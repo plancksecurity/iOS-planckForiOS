@@ -264,7 +264,7 @@ extension AppSettings: AppSettingsProtocol {
         }
     }
 
-    public func setSignature(_ signature: String, forAddress address: String) {
+    public func setSignature(_ signature: String?, forAddress address: String) {
         var signaturesForAdresses = signatureAddresDictionary
         signaturesForAdresses[address] = signature
         signatureAddresDictionary = signaturesForAdresses
@@ -323,6 +323,20 @@ extension AppSettings {
         var current = collapsingState
         current[address] = nil
         collapsingState = current
+    }
+
+    /// Remove all the settings related to an account
+    /// - Parameter address: The address of the account.
+    public func removeAllSettings(ofAccountWith address: String) {
+        //Collapsing state
+        removeFolderViewCollapsedStateOfAccountWith(address: address)
+        //Signature
+        setSignature(nil, forAddress: address)
+        // Default account
+        if AppSettings.userDefaults.string(forKey: AppSettings.keyDefaultAccountAddress) == address {
+            // Remove default account
+            AppSettings.userDefaults.set(nil, forKey: AppSettings.keyDefaultAccountAddress)
+        }
     }
 
     //MARK: Getters

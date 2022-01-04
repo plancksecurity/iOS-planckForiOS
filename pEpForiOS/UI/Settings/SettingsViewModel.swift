@@ -183,7 +183,9 @@ extension SettingsViewModel {
                         Log.shared.lostMySelf()
                         return
                     }
-                    me.appSettings.removeFolderViewCollapsedStateOfAccountWith(address: acc.user.address)
+                    //MB:-
+//                    me.appSettings.removeFolderViewCollapsedStateOfAccountWith(address: acc.user.address)
+                    me.appSettings.removeAllSettings(address: acc.user.address)
                     me.delete(account: acc)
                     guard let section = me.items.first(where: { (section) -> Bool in
                         return section.type == type

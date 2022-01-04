@@ -36,7 +36,12 @@ public protocol AppSettingsProtocol {
 
     /// Removes the collapsing state for the account address passed by parameter.
     /// - Parameter address: The address of the account to delete its collapsing states preferences.
+    /// MB:- delete this
     func removeFolderViewCollapsedStateOfAccountWith(address: String)
+
+    /// Removes all settings of an account
+    /// - Parameter address: The address of the account.
+    func removeAllSettings(ofAccountWith address: String)
 
     /// Retrieves the collapsed state for the account passed by parameter.
     ///
