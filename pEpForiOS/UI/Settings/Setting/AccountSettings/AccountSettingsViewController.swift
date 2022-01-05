@@ -220,8 +220,8 @@ extension AccountSettingsViewController : UITableViewDataSource {
 // MARK: - ViewModel Delegate
 
 extension AccountSettingsViewController : AccountSettingsViewModelDelegate {
-    func setLoadingView(visible: Bool) {
-        LoadingInterface.setLoadingView(visible: visible)
+    func setLoadingView(visible: Bool, completion: ((Bool) -> ())? = nil) {
+        LoadingInterface.setLoadingView(visible: visible, completion: completion)
     }
 
     func showAlert(error: Error) {
