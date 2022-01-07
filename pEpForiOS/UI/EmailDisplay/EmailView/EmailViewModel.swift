@@ -79,6 +79,17 @@ class EmailViewModel {
     ///
     /// - Parameter width: The max width the copied element may have
     public func handleCopy(maxWidth: CGFloat) {
+        if let potentialHTML = UIPasteboard.general.items.first?["public.html"] as? String {
+            var string = potentialHTML.slice(from: "<img src=", to: " ")
+            string = string?.replaceFirst(of: "cid:", with: "cid://")
+            string = string?.replacingOccurrences(of: "\"", with: "")
+            let test = string?.extractCid()
+            let attachment = Attachment.by(cid: test)
+            let data = attachment.data
+            let image = UIImage(data: data)
+            return
+        }
+
         // Just change default behaviour if an image is being copied
         guard let text = UIPasteboard.general.string,
               let cid = text.extractCid(),
@@ -514,6 +525,25 @@ extension EmailViewModel {
                 } else {
                     me.delegate?.showDocumentsEditor(url: url)
                 }
+            }
+        }
+    }
+}
+
+extension String {
+
+    /// Return the slice of string that exists between two strings.
+    /// For example:
+    /// "This is a nice day".slice(from:"a", to: "day") will return "nice".
+    ///
+    /// - Parameters:
+    ///   - from: The lower bound string
+    ///   - to: The upper bound string
+    /// - Returns: The slice of string between the two string in params. Nil if it doesn't find any of the bounds.
+    func slice(from: String, to: String) -> String? {
+        return (range(of: from)?.upperBound).flatMap { substringFrom in
+            (range(of: to, range: substringFrom..<endIndex)?.lowerBound).map { substringTo in
+                String(self[substringFrom..<substringTo])
             }
         }
     }
