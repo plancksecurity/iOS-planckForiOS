@@ -83,11 +83,14 @@ class EmailViewModel {
             var string = potentialHTML.slice(from: "<img src=", to: " ")
             string = string?.replaceFirst(of: "cid:", with: "cid://")
             string = string?.replacingOccurrences(of: "\"", with: "")
-            let test = string?.extractCid()
-            let attachment = Attachment.by(cid: test)
-            let data = attachment.data
-            let image = UIImage(data: data)
-            return
+            guard let test = string?.extractCid(),
+            let attachment = Attachment.by(cid: test),
+            let data = attachment.data,
+            let image = UIImage(data: data) else {
+                return
+            }
+            let margin: CGFloat = 10.0
+            UIPasteboard.general.image = image.resizeIfExceedMaxWidth(maxWidth: maxWidth - margin)
         }
 
         // Just change default behaviour if an image is being copied
