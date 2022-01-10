@@ -153,12 +153,12 @@ extension EditableAccountSettingsViewController: UITableViewDelegate {
     }
 }
 
-// MARK: - EditableAccountSettingsDelegate2
+// MARK: - EditableAccountSettingsDelegate
 
 extension EditableAccountSettingsViewController: EditableAccountSettingsDelegate {
 
-    func setLoadingView(visible: Bool) {
-        LoadingInterface.setLoadingView(visible: visible)
+    func setLoadingView(visible: Bool, completion: ((Bool) -> ())? = nil) {
+        LoadingInterface.setLoadingView(visible: visible, completion: completion)
     }
 
     func showAlert(error: Error) {

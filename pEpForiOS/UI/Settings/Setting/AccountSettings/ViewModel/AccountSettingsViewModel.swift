@@ -13,7 +13,7 @@ import pEpIOSToolbox
 ///Delegate protocol to communicate to the Account Settings View Controller
 protocol AccountSettingsViewModelDelegate: AnyObject {
     /// Changes loading view visibility
-    func setLoadingView(visible: Bool)
+    func setLoadingView(visible: Bool, completion: ((Bool) -> ())?)
     /// Shows an alert
     func showAlert(error: Error)
     /// Undo the last Pep Sync Change
@@ -194,7 +194,7 @@ extension AccountSettingsViewModel {
     /// Handle the Reset Identity action
     /// This resets all the keys of the current account and informs if it fails.
     public func handleResetIdentity() {
-        delegate?.setLoadingView(visible: true)
+        delegate?.setLoadingView(visible: true, completion: nil)
         account.resetKeys() { [weak self] result in
             guard let me = self else {
                 // Valid case. We might have been dismissed already.
@@ -203,11 +203,11 @@ extension AccountSettingsViewModel {
             switch result {
             case .success():
                 DispatchQueue.main.async {
-                    me.delegate?.setLoadingView(visible: false)
+                    me.delegate?.setLoadingView(visible: false, completion: nil)
                 }
             case .failure(let error):
                 DispatchQueue.main.async {
-                    me.delegate?.setLoadingView(visible: false)
+                    me.delegate?.setLoadingView(visible: false, completion: nil)
                     me.delegate?.showAlert(error: error)
                     Log.shared.errorAndCrash("Fail to reset identity, with error %@ ",
                                              error.localizedDescription)
@@ -485,7 +485,7 @@ extension AccountSettingsViewModel {
                 //Valid case: the view might be dismissed
                 return
             }
-            me.delegate?.setLoadingView(visible: visible)
+            me.delegate?.setLoadingView(visible: visible, completion: nil)
         }
     }
 }

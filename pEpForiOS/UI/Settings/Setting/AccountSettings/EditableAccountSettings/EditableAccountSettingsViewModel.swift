@@ -14,7 +14,7 @@ import PantomimeFramework
 protocol EditableAccountSettingsDelegate: AnyObject {
     /// Changes loading view visibility
     /// - Parameter visible: Indicates if it should be visible or not.
-    func setLoadingView(visible: Bool)
+    func setLoadingView(visible: Bool, completion: ((Bool) -> ())?)
     /// Shows an alert to inform an error.
     /// - Parameter error: The error to show
     func showAlert(error: Error)
@@ -120,12 +120,12 @@ class EditableAccountSettingsViewModel {
     /// Validates the user input
     /// Upload the changes if everything is OK, else informs the user
     public func handleSaveButtonPressed() {
-        delegate?.setLoadingView(visible: true)
+        delegate?.setLoadingView(visible: true, completion: nil)
         do {
             let validated = try validateInput()
             update(input: validated)
         } catch {
-            delegate?.setLoadingView(visible: false)
+            delegate?.setLoadingView(visible: false, completion: nil)
             delegate?.showAlert(error: error)
         }
     }
@@ -176,10 +176,11 @@ extension EditableAccountSettingsViewModel: VerifiableAccountDelegate {
                     return
                 }
                 DispatchQueue.main.async {
-                    me.delegate?.setLoadingView(visible: false)
+                    me.delegate?.setLoadingView(visible: false, completion: {_ in
+                        me.delegate?.dismissYourself()
+                    })
                     me.changeDelegate?.didChange()
                     me.postSettingsDidChanged()
-                    me.delegate?.dismissYourself()
                 }
             }
         case .failure(let error):
@@ -188,7 +189,7 @@ extension EditableAccountSettingsViewModel: VerifiableAccountDelegate {
                     //Valid case: the view might be dismissed.
                     return
                 }
-                me.delegate?.setLoadingView(visible: false)
+                me.delegate?.setLoadingView(visible: false, completion: nil)
                 if let imapError = error as? ImapSyncOperationError {
                     me.delegate?.showAlert(error: imapError)
                 } else if let smtpError = error as? SmtpSendError {
@@ -493,7 +494,7 @@ extension EditableAccountSettingsViewModel {
         do {
             try theVerifier.verify()
         } catch {
-            delegate?.setLoadingView(visible: false)
+            delegate?.setLoadingView(visible: false, completion: nil)
             delegate?.showAlert(error: LoginViewController.LoginError.noConnectData)
         }
     }
