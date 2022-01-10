@@ -123,9 +123,7 @@ class AnimatedPlaceholderTextfield: UITextField {
     ///   - animated: enable or disable the textField placeholder going up animation.
     func set(text: String?, animated: Bool = true) {
         isAnimationEnable = animated
-        DispatchQueue.main.async {
-            self.text = text
-        }
+        self.text = text
     }
 }
 
@@ -146,13 +144,7 @@ extension AnimatedPlaceholderTextfield {
     }
 
     @objc private func textFieldDidBeginEditing() {
-        DispatchQueue.main.async { [weak self] in
-            guard let me = self else {
-                Log.shared.lostMySelf()
-                return
-            }
-            me.moveUpPlaceHolderLabel()
-        }
+        moveUpPlaceHolderLabel()
     }
 
     @objc private func textFieldDidEndEditing() {
@@ -160,14 +152,7 @@ extension AnimatedPlaceholderTextfield {
             //dont not center if text is not empty
             return
         }
-
-        DispatchQueue.main.async { [weak self] in
-            guard let me = self else {
-                Log.shared.lostMySelf()
-                return
-            }
-            me.centerPlaceHolderLabel()
-        }
+        centerPlaceHolderLabel()
     }
 
     @objc private func textFieldDidChangeCharacters() {
