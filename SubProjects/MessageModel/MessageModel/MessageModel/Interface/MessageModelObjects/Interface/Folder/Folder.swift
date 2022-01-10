@@ -154,7 +154,7 @@ public class Folder: MessageModelObjectProtocol, ManagedObjectWrapperProtocol {
         return CdMessage.count(predicate: compound, in: session.moc)
     }
 
-    /// Number of unread mails in this folder
+    /// Number of mails in this folder
     public var countAll: Int {
         let compound = NSCompoundPredicate(type: .and, subpredicates: allMessagesPredicates)
         return CdMessage.count(predicate: compound, in: session.moc)
