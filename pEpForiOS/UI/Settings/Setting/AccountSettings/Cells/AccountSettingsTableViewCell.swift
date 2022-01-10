@@ -15,7 +15,7 @@ final class AccountSettingsTableViewCell: UITableViewCell {
     @IBOutlet weak var keyLabel: UILabel!
     @IBOutlet weak var valueTextfield: ConfigurableCaretTextField!
     @IBOutlet private weak var stackView: UIStackView!
-
+    @IBOutlet private var valueFieldWidthConstraint: NSLayoutConstraint!
     override func awakeFromNib() {
         super.awakeFromNib()
         keyLabel.font = UIFont.pepFont(style: .body, weight: .regular)
@@ -34,6 +34,7 @@ final class AccountSettingsTableViewCell: UITableViewCell {
         let contentSize = traitCollection.preferredContentSizeCategory
         stackView.axis = contentSize.isAccessibilityCategory ? .vertical : .horizontal
         stackView.spacing = contentSize.isAccessibilityCategory ? 10.0 : 5.0
+        valueFieldWidthConstraint.isActive = stackView.axis == .horizontal
 
         guard let row = displayRow else {
             Log.shared.errorAndCrash("Without row the cell can not be configured")
@@ -73,7 +74,6 @@ final class AccountSettingsTableViewCell: UITableViewCell {
         let contentSize = traitCollection.preferredContentSizeCategory
         stackView.axis = contentSize.isAccessibilityCategory ? .vertical : .horizontal
         stackView.spacing = contentSize.isAccessibilityCategory ? 10.0 : 5.0
-
         guard let row = actionRow else {
             Log.shared.errorAndCrash("Without row the cell can not be configured")
             return
