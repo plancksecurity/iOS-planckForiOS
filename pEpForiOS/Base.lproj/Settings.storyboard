@@ -861,6 +861,7 @@
                                             <constraints>
                                                 <constraint firstAttribute="trailing" secondItem="2tb-cr-b2S" secondAttribute="trailing" constant="20" symbolic="YES" id="0Lj-I0-GZQ"/>
                                                 <constraint firstItem="2tb-cr-b2S" firstAttribute="leading" secondItem="Fw7-lo-YKp" secondAttribute="leading" constant="20" symbolic="YES" id="QE2-G6-Frc"/>
+                                                <constraint firstItem="jWl-U8-Gg3" firstAttribute="width" secondItem="Fw7-lo-YKp" secondAttribute="width" multiplier="0.45" id="UHm-fB-Tnn"/>
                                                 <constraint firstAttribute="bottom" secondItem="2tb-cr-b2S" secondAttribute="bottom" constant="1" id="YFH-cW-3ex"/>
                                                 <constraint firstItem="2tb-cr-b2S" firstAttribute="top" secondItem="Fw7-lo-YKp" secondAttribute="top" constant="1" id="t9h-HO-DAb"/>
                                             </constraints>
@@ -869,6 +870,7 @@
                                         <connections>
                                             <outlet property="keyLabel" destination="409-SW-yds" id="j0L-1t-Mjo"/>
                                             <outlet property="stackView" destination="2tb-cr-b2S" id="2eE-ai-m9V"/>
+                                            <outlet property="valueFieldWidthConstraint" destination="UHm-fB-Tnn" id="nGF-eV-yTM"/>
                                             <outlet property="valueTextfield" destination="jWl-U8-Gg3" id="cKc-d2-ig4"/>
                                         </connections>
                                     </tableViewCell>
