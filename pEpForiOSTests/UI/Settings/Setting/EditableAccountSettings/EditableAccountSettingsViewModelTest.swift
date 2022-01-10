@@ -217,7 +217,7 @@ class MockEditableViewController: EditableAccountSettingsDelegate {
         self.showEditCertificateExpectation = showEditCertificateExpectation
     }
 
-    func setLoadingView(visible: Bool) {
+    func setLoadingView(visible: Bool, completion: ((Bool) -> ())?) {
         fulfillIfNotNil(expectation: setLoadingViewExpectation)
     }
 
