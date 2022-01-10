@@ -62,6 +62,7 @@ struct OAuth2Configuration: OAuth2ConfigurationProtocol {
         guard let redirectURLScheme = settings[redirectURLSchemeKey] as? String else {
             return nil
         }
+
         guard let redirectURL = URL(
             string: "\(redirectURLScheme):/oauth2\(OAuth2Configuration.createTokenURLParamString())") else {
             return nil
