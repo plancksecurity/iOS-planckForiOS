@@ -264,7 +264,8 @@ extension SettingsTableViewController : SwipeTableViewCellDelegate {
             tableView.deselectRow(at: indexPath, animated: true)
             return
         case .exportDBs:
-            //TODO: present the pop up
+            showExportDBsAlert()
+            tableView.deselectRow(at: indexPath, animated: true)
             return
         case .account,
              .extraKeys,
@@ -427,6 +428,22 @@ extension SettingsTableViewController {
 // MARK: - Alert Controllers
 
 extension SettingsTableViewController {
+
+    private func showExportDBsAlert() {
+        let alertTitle = NSLocalizedString("Export p≡p databases to file system", comment: "Alert view title - warning")
+        let message = NSLocalizedString("Do you really want to export p≡p databases to Documents/pEp/db-export/ on your local file system?\nWarning: The databases contain confidential information like private keys", comment: "Alert view message - warning")
+        let cancelButtonText = NSLocalizedString("No", comment: "No button")
+        let positiveButtonText = NSLocalizedString("Yes", comment: "Yes button")
+        UIUtils.showTwoButtonAlert(withTitle: alertTitle,
+                                   message: message,
+                                   cancelButtonText: cancelButtonText,
+                                   positiveButtonText: positiveButtonText,
+                                   cancelButtonAction: nil,
+                                   positiveButtonAction: {
+                                    print("Yes was pressed")
+                                   },
+                                   style: .warn)
+    }
 
     private func getBeforeDeleteAlert(deleteCallback: @escaping SettingsViewModel.AlertActionBlock) -> UIAlertController {
         let title = NSLocalizedString("Are you sure you want to delete the account?", comment: "Account delete confirmation")
