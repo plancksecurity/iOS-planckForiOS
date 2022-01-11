@@ -137,7 +137,8 @@ extension SettingsTableViewController {
              .credits,
              .trustedServer,
              .extraKeys,
-             .tutorial:
+             .tutorial,
+             .exportDBs:
             guard let row = row as? SettingsViewModel.NavigationRow else {
                 Log.shared.errorAndCrash(message: "Row doesn't match the expected type")
                 return UITableViewCell()
@@ -262,6 +263,9 @@ extension SettingsTableViewController : SwipeTableViewCellDelegate {
             TutorialWizardViewController.presentTutorialWizard(viewController: self)
             tableView.deselectRow(at: indexPath, animated: true)
             return
+        case .exportDBs:
+            //TODO: present the pop up
+            return
         case .account,
              .extraKeys,
              .resetTrust,
@@ -369,7 +373,7 @@ extension SettingsTableViewController {
             return .segueExtraKeys
         case .tutorial:
             return .tutorial
-        case .passiveMode, .usePEPFolder, .pEpSync, .unsecureReplyWarningEnabled, .protectMessageSubject, .resetAccounts:
+        case .passiveMode, .usePEPFolder, .pEpSync, .unsecureReplyWarningEnabled, .protectMessageSubject, .resetAccounts, .exportDBs:
             return .none
         }
     }
