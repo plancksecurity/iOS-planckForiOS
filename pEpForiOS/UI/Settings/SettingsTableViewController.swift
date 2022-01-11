@@ -440,7 +440,13 @@ extension SettingsTableViewController {
                                    positiveButtonText: positiveButtonText,
                                    cancelButtonAction: nil,
                                    positiveButtonAction: {
-                                    print("Yes was pressed")
+                                    
+                                    guard let vm = viewModel else {
+                                        Log.shared.errorAndCrash("VM not found")
+                                        return
+                                    }
+
+
                                    },
                                    style: .warn)
     }

@@ -143,6 +143,21 @@ final class SettingsViewModel {
     public func pgpKeyImportSettingViewModel() -> PGPKeyImportSettingViewModel {
         return PGPKeyImportSettingViewModel()
     }
+
+    public func handleExportDBsPressed() {
+
+        let date = Date()
+        let dateFormatter = DateFormatter()
+        dateFormatter.dateFormat = "YYYYMMDD-HH:MM"
+        let pathDate = dateFormatter.string(from: date)
+        let dirPath = "/Documents/db-export/\(pathDate)/"
+        do {
+            try FileManager.default.createDirectory(atPath: dirPath, withIntermediateDirectories: true, attributes: nil)
+        } catch {
+            print(error)
+        }
+    }
+
 }
 
 // MARK: - Private
