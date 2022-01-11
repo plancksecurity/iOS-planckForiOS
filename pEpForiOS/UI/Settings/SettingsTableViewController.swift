@@ -137,8 +137,7 @@ extension SettingsTableViewController {
              .credits,
              .trustedServer,
              .extraKeys,
-             .tutorial,
-             .exportDBs:
+             .tutorial:
             guard let row = row as? SettingsViewModel.NavigationRow else {
                 Log.shared.errorAndCrash(message: "Row doesn't match the expected type")
                 return UITableViewCell()
@@ -263,10 +262,6 @@ extension SettingsTableViewController : SwipeTableViewCellDelegate {
             TutorialWizardViewController.presentTutorialWizard(viewController: self)
             tableView.deselectRow(at: indexPath, animated: true)
             return
-        case .exportDBs:
-            showExportDBsAlert()
-            tableView.deselectRow(at: indexPath, animated: true)
-            return
         case .account,
              .extraKeys,
              .resetTrust,
@@ -374,7 +369,7 @@ extension SettingsTableViewController {
             return .segueExtraKeys
         case .tutorial:
             return .tutorial
-        case .passiveMode, .usePEPFolder, .pEpSync, .unsecureReplyWarningEnabled, .protectMessageSubject, .resetAccounts, .exportDBs:
+        case .passiveMode, .usePEPFolder, .pEpSync, .unsecureReplyWarningEnabled, .protectMessageSubject, .resetAccounts:
             return .none
         }
     }
@@ -428,28 +423,6 @@ extension SettingsTableViewController {
 // MARK: - Alert Controllers
 
 extension SettingsTableViewController {
-
-    private func showExportDBsAlert() {
-        let alertTitle = NSLocalizedString("Export p≡p databases to file system", comment: "Alert view title - warning")
-        let message = NSLocalizedString("Do you really want to export p≡p databases to Documents/pEp/db-export/ on your local file system?\nWarning: The databases contain confidential information like private keys", comment: "Alert view message - warning")
-        let cancelButtonText = NSLocalizedString("No", comment: "No button")
-        let positiveButtonText = NSLocalizedString("Yes", comment: "Yes button")
-        UIUtils.showTwoButtonAlert(withTitle: alertTitle,
-                                   message: message,
-                                   cancelButtonText: cancelButtonText,
-                                   positiveButtonText: positiveButtonText,
-                                   cancelButtonAction: nil,
-                                   positiveButtonAction: {
-                                    
-                                    guard let vm = viewModel else {
-                                        Log.shared.errorAndCrash("VM not found")
-                                        return
-                                    }
-
-
-                                   },
-                                   style: .warn)
-    }
 
     private func getBeforeDeleteAlert(deleteCallback: @escaping SettingsViewModel.AlertActionBlock) -> UIAlertController {
         let title = NSLocalizedString("Are you sure you want to delete the account?", comment: "Account delete confirmation")

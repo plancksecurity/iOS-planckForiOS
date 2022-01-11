@@ -11,7 +11,7 @@ import MessageModel
 import pEpIOSToolbox
 
 ///Delegate protocol to communicate to the SettingsTableViewController some special actions.
-protocol SettingsViewModelDelegate: AnyObject {
+protocol SettingsViewModelDelegate: class {
     /// Shows the loading
     func showLoadingView()
     /// Hides the loading
@@ -75,8 +75,7 @@ final class SettingsViewModel {
              .extraKeys,
              .trustedServer,
              .resetTrust, 
-             .tutorial,
-             .exportDBs:
+             .tutorial:
             return "SettingsCell"
         case .resetAccounts:
             return "SettingsActionCell"
@@ -143,21 +142,6 @@ final class SettingsViewModel {
     public func pgpKeyImportSettingViewModel() -> PGPKeyImportSettingViewModel {
         return PGPKeyImportSettingViewModel()
     }
-
-    public func handleExportDBsPressed() {
-
-        let date = Date()
-        let dateFormatter = DateFormatter()
-        dateFormatter.dateFormat = "YYYYMMDD-HH:MM"
-        let pathDate = dateFormatter.string(from: date)
-        let dirPath = "/Documents/db-export/\(pathDate)/"
-        do {
-            try FileManager.default.createDirectory(atPath: dirPath, withIntermediateDirectories: true, attributes: nil)
-        } catch {
-            print(error)
-        }
-    }
-
 }
 
 // MARK: - Private
@@ -286,8 +270,6 @@ extension SettingsViewModel {
             rows.append(generateNavigationRow(type: .extraKeys, isDangerous: false))
         case .tutorial:
             rows.append(generateNavigationRow(type: .tutorial, isDangerous: false))
-        case .support:
-            rows.append(generateNavigationRow(type: .exportDBs, isDangerous: false))
         }
         return rows
     }
@@ -357,9 +339,6 @@ extension SettingsViewModel {
         case .tutorial:
             return NSLocalizedString("Tutorial",
                                      comment: "Tableview section header: Tutorial")
-        case .support:
-            return NSLocalizedString("Support",
-                                     comment: "Tableview section header: Support")
         }
     }
 
@@ -368,7 +347,7 @@ extension SettingsViewModel {
     /// - Returns: The title of the footer. If the section is an account, a pepSync or the company features, it will be nil because there is no footer.
     private func sectionFooter(type: SectionType) -> String? {
         switch type {
-        case .pEpSync, .companyFeatures, .tutorial, .support:
+        case .pEpSync, .companyFeatures, .tutorial:
             return nil
         case .accounts:
             return NSLocalizedString("Performs a reset of the privacy settings of your account(s)",
@@ -427,8 +406,6 @@ extension SettingsViewModel {
                                      comment: "setting row title: Unsecure reply warning")
         case .tutorial:
             return NSLocalizedString("Tutorial", comment: "setting row title: Tutorial")
-        case .exportDBs:
-            return NSLocalizedString("Export p≡p databases to file system", comment: "setting row title: Export DBs")
         }
     }
 
@@ -450,9 +427,7 @@ extension SettingsViewModel {
              .resetTrust,
              .pgpKeyImport,
              .trustedServer,
-             .unsecureReplyWarningEnabled,
-             .tutorial,
-             .exportDBs:
+             .unsecureReplyWarningEnabled, .tutorial:
             return nil
         }
     }
@@ -551,7 +526,6 @@ extension SettingsViewModel {
         case companyFeatures
         case tutorial
         case contacts
-        case support
     }
 
     /// Identifies semantically the type of row.
@@ -570,7 +544,6 @@ extension SettingsViewModel {
         case resetTrust
         case extraKeys
         case tutorial
-        case exportDBs
     }
 
     /// Struct that represents a section in SettingsTableViewController
