@@ -462,7 +462,7 @@ extension SettingsTableViewController {
                                     }
                                     me.viewModel.handleExportDBsPressed()
                                    },
-                                   style: .warn)
+                                   style: .undo)
     }
 
     private func showExportDBsFailedAlert() {
@@ -478,13 +478,13 @@ extension SettingsTableViewController {
             me.dismiss(animated: true) {
                 me.viewModel.handleExportDBsPressed()
             }
-        }, style: .warn)
+        }, style: .undo)
     }
 
     private func showExportDBsSuccedAlert() {
         let alertTitle = NSLocalizedString("Export p≡p databases to file system", comment: "Alert view title - warning")
         let message = NSLocalizedString("Exporting databases OK", comment: "Error message")
-        UIUtils.showAlertWithOnlyPositiveButton(title: alertTitle, message: message, style: .default, completion: nil)
+        UIUtils.showAlertWithOnlyPositiveButton(title: alertTitle, message: message, style: .undo, completion: nil)
     }
 
     private func getBeforeDeleteAlert(deleteCallback: @escaping SettingsViewModel.AlertActionBlock) -> UIAlertController {
