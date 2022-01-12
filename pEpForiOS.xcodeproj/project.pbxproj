@@ -461,6 +461,8 @@
 		5B102FAB2652A1F400A758D2 /* MessageHeaderCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5B102FAA2652A1F400A758D2 /* MessageHeaderCell.swift */; };
 		5B102FAD2652AF3400A758D2 /* MessageHeaderCellViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5B102FAC2652AF3400A758D2 /* MessageHeaderCellViewModel.swift */; };
 		5B102FB92658008200A758D2 /* MessageHeaderCellViewModelTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5B102FB82658008200A758D2 /* MessageHeaderCellViewModelTest.swift */; };
+		5B1A010B278EDD6000EE5838 /* DBsUtil.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5B1A010A278EDD6000EE5838 /* DBsUtil.swift */; };
+		5B1A010D278EF45500EE5838 /* DBsUtilTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5B1A010C278EF45500EE5838 /* DBsUtilTest.swift */; };
 		5B1C0E1823FC26FB00F977C1 /* TrustManagementTableViewCellProtocols.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5B1C0E1723FC26FB00F977C1 /* TrustManagementTableViewCellProtocols.swift */; };
 		5B1C1432259A25B2006DB2A1 /* UILabel+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5B1C1431259A25B2006DB2A1 /* UILabel+Extension.swift */; };
 		5B2F7E63240D25CF004DDFA2 /* TutorialStepViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5B2F7E62240D25CF004DDFA2 /* TutorialStepViewController.swift */; };
@@ -1115,6 +1117,8 @@
 		5B102FAA2652A1F400A758D2 /* MessageHeaderCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MessageHeaderCell.swift; sourceTree = "<group>"; };
 		5B102FAC2652AF3400A758D2 /* MessageHeaderCellViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MessageHeaderCellViewModel.swift; sourceTree = "<group>"; };
 		5B102FB82658008200A758D2 /* MessageHeaderCellViewModelTest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MessageHeaderCellViewModelTest.swift; sourceTree = "<group>"; };
+		5B1A010A278EDD6000EE5838 /* DBsUtil.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DBsUtil.swift; sourceTree = "<group>"; };
+		5B1A010C278EF45500EE5838 /* DBsUtilTest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DBsUtilTest.swift; sourceTree = "<group>"; };
 		5B1C0E1723FC26FB00F977C1 /* TrustManagementTableViewCellProtocols.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TrustManagementTableViewCellProtocols.swift; sourceTree = "<group>"; };
 		5B1C1431259A25B2006DB2A1 /* UILabel+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UILabel+Extension.swift"; sourceTree = "<group>"; };
 		5B2F7E62240D25CF004DDFA2 /* TutorialStepViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TutorialStepViewController.swift; sourceTree = "<group>"; };
@@ -1714,6 +1718,7 @@
 			children = (
 				5B3C13BE23D8AF2E00FC0A53 /* SettingsTableViewController.swift */,
 				5BE35AA324913B4700AC605C /* SettingsViewModel.swift */,
+				5B1A010A278EDD6000EE5838 /* DBsUtil.swift */,
 				1521B78C241BDAD3000EAE57 /* UIUtils+Settings.swift */,
 				15874BAF2127493E00A3A4A6 /* Setting */,
 				5BF90035262F2517005B08D4 /* NSNotificationName+Settings.swift */,
@@ -1796,6 +1801,7 @@
 			isa = PBXGroup;
 			children = (
 				43D1900D2513734400A36973 /* SettingsViewModelTest.swift */,
+				5B1A010C278EF45500EE5838 /* DBsUtilTest.swift */,
 				1546CBFD252B5D3A00A7AA7D /* Credits */,
 				439EA15224727966005D6C9A /* KeyImport */,
 				37A710E2233B7A96001FEAF0 /* AccountSettings */,
@@ -3548,6 +3554,7 @@
 				5BF90036262F2517005B08D4 /* NSNotificationName+Settings.swift in Sources */,
 				37F615CF238BE584001AAE48 /* ManualAccountSetupView.swift in Sources */,
 				5B3B019124B46CFC00FBB4B5 /* UILayout+Extension.swift in Sources */,
+				5B1A010B278EDD6000EE5838 /* DBsUtil.swift in Sources */,
 				15D4399C216E698E00EB3933 /* AccountPickerViewModel.swift in Sources */,
 				3A7F89BB252B3D2400A38460 /* UIBarButtonItem+ComposeButton.swift in Sources */,
 				15679F0D2292F4090051DCC3 /* FilterViewDelegate.swift in Sources */,
@@ -3726,6 +3733,7 @@
 				15BBBC6B1FD0527200B9DCC8 /* DisplayUserErrorTest.swift in Sources */,
 				15D7D997219C374600A1A2B9 /* ComposeViewModelStateTest.swift in Sources */,
 				F73E4F7A2180744700CCFFED /* FolderCellViewModelTests.swift in Sources */,
+				5B1A010D278EF45500EE5838 /* DBsUtilTest.swift in Sources */,
 				B7F4A793212DDFC500507B76 /* EmailListViewModelTest.swift in Sources */,
 				157743B8217885EA0007222C /* RecipientTextViewModelTest.swift in Sources */,
 				49A6114E2179F3A1006BA3C5 /* UnitTestUtils.swift in Sources */,

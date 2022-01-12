@@ -161,4 +161,9 @@ class SettingsViewModeldelegate: SettingsViewModelDelegate {
     func showResetAllWarning(callback: @escaping SettingsViewModel.ActionBlock) {
         XCTFail()
     }
+
+    func didEndExportDBs(result: Result<Void, Error>) {
+        XCTFail()
+    }
+
 }

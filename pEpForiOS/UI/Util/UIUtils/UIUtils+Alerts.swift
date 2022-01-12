@@ -17,7 +17,9 @@ import pEpIOSToolbox
 // MARK: - UIUtils+Alerts
 
 extension UIUtils {
+
     /// Shows an alert with "OK" button only.
+    ///
     /// - Parameters:
     ///   - title: alert title
     ///   - message: alert message
@@ -40,6 +42,7 @@ extension UIUtils {
     }
     
     /// Shows a two alert button alert configured with the values passed by parameter.
+    ///
     /// - Parameters:
     ///   - title: The title of the Alert
     ///   - message: The message of the alert
@@ -70,6 +73,7 @@ extension UIUtils {
     }
 
     /// Generic method to show an alert and require information throught a textfield
+    ///
     /// - Parameters:
     ///   - title: The title of the alert
     ///   - message: The message of the alert
@@ -122,6 +126,7 @@ extension UIUtils {
     }
     
     /// Present the pep alert if possible.
+    ///
     /// - Parameter alertController: The controller to present.
     private static func show(_ alertController: PEPAlertViewController) {
         let presenterVc = UIApplication.currentlyVisibleViewController()
