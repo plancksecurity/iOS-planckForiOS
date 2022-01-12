@@ -405,6 +405,7 @@ extension EmailViewController: SegueHandlerType {
                 return
             }
             vc.viewModel = calendarEventBannerViewModel
+            vc.delegate = vm
             bannerContainerView.isHidden = !calendarEventBannerViewModel.shouldShowEventsBanner
         }
     }
@@ -416,6 +417,9 @@ extension EmailViewController: CalendarEventBannerViewModelDelegate {
     func dismiss() {
         bannerContainerView.isHidden = true
         stackView.layoutIfNeeded()
+    }
+    func reload() {
+        tableView.reloadData()
     }
 }
 
