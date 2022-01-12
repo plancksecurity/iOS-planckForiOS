@@ -14,7 +14,6 @@ class DBsUtil: NSObject {
     ///
     /// - Throws: throws an error in cases of failure.
     public static func exportDatabases() throws {
-
         let managementDBFileName = "management.db"
         let keysDBFileName = "keys.db"
         let systemDBFileName = "system.db"
@@ -32,34 +31,11 @@ class DBsUtil: NSObject {
             }
 
             //Get the destination path of each file
-            var managementDestinationURL = URL(string: destinationDirectoryURL.absoluteString)
-            managementDestinationURL?.appendPathComponent(managementDBFileName)
-            guard let managementDBDestinationPath = managementDestinationURL?.path else {
-                Log.shared.errorAndCrash("Management DB Destination Directory URL not found")
-                return
-            }
+            let managementDBDestinationPath = getPath(from: destinationDirectoryURL, withFileName: managementDBFileName)
+            let keysDBDestinationPath = getPath(from: destinationDirectoryURL, withFileName: keysDBFileName)
+            let systemDBDestinationPath = getPath(from: destinationDirectoryURL, withFileName: systemDBFileName)
+            let securityPEPsqliteDestinationPath = getPath(from: destinationDirectoryURL, withFileName: securityPEPsqliteFileName)
 
-            var keysDestinationURL = URL(string: destinationDirectoryURL.absoluteString)
-            keysDestinationURL?.appendPathComponent(keysDBFileName)
-            guard let keysDBDestinationPath = keysDestinationURL?.path else {
-                Log.shared.errorAndCrash("Keys DB Destination Directory URL not found")
-                return
-            }
-
-            var systemDestinationURL = URL(string: destinationDirectoryURL.absoluteString)
-            systemDestinationURL?.appendPathComponent(systemDBFileName)
-            guard let systemDBDestinationPath = systemDestinationURL?.path else {
-                Log.shared.errorAndCrash("Keys DB Destination Directory URL not found")
-                return
-            }
-
-            var securityPEPsqliteDestinationURL = URL(string: destinationDirectoryURL.absoluteString)
-            securityPEPsqliteDestinationURL?.appendPathComponent(securityPEPsqliteFileName)
-            guard let securityPEPsqliteDestinationPath = securityPEPsqliteDestinationURL?.path else {
-                Log.shared.errorAndCrash("security.pEp.sqlite DB Destination Directory URL not found")
-                return
-            }
-            
             //Copy Items from source paths to the destination paths.
             //Management DB
             if let managementDBsourcePath = getSourceURLforHiddenFileNamed(name: managementDBFileName)?.path {
@@ -87,6 +63,21 @@ class DBsUtil: NSObject {
 //MARK: - Private
 
 extension DBsUtil {
+
+    /// Get the path of the file passed by param.
+    /// - Parameters:
+    ///   - url: The url of the file
+    ///   - fileName: The name of the file
+    private static func getPath(from url: URL, withFileName fileName: String) -> String {
+        //Get the destination path of each file
+        var urlCopy = URL(string: url.absoluteString)
+        urlCopy?.appendPathComponent(fileName)
+        guard let path = urlCopy?.path else {
+            Log.shared.errorAndCrash("Management DB Destination Directory URL not found")
+            return ""
+        }
+        return path
+    }
 
     /// - Returns: The destination directory url.
     /// The last path component indicates the date and time.
@@ -144,5 +135,4 @@ extension DBsUtil {
         dateFormatter.dateFormat = "YYYYMMDD-hh-mm"
         return dateFormatter.string(from: date)
     }
-
 }
