@@ -345,7 +345,6 @@ extension SettingsTableViewController : SettingsViewModelDelegate {
             case .success:
                 me.showExportDBsSuccedAlert()
             case .failure(let error):
-                print(error)
                 me.showExportDBsFailedAlert()
             }
         }
