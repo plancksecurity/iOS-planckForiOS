@@ -9,7 +9,6 @@
 import Foundation
 import MessageModel
 import pEpIOSToolbox
-import pEp4iosIntern
 
 ///Delegate protocol to communicate to the SettingsTableViewController some special actions.
 protocol SettingsViewModelDelegate: AnyObject {
@@ -21,9 +20,10 @@ protocol SettingsViewModelDelegate: AnyObject {
     func showExtraKeyEditabilityStateChangeAlert(newValue: String)
     /// Shows an alert to confirm the reset all identities.
     func showResetAllWarning(callback: @escaping SettingsViewModel.ActionBlock)
-    /// Did end exporting databases
-    /// - Parameter result: The result of the export
-    func didEndExportDBs(result: Result<Void, Error>)
+    /// Shows an alert to indicate databases export was successful
+    func showDBExportSuccess()
+    /// Shows an alert to indicate databases export failed
+    func showDBExportFailed()
 }
 
 /// Protocol that represents the basic data in a row.
@@ -158,14 +158,14 @@ final class SettingsViewModel {
                 return
             }
             do {
-                try DBsUtil.exportDatabases()
+                try FileExportUtil.exportDatabases()
             } catch {
                 DispatchQueue.main.async {
-                    me.delegate?.didEndExportDBs(result: .failure(error))
+                    me.delegate?.showDBExportFailed()
                 }
             }
             DispatchQueue.main.async {
-                me.delegate?.didEndExportDBs(result: .success(()))
+                me.delegate?.showDBExportSuccess()
             }
         }
     }
