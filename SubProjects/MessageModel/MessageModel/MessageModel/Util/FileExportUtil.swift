@@ -27,7 +27,7 @@ public class FileExportUtil: NSObject, FileExportUtilProtocol {
     /// - Throws: throws an error in cases of failure.
     public func exportDatabases() throws {
         let systemDBFileName = "system.db"
-        let pepFolderName = "pep"
+        let pepFolderName = "pEp"
 
         do {
             let fileManager = FileManager.default
