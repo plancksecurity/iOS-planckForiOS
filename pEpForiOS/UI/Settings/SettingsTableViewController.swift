@@ -471,12 +471,6 @@ extension SettingsTableViewController {
                                    style: .undo)
     }
 
-    private func showExportDBsFailedAlert() {
-    }
-
-    private func showExportDBsSuccedAlert() {
-    }
-
     private func getBeforeDeleteAlert(deleteCallback: @escaping SettingsViewModel.AlertActionBlock) -> UIAlertController {
         let title = NSLocalizedString("Are you sure you want to delete the account?", comment: "Account delete confirmation")
         let deleteButtonTitle = NSLocalizedString("Delete", comment: "Delete account button title")
