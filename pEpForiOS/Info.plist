@@ -67,6 +67,16 @@
 				<string>${OAUTH2_YAHOO_REDIRECT_URL_SCHEME}</string>
 			</array>
 		</dict>
+		<dict>
+			<key>CFBundleTypeRole</key>
+			<string>Editor</string>
+			<key>CFBundleURLName</key>
+			<string>o365</string>
+			<key>CFBundleURLSchemes</key>
+			<array>
+				<string>${OAUTH2_O365_REDIRECT_URL_SCHEME}</string>
+			</array>
+		</dict>
 	</array>
 	<key>CFBundleVersion</key>
 	<string>$(CURRENT_PROJECT_VERSION)</string>
@@ -97,18 +107,18 @@
 	<string>${OAUTH2_GMAIL_CLIENT_ID}</string>
 	<key>OAUTH2_GMAIL_REDIRECT_URL_SCHEME</key>
 	<string>${OAUTH2_GMAIL_REDIRECT_URL_SCHEME}</string>
-	<key>OAUTH2_YAHOO_CLIENT_ID</key>
-	<string>${OAUTH2_YAHOO_CLIENT_ID}</string>
-	<key>OAUTH2_YAHOO_CLIENT_SECRET</key>
-	<string>${OAUTH2_YAHOO_CLIENT_SECRET}</string>
-	<key>OAUTH2_YAHOO_REDIRECT_URL</key>
-	<string>https://pep.security/oauth2/yahoo</string>
 	<key>OAUTH2_O365_CLIENT_ID</key>
 	<string>${OAUTH2_O365_CLIENT_ID}</string>
 	<key>OAUTH2_O365_CLIENT_SECRET</key>
 	<string>${OAUTH2_O365_CLIENT_SECRET}</string>
 	<key>OAUTH2_O365_REDIRECT_URL_SCHEME</key>
 	<string>${OAUTH2_O365_REDIRECT_URL_SCHEME}</string>
+	<key>OAUTH2_YAHOO_CLIENT_ID</key>
+	<string>${OAUTH2_YAHOO_CLIENT_ID}</string>
+	<key>OAUTH2_YAHOO_CLIENT_SECRET</key>
+	<string>${OAUTH2_YAHOO_CLIENT_SECRET}</string>
+	<key>OAUTH2_YAHOO_REDIRECT_URL</key>
+	<string>https://pep.security/oauth2/yahoo</string>
 	<key>UIAppFonts</key>
 	<array>
 		<string>UniversLTStd.otf</string>
