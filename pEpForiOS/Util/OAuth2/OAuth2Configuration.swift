@@ -64,8 +64,7 @@ struct OAuth2Configuration: OAuth2ConfigurationProtocol {
         }
 
         let gmailUrl = "\(redirectURLScheme):/oauth2\(OAuth2Configuration.createTokenURLParamString())"
-        let o365url = "\(redirectURLScheme)"
-        let stringUrl = oauth2Type == .o365 ? o365url : gmailUrl
+        let stringUrl = oauth2Type == .o365 ? redirectURLScheme : gmailUrl
 
         guard let redirectURL = URL(string: stringUrl) else {
             return nil
