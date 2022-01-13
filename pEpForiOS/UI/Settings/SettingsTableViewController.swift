@@ -466,7 +466,9 @@ extension SettingsTableViewController {
                                         Log.shared.errorAndCrash("Lost myself")
                                         return
                                     }
-                                    me.viewModel.handleExportDBsPressed()
+                                    me.dismiss(animated: true) {
+                                        me.viewModel.handleExportDBsPressed()
+                                    }
                                    },
                                    style: .undo)
     }

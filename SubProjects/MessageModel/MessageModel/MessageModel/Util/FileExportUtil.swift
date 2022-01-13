@@ -19,46 +19,44 @@ public class FileExportUtil: NSObject {
         let managementDBFileName = "management.db"
         let keysDBFileName = "keys.db"
         let systemDBFileName = "system.db"
-//        let securityPEPsqliteFileName = "security.pEp.sqlite"
-
-        //app containerDir/security.pEp.*
 
         do {
+            let fileManager = FileManager.default
             guard let destinationDirectoryURL: URL = getDBDestinationDirectoryURL() else {
                 Log.shared.errorAndCrash("Destination Directory URL not found")
                 return
             }
             //Check if destination directory already exists. If not, create it.
             var isDirectory:ObjCBool = true
-            if !FileManager.default.fileExists(atPath: destinationDirectoryURL.path, isDirectory: &isDirectory) {
+            if !fileManager.fileExists(atPath: destinationDirectoryURL.path, isDirectory: &isDirectory) {
                 try FileManager.default.createDirectory(at: destinationDirectoryURL, withIntermediateDirectories: true)
             }
 
-            //Get the destination path of each file and copy Items from source paths to the destination paths
-            let managementDBDestinationPath = getDestinationPath(from: destinationDirectoryURL, withFileName: managementDBFileName)
-            let keysDBDestinationPath = getDestinationPath(from: destinationDirectoryURL, withFileName: keysDBFileName)
-            let systemDBDestinationPath = getDestinationPath(from: destinationDirectoryURL, withFileName: systemDBFileName)
+            //Get the destination path of each file and copy items from source paths to the destination paths
+            let managementDBDestinationPath = getDestinationPath(from: destinationDirectoryURL, fileName: managementDBFileName)
+            let keysDBDestinationPath = getDestinationPath(from: destinationDirectoryURL, fileName: keysDBFileName)
+            let systemDBDestinationPath = getDestinationPath(from: destinationDirectoryURL, fileName: systemDBFileName)
 
             //Management DB
             if let managementDBsourcePath = getSourceURLforHiddenFileNamed(name: managementDBFileName)?.path {
-                try FileManager.default.copyItem(atPath: managementDBsourcePath, toPath: managementDBDestinationPath)
+                try fileManager.copyItem(atPath: managementDBsourcePath, toPath: managementDBDestinationPath)
             }
             //Keys DB
             if let keyDBsourcePath = getSourceURLforHiddenFileNamed(name: keysDBFileName)?.path {
-                try FileManager.default.copyItem(atPath: keyDBsourcePath, toPath: keysDBDestinationPath)
+                try fileManager.copyItem(atPath: keyDBsourcePath, toPath: keysDBDestinationPath)
             }
             //System DB
             if let systemDBsourcePath = getSystemDBSourceURL()?.path {
-                try FileManager.default.copyItem(atPath: systemDBsourcePath, toPath: systemDBDestinationPath)
+                try fileManager.copyItem(atPath: systemDBsourcePath, toPath: systemDBDestinationPath)
             }
-            //security.pEp DB
-            if let path = FileManager.default.containerURL(forSecurityApplicationGroupIdentifier: kAppGroupIdentifier)?.path,
-               let items = try? FileManager.default.contentsOfDirectory(atPath: path) {
+            //security.pEp DB files
+            if let path = fileManager.containerURL(forSecurityApplicationGroupIdentifier: kAppGroupIdentifier)?.path,
+               let items = try? fileManager.contentsOfDirectory(atPath: path) {
                 let filesNames = items.filter { $0.contains("security.pEp") }
                 try? filesNames.forEach { fileName in
-                    let securityPEPsqliteDestinationPath = getDestinationPath(from: destinationDirectoryURL, withFileName: fileName)
+                    let securityPEPsqliteDestinationPath = getDestinationPath(from: destinationDirectoryURL, fileName: fileName)
                     if let pepSecuritySQLiteDBsourcePath = getSQLiteDBSourceURL(fileName: fileName)?.path {
-                        try FileManager.default.copyItem(atPath: pepSecuritySQLiteDBsourcePath, toPath: securityPEPsqliteDestinationPath)
+                        try fileManager.copyItem(atPath: pepSecuritySQLiteDBsourcePath, toPath: securityPEPsqliteDestinationPath)
                     }
                 }
             }
@@ -74,7 +72,7 @@ extension FileExportUtil {
     /// - Parameters:
     ///   - url: The url of the file
     ///   - fileName: The name of the file
-    private static func getDestinationPath(from url: URL, withFileName fileName: String) -> String {
+    private static func getDestinationPath(from url: URL, fileName: String) -> String {
         var copyFileName = fileName
         if fileName.starts(with: ".") {
             copyFileName.removeFirst()
@@ -127,43 +125,13 @@ extension FileExportUtil {
         return appGroupURL
     }
 
-    /// - Returns: the URL where the security.pEp.sqlite file is stored
-    private static func getSQLiteDBSourceURL() -> URL? {
-        guard var appGroupURL = FileManager.default.containerURL(forSecurityApplicationGroupIdentifier: kAppGroupIdentifier) else {
-            Log.shared.errorAndCrash("Container folder not found")
-            return nil
-        }
-        appGroupURL.appendPathComponent("security.pEp.sqlite")
-        return appGroupURL
-    }
-
-    /// - Returns: the URL where the security.pEp.sqlite file is stored
+    /// - Returns: the URL where the security.pEp files are stored
     private static func getSQLiteDBSourceURL(fileName: String) -> URL? {
         guard var appGroupURL = FileManager.default.containerURL(forSecurityApplicationGroupIdentifier: kAppGroupIdentifier) else {
             Log.shared.errorAndCrash("Container folder not found")
             return nil
         }
         appGroupURL.appendPathComponent(fileName)
-        return appGroupURL
-    }
-
-    /// - Returns: the URL where the security.pEp.sqlite file is stored
-    private static func getSQLiteSHMDBSourceURL() -> URL? {
-        guard var appGroupURL = FileManager.default.containerURL(forSecurityApplicationGroupIdentifier: kAppGroupIdentifier) else {
-            Log.shared.errorAndCrash("Container folder not found")
-            return nil
-        }
-        appGroupURL.appendPathComponent("security.pEp.sqlite-shm")
-        return appGroupURL
-    }
-
-    /// - Returns: the URL where the security.pEp.sqlite file is stored
-    private static func getSQLiteWALBSourceURL() -> URL? {
-        guard var appGroupURL = FileManager.default.containerURL(forSecurityApplicationGroupIdentifier: kAppGroupIdentifier) else {
-            Log.shared.errorAndCrash("Container folder not found")
-            return nil
-        }
-        appGroupURL.appendPathComponent("security.pEp.sqlite-wal")
         return appGroupURL
     }
 
