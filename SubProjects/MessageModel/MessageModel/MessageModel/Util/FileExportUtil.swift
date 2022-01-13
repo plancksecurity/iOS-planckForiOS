@@ -3,22 +3,31 @@
 //  MessageModel
 //
 //  Created by Martín Brude on 13/1/22.
-//  Copyright © 2022 pEp Security S.A. All rights reserved.
+//  Copyright © 2022 p≡p Security S.A. All rights reserved.
 //
 
 import Foundation
 import pEpIOSToolbox
 import pEp4iosIntern
 
-public class FileExportUtil: NSObject {
+public protocol FileExportUtilProtocol: AnyObject {
+    func exportDatabases() throws
+}
+
+public class FileExportUtil: NSObject, FileExportUtilProtocol {
+
+    // MARK: - Singleton
+
+    static public let shared = FileExportUtil()
+
+    private override init() { }
 
     /// Export databases
     ///
     /// - Throws: throws an error in cases of failure.
-    public static func exportDatabases() throws {
-        let managementDBFileName = "management.db"
-        let keysDBFileName = "keys.db"
+    public func exportDatabases() throws {
         let systemDBFileName = "system.db"
+        let pepFolderName = "pep"
 
         do {
             let fileManager = FileManager.default
@@ -33,22 +42,18 @@ public class FileExportUtil: NSObject {
             }
 
             //Get the destination path of each file and copy items from source paths to the destination paths
-            let managementDBDestinationPath = getDestinationPath(from: destinationDirectoryURL, fileName: managementDBFileName)
-            let keysDBDestinationPath = getDestinationPath(from: destinationDirectoryURL, fileName: keysDBFileName)
+            let pepFolderDestinationPath = getDestinationPath(from: destinationDirectoryURL, fileName: pepFolderName)
             let systemDBDestinationPath = getDestinationPath(from: destinationDirectoryURL, fileName: systemDBFileName)
 
-            //Management DB
-            if let managementDBsourcePath = getSourceURLforHiddenFileNamed(name: managementDBFileName)?.path {
-                try fileManager.copyItem(atPath: managementDBsourcePath, toPath: managementDBDestinationPath)
-            }
-            //Keys DB
-            if let keyDBsourcePath = getSourceURLforHiddenFileNamed(name: keysDBFileName)?.path {
-                try fileManager.copyItem(atPath: keyDBsourcePath, toPath: keysDBDestinationPath)
-            }
             //System DB
             if let systemDBsourcePath = getSystemDBSourceURL()?.path {
                 try fileManager.copyItem(atPath: systemDBsourcePath, toPath: systemDBDestinationPath)
             }
+            //.pEp folder
+            if let pepHiddenFolderSourcePath = getSourceURLforHiddenPEPFolder()?.path {
+                try fileManager.copyItem(atPath: pepHiddenFolderSourcePath, toPath: pepFolderDestinationPath)
+            }
+
             //security.pEp DB files
             if let path = fileManager.containerURL(forSecurityApplicationGroupIdentifier: kAppGroupIdentifier)?.path,
                let items = try? fileManager.contentsOfDirectory(atPath: path) {
@@ -72,7 +77,7 @@ extension FileExportUtil {
     /// - Parameters:
     ///   - url: The url of the file
     ///   - fileName: The name of the file
-    private static func getDestinationPath(from url: URL, fileName: String) -> String {
+    private func getDestinationPath(from url: URL, fileName: String) -> String {
         var copyFileName = fileName
         if fileName.starts(with: ".") {
             copyFileName.removeFirst()
@@ -80,7 +85,7 @@ extension FileExportUtil {
         var urlCopy = URL(string: url.absoluteString)
         urlCopy?.appendPathComponent(copyFileName)
         guard let path = urlCopy?.path else {
-            Log.shared.errorAndCrash("Management DB Destination Directory URL not found")
+            Log.shared.errorAndCrash("Destination Directory URL not found")
             return ""
         }
         return path
@@ -89,7 +94,7 @@ extension FileExportUtil {
     /// - Returns: The destination directory url.
     /// The last path component indicates the date and time.
     /// It could be something like '.../Documents/db-export/{YYYYMMDD-hh-mm}/'
-    private static func getDBDestinationDirectoryURL() -> URL? {
+    private func getDBDestinationDirectoryURL() -> URL? {
         let documentsUrl = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask).first
         guard var docUrl = documentsUrl else {
             Log.shared.errorAndCrash("Documents not found")
@@ -100,22 +105,18 @@ extension FileExportUtil {
         return docUrl
     }
 
-    /// Retrieve the url of the hidden file passed by param if it's stored in the shared group.
-    ///
-    /// - Parameter name: The name of the file to look for.
-    /// - Returns: The URL if the file exists. Nil otherwise.
-    private static func getSourceURLforHiddenFileNamed(name: String) -> URL? {
+    /// - Returns: The source url for the hidden p≡p folder
+    private func getSourceURLforHiddenPEPFolder() -> URL? {
         guard var appGroupURL = FileManager.default.containerURL(forSecurityApplicationGroupIdentifier: kAppGroupIdentifier) else {
             Log.shared.errorAndCrash("Container folder not found")
             return nil
         }
         appGroupURL.appendPathComponent("pEp_home/.pEp/")
-        appGroupURL.appendPathComponent(name)
         return appGroupURL
     }
 
     /// - Returns: the URL where the system.db file is stored
-    private static func getSystemDBSourceURL() -> URL? {
+    private func getSystemDBSourceURL() -> URL? {
         guard var appGroupURL = FileManager.default.containerURL(forSecurityApplicationGroupIdentifier: kAppGroupIdentifier) else {
             Log.shared.errorAndCrash("Container folder not found")
             return nil
@@ -126,7 +127,7 @@ extension FileExportUtil {
     }
 
     /// - Returns: the URL where the security.pEp files are stored
-    private static func getSQLiteDBSourceURL(fileName: String) -> URL? {
+    private func getSQLiteDBSourceURL(fileName: String) -> URL? {
         guard var appGroupURL = FileManager.default.containerURL(forSecurityApplicationGroupIdentifier: kAppGroupIdentifier) else {
             Log.shared.errorAndCrash("Container folder not found")
             return nil
@@ -136,7 +137,7 @@ extension FileExportUtil {
     }
 
     /// - Returns: the date as string using the date format YYYYMMDD-hh-mm.
-    private static func getDatetimeAsString() -> String {
+    private func getDatetimeAsString() -> String {
         let date = Date()
         let dateFormatter = DateFormatter()
         dateFormatter.dateFormat = "YYYYMMDD-hh-mm"

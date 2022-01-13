@@ -39,7 +39,7 @@ protocol SettingsRowProtocol {
 /// View Model for SettingsTableViewController
 final class SettingsViewModel {
     private var appSettings: AppSettingsProtocol
-
+    private var fileExportUtil: FileExportUtilProtocol
     weak var delegate : SettingsViewModelDelegate?
     typealias SwitchBlock = ((Bool) -> Void)
     typealias ActionBlock = (() -> Void)
@@ -96,8 +96,11 @@ final class SettingsViewModel {
     }
 
     /// Constructor for SettingsViewModel
-    public init(delegate: SettingsViewModelDelegate, appSettings : AppSettingsProtocol = AppSettings.shared) {
+    public init(delegate: SettingsViewModelDelegate,
+                appSettings: AppSettingsProtocol = AppSettings.shared,
+                fileExportUtil: FileExportUtilProtocol = FileExportUtil.shared) {
         self.appSettings = appSettings
+        self.fileExportUtil = fileExportUtil
         self.delegate = delegate
         setup()
     }
@@ -158,7 +161,7 @@ final class SettingsViewModel {
                 return
             }
             do {
-                try FileExportUtil.exportDatabases()
+                try me.fileExportUtil.exportDatabases()
             } catch {
                 DispatchQueue.main.async {
                     me.delegate?.showDBExportFailed()
