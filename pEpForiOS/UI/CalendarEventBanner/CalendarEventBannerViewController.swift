@@ -13,12 +13,13 @@ import EventKitUI
 
 class CalendarEventBannerViewController: UIViewController {
 
+    public weak var delegate: CalendarEventEditDelegate?
+    public var viewModel: CalendarEventsBannerViewModel?
+    private var presentedEvent: ICSEvent?
     @IBOutlet private weak var tableView: UITableView!
     @IBOutlet private weak var dayOfTheWeekLabel: UILabel!
     @IBOutlet private weak var dayNumberLabel: UILabel!
     @IBOutlet private weak var titleLabel: UILabel!
-
-    public var viewModel: CalendarEventsBannerViewModel?
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -61,7 +62,25 @@ extension CalendarEventBannerViewController: UITableViewDataSource {
 
 extension CalendarEventBannerViewController: EKEventEditViewDelegate {
     func eventEditViewController(_ controller: EKEventEditViewController, didCompleteWith action: EKEventEditViewAction) {
-        controller.dismiss(animated: true, completion: nil)
+        if action == .saved, let event = presentedEvent {
+            guard let vm = viewModel else {
+                Log.shared.errorAndCrash("VM not found")
+                return
+            }
+            if let attachment = vm.getAttachmentOfEvent(icsEvent: event) {
+                delegate?.handleDidAddEvent(icsEvent: event, attachment: attachment, completion: { [weak self] in
+                    //Dismiss the EKEventEditViewController
+                    controller.dismiss(animated: true, completion: nil)
+                    guard let me = self else {
+                        Log.shared.errorAndCrash("Lost myself")
+                        return
+                    }
+                    me.viewModel?.removeIcs(event: event)
+                })
+            }
+        } else {
+            controller.dismiss(animated: true, completion: nil)
+        }
     }
 }
 // MARK: - Cell Delegate
@@ -73,6 +92,7 @@ extension CalendarEventBannerViewController: CalendarEventDescriptionTableViewCe
                 Log.shared.errorAndCrash("Lost myself")
                 return
             }
+            me.presentedEvent = event
             switch eventDetailPresentationResult {
             case .success:
                 Log.shared.info("The calendar view was succesfully presented. Nothing to do")
