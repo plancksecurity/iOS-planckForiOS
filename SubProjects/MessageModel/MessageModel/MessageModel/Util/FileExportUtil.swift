@@ -1,16 +1,18 @@
 //
-//  DBsUtil.swift
-//  pEp
+//  FileExportUtil.swift
+//  MessageModel
 //
-//  Created by Martín Brude on 12/1/22.
-//  Copyright © 2022 p≡p Security S.A. All rights reserved.
+//  Created by Martín Brude on 13/1/22.
+//  Copyright © 2022 pEp Security S.A. All rights reserved.
 //
+
+import Foundation
 import pEpIOSToolbox
 import pEp4iosIntern
 
-class DBsUtil: NSObject {
+public class FileExportUtil: NSObject {
 
-    /// Export keys.db, management.db, system.db
+    /// Export databases
     ///
     /// - Throws: throws an error in cases of failure.
     public static func exportDatabases() throws {
@@ -41,17 +43,17 @@ class DBsUtil: NSObject {
             if let managementDBsourcePath = getSourceURLforHiddenFileNamed(name: managementDBFileName)?.path {
                 try FileManager.default.copyItem(atPath: managementDBsourcePath, toPath: managementDBDestinationPath)
             }
-            
+
             //Keys DB
             if let keyDBsourcePath = getSourceURLforHiddenFileNamed(name: keysDBFileName)?.path {
                 try FileManager.default.copyItem(atPath: keyDBsourcePath, toPath: keysDBDestinationPath)
             }
-            
+
             //System DB
             if let systemDBsourcePath = getSystemDBSourceURL()?.path {
                 try FileManager.default.copyItem(atPath: systemDBsourcePath, toPath: systemDBDestinationPath)
             }
-            
+
             //PEP Security SQLite DB
             if let pepSecuritySQLiteDBsourcePath = getSQLiteDBSourceURL()?.path {
                 try FileManager.default.copyItem(atPath: pepSecuritySQLiteDBsourcePath, toPath: securityPEPsqliteDestinationPath)
@@ -62,7 +64,7 @@ class DBsUtil: NSObject {
 
 //MARK: - Private
 
-extension DBsUtil {
+extension FileExportUtil {
 
     /// Get the path of the file passed by param.
     /// - Parameters:
@@ -107,7 +109,7 @@ extension DBsUtil {
         return appGroupURL
     }
 
-    /// - Returns: retrieves the URL where the system.db file is stored
+    /// - Returns: the URL where the system.db file is stored
     private static func getSystemDBSourceURL() -> URL? {
         guard var appGroupURL = FileManager.default.containerURL(forSecurityApplicationGroupIdentifier: kAppGroupIdentifier) else {
             Log.shared.errorAndCrash("Container folder not found")
@@ -118,7 +120,7 @@ extension DBsUtil {
         return appGroupURL
     }
 
-    /// - Returns: retrieves the URL where the security.pEp.sqlite file is stored
+    /// - Returns: the URL where the security.pEp.sqlite file is stored
     private static func getSQLiteDBSourceURL() -> URL? {
         guard var appGroupURL = FileManager.default.containerURL(forSecurityApplicationGroupIdentifier: kAppGroupIdentifier) else {
             Log.shared.errorAndCrash("Container folder not found")
@@ -128,7 +130,7 @@ extension DBsUtil {
         return appGroupURL
     }
 
-    /// - Returns: Retrieves the date as string using the date format YYYYMMDD-hh-mm.
+    /// - Returns: the date as string using the date format YYYYMMDD-hh-mm.
     private static func getDatetimeAsString() -> String {
         let date = Date()
         let dateFormatter = DateFormatter()

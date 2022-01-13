@@ -335,19 +335,26 @@ extension SettingsTableViewController : SettingsViewModelDelegate {
         style: PEPAlertViewController.AlertStyle.warn)
     }
 
-    func didEndExportDBs(result: Result<Void, Error>) {
-        dismiss(animated: true) { [weak self] in
+    func showDBExportSuccess() {
+        let alertTitle = NSLocalizedString("Export p≡p databases to file system", comment: "Alert view title - warning")
+        let message = NSLocalizedString("Exporting databases OK", comment: "Error message")
+        UIUtils.showAlertWithOnlyPositiveButton(title: alertTitle, message: message, style: .undo, completion: nil)
+    }
+
+    func showDBExportFailed() {
+        let alertTitle = NSLocalizedString("Export p≡p databases to file system", comment: "Alert view title - warning")
+        let message = NSLocalizedString("Exporting databases failed", comment: "Error message")
+        let cancelButton = NSLocalizedString("Cancel", comment: "Cancel button")
+        let tryAgainButton = NSLocalizedString("Try Again", comment: "Try again button text")
+        UIUtils.showTwoButtonAlert(withTitle: alertTitle, message: message, cancelButtonText: cancelButton, positiveButtonText:tryAgainButton, cancelButtonAction: nil, positiveButtonAction: { [weak self] in
             guard let me = self else {
                 Log.shared.errorAndCrash("Lost myself")
                 return
             }
-            switch result {
-            case .success:
-                me.showExportDBsSuccedAlert()
-            case .failure(let error):
-                me.showExportDBsFailedAlert()
+            me.dismiss(animated: true) {
+                me.viewModel.handleExportDBsPressed()
             }
-        }
+        }, style: .undo)
     }
 }
 
@@ -465,25 +472,9 @@ extension SettingsTableViewController {
     }
 
     private func showExportDBsFailedAlert() {
-        let alertTitle = NSLocalizedString("Export p≡p databases to file system", comment: "Alert view title - warning")
-        let message = NSLocalizedString("Exporting databases failed", comment: "Error message")
-        let cancelButton = NSLocalizedString("Cancel", comment: "Cancel button")
-        let tryAgainButton = NSLocalizedString("Try Again", comment: "Try again button text")
-        UIUtils.showTwoButtonAlert(withTitle: alertTitle, message: message, cancelButtonText: cancelButton, positiveButtonText:tryAgainButton, cancelButtonAction: nil, positiveButtonAction: { [weak self] in
-            guard let me = self else {
-                Log.shared.errorAndCrash("Lost myself")
-                return
-            }
-            me.dismiss(animated: true) {
-                me.viewModel.handleExportDBsPressed()
-            }
-        }, style: .undo)
     }
 
     private func showExportDBsSuccedAlert() {
-        let alertTitle = NSLocalizedString("Export p≡p databases to file system", comment: "Alert view title - warning")
-        let message = NSLocalizedString("Exporting databases OK", comment: "Error message")
-        UIUtils.showAlertWithOnlyPositiveButton(title: alertTitle, message: message, style: .undo, completion: nil)
     }
 
     private func getBeforeDeleteAlert(deleteCallback: @escaping SettingsViewModel.AlertActionBlock) -> UIAlertController {
