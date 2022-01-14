@@ -126,6 +126,15 @@ class SettingsViewModelTest: AccountDrivenTestBase {
         XCTAssertEqual(cellsBefore, cellsAfter + 1)
         waitForExpectations(timeout: TestUtil.waitTime)
     }
+
+    func testHandleExportDBsPressed() {
+        let delegate = SettingsViewModeldelegate()
+        let exportDBsexpectation = expectation(description: "export dbs")
+        let mockFileExportUtil = MockFileExportUtil(exportDBsexpectation: exportDBsexpectation)
+        let vm = SettingsViewModel(delegate: delegate, fileExportUtil:mockFileExportUtil)
+        vm.handleExportDBsPressed()
+        wait(for: [exportDBsexpectation], timeout: TestUtil.waitTime)
+    }
 }
 
 // MARK: - Private
@@ -138,6 +147,20 @@ extension SettingsViewModelTest {
             } else {
                 settingsVM = SettingsViewModel(delegate: delegate)
             }
+        }
+    }
+}
+
+class MockFileExportUtil : FileExportUtilProtocol {
+
+    private var exportDBsexpectation: XCTestExpectation?
+
+    init(exportDBsexpectation: XCTestExpectation) {
+        self.exportDBsexpectation = exportDBsexpectation
+    }
+    public func exportDatabases() throws {
+        if let exportDBsexpectation = exportDBsexpectation {
+            exportDBsexpectation.fulfill()
         }
     }
 }
@@ -159,6 +182,14 @@ class SettingsViewModeldelegate: SettingsViewModelDelegate {
     }
 
     func showResetAllWarning(callback: @escaping SettingsViewModel.ActionBlock) {
+        XCTFail()
+    }
+
+    func showDBExportSuccess() {
+        XCTFail()
+    }
+
+    func showDBExportFailed() {
         XCTFail()
     }
 }
