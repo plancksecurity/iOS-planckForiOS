@@ -14,6 +14,8 @@ import pEpIOSToolbox
 protocol CalendarEventBannerViewModelDelegate: AnyObject {
     /// Dismiss the banner
     func dismiss()
+    /// reload the banner
+    func reload()
 }
 
 /// View Model that handles everything related to the Events Banner.
@@ -26,24 +28,49 @@ class CalendarEventsBannerViewModel: NSObject {
 
     public var events: [ICSEvent] = [ICSEvent]()
     private let parser: ICSParserProtocol?
+    private var eventsAndAttachment: [ICSEvent: Attachment] = [:]
 
     /// Constructor
+    ///
     /// - Parameter events: The events to show.
     init(attachments: [Attachment], parser: ICSParserProtocol? = ICSParser(), delegate: CalendarEventBannerViewModelDelegate) {
         self.delegate = delegate
         self.parser = parser
         var eventsToAdd: [ICSEvent] = [ICSEvent]()
+        var eventsAndAttachmentToAdd: [ICSEvent: Attachment] = [:]
         attachments.forEach { attachment in
             if let data = attachment.data, let parser = parser {
                 let content = String(decoding: data, as: UTF8.self)
-                eventsToAdd.append(contentsOf: parser.events(for: content))
+                let events: [ICSEvent] = parser.events(for: content)
+                events.forEach { event in
+                    eventsAndAttachmentToAdd[event] = attachment
+                }
+                eventsToAdd.append(contentsOf: events)
             }
         }
+        self.eventsAndAttachment = eventsAndAttachmentToAdd
         self.events.append(contentsOf: eventsToAdd)
         self.events = self.events.sorted(by: { ($0.startDate ?? Date.distantPast)?.compare($1.startDate ?? Date.distantPast) == .orderedDescending })
         guard self.events.count > 0 else {
             Log.shared.errorAndCrash("Missing attachments")
             return
+        }
+    }
+
+    /// - Parameter icsEvent: The ICS event to look for its attachment.
+    /// - Returns: The Attachment that contains the event passed by parameter.
+    public func getAttachmentOfEvent(icsEvent: ICSEvent) -> Attachment? {
+        return eventsAndAttachment[icsEvent]
+    }
+
+    /// Remove the event from the banner. If there are other events, the banner will be reloaded. Otherwise will be dimissed.
+    /// - Parameter event: The event to remove.
+    public func removeIcs(event: ICSEvent) {
+        events = events.filter { $0 != event }
+        if events.count == 0 {
+            delegate?.dismiss()
+        } else {
+            delegate?.reload()
         }
     }
 
