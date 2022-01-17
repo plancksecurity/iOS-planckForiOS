@@ -151,7 +151,7 @@
 /* Empty SMTP transport security method */
 "Choose SMTP transport security method." = "Elija el método de seguridad de transporte SMTP";
 
-/* Empty IMAP transport security method */
+/* Empty SMTP transport security method */
 "Choose SMTP username." = "Elija el nombre de usuario SMTP.";
 
 /* Header for client certificate password screen */
@@ -280,9 +280,6 @@
    Title of error alert shown to the user in case a message could not be sent
    Title of error alert shown to the user in case an unknown error occured. */
 "Error" = "Error";
-
-/* No comment provided by engineer. */
-"Error casting" = "Error al lanzar";
 
 /* Generic error message on trying to import a key */
 "Error occurred. No key imported." = "Se ha producido un error y no se ha importado ninguna clave.";
@@ -508,7 +505,8 @@
 "Next" = "Siguiente";
 
 /* Alert button while client certificate is importing: Try again? No
-   Cancel button title: In case we could not encrypt a messge that was previously shown as yellow or green, send message unencrypted? */
+   Cancel button title: In case we could not encrypt a messge that was previously shown as yellow or green, send message unencrypted?
+   No button */
 "No" = "No";
 
 /* 'No' button to confirm less secure email sent */
@@ -763,9 +761,6 @@
 
 /* compose email save */
 "Save Draft" = "Guardar Borrador";
-
-/* No comment provided by engineer. */
-"scroll-to-caret-on-edit" = "scroll-to-caret-on-edit";
 
 /* Privacy status title
    privacyStatusTitle yellow */
@@ -1131,7 +1126,8 @@
 "Wrong Trustwords" = "Trustwords incorrectas";
 
 /* Alert button while client certificate is importing: Try again? Yes
-   Positive button title: In case we could not encrypt a messge that was previously shown as yellow or green, send message unencrypted? */
+   Positive button title: In case we could not encrypt a messge that was previously shown as yellow or green, send message unencrypted?
+   Yes button */
 "Yes" = "Si";
 
 /* 'Yes' button to confirm less secure email sent */

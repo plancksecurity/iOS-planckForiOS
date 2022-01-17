@@ -245,9 +245,6 @@
    Title of error alert shown to the user in case an unknown error occured. */
 "Error" = "Error";
 
-/* No comment provided by engineer. */
-"Error casting" = "S'ha produït un error en emetre";
-
 /* Generic error message on trying to import a key */
 "Error occurred. No key imported." = "S'ha produït un error. No s’ha importat cap clau.";
 
@@ -460,7 +457,8 @@
 "Next" = "Següent";
 
 /* Alert button while client certificate is importing: Try again? No
-   Cancel button title: In case we could not encrypt a messge that was previously shown as yellow or green, send message unencrypted? */
+   Cancel button title: In case we could not encrypt a messge that was previously shown as yellow or green, send message unencrypted?
+   No button */
 "No" = "No";
 
 /* Error when no account found for set_own_key UI */
@@ -695,9 +693,6 @@
 
 /* compose email save */
 "Save Draft" = "Guardar l'esborrany";
-
-/* No comment provided by engineer. */
-"scroll-to-caret-on-edit" = "desplaçar-se-a-cuidar-en-editar";
 
 /* Privacy status title
    privacyStatusTitle yellow */
@@ -1017,7 +1012,8 @@
 "Wrong Trustwords" = "Trustwords incorrectes";
 
 /* Alert button while client certificate is importing: Try again? Yes
-   Positive button title: In case we could not encrypt a messge that was previously shown as yellow or green, send message unencrypted? */
+   Positive button title: In case we could not encrypt a messge that was previously shown as yellow or green, send message unencrypted?
+   Yes button */
 "Yes" = "Sí";
 
 /* Confirm less secure answer message alert body */
