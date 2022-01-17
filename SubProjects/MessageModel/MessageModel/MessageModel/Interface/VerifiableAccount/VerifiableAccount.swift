@@ -105,7 +105,7 @@ public class VerifiableAccount: VerifiableAccountProtocol {
         self.accessToken = accessToken
         self.loginNameIMAP = loginNameIMAP
         self.serverIMAP = serverIMAP
-        self .portIMAP = portIMAP
+        self.portIMAP = portIMAP
         self.transportIMAP = transportIMAP
         self.loginNameSMTP = loginNameSMTP
         self.serverSMTP = serverSMTP
