@@ -27,7 +27,7 @@ extension OAuth2Type {
         case .o365:
             return OAuth2Configuration(
                 oauth2Type: .o365,
-                scopes: ["User.ReadWrite.All"],
+                scopes: ["User.ReadWrite.All", "IMAP.AccessAsUser.All"],
                 clientIDKey: "OAUTH2_O365_CLIENT_ID",
                 redirectURLSchemeKey: "OAUTH2_O365_REDIRECT_URL_SCHEME")
         }
