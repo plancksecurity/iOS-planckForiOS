@@ -254,9 +254,6 @@
    Title of error alert shown to the user in case an unknown error occured. */
 "Error" = "Chyba";
 
-/* No comment provided by engineer. */
-"Error casting" = "Chyba pri odovzdávaní";
-
 /* Generic error message on trying to import a key */
 "Error occurred. No key imported." = "Vyskytla sa chyba. Nebol importovaný žiadny kľúč.";
 
@@ -472,7 +469,8 @@
 "Next" = "Ďalej";
 
 /* Alert button while client certificate is importing: Try again? No
-   Cancel button title: In case we could not encrypt a messge that was previously shown as yellow or green, send message unencrypted? */
+   Cancel button title: In case we could not encrypt a messge that was previously shown as yellow or green, send message unencrypted?
+   No button */
 "No" = "Nie";
 
 /* Error when no account found for set_own_key UI */
@@ -720,9 +718,6 @@
 
 /* compose email save */
 "Save Draft" = "Uložiť koncept";
-
-/* No comment provided by engineer. */
-"scroll-to-caret-on-edit" = "scroll-to-caret-on-edit";
 
 /* Privacy status title
    privacyStatusTitle yellow */
@@ -1057,7 +1052,8 @@
 "Wrong Trustwords" = "Chybné Trustwords";
 
 /* Alert button while client certificate is importing: Try again? Yes
-   Positive button title: In case we could not encrypt a messge that was previously shown as yellow or green, send message unencrypted? */
+   Positive button title: In case we could not encrypt a messge that was previously shown as yellow or green, send message unencrypted?
+   Yes button */
 "Yes" = "Áno";
 
 /* Confirm less secure answer message alert body */

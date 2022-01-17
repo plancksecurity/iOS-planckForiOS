@@ -245,9 +245,6 @@
    Title of error alert shown to the user in case an unknown error occured. */
 "Error" = "Hata";
 
-/* No comment provided by engineer. */
-"Error casting" = "Yayınlama hatası";
-
 /* Generic error message on trying to import a key */
 "Error occurred. No key imported." = "Error occured. No key imported.";
 
@@ -460,7 +457,8 @@
 "Next" = "İleri";
 
 /* Alert button while client certificate is importing: Try again? No
-   Cancel button title: In case we could not encrypt a messge that was previously shown as yellow or green, send message unencrypted? */
+   Cancel button title: In case we could not encrypt a messge that was previously shown as yellow or green, send message unencrypted?
+   No button */
 "No" = "Hayır";
 
 /* Error when no account found for set_own_key UI */
@@ -695,9 +693,6 @@
 
 /* compose email save */
 "Save Draft" = "Taslağı kaydet";
-
-/* No comment provided by engineer. */
-"scroll-to-caret-on-edit" = "Kaydırmayla to-şapka-on-edit";
 
 /* Privacy status title
    privacyStatusTitle yellow */
@@ -1017,7 +1012,8 @@
 "Wrong Trustwords" = "Hatalı Trustwords";
 
 /* Alert button while client certificate is importing: Try again? Yes
-   Positive button title: In case we could not encrypt a messge that was previously shown as yellow or green, send message unencrypted? */
+   Positive button title: In case we could not encrypt a messge that was previously shown as yellow or green, send message unencrypted?
+   Yes button */
 "Yes" = "Evet";
 
 /* Confirm less secure answer message alert body */

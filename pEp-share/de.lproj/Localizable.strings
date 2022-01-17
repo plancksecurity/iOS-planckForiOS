@@ -94,9 +94,6 @@
 /* Sharing extension: Error title */
 "Error" = "Fehler";
 
-/* No comment provided by engineer. */
-"Error casting" = "Fehler beim Casting";
-
 /* read button in slide-left menu */
 "Flag" = "Markieren";
 
@@ -181,9 +178,6 @@
 
 /* compose email save */
 "Save Draft" = "Entwurf speichern";
-
-/* No comment provided by engineer. */
-"scroll-to-caret-on-edit" = "scroll-to-caret-on-edit";
 
 /* Privacy status title */
 "Secure" = "Sicher";

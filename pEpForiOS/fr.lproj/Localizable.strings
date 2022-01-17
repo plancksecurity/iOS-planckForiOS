@@ -154,7 +154,7 @@
 /* Empty SMTP transport security method */
 "Choose SMTP transport security method." = "Choisissez la méthode de sécurité de transport SMTP";
 
-/* Empty IMAP transport security method */
+/* Empty SMTP transport security method */
 "Choose SMTP username." = "Choisissez le nom d'utilisateur SMTP.";
 
 /* Header for client certificate password screen */
@@ -283,9 +283,6 @@
    Title of error alert shown to the user in case a message could not be sent
    Title of error alert shown to the user in case an unknown error occured. */
 "Error" = "Erreur";
-
-/* No comment provided by engineer. */
-"Error casting" = "Erreur lors de la diffusion";
 
 /* Generic error message on trying to import a key */
 "Error occurred. No key imported." = "Une erreur s’est produite. Aucune clé importée.";
@@ -514,7 +511,8 @@
 "Next" = "Suivant";
 
 /* Alert button while client certificate is importing: Try again? No
-   Cancel button title: In case we could not encrypt a messge that was previously shown as yellow or green, send message unencrypted? */
+   Cancel button title: In case we could not encrypt a messge that was previously shown as yellow or green, send message unencrypted?
+   No button */
 "No" = "Non";
 
 /* 'No' button to confirm less secure email sent */
@@ -769,9 +767,6 @@
 
 /* compose email save */
 "Save Draft" = "Enregistrer le brouillon";
-
-/* No comment provided by engineer. */
-"scroll-to-caret-on-edit" = "faire défiler le curseur sur l'édition";
 
 /* Privacy status title
    privacyStatusTitle yellow */
@@ -1143,7 +1138,8 @@
 "Wrong Trustwords" = "Trustwords incorrects";
 
 /* Alert button while client certificate is importing: Try again? Yes
-   Positive button title: In case we could not encrypt a messge that was previously shown as yellow or green, send message unencrypted? */
+   Positive button title: In case we could not encrypt a messge that was previously shown as yellow or green, send message unencrypted?
+   Yes button */
 "Yes" = "Oui";
 
 /* 'Yes' button to confirm less secure email sent */
