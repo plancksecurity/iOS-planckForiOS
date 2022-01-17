@@ -68,11 +68,12 @@
 			</array>
 		</dict>
 		<dict>
-            <key>CFBundleURLName</key>
-            <string>o365</string>
+			<key>CFBundleURLName</key>
+			<string>o365</string>
 			<key>CFBundleURLSchemes</key>
 			<array>
 				<string>${OAUTH2_O365_REDIRECT_URL_SCHEME}</string>
+				<string>msauth.security.pEp</string>
 			</array>
 		</dict>
 	</array>
@@ -107,8 +108,6 @@
 	<string>${OAUTH2_GMAIL_REDIRECT_URL_SCHEME}</string>
 	<key>OAUTH2_O365_CLIENT_ID</key>
 	<string>${OAUTH2_O365_CLIENT_ID}</string>
-	<key>OAUTH2_O365_CLIENT_SECRET</key>
-	<string>${OAUTH2_O365_CLIENT_SECRET}</string>
 	<key>OAUTH2_O365_REDIRECT_URL_SCHEME</key>
 	<string>${OAUTH2_O365_REDIRECT_URL_SCHEME}</string>
 	<key>OAUTH2_YAHOO_CLIENT_ID</key>
