@@ -1100,6 +1100,7 @@
                                             </subviews>
                                             <constraints>
                                                 <constraint firstAttribute="trailing" secondItem="Fau-Mf-al7" secondAttribute="trailing" constant="20" symbolic="YES" id="0b0-pM-7sk"/>
+                                                <constraint firstItem="kdZ-UO-KYC" firstAttribute="width" secondItem="eg3-v0-qE4" secondAttribute="width" multiplier="0.45" id="Ykc-Ij-MH9"/>
                                                 <constraint firstItem="Fau-Mf-al7" firstAttribute="top" secondItem="eg3-v0-qE4" secondAttribute="top" constant="1" id="b4f-Rp-uvZ"/>
                                                 <constraint firstItem="Fau-Mf-al7" firstAttribute="leading" secondItem="eg3-v0-qE4" secondAttribute="leading" constant="20" symbolic="YES" id="kAu-nN-932"/>
                                                 <constraint firstAttribute="bottom" secondItem="Fau-Mf-al7" secondAttribute="bottom" constant="1" id="pOj-aj-Bje"/>
@@ -1109,6 +1110,7 @@
                                         <connections>
                                             <outlet property="keyLabel" destination="s0a-c5-T0Q" id="95T-TG-FDp"/>
                                             <outlet property="stackView" destination="Fau-Mf-al7" id="SBU-ik-YwB"/>
+                                            <outlet property="valueFieldWidthConstraint" destination="Ykc-Ij-MH9" id="Ucz-c2-pGQ"/>
                                             <outlet property="valueTextfield" destination="kdZ-UO-KYC" id="GTe-Un-mK6"/>
                                         </connections>
                                     </tableViewCell>
