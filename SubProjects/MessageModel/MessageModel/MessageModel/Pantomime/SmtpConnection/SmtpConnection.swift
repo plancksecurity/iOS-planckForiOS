@@ -82,10 +82,10 @@ class SmtpConnection: SmtpConnectionProtocol {
 
             if s.contains("cram-md5") {
                 return .cramMD5
-            } else if s.contains("plain") {
-                return .plain
             } else if s.contains("login") {
                 return .login
+            } else if s.contains("plain") {
+                return .plain
             }
 
             return .login
