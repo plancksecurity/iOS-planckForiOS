@@ -73,7 +73,6 @@
 			<key>CFBundleURLSchemes</key>
 			<array>
 				<string>${OAUTH2_O365_REDIRECT_URL_SCHEME}</string>
-				<string>msauth.security.pEp</string>
 			</array>
 		</dict>
 	</array>
