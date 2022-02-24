@@ -149,6 +149,7 @@ public class RecipientTextViewModel {
                 identity = Identity(address: address)
                 identity.session.commit()
             }
+            isDirty = false
             var (newText, attachment) = text.imageInserted(withAddressOf: identity,
                                                            in: range,
                                                            maxWidth: maxTextattachmentWidth)
@@ -161,7 +162,7 @@ public class RecipientTextViewModel {
             if informDelegate {
                 delegate?.textChanged(newText: newText)
             }
-            identityGenerated =  true
+            identityGenerated = true
         }
         return identityGenerated
     }
