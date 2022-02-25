@@ -37,7 +37,7 @@ public class RecipientTextViewModel {
     var maxTextattachmentWidth: CGFloat = 0.0
     private var initialRecipients = [Identity]()
     private var attributedText: NSAttributedString?
-    public private(set) var isDirty = false
+    public private(set) var isDirty: Bool = false
     private var recipientAttachments = [TextAttachment]() {
         didSet {
             let recipients = recipientAttachments.map { $0.recipient }
@@ -113,14 +113,13 @@ public class RecipientTextViewModel {
         recipientAttachments = recipientAttachments.filter({$0 != attachment})
     }
 
-     @discardableResult private func tryGenerateValidAddressAndUpdateStatus(range: NSRange,
-                                                                            of text: NSAttributedString) -> Bool {
-        let containsNothingButAttachments =
-            text.plainTextRemoved().length == text.length ||
-                text.plainTextRemoved().string.trimObjectReplacementCharacters().isEmpty
-        let validEmailaddressHandled = parseAndHandleValidEmailAddresses(inRange: range, of: text)
-        isDirty = !validEmailaddressHandled && !containsNothingButAttachments
-        return validEmailaddressHandled
+     @discardableResult private func tryGenerateValidAddressAndUpdateStatus(range: NSRange, of text: NSAttributedString) -> Bool {
+        return parseAndHandleValidEmailAddresses(inRange: range, of: text)
+    }
+
+    private func containsNothingButAttachments(text : NSAttributedString) -> Bool {
+        return text.plainTextRemoved().length == text.length ||
+            text.plainTextRemoved().string.trimObjectReplacementCharacters().isEmpty
     }
 
     private var addressDeliminators: [String] {
@@ -149,12 +148,17 @@ public class RecipientTextViewModel {
                 identity = Identity(address: address)
                 identity.session.commit()
             }
-            isDirty = false
+            identityGenerated = true
+            // We need to update the isDirty state before adding the attachment because
+            // when adding the attachment composeViewModelState change and checks if the cell isDirty
+            // to enable the send button.
+            isDirty = !identityGenerated && !containsNothingButAttachments(text: text)
+
             var (newText, attachment) = text.imageInserted(withAddressOf: identity,
                                                            in: range,
                                                            maxWidth: maxTextattachmentWidth)
-            recipientAttachments.append(attachment)
 
+            recipientAttachments.append(attachment)
             newText = newText.plainTextRemoved()
             newText = newText.baselineOffsetRemoved()
             attributedText = newText
@@ -162,8 +166,10 @@ public class RecipientTextViewModel {
             if informDelegate {
                 delegate?.textChanged(newText: newText)
             }
-            identityGenerated = true
+        } else {
+            isDirty = !identityGenerated && !containsNothingButAttachments(text: text)
         }
+
         return identityGenerated
     }
 
@@ -183,5 +189,3 @@ public class RecipientTextViewModel {
         }
     }
 }
-
-
