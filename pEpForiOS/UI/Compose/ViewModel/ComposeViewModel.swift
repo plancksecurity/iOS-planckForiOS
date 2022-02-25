@@ -369,7 +369,7 @@ extension ComposeViewModel {
 
     private func existsDirtyCell() -> Bool {
         for section in sections where section.type == .recipients {
-            for row  in section.rows where row is RecipientCellViewModel {
+            for row in section.rows where row is RecipientCellViewModel {
                 guard let recipientVM = row as? RecipientCellViewModel else {
                     Log.shared.errorAndCrash("Cast error")
                     return false
