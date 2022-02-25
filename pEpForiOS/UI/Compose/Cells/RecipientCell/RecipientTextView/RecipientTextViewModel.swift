@@ -149,9 +149,8 @@ public class RecipientTextViewModel {
                 identity.session.commit()
             }
             identityGenerated = true
-            // We need to update the isDirty state before adding the attachment because
-            // when adding the attachment composeViewModelState change and checks if the cell isDirty
-            // to enable the send button.
+            // The resultDelegate is called as a side effect in the setter of `recipientAttachments` and may depend on the isDirty state.
+            // Thus we must update the isDirty state before adding the attachment
             isDirty = !identityGenerated && !containsNothingButAttachments(text: text)
 
             var (newText, attachment) = text.imageInserted(withAddressOf: identity,
