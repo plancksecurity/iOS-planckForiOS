@@ -4,7 +4,7 @@ OpenSSL-for-iPhone: 32c016ad67e4e929b5fa20613a027a6e1f416248
 Pantomime: e235e6ed900af2e1f1ae4f648f610b2c4a99c64d
 SwipeCellKit: 9cdeb3fea34352d7a69ed318e12759f9c6bdc189
 changesets_script: 039c5be097e669e035bcf90f75c8428081de27d6
-common-dependency-build-helpers-4-apple-hardware: 6e5cbfd8f64cc3eed3acda0edad89e481498e806 tags/Release_2.1.7
+common-dependency-build-helpers-4-apple-hardware: e93014fd5a3d17d860f0daf09d6624af4ce6ccfe tags/Release_2.1.7
 ldns: 42b9bc034e66236599aa9fc7c1d8786ef33cf372
 libAccountSettings: b9c4bfc54d7cab91b41cc6ada997b234306d93ea
 libetpan: c94020af94dee1cc7f7c523be0e008e22fe24856
@@ -12,7 +12,7 @@ pEp-Translate: 285de95b7c36833bd746614c6dd7970425516763
 pEpEngine: 51d40b4282727b871cc1450954c365503fa718ff
 pEpObjCAdapter: 4e41839ccfa7f2ff8e03abfe1257ba20e92088cb
 pep-toolbox: 3e26aac9beb03995e5a01e8a6361462e3a5fbde7
-pep4ios: ddc66cc016c8fff197ce815cefb6b33b4a37f3cb
+pep4ios: 88320f9abb833a5bfd6b401f74431ad09ddc6c63
 pep_for_ios_intern: 95b2d6a3a4738fd6a5b9a667baed6309b59acc61
 libiconv: 01b38e6c9fc240ca17afb32f31804785bc910b73
 sequoia-ffi: 2f57e9081ba9109afbd5207b52b79efca7b5f88f
