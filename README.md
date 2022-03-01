@@ -82,7 +82,6 @@ git clone https://pep-security.lu/gitlab/iOS/SwipeCellKit.git/
 git clone https://pep-security.lu/gitlab/iOS/CocoaLumberjack
 git clone https://pep-security.lu/gitlab/iOS/AppAuth-iOS.git
 git clone https://pep-security.lu/gitlab/misc/ldns.git
-git clone https://pep-security.lu/gitlab/misc/sqlite.git
 git clone https://gitea.pep.foundation/pEp.foundation/libAccountSettings
 git clone https://gitea.pep.foundation/buff/common-dependency-build-helpers-4-apple-hardware.git
 git clone https://gitea.pep.foundation/pEp.foundation/libetpan.git
