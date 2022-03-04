@@ -29,6 +29,13 @@ protocol EmailDisplayViewModelDelegate: AnyObject {
 /// Base class for MessageQueryResults driven email display view models.
 /// All ViewModels that are showing messages that are fetched and monitored by MessageQueryResults
 /// should subclass from this.
+/// - showing list of mails (tableview)
+/// - showing one mail, which is swipable (email detail view, which is a colletion view)
+/// - future: message thread view (showing table view with referenced emails).
+///     - To implement this feature, change the Core Data model to have references as relationship (references<->isReferencedBy)
+///     - make sure those new references are stored and updated correctly when storing a new CWMessage
+///     - create Core Data FetchRequest (query) to get all messages referenced by a root (== iSreferencedBy == nil) message
+///     - use the above query for MessageQueryResults and let it do its magic
 class EmailDisplayViewModel {
 
     // MARK: - Life Cycle
