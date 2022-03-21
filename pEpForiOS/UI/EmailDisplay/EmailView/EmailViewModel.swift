@@ -202,7 +202,7 @@ class EmailViewModel {
 extension EmailViewModel {
 
     // Represents a Recipient in the collection view.
-    struct CollectionViewCellViewModel {
+    struct CollectionViewCellViewModel: CustomStringConvertible {
 
         public var size: CGSize {
             let recipientButton = RecipientButton(type: .system)
@@ -238,6 +238,14 @@ extension EmailViewModel {
             self.recipientType = recipientType
             self.title = title
             self.action = action
+        }
+
+        public var description: String {
+            if let ident = self.identity {
+                return "CollectionViewCellViewModel \(self.recipientType) identity \(ident.address)"
+            } else {
+                return "CollectionViewCellViewModel \(self.recipientType) title \(self.title)"
+            }
         }
     }
 
