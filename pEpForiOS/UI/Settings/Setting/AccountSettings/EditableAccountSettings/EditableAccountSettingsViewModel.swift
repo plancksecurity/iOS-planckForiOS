@@ -298,10 +298,9 @@ extension EditableAccountSettingsViewModel {
 
         // OAuth
         if !isOAuth2 {
-            if let password = server.credentials.password {
-                let passwordRow = getDisplayRow(type : .password, value: password)
-                rows.append(passwordRow)
-            }
+            let passwordOrEmpty = server.credentials.password ?? ""
+            let passwordRow = getDisplayRow(type : .password, value: passwordOrEmpty)
+            rows.append(passwordRow)
         }
     }
 
