@@ -52,10 +52,9 @@ extension Message {
     ///
     /// - Parameters:
     ///   - messages: The message to mark
-    ///   - seen: True means they must be marked as flagged. Otherwise use false.
+    ///   - flagged: True means they must be marked as flagged. Otherwise use false.
     public static func setFlaggedValue(to messages: [Message], newValue flagged: Bool) {
         messages.forEach {
-            // this logic is to trigger the FRC
             let imap =  $0.imapFlags
             imap.flagged = flagged
             $0.imapFlags = imap
