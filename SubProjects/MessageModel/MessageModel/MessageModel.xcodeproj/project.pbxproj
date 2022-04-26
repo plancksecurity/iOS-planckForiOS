@@ -637,6 +637,8 @@
 		5B64966025C82D570028B9ED /* CdAccount+FetchedResultsController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5B64965F25C82D570028B9ED /* CdAccount+FetchedResultsController.swift */; };
 		5B87D79A23F3117D009DACAA /* String+Fingerprint.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5B87D79923F3117D009DACAA /* String+Fingerprint.swift */; };
 		5B88A19D2406C1A2003240B8 /* TrustManagementUtil.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5B88A19C2406C1A2003240B8 /* TrustManagementUtil.swift */; };
+		5BAD433F28183F1D000BA5FF /* ImapUIFlags+SessionAware.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5BAD433E28183F1D000BA5FF /* ImapUIFlags+SessionAware.swift */; };
+		5BAD434028184202000BA5FF /* ImapUIFlags+SessionAware.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5BAD433E28183F1D000BA5FF /* ImapUIFlags+SessionAware.swift */; };
 		5BC6A24E267791CD00769972 /* Array+Attachments.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5BC6A24D267791CD00769972 /* Array+Attachments.swift */; };
 		5BC6A24F2677922C00769972 /* Array+Attachments.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5BC6A24D267791CD00769972 /* Array+Attachments.swift */; };
 		5BD3DDAB280825B600E41E0C /* Message+Seen.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5BD3DDAA280825B600E41E0C /* Message+Seen.swift */; };
@@ -1146,6 +1148,7 @@
 		5B64965F25C82D570028B9ED /* CdAccount+FetchedResultsController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "CdAccount+FetchedResultsController.swift"; sourceTree = "<group>"; };
 		5B87D79923F3117D009DACAA /* String+Fingerprint.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "String+Fingerprint.swift"; sourceTree = "<group>"; };
 		5B88A19C2406C1A2003240B8 /* TrustManagementUtil.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TrustManagementUtil.swift; sourceTree = "<group>"; };
+		5BAD433E28183F1D000BA5FF /* ImapUIFlags+SessionAware.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "ImapUIFlags+SessionAware.swift"; sourceTree = "<group>"; };
 		5BC6A24D267791CD00769972 /* Array+Attachments.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Array+Attachments.swift"; sourceTree = "<group>"; };
 		5BD3DDA92808232000E41E0C /* 1.1.273.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = 1.1.273.xcdatamodel; sourceTree = "<group>"; };
 		5BD3DDAA280825B600E41E0C /* Message+Seen.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Message+Seen.swift"; sourceTree = "<group>"; };
@@ -1489,6 +1492,7 @@
 			isa = PBXGroup;
 			children = (
 				15E39FC522551DBB0016A1C4 /* Account+SessionAware.swift */,
+				5BAD433E28183F1D000BA5FF /* ImapUIFlags+SessionAware.swift */,
 				158A569924059026003C0D7E /* ClientCertificcate+SessionAware.swift */,
 				15E39FC722551E2D0016A1C4 /* Folder+SessionAware.swift */,
 				15E39FC322551D650016A1C4 /* Message+SessionAware.swift */,
@@ -3133,6 +3137,7 @@
 				434C249325D6CE6D00F622DB /* CdImapFlags+Extension.swift in Sources */,
 				434C231B25D6A1EF00F622DB /* Folder+Imap.swift in Sources */,
 				434C237E25D6C03E00F622DB /* CdAccount+Trusted.swift in Sources */,
+				5BAD434028184202000BA5FF /* ImapUIFlags+SessionAware.swift in Sources */,
 				434C249F25D6CEC900F622DB /* CdAttachment+Pantomime.swift in Sources */,
 				434C217C25D6964B00F622DB /* ManagedObjectWrapperProtocol.swift in Sources */,
 				43BDDDAE25DD4DFC00FC0C68 /* SyncFoldersFromServerOperation.swift in Sources */,
@@ -3395,6 +3400,7 @@
 				159AB567235396E1008AB1F3 /* DeleteOutdatedAutoconsumableMessagesService.swift in Sources */,
 				43EA4884221E9518006E8F83 /* SyncFoldersFromServerOperation.swift in Sources */,
 				B7BED3152254FAA700CCF638 /* Folder+DisplaybleFolder.swift in Sources */,
+				5BAD433F28183F1D000BA5FF /* ImapUIFlags+SessionAware.swift in Sources */,
 				43EA4883221E9518006E8F83 /* LoginImapOperation.swift in Sources */,
 				153DDF3525ADD426008F645F /* ConnectionTransport+Transport.swift in Sources */,
 				37E61A602271B513000DF876 /* Account+Fetching.swift in Sources */,
