@@ -97,6 +97,18 @@ public class Message: MessageModelObjectProtocol, ManagedObjectWrapperProtocol {
         }
     }
 
+    public var imapUIFlags: ImapUIFlags? {
+        get {
+            guard let imapUIFlags = cdObject.imapUIFlags else {
+                return nil
+            }
+            return ImapUIFlags(cdObject: imapUIFlags, context: moc)
+        }
+        set {
+            cdObject.imapUIFlags = newValue?.cdObject
+        }
+    }
+
     public var parent: Folder {
         get {
             return cdObject.parent!.folder()
@@ -454,26 +466,6 @@ extension Message {
 }
 
 //!!!: extract
-
-// MARK: - IMAP flags
-
-extension Message {
-    /**
-     Marks the message as read, which in IMAP terms is called "seen".
-     */
-    public func markAsSeen() {
-        // Set imap on the messageto  trigger FetchedResultsController change
-        let imap = imapFlags
-        guard !imap.seen else {
-            // The message is marked as seen already. Thus there is nothing to do here.
-            // This ways we also avoid potentionally triggering a message change.
-            return
-        }
-        imap.seen = true
-        imapFlags = imap
-        moc.saveAndLogErrors()
-    }
-}
 
 // MARK: - Custom{Debug}StringConvertible
 

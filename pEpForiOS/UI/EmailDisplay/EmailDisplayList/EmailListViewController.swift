@@ -120,6 +120,7 @@ final class EmailListViewController: UIViewController {
         updateFilterText()
         updateEditButton()
         vm.updateLastLookAt()
+        updateFilterButton()
     }
 
     override func viewWillTransition(to size: CGSize, with coordinator: UIViewControllerTransitionCoordinator) {
@@ -128,6 +129,13 @@ final class EmailListViewController: UIViewController {
             if let cell = $0 as? SwipeTableViewCell {
                 cell.hideSwipe(animated: true)
             }
+        }
+    }
+
+    override func viewWillDisappear(_ animated: Bool) {
+        super.viewWillDisappear(animated)
+        if (isMovingFromParent) {
+            mergeUIState()
         }
     }
 
@@ -345,9 +353,19 @@ final class EmailListViewController: UIViewController {
     }
 
     @IBAction private func editButtonPressed() {
+        mergeUIState()
         showEditToolbar()
         tableView.setEditing(true, animated: true)
         updateBackButton(isTableViewEditing: tableView.isEditing)
+    }
+
+    private func mergeUIState() {
+        guard let vm = viewModel else {
+            Log.shared.errorAndCrash("VM not found")
+            return
+        }
+        
+        vm.mergeImapUIStateToImapState()
     }
 
     @IBAction private func showFilterOptions() {
@@ -622,8 +640,23 @@ extension EmailListViewController: UITableViewDataSource, UITableViewDelegate {
             vm.handleEditModeSelectionChange(selectedIndexPaths: selectedIndexPaths)
         } else {
             vm.handleDidSelectRow(indexPath: indexPath)
+            refreshUIForCellAt(indexPath: indexPath)
         }
         updateBackButton(isTableViewEditing: tableView.isEditing)
+    }
+
+    private func refreshUIForCellAt(indexPath: IndexPath) {
+        guard let vm = viewModel else {
+            Log.shared.errorAndCrash("No VM")
+            return
+        }
+        if let cell = tableView.cellForRow(at: indexPath) as? EmailListViewCell {
+            guard let viewModel = vm.viewModel(for: indexPath.row) else {
+                Log.shared.errorAndCrash("No MessageVM for indexPath!")
+                return
+            }
+            cell.configure(for: viewModel)
+        }
     }
 
     func tableView(_ tableView: UITableView, didDeselectRowAt indexPath: IndexPath) {
@@ -1145,10 +1178,7 @@ extension EmailListViewController {
             Log.shared.errorAndCrash("VM not found")
             return
         }
-        guard let cell = tableView.cellForRow(at: indexPath) as? EmailListViewCell else {
-            Log.shared.errorAndCrash("No cell for indexPath!")
-            return
-        }
+
         if row.isSeen {
             vm.markAsUnread(indexPaths: [indexPath], isEditModeEnabled: false)
         } else {
@@ -1166,6 +1196,7 @@ extension EmailListViewController {
             Log.shared.errorAndCrash("VM not found")
             return
         }
+
         if row.isFlagged {
             vm.markAsUnFlagged(indexPaths: [indexPath], isEditModeEnabled: false)
         } else {
@@ -1462,7 +1493,6 @@ extension EmailListViewController {
         presenterVc.present(composeNavigationController, animated: true)
     }
 }
-
 
 extension EmailListViewController {
 
