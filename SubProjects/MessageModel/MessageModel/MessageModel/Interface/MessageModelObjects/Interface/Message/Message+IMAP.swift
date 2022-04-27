@@ -30,6 +30,7 @@ extension Message {
 // MARK: - Move
 
 extension Message {
+
     /// Marks the message for moving to the given folder.
     ///
     /// Does not actually move the message but set it's target folder.
@@ -69,7 +70,6 @@ extension Message {
     ///   - seen: True means they must be marked as seen. Otherwise use false.
     public static func setSeenValue(to messages: [Message], newValue seen: Bool) {
         messages.forEach {
-            // this logic is to trigger the FRC
             let imap = $0.imapFlags
             imap.seen = seen
             $0.imapFlags = imap
