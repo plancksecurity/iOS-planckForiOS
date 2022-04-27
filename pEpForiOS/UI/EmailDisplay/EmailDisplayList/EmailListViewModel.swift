@@ -11,7 +11,6 @@ import Foundation
 import pEpIOSToolbox
 import MessageModel
 
-
 protocol EmailListViewModelDelegate: EmailDisplayViewModelDelegate {
     func setToolbarItemsEnabledState(to newValue: Bool)
     func showUnflagButton(enabled: Bool)
@@ -386,10 +385,16 @@ class EmailListViewModel: EmailDisplayViewModel {
                 del.showEditDraftInComposeView()
             } else {
                 del.showEmail(forCellAt: indexPath)
+                markUIOnlyAsSeen(indexPath: indexPath)
             }
         } else {
             del.deselect(itemAt: indexPath)
         }
+    }
+
+    private func markUIOnlyAsSeen(indexPath: IndexPath) {
+        let message = messageQueryResults[indexPath.row]
+        message.markUIOnlyAsSeen()
     }
 
     private func checkFlaggedMessages(indexPaths: [IndexPath]) {
@@ -458,6 +463,37 @@ extension EmailListViewModel {
             setNewFilterAndReload(filter: currentFilter)
         } else {
             setNewFilterAndReload(filter: nil)
+        }
+        mergeImapUIStateToImapState()
+    }
+
+    /// Merge the Imap UIState of emails To Imap State.
+    /// This does not affect the UI.
+    /// If there is no uistate to merge, nothing will happen.
+    public func mergeImapUIStateToImapState() {
+        // Create a new filter to get the emails that use uiflags.
+        let uiMarkedFilter = MessageQueryResultsFilter(mustBeFlagged: currentFilter.mustBeFlagged,
+                                                       mustBeUnread: currentFilter.mustBeUnread,
+                                                       mustContainAttachments: currentFilter.mustContainAttachments,
+                                                       mustHaveImapUIFlags: true,
+                                                       accounts: currentFilter.accounts)
+
+        // Create a new MessageQueryResults to not update the UI.
+        // Delegate is nil as we don't want to react to any change here.
+        let newMessageQueryResults = MessageQueryResults(withFolder: folderToShow,
+                                                         filter: uiMarkedFilter,
+                                                         search: messageQueryResults.search,
+                                                         rowDelegate: nil)
+        do {
+            try newMessageQueryResults.startMonitoring()
+            if try newMessageQueryResults.count() == 0 {
+                return
+            }
+            // Merge the ui state into the IMAP state.
+            Message.mergeUIState(messages: newMessageQueryResults.all)
+        } catch {
+            Log.shared.errorAndCrash("Failed to start QRC")
+            return
         }
     }
 
@@ -547,6 +583,7 @@ extension EmailListViewModel {
     public func emailDetialViewModel() -> EmailDetailViewModel {
         let detailQueryResults = messageQueryResults.clone()
         let createe = EmailDetailViewModel(messageQueryResults: detailQueryResults)
+        createe.currentFilter = currentFilter
         createe.selectionChangeDelegate = self
         detailQueryResults.rowDelegate = createe
         emailDetailViewModel = createe

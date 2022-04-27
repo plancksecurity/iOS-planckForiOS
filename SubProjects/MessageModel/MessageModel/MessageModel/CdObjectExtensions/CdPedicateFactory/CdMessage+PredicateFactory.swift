@@ -156,6 +156,18 @@ extension CdMessage {
                                FolderType.pEpSync.rawValue)
         }
 
+        static func hasSetImapUIFlags() -> NSPredicate {
+            var orPredicates = [NSPredicate]()
+            orPredicates.append(NSPredicate(format: "%K == true",
+                                            RelationshipKeyPath.cdMessage_imap_ui_flags + "." +
+                                            CdImapUIFlags.AttributeName.flagSeen))
+
+            orPredicates.append(NSPredicate(format: "%K == true",
+                                            RelationshipKeyPath.cdMessage_imap_ui_flags + "." +
+                                            CdImapUIFlags.AttributeName.flagFlagged))
+            return NSCompoundPredicate(orPredicateWithSubpredicates: orPredicates)
+        }
+        
         static func hasViewableAttachments() -> NSPredicate {
             let dontShowRatingsRawValues = PEPRating.neverShowAttachmentsForRatings
                 .map { $0.rawValue }
