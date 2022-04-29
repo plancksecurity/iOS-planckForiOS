@@ -48,7 +48,7 @@ class SmtpConnection: SmtpConnectionProtocol {
     private var smtpStatus: Status = Status()
     weak var delegate: SmtpConnectionDelegate?
 
-    private var connectInfo: EmailConnectInfo
+    private let connectInfo: EmailConnectInfo
 
     /// The access token, if authMethod is .saslXoauth2
     private let accessToken: OAuth2AccessTokenProtocol?
