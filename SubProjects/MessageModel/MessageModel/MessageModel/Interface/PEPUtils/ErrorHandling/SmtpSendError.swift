@@ -12,11 +12,11 @@ public enum SmtpSendError: Error {
      */
     case illegalState(FunctionName)
 
-    case authenticationFailed(FunctionName, String)
-    case connectionLost(FunctionName, String?)
-    case connectionTerminated(FunctionName)
-    case connectionTimedOut(FunctionName, String?)
-    case badResponse(FunctionName)
+    case authenticationFailed(FunctionName, String, String?)
+    case connectionLost(FunctionName, String?, String?)
+    case connectionTerminated(FunctionName, String?)
+    case connectionTimedOut(FunctionName, String?, String?)
+    case badResponse(FunctionName, String?)
 
     /// Indicates a problem with the client certificate
     case clientCertificateNotAccepted

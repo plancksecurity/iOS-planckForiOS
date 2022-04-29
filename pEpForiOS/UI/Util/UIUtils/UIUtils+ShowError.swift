@@ -33,7 +33,11 @@ extension UIUtils {
                 return
             }
             DispatchQueue.main.async {
-                showAlertWithOnlyPositiveButton(title: displayError.title, message: displayError.errorDescription)
+                if displayError.type == .brokenServerConnectionSmtp {
+                    UIUtils.showSMTPErrorMessage(error: displayError)
+                } else {
+                    showAlertWithOnlyPositiveButton(title: displayError.title, message: displayError.errorDescription)
+                }
             }
         }
 

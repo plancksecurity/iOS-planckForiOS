@@ -30,4 +30,6 @@ protocol SmtpConnectionProtocol {
 
     /// Indicates if a client certificate was set for this connection.
     var isClientCertificateSet: Bool { get }
+
+    var displayInfo: String { get }
 }

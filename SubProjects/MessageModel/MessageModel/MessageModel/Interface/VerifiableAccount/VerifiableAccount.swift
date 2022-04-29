@@ -213,6 +213,15 @@ extension VerifiableAccount {
             switch theSmtpResult {
             case .failure(let error):
                 resetPasswordsInKeychain()
+                // wether it was a problem with TLS or on SMTP level,
+                // and in case of SMTP it must show the number and the message text of the server.
+                if let smtpConnection = smtpVerifier.smtpConnection {
+                    let port = smtpConnection.connectInfo.networkPort
+                    let serverName = smtpConnection.connectInfo.networkAddress
+                    let connectinoTransport = smtpConnection.connectInfo.connectionTransport.toServerTransport().asString()
+
+                }
+
                 verifiableAccountDelegate?.didEndVerification(result: .failure(error))
             case .success(()):
                 verifiableAccountDelegate?.didEndVerification(result: .success(()))

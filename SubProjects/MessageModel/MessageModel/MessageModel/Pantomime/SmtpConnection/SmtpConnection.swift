@@ -12,6 +12,7 @@ import PantomimeFramework
 import pEpIOSToolboxForExtensions
 #else
 import pEpIOSToolbox
+import Foundation
 #endif
 
 protocol SmtpConnectionDelegate: AnyObject {
@@ -42,12 +43,13 @@ extension SmtpConnection {
 }
 
 class SmtpConnection: SmtpConnectionProtocol {
+
     private var smtp: CWSMTP
 
     private var smtpStatus: Status = Status()
     weak var delegate: SmtpConnectionDelegate?
 
-    private let connectInfo: EmailConnectInfo
+    public private(set) var connectInfo: EmailConnectInfo
 
     /// The access token, if authMethod is .saslXoauth2
     private let accessToken: OAuth2AccessTokenProtocol?
@@ -125,6 +127,14 @@ extension SmtpConnection {
 extension SmtpConnection {
     var accountAddress: String {
         return connectInfo.account.address
+    }
+
+    var displayInfo: String {
+        let server = NSLocalizedString("Server:", comment: "Server")
+        let port = NSLocalizedString("Port:", comment: "Port")
+        let transport = NSLocalizedString("Transport:", comment: "Port")
+        let connectionTransport = connectInfo.connectionTransport.toServerTransport().asString()
+        return "\(server) \(connectInfo.networkAddress). \(port) \(connectInfo.networkPort). \(transport) \(connectionTransport)."
     }
 }
 

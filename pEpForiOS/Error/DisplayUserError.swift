@@ -97,19 +97,23 @@ struct DisplayUserError: LocalizedError {
         } else if let smtpError = error as? SmtpSendError {
             type = DisplayUserError.type(forError: smtpError)
             switch smtpError {
-            case .authenticationFailed( _, let account):
+            case .authenticationFailed( _, let account, _):
                 extraInfo = account
             case .illegalState(_):
                 break
-            case .connectionLost(_, let errorDescription):
+            case .connectionLost(_, let errorDescription, let displayInfo):
                 errorString = errorDescription
+                extraInfo = displayInfo
                 break
-            case .connectionTerminated(_):
+            case .connectionTerminated(_, let displayInfo):
+                extraInfo = displayInfo
                 break
-            case .connectionTimedOut(_, let errorDescription):
+            case .connectionTimedOut(_, let errorDescription, let displayInfo):
                 errorString = errorDescription
+                extraInfo = displayInfo
                 break
-            case .badResponse(_):
+            case .badResponse(_, let displayInfo):
+                extraInfo = displayInfo
                 break
             case .clientCertificateNotAccepted:
                 break
