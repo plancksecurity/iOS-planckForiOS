@@ -10,7 +10,6 @@ import UIKit
 
 import pEpIOSToolbox
 import MessageModel
-import SwiftMessages
 
 protocol LoginViewControllerDelegate: AnyObject  {
     func loginViewControllerDidCreateNewAccount(_ loginViewController: LoginViewController)

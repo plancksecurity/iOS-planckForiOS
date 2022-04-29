@@ -12,7 +12,6 @@ import PantomimeFramework
 import pEpIOSToolboxForExtensions
 #else
 import pEpIOSToolbox
-import Foundation
 #endif
 
 protocol SmtpConnectionDelegate: AnyObject {
@@ -49,7 +48,7 @@ class SmtpConnection: SmtpConnectionProtocol {
     private var smtpStatus: Status = Status()
     weak var delegate: SmtpConnectionDelegate?
 
-    public private(set) var connectInfo: EmailConnectInfo
+    private var connectInfo: EmailConnectInfo
 
     /// The access token, if authMethod is .saslXoauth2
     private let accessToken: OAuth2AccessTokenProtocol?
