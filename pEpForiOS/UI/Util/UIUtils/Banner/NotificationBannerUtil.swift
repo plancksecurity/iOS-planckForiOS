@@ -14,7 +14,6 @@ import pEpIOSToolbox
 class NotificationBannerUtil {
 
     private static let animateDuration = 0.5
-    private static let bannerAppearanceDuration: TimeInterval = 5
     private static let minimunAmountOfSecondsSinceLastShown: TimeInterval = 30
 
     public static func show(error: DisplayUserError) {
