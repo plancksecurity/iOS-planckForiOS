@@ -105,29 +105,6 @@ class NotificationBannerUtil {
             view.closeButton.isHidden = false
             AppSettings.shared.bannerErrorDate = Date()
         }
-
-        //Animate banner removal
-        UIView.animate(withDuration: animateDuration / 2,
-                       delay: bannerAppearanceDuration,
-                       options: [], animations: {
-            // First, hide text
-            view.subtitleLabel.alpha = 0
-            view.titleLabel.alpha = 0
-            view.copyLogButton.alpha = 0
-            view.closeButton.alpha = 0
-            superview.layoutIfNeeded()
-        }, completion: { finished in
-            // Then collapse the banner and remove it.
-            if finished {
-                UIView.animate(withDuration: animateDuration / 2) {
-                    // Reduce banner height
-                    bannerHeightConstraint.constant = 0
-                    superview.layoutIfNeeded()
-                } completion: { finished in
-                    view.removeFromSuperview()
-                }
-            }
-        })
     }
 }
 

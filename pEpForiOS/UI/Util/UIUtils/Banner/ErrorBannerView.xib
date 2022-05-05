@@ -49,7 +49,7 @@
                                 <color key="baseForegroundColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                             </buttonConfiguration>
                             <connections>
-                                <action selector="buttonPressed" destination="iN0-l3-epB" eventType="touchUpInside" id="Ma7-qf-Y7h"/>
+                                <action selector="copyLogButtonPressed" destination="iN0-l3-epB" eventType="touchUpInside" id="4SH-zM-Vi5"/>
                             </connections>
                         </button>
                     </subviews>
