@@ -101,19 +101,19 @@ struct DisplayUserError: LocalizedError {
                 extraInfo = account
             case .illegalState(_):
                 break
-            case .connectionLost(_, let errorDescription, let displayInfo):
+            case .connectionLost(_, let errorDescription, let serverErrorInfo):
                 errorString = errorDescription
-                extraInfo = displayInfo
+                extraInfo = serverErrorInfo?.description
                 break
-            case .connectionTerminated(_, let displayInfo):
-                extraInfo = displayInfo
+            case .connectionTerminated(_, let serverErrorInfo):
+                extraInfo = serverErrorInfo?.description
                 break
-            case .connectionTimedOut(_, let errorDescription, let displayInfo):
+            case .connectionTimedOut(_, let errorDescription, let serverErrorInfo):
                 errorString = errorDescription
-                extraInfo = displayInfo
+                extraInfo = serverErrorInfo?.description
                 break
-            case .badResponse(_, let displayInfo):
-                extraInfo = displayInfo
+            case .badResponse(_, let serverErrorInfo):
+                extraInfo = serverErrorInfo?.description
                 break
             case .clientCertificateNotAccepted:
                 break

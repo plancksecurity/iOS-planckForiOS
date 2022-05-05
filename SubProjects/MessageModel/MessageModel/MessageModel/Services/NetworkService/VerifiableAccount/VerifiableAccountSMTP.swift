@@ -24,8 +24,7 @@ protocol VerifiableAccountSMTPDelegate: AnyObject {
 /// Helper for `VerifiableAccount` (verifies SMTP servers).
 class VerifiableAccountSMTP {
     weak var delegate: VerifiableAccountSMTPDelegate?
-
-    public private(set) var smtpConnection: SmtpConnection?
+    private var smtpConnection: SmtpConnection?
 
     /// Tries to verify the given IMAP account.
     func verify(connectInfo: EmailConnectInfo) {
@@ -39,7 +38,7 @@ class VerifiableAccountSMTP {
 
 extension VerifiableAccountSMTP: SmtpConnectionDelegate {
     private func notifyUnexpectedCallback(name: String) {
-        let error = SmtpSendError.badResponse(name, smtpConnection?.displayInfo)
+        let error = SmtpSendError.badResponse(name, ServerErrorInfo(description: name))
         delegate?.verified(verifier: self, result: .failure(error))
     }
 
@@ -86,33 +85,33 @@ extension VerifiableAccountSMTP: SmtpConnectionDelegate {
     func authenticationFailed(_ smtpConnection: SmtpConnectionProtocol, theNotification: Notification?) {
         notify(error: SmtpSendError.authenticationFailed(
             #function,
-            smtpConnection.accountAddress, smtpConnection.displayInfo))
+            smtpConnection.accountAddress, ServerErrorInfo(description: smtpConnection.displayInfo)))
     }
 
     func connectionEstablished(_ smtpConnection: SmtpConnectionProtocol, theNotification: Notification?) {}
 
     func connectionLost(_ smtpConnection: SmtpConnectionProtocol, theNotification: Notification?) {
         if let error = theNotification?.userInfo?[PantomimeErrorExtra] as? NSError {
-            notify(error: SmtpSendError.connectionLost(#function, error.localizedDescription, smtpConnection.displayInfo))
+            notify(error: SmtpSendError.connectionLost(#function, error.localizedDescription, ServerErrorInfo(description: smtpConnection.displayInfo)))
         } else {
-            notify(error: SmtpSendError.connectionLost(#function, nil, smtpConnection.displayInfo))
+            notify(error: SmtpSendError.connectionLost(#function, nil, ServerErrorInfo(description: smtpConnection.displayInfo)))
         }
     }
 
     func connectionTerminated(_ smtpConnection: SmtpConnectionProtocol, theNotification: Notification?) {
-        notify(error: SmtpSendError.connectionTerminated(#function, smtpConnection.displayInfo))
+        notify(error: SmtpSendError.connectionTerminated(#function, ServerErrorInfo(description: smtpConnection.displayInfo)))
     }
 
     func connectionTimedOut(_ smtpConnection: SmtpConnectionProtocol, theNotification: Notification?) {
         if let error = theNotification?.userInfo?[PantomimeErrorExtra] as? NSError {
-            notify(error: SmtpSendError.connectionTimedOut(#function, error.localizedDescription, smtpConnection.displayInfo))
+            notify(error: SmtpSendError.connectionTimedOut(#function, error.localizedDescription, ServerErrorInfo(description: smtpConnection.displayInfo)))
         } else {
-            notify(error: SmtpSendError.connectionTimedOut(#function, nil, smtpConnection.displayInfo))
+            notify(error: SmtpSendError.connectionTimedOut(#function, nil, ServerErrorInfo(description: smtpConnection.displayInfo)))
         }
     }
 
     func badResponse(_ smtpConnection: SmtpConnectionProtocol, response: String?) {
-        notify(error: SmtpSendError.badResponse(#function, smtpConnection.displayInfo))
+        notify(error: SmtpSendError.badResponse(#function, ServerErrorInfo(description: smtpConnection.displayInfo)))
     }
 
     func requestCancelled(_ smtpConnection: SmtpConnectionProtocol, theNotification: Notification?) {

@@ -38,7 +38,7 @@ class ErrorBannerView: UIView {
         return errorBannerView
     }
 
-    @IBAction func buttonPressed() {
+    @IBAction func copyLogButtonPressed() {
         UIPasteboard.general.string = log
     }
 
