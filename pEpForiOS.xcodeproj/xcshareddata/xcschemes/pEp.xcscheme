@@ -224,20 +224,6 @@
             buildForAnalyzing = "YES">
             <BuildableReference
                BuildableIdentifier = "primary"
-               BlueprintIdentifier = "86B48AEB1D5A41C900063E2B"
-               BuildableName = "SwiftMessages.framework"
-               BlueprintName = "SwiftMessages"
-               ReferencedContainer = "container:../SwiftMessages/SwiftMessages.xcodeproj">
-            </BuildableReference>
-         </BuildActionEntry>
-         <BuildActionEntry
-            buildForTesting = "YES"
-            buildForRunning = "YES"
-            buildForProfiling = "YES"
-            buildForArchiving = "YES"
-            buildForAnalyzing = "YES">
-            <BuildableReference
-               BuildableIdentifier = "primary"
                BlueprintIdentifier = "43980E221CBD0BC900A7FC3C"
                BuildableName = "pEp.app"
                BlueprintName = "pEp"

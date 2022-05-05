@@ -34,7 +34,4 @@
    <FileRef
       location = "group:../CocoaLumberjack/Lumberjack.xcodeproj">
    </FileRef>
-   <FileRef
-      location = "group:../SwiftMessages/SwiftMessages.xcodeproj">
-   </FileRef>
 </Workspace>

@@ -36,6 +36,7 @@ extension AppSettings {
     static private let keyVerboseLogginEnabled = "keyVerboseLogginEnabled"
     static private let keyCollapsingState = "keyCollapsingState"
     static private let keyFolderViewAccountCollapsedState = "keyFolderViewAccountCollapsedState-162844EB-1F32-4F66-8F92-9B77664523F1"
+    static private let keyBannerErrorShown = "keyBannerErrorShown"
 }
 
 // MARK: - AppSettings
@@ -287,6 +288,18 @@ extension AppSettings: AppSettingsProtocol {
             Log.shared.verboseLoggingEnabled = newValue
         }
     }
+
+    public var bannerErrorDate: Date? {
+        get {
+            guard let date = AppSettings.userDefaults.object(forKey: AppSettings.keyBannerErrorShown) as? Date else {
+                return nil
+            }
+            return date
+        }
+        set {
+            AppSettings.userDefaults.set(newValue, forKey: AppSettings.keyBannerErrorShown)
+        }
+    }
 }
 
 //MARK: Collapsing State
@@ -360,4 +373,6 @@ extension AppSettings {
             AppSettings.userDefaults.set(newValue, forKey: AppSettings.keyCollapsingState)
         }
     }
+
+    
 }

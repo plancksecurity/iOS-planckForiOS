@@ -32,6 +32,11 @@ public protocol AppSettingsProtocol {
     /// Should the logging be verbose, or not?
     var verboseLogginEnabled: Bool { get set }
 
+    /// Banner error datetime
+    ///
+    /// Nil means it was never presented.
+    var bannerErrorDate: Date? { get set }
+
     // MARK:- Collapsing State
 
     /// Removes the collapsing state for the account address passed by parameter.
@@ -66,4 +71,5 @@ public protocol AppSettingsProtocol {
     ///   - address: The account address
     ///   - isCollapsed: The collapsing state.
     func setFolderViewCollapsedState(forAccountWith address: String, to value: Bool)
+
 }

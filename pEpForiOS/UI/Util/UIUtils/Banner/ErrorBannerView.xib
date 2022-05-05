@@ -1,0 +1,96 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="20037" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+    <device id="retina6_1" orientation="portrait" appearance="dark"/>
+    <dependencies>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="20020"/>
+        <capability name="System colors in document resources" minToolsVersion="11.0"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <objects>
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner"/>
+        <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
+        <view contentMode="scaleToFill" id="iN0-l3-epB" customClass="ErrorBannerView" customModule="pEpForiOS" customModuleProvider="target">
+            <rect key="frame" x="0.0" y="0.0" width="364" height="44"/>
+            <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+            <subviews>
+                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Hsy-yo-Rw2" userLabel="Container">
+                    <rect key="frame" x="0.0" y="2.5" width="364" height="39"/>
+                    <subviews>
+                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="252" verticalCompressionResistancePriority="1000" text="Title" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Js9-mh-Xuc" userLabel="titleLabel">
+                            <rect key="frame" x="8" y="0.0" width="33" height="20.5"/>
+                            <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                            <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                            <nil key="highlightedColor"/>
+                        </label>
+                        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="aqd-2y-7qh" userLabel="closeButton">
+                            <rect key="frame" x="344" y="4" width="16" height="16"/>
+                            <constraints>
+                                <constraint firstAttribute="width" constant="16" id="aj9-nY-PVk"/>
+                                <constraint firstAttribute="width" secondItem="aqd-2y-7qh" secondAttribute="height" multiplier="1:1" id="gjE-JM-Xez"/>
+                            </constraints>
+                            <inset key="imageEdgeInsets" minX="0.0" minY="0.0" maxX="2.2250738585072014e-308" maxY="0.0"/>
+                            <state key="normal" image="calendar-close-icon"/>
+                            <connections>
+                                <action selector="closeButtonPressed" destination="iN0-l3-epB" eventType="touchUpInside" id="zlH-V5-uJ0"/>
+                            </connections>
+                        </button>
+                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" verticalCompressionResistancePriority="1000" text="Subtitle" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="cSw-Qf-dFb" userLabel="subtitleLabel">
+                            <rect key="frame" x="8" y="24.5" width="44" height="14.5"/>
+                            <fontDescription key="fontDescription" type="system" pointSize="12"/>
+                            <color key="textColor" white="0.66666666666666663" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                            <nil key="highlightedColor"/>
+                        </label>
+                        <button opaque="NO" contentMode="scaleToFill" horizontalCompressionResistancePriority="1000" verticalCompressionResistancePriority="1000" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="oSS-ke-xx5" userLabel="CopyLogButton">
+                            <rect key="frame" x="60" y="19.5" width="74" height="24.5"/>
+                            <color key="tintColor" systemColor="labelColor"/>
+                            <state key="normal" title="Button"/>
+                            <buttonConfiguration key="configuration" style="plain" title="Copy Log" buttonSize="mini">
+                                <color key="baseForegroundColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                            </buttonConfiguration>
+                            <connections>
+                                <action selector="buttonPressed" destination="iN0-l3-epB" eventType="touchUpInside" id="Ma7-qf-Y7h"/>
+                            </connections>
+                        </button>
+                    </subviews>
+                    <constraints>
+                        <constraint firstItem="aqd-2y-7qh" firstAttribute="top" secondItem="Hsy-yo-Rw2" secondAttribute="top" constant="4" id="1ls-qP-IKg"/>
+                        <constraint firstAttribute="trailing" relation="greaterThanOrEqual" secondItem="oSS-ke-xx5" secondAttribute="trailing" constant="4" id="GF9-Qh-PKT"/>
+                        <constraint firstAttribute="bottom" secondItem="cSw-Qf-dFb" secondAttribute="bottom" id="K0H-qO-Yab"/>
+                        <constraint firstItem="oSS-ke-xx5" firstAttribute="leading" secondItem="cSw-Qf-dFb" secondAttribute="trailing" constant="8" id="Lpz-U9-2ed"/>
+                        <constraint firstItem="aqd-2y-7qh" firstAttribute="leading" relation="greaterThanOrEqual" secondItem="Js9-mh-Xuc" secondAttribute="trailing" constant="8" id="eno-Cv-siD"/>
+                        <constraint firstItem="oSS-ke-xx5" firstAttribute="firstBaseline" secondItem="cSw-Qf-dFb" secondAttribute="firstBaseline" id="fI4-Co-sBY"/>
+                        <constraint firstItem="Js9-mh-Xuc" firstAttribute="leading" secondItem="Hsy-yo-Rw2" secondAttribute="leading" constant="8" id="gP4-hs-k6f"/>
+                        <constraint firstItem="cSw-Qf-dFb" firstAttribute="leading" secondItem="Js9-mh-Xuc" secondAttribute="leading" id="gky-zA-V1j"/>
+                        <constraint firstAttribute="trailing" secondItem="aqd-2y-7qh" secondAttribute="trailing" constant="4" id="kit-y2-gJz"/>
+                        <constraint firstItem="cSw-Qf-dFb" firstAttribute="top" secondItem="Js9-mh-Xuc" secondAttribute="bottom" constant="4" id="pQS-Ef-Rah"/>
+                        <constraint firstItem="Js9-mh-Xuc" firstAttribute="top" secondItem="Hsy-yo-Rw2" secondAttribute="top" id="vfL-ra-qRc"/>
+                    </constraints>
+                </view>
+            </subviews>
+            <color key="backgroundColor" systemColor="systemRedColor"/>
+            <constraints>
+                <constraint firstItem="Hsy-yo-Rw2" firstAttribute="leading" secondItem="iN0-l3-epB" secondAttribute="leading" id="Ka9-oM-7AB"/>
+                <constraint firstAttribute="trailing" secondItem="Hsy-yo-Rw2" secondAttribute="trailing" id="KpQ-GV-ZPJ"/>
+                <constraint firstItem="Hsy-yo-Rw2" firstAttribute="centerY" secondItem="iN0-l3-epB" secondAttribute="centerY" id="NAY-Bf-hQy"/>
+            </constraints>
+            <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
+            <connections>
+                <outlet property="closeButton" destination="aqd-2y-7qh" id="oBZ-MP-Tyi"/>
+                <outlet property="copyLogButton" destination="oSS-ke-xx5" id="zAM-sp-sLn"/>
+                <outlet property="subtitleLabel" destination="cSw-Qf-dFb" id="4w7-QV-NbF"/>
+                <outlet property="titleLabel" destination="Js9-mh-Xuc" id="nCX-x9-Y4d"/>
+            </connections>
+            <point key="canvasLocation" x="124.6376811594203" y="-25.446428571428569"/>
+        </view>
+    </objects>
+    <resources>
+        <image name="calendar-close-icon" width="20" height="20"/>
+        <systemColor name="labelColor">
+            <color white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+        </systemColor>
+        <systemColor name="systemRedColor">
+            <color red="1" green="0.23137254901960785" blue="0.18823529411764706" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+        </systemColor>
+    </resources>
+</document>

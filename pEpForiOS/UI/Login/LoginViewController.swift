@@ -57,6 +57,27 @@ final class LoginViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         setFonts()
+//        print(Bundle.main.resourceURL!)
+//        let dirPaths = NSSearchPathForDirectoriesInDomains(.applicationDirectory,
+//                      .userDomainMask, true)
+//        NSLog("%@", dirPaths.first!);
+//
+//
+//        let fileManager = FileManager.default
+//        let directoryURL = fileManager.urls(for: .applicationDirectory, in: .userDomainMask)[0]
+//
+//        do {
+//            let fileURLs = try fileManager.contentsOfDirectory(at: directoryURL, includingPropertiesForKeys: nil)
+//            print("applicationDirectory")
+//            print(fileURLs)
+//
+//
+//        } catch {
+//            print("Error while enumerating files \(directoryURL.path): \(error.localizedDescription)")
+//        }
+//
+//        print("")
+
     }
 
     override func viewWillAppear(_ animated: Bool) {

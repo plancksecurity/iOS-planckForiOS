@@ -16,20 +16,8 @@ import pEpIOSToolboxForExtensions
 import MessageModel
 import pEpIOSToolbox
 #endif
-import SwiftMessages
 
-class UIUtils { 
-
-    public static private(set) var swiftMessages = UIUtils.getSwiftMessagesConfigured()
-
-    private static func getSwiftMessagesConfigured() -> SwiftMessages {
-        let instance = SwiftMessages.sharedInstance
-        instance.pauseBetweenMessages = 1.0
-        var config = SwiftMessages.Config()
-        config.duration = .seconds(seconds: 5)
-        instance.defaultConfig = config
-        return instance
-    }
+class UIUtils {
 
     /// Shows the navigation controller passed by parameter
     /// - Parameter navigationController: The Navigation Controller to present.
