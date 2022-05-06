@@ -23,5 +23,7 @@ public enum SmtpSendError: Error {
 }
 
 public struct ServerErrorInfo {
-    public var description: String?
+    public var port: String
+    public var server: String
+    public var connectionTransport: String
 }

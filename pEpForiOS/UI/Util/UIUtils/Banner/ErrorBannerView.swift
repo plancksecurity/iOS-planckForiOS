@@ -10,13 +10,13 @@ import UIKit
 import pEpIOSToolbox
 
 class ErrorBannerView: UIView {
-    static let nibName = "ErrorBannerView"
+    private static let nibName = "ErrorBannerView"
     @IBOutlet weak var titleLabel: UILabel!
     @IBOutlet weak var subtitleLabel: UILabel!
     @IBOutlet weak var copyLogButton: UIButton!
     @IBOutlet weak var closeButton: UIButton!
 
-    private var log: String?
+    private var errorLogToBeCopied: String?
 
     override func awakeFromNib() {
         super.awakeFromNib()
@@ -27,19 +27,21 @@ class ErrorBannerView: UIView {
         copyLogButton.setTitleColor(.white, for: .highlighted)
     }
 
-    static func loadViewFromNib(log: String) -> ErrorBannerView? {
+    static func loadViewFromNib(errorLogToBeCopied: String, title: String, subtitle: String) -> ErrorBannerView? {
         let nib = UINib(nibName: String(describing:self), bundle: nil)
         guard let errorBannerView =
             nib.instantiate(withOwner: nil, options: nil).first as? ErrorBannerView else {
                 Log.shared.errorAndCrash("Fail to load ErrorBannerView from xib")
                 return nil
         }
-        errorBannerView.log = log
+        errorBannerView.errorLogToBeCopied = errorLogToBeCopied
+        errorBannerView.titleLabel.text = title
+        errorBannerView.subtitleLabel.text = subtitle
         return errorBannerView
     }
 
     @IBAction func copyLogButtonPressed() {
-        UIPasteboard.general.string = log
+        UIPasteboard.general.string = errorLogToBeCopied
     }
 
     @IBAction func closeButtonPressed() {

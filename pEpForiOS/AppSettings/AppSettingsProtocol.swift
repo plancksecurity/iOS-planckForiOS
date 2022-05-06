@@ -32,10 +32,10 @@ public protocol AppSettingsProtocol {
     /// Should the logging be verbose, or not?
     var verboseLogginEnabled: Bool { get set }
 
-    /// Banner error datetime
+    /// The last datetime where the error Banner was presented.
     ///
     /// Nil means it was never presented.
-    var bannerErrorDate: Date? { get set }
+    var lastBannerErrorPresentationDatetime: Date? { get set }
 
     // MARK:- Collapsing State
 

@@ -289,7 +289,7 @@ extension AppSettings: AppSettingsProtocol {
         }
     }
 
-    public var bannerErrorDate: Date? {
+    public var lastBannerErrorPresentationDatetime: Date? {
         get {
             guard let date = AppSettings.userDefaults.object(forKey: AppSettings.keyBannerErrorShown) as? Date else {
                 return nil
