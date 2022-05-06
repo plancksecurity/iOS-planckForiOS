@@ -17,14 +17,14 @@
                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Hsy-yo-Rw2" userLabel="Container">
                     <rect key="frame" x="0.0" y="2.5" width="364" height="39"/>
                     <subviews>
-                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="252" verticalCompressionResistancePriority="1000" text="Title" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Js9-mh-Xuc" userLabel="titleLabel">
+                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="252" verticalCompressionResistancePriority="1000" text="Title" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontForContentSizeCategory="YES" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Js9-mh-Xuc" userLabel="titleLabel">
                             <rect key="frame" x="8" y="0.0" width="33" height="20.5"/>
                             <fontDescription key="fontDescription" type="system" pointSize="17"/>
                             <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                             <nil key="highlightedColor"/>
                         </label>
                         <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="aqd-2y-7qh" userLabel="closeButton">
-                            <rect key="frame" x="344" y="4" width="16" height="16"/>
+                            <rect key="frame" x="340" y="4" width="16" height="16"/>
                             <constraints>
                                 <constraint firstAttribute="width" constant="16" id="aj9-nY-PVk"/>
                                 <constraint firstAttribute="width" secondItem="aqd-2y-7qh" secondAttribute="height" multiplier="1:1" id="gjE-JM-Xez"/>
@@ -35,7 +35,7 @@
                                 <action selector="closeButtonPressed" destination="iN0-l3-epB" eventType="touchUpInside" id="zlH-V5-uJ0"/>
                             </connections>
                         </button>
-                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" verticalCompressionResistancePriority="1000" text="Subtitle" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="cSw-Qf-dFb" userLabel="subtitleLabel">
+                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" verticalCompressionResistancePriority="1000" text="Subtitle" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontForContentSizeCategory="YES" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="cSw-Qf-dFb" userLabel="subtitleLabel">
                             <rect key="frame" x="8" y="24.5" width="44" height="14.5"/>
                             <fontDescription key="fontDescription" type="system" pointSize="12"/>
                             <color key="textColor" white="0.66666666666666663" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
@@ -59,10 +59,10 @@
                         <constraint firstAttribute="bottom" secondItem="cSw-Qf-dFb" secondAttribute="bottom" id="K0H-qO-Yab"/>
                         <constraint firstItem="oSS-ke-xx5" firstAttribute="leading" secondItem="cSw-Qf-dFb" secondAttribute="trailing" constant="8" id="Lpz-U9-2ed"/>
                         <constraint firstItem="aqd-2y-7qh" firstAttribute="leading" relation="greaterThanOrEqual" secondItem="Js9-mh-Xuc" secondAttribute="trailing" constant="8" id="eno-Cv-siD"/>
-                        <constraint firstItem="oSS-ke-xx5" firstAttribute="firstBaseline" secondItem="cSw-Qf-dFb" secondAttribute="firstBaseline" id="fI4-Co-sBY"/>
+                        <constraint firstItem="oSS-ke-xx5" firstAttribute="baseline" secondItem="cSw-Qf-dFb" secondAttribute="baseline" id="fI4-Co-sBY"/>
                         <constraint firstItem="Js9-mh-Xuc" firstAttribute="leading" secondItem="Hsy-yo-Rw2" secondAttribute="leading" constant="8" id="gP4-hs-k6f"/>
                         <constraint firstItem="cSw-Qf-dFb" firstAttribute="leading" secondItem="Js9-mh-Xuc" secondAttribute="leading" id="gky-zA-V1j"/>
-                        <constraint firstAttribute="trailing" secondItem="aqd-2y-7qh" secondAttribute="trailing" constant="4" id="kit-y2-gJz"/>
+                        <constraint firstAttribute="trailing" secondItem="aqd-2y-7qh" secondAttribute="trailing" constant="8" id="kit-y2-gJz"/>
                         <constraint firstItem="cSw-Qf-dFb" firstAttribute="top" secondItem="Js9-mh-Xuc" secondAttribute="bottom" constant="4" id="pQS-Ef-Rah"/>
                         <constraint firstItem="Js9-mh-Xuc" firstAttribute="top" secondItem="Hsy-yo-Rw2" secondAttribute="top" id="vfL-ra-qRc"/>
                     </constraints>

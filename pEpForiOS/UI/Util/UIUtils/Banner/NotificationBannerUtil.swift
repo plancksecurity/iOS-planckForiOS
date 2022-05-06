@@ -15,7 +15,6 @@ class NotificationBannerUtil {
 
     private static let animateDuration = 0.5
     private static let minimunAmountOfSecondsSinceLastShown: TimeInterval = 30
-    private static let bannerHeight = CGFloat(44)
 
     public static func show(error: DisplayUserError) {
         let currentlyShownViewController = UIApplication.currentlyVisibleViewController()
@@ -44,6 +43,11 @@ class NotificationBannerUtil {
             }
         }
 
+        let sizeOfSubtitle = view.subtitleLabel.sizeThatFits(CGSize(width: superview.frame.size.width, height: CGFloat.greatestFiniteMagnitude))
+        let sizeOfTitle = view.titleLabel.sizeThatFits(CGSize(width: superview.frame.size.width, height: CGFloat.greatestFiniteMagnitude))
+
+        let margins = 30
+        let bannerHeight = sizeOfTitle.height + sizeOfSubtitle.height + CGFloat(margins)
         view.isHidden = true
         superview.addSubview(view)
         superview.bringSubviewToFront(view)

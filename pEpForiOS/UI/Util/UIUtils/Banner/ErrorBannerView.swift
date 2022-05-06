@@ -21,9 +21,7 @@ class ErrorBannerView: UIView {
     override func awakeFromNib() {
         super.awakeFromNib()
         titleLabel.setPEPFont(style: .footnote, weight: .regular)
-        titleLabel.text = NSLocalizedString("Server Unreachable", comment: "Server Unreachable title")
         subtitleLabel.setPEPFont(style: .footnote, weight: .regular)
-        subtitleLabel.text = NSLocalizedString("We could not connect to the SMTP server", comment: "Server Unreachable description")
         copyLogButton.setTitleColor(.white, for: .highlighted)
     }
 
@@ -37,6 +35,7 @@ class ErrorBannerView: UIView {
         errorBannerView.errorLogToBeCopied = errorLogToBeCopied
         errorBannerView.titleLabel.text = title
         errorBannerView.subtitleLabel.text = subtitle
+
         return errorBannerView
     }
 
