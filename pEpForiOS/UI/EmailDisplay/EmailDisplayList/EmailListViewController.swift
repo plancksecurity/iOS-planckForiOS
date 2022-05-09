@@ -332,7 +332,7 @@ final class EmailListViewController: UIViewController {
         readToolbarButton = getButtonItem(img: UIImage(named: "icon-read"), action: #selector(readToolbar), accessibilityIdentifier: "Read button")
         unreadToolbarButton = getButtonItem(img: UIImage(named: "icon-unread"), action: #selector(unreadToolbar), accessibilityIdentifier: "Unread button")
         deleteToolbarButton = getButtonItem(img: UIImage(named: "folders-icon-trash"), action: #selector(deleteToolbar), accessibilityIdentifier: "Delete button")
-        moveToolbarButton = getButtonItem(img: UIImage(named: "swipe-archive"), action: #selector(moveToolbar), accessibilityIdentifier: "Move Button")
+        moveToolbarButton = getButtonItem(img: UIImage(named: "swipe-archive"), action: #selector(moveToolbar), accessibilityIdentifier: "Move button")
 
         toolbarItems = [flagToolbarButton, flexibleSpace,
                         readToolbarButton, flexibleSpace,
