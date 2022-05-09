@@ -322,7 +322,6 @@ final class EmailListViewController: UIViewController {
     private func showEditToolbar() {
         func getButtonItem(img: UIImage?, action: Selector, accessibilityIdentifier: String) -> UIBarButtonItem {
             let button = UIBarButtonItem(image: img, style: .plain, target: self, action: action)
-//            button.isEnabled = false
             button.accessibilityIdentifier = accessibilityIdentifier
             return button
         }
