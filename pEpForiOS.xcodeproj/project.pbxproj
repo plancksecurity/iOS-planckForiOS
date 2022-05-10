@@ -476,6 +476,8 @@
 		5B5C2A9225D2902C00F9C18A /* MessageAttachmentCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5B5C2A9125D2902C00F9C18A /* MessageAttachmentCell.swift */; };
 		5B5C2A9C25D2918800F9C18A /* AttachmentCellBackgroundView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5B5C2A9B25D2918800F9C18A /* AttachmentCellBackgroundView.swift */; };
 		5B5C2A9F25D293F300F9C18A /* EmailViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5B5C2A9E25D293F300F9C18A /* EmailViewModel.swift */; };
+		5B6357922829507C00DF4B18 /* ErrorMenuViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5B6357912829507B00DF4B18 /* ErrorMenuViewController.swift */; };
+		5B6357942829514F00DF4B18 /* ErrorMenuViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5B6357932829514F00DF4B18 /* ErrorMenuViewModel.swift */; };
 		5B6496D325C853670028B9ED /* AppSettingsTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5B6496D225C853670028B9ED /* AppSettingsTest.swift */; };
 		5B649AEE25CC80290028B9ED /* SignatureTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5B649AED25CC80290028B9ED /* SignatureTableViewCell.swift */; };
 		5B70B1F724507B8A0010AED7 /* pEpFooterView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5B70B1F624507B8A0010AED7 /* pEpFooterView.swift */; };
@@ -1135,6 +1137,8 @@
 		5B5C2A9125D2902C00F9C18A /* MessageAttachmentCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MessageAttachmentCell.swift; sourceTree = "<group>"; };
 		5B5C2A9B25D2918800F9C18A /* AttachmentCellBackgroundView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AttachmentCellBackgroundView.swift; sourceTree = "<group>"; };
 		5B5C2A9E25D293F300F9C18A /* EmailViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EmailViewModel.swift; sourceTree = "<group>"; };
+		5B6357912829507B00DF4B18 /* ErrorMenuViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ErrorMenuViewController.swift; sourceTree = "<group>"; };
+		5B6357932829514F00DF4B18 /* ErrorMenuViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ErrorMenuViewModel.swift; sourceTree = "<group>"; };
 		5B6496D225C853670028B9ED /* AppSettingsTest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppSettingsTest.swift; sourceTree = "<group>"; };
 		5B649AED25CC80290028B9ED /* SignatureTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SignatureTableViewCell.swift; sourceTree = "<group>"; };
 		5B70B1F624507B8A0010AED7 /* pEpFooterView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = pEpFooterView.swift; sourceTree = "<group>"; };
@@ -2375,6 +2379,7 @@
 		43AA82511E9B925000ABD5A8 /* Util */ = {
 			isa = PBXGroup;
 			children = (
+				5B6357902829503000DF4B18 /* ErrorMenuViewController */,
 				5BB7C74824D85BD600D5F328 /* PEPWebviewController */,
 				5BC0738C25B218DB00ECE3FC /* TextFieldWithoutSelection.swift */,
 				5BC0F96626AEE8ED0089760D /* EdgeInsetLabel.swift */,
@@ -2633,6 +2638,15 @@
 				5B41C6072418F15100C268CE /* TutorialStep3iPhoneViewController.swift */,
 			);
 			path = iPhone;
+			sourceTree = "<group>";
+		};
+		5B6357902829503000DF4B18 /* ErrorMenuViewController */ = {
+			isa = PBXGroup;
+			children = (
+				5B6357912829507B00DF4B18 /* ErrorMenuViewController.swift */,
+				5B6357932829514F00DF4B18 /* ErrorMenuViewModel.swift */,
+			);
+			path = ErrorMenuViewController;
 			sourceTree = "<group>";
 		};
 		5B6499F625C9BA000028B9ED /* AppSettings */ = {
@@ -3506,6 +3520,7 @@
 				4351C2D41F4441190053381F /* iterator.c in Sources */,
 				5BD93BEE2673AB7C000F2A8C /* ComposeViewModel+AttachmentSizeUtil.swift in Sources */,
 				5BC0738D25B218DB00ECE3FC /* TextFieldWithoutSelection.swift in Sources */,
+				5B6357922829507C00DF4B18 /* ErrorMenuViewController.swift in Sources */,
 				5B3C13BF23D8AF2E00FC0A53 /* SettingsTableViewController.swift in Sources */,
 				152A39D721905C3E00D9F8E4 /* BodyCellViewModel+TextAttachment.swift in Sources */,
 				43ED53711CC77F95006AB156 /* IMAPSettingsViewController.swift in Sources */,
@@ -3605,6 +3620,7 @@
 				152A39D021905C3E00D9F8E4 /* AttachmentCell.swift in Sources */,
 				0033C08120D7F3C600224E61 /* ThreadViewController+ViewModelDelegate.swift in Sources */,
 				4351C2DB1F4441190053381F /* utf8.c in Sources */,
+				5B6357942829514F00DF4B18 /* ErrorMenuViewModel.swift in Sources */,
 				152A39CA21905C3E00D9F8E4 /* DocumentAttachmentPickerViewController.swift in Sources */,
 				152A39CD21905C3E00D9F8E4 /* MediaAttachmentPickerProviderViewModel.swift in Sources */,
 				495D69BF20DBAEE900986007 /* ThreadViewController+SwipeCell.swift in Sources */,

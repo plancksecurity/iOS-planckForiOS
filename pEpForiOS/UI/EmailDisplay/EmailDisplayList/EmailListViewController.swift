@@ -16,6 +16,7 @@ final class EmailListViewController: UIViewController {
     @IBOutlet public weak var tableView: UITableView!
     @IBOutlet public weak var tableViewBottomConstraint: NSLayoutConstraint!
     public static let storyboardId = "EmailListViewController"
+    private var errorMenuChildViewController: ErrorMenuViewController?
 
     /// Stuff that must be done once only in viewWillAppear
     private var doOnce: (()-> Void)?
@@ -69,6 +70,24 @@ final class EmailListViewController: UIViewController {
 
     private let refreshController = UIRefreshControl()
 
+    private final func setupErrorMenuViewController() {
+        let storyboard = UIStoryboard(name: Constants.reusableStoryboard, bundle: nil)
+        guard
+            let vm = viewModel,
+            let errorMenuViewController = storyboard.instantiateViewController(
+                withIdentifier: ErrorMenuViewController.storyboardId)
+                as? ErrorMenuViewController,
+            let errorMenuView = errorMenuViewController.view else {
+                Log.shared.errorAndCrash("No VC.")
+                return
+        }
+        errorMenuChildViewController = errorMenuViewController
+        errorMenuChildViewController?.viewModel = vm.errorMenuViewModel(delegate: self)
+        addChild(errorMenuViewController)
+        errorMenuView.isHidden = true
+        view.addSubview(errorMenuView)
+    }
+
     // MARK: - Life Cycle
 
     override func viewDidLoad() {
@@ -120,6 +139,8 @@ final class EmailListViewController: UIViewController {
         updateFilterText()
         updateEditButton()
         vm.updateLastLookAt()
+        updateFilterButton()
+        setupErrorMenuViewController()
     }
 
     override func viewWillTransition(to size: CGSize, with coordinator: UIViewControllerTransitionCoordinator) {
@@ -582,7 +603,6 @@ extension EmailListViewController: UITableViewDataSource, UITableViewDelegate {
                                                  for: indexPath)
         if let theCell = cell as? EmailListViewCell {
             theCell.delegate = self
-
             guard let viewModel = viewModel?.viewModel(for: indexPath.row) else {
                 return cell
             }
@@ -1485,5 +1505,45 @@ extension EmailListViewController {
 
     @objc func pEpSettingsChanged() {
         tableView.reloadData()
+    }
+}
+
+//MARK: - Error Menu View Model Delegate
+
+extension EmailListViewController: ErrorMenuViewModelDelegate {
+
+    func closeNotification() {
+        errorMenuChildViewController?.view.isHidden = true
+    }
+
+    func showAlerView() {
+        let title = NSLocalizedString("Server Unreachable", comment: "Server Unreachable - title")
+        let subtitle = NSLocalizedString("It's not possible to send or receive e-mails because the server of the provider is not usable. We suggest to copy the log and send it to your email provider", comment: "Server Unreachable - description")
+        let cancelButtonText = NSLocalizedString("", comment: "")
+        let copyLogButtonText = NSLocalizedString("", comment: "")
+        UIUtils.showTwoButtonAlert(withTitle: title,
+                                   message: subtitle,
+                                   cancelButtonText: cancelButtonText,
+                                   positiveButtonText: copyLogButtonText,
+                                   cancelButtonAction: nil,
+                                   positiveButtonAction: { [weak self] in
+            guard let me = self else {
+                Log.shared.errorAndCrash("Lost myself")
+                return
+            }
+
+            guard let vm = me.errorMenuChildViewController?.viewModel else {
+                Log.shared.errorAndCrash("VM not found")
+                return
+            }
+
+            guard let index = ErrorMenuViewModel.RowIdentifier.copyMessage.index else {
+                Log.shared.errorAndCrash(error: "index not found")
+                return
+            }
+            let indexPath = IndexPath(row:  index, section: 0)
+            vm.handleDidSelect(rowAt: indexPath)
+
+        }, style: .default)
     }
 }

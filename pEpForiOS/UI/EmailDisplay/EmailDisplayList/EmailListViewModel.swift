@@ -45,6 +45,8 @@ class EmailListViewModel: EmailDisplayViewModel {
     }
     private var emailDetailViewModel: EmailDetailViewModel?
 
+    private var errorMenuViewModel: ErrorMenuViewModel?
+
     private var lastSearchTerm = ""
     private var updatesEnabled = true
 
@@ -317,6 +319,16 @@ class EmailListViewModel: EmailDisplayViewModel {
                 return MoveToAccountViewModel(messages: msgs)
             }
             return nil
+    }
+
+    /// Returns a new ErrorMenuViewModel.
+    ///
+    /// - Parameter delegate: The delegate to communitcate to the VC
+    /// - Returns: The configured ErrorMenuViewModel
+    public func errorMenuViewModel(delegate: ErrorMenuViewModelDelegate) -> ErrorMenuViewModel {
+        let errorMenuViewModel = ErrorMenuViewModel(delegate: delegate)
+        self.errorMenuViewModel = errorMenuViewModel
+        return errorMenuViewModel
     }
 
     // MARK: - Fetch Older Messages

@@ -28,6 +28,7 @@ class ComposeViewController: UIViewController {
     @IBOutlet var tableView: UITableView!
 
     private var suggestionsChildViewController: SuggestTableViewController?
+
     lazy private var mediaAttachmentPickerProvider: MediaAttachmentPickerProvider? = {
         guard let pickerVm = viewModel?.mediaAttachmentPickerProviderViewModel() else {
             Log.shared.errorAndCrash("Invalid state")

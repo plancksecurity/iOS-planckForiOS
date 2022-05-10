@@ -95,8 +95,6 @@ class EmailViewController: UIViewController {
         removeExternalContentView()
     }
 
-
-
     override func viewWillTransition(to size: CGSize, with coordinator: UIViewControllerTransitionCoordinator) {
         super.viewWillTransition(to: size, with: coordinator)
         if UIDevice.isIpad {
@@ -134,7 +132,6 @@ class EmailViewController: UIViewController {
             reloadTableView()
         }
     }
-
 
     @objc func copyToClip() {
         guard let vm = viewModel else {
