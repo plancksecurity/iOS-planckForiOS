@@ -27,6 +27,9 @@ protocol EmailDetailViewModelSelectionChangeDelegate: AnyObject {
 }
 
 class EmailDetailViewModel: EmailDisplayViewModel {
+
+    public var currentFilter: MessageQueryResultsFilter?
+
     /// Used to figure out whether or not the currently displayed message has been decrypted while
     /// being shown to the user.
     private var pathsForMessagesMarkedForRedecrypt = [IndexPath]()
@@ -103,9 +106,13 @@ class EmailDetailViewModel: EmailDisplayViewModel {
     public func handleEmailShown(forItemAt indexPath: IndexPath) {
         lastShownMessage = message(representedByRowAt: indexPath)
         markForRedecryptionIfNeeded(messageRepresentedBy: indexPath)
-        markSeenIfNeeded(messageRepresentedby: indexPath)
-        selectionChangeDelegate?.emailDetailViewModel(emailDetailViewModel: self,
-                                                      didSelectItemAt: indexPath)
+
+        if let filter = currentFilter, filter.mustBeUnread ?? false {
+            lastShownMessage?.markUIOnlyAsSeen()
+        } else {
+            selectionChangeDelegate?.emailDetailViewModel(emailDetailViewModel: self,
+                                                          didSelectItemAt: indexPath)
+        }
     }
 
     /// The indexpath of the last displayerd message.
@@ -254,14 +261,6 @@ class EmailDetailViewModel: EmailDisplayViewModel {
 // MARK: - Private
 
 extension EmailDetailViewModel {
-
-    private func markSeenIfNeeded(messageRepresentedby indexPath: IndexPath) {
-        guard let message = message(representedByRowAt: indexPath) else {
-            Log.shared.errorAndCrash("No msg")
-            return
-        }
-        message.markAsSeen()
-    }
 
     /// Resets bookholding vars
     private func reset() {

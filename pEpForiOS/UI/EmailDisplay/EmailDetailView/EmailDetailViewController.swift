@@ -35,7 +35,7 @@ class EmailDetailViewController: UIViewController {
     @IBOutlet weak var moveToFolderButton: UIBarButtonItem!
     @IBOutlet weak var collectionView: UICollectionView!
     private var pEpButtonHelper = UIBarButtonItem.getPEPButton(action: #selector(showSettingsViewController),
-                                                               target: self)
+                                                               target: EmailDetailViewController.self)
     
     private var separatorsArray = [UIBarButtonItem]()
 

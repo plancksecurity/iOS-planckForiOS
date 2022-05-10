@@ -12,6 +12,7 @@ import pEpIOSToolbox
 
 ///Struct that provides a interface to select which filters are enabled and how must be used.
 public struct MessageQueryResultsFilter {
+    public let mustHaveImapUIFlags: Bool?
     public let mustBeFlagged: Bool?
     public let mustBeUnread: Bool?
     public let mustContainAttachments: Bool?
@@ -40,6 +41,10 @@ public struct MessageQueryResultsFilter {
             if mustContainAttachments ?? false {
                 attributedPredicates.append(CdMessage.PredicateFactory.hasViewableAttachments())
             }
+            if mustHaveImapUIFlags ?? false {
+                attributedPredicates.append(CdMessage.PredicateFactory.hasSetImapUIFlags())
+            }
+
             if !attributedPredicates.isEmpty {
                 finalPredicate.append(NSCompoundPredicate(orPredicateWithSubpredicates: attributedPredicates))
             }
@@ -84,12 +89,16 @@ public struct MessageQueryResultsFilter {
     ///                             true = show only messages with attachemnts
     ///                             false = show only messages without attachments
     ///                             nil = attachments are ignored
+    ///   - mustHaveImapUIFlags: used to know  the messages that have UIFlags.
+    ///                          UIFlags are used to handle uistate without modifying IMAP state.
     ///   - accounts:   Accounts, including their enabled state. Filter will only show messages
     ///                 in enabled accounts. MUST NOT be empty.
     public init(mustBeFlagged: Bool? = nil,
                 mustBeUnread: Bool? = nil,
                 mustContainAttachments: Bool? = nil,
+                hasImapUIFlags: Bool? = nil,
                 accountEnabledStates: [[Account:Bool]]) {
+        self.mustHaveImapUIFlags = hasImapUIFlags
         self.mustBeFlagged = mustBeFlagged
         self.mustBeUnread = mustBeUnread
         self.mustContainAttachments = mustContainAttachments
@@ -112,14 +121,19 @@ public struct MessageQueryResultsFilter {
     ///                             true = show only messages with attachemnts
     ///                             false = show only messages without attachments
     ///                             nil = attachments are ignored
+    ///   - mustHaveImapUIFlags: used to know  the messages that have UIFlags.
+    ///                          UIFlags are used to handle uistate without modifying IMAP state.
+    ///
     ///   - accounts:   Accounts to take into account. All given accounts are set to enabled.
     public init(mustBeFlagged: Bool? = nil,
                 mustBeUnread: Bool? = nil,
                 mustContainAttachments: Bool? = nil,
+                mustHaveImapUIFlags: Bool? = nil,
                 accounts: [Account]) {
         self.mustBeFlagged = mustBeFlagged
         self.mustBeUnread = mustBeUnread
         self.mustContainAttachments = mustContainAttachments
+        self.mustHaveImapUIFlags = mustHaveImapUIFlags
         var enabledStates = [[Account:Bool]]()
         for account in accounts {
             enabledStates.append([account:true])

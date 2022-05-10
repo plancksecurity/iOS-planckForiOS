@@ -57,7 +57,6 @@ public class MessageQueryResults: MessageQueryResultsProtocol {
         return results
     }
 
-
     /// Init
     ///
     /// Messages will be ordered by date.

@@ -158,6 +158,20 @@ extension CdImapFlags {
     }
 }
 
+extension CdImapUIFlags {
+
+    /// All attribute names as constant String
+    struct AttributeName {
+        static let flagFlagged = "flagFlagged"
+        static let flagSeen = "flagSeen"
+    }
+
+    /// All relationship names as constant String
+    struct RelationshipName {
+        static let message = "message"
+    }
+}
+
 extension CdKey {
 
     /// All attribute names as constant String
@@ -196,6 +210,7 @@ extension CdMessage {
         static let cc = "cc"
         static let from = "from"
         static let imap = "imap"
+        static let imapUIFlags = "imapUIFlags"
         static let inReplyTo = "inReplyTo"
         static let keysFromDecryption = "keysFromDecryption"
         static let keywords = "keywords"
