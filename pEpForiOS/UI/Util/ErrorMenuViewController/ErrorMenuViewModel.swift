@@ -27,6 +27,8 @@ protocol ErrorMenuRowProtocol {
 
 class ErrorMenuViewModel {
 
+    private let cellIdentifier = "errorMenuActionCell"
+
     /// Struct that is used to perform an action.
     /// Represents a ActionRow in the Error Menu View Controller
     public struct ActionRow: ErrorMenuRowProtocol {
@@ -43,6 +45,7 @@ class ErrorMenuViewModel {
     public weak var delegate : ErrorMenuViewModelDelegate?
     typealias ActionBlock = (() -> Void)
 
+    /// The error message to be copied
     public var errorMessageToCopy : String?
 
     /// Identifies semantically the type of row.
@@ -69,9 +72,11 @@ class ErrorMenuViewModel {
     ///
     /// - Parameter rowAt: The indexPath of the selected row
     public func handleDidSelect(rowAt: IndexPath) {
-        if let row = rows[rowAt.row] as? ActionRow {
-            row.action?()
+        guard let row = rows[rowAt.row] as? ActionRow else {
+            Log.shared.errorAndCrash(error: "Row not found")
+            return
         }
+        row.action?()
     }
 }
 
@@ -88,6 +93,7 @@ extension ErrorMenuViewModel {
     /// - Returns: An array with the settings rows. Every setting row must conform the SettingsRowProtocol.
     private func generateRows() -> [ErrorMenuRowProtocol] {
         var rows = [ErrorMenuRowProtocol]()
+
         let seeMessageRow = generateActionRow(type: .seeMessage) { [weak self] in
             guard let me = self else {
                 Log.shared.errorAndCrash("Lost myself")
@@ -95,6 +101,7 @@ extension ErrorMenuViewModel {
             }
             me.handleSeeMessagePressed()
         }
+
         let copyMessageRow = generateActionRow(type: .copyMessage) { [weak self] in
             guard let me = self else {
                 Log.shared.errorAndCrash("Lost myself")
@@ -102,6 +109,7 @@ extension ErrorMenuViewModel {
             }
             me.handleCopyMessagePressed()
         }
+
         let closeNotificationRow = generateActionRow(type: .closeNotification) { [weak self] in
             guard let me = self else {
                 Log.shared.errorAndCrash("Lost myself")
@@ -126,9 +134,9 @@ extension ErrorMenuViewModel {
                                    action: @escaping ActionBlock) -> ActionRow {
         guard let rowTitle = rowTitle(type: type) else {
             Log.shared.errorAndCrash(message: "Row title not found")
-            return ActionRow(identifier: .seeMessage, title: "", action: nil, cellIdentifier: "errorMenuActionCell")
+            return ActionRow(identifier: .seeMessage, title: "", action: nil, cellIdentifier: cellIdentifier)
         }
-        return ActionRow(identifier: type, title: rowTitle, action: nil, cellIdentifier: "errorMenuActionCell")
+        return ActionRow(identifier: type, title: rowTitle, action: nil, cellIdentifier: cellIdentifier)
     }
 
     /// This method provides the title for each cell, regarding its type.

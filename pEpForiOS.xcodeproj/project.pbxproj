@@ -478,6 +478,7 @@
 		5B5C2A9F25D293F300F9C18A /* EmailViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5B5C2A9E25D293F300F9C18A /* EmailViewModel.swift */; };
 		5B6357922829507C00DF4B18 /* ErrorMenuViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5B6357912829507B00DF4B18 /* ErrorMenuViewController.swift */; };
 		5B6357942829514F00DF4B18 /* ErrorMenuViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5B6357932829514F00DF4B18 /* ErrorMenuViewModel.swift */; };
+		5B635796282A6C6D00DF4B18 /* ErrorMenuViewModelTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5B635795282A6C6D00DF4B18 /* ErrorMenuViewModelTest.swift */; };
 		5B6496D325C853670028B9ED /* AppSettingsTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5B6496D225C853670028B9ED /* AppSettingsTest.swift */; };
 		5B649AEE25CC80290028B9ED /* SignatureTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5B649AED25CC80290028B9ED /* SignatureTableViewCell.swift */; };
 		5B70B1F724507B8A0010AED7 /* pEpFooterView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5B70B1F624507B8A0010AED7 /* pEpFooterView.swift */; };
@@ -1139,6 +1140,7 @@
 		5B5C2A9E25D293F300F9C18A /* EmailViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EmailViewModel.swift; sourceTree = "<group>"; };
 		5B6357912829507B00DF4B18 /* ErrorMenuViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ErrorMenuViewController.swift; sourceTree = "<group>"; };
 		5B6357932829514F00DF4B18 /* ErrorMenuViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ErrorMenuViewModel.swift; sourceTree = "<group>"; };
+		5B635795282A6C6D00DF4B18 /* ErrorMenuViewModelTest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ErrorMenuViewModelTest.swift; sourceTree = "<group>"; };
 		5B6496D225C853670028B9ED /* AppSettingsTest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppSettingsTest.swift; sourceTree = "<group>"; };
 		5B649AED25CC80290028B9ED /* SignatureTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SignatureTableViewCell.swift; sourceTree = "<group>"; };
 		5B70B1F624507B8A0010AED7 /* pEpFooterView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = pEpFooterView.swift; sourceTree = "<group>"; };
@@ -1343,6 +1345,7 @@
 		150707DD21006D0200AA213F /* UI */ = {
 			isa = PBXGroup;
 			children = (
+				5B635795282A6C6D00DF4B18 /* ErrorMenuViewModelTest.swift */,
 				5BFBB20525D2A85000F269C4 /* EmailDisplay */,
 				37816547231035CF00B967E3 /* PEPAlertViewController */,
 				158A6E2B230D53B8006A9ECE /* Settings */,
@@ -3757,6 +3760,7 @@
 				153B2188219472A400497D3D /* BodyCellViewModelTest.swift in Sources */,
 				5B6496D325C853670028B9ED /* AppSettingsTest.swift in Sources */,
 				0017CD1D2162614400F62F13 /* MoveToFolderCellViewModelTests.swift in Sources */,
+				5B635796282A6C6D00DF4B18 /* ErrorMenuViewModelTest.swift in Sources */,
 				37816549231035F000B967E3 /* PEPAlertViewModelTest.swift in Sources */,
 				43D1900E2513734400A36973 /* SettingsViewModelTest.swift in Sources */,
 				F73E4F72217F238300CCFFED /* FolderSectionViewModelTests.swift in Sources */,

@@ -13,6 +13,7 @@ import XCTest
 
 
 class MockAppSettings: AppSettingsProtocol {
+    var lastBannerErrorPresentationDatetime: Date?
 
     var removeFolderViewCollapsedStateOfAccountWithExpectation: XCTestExpectation?
     // getters
