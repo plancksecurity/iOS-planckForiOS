@@ -15,6 +15,8 @@ class ErrorMenuViewController: UIViewController {
 
     public var viewModel: ErrorMenuViewModel?
 
+    @IBOutlet weak var tableView: UITableView!
+
     override func viewDidLoad() {
         super.viewDidLoad()
     }
@@ -51,6 +53,30 @@ extension ErrorMenuViewController : UITableViewDelegate {
             return
         }
         vm.handleDidSelect(rowAt: indexPath)
+    }
+}
+
+extension ErrorMenuViewController : UITableViewDataSource {
+    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        guard let vm = viewModel else {
+            Log.shared.errorAndCrash("VM not found")
+            return 0
+        }
+
+        return vm.count
+    }
+
+    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        guard let vm = viewModel else {
+            Log.shared.errorAndCrash("VM not found")
+            return UITableViewCell()
+        }
+        guard let cell = tableView.dequeueReusableCell(withIdentifier: vm.cellIdentifier, for: indexPath) as? ErrorMenuViewCell else {
+            return UITableViewCell()
+        }
+
+        cell.configure(row: vm.rows[indexPath.row])
+        return cell       
     }
 }
 

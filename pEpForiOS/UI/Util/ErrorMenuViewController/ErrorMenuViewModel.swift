@@ -27,7 +27,7 @@ protocol ErrorMenuRowProtocol {
 
 class ErrorMenuViewModel {
 
-    private let cellIdentifier = "errorMenuActionCell"
+    public let cellIdentifier = "errorMenuActionCell"
 
     /// Struct that is used to perform an action.
     /// Represents a ActionRow in the Error Menu View Controller
@@ -41,7 +41,7 @@ class ErrorMenuViewModel {
         var cellIdentifier: String
     }
 
-    private var rows = [ErrorMenuRowProtocol]()
+    public private(set) var rows = [ErrorMenuRowProtocol]()
     public weak var delegate : ErrorMenuViewModelDelegate?
     typealias ActionBlock = (() -> Void)
 
