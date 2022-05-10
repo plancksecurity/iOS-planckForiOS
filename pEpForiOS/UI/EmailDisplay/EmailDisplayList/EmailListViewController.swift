@@ -320,19 +320,20 @@ final class EmailListViewController: UIViewController {
     }
 
     private func showEditToolbar() {
-        func getButtonItem(img: UIImage?, action: Selector) -> UIBarButtonItem {
+        func getButtonItem(img: UIImage?, action: Selector, accessibilityIdentifier: String) -> UIBarButtonItem {
             let button = UIBarButtonItem(image: img, style: .plain, target: self, action: action)
-            button.isEnabled = false
-            return UIBarButtonItem(image: img, style: .plain, target: self, action: action)
+            button.accessibilityIdentifier = accessibilityIdentifier
+            return button
         }
         // Flexible Space separation between the buttons
         let flexibleSpace = createFlexibleBarButtonItem()
-        flagToolbarButton = getButtonItem(img: UIImage(named: "icon-flagged"), action: #selector(flagToolbar))
-        unflagToolbarButton = getButtonItem(img: UIImage(named: "icon-unflagged"), action: #selector(unflagToolbar))
-        readToolbarButton = getButtonItem(img: UIImage(named: "icon-read"), action: #selector(readToolbar))
-        unreadToolbarButton = getButtonItem(img: UIImage(named: "icon-unread"), action: #selector(unreadToolbar))
-        deleteToolbarButton = getButtonItem(img: UIImage(named: "folders-icon-trash"), action: #selector(deleteToolbar))
-        moveToolbarButton = getButtonItem(img: UIImage(named: "swipe-archive"), action: #selector(moveToolbar))
+        flagToolbarButton = getButtonItem(img: UIImage(named: "icon-flagged"), action: #selector(flagToolbar), accessibilityIdentifier: "Flag button")
+        unflagToolbarButton = getButtonItem(img: UIImage(named: "icon-unflagged"), action: #selector(unflagToolbar), accessibilityIdentifier: "Unflag button")
+        readToolbarButton = getButtonItem(img: UIImage(named: "icon-read"), action: #selector(readToolbar), accessibilityIdentifier: "Read button")
+        unreadToolbarButton = getButtonItem(img: UIImage(named: "icon-unread"), action: #selector(unreadToolbar), accessibilityIdentifier: "Unread button")
+        deleteToolbarButton = getButtonItem(img: UIImage(named: "folders-icon-trash"), action: #selector(deleteToolbar), accessibilityIdentifier: "Delete button")
+        moveToolbarButton = getButtonItem(img: UIImage(named: "swipe-archive"), action: #selector(moveToolbar), accessibilityIdentifier: "Move button")
+
         toolbarItems = [flagToolbarButton, flexibleSpace,
                         readToolbarButton, flexibleSpace,
                         deleteToolbarButton, flexibleSpace,
@@ -345,6 +346,7 @@ final class EmailListViewController: UIViewController {
                                      style: .plain,
                                      target: self,
                                      action: #selector(cancelToolbar))
+        cancel.accessibilityIdentifier = "Cancel button"
         navigationItem.rightBarButtonItem = cancel
     }
 
@@ -1424,13 +1426,17 @@ extension EmailListViewController {
     private var selectAllBarButton: UIBarButtonItem {
         let selectAllTitle = NSLocalizedString("Select all", comment: "Select all emails")
         let selectAllCellsSelector = #selector(selectAllCells)
-        return UIBarButtonItem(title: selectAllTitle, style: .plain, target: self, action: selectAllCellsSelector)
+        let button = UIBarButtonItem(title: selectAllTitle, style: .plain, target: self, action: selectAllCellsSelector)
+        button.accessibilityIdentifier = "Select All button"
+        return button
     }
 
     private var deselectAllBarButton: UIBarButtonItem {
         let deselectAllTitle = NSLocalizedString("Deselect all", comment: "Deselect all emails")
         let deselectAllCellsSelector = #selector(deselectAllCells)
-        return UIBarButtonItem(title: deselectAllTitle, style: .plain, target: self, action: deselectAllCellsSelector)
+        let button = UIBarButtonItem(title: deselectAllTitle, style: .plain, target: self, action: deselectAllCellsSelector)
+        button.accessibilityIdentifier = "Deselect All button"
+        return button
     }
 
     private func updateBackButton(isTableViewEditing: Bool) {
