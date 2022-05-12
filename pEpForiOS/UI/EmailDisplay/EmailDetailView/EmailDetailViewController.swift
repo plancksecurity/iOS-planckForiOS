@@ -34,6 +34,7 @@ class EmailDetailViewController: UIViewController {
     @IBOutlet weak var pEpIconSettingsButton: UIBarButtonItem!
     @IBOutlet weak var moveToFolderButton: UIBarButtonItem!
     @IBOutlet weak var collectionView: UICollectionView!
+
     private var pEpButtonHelper = UIBarButtonItem.getPEPButton(action: #selector(showSettingsViewController),
                                                                target: EmailDetailViewController.self)
     
