@@ -106,21 +106,13 @@ extension TutorialWizardViewController {
     /// Updates the right bar button, regarding if it's the last element or not.
     /// - Parameter lastScreen: Indicates if it's the last screen.
     private func updateNavButton(lastScreen: Bool) {
-        var navBarButtonTitle: String? = nil
-        var accessibilityIdentifier: String? = nil
-
+        var navBarButtonTitle = ""
         if lastScreen {
             navBarButtonTitle = NSLocalizedString("Finish", comment: "Start up tutorial finish button")
-            accessibilityIdentifier = "Tutorial Finish"
         } else {
             navBarButtonTitle = NSLocalizedString("Skip", comment: "Start up tutorial skip button")
-            accessibilityIdentifier = "Tutorial Skip"
         }
-
         let endButton = UIBarButtonItem(title: navBarButtonTitle, style: .done, target: self, action: #selector(closeScreen))
-
-        endButton.accessibilityIdentifier = accessibilityIdentifier
-
         navigationItem.rightBarButtonItem = endButton
     }
 }
