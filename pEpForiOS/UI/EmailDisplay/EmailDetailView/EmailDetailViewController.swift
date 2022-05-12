@@ -851,6 +851,7 @@ extension EmailDetailViewController {
                                                      style: .plain,
                                                      target: self,
                                                      action: #selector(replyButtonPressed(_:)))
+            replyBarButtonItem.accessibilityIdentifier = "Reply Button"
 
             //Folder
             let folderImage = UIImage(named: "pEpForiOS-icon-movetofolder")
@@ -858,6 +859,7 @@ extension EmailDetailViewController {
                                                             style: .plain,
                                                             target: self,
                                                             action: #selector(moveToFolderButtonPressed(_:)))
+            folderButtonBarButtonItem.accessibilityIdentifier = "Move to Folder Button"
 
             //Flag
             let flagImage = viewModel?.flagButtonIcon(forMessageAt: indexPathOfCurrentlyVisibleCell)
@@ -868,6 +870,7 @@ extension EmailDetailViewController {
             flagButton.imageView?.tintColor = UIColor.pEpGreen
             flagButton.addTarget(self, action: #selector(flagButtonPressed(_:)), for: .touchUpInside)
             let flagBarButtonItem = UIBarButtonItem(customView: flagButton)
+            flagBarButtonItem.accessibilityIdentifier = "Flag Button"
 
             //Delete
             let deleteImage = viewModel?.destructiveButtonIcon(forMessageAt: indexPathOfCurrentlyVisibleCell)
@@ -875,6 +878,7 @@ extension EmailDetailViewController {
                                                             style: .plain,
                                                             target: self,
                                                             action: #selector(destructiveButtonPressed(_:)))
+            deleteButtonBarButtonItem.accessibilityIdentifier = "Delete Button"
 
             
             navigationItem.rightBarButtonItems = [replyBarButtonItem,
