@@ -83,6 +83,9 @@ class ComposeViewController: UIViewController {
         }  else {
             tableView.backgroundColor = .white
         }
+
+        sendButton.accessibilityIdentifier = "Send Button"
+        cancelButton.accessibilityIdentifier = "Cancel Button"
     }
 
     override func viewWillAppear(_ animated: Bool) {
