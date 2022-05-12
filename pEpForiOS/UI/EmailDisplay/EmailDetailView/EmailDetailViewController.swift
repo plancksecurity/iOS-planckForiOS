@@ -43,13 +43,6 @@ class EmailDetailViewController: UIViewController {
     /// IndexPath to show on load
     var firstItemToShow: IndexPath?
 
-    private static let accessibilityIdentifierReplyButton = "Reply Button"
-    private static let accessibilityIdentifierNextButton = "Next Button"
-    private static let accessibilityIdentifierPreviousButton = "Previous Button"
-    private static let accessibilityIdentifierFlagButton = "Flag Button"
-    private static let accessibilityIdentifierDeleteButton = "Delete Button"
-    private static let accessibilityIdentifierMoveToFolderButton = "Move to Folder Button"
-
     override var collapsedBehavior: CollapsedSplitViewBehavior {
         return .needed
     }
@@ -68,15 +61,15 @@ class EmailDetailViewController: UIViewController {
         super.viewDidLoad()
         edgesForExtendedLayout = .all
 
-        nextButton?.accessibilityIdentifier = EmailDetailViewController.accessibilityIdentifierNextButton
-        previousButton?.accessibilityIdentifier = EmailDetailViewController.accessibilityIdentifierPreviousButton
-        nextButtonForSplitView?.accessibilityIdentifier = EmailDetailViewController.accessibilityIdentifierNextButton
-        prevButtonForSplitView?.accessibilityIdentifier = EmailDetailViewController.accessibilityIdentifierPreviousButton
-        flagButton?.accessibilityIdentifier = EmailDetailViewController.accessibilityIdentifierFlagButton
-        destructiveButton?.accessibilityIdentifier = EmailDetailViewController.accessibilityIdentifierDeleteButton
-        replyButton?.accessibilityIdentifier = EmailDetailViewController.accessibilityIdentifierReplyButton
+        nextButton?.accessibilityIdentifier = AccessibilityIdentifier.nextButton
+        previousButton?.accessibilityIdentifier = AccessibilityIdentifier.previousButton
+        nextButtonForSplitView?.accessibilityIdentifier = AccessibilityIdentifier.nextButton
+        prevButtonForSplitView?.accessibilityIdentifier = AccessibilityIdentifier.previousButton
+        flagButton?.accessibilityIdentifier = AccessibilityIdentifier.flagButton
+        destructiveButton?.accessibilityIdentifier = AccessibilityIdentifier.deleteButton
+        replyButton?.accessibilityIdentifier = AccessibilityIdentifier.replyButton
         pEpIconSettingsButton?.accessibilityIdentifier = "pEp Button"
-        moveToFolderButton?.accessibilityIdentifier = EmailDetailViewController.accessibilityIdentifierMoveToFolderButton
+        moveToFolderButton?.accessibilityIdentifier = AccessibilityIdentifier.moveToFolderButton
 
         setup()
     }
