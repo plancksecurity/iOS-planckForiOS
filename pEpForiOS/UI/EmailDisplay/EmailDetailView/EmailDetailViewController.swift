@@ -47,6 +47,7 @@ class EmailDetailViewController: UIViewController {
     private static let accessibilityIdentifierNextButton = "Next Button"
     private static let accessibilityIdentifierPreviousButton = "Previous Button"
     private static let accessibilityIdentifierFlagButton = "Flag Button"
+    private static let accessibilityIdentifierDeleteButton = "Delete Button"
 
     override var collapsedBehavior: CollapsedSplitViewBehavior {
         return .needed
@@ -71,7 +72,7 @@ class EmailDetailViewController: UIViewController {
         nextButtonForSplitView?.accessibilityIdentifier = EmailDetailViewController.accessibilityIdentifierNextButton
         prevButtonForSplitView?.accessibilityIdentifier = EmailDetailViewController.accessibilityIdentifierPreviousButton
         flagButton?.accessibilityIdentifier = EmailDetailViewController.accessibilityIdentifierFlagButton
-        destructiveButton?.accessibilityIdentifier = "Delete Button"
+        destructiveButton?.accessibilityIdentifier = EmailDetailViewController.accessibilityIdentifierDeleteButton
         replyButton?.accessibilityIdentifier = EmailDetailViewController.accessibilityIdentifierReplyButton
         pEpIconSettingsButton?.accessibilityIdentifier = "pEp Button"
         moveToFolderButton?.accessibilityIdentifier = "Move to Folder Button"
@@ -884,7 +885,7 @@ extension EmailDetailViewController {
                                                             style: .plain,
                                                             target: self,
                                                             action: #selector(destructiveButtonPressed(_:)))
-            deleteButtonBarButtonItem.accessibilityIdentifier = "Delete Button"
+            deleteButtonBarButtonItem.accessibilityIdentifier = EmailDetailViewController.accessibilityIdentifierDeleteButton
 
             
             navigationItem.rightBarButtonItems = [replyBarButtonItem,
