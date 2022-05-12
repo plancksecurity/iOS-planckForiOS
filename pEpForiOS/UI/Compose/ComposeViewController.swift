@@ -25,6 +25,7 @@ class ComposeViewController: UIViewController {
     public static let storyboardId = "ComposeViewController"
 
     @IBOutlet var sendButton: UIBarButtonItem!
+    @IBOutlet weak var cancelButton: UIBarButtonItem!
     @IBOutlet var tableView: UITableView!
 
     private var suggestionsChildViewController: SuggestTableViewController?
