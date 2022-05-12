@@ -59,6 +59,17 @@ class EmailDetailViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         edgesForExtendedLayout = .all
+
+        nextButton?.accessibilityIdentifier = "Next Button"
+        previousButton?.accessibilityIdentifier = "Previous Button"
+        nextButtonForSplitView?.accessibilityIdentifier = "Next Button"
+        prevButtonForSplitView?.accessibilityIdentifier = "Previous Button"
+        flagButton?.accessibilityIdentifier = "Flag Button"
+        destructiveButton?.accessibilityIdentifier = "Delete Button"
+        replyButton?.accessibilityIdentifier = "Reply Button"
+        pEpIconSettingsButton?.accessibilityIdentifier = "pEp Button"
+        moveToFolderButton?.accessibilityIdentifier = "Move to Folder Button"
+
         setup()
     }
 
