@@ -853,7 +853,7 @@ extension EmailDetailViewController {
                                                      style: .plain,
                                                      target: self,
                                                      action: #selector(replyButtonPressed(_:)))
-            replyBarButtonItem.accessibilityIdentifier = EmailDetailViewController.accessibilityIdentifierReplyButton
+            replyBarButtonItem.accessibilityIdentifier = AccessibilityIdentifier.replyButton
 
             //Folder
             let folderImage = UIImage(named: "pEpForiOS-icon-movetofolder")
@@ -861,7 +861,7 @@ extension EmailDetailViewController {
                                                             style: .plain,
                                                             target: self,
                                                             action: #selector(moveToFolderButtonPressed(_:)))
-            folderButtonBarButtonItem.accessibilityIdentifier = EmailDetailViewController.accessibilityIdentifierMoveToFolderButton
+            folderButtonBarButtonItem.accessibilityIdentifier = AccessibilityIdentifier.moveToFolderButton
 
             //Flag
             let flagImage = viewModel?.flagButtonIcon(forMessageAt: indexPathOfCurrentlyVisibleCell)
@@ -872,7 +872,7 @@ extension EmailDetailViewController {
             flagButton.imageView?.tintColor = UIColor.pEpGreen
             flagButton.addTarget(self, action: #selector(flagButtonPressed(_:)), for: .touchUpInside)
             let flagBarButtonItem = UIBarButtonItem(customView: flagButton)
-            flagBarButtonItem.accessibilityIdentifier = EmailDetailViewController.accessibilityIdentifierFlagButton
+            flagBarButtonItem.accessibilityIdentifier = AccessibilityIdentifier.flagButton
 
             //Delete
             let deleteImage = viewModel?.destructiveButtonIcon(forMessageAt: indexPathOfCurrentlyVisibleCell)
@@ -880,7 +880,7 @@ extension EmailDetailViewController {
                                                             style: .plain,
                                                             target: self,
                                                             action: #selector(destructiveButtonPressed(_:)))
-            deleteButtonBarButtonItem.accessibilityIdentifier = EmailDetailViewController.accessibilityIdentifierDeleteButton
+            deleteButtonBarButtonItem.accessibilityIdentifier = AccessibilityIdentifier.deleteButton
 
             
             navigationItem.rightBarButtonItems = [replyBarButtonItem,
