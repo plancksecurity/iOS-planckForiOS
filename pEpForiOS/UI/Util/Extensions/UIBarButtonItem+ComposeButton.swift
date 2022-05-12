@@ -20,11 +20,11 @@ extension UIBarButtonItem {
     public static func getComposeButton(tapAction: Selector,
                                         longPressAction: Selector? = nil,
                                         target: Any) -> UIBarButtonItem {
-
         // Custom view
         let viewContainerForComposeButton = UIView(frame: CGRect(x: 0, y: 0, width: 22, height: 30))
         let composeImage = #imageLiteral(resourceName: "compose")
         let composeImageButton = UIImageView(image: composeImage)
+        composeImageButton.accessibilityIdentifier = "Compose Button"
         composeImageButton.tintColor = .white
         composeImageButton.sizeThatFits(viewContainerForComposeButton.frame.size)
         viewContainerForComposeButton.addSubview(composeImageButton)
