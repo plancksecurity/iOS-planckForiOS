@@ -217,6 +217,8 @@ final class EmailListViewController: UIViewController {
         let attributes = [NSAttributedString.Key.font: font]
         textFilterButton.setTitleTextAttributes(attributes, for: .normal)
         textFilterButton.setTitleTextAttributes(attributes, for: .selected)
+
+        textFilterButton.accessibilityIdentifier = "Filter Button"
     }
 
     private func setupNavigationBar() {
