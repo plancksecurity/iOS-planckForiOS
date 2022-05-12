@@ -44,6 +44,7 @@ class EmailDetailViewController: UIViewController {
     var firstItemToShow: IndexPath?
 
     private static let accessibilityIdentifierReplyButton = "Reply Button"
+    private static let accessibilityIdentifierNextButton = "Next Button"
 
     override var collapsedBehavior: CollapsedSplitViewBehavior {
         return .needed
@@ -63,9 +64,9 @@ class EmailDetailViewController: UIViewController {
         super.viewDidLoad()
         edgesForExtendedLayout = .all
 
-        nextButton?.accessibilityIdentifier = "Next Button"
+        nextButton?.accessibilityIdentifier = EmailDetailViewController.accessibilityIdentifierNextButton
         previousButton?.accessibilityIdentifier = "Previous Button"
-        nextButtonForSplitView?.accessibilityIdentifier = "Next Button"
+        nextButtonForSplitView?.accessibilityIdentifier = EmailDetailViewController.accessibilityIdentifierNextButton
         prevButtonForSplitView?.accessibilityIdentifier = "Previous Button"
         flagButton?.accessibilityIdentifier = "Flag Button"
         destructiveButton?.accessibilityIdentifier = "Delete Button"
