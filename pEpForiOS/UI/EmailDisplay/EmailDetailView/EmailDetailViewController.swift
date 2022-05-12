@@ -42,7 +42,9 @@ class EmailDetailViewController: UIViewController {
 
     /// IndexPath to show on load
     var firstItemToShow: IndexPath?
-    
+
+    private static let accessibilityIdentifierReplyButton = "Reply Button"
+
     override var collapsedBehavior: CollapsedSplitViewBehavior {
         return .needed
     }
@@ -67,7 +69,7 @@ class EmailDetailViewController: UIViewController {
         prevButtonForSplitView?.accessibilityIdentifier = "Previous Button"
         flagButton?.accessibilityIdentifier = "Flag Button"
         destructiveButton?.accessibilityIdentifier = "Delete Button"
-        replyButton?.accessibilityIdentifier = "Reply Button"
+        replyButton?.accessibilityIdentifier = EmailDetailViewController.accessibilityIdentifierReplyButton
         pEpIconSettingsButton?.accessibilityIdentifier = "pEp Button"
         moveToFolderButton?.accessibilityIdentifier = "Move to Folder Button"
 
@@ -852,7 +854,7 @@ extension EmailDetailViewController {
                                                      style: .plain,
                                                      target: self,
                                                      action: #selector(replyButtonPressed(_:)))
-            replyBarButtonItem.accessibilityIdentifier = "Reply Button"
+            replyBarButtonItem.accessibilityIdentifier = EmailDetailViewController.accessibilityIdentifierReplyButton
 
             //Folder
             let folderImage = UIImage(named: "pEpForiOS-icon-movetofolder")
