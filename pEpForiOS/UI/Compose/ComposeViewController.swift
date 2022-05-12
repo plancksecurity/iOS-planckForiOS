@@ -87,6 +87,7 @@ class ComposeViewController: UIViewController {
 
         sendButton.accessibilityIdentifier = "Send Button"
         cancelButton.accessibilityIdentifier = "Cancel Button"
+        bodyTextView.accessibilityIdentifier = "Email Text View"
     }
 
     override func viewWillAppear(_ animated: Bool) {
