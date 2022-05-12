@@ -59,7 +59,7 @@ final class EmailListViewController: UIViewController {
         }
     }
 
-    private let searchController = UISearchController(searchResultsController: nil)
+    public let searchController = UISearchController(searchResultsController: nil)
 
     // swipe actions types
     private let buttonDisplayMode: ButtonDisplayMode = .titleAndImage
@@ -76,10 +76,7 @@ final class EmailListViewController: UIViewController {
         subscribeForKeyboardNotifications()
         edgesForExtendedLayout = .all
         setSeparator()
-        NotificationCenter.default.addObserver(self,
-                                               selector: #selector(pEpSettingsChanged),
-                                               name: .pEpSettingsChanged,
-                                               object: nil)
+        registerNotifications()
         doOnce = { [weak self] in
             guard let me = self else {
                 Log.shared.lostMySelf()
@@ -120,6 +117,24 @@ final class EmailListViewController: UIViewController {
         updateFilterText()
         updateEditButton()
         vm.updateLastLookAt()
+    }
+
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
+        guard let vm = viewModel else {
+            Log.shared.errorAndCrash("VM not found")
+            return
+        }
+        vm.showBannerIfNeeded()
+    }
+
+    override func willMove(toParent parent: UIViewController?) {
+        super.willMove(toParent: parent)
+        if parent == nil {
+            // we hide the banner because we are leaving the view, but nothing changed regarding the connectivity.
+            // So preference
+            UIUtils.hideBanner(shouldSavePreference: false)
+        }
     }
 
     override func viewWillTransition(to size: CGSize, with coordinator: UIViewControllerTransitionCoordinator) {
@@ -1463,8 +1478,14 @@ extension EmailListViewController {
     }
 }
 
-
 extension EmailListViewController {
+
+    private func registerNotifications() {
+        NotificationCenter.default.addObserver(self,
+                                               selector: #selector(pEpSettingsChanged),
+                                               name: .pEpSettingsChanged,
+                                               object: nil)
+    }
 
     private func setSeparator() {
         if #available(iOS 13.0, *) {

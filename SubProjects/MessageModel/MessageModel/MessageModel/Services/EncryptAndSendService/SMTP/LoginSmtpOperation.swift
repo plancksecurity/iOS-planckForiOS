@@ -43,9 +43,14 @@ extension LoginSmtpOperation: SmtpConnectionDelegate {
     }
     
     func authenticationFailed(_ smtpConnection: SmtpConnectionProtocol, theNotification: Notification?) {
+
         addError(SmtpSendError.authenticationFailed(
             #function,
-            smtpConnection.accountAddress))
+            smtpConnection.accountAddress,
+            ServerErrorInfo(
+                            port: smtpConnection.port,
+                            server: smtpConnection.server,
+                            connectionTransport: smtpConnection.connectionTransport)))
         waitForBackgroundTasksAndFinish()
     }
     
@@ -65,35 +70,58 @@ extension LoginSmtpOperation: SmtpConnectionDelegate {
                     setSpecializedError = true
                 }
             default:
-                addError(SmtpSendError.connectionLost(#function, error.localizedDescription))
+                let serverErrorInfo = ServerErrorInfo(
+                                port: smtpConnection.port,
+                                server: smtpConnection.server,
+                                connectionTransport: smtpConnection.connectionTransport)
+                addError(SmtpSendError.connectionLost(#function, error.localizedDescription, serverErrorInfo))
                 break
             }
         }
 
         if !setSpecializedError {
             // Did not find a more specific explanation for the error, so use the generic one
-            addError(SmtpSendError.connectionLost(#function, nil))
+            let serverErrorInfo = ServerErrorInfo(
+                            port: smtpConnection.port,
+                            server: smtpConnection.server,
+                            connectionTransport: smtpConnection.connectionTransport)
+            addError(SmtpSendError.connectionLost(#function, nil, serverErrorInfo))
         }
 
         waitForBackgroundTasksAndFinish()
     }
 
     func connectionTerminated(_ smtpConnection: SmtpConnectionProtocol, theNotification: Notification?) {
-        addError(SmtpSendError.connectionTerminated(#function))
+        let serverErrorInfo = ServerErrorInfo(
+                        port: smtpConnection.port,
+                        server: smtpConnection.server,
+                        connectionTransport: smtpConnection.connectionTransport)
+
+        addError(SmtpSendError.connectionTerminated(#function, serverErrorInfo))
         waitForBackgroundTasksAndFinish()
     }
 
     func connectionTimedOut(_ smtpConnection: SmtpConnectionProtocol, theNotification: Notification?) {
+        let serverErrorInfo = ServerErrorInfo(
+                        port: smtpConnection.port,
+                        server: smtpConnection.server,
+                        connectionTransport: smtpConnection.connectionTransport)
+
         if let error = theNotification?.userInfo?[PantomimeErrorExtra] as? NSError {
-            addError(SmtpSendError.connectionTimedOut(#function, error.localizedDescription))
+            addError(SmtpSendError.connectionTimedOut(#function, error.localizedDescription, serverErrorInfo))
         } else {
-            addError(SmtpSendError.connectionTimedOut(#function, nil))
+            addError(SmtpSendError.connectionTimedOut(#function, nil, serverErrorInfo) )
         }
         waitForBackgroundTasksAndFinish()
     }
 
     func badResponse(_ smtpConnection: SmtpConnectionProtocol, response: String?) {
-        addError(SmtpSendError.badResponse(#function))
+        let serverErrorInfo = ServerErrorInfo(
+                        port: smtpConnection.port,
+                        server: smtpConnection.server,
+                        connectionTransport: smtpConnection.connectionTransport)
+
+        addError(SmtpSendError.badResponse(#function, serverErrorInfo))
         waitForBackgroundTasksAndFinish()
     }
 

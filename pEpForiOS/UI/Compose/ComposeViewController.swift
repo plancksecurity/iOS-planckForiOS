@@ -1052,6 +1052,7 @@ extension ComposeViewController {
 extension ComposeViewController {
 
     private func registerForNotifications() {
+
         NotificationCenter.default.addObserver(self,
                                                selector: #selector(handleKeyboardDidShow),
                                                name: UIResponder.keyboardDidShowNotification,

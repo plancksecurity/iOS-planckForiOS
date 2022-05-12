@@ -27,6 +27,10 @@ protocol EmailListViewModelDelegate: EmailDisplayViewModelDelegate {
 
 class EmailListViewModel: EmailDisplayViewModel {
 
+    private var emailDetailViewModel: EmailDetailViewModel?
+    private var lastSearchTerm = ""
+    private var updatesEnabled = true
+
     public var filterButtonTitle: String {
         var txt = currentFilter.getFilterText()
         if txt.count > filterMaxChars {
@@ -43,12 +47,8 @@ class EmailListViewModel: EmailDisplayViewModel {
         return title
 
     }
-    private var emailDetailViewModel: EmailDetailViewModel?
-
-    private var lastSearchTerm = ""
-    private var updatesEnabled = true
-
     public let filterMaxChars = 20
+
     // MARK: - Life Cycle
 
     init(delegate: EmailListViewModelDelegate? = nil, folderToShow: DisplayableFolderProtocol) {
@@ -63,6 +63,7 @@ class EmailListViewModel: EmailDisplayViewModel {
     // MARK: - EmailListViewModelProtocol
 
     private var _currentFilter: MessageQueryResultsFilter?
+
     public private(set) var currentFilter: MessageQueryResultsFilter {
         get {
             if let cf = _currentFilter {
@@ -109,6 +110,7 @@ class EmailListViewModel: EmailDisplayViewModel {
     public var isDraftsPreviewMode: Bool {
         return folderToShow is UnifiedDraft
     }
+
     /// - Parameter indexPath: indexPath to check editability for.
     /// - returns:  Whether or not to show compose view rather then the email for message
     ///             represented by row at given `indexPath`.
@@ -307,6 +309,12 @@ class EmailListViewModel: EmailDisplayViewModel {
     /// Update LastLookAt of the folder to show.
     public func updateLastLookAt() {
         folderToShow.updateLastLookAt()
+    }
+
+    public func showBannerIfNeeded() {
+        if let message = AppSettings.shared.bannerErrorMessage {
+            UIUtils.showBanner(errorMessage: message)
+        }
     }
 
     // MARK: - EmailDisplayViewModelDelegate Overrides

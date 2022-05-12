@@ -42,6 +42,7 @@ extension SmtpConnection {
 }
 
 class SmtpConnection: SmtpConnectionProtocol {
+
     private var smtp: CWSMTP
 
     private var smtpStatus: Status = Status()
@@ -72,7 +73,7 @@ class SmtpConnection: SmtpConnectionProtocol {
         smtp.connectInBackgroundAndNotify()
     }
 
-    private func bestAuthMethodFromList(_ mechanisms: [String])  -> AuthMethod {
+    private func bestAuthMethodFromList(_ mechanisms: [String]) -> AuthMethod {
         if mechanisms.count > 0 {
             let mechanismsLC = mechanisms.map() { mech in
                 return mech.lowercased()
@@ -125,6 +126,18 @@ extension SmtpConnection {
 extension SmtpConnection {
     var accountAddress: String {
         return connectInfo.account.address
+    }
+
+    var port: String {
+        return "\(connectInfo.networkPort)"
+    }
+
+    var server: String {
+        return connectInfo.networkAddress
+    }
+
+    var connectionTransport: String {
+        return connectInfo.connectionTransport.toServerTransport().asString()
     }
 }
 

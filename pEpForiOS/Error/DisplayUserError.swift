@@ -83,7 +83,6 @@ struct DisplayUserError: LocalizedError {
     /// Contains the underlying `NSError`'s `localizedDescription`, if available.
     var errorString: String?
 
-
     /// Creates a user friendly error to present in an alert or such. I case the error type is not
     /// suitable to display to the user (should fail silently), nil is returned.
     ///
@@ -91,25 +90,39 @@ struct DisplayUserError: LocalizedError {
     /// - Returns:  nil if you should not bother the user with this kind of error,
     ///             user friendly error otherwize.
     init?(withError error: Error) {
+        func getServerErrorDescription(serverErrorInfo: ServerErrorInfo?) -> String? {
+            guard let info = serverErrorInfo else {
+                return nil
+            }
+            let server = NSLocalizedString("Server:", comment: "Server")
+            let port = NSLocalizedString("Port:", comment: "Port")
+            let transport = NSLocalizedString("Transport:", comment: "Port")
+            return "\(server) \(info.server). \(port) \(info.port). \(transport) \(info.connectionTransport)."
+        }
+
         extraInfo = nil
         if let displayUserError = error as? DisplayUserError {
             self = displayUserError
         } else if let smtpError = error as? SmtpSendError {
             type = DisplayUserError.type(forError: smtpError)
             switch smtpError {
-            case .authenticationFailed( _, let account):
+            case .authenticationFailed( _, let account, _):
                 extraInfo = account
             case .illegalState(_):
                 break
-            case .connectionLost(_, let errorDescription):
+            case .connectionLost(_, let errorDescription, let serverErrorInfo):
                 errorString = errorDescription
+                extraInfo = serverErrorInfo?.port
                 break
-            case .connectionTerminated(_):
+            case .connectionTerminated(_, let serverErrorInfo):
+                extraInfo = getServerErrorDescription(serverErrorInfo: serverErrorInfo)
                 break
-            case .connectionTimedOut(_, let errorDescription):
+            case .connectionTimedOut(_, let errorDescription, let serverErrorInfo):
                 errorString = errorDescription
+                extraInfo = getServerErrorDescription(serverErrorInfo: serverErrorInfo)
                 break
-            case .badResponse(_):
+            case .badResponse(_, let serverErrorInfo):
+                extraInfo = getServerErrorDescription(serverErrorInfo: serverErrorInfo)
                 break
             case .clientCertificateNotAccepted:
                 break

@@ -25,6 +25,7 @@ extension AppSettings {
     static private let keyUsePEPFolderEnabled = "keyUsePEPFolderEnabled"
     static private let keyUnencryptedSubjectEnabled = "keyUnencryptedSubjectEnabled"
     static private let keyDefaultAccountAddress = "keyDefaultAccountAddress"
+    static private let keyBannerErrorMessage = "keyBannerErrorMessage"
     static private let keyThreadedViewEnabled = "keyThreadedViewEnabled"
     static private let keyPassiveMode = "keyPassiveMode"
     static private let keyLastKnowDeviceGroupStateRawValue = "keyLastKnowDeviceGroupStateRawValue"
@@ -287,6 +288,15 @@ extension AppSettings: AppSettingsProtocol {
             Log.shared.verboseLoggingEnabled = newValue
         }
     }
+
+    public var bannerErrorMessage : String? {
+        get {
+            return AppSettings.userDefaults.string(forKey: AppSettings.keyBannerErrorMessage)
+        }
+        set {
+            AppSettings.userDefaults.set(newValue, forKey: AppSettings.keyBannerErrorMessage)
+        }
+    }
 }
 
 //MARK: Collapsing State
@@ -360,4 +370,6 @@ extension AppSettings {
             AppSettings.userDefaults.set(newValue, forKey: AppSettings.keyCollapsingState)
         }
     }
+
+    
 }
