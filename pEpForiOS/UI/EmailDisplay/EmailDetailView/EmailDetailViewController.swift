@@ -59,6 +59,7 @@ class EmailDetailViewController: UIViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
+
         edgesForExtendedLayout = .all
 
         nextButton?.accessibilityIdentifier = AccessibilityIdentifier.nextButton
