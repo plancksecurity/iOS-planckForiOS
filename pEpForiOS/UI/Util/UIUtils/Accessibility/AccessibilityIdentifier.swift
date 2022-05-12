@@ -16,4 +16,5 @@ class AccessibilityIdentifier {
     static let flagButton = "Flag Button"
     static let deleteButton = "Delete Button"
     static let moveToFolderButton = "Move to Folder Button"
+    static let pEpButton = "pEp Button"
 }

@@ -69,7 +69,7 @@ class EmailDetailViewController: UIViewController {
         flagButton?.accessibilityIdentifier = AccessibilityIdentifier.flagButton
         destructiveButton?.accessibilityIdentifier = AccessibilityIdentifier.deleteButton
         replyButton?.accessibilityIdentifier = AccessibilityIdentifier.replyButton
-        pEpIconSettingsButton?.accessibilityIdentifier = "pEp Button"
+        pEpIconSettingsButton?.accessibilityIdentifier = AccessibilityIdentifier.pEpButton
         moveToFolderButton?.accessibilityIdentifier = AccessibilityIdentifier.moveToFolderButton
 
         setup()
