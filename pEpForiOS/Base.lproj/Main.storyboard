@@ -1379,6 +1379,7 @@
                         </barButtonItem>
                     </navigationItem>
                     <connections>
+                        <outlet property="bodyTextView" destination="7AF-wt-e0B" id="a9w-gi-iNg"/>
                         <outlet property="cancelButton" destination="ijh-vj-Bee" id="hXo-wt-WOo"/>
                         <outlet property="sendButton" destination="d2A-SO-1Ce" id="tjo-8d-QN5"/>
                         <outlet property="tableView" destination="bP2-wr-f5G" id="lLV-EJ-UUb"/>

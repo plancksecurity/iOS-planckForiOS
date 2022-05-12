@@ -26,6 +26,7 @@ class ComposeViewController: UIViewController {
 
     @IBOutlet weak var sendButton: UIBarButtonItem!
     @IBOutlet weak var cancelButton: UIBarButtonItem!
+    @IBOutlet weak var bodyTextView: UITextView!
     @IBOutlet var tableView: UITableView!
 
     private var suggestionsChildViewController: SuggestTableViewController?
