@@ -797,6 +797,7 @@ extension EmailDetailViewController {
         
         separatorsArray.append(contentsOf: [spacer,midSpacer])
     }
+
     private func setupToolbar() {
         if navigationController?.topViewController != self {
             // Only configure toolbar and navbar if possible.
