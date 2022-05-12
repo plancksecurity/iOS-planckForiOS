@@ -46,6 +46,7 @@ class EmailDetailViewController: UIViewController {
     private static let accessibilityIdentifierReplyButton = "Reply Button"
     private static let accessibilityIdentifierNextButton = "Next Button"
     private static let accessibilityIdentifierPreviousButton = "Previous Button"
+    private static let accessibilityIdentifierFlagButton = "Flag Button"
 
     override var collapsedBehavior: CollapsedSplitViewBehavior {
         return .needed
@@ -69,7 +70,7 @@ class EmailDetailViewController: UIViewController {
         previousButton?.accessibilityIdentifier = EmailDetailViewController.accessibilityIdentifierPreviousButton
         nextButtonForSplitView?.accessibilityIdentifier = EmailDetailViewController.accessibilityIdentifierNextButton
         prevButtonForSplitView?.accessibilityIdentifier = EmailDetailViewController.accessibilityIdentifierPreviousButton
-        flagButton?.accessibilityIdentifier = "Flag Button"
+        flagButton?.accessibilityIdentifier = EmailDetailViewController.accessibilityIdentifierFlagButton
         destructiveButton?.accessibilityIdentifier = "Delete Button"
         replyButton?.accessibilityIdentifier = EmailDetailViewController.accessibilityIdentifierReplyButton
         pEpIconSettingsButton?.accessibilityIdentifier = "pEp Button"
@@ -875,7 +876,7 @@ extension EmailDetailViewController {
             flagButton.imageView?.tintColor = UIColor.pEpGreen
             flagButton.addTarget(self, action: #selector(flagButtonPressed(_:)), for: .touchUpInside)
             let flagBarButtonItem = UIBarButtonItem(customView: flagButton)
-            flagBarButtonItem.accessibilityIdentifier = "Flag Button"
+            flagBarButtonItem.accessibilityIdentifier = EmailDetailViewController.accessibilityIdentifierFlagButton
 
             //Delete
             let deleteImage = viewModel?.destructiveButtonIcon(forMessageAt: indexPathOfCurrentlyVisibleCell)
