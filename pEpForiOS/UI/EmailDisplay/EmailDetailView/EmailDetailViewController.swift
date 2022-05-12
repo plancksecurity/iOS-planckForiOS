@@ -48,6 +48,7 @@ class EmailDetailViewController: UIViewController {
     private static let accessibilityIdentifierPreviousButton = "Previous Button"
     private static let accessibilityIdentifierFlagButton = "Flag Button"
     private static let accessibilityIdentifierDeleteButton = "Delete Button"
+    private static let accessibilityIdentifierMoveToFolderButton = "Move to Folder Button"
 
     override var collapsedBehavior: CollapsedSplitViewBehavior {
         return .needed
@@ -75,7 +76,7 @@ class EmailDetailViewController: UIViewController {
         destructiveButton?.accessibilityIdentifier = EmailDetailViewController.accessibilityIdentifierDeleteButton
         replyButton?.accessibilityIdentifier = EmailDetailViewController.accessibilityIdentifierReplyButton
         pEpIconSettingsButton?.accessibilityIdentifier = "pEp Button"
-        moveToFolderButton?.accessibilityIdentifier = "Move to Folder Button"
+        moveToFolderButton?.accessibilityIdentifier = EmailDetailViewController.accessibilityIdentifierMoveToFolderButton
 
         setup()
     }
@@ -866,7 +867,7 @@ extension EmailDetailViewController {
                                                             style: .plain,
                                                             target: self,
                                                             action: #selector(moveToFolderButtonPressed(_:)))
-            folderButtonBarButtonItem.accessibilityIdentifier = "Move to Folder Button"
+            folderButtonBarButtonItem.accessibilityIdentifier = EmailDetailViewController.accessibilityIdentifierMoveToFolderButton
 
             //Flag
             let flagImage = viewModel?.flagButtonIcon(forMessageAt: indexPathOfCurrentlyVisibleCell)
