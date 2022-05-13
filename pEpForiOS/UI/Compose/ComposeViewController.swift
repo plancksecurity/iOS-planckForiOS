@@ -26,7 +26,6 @@ class ComposeViewController: UIViewController {
 
     @IBOutlet weak var sendButton: UIBarButtonItem!
     @IBOutlet weak var cancelButton: UIBarButtonItem!
-    @IBOutlet weak var bodyTextView: UITextView!
     @IBOutlet var tableView: UITableView!
 
     private var suggestionsChildViewController: SuggestTableViewController?
@@ -87,7 +86,6 @@ class ComposeViewController: UIViewController {
 
         sendButton.accessibilityIdentifier = "Send Button"
         cancelButton.accessibilityIdentifier = "Cancel Button"
-        bodyTextView.accessibilityIdentifier = "Email Text View"
     }
 
     override func viewWillAppear(_ animated: Bool) {
