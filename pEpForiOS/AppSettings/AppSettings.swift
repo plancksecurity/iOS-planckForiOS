@@ -25,7 +25,6 @@ extension AppSettings {
     static private let keyUsePEPFolderEnabled = "keyUsePEPFolderEnabled"
     static private let keyUnencryptedSubjectEnabled = "keyUnencryptedSubjectEnabled"
     static private let keyDefaultAccountAddress = "keyDefaultAccountAddress"
-    static private let keyBannerErrorMessage = "keyBannerErrorMessage"
     static private let keyThreadedViewEnabled = "keyThreadedViewEnabled"
     static private let keyPassiveMode = "keyPassiveMode"
     static private let keyLastKnowDeviceGroupStateRawValue = "keyLastKnowDeviceGroupStateRawValue"

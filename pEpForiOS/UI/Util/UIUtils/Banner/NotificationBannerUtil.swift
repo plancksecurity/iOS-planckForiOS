@@ -34,6 +34,7 @@ class NotificationBannerUtil: NotificationBannerUtilProtocol {
     // MARK: - Public
 
     public static func show(errorMessage: String) {
+#if !targetEnvironment(simulator)
         DispatchQueue.main.async {
             let currentlyShownViewController = UIApplication.currentlyVisibleViewController()
             guard currentlyShownViewController is EmailListViewController || currentlyShownViewController is ComposeViewController else {
@@ -123,6 +124,7 @@ class NotificationBannerUtil: NotificationBannerUtilProtocol {
                 errorBannerView.titleLabel.isHidden = false
             }
         }
+#endif
     }
 
     /// Hide a Banner error view if exists

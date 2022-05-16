@@ -11,13 +11,6 @@ import pEpIOSToolbox
 
 extension UIUtils {
 
-    /// Show an error banner.
-    ///
-    /// - Parameter error: The error to display
-    public static func showBanner(errorMessage: String) {
-        NotificationBannerUtil.show(errorMessage: errorMessage)
-    }
-
     /// Show the No internet connection banner error
     public static func showNoInternetConnectionBanner() {
         let errorMessage = NSLocalizedString("You're offline", comment: "You're offline error message")
@@ -26,7 +19,7 @@ extension UIUtils {
 
     /// Show the Server not available banner error
     public static func showServerNotAvailableBanner() {
-        let errorMessage = NSLocalizedString("The server is not available", comment: "The server is not available error message")
+        let errorMessage = NSLocalizedString("Server Unreachable", comment: "The server is not available error message")
         NotificationBannerUtil.show(errorMessage: errorMessage)
     }
 
@@ -36,3 +29,15 @@ extension UIUtils {
     }
 }
 
+// MARK: - Private
+
+extension UIUtils {
+
+    /// Show an error banner.
+    ///
+    /// - Parameter error: The error to display
+    private static func showBanner(errorMessage: String) {
+        NotificationBannerUtil.show(errorMessage: errorMessage)
+    }
+
+}
