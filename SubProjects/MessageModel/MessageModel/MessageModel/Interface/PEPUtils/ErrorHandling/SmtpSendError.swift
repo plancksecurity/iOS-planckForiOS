@@ -6,6 +6,8 @@
 //  Copyright © 2017 p≡p Security S.A. All rights reserved.
 //
 
+//MB: - Revert changes
+
 public enum SmtpSendError: Error {
     /**
      Received an unexpected callback.

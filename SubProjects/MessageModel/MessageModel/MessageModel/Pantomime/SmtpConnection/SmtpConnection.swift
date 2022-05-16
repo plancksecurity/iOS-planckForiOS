@@ -96,7 +96,7 @@ class SmtpConnection: SmtpConnectionProtocol {
         }
     }
 
-    private func bestAuthMethod()  -> AuthMethod {
+    private func bestAuthMethod() -> AuthMethod {
         return bestAuthMethodFromList(smtp.supportedMechanisms() as? [String] ?? [])
     }
 }
@@ -127,6 +127,8 @@ extension SmtpConnection {
     var accountAddress: String {
         return connectInfo.account.address
     }
+
+    //MB: - Revert changes
 
     var port: String {
         return "\(connectInfo.networkPort)"

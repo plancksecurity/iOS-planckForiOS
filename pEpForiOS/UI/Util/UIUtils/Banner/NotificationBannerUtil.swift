@@ -31,11 +31,7 @@ class NotificationBannerUtil {
     private static var heightConstraint: NSLayoutConstraint?
 
     public static func show(errorMessage: String) {
-        guard UIDevice().type == .simulator else {
-            // We don't show this banner in the simulator
-            return
-        }
-        DispatchQueue.main.async {  
+        DispatchQueue.main.async {
             let currentlyShownViewController = UIApplication.currentlyVisibleViewController()
             guard currentlyShownViewController is EmailListViewController || currentlyShownViewController is ComposeViewController else {
                 //The banner MUST NOT be shown in other VCs than Email List and Compose.
@@ -69,6 +65,7 @@ class NotificationBannerUtil {
             navigationBar.bringSubviewToFront(errorBannerView)
             errorBannerView.translatesAutoresizingMaskIntoConstraints = false
 
+            print(bannerHeight)
             //Banner constraints
             let bannerWidthConstraint = NSLayoutConstraint(item: errorBannerView,
                                                            attribute: .width,
@@ -112,12 +109,12 @@ class NotificationBannerUtil {
             errorBannerView.isHidden = false
             navigationBar.layoutIfNeeded()
 
-            // First, increase the banner height.
+            // First, increase the distance between the tableView and the top of the view that is being displayed.
             UIView.animate(withDuration: animateDuration) {
                 if let vc = currentlyShownViewController as? EmailListViewController {
                     vc.tableView.transform = CGAffineTransform(translationX: 0, y: bannerHeight)
                 } else if let vc = currentlyShownViewController as? ComposeViewController {
-                    vc.tableView.transform = CGAffineTransform(translationX: 0, y: bannerHeight)
+                    vc.tableView.transform = CGAffineTransform(translationX: 0, y: 64 + bannerHeight)
                 }
                 bannerHeightConstraint.constant = bannerHeight
                 navigationBar.layoutIfNeeded()
@@ -130,10 +127,6 @@ class NotificationBannerUtil {
 
     /// Hide a Banner error view if exists
     public static func hide(shouldSavePreference: Bool) {
-        guard UIDevice().type == .simulator else {
-            // We don't show this banner in the simulator
-            return
-        }
         if shouldSavePreference {
             AppSettings.shared.bannerErrorMessage = nil
         }

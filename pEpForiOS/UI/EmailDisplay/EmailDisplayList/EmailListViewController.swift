@@ -128,15 +128,6 @@ final class EmailListViewController: UIViewController {
         vm.showBannerIfNeeded()
     }
 
-    override func willMove(toParent parent: UIViewController?) {
-        super.willMove(toParent: parent)
-        if parent == nil {
-            // we hide the banner because we are leaving the view, but nothing changed regarding the connectivity.
-            // So preference
-            UIUtils.hideBanner(shouldSavePreference: false)
-        }
-    }
-
     override func viewWillTransition(to size: CGSize, with coordinator: UIViewControllerTransitionCoordinator) {
         super.viewWillTransition(to: size, with: coordinator)
         tableView.visibleCells.forEach {

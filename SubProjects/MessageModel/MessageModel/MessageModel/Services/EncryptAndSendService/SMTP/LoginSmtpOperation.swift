@@ -41,7 +41,9 @@ extension LoginSmtpOperation: SmtpConnectionDelegate {
     func authenticationCompleted(_ smtpConnection: SmtpConnectionProtocol, theNotification: Notification?) {
         self.waitForBackgroundTasksAndFinish()
     }
-    
+
+    //MB: - Revert changes
+
     func authenticationFailed(_ smtpConnection: SmtpConnectionProtocol, theNotification: Notification?) {
 
         addError(SmtpSendError.authenticationFailed(

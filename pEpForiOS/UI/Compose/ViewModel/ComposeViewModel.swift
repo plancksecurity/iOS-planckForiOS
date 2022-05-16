@@ -167,6 +167,11 @@ class ComposeViewModel {
 
     public func handleDidReAppear() {
         state.validate()
+#if !EXT_SHARE
+        if let message = AppSettings.shared.bannerErrorMessage {
+            UIUtils.showBanner(errorMessage: message)
+        }
+#endif
     }
 
     public func viewModel(for indexPath: IndexPath) -> CellViewModel {

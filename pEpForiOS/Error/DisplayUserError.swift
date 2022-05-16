@@ -7,7 +7,6 @@
 //
 
 import Foundation
-
 import MessageModel
 
 /// Error to display to the user.
@@ -90,6 +89,9 @@ struct DisplayUserError: LocalizedError {
     /// - Returns:  nil if you should not bother the user with this kind of error,
     ///             user friendly error otherwize.
     init?(withError error: Error) {
+
+        //MB: - Revert changes
+
         func getServerErrorDescription(serverErrorInfo: ServerErrorInfo?) -> String? {
             guard let info = serverErrorInfo else {
                 return nil

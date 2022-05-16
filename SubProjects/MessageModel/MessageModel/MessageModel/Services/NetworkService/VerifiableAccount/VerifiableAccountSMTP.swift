@@ -16,6 +16,8 @@ import pEpIOSToolboxForExtensions
 import pEpIOSToolbox
 #endif
 
+//MB: - Revert changes
+
 protocol VerifiableAccountSMTPDelegate: AnyObject {
     func verified(verifier: VerifiableAccountSMTP,
                   result: Result<Void, Error>)

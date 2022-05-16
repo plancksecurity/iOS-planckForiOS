@@ -9,17 +9,12 @@
 import UIKit
 import pEpIOSToolbox
 
-// https://gist.github.com/dimohamdy/5166ba6c88f6954fa6b23bc9f28cbe12
-
 class ReachabilityManager {
     static public let shared = ReachabilityManager()
-//    public let reachability: Reachability2
-    public let netConnection = NetMonitor.shared
+    public let netMonitor = NetMonitor.shared
 
     private init() {
-//        reachability = Reachability2.shared
-//        setup()
-//        reachability.startNetworkReachabilityObserver()
+        setup()
     }
 
     private func setup() {
@@ -31,10 +26,6 @@ class ReachabilityManager {
 
     @objc
     private func changeInternetConnection(notification: Notification) {
-        handleReachabilityChange(notification: notification)
-    }
-
-    private func handleReachabilityChange(notification: Notification) {
         if notification.name == Notifications.Reachability.notConnected.name {
             UIUtils.showNoInternetConnectionBanner()
         } else {
