@@ -50,7 +50,7 @@ class NotificationBannerUtil {
                 return
             }
 
-            if currentlyShownViewController.view.subviews.filter({ $0 is ErrorBannerView }).count > 0 {
+            if navigationBar.subviews.filter({ $0 is ErrorBannerView }).count > 0 {
                 //A Banner view is already presented
                 return
             }
@@ -65,7 +65,6 @@ class NotificationBannerUtil {
             navigationBar.bringSubviewToFront(errorBannerView)
             errorBannerView.translatesAutoresizingMaskIntoConstraints = false
 
-            print(bannerHeight)
             //Banner constraints
             let bannerWidthConstraint = NSLayoutConstraint(item: errorBannerView,
                                                            attribute: .width,
