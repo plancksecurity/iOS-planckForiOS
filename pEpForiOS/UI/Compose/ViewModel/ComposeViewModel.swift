@@ -168,7 +168,7 @@ class ComposeViewModel {
     public func handleDidReAppear() {
         state.validate()
 #if !EXT_SHARE
-        if !NetMonitor.shared.netOn {
+        if !NetworkMonitorUtil.shared.netOn {
             UIUtils.showNoInternetConnectionBanner()
         }
 #endif

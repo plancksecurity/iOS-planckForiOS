@@ -312,7 +312,7 @@ class EmailListViewModel: EmailDisplayViewModel {
     }
 
     public func showBannerIfNeeded() {
-        if !NetMonitor.shared.netOn {
+        if !NetworkMonitorUtil.shared.netOn {
             UIUtils.showNoInternetConnectionBanner()
         }
     }
