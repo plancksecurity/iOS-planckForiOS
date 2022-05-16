@@ -7,6 +7,7 @@
 //
 
 import Foundation
+
 extension Notification.Name {
 
     /// Notification name to inform reachability has changed.

@@ -110,7 +110,6 @@ extension AppDelegate {
             // We have been opened by the OS to handle a certain file.
             result = handleUrlTheOSHasBroughtUsToForgroundFor(openedToOpenFile)
         }
-//        reachabilityManager = ReachabilityManager.shared
         self.reachabilityManager = ReachabilityManager.shared
 
         return result

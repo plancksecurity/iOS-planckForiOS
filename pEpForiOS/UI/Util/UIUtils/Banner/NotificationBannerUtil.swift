@@ -10,25 +10,28 @@ import UIKit
 import Foundation
 import pEpIOSToolbox
 
-
 protocol NotificationBannerUtilProtocol {
+
     /// Show the error banner with the given message
+    ///
     /// - Parameter errorMessage: The message to show
     static func show(errorMessage: String)
 
     /// Hide the banner
-    ///
-    /// - Parameter shouldSavePreference: Indicates if the global state should be reset.
-    static func hide(shouldSavePreference: Bool)
+    static func hide()
 }
 
-class NotificationBannerUtil {
+class NotificationBannerUtil: NotificationBannerUtilProtocol {
+
+    // MARK: - Private
 
     private static let animateDuration = 0.5
 
     private static let minimunAmountOfSecondsSinceLastShown: TimeInterval = 30
 
     private static var heightConstraint: NSLayoutConstraint?
+
+    // MARK: - Public
 
     public static func show(errorMessage: String) {
         DispatchQueue.main.async {
@@ -37,8 +40,6 @@ class NotificationBannerUtil {
                 //The banner MUST NOT be shown in other VCs than Email List and Compose.
                 return
             }
-
-            AppSettings.shared.bannerErrorMessage = errorMessage
 
             guard let navigationBar = currentlyShownViewController.navigationController?.navigationBar else {
                 // Navigation bar not found, nothing to do.
@@ -55,7 +56,7 @@ class NotificationBannerUtil {
                 return
             }
 
-            let sizeToFit = CGSize(width: navigationBar.frame.size.width, height: CGFloat.greatestFiniteMagnitude)
+            let sizeToFit = CGSize(width: navigationBar.frame.size.width, height: .greatestFiniteMagnitude)
             let sizeOfTitle = errorBannerView.titleLabel.sizeThatFits(sizeToFit)
 
             let margins: CGFloat = 16.0
@@ -125,10 +126,7 @@ class NotificationBannerUtil {
     }
 
     /// Hide a Banner error view if exists
-    public static func hide(shouldSavePreference: Bool) {
-        if shouldSavePreference {
-            AppSettings.shared.bannerErrorMessage = nil
-        }
+    public static func hide() {
         DispatchQueue.main.async {
             let currentlyShownViewController = UIApplication.currentlyVisibleViewController()
             if let vc = currentlyShownViewController as? EmailListViewController {

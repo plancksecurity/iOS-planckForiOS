@@ -31,11 +31,8 @@ extension UIUtils {
     }
 
     // Hide any banner that is shown.
-    // If no banner is presented,
-    // it will remove the error message from Defaults
-    // so it's not automatically presented
-    public static func hideBanner(shouldSavePreference: Bool = true) {
-        NotificationBannerUtil.hide(shouldSavePreference: shouldSavePreference)
+    public static func hideBanner() {
+        NotificationBannerUtil.hide()
     }
 }
 

@@ -59,7 +59,7 @@ final class EmailListViewController: UIViewController {
         }
     }
 
-    public let searchController = UISearchController(searchResultsController: nil)
+    private let searchController = UISearchController(searchResultsController: nil)
 
     // swipe actions types
     private let buttonDisplayMode: ButtonDisplayMode = .titleAndImage

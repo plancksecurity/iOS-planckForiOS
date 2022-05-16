@@ -29,7 +29,7 @@ class ReachabilityManager {
         if notification.name == Notifications.Reachability.notConnected.name {
             UIUtils.showNoInternetConnectionBanner()
         } else {
-            UIUtils.hideBanner(shouldSavePreference: true)
+            UIUtils.hideBanner()
         }
     }
 }

@@ -288,15 +288,6 @@ extension AppSettings: AppSettingsProtocol {
             Log.shared.verboseLoggingEnabled = newValue
         }
     }
-
-    public var bannerErrorMessage : String? {
-        get {
-            return AppSettings.userDefaults.string(forKey: AppSettings.keyBannerErrorMessage)
-        }
-        set {
-            AppSettings.userDefaults.set(newValue, forKey: AppSettings.keyBannerErrorMessage)
-        }
-    }
 }
 
 //MARK: Collapsing State

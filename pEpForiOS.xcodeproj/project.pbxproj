@@ -1735,7 +1735,6 @@
 				1521B78C241BDAD3000EAE57 /* UIUtils+Settings.swift */,
 				15874BAF2127493E00A3A4A6 /* Setting */,
 				5BF90035262F2517005B08D4 /* NSNotificationName+Settings.swift */,
-				5B63579A282BE9F900DF4B18 /* NSNotificationName+Reachability.swift */,
 			);
 			path = Settings;
 			sourceTree = "<group>";
@@ -2481,6 +2480,7 @@
 		43ED53611CC77F95006AB156 /* UI */ = {
 			isa = PBXGroup;
 			children = (
+				5B125F1028328DCC00B0815B /* Notifications */,
 				5BCD37C1269EE9DD0052A030 /* CalendarEventBanner */,
 				B706C0EF1EA8C378006B2F6C /* StoryboardFiles */,
 				158A564E2403F00A003C0D7E /* ClientCertificateManagement */,
@@ -2629,6 +2629,14 @@
 			children = (
 			);
 			name = "Recovered References";
+			sourceTree = "<group>";
+		};
+		5B125F1028328DCC00B0815B /* Notifications */ = {
+			isa = PBXGroup;
+			children = (
+				5B63579A282BE9F900DF4B18 /* NSNotificationName+Reachability.swift */,
+			);
+			path = Notifications;
 			sourceTree = "<group>";
 		};
 		5B56E35D25E7C39D00B0AB42 /* iPhone */ = {

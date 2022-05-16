@@ -168,8 +168,8 @@ class ComposeViewModel {
     public func handleDidReAppear() {
         state.validate()
 #if !EXT_SHARE
-        if let message = AppSettings.shared.bannerErrorMessage {
-            UIUtils.showBanner(errorMessage: message)
+        if !NetMonitor.shared.netOn {
+            UIUtils.showNoInternetConnectionBanner()
         }
 #endif
     }

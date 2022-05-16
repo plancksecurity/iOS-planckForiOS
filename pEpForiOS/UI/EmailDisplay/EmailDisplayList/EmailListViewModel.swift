@@ -312,8 +312,8 @@ class EmailListViewModel: EmailDisplayViewModel {
     }
 
     public func showBannerIfNeeded() {
-        if let message = AppSettings.shared.bannerErrorMessage {
-            UIUtils.showBanner(errorMessage: message)
+        if !NetMonitor.shared.netOn {
+            UIUtils.showNoInternetConnectionBanner()
         }
     }
 
