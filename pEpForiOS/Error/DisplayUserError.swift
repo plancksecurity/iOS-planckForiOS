@@ -90,41 +90,25 @@ struct DisplayUserError: LocalizedError {
     ///             user friendly error otherwize.
     init?(withError error: Error) {
 
-        //MB: - Revert changes
-
-        func getServerErrorDescription(serverErrorInfo: ServerErrorInfo?) -> String? {
-            guard let info = serverErrorInfo else {
-                return nil
-            }
-            let server = NSLocalizedString("Server:", comment: "Server")
-            let port = NSLocalizedString("Port:", comment: "Port")
-            let transport = NSLocalizedString("Transport:", comment: "Port")
-            return "\(server) \(info.server). \(port) \(info.port). \(transport) \(info.connectionTransport)."
-        }
-
         extraInfo = nil
         if let displayUserError = error as? DisplayUserError {
             self = displayUserError
         } else if let smtpError = error as? SmtpSendError {
             type = DisplayUserError.type(forError: smtpError)
             switch smtpError {
-            case .authenticationFailed( _, let account, _):
+            case .authenticationFailed( _, let account):
                 extraInfo = account
             case .illegalState(_):
                 break
-            case .connectionLost(_, let errorDescription, let serverErrorInfo):
+            case .connectionLost(_, let errorDescription):
                 errorString = errorDescription
-                extraInfo = serverErrorInfo?.port
                 break
-            case .connectionTerminated(_, let serverErrorInfo):
-                extraInfo = getServerErrorDescription(serverErrorInfo: serverErrorInfo)
+            case .connectionTerminated(_):
                 break
-            case .connectionTimedOut(_, let errorDescription, let serverErrorInfo):
+            case .connectionTimedOut(_, let errorDescription):
                 errorString = errorDescription
-                extraInfo = getServerErrorDescription(serverErrorInfo: serverErrorInfo)
                 break
-            case .badResponse(_, let serverErrorInfo):
-                extraInfo = getServerErrorDescription(serverErrorInfo: serverErrorInfo)
+            case .badResponse(_):
                 break
             case .clientCertificateNotAccepted:
                 break

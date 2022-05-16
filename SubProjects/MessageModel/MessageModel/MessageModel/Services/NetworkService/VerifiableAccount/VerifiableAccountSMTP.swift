@@ -40,7 +40,7 @@ class VerifiableAccountSMTP {
 
 extension VerifiableAccountSMTP: SmtpConnectionDelegate {
     private func notifyUnexpectedCallback(name: String) {
-        let error = SmtpSendError.badResponse(name, nil)
+        let error = SmtpSendError.badResponse(name)
         delegate?.verified(verifier: self, result: .failure(error))
     }
 
@@ -85,65 +85,35 @@ extension VerifiableAccountSMTP: SmtpConnectionDelegate {
     }
 
     func authenticationFailed(_ smtpConnection: SmtpConnectionProtocol, theNotification: Notification?) {
-        let serverErrorInfo = ServerErrorInfo(
-                        port: smtpConnection.port,
-                        server: smtpConnection.server,
-                        connectionTransport: smtpConnection.connectionTransport)
-
         notify(error: SmtpSendError.authenticationFailed(
             #function,
-            smtpConnection.accountAddress, serverErrorInfo))
+            smtpConnection.accountAddress))
     }
 
     func connectionEstablished(_ smtpConnection: SmtpConnectionProtocol, theNotification: Notification?) {}
 
     func connectionLost(_ smtpConnection: SmtpConnectionProtocol, theNotification: Notification?) {
         if let error = theNotification?.userInfo?[PantomimeErrorExtra] as? NSError {
-            let serverErrorInfo = ServerErrorInfo(
-                            port: smtpConnection.port,
-                            server: smtpConnection.server,
-                            connectionTransport: smtpConnection.connectionTransport)
-
-            notify(error: SmtpSendError.connectionLost(#function, error.localizedDescription, serverErrorInfo))
+            notify(error: SmtpSendError.connectionLost(#function, error.localizedDescription))
         } else {
-            let serverErrorInfo = ServerErrorInfo(
-                            port: smtpConnection.port,
-                            server: smtpConnection.server,
-                            connectionTransport: smtpConnection.connectionTransport)
-
-            notify(error: SmtpSendError.connectionLost(#function, nil, serverErrorInfo))
+            notify(error: SmtpSendError.connectionLost(#function, nil))
         }
     }
 
     func connectionTerminated(_ smtpConnection: SmtpConnectionProtocol, theNotification: Notification?) {
-        let serverErrorInfo = ServerErrorInfo(
-                        port: smtpConnection.port,
-                        server: smtpConnection.server,
-                        connectionTransport: smtpConnection.connectionTransport)
-
-        notify(error: SmtpSendError.connectionTerminated(#function, serverErrorInfo))
+        notify(error: SmtpSendError.connectionTerminated(#function))
     }
 
     func connectionTimedOut(_ smtpConnection: SmtpConnectionProtocol, theNotification: Notification?) {
-        let serverErrorInfo = ServerErrorInfo(
-                        port: smtpConnection.port,
-                        server: smtpConnection.server,
-                        connectionTransport: smtpConnection.connectionTransport)
-
         if let error = theNotification?.userInfo?[PantomimeErrorExtra] as? NSError {
-            notify(error: SmtpSendError.connectionTimedOut(#function, error.localizedDescription, serverErrorInfo))
+            notify(error: SmtpSendError.connectionTimedOut(#function, error.localizedDescription))
         } else {
-            notify(error: SmtpSendError.connectionTimedOut(#function, nil, serverErrorInfo))
+            notify(error: SmtpSendError.connectionTimedOut(#function, nil))
         }
     }
 
     func badResponse(_ smtpConnection: SmtpConnectionProtocol, response: String?) {
-        let serverErrorInfo = ServerErrorInfo(
-                        port: smtpConnection.port,
-                        server: smtpConnection.server,
-                        connectionTransport: smtpConnection.connectionTransport)
-
-        notify(error: SmtpSendError.badResponse(#function, serverErrorInfo))
+        notify(error: SmtpSendError.badResponse(#function))
     }
 
     func requestCancelled(_ smtpConnection: SmtpConnectionProtocol, theNotification: Notification?) {

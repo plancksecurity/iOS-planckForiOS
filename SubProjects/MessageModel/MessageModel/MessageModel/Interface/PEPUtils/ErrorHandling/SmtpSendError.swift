@@ -6,26 +6,18 @@
 //  Copyright © 2017 p≡p Security S.A. All rights reserved.
 //
 
-//MB: - Revert changes
-
 public enum SmtpSendError: Error {
     /**
      Received an unexpected callback.
      */
     case illegalState(FunctionName)
 
-    case authenticationFailed(FunctionName, String, ServerErrorInfo?)
-    case connectionLost(FunctionName, String?, ServerErrorInfo?)
-    case connectionTerminated(FunctionName, ServerErrorInfo?)
-    case connectionTimedOut(FunctionName, String?, ServerErrorInfo?)
-    case badResponse(FunctionName, ServerErrorInfo?)
+    case authenticationFailed(FunctionName, String)
+    case connectionLost(FunctionName, String?)
+    case connectionTerminated(FunctionName)
+    case connectionTimedOut(FunctionName, String?)
+    case badResponse(FunctionName)
 
     /// Indicates a problem with the client certificate
     case clientCertificateNotAccepted
-}
-
-public struct ServerErrorInfo {
-    public var port: String
-    public var server: String
-    public var connectionTransport: String
 }

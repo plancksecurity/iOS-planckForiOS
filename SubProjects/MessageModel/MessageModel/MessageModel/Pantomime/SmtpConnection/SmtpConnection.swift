@@ -127,20 +127,6 @@ extension SmtpConnection {
     var accountAddress: String {
         return connectInfo.account.address
     }
-
-    //MB: - Revert changes
-
-    var port: String {
-        return "\(connectInfo.networkPort)"
-    }
-
-    var server: String {
-        return connectInfo.networkAddress
-    }
-
-    var connectionTransport: String {
-        return connectInfo.connectionTransport.toServerTransport().asString()
-    }
 }
 
 // MARK: - TransportClient
