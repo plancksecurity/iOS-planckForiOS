@@ -34,7 +34,7 @@ class VerifiableAccountSMTP {
     }
 }
 
-// Mark: - SmtpConnectionDelegate
+// MARK: - SmtpConnectionDelegate
 
 extension VerifiableAccountSMTP: SmtpConnectionDelegate {
     private func notifyUnexpectedCallback(name: String) {
