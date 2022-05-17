@@ -16,6 +16,11 @@ class ReachabilityManager {
     private init() {
         setup()
     }
+}
+
+//MARK: - Private
+
+extension ReachabilityManager {
 
     private func setup() {
         [Notifications.Reachability.connected.name,
