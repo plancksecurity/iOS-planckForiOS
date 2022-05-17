@@ -23,7 +23,7 @@ extension UIBarButtonItem {
         return getButton(image: img,
                          action: action,
                          target: target,
-                         accessibilityIdentifier: "pEp Button")
+                         accessibilityIdentifier: AccessibilityIdentifier.pEpButton)
     }
 
     public static func getNextButton(action: Selector, target: Any) -> UIBarButtonItem {
