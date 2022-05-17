@@ -30,7 +30,7 @@ class BodyCell: TextViewContainingTableViewCell {
     override func awakeFromNib() {
         super.awakeFromNib()
         textView.font = UIFont.systemFont(ofSize: defaultFontSize)
-        textView.accessibilityIdentifier = "Email Text View"
+        textView.accessibilityIdentifier = AccessibilityIdentifier.emailTextView
     }
 
     public func setup(with viewModel: BodyCellViewModel) {
