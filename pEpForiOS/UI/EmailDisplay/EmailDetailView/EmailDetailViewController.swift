@@ -34,14 +34,15 @@ class EmailDetailViewController: UIViewController {
     @IBOutlet weak var pEpIconSettingsButton: UIBarButtonItem!
     @IBOutlet weak var moveToFolderButton: UIBarButtonItem!
     @IBOutlet weak var collectionView: UICollectionView!
+
     private var pEpButtonHelper = UIBarButtonItem.getPEPButton(action: #selector(showSettingsViewController),
-                                                               target: self)
+                                                               target: EmailDetailViewController.self)
     
     private var separatorsArray = [UIBarButtonItem]()
 
     /// IndexPath to show on load
     var firstItemToShow: IndexPath?
-    
+
     override var collapsedBehavior: CollapsedSplitViewBehavior {
         return .needed
     }
@@ -58,7 +59,19 @@ class EmailDetailViewController: UIViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
+
         edgesForExtendedLayout = .all
+
+        nextButton?.accessibilityIdentifier = AccessibilityIdentifier.nextButton
+        previousButton?.accessibilityIdentifier = AccessibilityIdentifier.previousButton
+        nextButtonForSplitView?.accessibilityIdentifier = AccessibilityIdentifier.nextButton
+        prevButtonForSplitView?.accessibilityIdentifier = AccessibilityIdentifier.previousButton
+        flagButton?.accessibilityIdentifier = AccessibilityIdentifier.flagButton
+        destructiveButton?.accessibilityIdentifier = AccessibilityIdentifier.deleteButton
+        replyButton?.accessibilityIdentifier = AccessibilityIdentifier.replyButton
+        pEpIconSettingsButton?.accessibilityIdentifier = AccessibilityIdentifier.pEpButton
+        moveToFolderButton?.accessibilityIdentifier = AccessibilityIdentifier.moveToFolderButton
+
         setup()
     }
 
@@ -786,6 +799,7 @@ extension EmailDetailViewController {
         
         separatorsArray.append(contentsOf: [spacer,midSpacer])
     }
+
     private func setupToolbar() {
         if navigationController?.topViewController != self {
             // Only configure toolbar and navbar if possible.
@@ -839,6 +853,7 @@ extension EmailDetailViewController {
                                                      style: .plain,
                                                      target: self,
                                                      action: #selector(replyButtonPressed(_:)))
+            replyBarButtonItem.accessibilityIdentifier = AccessibilityIdentifier.replyButton
 
             //Folder
             let folderImage = UIImage(named: "pEpForiOS-icon-movetofolder")
@@ -846,6 +861,7 @@ extension EmailDetailViewController {
                                                             style: .plain,
                                                             target: self,
                                                             action: #selector(moveToFolderButtonPressed(_:)))
+            folderButtonBarButtonItem.accessibilityIdentifier = AccessibilityIdentifier.moveToFolderButton
 
             //Flag
             let flagImage = viewModel?.flagButtonIcon(forMessageAt: indexPathOfCurrentlyVisibleCell)
@@ -856,6 +872,7 @@ extension EmailDetailViewController {
             flagButton.imageView?.tintColor = UIColor.pEpGreen
             flagButton.addTarget(self, action: #selector(flagButtonPressed(_:)), for: .touchUpInside)
             let flagBarButtonItem = UIBarButtonItem(customView: flagButton)
+            flagBarButtonItem.accessibilityIdentifier = AccessibilityIdentifier.flagButton
 
             //Delete
             let deleteImage = viewModel?.destructiveButtonIcon(forMessageAt: indexPathOfCurrentlyVisibleCell)
@@ -863,6 +880,7 @@ extension EmailDetailViewController {
                                                             style: .plain,
                                                             target: self,
                                                             action: #selector(destructiveButtonPressed(_:)))
+            deleteButtonBarButtonItem.accessibilityIdentifier = AccessibilityIdentifier.deleteButton
 
             
             navigationItem.rightBarButtonItems = [replyBarButtonItem,

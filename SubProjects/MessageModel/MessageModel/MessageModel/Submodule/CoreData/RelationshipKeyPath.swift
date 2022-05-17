@@ -21,6 +21,7 @@ struct RelationshipKeyPath {
         CdFolder.AttributeName.folderTypeRawValue
     static let cdMessage_imap_localFlags = CdMessage.RelationshipName.imap + "." +
         CdImapFields.RelationshipName.localFlags
+    static let cdMessage_imap_ui_flags = CdMessage.RelationshipName.imapUIFlags
     static let cdMessage_imap_localFlags_flagDeleted = cdMessage_imap_localFlags + "." +
         CdImapFlags.AttributeName.flagDeleted
     static let cdMessage_imap_serverFlags = CdMessage.RelationshipName.imap + "." +

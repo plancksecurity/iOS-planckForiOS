@@ -11,7 +11,7 @@ import MessageModel
 
 extension MessageQueryResultsFilter {
 
-    public func getFilterText() -> String{
+    public func getFilterText() -> String {
         var finalString = ""
 
         var totalFilter = 0

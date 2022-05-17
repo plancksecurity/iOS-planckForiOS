@@ -22,7 +22,6 @@ public class ImapFlags: MessageModelObjectProtocol, ManagedObjectWrapperProtocol
     required init(cdObject: T, context: NSManagedObjectContext) {
         self.cdObject = cdObject
         self.moc = context
-
     }
 
     // MARK: - Forwarded Getters & Setters

@@ -70,8 +70,8 @@ class MessageViewModel: CustomDebugStringConvertible {
         from = (message.from ?? Identity(address: "unknown@unknown.com")).userNameOrAddress
         displayedImageIdentity =  MessageViewModel.identityForImage(from: message)
         subject = message.shortMessage ?? ""
-        isFlagged = message.imapFlags.flagged
-        isSeen = message.imapFlags.seen
+        isFlagged = message.imapFlags.flagged || message.imapUIFlags?.flagged ?? false
+        isSeen = message.imapFlags.seen || message.imapUIFlags?.seen ?? false
         dateText =  (message.sent ?? Date()).smartString()
         profilePictureComposer = PepProfilePictureComposer()
         displayedUsername = MessageViewModel.getDisplayedUsername(for: message)

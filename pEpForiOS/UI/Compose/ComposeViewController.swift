@@ -24,7 +24,8 @@ import pEpIOSToolbox
 class ComposeViewController: UIViewController {
     public static let storyboardId = "ComposeViewController"
 
-    @IBOutlet var sendButton: UIBarButtonItem!
+    @IBOutlet weak var sendButton: UIBarButtonItem!
+    @IBOutlet weak var cancelButton: UIBarButtonItem!
     @IBOutlet var tableView: UITableView!
 
     private var suggestionsChildViewController: SuggestTableViewController?
@@ -82,6 +83,9 @@ class ComposeViewController: UIViewController {
         }  else {
             tableView.backgroundColor = .white
         }
+
+        sendButton.accessibilityIdentifier = AccessibilityIdentifier.sendButton
+        cancelButton.accessibilityIdentifier = AccessibilityIdentifier.cancelButton
     }
 
     override func viewWillAppear(_ animated: Bool) {

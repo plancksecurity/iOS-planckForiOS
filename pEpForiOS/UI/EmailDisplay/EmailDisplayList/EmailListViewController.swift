@@ -117,6 +117,7 @@ final class EmailListViewController: UIViewController {
         updateFilterText()
         updateEditButton()
         vm.updateLastLookAt()
+        updateFilterButton()
     }
 
     override func viewDidAppear(_ animated: Bool) {
@@ -134,6 +135,13 @@ final class EmailListViewController: UIViewController {
             if let cell = $0 as? SwipeTableViewCell {
                 cell.hideSwipe(animated: true)
             }
+        }
+    }
+
+    override func viewWillDisappear(_ animated: Bool) {
+        super.viewWillDisappear(animated)
+        if (isMovingFromParent) {
+            mergeUIState()
         }
     }
 
@@ -318,19 +326,20 @@ final class EmailListViewController: UIViewController {
     }
 
     private func showEditToolbar() {
-        func getButtonItem(img: UIImage?, action: Selector) -> UIBarButtonItem {
+        func getButtonItem(img: UIImage?, action: Selector, accessibilityIdentifier: String) -> UIBarButtonItem {
             let button = UIBarButtonItem(image: img, style: .plain, target: self, action: action)
-            button.isEnabled = false
-            return UIBarButtonItem(image: img, style: .plain, target: self, action: action)
+            button.accessibilityIdentifier = accessibilityIdentifier
+            return button
         }
         // Flexible Space separation between the buttons
         let flexibleSpace = createFlexibleBarButtonItem()
-        flagToolbarButton = getButtonItem(img: UIImage(named: "icon-flagged"), action: #selector(flagToolbar))
-        unflagToolbarButton = getButtonItem(img: UIImage(named: "icon-unflagged"), action: #selector(unflagToolbar))
-        readToolbarButton = getButtonItem(img: UIImage(named: "icon-read"), action: #selector(readToolbar))
-        unreadToolbarButton = getButtonItem(img: UIImage(named: "icon-unread"), action: #selector(unreadToolbar))
-        deleteToolbarButton = getButtonItem(img: UIImage(named: "folders-icon-trash"), action: #selector(deleteToolbar))
-        moveToolbarButton = getButtonItem(img: UIImage(named: "swipe-archive"), action: #selector(moveToolbar))
+        flagToolbarButton = getButtonItem(img: UIImage(named: "icon-flagged"), action: #selector(flagToolbar), accessibilityIdentifier: "Flag button")
+        unflagToolbarButton = getButtonItem(img: UIImage(named: "icon-unflagged"), action: #selector(unflagToolbar), accessibilityIdentifier: "Unflag button")
+        readToolbarButton = getButtonItem(img: UIImage(named: "icon-read"), action: #selector(readToolbar), accessibilityIdentifier: "Read button")
+        unreadToolbarButton = getButtonItem(img: UIImage(named: "icon-unread"), action: #selector(unreadToolbar), accessibilityIdentifier: "Unread button")
+        deleteToolbarButton = getButtonItem(img: UIImage(named: "folders-icon-trash"), action: #selector(deleteToolbar), accessibilityIdentifier: "Delete button")
+        moveToolbarButton = getButtonItem(img: UIImage(named: "swipe-archive"), action: #selector(moveToolbar), accessibilityIdentifier: "Move button")
+
         toolbarItems = [flagToolbarButton, flexibleSpace,
                         readToolbarButton, flexibleSpace,
                         deleteToolbarButton, flexibleSpace,
@@ -343,6 +352,7 @@ final class EmailListViewController: UIViewController {
                                      style: .plain,
                                      target: self,
                                      action: #selector(cancelToolbar))
+        cancel.accessibilityIdentifier = "Cancel button"
         navigationItem.rightBarButtonItem = cancel
     }
 
@@ -351,9 +361,19 @@ final class EmailListViewController: UIViewController {
     }
 
     @IBAction private func editButtonPressed() {
+        mergeUIState()
         showEditToolbar()
         tableView.setEditing(true, animated: true)
         updateBackButton(isTableViewEditing: tableView.isEditing)
+    }
+
+    private func mergeUIState() {
+        guard let vm = viewModel else {
+            Log.shared.errorAndCrash("VM not found")
+            return
+        }
+        
+        vm.mergeImapUIStateToImapState()
     }
 
     @IBAction private func showFilterOptions() {
@@ -628,8 +648,23 @@ extension EmailListViewController: UITableViewDataSource, UITableViewDelegate {
             vm.handleEditModeSelectionChange(selectedIndexPaths: selectedIndexPaths)
         } else {
             vm.handleDidSelectRow(indexPath: indexPath)
+            refreshUIForCellAt(indexPath: indexPath)
         }
         updateBackButton(isTableViewEditing: tableView.isEditing)
+    }
+
+    private func refreshUIForCellAt(indexPath: IndexPath) {
+        guard let vm = viewModel else {
+            Log.shared.errorAndCrash("No VM")
+            return
+        }
+        if let cell = tableView.cellForRow(at: indexPath) as? EmailListViewCell {
+            guard let viewModel = vm.viewModel(for: indexPath.row) else {
+                Log.shared.errorAndCrash("No MessageVM for indexPath!")
+                return
+            }
+            cell.configure(for: viewModel)
+        }
     }
 
     func tableView(_ tableView: UITableView, didDeselectRowAt indexPath: IndexPath) {
@@ -1151,10 +1186,7 @@ extension EmailListViewController {
             Log.shared.errorAndCrash("VM not found")
             return
         }
-        guard let cell = tableView.cellForRow(at: indexPath) as? EmailListViewCell else {
-            Log.shared.errorAndCrash("No cell for indexPath!")
-            return
-        }
+
         if row.isSeen {
             vm.markAsUnread(indexPaths: [indexPath], isEditModeEnabled: false)
         } else {
@@ -1172,6 +1204,7 @@ extension EmailListViewController {
             Log.shared.errorAndCrash("VM not found")
             return
         }
+
         if row.isFlagged {
             vm.markAsUnFlagged(indexPaths: [indexPath], isEditModeEnabled: false)
         } else {
@@ -1399,13 +1432,17 @@ extension EmailListViewController {
     private var selectAllBarButton: UIBarButtonItem {
         let selectAllTitle = NSLocalizedString("Select all", comment: "Select all emails")
         let selectAllCellsSelector = #selector(selectAllCells)
-        return UIBarButtonItem(title: selectAllTitle, style: .plain, target: self, action: selectAllCellsSelector)
+        let button = UIBarButtonItem(title: selectAllTitle, style: .plain, target: self, action: selectAllCellsSelector)
+        button.accessibilityIdentifier = "Select All button"
+        return button
     }
 
     private var deselectAllBarButton: UIBarButtonItem {
         let deselectAllTitle = NSLocalizedString("Deselect all", comment: "Deselect all emails")
         let deselectAllCellsSelector = #selector(deselectAllCells)
-        return UIBarButtonItem(title: deselectAllTitle, style: .plain, target: self, action: deselectAllCellsSelector)
+        let button = UIBarButtonItem(title: deselectAllTitle, style: .plain, target: self, action: deselectAllCellsSelector)
+        button.accessibilityIdentifier = "Deselect All button"
+        return button
     }
 
     private func updateBackButton(isTableViewEditing: Bool) {
