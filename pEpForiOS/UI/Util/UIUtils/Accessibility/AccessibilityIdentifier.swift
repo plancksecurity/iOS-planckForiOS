@@ -21,4 +21,5 @@ class AccessibilityIdentifier {
     static let sendButton = "Send Button"
     static let cancelButton = "Cancel Button"
     static let composeButton = "Compose Button"
+    static let filterButton = "Filter Button"
 }

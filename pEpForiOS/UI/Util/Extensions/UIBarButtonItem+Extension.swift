@@ -15,7 +15,7 @@ extension UIBarButtonItem {
         return getButton(image: img,
                          action: action,
                          target: target,
-                         accessibilityIdentifier: "Filter Button")
+                         accessibilityIdentifier: AccessibilityIdentifier.filterButton)
     }
 
     public static func getPEPButton(action: Selector, target: Any) -> UIBarButtonItem {
