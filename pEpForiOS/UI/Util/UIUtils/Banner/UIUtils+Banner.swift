@@ -39,5 +39,4 @@ extension UIUtils {
     private static func showBanner(errorMessage: String) {
         NotificationBannerUtil.show(errorMessage: errorMessage)
     }
-
 }
