@@ -38,7 +38,7 @@ extension UIBarButtonItem {
             viewContainerForComposeButton.addGestureRecognizer(longGesture)
         }
         let compose = UIBarButtonItem(customView: viewContainerForComposeButton)
-        compose.accessibilityIdentifier = "Compose Button"
+        compose.accessibilityIdentifier = AccessibilityIdentifier.composeButton
         compose.tintColor = .white
         return compose
     }
