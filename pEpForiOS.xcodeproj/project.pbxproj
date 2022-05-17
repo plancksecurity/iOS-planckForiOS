@@ -427,6 +427,7 @@
 		43D1900E2513734400A36973 /* SettingsViewModelTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43D1900D2513734400A36973 /* SettingsViewModelTest.swift */; };
 		43D2133B2237CABD00C060A1 /* libxml2.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = 43800D981D112A2A00821E34 /* libxml2.tbd */; };
 		43DC6308262DCC8A0017D1BD /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = 43DC6306262DCC8A0017D1BD /* Localizable.strings */; };
+		43E15D1C2833CA4D00EDEAB7 /* AccessibilityIdentifier.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43285973282D4E9D00493791 /* AccessibilityIdentifier.swift */; };
 		43E1619120D7B2D6003F1514 /* UpdateThreadListDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43E1619020D7B2D6003F1514 /* UpdateThreadListDelegate.swift */; };
 		43E60263262F0E8100232FE6 /* MessageModelForAppExtensions.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 43E60261262F0E8100232FE6 /* MessageModelForAppExtensions.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		43E657D11F3C33C30014CBEC /* String+HTML.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43E657D01F3C33C30014CBEC /* String+HTML.swift */; };
@@ -3242,6 +3243,7 @@
 				434C1AFF25D4279100F622DB /* HtmlToAttributedTextSaxParser.swift in Sources */,
 				434C1AAC25D40FF800F622DB /* AddToContactsViewController.swift in Sources */,
 				434A6C7525D2A3E700179335 /* SubjectCell.swift in Sources */,
+				43E15D1C2833CA4D00EDEAB7 /* AccessibilityIdentifier.swift in Sources */,
 				3A503A9F253737B20070AB6A /* ShareViewController.swift in Sources */,
 				434C1AD825D4136A00F622DB /* String+pEp.swift in Sources */,
 				43BDE05D25DE826000FC0C68 /* houdini_html_e.c in Sources */,
