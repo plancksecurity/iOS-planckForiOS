@@ -84,7 +84,7 @@ class ComposeViewController: UIViewController {
             tableView.backgroundColor = .white
         }
 
-        sendButton.accessibilityIdentifier = "Send Button"
+        sendButton.accessibilityIdentifier = AccessibilityIdentifier.sendButton
         cancelButton.accessibilityIdentifier = "Cancel Button"
     }
 

@@ -18,4 +18,5 @@ class AccessibilityIdentifier {
     static let moveToFolderButton = "Move to Folder Button"
     static let pEpButton = "pEp Button"
     static let emailTextView = "Email Text View"
+    static let sendButton = "Send Button"
 }
