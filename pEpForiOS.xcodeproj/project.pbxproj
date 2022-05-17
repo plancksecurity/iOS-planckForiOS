@@ -2427,13 +2427,21 @@
 		43D0702D2133DB3F0013B120 /* AppSettings */ = {
 			isa = PBXGroup;
 			children = (
-				43E15CF82833770200EDEAB7 /* AppSettingsMDMProtocol.swift */,
+				43E15CFA283377F300EDEAB7 /* MDM */,
 				43D070302133DB920013B120 /* AppSettingsProtocol.swift */,
 				43D070322133DC500013B120 /* AppSettings.swift */,
 				159AB56C23539D67008AB1F3 /* AppSettings+CNContactsAccessPermissionProvider.swift */,
 				15326E2C24A4BD1C00EA8C9B /* AppSettings+UsePEPFolderProvider.swift */,
 			);
 			path = AppSettings;
+			sourceTree = "<group>";
+		};
+		43E15CFA283377F300EDEAB7 /* MDM */ = {
+			isa = PBXGroup;
+			children = (
+				43E15CF82833770200EDEAB7 /* AppSettingsMDMProtocol.swift */,
+			);
+			path = MDM;
 			sourceTree = "<group>";
 		};
 		43E58EB21CBF8301008AA7A7 /* Models */ = {
