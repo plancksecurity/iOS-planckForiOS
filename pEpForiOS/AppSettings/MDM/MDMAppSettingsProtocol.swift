@@ -1,5 +1,5 @@
 //
-//  AppSettingsMDMProtocol.swift
+//  MDMAppSettingsProtocol.swift
 //  pEp
 //
 //  Created by Dirk Zimmermann on 17.05.22.
@@ -9,5 +9,5 @@
 import Foundation
 
 /// App settings that are relevant for MDM.
-public protocol AppSettingsMDMProtocol {
+public protocol MDMAppSettingsProtocol {
 }
