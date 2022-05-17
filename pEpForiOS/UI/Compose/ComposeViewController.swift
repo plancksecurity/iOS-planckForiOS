@@ -85,7 +85,7 @@ class ComposeViewController: UIViewController {
         }
 
         sendButton.accessibilityIdentifier = AccessibilityIdentifier.sendButton
-        cancelButton.accessibilityIdentifier = "Cancel Button"
+        cancelButton.accessibilityIdentifier = AccessibilityIdentifier.cancelButton
     }
 
     override func viewWillAppear(_ animated: Bool) {

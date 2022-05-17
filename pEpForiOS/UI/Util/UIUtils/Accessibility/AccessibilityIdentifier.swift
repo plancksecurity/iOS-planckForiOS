@@ -19,4 +19,5 @@ class AccessibilityIdentifier {
     static let pEpButton = "pEp Button"
     static let emailTextView = "Email Text View"
     static let sendButton = "Send Button"
+    static let cancelButton = "Cancel Button"
 }
