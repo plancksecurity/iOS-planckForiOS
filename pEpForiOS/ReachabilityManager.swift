@@ -11,7 +11,6 @@ import pEpIOSToolbox
 
 class ReachabilityManager {
     static public let shared = ReachabilityManager()
-    public let networkMonitorUtil = NetworkMonitorUtil.shared
 
     private init() {
         setup()
