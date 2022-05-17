@@ -31,7 +31,7 @@ extension UIBarButtonItem {
         return getButton(image: img,
                          action: action,
                          target: target,
-                         accessibilityIdentifier: "Next Button")
+                         accessibilityIdentifier: AccessibilityIdentifier.nextButton)
     }
 
     public static func getPreviousButton(action: Selector, target: Any) -> UIBarButtonItem {
