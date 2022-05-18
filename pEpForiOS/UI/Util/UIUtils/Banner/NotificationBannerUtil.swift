@@ -34,6 +34,7 @@ class NotificationBannerUtil: NotificationBannerUtilProtocol {
     // MARK: - Public
 
     public static func show(errorMessage: String) {
+        /// The framework Apple introduce to monitor network status does not work properly on simulators.
 #if !targetEnvironment(simulator)
         DispatchQueue.main.async {
             let currentlyShownViewController = UIApplication.currentlyVisibleViewController()
