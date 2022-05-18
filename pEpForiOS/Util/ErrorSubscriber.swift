@@ -15,12 +15,12 @@ public class ErrorSubscriber {
     private func errorShouldBeDisplayed(error: Error) -> Bool{
         if let smtpError = error as? SmtpSendError {
             switch smtpError {
-            case .authenticationFailed( _, let account):
+            case .authenticationFailed(_, let account):
                 return accountErrorShouldBeShown(account: account, serverType: .smtp)
             case .illegalState(_),
-                 .connectionLost(_),
+                 .connectionLost(_, _),
                  .connectionTerminated(_),
-                 .connectionTimedOut(_),
+                 .connectionTimedOut(_, _),
                  .badResponse(_),
                  .clientCertificateNotAccepted:
                 break

@@ -41,11 +41,10 @@ extension LoginSmtpOperation: SmtpConnectionDelegate {
     func authenticationCompleted(_ smtpConnection: SmtpConnectionProtocol, theNotification: Notification?) {
         self.waitForBackgroundTasksAndFinish()
     }
-    
+
     func authenticationFailed(_ smtpConnection: SmtpConnectionProtocol, theNotification: Notification?) {
-        addError(SmtpSendError.authenticationFailed(
-            #function,
-            smtpConnection.accountAddress))
+
+        addError(SmtpSendError.authenticationFailed(#function, smtpConnection.accountAddress))
         waitForBackgroundTasksAndFinish()
     }
     
@@ -93,6 +92,7 @@ extension LoginSmtpOperation: SmtpConnectionDelegate {
     }
 
     func badResponse(_ smtpConnection: SmtpConnectionProtocol, response: String?) {
+
         addError(SmtpSendError.badResponse(#function))
         waitForBackgroundTasksAndFinish()
     }

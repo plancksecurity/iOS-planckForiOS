@@ -37,6 +37,7 @@ class FolderTableViewController: UITableViewController {
         showEmptyDetailViewIfNeeded()
         updateRefreshControl()
         folderVM?.refreshFolderList()
+        UIUtils.hideBanner()
     }
 
     override func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
