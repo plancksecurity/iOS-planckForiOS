@@ -9,7 +9,12 @@
 import UIKit
 import pEpIOSToolbox
 
+/// Class to handle the reachability changes.
+/// The notifications comes from pEpIOSToolbox
+/// It's needed to keep the shared instance alive. 
 class ReachabilityManager {
+
+    /// The shared instance
     static public let shared = ReachabilityManager()
 
     private init() {
@@ -24,7 +29,9 @@ extension ReachabilityManager {
     private func setup() {
         [Notifications.Reachability.connected.name,
          Notifications.Reachability.notConnected.name].forEach { (notification) in
-            NotificationCenter.default.addObserver(self, selector: #selector(changeInternetConnection), name: notification, object: nil)
+            NotificationCenter.default.addObserver(self,
+                                                   selector: #selector(changeInternetConnection),
+                                                   name: notification, object: nil)
          }
     }
 
