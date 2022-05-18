@@ -89,7 +89,6 @@ struct DisplayUserError: LocalizedError {
     /// - Returns:  nil if you should not bother the user with this kind of error,
     ///             user friendly error otherwize.
     init?(withError error: Error) {
-
         extraInfo = nil
         if let displayUserError = error as? DisplayUserError {
             self = displayUserError

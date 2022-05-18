@@ -42,18 +42,13 @@ extension SmtpConnection {
 }
 
 class SmtpConnection: SmtpConnectionProtocol {
-
     private var smtp: CWSMTP
-
     private var smtpStatus: Status = Status()
-    weak var delegate: SmtpConnectionDelegate?
-
     private let connectInfo: EmailConnectInfo
-
+    public weak var delegate: SmtpConnectionDelegate?
     /// The access token, if authMethod is .saslXoauth2
     private let accessToken: OAuth2AccessTokenProtocol?
-
-    var isClientCertificateSet: Bool {
+    public var isClientCertificateSet: Bool {
         return connectInfo.clientCertificate != nil
     }
 
