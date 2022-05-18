@@ -1,7 +1,7 @@
 //
 //  UIUtils.swift
 //  pEp
-//pde
+//
 //  Created by Andreas Buff on 29.11.17.
 //  Copyright © 2017 p≡p Security S.A. All rights reserved.
 //
@@ -25,5 +25,4 @@ class UIUtils {
         let presenterVc = UIApplication.currentlyVisibleViewController()
         presenterVc.present(navigationController, animated: true)
     }
-
 }

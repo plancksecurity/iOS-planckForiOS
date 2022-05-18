@@ -7,7 +7,6 @@
 //
 
 import Foundation
-
 import MessageModel
 
 /// Error to display to the user.
@@ -82,7 +81,6 @@ struct DisplayUserError: LocalizedError {
 
     /// Contains the underlying `NSError`'s `localizedDescription`, if available.
     var errorString: String?
-
 
     /// Creates a user friendly error to present in an alert or such. I case the error type is not
     /// suitable to display to the user (should fail silently), nil is returned.

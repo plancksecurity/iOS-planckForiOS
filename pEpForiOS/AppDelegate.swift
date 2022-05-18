@@ -16,6 +16,8 @@ import pEp4iosIntern
 class AppDelegate: UIResponder, UIApplicationDelegate {
     var window: UIWindow?
 
+    private var reachabilityManager : ReachabilityManager?
+
     /// The model
     private var messageModelService: MessageModelServiceProtocol?
 
@@ -104,11 +106,11 @@ extension AppDelegate {
         setupServices()
         askUserForNotificationPermissions()
         var result = setupInitialViewController()
-
         if let openedToOpenFile = launchOptions?[UIApplication.LaunchOptionsKey.url] as? URL {
             // We have been opened by the OS to handle a certain file.
             result = handleUrlTheOSHasBroughtUsToForgroundFor(openedToOpenFile)
         }
+        self.reachabilityManager = ReachabilityManager.shared
 
         return result
     }

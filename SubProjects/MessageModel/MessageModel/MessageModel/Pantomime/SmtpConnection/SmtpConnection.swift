@@ -43,16 +43,12 @@ extension SmtpConnection {
 
 class SmtpConnection: SmtpConnectionProtocol {
     private var smtp: CWSMTP
-
     private var smtpStatus: Status = Status()
-    weak var delegate: SmtpConnectionDelegate?
-
     private let connectInfo: EmailConnectInfo
-
+    public weak var delegate: SmtpConnectionDelegate?
     /// The access token, if authMethod is .saslXoauth2
     private let accessToken: OAuth2AccessTokenProtocol?
-
-    var isClientCertificateSet: Bool {
+    public var isClientCertificateSet: Bool {
         return connectInfo.clientCertificate != nil
     }
 
@@ -72,7 +68,7 @@ class SmtpConnection: SmtpConnectionProtocol {
         smtp.connectInBackgroundAndNotify()
     }
 
-    private func bestAuthMethodFromList(_ mechanisms: [String])  -> AuthMethod {
+    private func bestAuthMethodFromList(_ mechanisms: [String]) -> AuthMethod {
         if mechanisms.count > 0 {
             let mechanismsLC = mechanisms.map() { mech in
                 return mech.lowercased()
@@ -95,7 +91,7 @@ class SmtpConnection: SmtpConnectionProtocol {
         }
     }
 
-    private func bestAuthMethod()  -> AuthMethod {
+    private func bestAuthMethod() -> AuthMethod {
         return bestAuthMethodFromList(smtp.supportedMechanisms() as? [String] ?? [])
     }
 }
