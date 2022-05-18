@@ -20,7 +20,6 @@ extension UIBarButtonItem {
     public static func getComposeButton(tapAction: Selector,
                                         longPressAction: Selector? = nil,
                                         target: Any) -> UIBarButtonItem {
-
         // Custom view
         let viewContainerForComposeButton = UIView(frame: CGRect(x: 0, y: 0, width: 22, height: 30))
         let composeImage = #imageLiteral(resourceName: "compose")
@@ -39,6 +38,7 @@ extension UIBarButtonItem {
             viewContainerForComposeButton.addGestureRecognizer(longGesture)
         }
         let compose = UIBarButtonItem(customView: viewContainerForComposeButton)
+        compose.accessibilityIdentifier = AccessibilityIdentifier.composeButton
         compose.tintColor = .white
         return compose
     }
