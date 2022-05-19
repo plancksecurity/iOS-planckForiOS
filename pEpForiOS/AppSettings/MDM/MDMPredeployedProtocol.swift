@@ -9,7 +9,9 @@
 import Foundation
 
 /// Error cases thrown by `MDMPredeployedProtocol.predeployAccounts`.
-enum MDMPredeployedError {
+enum MDMPredeployedError: Error {
+    /// Account settings were found, but the format could not be read.
+    case malformedAccountData
 }
 
 protocol MDMPredeployedProtocol {
