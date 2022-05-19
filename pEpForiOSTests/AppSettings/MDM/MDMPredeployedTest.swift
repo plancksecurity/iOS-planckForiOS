@@ -11,6 +11,8 @@ import XCTest
 import pEpForiOS
 import pEp4iosIntern
 
+typealias SettingsDict = [String:Any]
+
 class MDMPredeployedTest: XCTestCase {
 
     override func setUpWithError() throws {
@@ -20,11 +22,14 @@ class MDMPredeployedTest: XCTestCase {
     override func tearDownWithError() throws {
     }
 
-    func testExample() throws {
+    func testSingleAccount() throws {
+        setupSingleAccount()
     }
 
     // MARK: - Util
 
+    let keyMDM = "mdm"
+    let keyPredeployedAccounts = "predeployedAccounts"
     let keyServerName = "name"
     let keyServerPort = "port"
     let keyUserName = "userName"
@@ -33,15 +38,30 @@ class MDMPredeployedTest: XCTestCase {
     let keyImapServer = "imapServer"
     let keySmtpServer = "smtpServer"
 
-    func serverDictionary(name: String, port: UInt16) -> NSDictionary {
+    func setupSingleAccount() {
+        let imapServer = serverDictionary(name: "imap", port: 333)
+        let smtpServer = serverDictionary(name: "smtp", port: 444)
+        let accountDict = accountDictionary(userName: "user",
+                                            loginName: "login",
+                                            password: "password",
+                                            imapServer: imapServer,
+                                            smtpServer: smtpServer)
+
+        let predeployedAccounts: SettingsDict = [keyPredeployedAccounts:[accountDict]]
+        let mdm: SettingsDict = [keyMDM: predeployedAccounts]
+
+        UserDefaults.standard.register(defaults: mdm)
+    }
+
+    func serverDictionary(name: String, port: UInt16) -> SettingsDict {
         return [keyServerName: name, keyServerPort: NSNumber(value: port)]
     }
 
     func accountDictionary(userName: String,
                            loginName: String,
                            password: String,
-                           imapServer: NSDictionary,
-                           smtpServer: NSDictionary) -> NSDictionary {
+                           imapServer: SettingsDict,
+                           smtpServer: SettingsDict) -> SettingsDict {
         return [keyUserName: userName,
                keyLoginName: loginName,
                 keyPassword: password,
