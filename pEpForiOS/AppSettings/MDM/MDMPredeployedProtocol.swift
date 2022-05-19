@@ -28,9 +28,7 @@ struct MDMPredeployedAccount {
   let userName: String
 
   /// The password to be used for all accounts.
-  /// Can be nil, in which case OAuth2 has to be used.
-  /// Note that in this case, the user has to enter a password.
-  let password: String?
+  let password: String
 }
 
 protocol MDMPredeployedProtocol {
