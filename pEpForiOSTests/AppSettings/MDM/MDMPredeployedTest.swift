@@ -56,12 +56,17 @@ class MDMPredeployedTest: XCTestCase {
     let accountDataLoginName = "loginName"
     let accountDataPassword = "password"
 
-    func setupSingleAccount() {
-        let imapServer = serverDictionary(name: accountDataImapServer, port: accountDataImapPort)
-        let smtpServer = serverDictionary(name: accountDataSmtpServer, port: accountDataSmtpPort)
-        let accountDict = accountDictionary(userName: accountDataUserName,
-                                            loginName: accountDataLoginName,
-                                            password: accountDataPassword,
+    func setupSingleAccount(appendixNumber: Int = 0) {
+        let appendix16 = UInt16(appendixNumber)
+        let appendixString = "\(appendixNumber)"
+
+        let imapServer = serverDictionary(name: accountDataImapServer + appendixString,
+                                          port: accountDataImapPort + appendix16)
+        let smtpServer = serverDictionary(name: accountDataSmtpServer + appendixString,
+                                          port: accountDataSmtpPort + appendix16)
+        let accountDict = accountDictionary(userName: accountDataUserName + appendixString,
+                                            loginName: accountDataLoginName + appendixString,
+                                            password: accountDataPassword + appendixString,
                                             imapServer: imapServer,
                                             smtpServer: smtpServer)
 
