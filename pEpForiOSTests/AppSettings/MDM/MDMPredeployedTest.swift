@@ -57,6 +57,14 @@ class MDMPredeployedTest: XCTestCase {
     let accountDataPassword = "password"
 
     func setupSingleAccount(appendixNumber: Int = 0) {
+        let accountDict = accountWithServerDictionary(appendixNumber: appendixNumber)
+        let predeployedAccounts: SettingsDict = [MDMPredeployed.keyPredeployedAccounts:[accountDict]]
+        let mdm: SettingsDict = [MDMPredeployed.keyMDM: predeployedAccounts]
+
+        UserDefaults.standard.register(defaults: mdm)
+    }
+
+    func accountWithServerDictionary(appendixNumber: Int = 0) -> SettingsDict {
         let appendix16 = UInt16(appendixNumber)
         let appendixString = "\(appendixNumber)"
 
@@ -70,10 +78,7 @@ class MDMPredeployedTest: XCTestCase {
                                             imapServer: imapServer,
                                             smtpServer: smtpServer)
 
-        let predeployedAccounts: SettingsDict = [MDMPredeployed.keyPredeployedAccounts:[accountDict]]
-        let mdm: SettingsDict = [MDMPredeployed.keyMDM: predeployedAccounts]
-
-        UserDefaults.standard.register(defaults: mdm)
+        return accountDict
     }
 
     func serverDictionary(name: String, port: UInt16) -> SettingsDict {
