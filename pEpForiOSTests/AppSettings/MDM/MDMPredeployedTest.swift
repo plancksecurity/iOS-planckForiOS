@@ -35,33 +35,33 @@ class MDMPredeployedTest: XCTestCase {
             return
         }
 
-        XCTAssertEqual(account1.imapServer?.address, imapServer)
-        XCTAssertEqual(account1.smtpServer?.address, smtpServer)
-        XCTAssertEqual(account1.imapServer?.port, imapPort)
-        XCTAssertEqual(account1.smtpServer?.port, smtpPort)
-        XCTAssertEqual(account1.user.userName, userName)
-        XCTAssertEqual(account1.imapServer?.credentials.loginName, loginName)
-        XCTAssertEqual(account1.smtpServer?.credentials.loginName, loginName)
-        XCTAssertEqual(account1.imapServer?.credentials.password, password)
-        XCTAssertEqual(account1.smtpServer?.credentials.password, password)
+        XCTAssertEqual(account1.imapServer?.address, accountDataImapServer)
+        XCTAssertEqual(account1.smtpServer?.address, accountDataSmtpServer)
+        XCTAssertEqual(account1.imapServer?.port, accountDataImapPort)
+        XCTAssertEqual(account1.smtpServer?.port, accountDataSmtpPort)
+        XCTAssertEqual(account1.user.userName, accountDataUserName)
+        XCTAssertEqual(account1.imapServer?.credentials.loginName, accountDataLoginName)
+        XCTAssertEqual(account1.smtpServer?.credentials.loginName, accountDataLoginName)
+        XCTAssertEqual(account1.imapServer?.credentials.password, accountDataPassword)
+        XCTAssertEqual(account1.smtpServer?.credentials.password, accountDataPassword)
     }
 
     // MARK: - Util
 
-    let imapServer = "imap"
-    let smtpServer = "smtp"
-    let imapPort: UInt16 = 333
-    let smtpPort: UInt16 = 444
-    let userName = "userName"
-    let loginName = "loginName"
-    let password = "password"
+    let accountDataImapServer = "imap"
+    let accountDataSmtpServer = "smtp"
+    let accountDataImapPort: UInt16 = 333
+    let accountDataSmtpPort: UInt16 = 444
+    let accountDataUserName = "userName"
+    let accountDataLoginName = "loginName"
+    let accountDataPassword = "password"
 
     func setupSingleAccount() {
-        let imapServer = serverDictionary(name: imapServer, port: imapPort)
-        let smtpServer = serverDictionary(name: smtpServer, port: smtpPort)
-        let accountDict = accountDictionary(userName: userName,
-                                            loginName: loginName,
-                                            password: password,
+        let imapServer = serverDictionary(name: accountDataImapServer, port: accountDataImapPort)
+        let smtpServer = serverDictionary(name: accountDataSmtpServer, port: accountDataSmtpPort)
+        let accountDict = accountDictionary(userName: accountDataUserName,
+                                            loginName: accountDataLoginName,
+                                            password: accountDataPassword,
                                             imapServer: imapServer,
                                             smtpServer: smtpServer)
 
