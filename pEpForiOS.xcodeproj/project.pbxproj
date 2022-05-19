@@ -429,6 +429,7 @@
 		43DC6308262DCC8A0017D1BD /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = 43DC6306262DCC8A0017D1BD /* Localizable.strings */; };
 		43E15D1C2833CA4D00EDEAB7 /* AccessibilityIdentifier.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43285973282D4E9D00493791 /* AccessibilityIdentifier.swift */; };
 		43E1619120D7B2D6003F1514 /* UpdateThreadListDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43E1619020D7B2D6003F1514 /* UpdateThreadListDelegate.swift */; };
+		43E3668A2836254A00C4A4CB /* MDMPredeployedProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43E366892836254A00C4A4CB /* MDMPredeployedProtocol.swift */; };
 		43E60263262F0E8100232FE6 /* MessageModelForAppExtensions.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 43E60261262F0E8100232FE6 /* MessageModelForAppExtensions.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		43E657D11F3C33C30014CBEC /* String+HTML.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43E657D01F3C33C30014CBEC /* String+HTML.swift */; };
 		43E657E01F3C74030014CBEC /* AXHTMLParser.m in Sources */ = {isa = PBXBuildFile; fileRef = 43E657DD1F3C72360014CBEC /* AXHTMLParser.m */; };
@@ -1086,6 +1087,7 @@
 		43D213332237C8CA00C060A1 /* libAccountSettingsAdapter.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; path = libAccountSettingsAdapter.a; sourceTree = BUILT_PRODUCTS_DIR; };
 		43DC6307262DCC8A0017D1BD /* de */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = de; path = de.lproj/Localizable.strings; sourceTree = "<group>"; };
 		43E1619020D7B2D6003F1514 /* UpdateThreadListDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UpdateThreadListDelegate.swift; sourceTree = "<group>"; };
+		43E366892836254A00C4A4CB /* MDMPredeployedProtocol.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MDMPredeployedProtocol.swift; sourceTree = "<group>"; };
 		43E52A40262DCC8D006490D2 /* fr */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = fr; path = fr.lproj/Localizable.strings; sourceTree = "<group>"; };
 		43E60228262F08A700232FE6 /* MessageModelForAppExtensions.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MessageModelForAppExtensions.framework; path = "../../../../Library/Developer/Xcode/DerivedData/pEpForiOS-cvmzenmcimtlkhhkjvpbxrfptqfc/Build/Products/Debug-iphoneos/MessageModelForAppExtensions.framework"; sourceTree = "<group>"; };
 		43E60261262F0E8100232FE6 /* MessageModelForAppExtensions.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = MessageModelForAppExtensions.framework; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -2445,12 +2447,21 @@
 		43D0702D2133DB3F0013B120 /* AppSettings */ = {
 			isa = PBXGroup;
 			children = (
+				43E366882836254300C4A4CB /* MDM */,
 				43D070302133DB920013B120 /* AppSettingsProtocol.swift */,
 				43D070322133DC500013B120 /* AppSettings.swift */,
 				159AB56C23539D67008AB1F3 /* AppSettings+CNContactsAccessPermissionProvider.swift */,
 				15326E2C24A4BD1C00EA8C9B /* AppSettings+UsePEPFolderProvider.swift */,
 			);
 			path = AppSettings;
+			sourceTree = "<group>";
+		};
+		43E366882836254300C4A4CB /* MDM */ = {
+			isa = PBXGroup;
+			children = (
+				43E366892836254A00C4A4CB /* MDMPredeployedProtocol.swift */,
+			);
+			path = MDM;
 			sourceTree = "<group>";
 		};
 		43E58EB21CBF8301008AA7A7 /* Models */ = {
@@ -3679,6 +3690,7 @@
 				152A39DE21905C3E00D9F8E4 /* AccountCellViewModel.swift in Sources */,
 				49D3BECC20F8F7330043E05D /* LoginViewController.swift in Sources */,
 				43425EDB1FE3DE6E004A2728 /* OAuth2ProviderProtocol.swift in Sources */,
+				43E3668A2836254A00C4A4CB /* MDMPredeployedProtocol.swift in Sources */,
 				150B8E991FCDACBB00374438 /* AccountSettingsUserInputError.swift in Sources */,
 				4351C2DE1F4457620053381F /* NSString+Markdown.m in Sources */,
 				43306EBE1FE125B50045DD00 /* OAuth2Authorization.swift in Sources */,
