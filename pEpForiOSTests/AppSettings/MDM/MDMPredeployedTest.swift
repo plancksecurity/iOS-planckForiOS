@@ -43,17 +43,6 @@ class MDMPredeployedTest: XCTestCase {
 
     // MARK: - Util
 
-    // Dictionary keys
-    let keyMDM = "mdm"
-    let keyPredeployedAccounts = "predeployedAccounts"
-    let keyServerName = "name"
-    let keyServerPort = "port"
-    let keyUserName = "userName"
-    let keyLoginName = "loginName"
-    let keyPassword = "password"
-    let keyImapServer = "imapServer"
-    let keySmtpServer = "smtpServer"
-
     let imapServer = "imap"
     let smtpServer = "smtp"
     let imapPort: UInt16 = 333
@@ -68,14 +57,15 @@ class MDMPredeployedTest: XCTestCase {
                                             imapServer: imapServer,
                                             smtpServer: smtpServer)
 
-        let predeployedAccounts: SettingsDict = [keyPredeployedAccounts:[accountDict]]
-        let mdm: SettingsDict = [keyMDM: predeployedAccounts]
+        let predeployedAccounts: SettingsDict = [MDMPredeployed.keyPredeployedAccounts:[accountDict]]
+        let mdm: SettingsDict = [MDMPredeployed.keyMDM: predeployedAccounts]
 
         UserDefaults.standard.register(defaults: mdm)
     }
 
     func serverDictionary(name: String, port: UInt16) -> SettingsDict {
-        return [keyServerName: name, keyServerPort: NSNumber(value: port)]
+        return [MDMPredeployed.keyServerName: name,
+                MDMPredeployed.keyServerPort: NSNumber(value: port)]
     }
 
     func accountDictionary(userName: String,
@@ -83,10 +73,10 @@ class MDMPredeployedTest: XCTestCase {
                            password: String,
                            imapServer: SettingsDict,
                            smtpServer: SettingsDict) -> SettingsDict {
-        return [keyUserName: userName,
-               keyLoginName: loginName,
-                keyPassword: password,
-              keyImapServer: imapServer,
-              keySmtpServer: smtpServer]
+        return [MDMPredeployed.keyUserName: userName,
+                MDMPredeployed.keyLoginName: loginName,
+                MDMPredeployed.keyPassword: password,
+                MDMPredeployed.keyImapServer: imapServer,
+                MDMPredeployed.keySmtpServer: smtpServer]
     }
 }

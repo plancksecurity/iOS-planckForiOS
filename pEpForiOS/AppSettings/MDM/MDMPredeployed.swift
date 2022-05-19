@@ -35,6 +35,16 @@ struct MDMPredeployedAccount {
 }
 
 extension MDMPredeployed: MDMPredeployedProtocol {
+    static let keyMDM = "mdm"
+    static let keyPredeployedAccounts = "predeployedAccounts"
+    static let keyServerName = "name"
+    static let keyServerPort = "port"
+    static let keyUserName = "userName"
+    static let keyLoginName = "loginName"
+    static let keyPassword = "password"
+    static let keyImapServer = "imapServer"
+    static let keySmtpServer = "smtpServer"
+
     func predeployAccounts() {
     }
 }
