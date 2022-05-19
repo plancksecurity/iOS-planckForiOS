@@ -35,9 +35,10 @@ extension UIUtils {
             DispatchQueue.main.async {
                 let currentlyShownViewController = UIApplication.currentlyVisibleViewController()
                 if (displayError.type == .brokenServerConnectionSmtp ||
-                    displayError.type == .brokenServerConnectionImap) &&
-                    (currentlyShownViewController is EmailListViewController || currentlyShownViewController is ComposeViewController) {
+                    displayError.type == .brokenServerConnectionImap) {
+                    if (currentlyShownViewController is EmailListViewController || currentlyShownViewController is ComposeViewController) {
                         UIUtils.showServerNotAvailableBanner()
+                    }
                 } else {
                     showAlertWithOnlyPositiveButton(title: displayError.title, message: displayError.errorDescription)
                 }
