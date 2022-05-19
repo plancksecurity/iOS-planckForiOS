@@ -26,7 +26,7 @@ class MDMPredeployedTest: XCTestCase {
     func testSingleAccount() throws {
         setupSingleAccount()
 
-        MDMPredeployed().predeployAccounts()
+        try MDMPredeployed().predeployAccounts()
 
         let accounts = Account.all()
         XCTAssertEqual(accounts.count, 1)
@@ -52,7 +52,7 @@ class MDMPredeployedTest: XCTestCase {
 
         setupAccounts(number: numAccounts)
 
-        MDMPredeployed().predeployAccounts()
+        try MDMPredeployed().predeployAccounts()
 
         let accounts = Account.all()
         XCTAssertEqual(accounts.count, numAccounts

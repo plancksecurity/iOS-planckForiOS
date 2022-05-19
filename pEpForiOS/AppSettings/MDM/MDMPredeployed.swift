@@ -47,7 +47,7 @@ extension MDMPredeployed: MDMPredeployedProtocol {
     static let keyImapServer = "imapServer"
     static let keySmtpServer = "smtpServer"
 
-    func predeployAccounts() {
+    func predeployAccounts() throws {
         guard let mdmDict = UserDefaults.standard.dictionary(forKey: MDMPredeployed.keyMDM) else {
             return
         }
@@ -56,7 +56,22 @@ extension MDMPredeployed: MDMPredeployedProtocol {
             return
         }
 
-        if !predeployedAccounts.isEmpty {
+        for accDict in predeployedAccounts {
+            guard let imapServerDict = accDict[MDMPredeployed.keyImapServer] else {
+                throw MDMPredeployedError.malformedAccountData
+            }
+            guard let smtpServerDict = accDict[MDMPredeployed.keySmtpServer] else {
+                throw MDMPredeployedError.malformedAccountData
+            }
+            guard let userName = accDict[MDMPredeployed.keyUserName] else {
+                throw MDMPredeployedError.malformedAccountData
+            }
+            guard let loginName = accDict[MDMPredeployed.keyLoginName] else {
+                throw MDMPredeployedError.malformedAccountData
+            }
+            guard let password = accDict[MDMPredeployed.keyPassword] else {
+                throw MDMPredeployedError.malformedAccountData
+            }
         }
     }
 }
