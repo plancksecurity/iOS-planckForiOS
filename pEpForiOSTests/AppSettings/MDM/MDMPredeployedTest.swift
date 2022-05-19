@@ -8,7 +8,8 @@
 
 import XCTest
 
-import pEpForiOS
+@testable import pEpForiOS
+import MessageModel
 import pEp4iosIntern
 
 typealias SettingsDict = [String:Any]
@@ -24,6 +25,10 @@ class MDMPredeployedTest: XCTestCase {
 
     func testSingleAccount() throws {
         setupSingleAccount()
+        MDMPredeployed().predeployAccounts()
+
+        let accounts = Account.all()
+        XCTAssertEqual(accounts.count, 1)
     }
 
     // MARK: - Util
