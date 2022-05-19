@@ -359,5 +359,5 @@ extension AppSettings {
         set {
             AppSettings.userDefaults.set(newValue, forKey: AppSettings.keyCollapsingState)
         }
-    }
+    }    
 }

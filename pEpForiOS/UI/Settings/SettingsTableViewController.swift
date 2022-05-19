@@ -34,6 +34,7 @@ final class SettingsTableViewController: UITableViewController {
         navigationController?.setToolbarHidden(true, animated: false)
         showEmptyDetailViewIfApplicable(message: NSLocalizedString("Please choose a setting",
                                                                    comment: "No setting has been selected yet in the settings VC"))
+        UIUtils.hideBanner()
     }
 
     // MARK: - Extra Keys

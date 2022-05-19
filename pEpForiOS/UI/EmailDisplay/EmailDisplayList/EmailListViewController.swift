@@ -76,10 +76,7 @@ final class EmailListViewController: UIViewController {
         subscribeForKeyboardNotifications()
         edgesForExtendedLayout = .all
         setSeparator()
-        NotificationCenter.default.addObserver(self,
-                                               selector: #selector(pEpSettingsChanged),
-                                               name: .pEpSettingsChanged,
-                                               object: nil)
+        registerNotifications()
         doOnce = { [weak self] in
             guard let me = self else {
                 Log.shared.lostMySelf()
@@ -121,6 +118,15 @@ final class EmailListViewController: UIViewController {
         updateEditButton()
         vm.updateLastLookAt()
         updateFilterButton()
+    }
+
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
+        guard let vm = viewModel else {
+            Log.shared.errorAndCrash("VM not found")
+            return
+        }
+        vm.showBannerIfNeeded()
     }
 
     override func viewWillTransition(to size: CGSize, with coordinator: UIViewControllerTransitionCoordinator) {
@@ -1501,6 +1507,13 @@ extension EmailListViewController {
 }
 
 extension EmailListViewController {
+
+    private func registerNotifications() {
+        NotificationCenter.default.addObserver(self,
+                                               selector: #selector(pEpSettingsChanged),
+                                               name: .pEpSettingsChanged,
+                                               object: nil)
+    }
 
     private func setSeparator() {
         if #available(iOS 13.0, *) {
