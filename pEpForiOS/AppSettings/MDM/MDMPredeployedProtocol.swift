@@ -15,11 +15,11 @@ struct MDMPredeployedServer {
 }
 
 struct MDMPredeployedAccount {
-  /// If non-nil, this means that this account is IMAP based.
-  let imapServer: MDMPredeployedServer?
+  /// The IMAP server for this account.
+  let imapServer: MDMPredeployedServer
 
-  /// There is currently always an SMTP server, but who knows?
-  let smtpServer: MDMPredeployedServer?
+  /// The SMTP server for this account.
+  let smtpServer: MDMPredeployedServer
 
   /// The _login_ user name (that is, for logging in to any of the servers).
   let loginName: String
