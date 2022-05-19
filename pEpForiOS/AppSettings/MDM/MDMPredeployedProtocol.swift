@@ -31,7 +31,7 @@ struct MDMPredeployedAccount {
   let password: String
 }
 
-/// Error cases thrown by MDMPredeployedProtocol.predeployAccounts.
+/// Error cases thrown by `MDMPredeployedProtocol.predeployAccounts`.
 enum MDMPredeployedError {
 }
 
