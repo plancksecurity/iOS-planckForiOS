@@ -41,6 +41,8 @@ protocol MDMPredeployedProtocol {
     ///
     /// Will be called by the app delegate _before_ any account related action has been triggered, e.g., sync services.
     ///
+    /// - Throws: `MDMPredeployedError`
+    ///
     /// - Note: The logins for the accounts are _not_ checked for validity, that is, a wrong password will not lead
     /// to an immediate error.
     func predeployAccounts() throws
