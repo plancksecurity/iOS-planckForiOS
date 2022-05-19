@@ -56,6 +56,20 @@ class MDMPredeployedTest: XCTestCase {
     let accountDataLoginName = "loginName"
     let accountDataPassword = "password"
 
+    func setupAccounts(number: Int) {
+        var accountDicts = [SettingsDict]()
+
+        for i in 1...number {
+            let accDict = accountWithServerDictionary(appendixNumber: i)
+            accountDicts.append(accDict)
+        }
+
+        let predeployedAccounts: SettingsDict = [MDMPredeployed.keyPredeployedAccounts:accountDicts]
+        let mdm: SettingsDict = [MDMPredeployed.keyMDM: predeployedAccounts]
+
+        UserDefaults.standard.register(defaults: mdm)
+    }
+
     func setupSingleAccount(appendixNumber: Int = 0) {
         let accountDict = accountWithServerDictionary(appendixNumber: appendixNumber)
         let predeployedAccounts: SettingsDict = [MDMPredeployed.keyPredeployedAccounts:[accountDict]]
