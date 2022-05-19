@@ -23,7 +23,7 @@ extension UIUtils {
         NotificationBannerUtil.show(errorMessage: errorMessage)
     }
 
-    // Hide any banner that is shown.
+    /// Hide any banner that is shown.
     public static func hideBanner() {
         NotificationBannerUtil.hide()
     }
