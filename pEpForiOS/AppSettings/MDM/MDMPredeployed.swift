@@ -33,3 +33,8 @@ struct MDMPredeployedAccount {
   /// The password to be used for all accounts.
   let password: String
 }
+
+extension MDMPredeployed: MDMPredeployedProtocol {
+    func predeployAccounts() {
+    }
+}
