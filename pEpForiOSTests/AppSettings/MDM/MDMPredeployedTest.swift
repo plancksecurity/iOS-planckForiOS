@@ -29,10 +29,21 @@ class MDMPredeployedTest: XCTestCase {
 
         let accounts = Account.all()
         XCTAssertEqual(accounts.count, 1)
+
+        guard let account1 = accounts.first else {
+            // The number of accounts has already been checked
+            return
+        }
+
+        XCTAssertEqual(account1.imapServer?.address, imapServer)
+        XCTAssertEqual(account1.smtpServer?.address, smtpServer)
+        XCTAssertEqual(account1.imapServer?.port, imapPort)
+        XCTAssertEqual(account1.smtpServer?.port, smtpPort)
     }
 
     // MARK: - Util
 
+    // Dictionary keys
     let keyMDM = "mdm"
     let keyPredeployedAccounts = "predeployedAccounts"
     let keyServerName = "name"
@@ -43,9 +54,14 @@ class MDMPredeployedTest: XCTestCase {
     let keyImapServer = "imapServer"
     let keySmtpServer = "smtpServer"
 
+    let imapServer = "imap"
+    let smtpServer = "smtp"
+    let imapPort: UInt16 = 333
+    let smtpPort: UInt16 = 444
+
     func setupSingleAccount() {
-        let imapServer = serverDictionary(name: "imap", port: 333)
-        let smtpServer = serverDictionary(name: "smtp", port: 444)
+        let imapServer = serverDictionary(name: imapServer, port: imapPort)
+        let smtpServer = serverDictionary(name: smtpServer, port: smtpPort)
         let accountDict = accountDictionary(userName: "user",
                                             loginName: "login",
                                             password: "password",
