@@ -56,6 +56,7 @@ extension MDMPredeployed: MDMPredeployedProtocol {
             return
         }
 
+        var haveWipedExistingAccounts = false
         for accDict in predeployedAccounts {
             guard let imapServerDict = accDict[MDMPredeployed.keyImapServer] else {
                 throw MDMPredeployedError.malformedAccountData
@@ -71,6 +72,11 @@ extension MDMPredeployed: MDMPredeployedProtocol {
             }
             guard let password = accDict[MDMPredeployed.keyPassword] else {
                 throw MDMPredeployedError.malformedAccountData
+            }
+
+            if !haveWipedExistingAccounts {
+                // TODO: Wipe existing accounts
+                haveWipedExistingAccounts = true
             }
         }
     }
