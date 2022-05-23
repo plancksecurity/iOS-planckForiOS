@@ -61,7 +61,7 @@ extension MDMPredeployed: MDMPredeployedProtocol {
             guard let imapServerDict = accDict[MDMPredeployed.keyImapServer] as? SettingsDict else {
                 throw MDMPredeployedError.malformedAccountData
             }
-            guard let imapServer = imapServerDict[MDMPredeployed.keyServerName] as? String else {
+            guard let imapServerAddress = imapServerDict[MDMPredeployed.keyServerName] as? String else {
                 throw MDMPredeployedError.malformedAccountData
             }
             guard let imapPortNumber = imapServerDict[MDMPredeployed.keyServerPort] as? NSNumber else {
@@ -70,7 +70,7 @@ extension MDMPredeployed: MDMPredeployedProtocol {
             guard let smtpServerDict = accDict[MDMPredeployed.keySmtpServer] as? SettingsDict else {
                 throw MDMPredeployedError.malformedAccountData
             }
-            guard let smtpServer = smtpServerDict[MDMPredeployed.keyServerName] as? String else {
+            guard let smtpServerAddress = smtpServerDict[MDMPredeployed.keyServerName] as? String else {
                 throw MDMPredeployedError.malformedAccountData
             }
             guard let smtpPortNumber = smtpServerDict[MDMPredeployed.keyServerPort] as? NSNumber else {
@@ -94,8 +94,14 @@ extension MDMPredeployed: MDMPredeployedProtocol {
                                    userName: userName,
                                    session: session)
 
-            let creds = ServerCredentials.init(loginName: loginName, clientCertificate: nil)
-            creds.password = password
+            let credentials = ServerCredentials.init(loginName: loginName, clientCertificate: nil)
+            credentials.password = password
+
+            let imapServer = Server.create(serverType: .imap,
+                                           port: imapPortNumber.uint16Value,
+                                           address: imapServerAddress,
+                                           transport: .tls,
+                                           credentials: credentials)
         }
     }
 }
