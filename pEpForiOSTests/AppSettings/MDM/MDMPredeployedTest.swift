@@ -55,8 +55,7 @@ class MDMPredeployedTest: XCTestCase {
         try MDMPredeployed().predeployAccounts()
 
         let accounts = Account.all()
-        XCTAssertEqual(accounts.count, numAccounts
-        )
+        XCTAssertEqual(accounts.count, numAccounts)
 
         var optionalPrevAccount: Account? = nil
         for acc in accounts {
