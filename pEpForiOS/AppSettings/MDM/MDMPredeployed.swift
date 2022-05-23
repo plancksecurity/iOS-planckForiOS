@@ -106,6 +106,7 @@ extension MDMPredeployed: MDMPredeployedProtocol {
                                    session: session)
 
             let creds = ServerCredentials.init(loginName: loginName, clientCertificate: nil)
+            creds.password = password
         }
     }
 }
