@@ -61,7 +61,19 @@ extension MDMPredeployed: MDMPredeployedProtocol {
             guard let imapServerDict = accDict[MDMPredeployed.keyImapServer] as? SettingsDict else {
                 throw MDMPredeployedError.malformedAccountData
             }
+            guard let imapServer = imapServerDict[MDMPredeployed.keyServerName] as? String else {
+                throw MDMPredeployedError.malformedAccountData
+            }
+            guard let imapPortNumber = imapServerDict[MDMPredeployed.keyServerPort] as? NSNumber else {
+                throw MDMPredeployedError.malformedAccountData
+            }
             guard let smtpServerDict = accDict[MDMPredeployed.keySmtpServer] as? SettingsDict else {
+                throw MDMPredeployedError.malformedAccountData
+            }
+            guard let smtpServer = smtpServerDict[MDMPredeployed.keyServerName] as? String else {
+                throw MDMPredeployedError.malformedAccountData
+            }
+            guard let smtpPortNumber = smtpServerDict[MDMPredeployed.keyServerPort] as? NSNumber else {
                 throw MDMPredeployedError.malformedAccountData
             }
 
