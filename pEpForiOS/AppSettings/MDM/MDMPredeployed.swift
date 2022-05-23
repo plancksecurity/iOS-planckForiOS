@@ -108,6 +108,8 @@ extension MDMPredeployed: MDMPredeployedProtocol {
                                            address: smtpServerAddress,
                                            transport: .tls,
                                            credentials: credentials)
+
+            let _ = Account.init(user: id, servers: [imapServer, smtpServer], session: session)
         }
         session.commit()
     }
