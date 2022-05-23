@@ -43,6 +43,7 @@ extension MDMPredeployed {
     static let keyPredeployedAccounts = "predeployedAccounts"
     static let keyServerName = "name"
     static let keyServerPort = "port"
+    static let keyUserAddress = "userAddress"
     static let keyUserName = "userName"
     static let keyLoginName = "loginName"
     static let keyPassword = "password"
@@ -75,6 +76,9 @@ extension MDMPredeployed: MDMPredeployedProtocol {
                 throw MDMPredeployedError.malformedAccountData
             }
             guard let userName = accDict[MDMPredeployed.keyUserName] else {
+                throw MDMPredeployedError.malformedAccountData
+            }
+            guard let userAddress = accDict[MDMPredeployed.keyUserAddress] else {
                 throw MDMPredeployedError.malformedAccountData
             }
             guard let loginName = accDict[MDMPredeployed.keyLoginName] else {

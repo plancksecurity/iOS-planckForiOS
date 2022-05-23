@@ -174,6 +174,8 @@ class MDMPredeployedTest: XCTestCase {
         let smtpServer = serverDictionary(name: accountDataSmtpServer + appendixString,
                                           port: accountDataSmtpPort + appendix16)
         let accountDict = accountDictionary(userName: accountDataUserName + appendixString,
+                                            userAddress: accountDataUserName + appendixString +
+                                            "@example.com",
                                             loginName: accountDataLoginName + appendixString,
                                             password: accountDataPassword + appendixString,
                                             imapServer: imapServer,
@@ -188,11 +190,13 @@ class MDMPredeployedTest: XCTestCase {
     }
 
     func accountDictionary(userName: String,
+                           userAddress: String,
                            loginName: String,
                            password: String,
                            imapServer: SettingsDict,
                            smtpServer: SettingsDict) -> SettingsDict {
         return [MDMPredeployed.keyUserName: userName,
+                MDMPredeployed.keyUserAddress: userAddress,
                 MDMPredeployed.keyLoginName: loginName,
                 MDMPredeployed.keyPassword: password,
                 MDMPredeployed.keyImapServer: imapServer,
