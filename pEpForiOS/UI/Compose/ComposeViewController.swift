@@ -102,9 +102,11 @@ class ComposeViewController: UIViewController {
 
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
+#if EXT_SHARE
         if !NetworkMonitorUtil.shared.netOn {
             UIUtils.showNoInternetConnectionBanner(viewController: self)
         }
+#endif
     }
 
     deinit {
