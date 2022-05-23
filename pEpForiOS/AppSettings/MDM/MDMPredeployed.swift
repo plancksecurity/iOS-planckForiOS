@@ -69,12 +69,6 @@ extension MDMPredeployed: MDMPredeployedProtocol {
 
         var haveWipedExistingAccounts = false
         for accDict in predeployedAccounts {
-            guard let imapServerDict = accDict[MDMPredeployed.keyImapServer] as? SettingsDict else {
-                throw MDMPredeployedError.malformedAccountData
-            }
-            guard let smtpServerDict = accDict[MDMPredeployed.keySmtpServer] as? SettingsDict else {
-                throw MDMPredeployedError.malformedAccountData
-            }
             guard let userName = accDict[MDMPredeployed.keyUserName] as? String else {
                 throw MDMPredeployedError.malformedAccountData
             }
@@ -85,6 +79,12 @@ extension MDMPredeployed: MDMPredeployedProtocol {
                 throw MDMPredeployedError.malformedAccountData
             }
             guard let password = accDict[MDMPredeployed.keyPassword] as? String else {
+                throw MDMPredeployedError.malformedAccountData
+            }
+            guard let imapServerDict = accDict[MDMPredeployed.keyImapServer] as? SettingsDict else {
+                throw MDMPredeployedError.malformedAccountData
+            }
+            guard let smtpServerDict = accDict[MDMPredeployed.keySmtpServer] as? SettingsDict else {
                 throw MDMPredeployedError.malformedAccountData
             }
 
