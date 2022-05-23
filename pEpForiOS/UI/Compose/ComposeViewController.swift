@@ -29,6 +29,7 @@ class ComposeViewController: UIViewController {
     @IBOutlet var tableView: UITableView!
 
     private var suggestionsChildViewController: SuggestTableViewController?
+
     lazy private var mediaAttachmentPickerProvider: MediaAttachmentPickerProvider? = {
         guard let pickerVm = viewModel?.mediaAttachmentPickerProviderViewModel() else {
             Log.shared.errorAndCrash("Invalid state")
@@ -36,6 +37,7 @@ class ComposeViewController: UIViewController {
         }
         return MediaAttachmentPickerProvider(with: pickerVm)
     }()
+
     lazy private var documentAttachmentPicker: DocumentAttachmentPickerViewController = {
         return DocumentAttachmentPickerViewController(
             viewModel: viewModel?.documentAttachmentPickerViewModel())
@@ -61,6 +63,7 @@ class ComposeViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         setupView()
+        setupForSharingExtension()
         if viewModel == nil {
             setupModel()
         }
@@ -95,6 +98,13 @@ class ComposeViewController: UIViewController {
         tableView.hideSeperatorForEmptyCells()
         setupRecipientSuggestionsTableViewController()
         viewModel?.handleDidReAppear()
+    }
+
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
+        if !NetworkMonitorUtil.shared.netOn {
+            UIUtils.showNoInternetConnectionBannerOn(sharingExtensionComposeViewController: self)
+        }
     }
 
     deinit {
@@ -1108,5 +1118,32 @@ extension ComposeViewController {
         } else {
             tableView.backgroundColor = .white
         }
+    }
+}
+
+//MARK: - Share Extension 
+
+extension ComposeViewController {
+
+    func setupForSharingExtension() {
+#if EXT_SHARE
+        [Notifications.Reachability.connected.name,
+         Notifications.Reachability.notConnected.name].forEach { (notification) in
+            NotificationCenter.default.addObserver(self,
+                                                   selector: #selector(changeInternetConnection),
+                                                   name: notification, object: nil)
+        }
+#endif
+    }
+
+    @objc
+    private func changeInternetConnection(notification: Notification) {
+#if EXT_SHARE
+        if notification.name == Notifications.Reachability.notConnected.name {
+            UIUtils.showNoInternetConnectionBannerOn(sharingExtensionComposeViewController: self)
+        } else {
+            UIUtils.hideBannerOn(sharingExtensionComposeViewController: self)
+        }
+#endif
     }
 }

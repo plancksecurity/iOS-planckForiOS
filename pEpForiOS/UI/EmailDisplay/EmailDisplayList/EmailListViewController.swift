@@ -126,7 +126,7 @@ final class EmailListViewController: UIViewController {
             Log.shared.errorAndCrash("VM not found")
             return
         }
-        vm.showBannerIfNeeded()
+        vm.handleBannerIfNeeded()
     }
 
     override func viewWillTransition(to size: CGSize, with coordinator: UIViewControllerTransitionCoordinator) {
