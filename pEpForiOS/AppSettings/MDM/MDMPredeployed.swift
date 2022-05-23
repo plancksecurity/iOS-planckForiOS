@@ -58,6 +58,8 @@ extension MDMPredeployed: MDMPredeployedProtocol {
             return
         }
 
+        let session = Session.main
+
         var haveWipedExistingAccounts = false
         for accDict in predeployedAccounts {
             guard let imapServerDict = accDict[MDMPredeployed.keyImapServer] else {
@@ -82,7 +84,7 @@ extension MDMPredeployed: MDMPredeployedProtocol {
                     accountToDelete.delete()
                 }
 
-                Session.main.commit()
+                session.commit()
 
                 haveWipedExistingAccounts = true
             }
