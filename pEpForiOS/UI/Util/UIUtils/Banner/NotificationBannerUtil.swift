@@ -159,10 +159,6 @@ class NotificationBannerUtil: NotificationBannerUtilProtocol {
                 vc = UIApplication.currentlyVisibleViewController()
             }
 
-            if let tv = vc.view.subviews.filter({$0 is UITableView} ).first {
-                tv.transform = .identity
-            }
-
             guard let navigationBar = vc.navigationController?.navigationBar else {
                 // Navigation bar not found, nothing to do.
                 return
@@ -175,6 +171,9 @@ class NotificationBannerUtil: NotificationBannerUtilProtocol {
 
             // First, increase the banner height.
             UIView.animate(withDuration: animateDuration) {
+                if let tv = vc.view.subviews.filter({$0 is UITableView}).first {
+                    tv.transform = .identity
+                }
                 errorBannerView.titleLabel.isHidden = true
                 heightConstraint?.constant = 0
                 navigationBar.layoutIfNeeded()
