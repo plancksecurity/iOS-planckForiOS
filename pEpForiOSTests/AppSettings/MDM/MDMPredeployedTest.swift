@@ -79,8 +79,8 @@ class MDMPredeployedTest: XCTestCase {
     }
 
     func testAllExistingAccountsHaveBeenWiped() throws {
-        let acc1 = createAccount(baseName: "acc1", portBase: 555, index: 1)
-        let acc2 = createAccount(baseName: "acc2", portBase: 556, index: 2)
+        let _ = createAccount(baseName: "acc1", portBase: 555, index: 1)
+        let _ = createAccount(baseName: "acc2", portBase: 556, index: 2)
 
         setupSinglePredepolyAccount()
 
