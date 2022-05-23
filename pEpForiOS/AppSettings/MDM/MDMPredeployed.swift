@@ -8,6 +8,8 @@
 
 import Foundation
 
+import MessageModel
+
 class MDMPredeployed {
 }
 
@@ -75,7 +77,13 @@ extension MDMPredeployed: MDMPredeployedProtocol {
             }
 
             if !haveWipedExistingAccounts {
-                // TODO: Wipe existing accounts
+                let allAccounts = Account.all()
+                for accountToDelete in allAccounts {
+                    accountToDelete.delete()
+                }
+
+                Session.main.commit()
+
                 haveWipedExistingAccounts = true
             }
         }
