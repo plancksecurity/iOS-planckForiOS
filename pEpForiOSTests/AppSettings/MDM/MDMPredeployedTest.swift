@@ -79,6 +79,30 @@ class MDMPredeployedTest: XCTestCase {
     }
 
     func testAllExistingAccountsHaveBeenWiped() throws {
+        let acc1 = createAccount(baseName: "acc1", portBase: 555, index: 1)
+        let acc2 = createAccount(baseName: "acc2", portBase: 556, index: 2)
+
+        setupSinglePredepolyAccount()
+
+        try MDMPredeployed().predeployAccounts()
+
+        let accounts = Account.all()
+        XCTAssertEqual(accounts.count, 1)
+
+        guard let account1 = accounts.first else {
+            // The number of accounts has already been checked
+            return
+        }
+
+        XCTAssertEqual(account1.imapServer?.address, accountDataImapServer)
+        XCTAssertEqual(account1.smtpServer?.address, accountDataSmtpServer)
+        XCTAssertEqual(account1.imapServer?.port, accountDataImapPort)
+        XCTAssertEqual(account1.smtpServer?.port, accountDataSmtpPort)
+        XCTAssertEqual(account1.user.userName, accountDataUserName)
+        XCTAssertEqual(account1.imapServer?.credentials.loginName, accountDataLoginName)
+        XCTAssertEqual(account1.smtpServer?.credentials.loginName, accountDataLoginName)
+        XCTAssertEqual(account1.imapServer?.credentials.password, accountDataPassword)
+        XCTAssertEqual(account1.smtpServer?.credentials.password, accountDataPassword)
     }
 
     // MARK: - Util
@@ -111,6 +135,32 @@ class MDMPredeployedTest: XCTestCase {
         let mdm: SettingsDict = [MDMPredeployed.keyMDM: predeployedAccounts]
 
         UserDefaults.standard.register(defaults: mdm)
+    }
+
+    func createAccount(baseName: String, portBase: Int, index: Int) -> Account {
+        let session = Session.main
+        let id = Identity.init(address: "\(baseName)\(index)@example.com",
+                               userID: "\(baseName)\(index)",
+                               addressBookID: nil,
+                               userName: "\(baseName)\(index)",
+                               session: session)
+        let creds = ServerCredentials.init(loginName: "\(baseName)\(index)", clientCertificate: nil)
+        creds.password = "password_\(portBase)\(index)"
+
+        let imap = Server.create(serverType: .imap,
+                                 port: UInt16(portBase),
+                                 address: "imap\(baseName)\(portBase)\(index)",
+                                 transport: .tls,
+                                 credentials: creds)
+        let smtp = Server.create(serverType: .smtp,
+                                 port: UInt16(portBase + 1),
+                                 address: "smtp\(baseName)\(portBase + 1)\(index)",
+                                 transport: .tls,
+                                 credentials: creds)
+        let acc = Account.init(user: id, servers: [imap, smtp], session: session)
+        session.commit()
+
+        return acc
     }
 
     // MARK: - Util Util
