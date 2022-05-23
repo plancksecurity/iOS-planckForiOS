@@ -9,7 +9,7 @@
 import XCTest
 
 @testable import pEpForiOS
-import MessageModel
+@testable import MessageModel
 import pEp4iosIntern
 
 typealias SettingsDict = [String:Any]
@@ -21,6 +21,7 @@ class MDMPredeployedTest: XCTestCase {
     }
 
     override func tearDownWithError() throws {
+        Stack.shared.reset()
     }
 
     func testSingleAccount() throws {
