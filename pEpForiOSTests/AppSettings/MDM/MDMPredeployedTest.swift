@@ -24,7 +24,7 @@ class MDMPredeployedTest: XCTestCase {
     }
 
     func testSingleAccount() throws {
-        setupSingleAccount()
+        setupSinglePredepolyAccount()
 
         try MDMPredeployed().predeployAccounts()
 
@@ -50,7 +50,7 @@ class MDMPredeployedTest: XCTestCase {
     func testMoreThanOneAccount() throws {
         let numAccounts = 2
 
-        setupAccounts(number: numAccounts)
+        setupPredeployAccounts(number: numAccounts)
 
         try MDMPredeployed().predeployAccounts()
 
@@ -92,7 +92,7 @@ class MDMPredeployedTest: XCTestCase {
     let accountDataLoginName = "loginName"
     let accountDataPassword = "password"
 
-    func setupAccounts(number: Int) {
+    func setupPredeployAccounts(number: Int) {
         var accountDicts = [SettingsDict]()
 
         for i in 1...number {
@@ -106,13 +106,15 @@ class MDMPredeployedTest: XCTestCase {
         UserDefaults.standard.register(defaults: mdm)
     }
 
-    func setupSingleAccount(appendixNumber: Int = 0) {
+    func setupSinglePredepolyAccount(appendixNumber: Int = 0) {
         let accountDict = accountWithServerDictionary(appendixNumber: appendixNumber)
         let predeployedAccounts: SettingsDict = [MDMPredeployed.keyPredeployedAccounts:[accountDict]]
         let mdm: SettingsDict = [MDMPredeployed.keyMDM: predeployedAccounts]
 
         UserDefaults.standard.register(defaults: mdm)
     }
+
+    // MARK: - Util Util
 
     func accountWithServerDictionary(appendixNumber: Int = 0) -> SettingsDict {
         let appendix16 = UInt16(appendixNumber)
