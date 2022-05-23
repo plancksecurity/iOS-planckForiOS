@@ -109,5 +109,6 @@ extension MDMPredeployed: MDMPredeployedProtocol {
                                            transport: .tls,
                                            credentials: credentials)
         }
+        session.commit()
     }
 }
