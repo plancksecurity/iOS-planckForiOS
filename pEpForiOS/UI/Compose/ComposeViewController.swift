@@ -103,7 +103,7 @@ class ComposeViewController: UIViewController {
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
         if !NetworkMonitorUtil.shared.netOn {
-            UIUtils.showNoInternetConnectionBannerOn(sharingExtensionComposeViewController: self)
+            UIUtils.showNoInternetConnectionBanner(viewController: self)
         }
     }
 
@@ -1140,9 +1140,9 @@ extension ComposeViewController {
     private func changeInternetConnection(notification: Notification) {
 #if EXT_SHARE
         if notification.name == Notifications.Reachability.notConnected.name {
-            UIUtils.showNoInternetConnectionBannerOn(sharingExtensionComposeViewController: self)
+            UIUtils.showNoInternetConnectionBanner(viewController: self)
         } else {
-            UIUtils.hideBannerOn(sharingExtensionComposeViewController: self)
+            UIUtils.hideBanner(viewController: self)
         }
 #endif
     }

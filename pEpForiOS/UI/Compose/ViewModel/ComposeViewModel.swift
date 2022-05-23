@@ -167,15 +167,6 @@ class ComposeViewModel {
 
     public func handleDidReAppear() {
         state.validate()
-#if !EXT_SHARE
-        checkConnectivity()
-#endif
-    }
-
-    public func checkConnectivity() {
-        if !NetworkMonitorUtil.shared.netOn {
-            UIUtils.showNoInternetConnectionBanner()
-        }
     }
 
     public func viewModel(for indexPath: IndexPath) -> CellViewModel {
