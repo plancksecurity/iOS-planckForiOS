@@ -79,6 +79,9 @@ class MDMPredeployedTest: XCTestCase {
         }
     }
 
+    func testAllExistingAccountsHaveBeenWiped() throws {
+    }
+
     // MARK: - Util
 
     let accountDataImapServer = "imap"
