@@ -98,6 +98,14 @@ extension MDMPredeployed: MDMPredeployedProtocol {
 
                 haveWipedExistingAccounts = true
             }
+
+            let id = Identity.init(address: userAddress,
+                                   userID: nil,
+                                   addressBookID: nil,
+                                   userName: userName,
+                                   session: session)
+
+            let creds = ServerCredentials.init(loginName: loginName, clientCertificate: nil)
         }
     }
 }
