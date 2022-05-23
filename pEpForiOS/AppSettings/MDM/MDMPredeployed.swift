@@ -36,9 +36,9 @@ struct MDMPredeployedAccount {
   let password: String
 }
 
-typealias SettingsDict = [String:Any]
+// MARK: - Dictionary key constants
 
-extension MDMPredeployed: MDMPredeployedProtocol {
+extension MDMPredeployed {
     static let keyMDM = "mdm"
     static let keyPredeployedAccounts = "predeployedAccounts"
     static let keyServerName = "name"
@@ -48,7 +48,13 @@ extension MDMPredeployed: MDMPredeployedProtocol {
     static let keyPassword = "password"
     static let keyImapServer = "imapServer"
     static let keySmtpServer = "smtpServer"
+}
 
+typealias SettingsDict = [String:Any]
+
+// MARK: - MDMPredeployedProtocol
+
+extension MDMPredeployed: MDMPredeployedProtocol {
     func predeployAccounts() throws {
         guard let mdmDict = UserDefaults.standard.dictionary(forKey: MDMPredeployed.keyMDM) else {
             return
