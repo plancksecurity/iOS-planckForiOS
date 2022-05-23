@@ -102,6 +102,12 @@ extension MDMPredeployed: MDMPredeployedProtocol {
                                            address: imapServerAddress,
                                            transport: .tls,
                                            credentials: credentials)
+
+            let smtpServer = Server.create(serverType: .smtp,
+                                           port: smtpPortNumber.uint16Value,
+                                           address: smtpServerAddress,
+                                           transport: .tls,
+                                           credentials: credentials)
         }
     }
 }
