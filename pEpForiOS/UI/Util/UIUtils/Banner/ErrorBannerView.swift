@@ -7,7 +7,6 @@
 //
 
 import UIKit
-import pEpIOSToolbox
 
 class ErrorBannerView: UIView {
     private static let nibName = "ErrorBannerView"
@@ -17,7 +16,7 @@ class ErrorBannerView: UIView {
 
     override func awakeFromNib() {
         super.awakeFromNib()
-        titleLabel.setPEPFont(style: .footnote, weight: .regular)
+        titleLabel.setPEPFont(style: .body, weight: .regular)
     }
 
     /// Load the banner view.
@@ -29,7 +28,6 @@ class ErrorBannerView: UIView {
         let nib = UINib(nibName: String(describing:self), bundle: nil)
         guard let errorBannerView =
             nib.instantiate(withOwner: nil, options: nil).first as? ErrorBannerView else {
-                Log.shared.errorAndCrash("Fail to load ErrorBannerView from xib")
                 return nil
         }
         errorBannerView.titleLabel.text = title

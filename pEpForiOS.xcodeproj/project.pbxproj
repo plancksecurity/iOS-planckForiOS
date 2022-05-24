@@ -469,6 +469,8 @@
 		5B394E1323ED5673006A1FC0 /* TrustManagementTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5B394E1223ED5673006A1FC0 /* TrustManagementTableViewCell.swift */; };
 		5B3B019124B46CFC00FBB4B5 /* UILayout+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5B3B019024B46CFC00FBB4B5 /* UILayout+Extension.swift */; };
 		5B3B019524B49DD700FBB4B5 /* AccountSettingsViewModelTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5B3B019424B49DD700FBB4B5 /* AccountSettingsViewModelTest.swift */; };
+		5B3C0DFB28368BAA001B7A82 /* ErrorBannerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5BFAE38B2822933A00B003D4 /* ErrorBannerView.swift */; };
+		5B3C0DFC28368BBA001B7A82 /* ErrorBannerView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 5BFAE389282292C400B003D4 /* ErrorBannerView.xib */; };
 		5B3C13BF23D8AF2E00FC0A53 /* SettingsTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5B3C13BE23D8AF2E00FC0A53 /* SettingsTableViewController.swift */; };
 		5B41C6082418F15100C268CE /* TutorialStep3iPhoneViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5B41C6072418F15100C268CE /* TutorialStep3iPhoneViewController.swift */; };
 		5B41F9CF25CD517700E55EDF /* MockAppSettings.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5B41F9CE25CD517700E55EDF /* MockAppSettings.swift */; };
@@ -528,6 +530,9 @@
 		5BD3C104282C08A000701B94 /* ReachabilityManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5BD3C103282BFEB000701B94 /* ReachabilityManager.swift */; };
 		5BD3C107282C13CA00701B94 /* UIUtils.swift in Sources */ = {isa = PBXBuildFile; fileRef = 150B8EB21FCEB93D00374438 /* UIUtils.swift */; };
 		5BD4466024F65DE300422594 /* EmailListViewController+Keyboard.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5BD4465F24F65DE300422594 /* EmailListViewController+Keyboard.swift */; };
+		5BD68E632837ACD200C423CF /* ReachabilityManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5BD3C103282BFEB000701B94 /* ReachabilityManager.swift */; };
+		5BD68E642837AD8000C423CF /* UIUtils+Banner.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5BFAE38328218A0100B003D4 /* UIUtils+Banner.swift */; };
+		5BD68E652837ADA000C423CF /* NotificationBannerUtil.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5BFAE3802821889E00B003D4 /* NotificationBannerUtil.swift */; };
 		5BD93BEE2673AB7C000F2A8C /* ComposeViewModel+AttachmentSizeUtil.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5BD93BED2673AB7C000F2A8C /* ComposeViewModel+AttachmentSizeUtil.swift */; };
 		5BD93BEF2673AB7D000F2A8C /* ComposeViewModel+AttachmentSizeUtil.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5BD93BED2673AB7C000F2A8C /* ComposeViewModel+AttachmentSizeUtil.swift */; };
 		5BE35A9A249139DD00AC605C /* AccountSettingsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5BE35A99249139DD00AC605C /* AccountSettingsViewController.swift */; };
@@ -3148,6 +3153,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				434A6C1625D2A17900179335 /* TrustManagement.storyboard in Resources */,
+				5B3C0DFC28368BBA001B7A82 /* ErrorBannerView.xib in Resources */,
 				153169C2263863A6006E020D /* InfoPlist.strings in Resources */,
 				4313A55225E7C1F7001E6767 /* LaunchScreen.storyboard in Resources */,
 				4313A54C25E7C1D9001E6767 /* NothingSelected.storyboard in Resources */,
@@ -3282,6 +3288,7 @@
 			files = (
 				5BCD37D3269F236D0052A030 /* CornerRadiusView.swift in Sources */,
 				434C19E325D3E3F700F622DB /* ComposeUtil.swift in Sources */,
+				5BD68E652837ADA000C423CF /* NotificationBannerUtil.swift in Sources */,
 				43BDE03F25DE7D1A00FC0C68 /* node.c in Sources */,
 				434C1A9625D40D6500F622DB /* UIUtils+ActionSheets.swift in Sources */,
 				434C1AFF25D4279100F622DB /* HtmlToAttributedTextSaxParser.swift in Sources */,
@@ -3327,6 +3334,7 @@
 				439C62D82611D41F001893BD /* Appearance.swift in Sources */,
 				434C1ADB25D413AE00F622DB /* IdentityImageTool.swift in Sources */,
 				434C19EA25D3E52F00F622DB /* Account+Extension.swift in Sources */,
+				5B3C0DFB28368BAA001B7A82 /* ErrorBannerView.swift in Sources */,
 				434C19DA25D3E2AE00F622DB /* UITableView+Extension.swift in Sources */,
 				434C1B0225D427DA00F622DB /* MediaAttachmentPickerProviderViewModel.swift in Sources */,
 				434C1AC025D4116D00F622DB /* SegueHandlerType.swift in Sources */,
@@ -3362,6 +3370,7 @@
 				434A6C6525D2A3CB00179335 /* NSAttributedString+BodyTextUtils.swift in Sources */,
 				434C1ACC25D4123900F622DB /* PEPUIAlertAction.swift in Sources */,
 				43959CFE261C85CA00410108 /* UILayout+Extension.swift in Sources */,
+				5BD68E642837AD8000C423CF /* UIUtils+Banner.swift in Sources */,
 				434C1AC925D4121900F622DB /* PEPAlertViewModel.swift in Sources */,
 				434A6C5A25D2A3B800179335 /* AttachmentViewModel.swift in Sources */,
 				434C1B7425D5123A00F622DB /* NothingSelectedViewController.swift in Sources */,
@@ -3377,6 +3386,7 @@
 				43BDE05725DE820C00FC0C68 /* iterator.c in Sources */,
 				434C19C125D3E07000F622DB /* AppSettingsProtocol.swift in Sources */,
 				5B0FDAD7268249B6000420A7 /* UIImage+Attachment.swift in Sources */,
+				5BD68E632837ACD200C423CF /* ReachabilityManager.swift in Sources */,
 				4300CF6725ECF4F4003DBEB4 /* ShareViewModel.swift in Sources */,
 				434C1AD225D412F300F622DB /* TrustManagementViewModel.swift in Sources */,
 				434C1ABD25D4112B00F622DB /* SecureWebViewUrlClickHandlerProtocol.swift in Sources */,
