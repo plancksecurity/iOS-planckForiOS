@@ -37,15 +37,22 @@ class MDMPredeployedTest: XCTestCase {
             return
         }
 
-        XCTAssertEqual(account1.imapServer?.address, accountDataImapServer + "0")
-        XCTAssertEqual(account1.smtpServer?.address, accountDataSmtpServer + "0")
+        XCTAssertEqual(account1.imapServer?.address,
+                       indexed(string: accountDataImapServer, index: 0))
+        XCTAssertEqual(account1.smtpServer?.address,
+                       indexed(string: accountDataSmtpServer, index: 0))
         XCTAssertEqual(account1.imapServer?.port, accountDataImapPort)
         XCTAssertEqual(account1.smtpServer?.port, accountDataSmtpPort)
-        XCTAssertEqual(account1.user.userName, accountDataUserName + "0")
-        XCTAssertEqual(account1.imapServer?.credentials.loginName, accountDataLoginName + "0")
-        XCTAssertEqual(account1.smtpServer?.credentials.loginName, accountDataLoginName + "0")
-        XCTAssertEqual(account1.imapServer?.credentials.password, accountDataPassword + "0")
-        XCTAssertEqual(account1.smtpServer?.credentials.password, accountDataPassword + "0")
+        XCTAssertEqual(account1.user.userName,
+                       indexed(string: accountDataUserName, index: 0))
+        XCTAssertEqual(account1.imapServer?.credentials.loginName,
+                       indexed(string: accountDataLoginName, index: 0))
+        XCTAssertEqual(account1.smtpServer?.credentials.loginName,
+                       indexed(string: accountDataLoginName, index: 0))
+        XCTAssertEqual(account1.imapServer?.credentials.password,
+                       indexed(string: accountDataPassword, index:0))
+        XCTAssertEqual(account1.smtpServer?.credentials.password,
+                       indexed(string: accountDataPassword, index: 0))
     }
 
     func testMoreThanOneAccount() throws {
@@ -95,15 +102,22 @@ class MDMPredeployedTest: XCTestCase {
             return
         }
 
-        XCTAssertEqual(account1.imapServer?.address, accountDataImapServer + "0")
-        XCTAssertEqual(account1.smtpServer?.address, accountDataSmtpServer + "0")
+        XCTAssertEqual(account1.imapServer?.address,
+                       indexed(string: accountDataImapServer, index: 0))
+        XCTAssertEqual(account1.smtpServer?.address,
+                       indexed(string: accountDataSmtpServer, index: 0))
         XCTAssertEqual(account1.imapServer?.port, accountDataImapPort)
         XCTAssertEqual(account1.smtpServer?.port, accountDataSmtpPort)
-        XCTAssertEqual(account1.user.userName, accountDataUserName + "0")
-        XCTAssertEqual(account1.imapServer?.credentials.loginName, accountDataLoginName + "0")
-        XCTAssertEqual(account1.smtpServer?.credentials.loginName, accountDataLoginName + "0")
-        XCTAssertEqual(account1.imapServer?.credentials.password, accountDataPassword + "0")
-        XCTAssertEqual(account1.smtpServer?.credentials.password, accountDataPassword + "0")
+        XCTAssertEqual(account1.user.userName,
+                       indexed(string: accountDataUserName, index: 0))
+        XCTAssertEqual(account1.imapServer?.credentials.loginName,
+                       indexed(string: accountDataLoginName, index: 0))
+        XCTAssertEqual(account1.smtpServer?.credentials.loginName,
+                       indexed(string: accountDataLoginName, index: 0))
+        XCTAssertEqual(account1.imapServer?.credentials.password,
+                       indexed(string: accountDataPassword, index:0))
+        XCTAssertEqual(account1.smtpServer?.credentials.password,
+                       indexed(string: accountDataPassword, index:0))
     }
 
     // MARK: - Util
@@ -162,6 +176,10 @@ class MDMPredeployedTest: XCTestCase {
         session.commit()
 
         return acc
+    }
+
+    func indexed(string: String, index: Int) -> String {
+        return "\(string)\(index)"
     }
 
     // MARK: - Util Util
