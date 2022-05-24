@@ -16,12 +16,9 @@ typealias SettingsDict = [String:Any]
 
 class MDMPredeployedTest: XCTestCase {
 
-    override func setUpWithError() throws {
-        UserDefaults().removePersistentDomain(forName: kAppGroupIdentifier)
-    }
-
     override func tearDownWithError() throws {
         Stack.shared.reset()
+        UserDefaults().removePersistentDomain(forName: kAppGroupIdentifier)
     }
 
     func testSingleAccount() throws {
