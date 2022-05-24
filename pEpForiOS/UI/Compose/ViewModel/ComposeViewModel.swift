@@ -172,6 +172,7 @@ class ComposeViewModel {
 #endif
     }
 
+#if !EXT_SHARE
     private func checkConnectivity() {
         if !NetworkMonitorUtil.shared.netOn {
             UIUtils.showNoInternetConnectionBanner()
@@ -179,6 +180,7 @@ class ComposeViewModel {
             UIUtils.hideBanner()
         }
     }
+#endif
 
     public func viewModel(for indexPath: IndexPath) -> CellViewModel {
         return sections[indexPath.section].rows[indexPath.row]

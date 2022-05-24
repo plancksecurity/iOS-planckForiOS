@@ -63,7 +63,9 @@ class ComposeViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         setupView()
+#if EXT_SHARE
         setupForSharingExtension()
+#endif
         if viewModel == nil {
             setupModel()
         }
@@ -1123,29 +1125,29 @@ extension ComposeViewController {
     }
 }
 
-//MARK: - Share Extension 
+#if EXT_SHARE
+
+// MARK: - Share Extension
 
 extension ComposeViewController {
 
     func setupForSharingExtension() {
-#if EXT_SHARE
         [Notifications.Reachability.connected.name,
          Notifications.Reachability.notConnected.name].forEach { (notification) in
             NotificationCenter.default.addObserver(self,
                                                    selector: #selector(changeInternetConnection),
                                                    name: notification, object: nil)
         }
-#endif
     }
 
     @objc
     private func changeInternetConnection(notification: Notification) {
-#if EXT_SHARE
         if notification.name == Notifications.Reachability.notConnected.name {
             UIUtils.showNoInternetConnectionBanner(viewController: self)
         } else {
             UIUtils.hideBanner(viewController: self)
         }
-#endif
     }
 }
+
+#endif
