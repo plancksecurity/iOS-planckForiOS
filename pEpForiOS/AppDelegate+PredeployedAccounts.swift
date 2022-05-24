@@ -11,6 +11,10 @@ import Foundation
 private typealias SettingsDict = [String:Any]
 
 extension AppDelegate {
+    /// Checks for predeployed accounts, and acts on them.
+    public func predeployAccounts() {
+    }
+
     /// Temporary test function for adding MDM account data.
     public func predeployAccount(userName: String,
                                  userAddress: String,

@@ -87,6 +87,10 @@ extension AppDelegate {
 
         Log.shared.logDebugInfo()
 
+        // If there are accounts to predeploy, act on them right now, before
+        // starting up sub systems.
+        predeployAccounts()
+
         if #available(iOS 13.0, *) {
             Log.shared.info("BGAppRefreshTask: Registering BGTaskScheduler.shared.register(forTaskWithIdentifier: ...")
             BGTaskScheduler.shared.register(forTaskWithIdentifier: Constants.appRefreshTaskBackgroundtaskBackgroundfetchSchedulerid,
