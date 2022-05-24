@@ -22,6 +22,16 @@ extension AppDelegate {
                                  smtpServerPort: Int) {
         let imapServerDict = serverDictionary(name: imapServerName, port: UInt16(imapServerPort))
         let smtpServerDict = serverDictionary(name: smtpServerName, port: UInt16(smtpServerPort))
+        let predeployedAccount = accountDictionary(userName: userName,
+                                                   userAddress: userAddress,
+                                                   loginName: loginName,
+                                                   password: password,
+                                                   imapServer: imapServerDict,
+                                                   smtpServer: smtpServerDict)
+
+        let mdm: SettingsDict = [MDMPredeployed.keyMDM: [predeployedAccount]]
+
+        UserDefaults.standard.register(defaults: mdm)
     }
 
     private func serverDictionary(name: String, port: UInt16) -> SettingsDict {
