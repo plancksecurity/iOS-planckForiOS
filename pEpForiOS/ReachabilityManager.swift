@@ -7,7 +7,12 @@
 //
 
 import UIKit
+#if EXT_SHARE
+import pEpIOSToolboxForExtensions
+#else
 import pEpIOSToolbox
+#endif
+
 
 /// Class to handle the reachability changes.
 /// The notifications comes from pEpIOSToolbox

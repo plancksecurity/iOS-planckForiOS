@@ -310,9 +310,11 @@ class EmailListViewModel: EmailDisplayViewModel {
         folderToShow.updateLastLookAt()
     }
 
-    public func showBannerIfNeeded() {
+    public func handleBannerIfNeeded() {
         if !NetworkMonitorUtil.shared.netOn {
             UIUtils.showNoInternetConnectionBanner()
+        } else {
+            UIUtils.hideBanner()
         }
     }
 

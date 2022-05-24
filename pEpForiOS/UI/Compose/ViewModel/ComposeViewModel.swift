@@ -168,11 +168,19 @@ class ComposeViewModel {
     public func handleDidReAppear() {
         state.validate()
 #if !EXT_SHARE
-        if !NetworkMonitorUtil.shared.netOn {
-            UIUtils.showNoInternetConnectionBanner()
-        }
+        checkConnectivity()
 #endif
     }
+
+#if !EXT_SHARE
+    private func checkConnectivity() {
+        if !NetworkMonitorUtil.shared.netOn {
+            UIUtils.showNoInternetConnectionBanner()
+        } else {
+            UIUtils.hideBanner()
+        }
+    }
+#endif
 
     public func viewModel(for indexPath: IndexPath) -> CellViewModel {
         return sections[indexPath.section].rows[indexPath.row]
