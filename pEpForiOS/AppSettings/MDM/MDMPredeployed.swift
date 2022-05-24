@@ -28,7 +28,7 @@ extension MDMPredeployed {
     static let keySmtpServer = "smtpServer"
 }
 
-typealias SettingsDict = [String:Any]
+private typealias SettingsDict = [String:Any]
 
 // MARK: - MDMPredeployedProtocol
 

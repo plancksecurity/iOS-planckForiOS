@@ -12,7 +12,7 @@ import XCTest
 @testable import MessageModel
 import pEp4iosIntern
 
-typealias SettingsDict = [String:Any]
+private typealias SettingsDict = [String:Any]
 
 class MDMPredeployedTest: XCTestCase {
 
@@ -181,7 +181,7 @@ class MDMPredeployedTest: XCTestCase {
 
     // MARK: - Util Util
 
-    func accountWithServerDictionary(appendixNumber: Int = 0) -> SettingsDict {
+    private func accountWithServerDictionary(appendixNumber: Int = 0) -> SettingsDict {
         let appendix16 = UInt16(appendixNumber)
 
         let imapServer = serverDictionary(name: indexed(string: accountDataImapServer,
@@ -205,17 +205,17 @@ class MDMPredeployedTest: XCTestCase {
         return accountDict
     }
 
-    func serverDictionary(name: String, port: UInt16) -> SettingsDict {
+    private func serverDictionary(name: String, port: UInt16) -> SettingsDict {
         return [MDMPredeployed.keyServerName: name,
                 MDMPredeployed.keyServerPort: NSNumber(value: port)]
     }
 
-    func accountDictionary(userName: String,
-                           userAddress: String,
-                           loginName: String,
-                           password: String,
-                           imapServer: SettingsDict,
-                           smtpServer: SettingsDict) -> SettingsDict {
+    private func accountDictionary(userName: String,
+                                   userAddress: String,
+                                   loginName: String,
+                                   password: String,
+                                   imapServer: SettingsDict,
+                                   smtpServer: SettingsDict) -> SettingsDict {
         return [MDMPredeployed.keyUserName: userName,
                 MDMPredeployed.keyUserAddress: userAddress,
                 MDMPredeployed.keyLoginName: loginName,
