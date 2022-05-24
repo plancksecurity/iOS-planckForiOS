@@ -69,6 +69,10 @@ extension UIViewController {
             let minimumHitTestDimension: CGFloat = 44
 
             let imgView = UIImageView(image: img)
+            if let color = pEpRating?.pEpColor() {
+                imgView.accessibilityIdentifier = String(describing: color)
+            }
+
             imgView.translatesAutoresizingMaskIntoConstraints = false
             let aspectRatio = imgView.aspectRatio()
             imgView.heightAnchor.constraint(equalTo: imgView.widthAnchor, multiplier: 1.0/aspectRatio).isActive = true
