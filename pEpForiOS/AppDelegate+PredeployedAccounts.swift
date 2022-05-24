@@ -8,11 +8,20 @@
 
 import Foundation
 
+import pEpIOSToolbox
+
 private typealias SettingsDict = [String:Any]
 
 extension AppDelegate {
     /// Checks for predeployed accounts, and acts on them.
     public func predeployAccounts() {
+        let predeployer: MDMPredeployedProtocol = MDMPredeployed()
+        do {
+            try predeployer.predeployAccounts()
+        } catch {
+            // TODO: Show the error to the user.
+            Log.shared.errorAndCrash(error: error)
+        }
     }
 
     /// Temporary test function for adding MDM account data.
