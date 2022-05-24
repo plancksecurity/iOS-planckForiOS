@@ -72,3 +72,5 @@ playground.xcworkspace
 
 ### Xcode Patch ###
 **/xcshareddata/WorkspaceSettings.xcsettings
+
+**/*Secret*
