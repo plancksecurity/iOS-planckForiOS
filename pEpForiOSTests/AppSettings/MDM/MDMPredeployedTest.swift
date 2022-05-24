@@ -186,17 +186,22 @@ class MDMPredeployedTest: XCTestCase {
 
     func accountWithServerDictionary(appendixNumber: Int = 0) -> SettingsDict {
         let appendix16 = UInt16(appendixNumber)
-        let appendixString = "\(appendixNumber)"
 
-        let imapServer = serverDictionary(name: accountDataImapServer + appendixString,
+        let imapServer = serverDictionary(name: indexed(string: accountDataImapServer,
+                                                        index: appendixNumber),
                                           port: accountDataImapPort + appendix16)
-        let smtpServer = serverDictionary(name: accountDataSmtpServer + appendixString,
+        let smtpServer = serverDictionary(name: indexed(string: accountDataSmtpServer,
+                                                        index: appendixNumber),
                                           port: accountDataSmtpPort + appendix16)
-        let accountDict = accountDictionary(userName: accountDataUserName + appendixString,
-                                            userAddress: accountDataUserName + appendixString +
+        let accountDict = accountDictionary(userName: indexed(string: accountDataUserName,
+                                                              index: appendixNumber),
+                                            userAddress: indexed(string: accountDataUserName,
+                                                                 index: appendixNumber) +
                                             "@example.com",
-                                            loginName: accountDataLoginName + appendixString,
-                                            password: accountDataPassword + appendixString,
+                                            loginName: indexed(string: accountDataLoginName,
+                                                               index: appendixNumber),
+                                            password: indexed(string: accountDataPassword,
+                                                              index: appendixNumber),
                                             imapServer: imapServer,
                                             smtpServer: smtpServer)
 
