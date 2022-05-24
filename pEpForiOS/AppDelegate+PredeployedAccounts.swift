@@ -20,8 +20,8 @@ extension AppDelegate {
                                  imapServerPort: Int,
                                  smtpServerName: String,
                                  smtpServerPort: Int) {
-        let imapServerDict = serverDictionary(name: imapServerName, port: imapServerPort)
-        let smtpServerDict = serverDictionary(name: smtpServerName, port: smtpServerPort)
+        let imapServerDict = serverDictionary(name: imapServerName, port: UInt16(imapServerPort))
+        let smtpServerDict = serverDictionary(name: smtpServerName, port: UInt16(smtpServerPort))
     }
 
     private func serverDictionary(name: String, port: UInt16) -> SettingsDict {
