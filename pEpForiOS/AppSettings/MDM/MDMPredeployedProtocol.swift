@@ -24,5 +24,22 @@ protocol MDMPredeployedProtocol {
     ///
     /// - Note: The logins for the accounts are _not_ checked for validity, that is, a wrong password will not lead
     /// to an immediate error.
+    ///
+    /// The format of the required settings is as follows:
+    ///
+    ///     MDM: Dictionary
+    ///              predeployedAcounts: Array of AccountDictionary
+    ///
+    /// The format of a single account description (`AccountDictionary`):
+    ///
+    ///     userName: String
+    ///     loginName: String
+    ///     password: String
+    ///     imapServer: Dictionary
+    ///       name: String
+    ///       port: Integer
+    ///     smtpServer: Dictionary
+    ///       name: String
+    ///       port: Integer
     func predeployAccounts() throws
 }
