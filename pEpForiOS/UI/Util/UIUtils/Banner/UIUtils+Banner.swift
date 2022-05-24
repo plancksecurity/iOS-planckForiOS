@@ -7,14 +7,21 @@
 //
 
 import Foundation
+import UIKit
+
+#if EXT_SHARE
+import pEpIOSToolboxForExtensions
+#else
 import pEpIOSToolbox
+#endif
 
 extension UIUtils {
 
     /// Show the No internet connection banner error
-    public static func showNoInternetConnectionBanner() {
+    /// - Parameter viewController: The currently shown VC.
+    public static func showNoInternetConnectionBanner(viewController : UIViewController? = nil) {
         let errorMessage = NSLocalizedString("You're offline", comment: "You're offline error message")
-        NotificationBannerUtil.show(errorMessage: errorMessage)
+        NotificationBannerUtil.show(errorMessage: errorMessage, currentlyShownViewController: viewController)
     }
 
     /// Show the Server not available banner error
@@ -23,9 +30,10 @@ extension UIUtils {
         NotificationBannerUtil.show(errorMessage: errorMessage)
     }
 
-    // Hide any banner that is shown.
-    public static func hideBanner() {
-        NotificationBannerUtil.hide()
+    /// Hide any banner that is shown.
+    /// - Parameter viewController: The currently shown VC.
+    public static func hideBanner(viewController : UIViewController? = nil) {
+        NotificationBannerUtil.hide(currentlyShownViewController: viewController)
     }
 }
 
