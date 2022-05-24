@@ -15,12 +15,20 @@ private typealias SettingsDict = [String:Any]
 extension AppDelegate {
     /// Checks for predeployed accounts, and acts on them.
     public func predeployAccounts() {
+        func showError(message: String) {
+            let titleString = NSLocalizedString("MDM Predeployment Error",
+                                                comment: "MDM Predeployment Error Title")
+            UIUtils.showAlertWithOnlyPositiveButton(title: titleString, message: message)
+        }
+
         let predeployer: MDMPredeployedProtocol = MDMPredeployed()
         do {
             try predeployer.predeployAccounts()
+        } catch let error as MDMPredeployedError {
+            showError(message: "\(error)")
         } catch {
-            // TODO: Show the error to the user.
-            Log.shared.errorAndCrash(error: error)
+            let message = NSLocalizedString("Unknown Error", comment: "MDM Unknown Error")
+            showError(message: message)
         }
     }
 }
