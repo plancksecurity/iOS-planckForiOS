@@ -87,6 +87,8 @@ extension AppDelegate {
 
         Log.shared.logDebugInfo()
 
+        Appearance.setup()
+
         // If there are accounts to predeploy, act on them right now, before
         // starting up sub systems.
         predeployAccounts()
@@ -106,7 +108,6 @@ extension AppDelegate {
             application.setMinimumBackgroundFetchInterval(60.0 * 2)
         }
 
-        Appearance.setup()
         setupServices()
         askUserForNotificationPermissions()
         var result = setupInitialViewController()
