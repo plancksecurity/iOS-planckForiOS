@@ -32,3 +32,8 @@ extension AppDelegate {
         }
     }
 }
+
+// MARK: - Private
+
+extension AppDelegate {
+}
