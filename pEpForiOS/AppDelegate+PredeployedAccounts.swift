@@ -21,7 +21,7 @@ extension AppDelegate {
         do {
             try predeployer.predeployAccounts()
         } catch {
-            Log.shared.errorAndCrash(error: error)
+            Log.shared.error(error: error)
         }
     }
 }
