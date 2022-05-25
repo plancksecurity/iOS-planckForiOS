@@ -15,6 +15,18 @@ extension AppDelegate {
     ///
     /// - Note: Silently fails if there was an error is the account description.
     public func predeployAccounts() {
+        let server = "server.example.com"
+        let email = "email@\(server)"
+
+        predeployAccount(userName: "User Name",
+                         userAddress: email,
+                         loginName: email,
+                         password: "password",
+                         imapServerName: server,
+                         imapServerPort: 993,
+                         smtpServerName: server,
+                         smtpServerPort: 465)
+
         let predeployer: MDMPredeployedProtocol = MDMPredeployed()
         do {
             try predeployer.predeployAccounts()
