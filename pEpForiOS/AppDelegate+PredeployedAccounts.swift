@@ -20,10 +20,8 @@ extension AppDelegate {
         let predeployer: MDMPredeployedProtocol = MDMPredeployed()
         do {
             try predeployer.predeployAccounts()
-        } catch let _ as MDMPredeployedError {
-            // Ignore
         } catch {
-            // Ignore
+            Log.shared.errorAndCrash(error: error)
         }
     }
 }
