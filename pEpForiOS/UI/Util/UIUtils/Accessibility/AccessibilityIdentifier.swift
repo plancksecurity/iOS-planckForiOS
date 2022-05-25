@@ -22,4 +22,8 @@ class AccessibilityIdentifier {
     static let cancelButton = "Cancel Button"
     static let composeButton = "Compose Button"
     static let filterButton = "Filter Button"
+    static let secure = "Secure"
+    static let secureAndTrusted = "Secure and Trusted"
+    static let mistrusted = "Mistrusted"
+    static let unknownTrust = "Unknown Trust"
 }

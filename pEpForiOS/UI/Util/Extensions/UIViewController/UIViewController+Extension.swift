@@ -63,35 +63,45 @@ extension UIViewController {
     }
 
     private func navigationItemTitleView(pEpRating: Rating?, pEpProtection: Bool = true) -> UIView? {
-        if let img = pEpRating?.pEpColor().statusIconForMessage(enabled: pEpProtection) {
+        if let color = pEpRating?.pEpColor(),
+            let image = color.statusIconForMessage(enabled: pEpProtection) {
             // according to apple's design guidelines ('Hit Targets'):
             // https://developer.apple.com/design/tips/
             let minimumHitTestDimension: CGFloat = 44
 
-            let imgView = UIImageView(image: img)
-            if let color = pEpRating?.pEpColor() {
-                imgView.accessibilityIdentifier = String(describing: color)
+            let imageView = UIImageView(image: image)
+            var accessibilityIdentifier: String
+            switch color {
+            case .noColor:
+                accessibilityIdentifier = AccessibilityIdentifier.unknownTrust
+            case .yellow:
+                accessibilityIdentifier = AccessibilityIdentifier.secure
+            case .green:
+                accessibilityIdentifier = AccessibilityIdentifier.secureAndTrusted
+            case .red:
+                accessibilityIdentifier = AccessibilityIdentifier.mistrusted
             }
+            imageView.accessibilityIdentifier = accessibilityIdentifier
 
-            imgView.translatesAutoresizingMaskIntoConstraints = false
-            let aspectRatio = imgView.aspectRatio()
-            imgView.heightAnchor.constraint(equalTo: imgView.widthAnchor, multiplier: 1.0/aspectRatio).isActive = true
+            imageView.translatesAutoresizingMaskIntoConstraints = false
+            let aspectRatio = imageView.aspectRatio()
+            imageView.heightAnchor.constraint(equalTo: imageView.widthAnchor, multiplier: 1.0/aspectRatio).isActive = true
 
             let badgeView = UIView()
             badgeView.translatesAutoresizingMaskIntoConstraints = false
             badgeView.heightAnchor.constraint(
                 greaterThanOrEqualToConstant: minimumHitTestDimension).usingPriority(.almostRequired).isActive = true
-            badgeView.addSubview(imgView)
+            badgeView.addSubview(imageView)
 
             let imagePadding: CGFloat = 10
-            let imgViewHeight = minimumHitTestDimension - imagePadding
-            imgView.centerXAnchor.constraint(equalTo: badgeView.centerXAnchor).isActive = true
-            imgView.centerYAnchor.constraint(equalTo: badgeView.centerYAnchor).isActive = true
-            imgView.heightAnchor.constraint(lessThanOrEqualTo: badgeView.heightAnchor,
+            let imageViewHeight = minimumHitTestDimension - imagePadding
+            imageView.centerXAnchor.constraint(equalTo: badgeView.centerXAnchor).isActive = true
+            imageView.centerYAnchor.constraint(equalTo: badgeView.centerYAnchor).isActive = true
+            imageView.heightAnchor.constraint(lessThanOrEqualTo: badgeView.heightAnchor,
                                             constant: -imagePadding).isActive = true
-            imgView.heightAnchor.constraint(greaterThanOrEqualToConstant: imgViewHeight).usingPriority(.almostRequired).isActive = true
+            imageView.heightAnchor.constraint(greaterThanOrEqualToConstant: imageViewHeight).usingPriority(.almostRequired).isActive = true
 
-            imgView.widthAnchor.constraint(lessThanOrEqualTo: badgeView.widthAnchor,
+            imageView.widthAnchor.constraint(lessThanOrEqualTo: badgeView.widthAnchor,
                                            constant: -imagePadding).isActive = true
 
             return badgeView
