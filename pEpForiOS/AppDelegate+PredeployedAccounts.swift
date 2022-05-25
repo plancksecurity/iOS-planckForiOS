@@ -10,8 +10,6 @@ import Foundation
 
 import pEpIOSToolbox
 
-private typealias SettingsDict = [String:Any]
-
 extension AppDelegate {
     /// Checks for predeployed accounts, and acts on them.
     ///
