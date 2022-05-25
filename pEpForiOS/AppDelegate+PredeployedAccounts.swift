@@ -21,7 +21,7 @@ extension AppDelegate {
         do {
             try predeployer.predeployAccounts()
         } catch {
-            Log.shared.error(error: error)
+            Log.shared.logError(message: "Error during MDM account predeployment: \(error)")
         }
     }
 }
