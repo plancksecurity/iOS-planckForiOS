@@ -34,9 +34,6 @@ private typealias SettingsDict = [String:Any]
 
 extension MDMPredeployed: MDMPredeployedProtocol {
     func predeployAccounts() throws {
-        // TODO: Remove this. Simulates an error.
-        throw MDMPredeployedError.malformedAccountData
-
         guard let mdmDict = UserDefaults.standard.dictionary(forKey: MDMPredeployed.keyMDM) else {
             return
         }
