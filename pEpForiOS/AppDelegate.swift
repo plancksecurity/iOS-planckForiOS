@@ -91,41 +91,33 @@ extension AppDelegate {
 
         // If there are accounts to predeploy, act on them right now, before
         // starting up sub systems.
-        // Get the potential error message to show to the user later,
-        // after the first view has appeared.
-        let predeployErrorMessageOpt = predeployAccounts()
+        predeployAccounts()
 
-        if let predeployErrorMessage = predeployErrorMessageOpt {
-            let result = setupInitialViewController()
-            predeployAccounts(errorMessage: predeployErrorMessage)
-            return result
-        } else {
-            if #available(iOS 13.0, *) {
-                Log.shared.info("BGAppRefreshTask: Registering BGTaskScheduler.shared.register(forTaskWithIdentifier: ...")
-                BGTaskScheduler.shared.register(forTaskWithIdentifier: Constants.appRefreshTaskBackgroundtaskBackgroundfetchSchedulerid,
-                                                using: nil) { [weak self] task in
-                    guard let me = self else {
-                        Log.shared.errorAndCrash("BGAppRefreshTask: Lost myself")
-                        return
-                    }
-                    me.handleAppRefreshTask(task as! BGAppRefreshTask)
+        if #available(iOS 13.0, *) {
+            Log.shared.info("BGAppRefreshTask: Registering BGTaskScheduler.shared.register(forTaskWithIdentifier: ...")
+            BGTaskScheduler.shared.register(forTaskWithIdentifier: Constants.appRefreshTaskBackgroundtaskBackgroundfetchSchedulerid,
+                                            using: nil) { [weak self] task in
+                guard let me = self else {
+                    Log.shared.errorAndCrash("BGAppRefreshTask: Lost myself")
+                    return
                 }
-            } else {
-                Log.shared.info("BGAppRefreshTask: we are < iOS13. Fallback to BackgroundFetch ...")
-                application.setMinimumBackgroundFetchInterval(60.0 * 2)
+                me.handleAppRefreshTask(task as! BGAppRefreshTask)
             }
-
-            setupServices()
-            askUserForNotificationPermissions()
-            var result = setupInitialViewController()
-            if let openedToOpenFile = launchOptions?[UIApplication.LaunchOptionsKey.url] as? URL {
-                // We have been opened by the OS to handle a certain file.
-                result = handleUrlTheOSHasBroughtUsToForgroundFor(openedToOpenFile)
-            }
-            self.reachabilityManager = ReachabilityManager.shared
-
-            return result
+        } else {
+            Log.shared.info("BGAppRefreshTask: we are < iOS13. Fallback to BackgroundFetch ...")
+            application.setMinimumBackgroundFetchInterval(60.0 * 2)
         }
+
+        setupServices()
+        askUserForNotificationPermissions()
+        var result = setupInitialViewController()
+        if let openedToOpenFile = launchOptions?[UIApplication.LaunchOptionsKey.url] as? URL {
+            // We have been opened by the OS to handle a certain file.
+            result = handleUrlTheOSHasBroughtUsToForgroundFor(openedToOpenFile)
+        }
+        self.reachabilityManager = ReachabilityManager.shared
+
+        return result
     }
 
     /// Sent when the application is about to move from active to inactive state. This can occur

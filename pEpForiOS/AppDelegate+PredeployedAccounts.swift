@@ -15,23 +15,15 @@ private typealias SettingsDict = [String:Any]
 extension AppDelegate {
     /// Checks for predeployed accounts, and acts on them.
     ///
-    /// - Returns: In the case of error, a localized error message, that can be shown
-    /// in an error view later (once the first view controller is active).
-    public func predeployAccounts() -> String? {
+    /// - Note: Silently fails if there was an error is the account description.
+    public func predeployAccounts() {
         let predeployer: MDMPredeployedProtocol = MDMPredeployed()
         do {
             try predeployer.predeployAccounts()
-            return nil
-        } catch let error as MDMPredeployedError {
-            return "\(error)"
+        } catch let _ as MDMPredeployedError {
+            // Ignore
         } catch {
-            return NSLocalizedString("Unknown Error", comment: "MDM Unknown Error")
+            // Ignore
         }
-    }
-
-    public func predeployAccounts(errorMessage: String) {
-        let titleString = NSLocalizedString("MDM Predeployment Error",
-                                            comment: "MDM Predeployment Error Title")
-        UIUtils.showAlertWithOnlyPositiveButton(title: titleString, message: errorMessage)
     }
 }
