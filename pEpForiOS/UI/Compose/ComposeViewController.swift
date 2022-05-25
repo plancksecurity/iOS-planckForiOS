@@ -157,7 +157,11 @@ class ComposeViewController: UIViewController {
 
     @IBAction func cancel(_ sender: Any) {
         updateBodyState()
-        if viewModel?.showCancelActions ?? false {
+        guard let vm = viewModel else {
+            Log.shared.errorAndCrash("VM not found")
+            return
+        }
+        if vm.showCancelActions {
             showAlertControllerWithOptionsForCanceling(sender: sender)
         } else {
             dismiss()
