@@ -780,7 +780,7 @@ extension ComposeViewModel {
 
     public var showCancelActions: Bool {
         if offerToSaveDraftOnCancel {
-            return existsDirtyCell() || state.edited
+            return state.edited
         } else {
             return false
         }
