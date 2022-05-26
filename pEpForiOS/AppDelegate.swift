@@ -36,18 +36,22 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     /// This is used to handle OAuth2 requests.
     private let oauth2Provider = OAuth2ProviderFactory().oauth2Provider()
 
-    private func setupInitialViewController() -> Bool {
-        let folderViews: UIStoryboard = UIStoryboard(name: "FolderViews", bundle: nil)
-        guard let initialNVC = folderViews.instantiateViewController(withIdentifier: "main.initial.nvc") as? UISplitViewController
+    private func setupInitialViewController(freshAccountsHaveBeenDeployed: Bool) -> Bool {
+        if freshAccountsHaveBeenDeployed {
+            return false
+        } else {
+            let folderViews: UIStoryboard = UIStoryboard(name: "FolderViews", bundle: nil)
+            guard let initialNVC = folderViews.instantiateViewController(withIdentifier: "main.initial.nvc") as? UISplitViewController
             else {
                 Log.shared.errorAndCrash("Problem initializing UI")
                 return false
+            }
+            let window = UIWindow(frame: UIScreen.main.bounds)
+            self.window = window
+            window.rootViewController = initialNVC
+            window.makeKeyAndVisible()
+            return true
         }
-        let window = UIWindow(frame: UIScreen.main.bounds)
-        self.window = window
-        window.rootViewController = initialNVC
-        window.makeKeyAndVisible()
-        return true
     }
 
     private func setupServices() {
@@ -91,7 +95,7 @@ extension AppDelegate {
 
         // If there are accounts to predeploy, act on them right now, before
         // starting up sub systems.
-        predeployAccounts()
+        let freshAccountsHaveBeenDeployed = predeployAccounts()
 
         if #available(iOS 13.0, *) {
             Log.shared.info("BGAppRefreshTask: Registering BGTaskScheduler.shared.register(forTaskWithIdentifier: ...")
@@ -110,7 +114,7 @@ extension AppDelegate {
 
         setupServices()
         askUserForNotificationPermissions()
-        var result = setupInitialViewController()
+        var result = setupInitialViewController(freshAccountsHaveBeenDeployed: freshAccountsHaveBeenDeployed)
         if let openedToOpenFile = launchOptions?[UIApplication.LaunchOptionsKey.url] as? URL {
             // We have been opened by the OS to handle a certain file.
             result = handleUrlTheOSHasBroughtUsToForgroundFor(openedToOpenFile)
