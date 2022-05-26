@@ -25,6 +25,8 @@ protocol MDMPredeployedProtocol {
     /// - Note: The logins for the accounts are _not_ checked for validity, that is, a wrong password will not lead
     /// to an immediate error.
     ///
+    /// - Returns: `true` if there have been accounts set up, `false` otherwise.
+    ///
     /// The format of the required settings is as follows:
     ///
     ///     MDM: Dictionary
@@ -41,5 +43,5 @@ protocol MDMPredeployedProtocol {
     ///     smtpServer: Dictionary
     ///       name: String
     ///       port: Integer
-    func predeployAccounts() throws
+    func predeployAccounts() throws -> Bool
 }

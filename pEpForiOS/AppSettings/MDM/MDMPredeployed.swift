@@ -33,13 +33,13 @@ private typealias SettingsDict = [String:Any]
 // MARK: - MDMPredeployedProtocol
 
 extension MDMPredeployed: MDMPredeployedProtocol {
-    func predeployAccounts() throws {
+    func predeployAccounts() throws -> Bool {
         guard let mdmDict = UserDefaults.standard.dictionary(forKey: MDMPredeployed.keyMDM) else {
-            return
+            return false
         }
 
         guard let predeployedAccounts = mdmDict[MDMPredeployed.keyPredeployedAccounts] as? [SettingsDict] else {
-            return
+            return false
         }
 
         let session = Session.main
@@ -112,5 +112,7 @@ extension MDMPredeployed: MDMPredeployedProtocol {
             let _ = Account.init(user: id, servers: [imapServer, smtpServer], session: session)
         }
         session.commit()
+
+        return true
     }
 }
