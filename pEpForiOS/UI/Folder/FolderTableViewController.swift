@@ -13,6 +13,7 @@ import MessageModel
 class FolderTableViewController: UITableViewController {
 
     var folderVM: FolderViewModel?
+
     // Indicates if it's needed to lead the user to a new screen,
     // the email list or the new account, for example.
     private var shouldPresentNextView: Bool = true
