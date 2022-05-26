@@ -37,21 +37,17 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     private let oauth2Provider = OAuth2ProviderFactory().oauth2Provider()
 
     private func setupInitialViewController(freshAccountsHaveBeenDeployed: Bool) -> Bool {
-        if freshAccountsHaveBeenDeployed {
+        let folderViews: UIStoryboard = UIStoryboard(name: "FolderViews", bundle: nil)
+        guard let initialNVC = folderViews.instantiateViewController(withIdentifier: "main.initial.nvc") as? UISplitViewController
+        else {
+            Log.shared.errorAndCrash("Problem initializing UI")
             return false
-        } else {
-            let folderViews: UIStoryboard = UIStoryboard(name: "FolderViews", bundle: nil)
-            guard let initialNVC = folderViews.instantiateViewController(withIdentifier: "main.initial.nvc") as? UISplitViewController
-            else {
-                Log.shared.errorAndCrash("Problem initializing UI")
-                return false
-            }
-            let window = UIWindow(frame: UIScreen.main.bounds)
-            self.window = window
-            window.rootViewController = initialNVC
-            window.makeKeyAndVisible()
-            return true
         }
+        let window = UIWindow(frame: UIScreen.main.bounds)
+        self.window = window
+        window.rootViewController = initialNVC
+        window.makeKeyAndVisible()
+        return true
     }
 
     private func setupServices() {
