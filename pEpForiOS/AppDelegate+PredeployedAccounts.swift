@@ -15,6 +15,9 @@ extension AppDelegate {
     ///
     /// - Note: Silently fails if there was an error is the account description.
     public func predeployAccounts() -> Bool {
+        // TMP
+        addTestData()
+
         let predeployer: MDMPredeployedProtocol = MDMPredeployed()
         do {
             return try predeployer.predeployAccounts()
