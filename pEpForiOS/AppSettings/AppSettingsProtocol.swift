@@ -32,6 +32,9 @@ public protocol AppSettingsProtocol {
     /// Should the logging be verbose, or not?
     var verboseLogginEnabled: Bool { get set }
 
+    /// Are accounts predeployed by the MDM?
+    var mdmPredeployAccounts: Bool { get set }
+
     // MARK:- Collapsing State
 
     /// Removes the collapsing state for the account address passed by parameter.

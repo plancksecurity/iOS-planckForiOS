@@ -36,6 +36,7 @@ extension AppSettings {
     static private let keyVerboseLogginEnabled = "keyVerboseLogginEnabled"
     static private let keyCollapsingState = "keyCollapsingState"
     static private let keyFolderViewAccountCollapsedState = "keyFolderViewAccountCollapsedState-162844EB-1F32-4F66-8F92-9B77664523F1"
+    static private let keyMdmPredeployAccounts = "keyMdmPredeployAccounts"
 }
 
 // MARK: - AppSettings
@@ -285,6 +286,16 @@ extension AppSettings: AppSettingsProtocol {
             AppSettings.userDefaults.set(newValue,
                                          forKey: AppSettings.keyVerboseLogginEnabled)
             Log.shared.verboseLoggingEnabled = newValue
+        }
+    }
+
+    public var mdmPredeployAccounts: Bool {
+        get {
+            return AppSettings.userDefaults.bool(forKey: AppSettings.keyMdmPredeployAccounts)
+        }
+        set {
+            AppSettings.userDefaults.set(newValue,
+                                         forKey: AppSettings.keyMdmPredeployAccounts)
         }
     }
 }
