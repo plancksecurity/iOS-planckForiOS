@@ -16,6 +16,7 @@ extension AppDelegate {
     /// - Note: Silently fails if there was an error is the account description.
     public func predeployAccounts() -> Bool {
         // TMP
+        AppSettings.shared.mdmPredeployAccounts = true
         addTestData()
 
         let predeployer: MDMPredeployedProtocol = MDMPredeployed()
