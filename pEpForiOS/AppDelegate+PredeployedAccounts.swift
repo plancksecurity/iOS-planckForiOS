@@ -14,21 +14,21 @@ extension AppDelegate {
     /// Checks for predeployed accounts, and acts on them.
     ///
     /// - Note: Silently fails if there was an error is the account description.
-    public func predeployAccounts() -> Bool {
+    public func predeployAccounts() {
         // TMP
         AppSettings.shared.mdmPredeployAccounts = true
         addTestData()
 
         if !AppSettings.shared.mdmPredeployAccounts {
-            return false
+            return
         }
 
         let predeployer: MDMPredeployedProtocol = MDMPredeployed()
         do {
-            return try predeployer.predeployAccounts()
+            try predeployer.predeployAccounts()
         } catch {
             Log.shared.logError(message: "Error during MDM account predeployment: \(error)")
-            return false
+            return
         }
     }
 }

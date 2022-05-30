@@ -36,7 +36,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     /// This is used to handle OAuth2 requests.
     private let oauth2Provider = OAuth2ProviderFactory().oauth2Provider()
 
-    private func setupInitialViewController(freshAccountsHaveBeenDeployed: Bool) -> Bool {
+    private func setupInitialViewController() -> Bool {
         let folderViews: UIStoryboard = UIStoryboard(name: "FolderViews", bundle: nil)
         guard let initialNVC = folderViews.instantiateViewController(withIdentifier: "main.initial.nvc") as? UISplitViewController
         else {
@@ -91,7 +91,7 @@ extension AppDelegate {
 
         // If there are accounts to predeploy, act on them right now, before
         // starting up sub systems.
-        let freshAccountsHaveBeenDeployed = predeployAccounts()
+        predeployAccounts()
 
         if #available(iOS 13.0, *) {
             Log.shared.info("BGAppRefreshTask: Registering BGTaskScheduler.shared.register(forTaskWithIdentifier: ...")
@@ -110,7 +110,7 @@ extension AppDelegate {
 
         setupServices()
         askUserForNotificationPermissions()
-        var result = setupInitialViewController(freshAccountsHaveBeenDeployed: freshAccountsHaveBeenDeployed)
+        var result = setupInitialViewController()
         if let openedToOpenFile = launchOptions?[UIApplication.LaunchOptionsKey.url] as? URL {
             // We have been opened by the OS to handle a certain file.
             result = handleUrlTheOSHasBroughtUsToForgroundFor(openedToOpenFile)
