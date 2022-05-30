@@ -430,6 +430,7 @@
 		43D530F62844C55B007E227E /* MDMAccountPredeploymentViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43D530F52844C55B007E227E /* MDMAccountPredeploymentViewController.swift */; };
 		43D530F82844D5B5007E227E /* MDMAccountPredeploymentViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43D530F72844D5B5007E227E /* MDMAccountPredeploymentViewModel.swift */; };
 		43D531052844F524007E227E /* MDMAccountPredeployment.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 43D531042844F524007E227E /* MDMAccountPredeployment.storyboard */; };
+		43D531112844FBCB007E227E /* MDMAccountPredeployment.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 43D531042844F524007E227E /* MDMAccountPredeployment.storyboard */; };
 		43DC6308262DCC8A0017D1BD /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = 43DC6306262DCC8A0017D1BD /* Localizable.strings */; };
 		43E15D1C2833CA4D00EDEAB7 /* AccessibilityIdentifier.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43285973282D4E9D00493791 /* AccessibilityIdentifier.swift */; };
 		43E1619120D7B2D6003F1514 /* UpdateThreadListDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43E1619020D7B2D6003F1514 /* UpdateThreadListDelegate.swift */; };
@@ -3199,6 +3200,7 @@
 			files = (
 				434A6C1625D2A17900179335 /* TrustManagement.storyboard in Resources */,
 				5B3C0DFC28368BBA001B7A82 /* ErrorBannerView.xib in Resources */,
+				43D531112844FBCB007E227E /* MDMAccountPredeployment.storyboard in Resources */,
 				153169C2263863A6006E020D /* InfoPlist.strings in Resources */,
 				4313A55225E7C1F7001E6767 /* LaunchScreen.storyboard in Resources */,
 				4313A54C25E7C1D9001E6767 /* NothingSelected.storyboard in Resources */,
