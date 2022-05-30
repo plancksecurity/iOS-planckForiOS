@@ -298,7 +298,11 @@ extension FolderTableViewController: SegueHandlerType {
             if vm.shouldShowFolders {
                 showEmailList(folder:vm.folderToShow)
             } else {
-                performSegue(withIdentifier:.newAccount, sender: self)
+                if AppSettings.shared.mdmPredeployAccounts {
+                    // TODO
+                } else {
+                    performSegue(withIdentifier:.newAccount, sender: self)
+                }
             }
         }
     }
