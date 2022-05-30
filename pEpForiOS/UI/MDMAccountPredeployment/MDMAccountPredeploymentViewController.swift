@@ -9,4 +9,5 @@
 import UIKit
 
 class MDMAccountPredeploymentViewController: UIViewController {
+    let viewModel = MDMAccountPredeploymentViewModel()
 }
