@@ -427,6 +427,7 @@
 		43D070332133DC500013B120 /* AppSettings.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43D070322133DC500013B120 /* AppSettings.swift */; };
 		43D1900E2513734400A36973 /* SettingsViewModelTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43D1900D2513734400A36973 /* SettingsViewModelTest.swift */; };
 		43D2133B2237CABD00C060A1 /* libxml2.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = 43800D981D112A2A00821E34 /* libxml2.tbd */; };
+		43D530F62844C55B007E227E /* MDMAccountPredeploymentViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43D530F52844C55B007E227E /* MDMAccountPredeploymentViewController.swift */; };
 		43DC6308262DCC8A0017D1BD /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = 43DC6306262DCC8A0017D1BD /* Localizable.strings */; };
 		43E15D1C2833CA4D00EDEAB7 /* AccessibilityIdentifier.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43285973282D4E9D00493791 /* AccessibilityIdentifier.swift */; };
 		43E1619120D7B2D6003F1514 /* UpdateThreadListDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43E1619020D7B2D6003F1514 /* UpdateThreadListDelegate.swift */; };
@@ -1094,6 +1095,7 @@
 		43D070322133DC500013B120 /* AppSettings.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppSettings.swift; sourceTree = "<group>"; };
 		43D1900D2513734400A36973 /* SettingsViewModelTest.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SettingsViewModelTest.swift; sourceTree = "<group>"; };
 		43D213332237C8CA00C060A1 /* libAccountSettingsAdapter.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; path = libAccountSettingsAdapter.a; sourceTree = BUILT_PRODUCTS_DIR; };
+		43D530F52844C55B007E227E /* MDMAccountPredeploymentViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MDMAccountPredeploymentViewController.swift; sourceTree = "<group>"; };
 		43DC6307262DCC8A0017D1BD /* de */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = de; path = de.lproj/Localizable.strings; sourceTree = "<group>"; };
 		43E1619020D7B2D6003F1514 /* UpdateThreadListDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UpdateThreadListDelegate.swift; sourceTree = "<group>"; };
 		43E366892836254A00C4A4CB /* MDMPredeployedProtocol.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MDMPredeployedProtocol.swift; sourceTree = "<group>"; };
@@ -2468,6 +2470,14 @@
 			path = AppSettings;
 			sourceTree = "<group>";
 		};
+		43D530F42844C50D007E227E /* MDMAccountPredeployment */ = {
+			isa = PBXGroup;
+			children = (
+				43D530F52844C55B007E227E /* MDMAccountPredeploymentViewController.swift */,
+			);
+			path = MDMAccountPredeployment;
+			sourceTree = "<group>";
+		};
 		43E366882836254300C4A4CB /* MDM */ = {
 			isa = PBXGroup;
 			children = (
@@ -2544,6 +2554,7 @@
 				003C0FAA20B57C2E0093A987 /* SplitView */,
 				492EF92B20C69547004EAE14 /* Thread */,
 				150DF6D12052A99800A9DCF7 /* SecureWebViewController */,
+				43D530F42844C50D007E227E /* MDMAccountPredeployment */,
 				43AA82511E9B925000ABD5A8 /* Util */,
 			);
 			path = UI;
@@ -3681,6 +3692,7 @@
 				4351C2CF1F4441190053381F /* houdini_href_e.c in Sources */,
 				4351C2D01F4441190053381F /* houdini_html_e.c in Sources */,
 				15D7D992219B154000A1A2B9 /* Attachment+Extensions.swift in Sources */,
+				43D530F62844C55B007E227E /* MDMAccountPredeploymentViewController.swift in Sources */,
 				B7DB7FC42215C4FF003968DA /* UINavigationController+Extensions.swift in Sources */,
 				15944A3523980FEC006B133B /* EmailDisplayViewModel.swift in Sources */,
 				430D73651E9CBD4E00EA6FA9 /* AttachmentViewOperation.swift in Sources */,
