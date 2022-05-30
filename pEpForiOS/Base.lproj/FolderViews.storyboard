@@ -129,6 +129,7 @@
                     <connections>
                         <outlet property="addAccountButton" destination="NEj-lZ-p6O" id="wRw-yI-H5s"/>
                         <segue destination="uKb-Ku-Cng" kind="presentation" identifier="newAccount" id="kBC-vv-Cfe"/>
+                        <segue destination="sKj-cp-Cdr" kind="presentation" identifier="mdmPredeployAccounts" id="KOS-pV-IL5"/>
                     </connections>
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="o2c-UY-yR4" userLabel="First Responder" sceneMemberID="firstResponder"/>
