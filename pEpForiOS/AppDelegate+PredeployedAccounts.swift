@@ -19,6 +19,10 @@ extension AppDelegate {
         AppSettings.shared.mdmPredeployAccounts = true
         addTestData()
 
+        if !AppSettings.shared.mdmPredeployAccounts {
+            return false
+        }
+
         let predeployer: MDMPredeployedProtocol = MDMPredeployed()
         do {
             return try predeployer.predeployAccounts()
