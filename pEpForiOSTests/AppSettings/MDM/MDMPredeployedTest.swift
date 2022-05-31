@@ -29,7 +29,7 @@ class MDMPredeployedTest: XCTestCase {
         let settingsDict: SettingsDict = [key:array]
         UserDefaults().register(defaults: settingsDict)
         let readDict = UserDefaults().object(forKey: key) as? SettingsDict
-        XCTAssertNotNil(UserDefaults().object(forKey: key))
+        XCTAssertNotNil(readDict)
         XCTAssertEqual(settingsDict, readDict)
         UserDefaults().removeObject(forKey: key)
         XCTAssertNil(UserDefaults().object(forKey: key))
