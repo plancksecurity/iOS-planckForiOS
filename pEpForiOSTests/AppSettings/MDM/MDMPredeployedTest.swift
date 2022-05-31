@@ -21,8 +21,14 @@ class MDMPredeployedTest: XCTestCase {
         UserDefaults().removePersistentDomain(forName: kAppGroupIdentifier)
     }
 
+    func testNoPredeploymentNecessary() {
+        XCTAssertFalse(MDMPredeployed().hasPredeployableAccounts())
+    }
+
     func testSingleAccount() throws {
+        XCTAssertFalse(MDMPredeployed().hasPredeployableAccounts())
         setupSinglePredepolyAccount()
+        XCTAssertTrue(MDMPredeployed().hasPredeployableAccounts())
 
         try MDMPredeployed().predeployAccounts()
 
@@ -55,7 +61,9 @@ class MDMPredeployedTest: XCTestCase {
     func testMoreThanOneAccount() throws {
         let numAccounts = 2
 
+        XCTAssertFalse(MDMPredeployed().hasPredeployableAccounts())
         setupPredeployAccounts(number: numAccounts)
+        XCTAssertTrue(MDMPredeployed().hasPredeployableAccounts())
 
         try MDMPredeployed().predeployAccounts()
 
@@ -87,7 +95,9 @@ class MDMPredeployedTest: XCTestCase {
         let _ = createAccount(baseName: "acc1", portBase: 555, index: 1)
         let _ = createAccount(baseName: "acc2", portBase: 556, index: 2)
 
+        XCTAssertFalse(MDMPredeployed().hasPredeployableAccounts())
         setupSinglePredepolyAccount()
+        XCTAssertTrue(MDMPredeployed().hasPredeployableAccounts())
 
         try MDMPredeployed().predeployAccounts()
 
