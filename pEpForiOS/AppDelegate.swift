@@ -39,9 +39,9 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     private func setupInitialViewController() -> Bool {
         let folderViews: UIStoryboard = UIStoryboard(name: "FolderViews", bundle: nil)
         guard let initialNVC = folderViews.instantiateViewController(withIdentifier: "main.initial.nvc") as? UISplitViewController
-        else {
-            Log.shared.errorAndCrash("Problem initializing UI")
-            return false
+            else {
+                Log.shared.errorAndCrash("Problem initializing UI")
+                return false
         }
         let window = UIWindow(frame: UIScreen.main.bounds)
         self.window = window
@@ -87,12 +87,6 @@ extension AppDelegate {
 
         Log.shared.logDebugInfo()
 
-        Appearance.setup()
-
-        // If there are accounts to predeploy, act on them right now, before
-        // starting up sub systems.
-        predeployAccounts()
-
         if #available(iOS 13.0, *) {
             Log.shared.info("BGAppRefreshTask: Registering BGTaskScheduler.shared.register(forTaskWithIdentifier: ...")
             BGTaskScheduler.shared.register(forTaskWithIdentifier: Constants.appRefreshTaskBackgroundtaskBackgroundfetchSchedulerid,
@@ -108,6 +102,7 @@ extension AppDelegate {
             application.setMinimumBackgroundFetchInterval(60.0 * 2)
         }
 
+        Appearance.setup()
         setupServices()
         askUserForNotificationPermissions()
         var result = setupInitialViewController()
