@@ -13,4 +13,30 @@ class MDMAccountPredeploymentViewController: UIViewController {
     @IBOutlet weak var activityIndicator: UIActivityIndicatorView!
 
     let viewModel = MDMAccountPredeploymentViewModel()
+
+    override func viewDidLoad() {
+        super.viewDidLoad()
+
+        // Here we use the font extension.
+        messageLabel.font = UIFont.pepFont(style: .body, weight: .regular)
+        configureView(for: traitCollection)
+
+        setFonts()
+    }
+
+    override func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
+        super.traitCollectionDidChange(previousTraitCollection)
+        // Here we react to changes in the font size.
+        if previousTraitCollection?.preferredContentSizeCategory != traitCollection.preferredContentSizeCategory {
+            configureView(for: traitCollection)
+        }
+    }
+
+    private func configureView(for traitCollection: UITraitCollection) {
+        // TODO: reload the view
+    }
+
+    private func setFonts() {
+        messageLabel.setPEPFont(style: .callout, weight: .regular)
+    }
 }
