@@ -19,7 +19,7 @@ class MDMPredeployedTest: XCTestCase {
     override func tearDownWithError() throws {
         Stack.shared.reset()
 
-        UserDefaults().removePersistentDomain(forName: kAppGroupIdentifier)
+        UserDefaults().removeObject(forKey: MDMPredeployed.keyMDM)
         XCTAssertFalse(MDMPredeployed().hasPredeployableAccounts())
     }
 
