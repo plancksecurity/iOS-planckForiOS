@@ -26,6 +26,7 @@ class MDMAccountPredeploymentViewController: UIViewController {
 
     override func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
         super.traitCollectionDidChange(previousTraitCollection)
+
         // Here we react to changes in the font size.
         if previousTraitCollection?.preferredContentSizeCategory != traitCollection.preferredContentSizeCategory {
             configureView(for: traitCollection)
