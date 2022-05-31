@@ -16,8 +16,30 @@
                     <view key="view" contentMode="scaleToFill" id="5EZ-qb-Rvc">
                         <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" translatesAutoresizingMaskIntoConstraints="NO" id="Pel-oi-IFg">
+                                <rect key="frame" x="0.0" y="88" width="414" height="720"/>
+                                <subviews>
+                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="7eN-FQ-fcU">
+                                        <rect key="frame" x="0.0" y="0.0" width="414" height="700"/>
+                                        <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                        <nil key="textColor"/>
+                                        <nil key="highlightedColor"/>
+                                    </label>
+                                    <activityIndicatorView opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" style="medium" translatesAutoresizingMaskIntoConstraints="NO" id="d7S-Nk-zxj">
+                                        <rect key="frame" x="0.0" y="700" width="414" height="20"/>
+                                    </activityIndicatorView>
+                                </subviews>
+                            </stackView>
+                        </subviews>
                         <viewLayoutGuide key="safeArea" id="vDu-zF-Fre"/>
                         <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+                        <constraints>
+                            <constraint firstItem="Pel-oi-IFg" firstAttribute="top" secondItem="vDu-zF-Fre" secondAttribute="top" id="7ss-l5-osJ"/>
+                            <constraint firstItem="Pel-oi-IFg" firstAttribute="centerX" secondItem="5EZ-qb-Rvc" secondAttribute="centerX" id="fYO-ar-4R9"/>
+                            <constraint firstItem="Pel-oi-IFg" firstAttribute="leading" secondItem="vDu-zF-Fre" secondAttribute="leading" id="gg6-UE-6ch"/>
+                            <constraint firstItem="Pel-oi-IFg" firstAttribute="centerY" secondItem="5EZ-qb-Rvc" secondAttribute="centerY" id="qet-z8-3Ou"/>
+                        </constraints>
                     </view>
                     <navigationItem key="navigationItem" id="IQI-8n-fg2"/>
                 </viewController>
