@@ -25,10 +25,10 @@ class MDMPredeployedTest: XCTestCase {
 
     func testRemoveDefault() {
         let key = "blah"
-        let array = ["some", "values"]
-        let settingsDict: SettingsDict = [key:array]
+        let array: NSArray = ["some", "values"]
+        let settingsDict: [String:NSObject] = [key:array]
         UserDefaults().register(defaults: settingsDict)
-        let readDict = UserDefaults().object(forKey: key) as? SettingsDict
+        let readDict = UserDefaults().object(forKey: key) as? [String:NSObject]
         XCTAssertNotNil(readDict)
         XCTAssertEqual(settingsDict, readDict)
         UserDefaults().removeObject(forKey: key)
