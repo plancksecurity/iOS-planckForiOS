@@ -9,10 +9,14 @@
 import UIKit
 
 class MDMAccountPredeploymentViewController: UIViewController {
+    // MARK: - Storyboard
+
     @IBOutlet weak var messageLabel: UILabel!
     @IBOutlet weak var activityIndicator: UIActivityIndicatorView!
 
     let viewModel = MDMAccountPredeploymentViewModel()
+
+    // MARK: - Lifecycle
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -21,6 +25,8 @@ class MDMAccountPredeploymentViewController: UIViewController {
         messageLabel.setPEPFont(style: .largeTitle, weight: .regular)
         configureView(for: traitCollection)
     }
+
+    // MARK: - Font Size
 
     override func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
         super.traitCollectionDidChange(previousTraitCollection)
