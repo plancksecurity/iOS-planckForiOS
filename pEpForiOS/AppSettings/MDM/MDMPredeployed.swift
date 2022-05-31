@@ -33,6 +33,18 @@ private typealias SettingsDict = [String:Any]
 // MARK: - MDMPredeployedProtocol
 
 extension MDMPredeployed: MDMPredeployedProtocol {
+    func hasPredeployableAccounts() -> Bool {
+        guard let mdmDict = UserDefaults.standard.dictionary(forKey: MDMPredeployed.keyMDM) else {
+            return false
+        }
+
+        guard let predeployedAccounts = mdmDict[MDMPredeployed.keyPredeployedAccounts] as? [SettingsDict] else {
+            return false
+        }
+
+        return !predeployedAccounts.isEmpty
+    }
+
     func predeployAccounts() throws {
         guard let mdmDict = UserDefaults.standard.dictionary(forKey: MDMPredeployed.keyMDM) else {
             return

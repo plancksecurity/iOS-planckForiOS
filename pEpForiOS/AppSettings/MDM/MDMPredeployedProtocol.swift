@@ -15,6 +15,9 @@ enum MDMPredeployedError: Error {
 }
 
 protocol MDMPredeployedProtocol {
+    /// - Returns: `true` if there are accounts waiting to be predeployed, `false` otherwise.
+    func hasPredeployableAccounts() -> Bool
+
     /// Finds out about pre-deployed accounts, and if there are any configured, erases the local DB
     /// and sets them up, wiping the very configuration settings that triggered the set up after that.
     ///
