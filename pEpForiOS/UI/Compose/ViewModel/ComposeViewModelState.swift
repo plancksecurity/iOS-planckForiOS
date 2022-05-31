@@ -50,7 +50,7 @@ extension ComposeViewModel {
                 !inlinedAttachments.isEmpty ||
                 subject != defaultSubject ||
                 bodyPlaintext != defaultBodyPlaintext ||
-                bodyText.string != defaultBodyText?.string
+                (!bodyText.string.isEmpty && bodyText.string.trimmed() != defaultBodyText?.string.trimmed())
             }
         }
 
@@ -110,7 +110,7 @@ extension ComposeViewModel {
         var bodyText = NSAttributedString(string: "") {
             didSet {
                 if defaultBodyText == nil {
-                    defaultBodyText = bodyText
+                    defaultBodyText = NSAttributedString(string: String.pepSignature) 
                 }
             }
         }
