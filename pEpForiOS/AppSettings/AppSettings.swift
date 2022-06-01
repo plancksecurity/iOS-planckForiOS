@@ -113,6 +113,7 @@ extension AppSettings {
         defaults[AppSettings.keyUnsecureReplyWarningEnabled] = false
         defaults[AppSettings.keyAccountSignature] = [String:String]()
         defaults[AppSettings.keyVerboseLogginEnabled] = false
+        defaults[AppSettings.keyMdmPredeployAccounts] = true // TMP
         AppSettings.userDefaults.register(defaults: defaults)
     }
 
