@@ -38,6 +38,13 @@ class MDMPredeployedTest: XCTestCase {
         // This very clearly does not remove keys
         UserDefaults().removeObject(forKey: key)
         XCTAssertNotNil(UserDefaults().object(forKey: key))
+
+        guard let bundleId = Bundle.main.bundleIdentifier else {
+            XCTFail()
+            return
+        }
+        UserDefaults().removePersistentDomain(forName: bundleId)
+        XCTAssertNil(UserDefaults().object(forKey: key))
     }
 
     func testNoPredeploymentNecessary() {
