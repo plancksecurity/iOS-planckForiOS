@@ -18,9 +18,6 @@ class MDMPredeployedTest: XCTestCase {
 
     override func tearDownWithError() throws {
         Stack.shared.reset()
-
-        UserDefaults().removeObject(forKey: MDMPredeployed.keyMDM)
-        XCTAssertFalse(MDMPredeployed().hasPredeployableAccounts())
     }
 
     func testNoPredeploymentNecessary() {
