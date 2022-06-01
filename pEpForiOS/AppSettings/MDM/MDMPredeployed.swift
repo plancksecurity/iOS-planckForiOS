@@ -16,7 +16,7 @@ class MDMPredeployed {
 // MARK: - Dictionary key constants
 
 extension MDMPredeployed {
-    static let keyMDM = "mdm"
+    static let keyMDM = "com.apple.configuration.managed"
     static let keyPredeployedAccounts = "predeployedAccounts"
     static let keyServerName = "name"
     static let keyServerPort = "port"
