@@ -44,6 +44,9 @@ class MDMPredeployedTest: XCTestCase {
             return
         }
         UserDefaults().removePersistentDomain(forName: bundleId)
+        XCTAssertNotNil(UserDefaults().object(forKey: key))
+
+        UserDefaults().removePersistentDomain(forName: kAppGroupIdentifier)
         XCTAssertNil(UserDefaults().object(forKey: key))
     }
 
