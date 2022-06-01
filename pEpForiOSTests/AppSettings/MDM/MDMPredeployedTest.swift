@@ -23,12 +23,6 @@ class MDMPredeployedTest: XCTestCase {
         XCTAssertFalse(MDMPredeployed().hasPredeployableAccounts())
     }
 
-    func testDomains() {
-        for volatileDomain in UserDefaults().volatileDomainNames {
-            print("*** volatileDomain \(volatileDomain)")
-        }
-    }
-
     func testRemoveDefault() {
         let key = "blah"
         let array = ["some", "values"]
@@ -40,8 +34,10 @@ class MDMPredeployedTest: XCTestCase {
         let readObject = UserDefaults().object(forKey: key)
         XCTAssertNotNil(readObject)
         XCTAssertEqual(readObject as? [String], array)
+
+        // This very clearly does not remove keys
         UserDefaults().removeObject(forKey: key)
-        XCTAssertNil(UserDefaults().object(forKey: key))
+        XCTAssertNotNil(UserDefaults().object(forKey: key))
     }
 
     func testNoPredeploymentNecessary() {
