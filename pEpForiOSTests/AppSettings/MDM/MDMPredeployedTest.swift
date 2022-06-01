@@ -23,9 +23,18 @@ class MDMPredeployedTest: XCTestCase {
         XCTAssertFalse(MDMPredeployed().hasPredeployableAccounts())
     }
 
+    func testDomains() {
+        for volatileDomain in UserDefaults().volatileDomainNames {
+            print("*** volatileDomain \(volatileDomain)")
+        }
+    }
+
     func testRemoveDefault() {
         let key = "blah"
         let array = ["some", "values"]
+
+        XCTAssertNil(UserDefaults().object(forKey: key))
+
         let settingsDict: SettingsDict = [key:array]
         UserDefaults().register(defaults: settingsDict)
         let readObject = UserDefaults().object(forKey: key)
