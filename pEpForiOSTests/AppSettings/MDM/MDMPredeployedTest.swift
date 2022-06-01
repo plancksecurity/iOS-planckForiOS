@@ -23,33 +23,6 @@ class MDMPredeployedTest: XCTestCase {
         XCTAssertFalse(MDMPredeployed().hasPredeployableAccounts())
     }
 
-    func testRemoveDefault() {
-        let key = "blah"
-        let array = ["some", "values"]
-
-        XCTAssertNil(UserDefaults().object(forKey: key))
-
-        let settingsDict: SettingsDict = [key:array]
-        UserDefaults().register(defaults: settingsDict)
-        let readObject = UserDefaults().object(forKey: key)
-        XCTAssertNotNil(readObject)
-        XCTAssertEqual(readObject as? [String], array)
-
-        // This very clearly does not remove keys
-        UserDefaults().removeObject(forKey: key)
-        XCTAssertNotNil(UserDefaults().object(forKey: key))
-
-        guard let bundleId = Bundle.main.bundleIdentifier else {
-            XCTFail()
-            return
-        }
-        UserDefaults().removePersistentDomain(forName: bundleId)
-        XCTAssertNotNil(UserDefaults().object(forKey: key))
-
-        UserDefaults().removePersistentDomain(forName: kAppGroupIdentifier)
-        XCTAssertNil(UserDefaults().object(forKey: key))
-    }
-
     func testNoPredeploymentNecessary() {
         XCTAssertFalse(MDMPredeployed().hasPredeployableAccounts())
     }
