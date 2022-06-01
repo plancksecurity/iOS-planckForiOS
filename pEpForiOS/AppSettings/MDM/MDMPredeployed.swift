@@ -51,9 +51,9 @@ extension MDMPredeployed: MDMPredeployedProtocol {
     ///
     /// "The configuration dictionary provides one-way communication from the MDM server to an app.
     /// An app can access its (read-only) configuration dictionary by reading the key com.apple.configuration.managed
-    /// using the NSUserDefaults class.
+    /// using the NSUserDefaults class."
     ///
-    /// A managed app can respond to new configurations that arrive while the app is running by observing the
+    /// "A managed app can respond to new configurations that arrive while the app is running by observing the
     /// NSUserDefaultsDidChangeNotification notification."
     func predeployAccounts() throws {
         guard let mdmDict = UserDefaults.standard.dictionary(forKey: MDMPredeployed.keyMDM) else {
