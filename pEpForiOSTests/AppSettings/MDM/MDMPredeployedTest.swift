@@ -20,12 +20,7 @@ class MDMPredeployedTest: XCTestCase {
         Stack.shared.reset()
     }
 
-    func testNoPredeploymentNecessary() {
-        XCTAssertFalse(MDMPredeployed().hasPredeployableAccounts())
-    }
-
     func testSingleAccount() throws {
-        XCTAssertFalse(MDMPredeployed().hasPredeployableAccounts())
         setupSinglePredepolyAccount()
         XCTAssertTrue(MDMPredeployed().hasPredeployableAccounts())
 
@@ -60,7 +55,6 @@ class MDMPredeployedTest: XCTestCase {
     func testMoreThanOneAccount() throws {
         let numAccounts = 2
 
-        XCTAssertFalse(MDMPredeployed().hasPredeployableAccounts())
         setupPredeployAccounts(number: numAccounts)
         XCTAssertTrue(MDMPredeployed().hasPredeployableAccounts())
 
