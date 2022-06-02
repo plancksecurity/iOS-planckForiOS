@@ -135,7 +135,6 @@ extension MDMPredeployed: MDMPredeployedProtocol {
         }
         session.commit()
 
-        UserDefaults.standard.removeObject(forKey: MDMPredeployed.keyMDM)
-        assert(UserDefaults.standard.object(forKey: MDMPredeployed.keyMDM) == nil)
+        UserDefaults.standard.set([:], forKey: MDMPredeployed.keyMDM)
     }
 }
