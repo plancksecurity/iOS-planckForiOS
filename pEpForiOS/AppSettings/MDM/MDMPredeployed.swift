@@ -56,9 +56,6 @@ extension MDMPredeployed: MDMPredeployedProtocol {
     /// "A managed app can respond to new configurations that arrive while the app is running by observing the
     /// NSUserDefaultsDidChangeNotification notification."
     func predeployAccounts() throws {
-        // TMP
-        throw MDMPredeployedError.malformedAccountData
-
         guard let mdmDict = UserDefaults.standard.dictionary(forKey: MDMPredeployed.keyMDM) else {
             return
         }
