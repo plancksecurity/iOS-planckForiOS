@@ -24,6 +24,8 @@ class MDMAccountPredeploymentViewController: UIViewController {
         // Here we use the font extension.
         messageLabel.setPEPFont(style: .largeTitle, weight: .regular)
         configureView(for: traitCollection)
+
+        viewModel.delegate = self
     }
 
     override func viewWillAppear(_ animated: Bool) {
