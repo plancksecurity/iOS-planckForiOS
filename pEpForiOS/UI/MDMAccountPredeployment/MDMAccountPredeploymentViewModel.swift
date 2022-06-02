@@ -8,6 +8,8 @@
 
 import Foundation
 
+import MessageModel
+
 import pEpIOSToolbox
 
 protocol MDMAccountPredeploymentViewModelDelegate: NSObject {
@@ -29,6 +31,7 @@ class MDMAccountPredeploymentViewModel {
         let predeployer: MDMPredeployedProtocol = MDMPredeployed()
         do {
             try predeployer.predeployAccounts()
+            setupAccounts()
         } catch let error as MDMPredeployedError {
             if let del = delegate {
                 del.handle(predeploymentError: error)
@@ -40,6 +43,14 @@ class MDMAccountPredeploymentViewModel {
             Log.shared.logError(message: "Error during MDM account predeployment: \(error)")
             return
         }
+    }
+}
+
+// MARK: - Internals
+
+extension MDMAccountPredeploymentViewModel {
+    func setupAccounts() {
+        // TODO: Use something on top of PrepareAccountForSavingService
     }
 }
 
