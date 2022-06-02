@@ -302,6 +302,10 @@ extension FolderTableViewController: SegueHandlerType {
             Log.shared.errorAndCrash("VM not Found")
             return
         }
+
+        // TMP
+        MDMAccountPredeploymentViewModel.addTestData()
+
         if shouldPresentNextView {
             if vm.shouldShowFolders {
                 showEmailList(folder:vm.folderToShow)

@@ -20,9 +20,6 @@ class MDMAccountPredeploymentViewModel {
     ///
     /// - Note: Silently fails if there was an error is the account description.
     func predeployAccounts() {
-        // TMP
-        MDMAccountPredeploymentViewModel.addTestData()
-
         if !AppSettings.shared.mdmPredeployAccounts {
             return
         }
