@@ -10,7 +10,12 @@ import Foundation
 
 import pEpIOSToolbox
 
+protocol MDMAccountPredeploymentViewModelDelegate: NSObject {
+}
+
 class MDMAccountPredeploymentViewModel {
+    weak var delegate: MDMAccountPredeploymentViewModelDelegate?
+
     /// Checks for predeployed accounts, and acts on them.
     ///
     /// - Note: Silently fails if there was an error is the account description.
