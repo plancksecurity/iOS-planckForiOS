@@ -47,7 +47,7 @@ extension MDMPredeployed: MDMPredeployedProtocol {
 
     /// Implementation details:
     ///
-    /// From MDM-Protocol-Reference.pdf:
+    /// From MDM-Protocol-Reference.pdf, p 70:
     ///
     /// "The configuration dictionary provides one-way communication from the MDM server to an app.
     /// An app can access its (read-only) configuration dictionary by reading the key com.apple.configuration.managed
