@@ -26,6 +26,7 @@ class MDMAccountPredeploymentViewController: UIViewController {
         configureView(for: traitCollection)
 
         if #available(iOS 13.0, *) {
+            // Prevent the user to be able to "swipe down" this VC
             isModalInPresentation = true
         } else {
             // Modal is modal already?
