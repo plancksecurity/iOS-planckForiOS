@@ -8,8 +8,6 @@
 
 import Foundation
 
-import MessageModel
-
 import pEpIOSToolbox
 
 protocol MDMAccountPredeploymentViewModelDelegate: NSObject {
