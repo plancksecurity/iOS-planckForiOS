@@ -26,6 +26,10 @@ class MDMAccountPredeploymentViewController: UIViewController {
         configureView(for: traitCollection)
     }
 
+    override func viewWillAppear(_ animated: Bool) {
+        viewModel.predeployAccounts()
+    }
+
     // MARK: - Font Size
 
     override func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
