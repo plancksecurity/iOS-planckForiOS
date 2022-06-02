@@ -29,6 +29,7 @@ class MDMAccountPredeploymentViewController: UIViewController {
     }
 
     override func viewWillAppear(_ animated: Bool) {
+        activityIndicator.startAnimating()
         viewModel.predeployAccounts()
     }
 
@@ -50,6 +51,8 @@ class MDMAccountPredeploymentViewController: UIViewController {
 
 extension MDMAccountPredeploymentViewController: MDMAccountPredeploymentViewModelDelegate {
     func handle(predeploymentError: MDMPredeployedError) {
-        // TODO: Show error
+        activityIndicator.stopAnimating()
+        messageLabel.text = NSLocalizedString("MDM Error",
+                                              comment: "MDM Predeployment went wrong")
     }
 }
