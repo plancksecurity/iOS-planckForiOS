@@ -91,7 +91,8 @@ extension MDMAccountPredeploymentViewModel {
                                                    imapServer: imapServerDict,
                                                    smtpServer: smtpServerDict)
 
-        let mdm: SettingsDict = [MDMPredeployed.keyMDM: [predeployedAccount]]
+        let predeployedAccounts: SettingsDict = [MDMPredeployed.keyPredeployedAccounts:[predeployedAccount]]
+        let mdm: SettingsDict = [MDMPredeployed.keyMDM: predeployedAccounts]
 
         UserDefaults.standard.register(defaults: mdm)
     }
