@@ -45,3 +45,9 @@ class MDMAccountPredeploymentViewController: UIViewController {
         view.setNeedsLayout()
     }
 }
+
+extension MDMAccountPredeploymentViewController: MDMAccountPredeploymentViewModelDelegate {
+    func handle(predeploymentError: MDMPredeployedError) {
+        // TODO: Show error
+    }
+}
