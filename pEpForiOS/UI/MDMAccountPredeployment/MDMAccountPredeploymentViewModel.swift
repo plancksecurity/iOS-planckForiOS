@@ -21,8 +21,7 @@ class MDMAccountPredeploymentViewModel {
     /// - Note: Silently fails if there was an error is the account description.
     func predeployAccounts() {
         // TMP
-        AppSettings.shared.mdmPredeployAccounts = true
-        addTestData()
+        MDMAccountPredeploymentViewModel.addTestData()
 
         if !AppSettings.shared.mdmPredeployAccounts {
             return
@@ -43,7 +42,9 @@ class MDMAccountPredeploymentViewModel {
 private typealias SettingsDict = [String:Any]
 
 extension MDMAccountPredeploymentViewModel {
-    private func addTestData() {
+    static func addTestData() {
+        AppSettings.shared.mdmPredeployAccounts = true
+
         let server = "server.example.com"
         let email = "email@\(server)"
 
@@ -58,14 +59,14 @@ extension MDMAccountPredeploymentViewModel {
     }
 
     /// Temporary test function for adding MDM account data.
-    private func predeployAccount(userName: String,
-                                  userAddress: String,
-                                  loginName: String,
-                                  password: String,
-                                  imapServerName: String,
-                                  imapServerPort: Int,
-                                  smtpServerName: String,
-                                  smtpServerPort: Int) {
+    private static func predeployAccount(userName: String,
+                                         userAddress: String,
+                                         loginName: String,
+                                         password: String,
+                                         imapServerName: String,
+                                         imapServerPort: Int,
+                                         smtpServerName: String,
+                                         smtpServerPort: Int) {
         let imapServerDict = serverDictionary(name: imapServerName, port: UInt16(imapServerPort))
         let smtpServerDict = serverDictionary(name: smtpServerName, port: UInt16(smtpServerPort))
         let predeployedAccount = accountDictionary(userName: userName,
@@ -80,17 +81,17 @@ extension MDMAccountPredeploymentViewModel {
         UserDefaults.standard.register(defaults: mdm)
     }
 
-    private func serverDictionary(name: String, port: UInt16) -> SettingsDict {
+    private static func serverDictionary(name: String, port: UInt16) -> SettingsDict {
         return [MDMPredeployed.keyServerName: name,
                 MDMPredeployed.keyServerPort: NSNumber(value: port)]
     }
 
-    private func accountDictionary(userName: String,
-                                   userAddress: String,
-                                   loginName: String,
-                                   password: String,
-                                   imapServer: SettingsDict,
-                                   smtpServer: SettingsDict) -> SettingsDict {
+    private static func accountDictionary(userName: String,
+                                  userAddress: String,
+                                  loginName: String,
+                                  password: String,
+                                  imapServer: SettingsDict,
+                                  smtpServer: SettingsDict) -> SettingsDict {
         return [MDMPredeployed.keyUserName: userName,
                 MDMPredeployed.keyUserAddress: userAddress,
                 MDMPredeployed.keyLoginName: loginName,
