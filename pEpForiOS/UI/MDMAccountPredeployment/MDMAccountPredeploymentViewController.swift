@@ -25,6 +25,12 @@ class MDMAccountPredeploymentViewController: UIViewController {
         messageLabel.setPEPFont(style: .largeTitle, weight: .regular)
         configureView(for: traitCollection)
 
+        if #available(iOS 13.0, *) {
+            isModalInPresentation = true
+        } else {
+            // Modal is modal already?
+        }
+
         viewModel.delegate = self
     }
 
