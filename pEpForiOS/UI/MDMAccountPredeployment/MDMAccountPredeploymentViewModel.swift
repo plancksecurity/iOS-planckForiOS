@@ -11,6 +11,8 @@ import Foundation
 import pEpIOSToolbox
 
 protocol MDMAccountPredeploymentViewModelDelegate: NSObject {
+    /// The MDM data contained errors.
+    func handle(predeploymentError: MDMPredeployedError)
 }
 
 class MDMAccountPredeploymentViewModel {
@@ -27,6 +29,13 @@ class MDMAccountPredeploymentViewModel {
         let predeployer: MDMPredeployedProtocol = MDMPredeployed()
         do {
             try predeployer.predeployAccounts()
+        } catch let error as MDMPredeployedError {
+            if let del = delegate {
+                del.handle(predeploymentError: error)
+            } else {
+                Log.shared.logError(message: "Error during MDM account predeployment: \(error)")
+                return
+            }
         } catch {
             Log.shared.logError(message: "Error during MDM account predeployment: \(error)")
             return
