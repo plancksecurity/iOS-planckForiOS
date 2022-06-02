@@ -303,7 +303,7 @@ extension FolderTableViewController: SegueHandlerType {
             return
         }
 
-        // TMP
+        // TMP: Simulate account pre-deployment
         MDMAccountPredeploymentViewModel.addTestData()
 
         if shouldPresentNextView {
