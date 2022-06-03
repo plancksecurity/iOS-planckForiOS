@@ -134,7 +134,5 @@ extension MDMPredeployed: MDMPredeployedProtocol {
             let _ = Account.init(user: id, servers: [imapServer, smtpServer], session: session)
         }
         session.commit()
-
-        UserDefaults.standard.set([:], forKey: MDMPredeployed.keyMDM)
     }
 }
