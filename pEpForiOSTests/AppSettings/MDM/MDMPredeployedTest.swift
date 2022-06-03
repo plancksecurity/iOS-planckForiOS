@@ -21,7 +21,7 @@ class MDMPredeployedTest: XCTestCase {
     }
 
     func testSingleAccount() throws {
-        setupSinglePredepolyAccount()
+        setupSinglePredeployedAccount()
         XCTAssertTrue(MDMPredeployed().hasPredeployableAccounts())
 
         try MDMPredeployed().predeployAccounts()
@@ -89,7 +89,7 @@ class MDMPredeployedTest: XCTestCase {
         let _ = createAccount(baseName: "acc2", portBase: 556, index: 2)
 
         XCTAssertFalse(MDMPredeployed().hasPredeployableAccounts())
-        setupSinglePredepolyAccount()
+        setupSinglePredeployedAccount()
         XCTAssertTrue(MDMPredeployed().hasPredeployableAccounts())
 
         try MDMPredeployed().predeployAccounts()
@@ -144,7 +144,7 @@ class MDMPredeployedTest: XCTestCase {
         UserDefaults.standard.register(defaults: mdm)
     }
 
-    func setupSinglePredepolyAccount(appendixNumber: Int = 0) {
+    func setupSinglePredeployedAccount(appendixNumber: Int = 0) {
         let accountDict = accountWithServerDictionary(appendixNumber: appendixNumber)
         let predeployedAccounts: SettingsDict = [MDMPredeployed.keyPredeployedAccounts:[accountDict]]
         let mdm: SettingsDict = [MDMPredeployed.keyMDM: predeployedAccounts]
