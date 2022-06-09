@@ -21,10 +21,8 @@ protocol MDMPredeployedProtocol {
     /// Finds out about pre-deployed accounts, and if there are any configured, erases the local DB
     /// and sets them up, wiping the very configuration settings that triggered the set up after that.
     ///
-    /// - Throws: `MDMPredeployedError`
-    ///
-    /// - Note: The logins for the accounts are _not_ checked for validity, that is, a wrong password will not lead
-    /// to an immediate error.
+    /// Calls the given callback when finished, indicating an error (`MDMPredeployedError`, if any),
+    /// or complete success.
     ///
     /// The format of the required settings is as follows:
     ///
@@ -42,5 +40,5 @@ protocol MDMPredeployedProtocol {
     ///     smtpServer: Dictionary
     ///       name: String
     ///       port: Integer
-    func predeployAccounts() throws
+    func predeployAccounts(callback: (_ error: MDMPredeployedError?) -> (Void))
 }
