@@ -22,9 +22,8 @@ class MDMPredeployedTest: XCTestCase {
 
     func testSingleAccount() throws {
         setupSinglePredeployedAccount()
-        XCTAssertTrue(MDMPredeployed().hasPredeployableAccounts())
 
-        try MDMPredeployed().predeployAccounts()
+        try predeployAccounts()
 
         let accounts = Account.all()
         XCTAssertEqual(accounts.count, 1)
@@ -56,9 +55,8 @@ class MDMPredeployedTest: XCTestCase {
         let numAccounts = 2
 
         setupPredeployAccounts(number: numAccounts)
-        XCTAssertTrue(MDMPredeployed().hasPredeployableAccounts())
 
-        try MDMPredeployed().predeployAccounts()
+        try predeployAccounts()
 
         let accounts = Account.all()
         XCTAssertEqual(accounts.count, numAccounts)
@@ -88,11 +86,9 @@ class MDMPredeployedTest: XCTestCase {
         let _ = createAccount(baseName: "acc1", portBase: 555, index: 1)
         let _ = createAccount(baseName: "acc2", portBase: 556, index: 2)
 
-        XCTAssertFalse(MDMPredeployed().hasPredeployableAccounts())
         setupSinglePredeployedAccount()
-        XCTAssertTrue(MDMPredeployed().hasPredeployableAccounts())
 
-        try MDMPredeployed().predeployAccounts()
+        try predeployAccounts()
 
         let accounts = Account.all()
         XCTAssertEqual(accounts.count, 1)
@@ -121,6 +117,19 @@ class MDMPredeployedTest: XCTestCase {
     }
 
     // MARK: - Util
+
+    func predeployAccounts() throws {
+        let expDeployed = expectation(description: "expDeployed")
+        MDMPredeployed().predeployAccounts { maybeError in
+            expDeployed.fulfill()
+            if let error = maybeError {
+                throw error
+            }
+        }
+        wait(for: [expDeployed], timeout: TestUtil.waitTimeLocal)
+    }
+
+    // MARK: - Setup Util
 
     let accountDataImapServer = "imap"
     let accountDataSmtpServer = "smtp"
@@ -182,7 +191,7 @@ class MDMPredeployedTest: XCTestCase {
         return "\(string)\(index)"
     }
 
-    // MARK: - Util Util
+    // MARK: - Setup Util Util
 
     private func accountWithServerDictionary(appendixNumber: Int = 0) -> SettingsDict {
         let appendix16 = UInt16(appendixNumber)
