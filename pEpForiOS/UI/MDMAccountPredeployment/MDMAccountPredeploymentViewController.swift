@@ -31,15 +31,18 @@ class MDMAccountPredeploymentViewController: UIViewController {
         } else {
             // Modal is modal already?
         }
-
-        viewModel.delegate = self
     }
 
     override func viewWillAppear(_ animated: Bool) {
         activityIndicator.startAnimating()
         activityIndicator.isHidden = false
 
-        viewModel.predeployAccounts()
+        viewModel.predeployAccounts { predeploymentError in
+            activityIndicator.stopAnimating()
+            activityIndicator.isHidden = true
+            messageLabel.text = NSLocalizedString("MDM Error",
+                                                  comment: "MDM Predeployment went wrong")
+        }
     }
 
     // MARK: - Font Size
@@ -55,14 +58,5 @@ class MDMAccountPredeploymentViewController: UIViewController {
 
     private func configureView(for traitCollection: UITraitCollection) {
         view.setNeedsLayout()
-    }
-}
-
-extension MDMAccountPredeploymentViewController: MDMAccountPredeploymentViewModelDelegate {
-    func handle(predeploymentError: MDMPredeployedError) {
-        activityIndicator.stopAnimating()
-        activityIndicator.isHidden = true
-        messageLabel.text = NSLocalizedString("MDM Error",
-                                              comment: "MDM Predeployment went wrong")
     }
 }
