@@ -149,7 +149,7 @@ extension String {
             }
         }
 
-        return string.normalAttributedString()
+        return string
     }
 
     public func replaceMarkdownImageSyntaxToHtmlSyntax() -> String {
