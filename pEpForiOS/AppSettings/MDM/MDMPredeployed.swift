@@ -33,18 +33,6 @@ private typealias SettingsDict = [String:Any]
 // MARK: - MDMPredeployedProtocol
 
 extension MDMPredeployed: MDMPredeployedProtocol {
-    func hasPredeployableAccounts() -> Bool {
-        guard let mdmDict = UserDefaults.standard.dictionary(forKey: MDMPredeployed.keyMDM) else {
-            return false
-        }
-
-        guard let predeployedAccounts = mdmDict[MDMPredeployed.keyPredeployedAccounts] as? [SettingsDict] else {
-            return false
-        }
-
-        return !predeployedAccounts.isEmpty
-    }
-
     /// Implementation details:
     ///
     /// From MDM-Protocol-Reference.pdf, p 70:
@@ -55,9 +43,9 @@ extension MDMPredeployed: MDMPredeployedProtocol {
     ///
     /// "A managed app can respond to new configurations that arrive while the app is running by observing the
     /// NSUserDefaultsDidChangeNotification notification."
-    func predeployAccounts() throws {
+    func predeployAccounts(callback: (_ error: MDMPredeployedError?) -> ()) {
         guard let mdmDict = UserDefaults.standard.dictionary(forKey: MDMPredeployed.keyMDM) else {
-            return
+            callback(nil)
         }
 
         guard let predeployedAccounts = mdmDict[MDMPredeployed.keyPredeployedAccounts] as? [SettingsDict] else {
@@ -69,34 +57,34 @@ extension MDMPredeployed: MDMPredeployedProtocol {
         var haveWipedExistingAccounts = false
         for accDict in predeployedAccounts {
             guard let userName = accDict[MDMPredeployed.keyUserName] as? String else {
-                throw MDMPredeployedError.malformedAccountData
+                callback(MDMPredeployedError.malformedAccountData)
             }
             guard let userAddress = accDict[MDMPredeployed.keyUserAddress] as? String else {
-                throw MDMPredeployedError.malformedAccountData
+                callback(MDMPredeployedError.malformedAccountData)
             }
             guard let loginName = accDict[MDMPredeployed.keyLoginName] as? String else {
-                throw MDMPredeployedError.malformedAccountData
+                callback(MDMPredeployedError.malformedAccountData)
             }
             guard let password = accDict[MDMPredeployed.keyPassword] as? String else {
-                throw MDMPredeployedError.malformedAccountData
+                callback(MDMPredeployedError.malformedAccountData)
             }
             guard let imapServerDict = accDict[MDMPredeployed.keyImapServer] as? SettingsDict else {
-                throw MDMPredeployedError.malformedAccountData
+                callback(MDMPredeployedError.malformedAccountData)
             }
             guard let imapServerAddress = imapServerDict[MDMPredeployed.keyServerName] as? String else {
-                throw MDMPredeployedError.malformedAccountData
+                callback(MDMPredeployedError.malformedAccountData)
             }
             guard let imapPortNumber = imapServerDict[MDMPredeployed.keyServerPort] as? NSNumber else {
-                throw MDMPredeployedError.malformedAccountData
+                callback(MDMPredeployedError.malformedAccountData)
             }
             guard let smtpServerDict = accDict[MDMPredeployed.keySmtpServer] as? SettingsDict else {
-                throw MDMPredeployedError.malformedAccountData
+                callback(MDMPredeployedError.malformedAccountData)
             }
             guard let smtpServerAddress = smtpServerDict[MDMPredeployed.keyServerName] as? String else {
-                throw MDMPredeployedError.malformedAccountData
+                callback(MDMPredeployedError.malformedAccountData)
             }
             guard let smtpPortNumber = smtpServerDict[MDMPredeployed.keyServerPort] as? NSNumber else {
-                throw MDMPredeployedError.malformedAccountData
+                callback(MDMPredeployedError.malformedAccountData)
             }
 
             if !haveWipedExistingAccounts {
@@ -143,5 +131,7 @@ extension MDMPredeployed: MDMPredeployedProtocol {
         UserDefaults.standard.set(emptyVal, forKey: MDMPredeployed.keyMDM)
         let stillThere = UserDefaults.standard.object(forKey: MDMPredeployed.keyMDM) as? SettingsDict
         assert(stillThere?.isEmpty ?? false)
+
+        callback(nil)
     }
 }
