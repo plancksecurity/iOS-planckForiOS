@@ -119,14 +119,20 @@ class MDMPredeployedTest: XCTestCase {
     // MARK: - Util
 
     func predeployAccounts() throws {
+        var potentialError: Error
+
         let expDeployed = expectation(description: "expDeployed")
         MDMPredeployed().predeployAccounts { maybeError in
             expDeployed.fulfill()
             if let error = maybeError {
-                throw error
+                potentialError = error
             }
         }
         wait(for: [expDeployed], timeout: TestUtil.waitTimeLocal)
+
+        if let error = potentialError {
+            throw error
+        }
     }
 
     // MARK: - Setup Util
