@@ -73,9 +73,7 @@ extension MDMAccountPredeploymentViewModel {
                                                    smtpServer: smtpServerDict)
 
         let predeployedAccounts: SettingsDict = [MDMPredeployed.keyPredeployedAccounts:[predeployedAccount]]
-        let mdm: SettingsDict = [MDMPredeployed.keyMDM: predeployedAccounts]
-
-        UserDefaults.standard.register(defaults: mdm)
+        UserDefaults.standard.set(predeployedAccounts, forKey: MDMPredeployed.keyMDM)
     }
 
     private static func serverDictionary(name: String, port: UInt16) -> SettingsDict {
