@@ -18,6 +18,8 @@ class MDMPredeployedTest: XCTestCase {
 
     override func tearDownWithError() throws {
         Stack.shared.reset()
+        XCTAssertTrue(PEPUtils.pEpClean())
+        try super.tearDownWithError()
     }
 
     func testSingleAccount() throws {
