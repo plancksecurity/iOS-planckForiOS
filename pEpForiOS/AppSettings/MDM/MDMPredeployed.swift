@@ -46,9 +46,11 @@ extension MDMPredeployed: MDMPredeployedProtocol {
     func predeployAccounts(callback: (_ error: MDMPredeployedError?) -> ()) {
         guard let mdmDict = UserDefaults.standard.dictionary(forKey: MDMPredeployed.keyMDM) else {
             callback(nil)
+            return
         }
 
         guard let predeployedAccounts = mdmDict[MDMPredeployed.keyPredeployedAccounts] as? [SettingsDict] else {
+            callback(nil)
             return
         }
 
@@ -58,33 +60,43 @@ extension MDMPredeployed: MDMPredeployedProtocol {
         for accDict in predeployedAccounts {
             guard let userName = accDict[MDMPredeployed.keyUserName] as? String else {
                 callback(MDMPredeployedError.malformedAccountData)
+                return
             }
             guard let userAddress = accDict[MDMPredeployed.keyUserAddress] as? String else {
                 callback(MDMPredeployedError.malformedAccountData)
+                return
             }
             guard let loginName = accDict[MDMPredeployed.keyLoginName] as? String else {
                 callback(MDMPredeployedError.malformedAccountData)
+                return
             }
             guard let password = accDict[MDMPredeployed.keyPassword] as? String else {
                 callback(MDMPredeployedError.malformedAccountData)
+                return
             }
             guard let imapServerDict = accDict[MDMPredeployed.keyImapServer] as? SettingsDict else {
                 callback(MDMPredeployedError.malformedAccountData)
+                return
             }
             guard let imapServerAddress = imapServerDict[MDMPredeployed.keyServerName] as? String else {
                 callback(MDMPredeployedError.malformedAccountData)
+                return
             }
             guard let imapPortNumber = imapServerDict[MDMPredeployed.keyServerPort] as? NSNumber else {
                 callback(MDMPredeployedError.malformedAccountData)
+                return
             }
             guard let smtpServerDict = accDict[MDMPredeployed.keySmtpServer] as? SettingsDict else {
                 callback(MDMPredeployedError.malformedAccountData)
+                return
             }
             guard let smtpServerAddress = smtpServerDict[MDMPredeployed.keyServerName] as? String else {
                 callback(MDMPredeployedError.malformedAccountData)
+                return
             }
             guard let smtpPortNumber = smtpServerDict[MDMPredeployed.keyServerPort] as? NSNumber else {
                 callback(MDMPredeployedError.malformedAccountData)
+                return
             }
 
             if !haveWipedExistingAccounts {
