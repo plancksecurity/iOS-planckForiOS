@@ -12,6 +12,9 @@ import Foundation
 enum MDMPredeployedError: Error {
     /// Account settings were found, but the format could not be read.
     case malformedAccountData
+
+    /// A network error occurred when trying to verify the account
+    case networkError
 }
 
 protocol MDMPredeployedProtocol {
