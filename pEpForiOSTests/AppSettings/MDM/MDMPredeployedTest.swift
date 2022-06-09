@@ -119,7 +119,7 @@ class MDMPredeployedTest: XCTestCase {
     // MARK: - Util
 
     func predeployAccounts() throws {
-        var potentialError: Error
+        var potentialError: Error?
 
         let expDeployed = expectation(description: "expDeployed")
         MDMPredeployed().predeployAccounts { maybeError in
