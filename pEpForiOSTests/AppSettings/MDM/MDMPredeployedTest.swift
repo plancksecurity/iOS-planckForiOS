@@ -158,17 +158,13 @@ class MDMPredeployedTest: XCTestCase {
         }
 
         let predeployedAccounts: SettingsDict = [MDMPredeployed.keyPredeployedAccounts:accountDicts]
-        let mdm: SettingsDict = [MDMPredeployed.keyMDM: predeployedAccounts]
-
-        UserDefaults.standard.register(defaults: mdm)
+        UserDefaults.standard.set(predeployedAccounts, forKey: MDMPredeployed.keyMDM)
     }
 
     func setupSinglePredeployedAccount(appendixNumber: Int = 0) {
         let accountDict = accountWithServerDictionary(appendixNumber: appendixNumber)
         let predeployedAccounts: SettingsDict = [MDMPredeployed.keyPredeployedAccounts:[accountDict]]
-        let mdm: SettingsDict = [MDMPredeployed.keyMDM: predeployedAccounts]
-
-        UserDefaults.standard.register(defaults: mdm)
+        UserDefaults.standard.set(predeployedAccounts, forKey: MDMPredeployed.keyMDM)
     }
 
     func createAccount(baseName: String, portBase: Int, index: Int) -> Account {
