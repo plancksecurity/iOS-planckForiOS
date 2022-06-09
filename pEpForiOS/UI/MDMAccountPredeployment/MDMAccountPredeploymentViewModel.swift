@@ -10,45 +10,26 @@ import Foundation
 
 import pEpIOSToolbox
 
-protocol MDMAccountPredeploymentViewModelDelegate: NSObject {
-    /// The MDM data contained errors.
-    func handle(predeploymentError: MDMPredeployedError)
-}
-
 class MDMAccountPredeploymentViewModel {
-    weak var delegate: MDMAccountPredeploymentViewModelDelegate?
-
     /// Checks for predeployed accounts, and acts on them.
     ///
     /// - Note: Silently fails if there was an error is the account description.
-    func predeployAccounts() {
+    func predeployAccounts(callback: (_ predeploymentError: MDMPredeployedError?) -> ()) {
         if !AppSettings.shared.mdmPredeployAccounts {
             return
         }
 
         let predeployer: MDMPredeployedProtocol = MDMPredeployed()
-        do {
-            try predeployer.predeployAccounts()
-            setupAccounts()
-        } catch let error as MDMPredeployedError {
-            if let del = delegate {
-                del.handle(predeploymentError: error)
+        predeployer.predeployAccounts { maybeError in
+            if let error = maybeError {
+                callback(error)
+            } else if let error = maybeError {
+                // This should not happen
+                Log.shared.errorAndCrash(error: error)
             } else {
-                Log.shared.logError(message: "Error during MDM account predeployment: \(error)")
-                return
+                callback(nil)
             }
-        } catch {
-            Log.shared.logError(message: "Error during MDM account predeployment: \(error)")
-            return
         }
-    }
-}
-
-// MARK: - Internals
-
-extension MDMAccountPredeploymentViewModel {
-    func setupAccounts() {
-        // TODO: Use something on top of PrepareAccountForSavingService
     }
 }
 
