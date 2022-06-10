@@ -39,7 +39,7 @@ class MDMPredeployedTest: XCTestCase {
         }
 
         XCTAssertEqual(account1.imapServer?.address,
-                       indexed(string: accountDataImapServer, index: 0))
+                       setupAccountData[0].imapServer)
         XCTAssertEqual(account1.smtpServer?.address,
                        indexed(string: accountDataSmtpServer, index: 0))
         XCTAssertEqual(account1.imapServer?.port, accountDataImapPort)
