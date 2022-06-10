@@ -104,21 +104,21 @@ class MDMPredeployedTest: XCTestCase {
         }
 
         XCTAssertEqual(account1.imapServer?.address,
-                       indexed(string: accountDataImapServer, index: 0))
+                       setupAccountData[0].imapServer)
         XCTAssertEqual(account1.smtpServer?.address,
-                       indexed(string: accountDataSmtpServer, index: 0))
-        XCTAssertEqual(account1.imapServer?.port, accountDataImapPort)
-        XCTAssertEqual(account1.smtpServer?.port, accountDataSmtpPort)
+                       setupAccountData[0].smtpServer)
+        XCTAssertEqual(account1.imapServer?.port, setupAccountData[0].imapPort)
+        XCTAssertEqual(account1.smtpServer?.port, setupAccountData[0].smtpPort)
         XCTAssertEqual(account1.user.userName,
-                       indexed(string: accountDataUserName, index: 0))
+                       setupAccountData[0].userName)
         XCTAssertEqual(account1.imapServer?.credentials.loginName,
-                       indexed(string: accountDataLoginName, index: 0))
+                       setupAccountData[0].loginName)
         XCTAssertEqual(account1.smtpServer?.credentials.loginName,
-                       indexed(string: accountDataLoginName, index: 0))
+                       setupAccountData[0].loginName)
         XCTAssertEqual(account1.imapServer?.credentials.password,
-                       indexed(string: accountDataPassword, index:0))
+                       setupAccountData[0].password)
         XCTAssertEqual(account1.smtpServer?.credentials.password,
-                       indexed(string: accountDataPassword, index:0))
+                       setupAccountData[0].password)
     }
 
     // MARK: - Util
