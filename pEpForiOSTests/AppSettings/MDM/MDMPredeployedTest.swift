@@ -69,19 +69,11 @@ class MDMPredeployedTest: XCTestCase {
         var optionalPrevAccount: Account? = nil
         for acc in accounts {
             if let account1 = optionalPrevAccount {
-                XCTAssertNotEqual(account1.imapServer?.address, acc.imapServer?.address)
-                XCTAssertNotEqual(account1.smtpServer?.address, acc.smtpServer?.address)
-                XCTAssertNotEqual(account1.imapServer?.port, acc.imapServer?.port)
-                XCTAssertNotEqual(account1.smtpServer?.port, acc.smtpServer?.port)
                 XCTAssertNotEqual(account1.user.userName, acc.user.userName)
                 XCTAssertNotEqual(account1.imapServer?.credentials.loginName,
                                   acc.imapServer?.credentials.loginName)
                 XCTAssertNotEqual(account1.smtpServer?.credentials.loginName,
                                   acc.smtpServer?.credentials.loginName)
-                XCTAssertNotEqual(account1.imapServer?.credentials.password,
-                                  acc.imapServer?.credentials.password)
-                XCTAssertNotEqual(account1.smtpServer?.credentials.password,
-                                  acc.smtpServer?.credentials.password)
             }
             optionalPrevAccount = acc
         }
