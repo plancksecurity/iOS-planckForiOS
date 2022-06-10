@@ -217,11 +217,16 @@ class MDMPredeployedTest: XCTestCase {
             return [:]
         }
 
+        guard let username = testData.idUserName else {
+            XCTFail()
+            return [:]
+        }
+
         let imapServer = serverDictionary(name: testData.imapServerAddress,
                                           port: testData.imapServerPort)
         let smtpServer = serverDictionary(name: testData.smtpServerAddress,
                                           port: testData.smtpServerPort)
-        let accountDict = accountDictionary(userName: "User \(testData.idUserName ?? "Unknown")",
+        let accountDict = accountDictionary(userName: username,
                                             userAddress: testData.idAddress,
                                             loginName: loginName,
                                             password: password,
