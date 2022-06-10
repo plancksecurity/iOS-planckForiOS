@@ -135,10 +135,13 @@ extension MDMPredeployed: MDMPredeployedProtocol {
         }
         session.commit()
 
-        let emptyVal: SettingsDict = [:]
-        UserDefaults.standard.set(emptyVal, forKey: MDMPredeployed.keyMDM)
-        let stillThere = UserDefaults.standard.object(forKey: MDMPredeployed.keyMDM) as? SettingsDict
-        assert(stillThere?.isEmpty ?? false)
+        if var mdmDict = UserDefaults.standard.dictionary(forKey: MDMPredeployed.keyMDM) {
+            mdmDict[MDMPredeployed.keyPredeployedAccounts] = nil
+            UserDefaults.standard.set(mdmDict, forKey: MDMPredeployed.keyMDM)
+            if let mdmDictCheck = UserDefaults.standard.dictionary(forKey: MDMPredeployed.keyMDM) {
+                assert(mdmDictCheck[MDMPredeployed.keyPredeployedAccounts] == nil)
+            }
+        }
 
         callback(nil)
     }
