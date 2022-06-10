@@ -157,7 +157,7 @@ class MDMPredeployedTest: XCTestCase {
     func setupPredeployAccounts(number: Int) {
         var accountDicts = [SettingsDict]()
 
-        for i in 1...number {
+        for i in 0...number-1 {
             let accDict = accountWithServerDictionary(appendixNumber: i)
             accountDicts.append(accDict)
         }
