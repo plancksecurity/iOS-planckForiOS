@@ -245,7 +245,11 @@ class MDMPredeployedTest: XCTestCase {
                                         userName: username,
                                         loginName: loginName,
                                         password: password)
-        setupAccountData.replaceSubrange(appendixNumber...appendixNumber, with: [accountData])
+        if setupAccountData.count > appendixNumber {
+            XCTFail()
+            return [:]
+        }
+        setupAccountData.append(accountData)
 
         let imapServer = serverDictionary(name: accountData.imapServer,
                                           port: accountData.imapPort)
