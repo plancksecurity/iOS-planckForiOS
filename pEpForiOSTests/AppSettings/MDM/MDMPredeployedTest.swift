@@ -17,6 +17,10 @@ private typealias SettingsDict = [String:Any]
 class MDMPredeployedTest: XCTestCase {
 
     override func tearDownWithError() throws {
+        if let mdmDictCheck = UserDefaults.standard.dictionary(forKey: MDMPredeployed.keyMDM) {
+            XCTAssertNil(mdmDictCheck[MDMPredeployed.keyPredeployedAccounts])
+        }
+
         Stack.shared.reset()
         XCTAssertTrue(PEPUtils.pEpClean())
         try super.tearDownWithError()
