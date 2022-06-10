@@ -207,7 +207,7 @@ class MDMPredeployedTest: XCTestCase {
     private func accountWithServerDictionary(appendixNumber: Int = 0) -> SettingsDict {
         let testData = TestData().createVerifiableAccountSettings(number: appendixNumber)
 
-        guard let loginName = testData.imapLoginName ?? testData.smtpLoginName else {
+        guard let loginName = testData.imapLoginName ?? testData.smtpLoginName ?? testData.idAddress else {
             XCTFail()
             return [:]
         }
