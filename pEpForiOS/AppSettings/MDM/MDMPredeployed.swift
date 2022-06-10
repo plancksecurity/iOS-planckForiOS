@@ -44,7 +44,7 @@ extension MDMPredeployed: MDMPredeployedProtocol {
     /// "A managed app can respond to new configurations that arrive while the app is running by observing the
     /// NSUserDefaultsDidChangeNotification notification."
     func predeployAccounts(callback: (_ error: MDMPredeployedError?) -> ()) {
-        guard let mdmDict = UserDefaults.standard.dictionary(forKey: MDMPredeployed.keyMDM) else {
+        guard var mdmDict = UserDefaults.standard.dictionary(forKey: MDMPredeployed.keyMDM) else {
             callback(nil)
             return
         }
@@ -135,13 +135,8 @@ extension MDMPredeployed: MDMPredeployedProtocol {
         }
         session.commit()
 
-        if var mdmDict = UserDefaults.standard.dictionary(forKey: MDMPredeployed.keyMDM) {
-            mdmDict[MDMPredeployed.keyPredeployedAccounts] = nil
-            UserDefaults.standard.set(mdmDict, forKey: MDMPredeployed.keyMDM)
-            if let mdmDictCheck = UserDefaults.standard.dictionary(forKey: MDMPredeployed.keyMDM) {
-                assert(mdmDictCheck[MDMPredeployed.keyPredeployedAccounts] == nil)
-            }
-        }
+        mdmDict[MDMPredeployed.keyPredeployedAccounts] = nil
+        UserDefaults.standard.set(mdmDict, forKey: MDMPredeployed.keyMDM)
 
         callback(nil)
     }
