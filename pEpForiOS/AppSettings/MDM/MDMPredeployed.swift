@@ -135,10 +135,6 @@ extension MDMPredeployed: MDMPredeployedProtocol {
         }
         session.commit()
 
-        UserDefaults.standard.removeObject(forKey: MDMPredeployed.keyMDM)
-        let didSync = UserDefaults.standard.synchronize()
-        assert(didSync)
-
         let emptyVal: SettingsDict = [:]
         UserDefaults.standard.set(emptyVal, forKey: MDMPredeployed.keyMDM)
         let stillThere = UserDefaults.standard.object(forKey: MDMPredeployed.keyMDM) as? SettingsDict
