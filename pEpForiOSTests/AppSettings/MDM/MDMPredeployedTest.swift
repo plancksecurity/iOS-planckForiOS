@@ -159,6 +159,7 @@ class MDMPredeployedTest: XCTestCase {
 
     /// Contains account data for double-checking what has been set up.
     struct AccountStruct {
+        let userAddress: String
         let imapServer: String
         let imapPort: UInt16
         let smtpServer: String
@@ -236,14 +237,24 @@ class MDMPredeployedTest: XCTestCase {
             return [:]
         }
 
-        let imapServer = serverDictionary(name: testData.imapServerAddress,
-                                          port: testData.imapServerPort)
-        let smtpServer = serverDictionary(name: testData.smtpServerAddress,
-                                          port: testData.smtpServerPort)
-        let accountDict = accountDictionary(userName: username,
-                                            userAddress: testData.idAddress,
-                                            loginName: loginName,
-                                            password: password,
+        let accountData = AccountStruct(userAddress: testData.idAddress,
+                                        imapServer: testData.imapServerAddress,
+                                        imapPort: testData.imapServerPort,
+                                        smtpServer: testData.smtpServerAddress,
+                                        smtpPort: testData.smtpServerPort,
+                                        userName: username,
+                                        loginName: loginName,
+                                        password: password)
+        setupAccountData.replaceSubrange(appendixNumber...appendixNumber, with: [accountData])
+
+        let imapServer = serverDictionary(name: accountData.imapServer,
+                                          port: accountData.imapPort)
+        let smtpServer = serverDictionary(name: accountData.smtpServer,
+                                          port: accountData.smtpPort)
+        let accountDict = accountDictionary(userName: accountData.userName,
+                                            userAddress: accountData.userAddress,
+                                            loginName: accountData.loginName,
+                                            password: accountData.password,
                                             imapServer: imapServer,
                                             smtpServer: smtpServer)
 
