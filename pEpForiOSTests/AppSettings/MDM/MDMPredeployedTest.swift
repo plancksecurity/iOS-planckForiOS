@@ -205,23 +205,26 @@ class MDMPredeployedTest: XCTestCase {
     // MARK: - Setup Util Util
 
     private func accountWithServerDictionary(appendixNumber: Int = 0) -> SettingsDict {
-        let appendix16 = UInt16(appendixNumber)
+        let testData = TestData().createVerifiableAccountSettings(number: appendixNumber)
 
-        let imapServer = serverDictionary(name: indexed(string: accountDataImapServer,
-                                                        index: appendixNumber),
-                                          port: accountDataImapPort + appendix16)
-        let smtpServer = serverDictionary(name: indexed(string: accountDataSmtpServer,
-                                                        index: appendixNumber),
-                                          port: accountDataSmtpPort + appendix16)
-        let accountDict = accountDictionary(userName: indexed(string: accountDataUserName,
-                                                              index: appendixNumber),
-                                            userAddress: indexed(string: accountDataUserName,
-                                                                 index: appendixNumber) +
-                                            "@example.com",
-                                            loginName: indexed(string: accountDataLoginName,
-                                                               index: appendixNumber),
-                                            password: indexed(string: accountDataPassword,
-                                                              index: appendixNumber),
+        guard let loginName = testData.imapLoginName ?? testData.smtpLoginName else {
+            XCTFail()
+            return [:]
+        }
+
+        guard let password = testData.imapPassword ?? testData.smtpPassword else {
+            XCTFail()
+            return [:]
+        }
+
+        let imapServer = serverDictionary(name: testData.imapServerAddress,
+                                          port: testData.imapServerPort)
+        let smtpServer = serverDictionary(name: testData.smtpServerAddress,
+                                          port: testData.smtpServerPort)
+        let accountDict = accountDictionary(userName: "User \(testData.idUserName ?? "Unknown")",
+                                            userAddress: testData.idAddress,
+                                            loginName: loginName,
+                                            password: password,
                                             imapServer: imapServer,
                                             smtpServer: smtpServer)
 
