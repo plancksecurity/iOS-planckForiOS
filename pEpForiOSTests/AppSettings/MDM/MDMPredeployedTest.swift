@@ -17,10 +17,6 @@ private typealias SettingsDict = [String:Any]
 class MDMPredeployedTest: XCTestCase {
 
     override func tearDownWithError() throws {
-        if let mdmDictCheck = UserDefaults.standard.dictionary(forKey: MDMPredeployed.keyMDM) {
-            XCTAssertNil(mdmDictCheck[MDMPredeployed.keyPredeployedAccounts])
-        }
-
         Stack.shared.reset()
         XCTAssertTrue(PEPUtils.pEpClean())
         try super.tearDownWithError()
@@ -134,6 +130,11 @@ class MDMPredeployedTest: XCTestCase {
             expDeployed.fulfill()
             if let error = maybeError {
                 potentialError = error
+            } else {
+                // After successful deploy, there should not be any accounts to predeploy anymore
+                if let mdmDictCheck = UserDefaults.standard.dictionary(forKey: MDMPredeployed.keyMDM) {
+                    XCTAssertNil(mdmDictCheck[MDMPredeployed.keyPredeployedAccounts])
+                }
             }
         }
         wait(for: [expDeployed], timeout: TestUtil.waitTimeLocal)
