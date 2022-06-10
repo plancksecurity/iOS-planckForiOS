@@ -15,6 +15,9 @@ import pEp4iosIntern
 private typealias SettingsDict = [String:Any]
 
 class MDMPredeployedTest: XCTestCase {
+    override func setUpWithError() throws {
+        setupAccountData = []
+    }
 
     override func tearDownWithError() throws {
         Stack.shared.reset()
@@ -153,6 +156,20 @@ class MDMPredeployedTest: XCTestCase {
     let accountDataUserName = "userName"
     let accountDataLoginName = "loginName"
     let accountDataPassword = "password"
+
+    /// Contains account data for double-checking what has been set up.
+    struct AccountStruct {
+        let imapServer: String
+        let imapPort: UInt16
+        let smtpServer: String
+        let smtpPort: UInt16
+        let userName: String
+        let loginName: String
+        let password: String
+    }
+
+    /// An array of all accounts that are expected to be set up
+    var setupAccountData = [AccountStruct]()
 
     func setupPredeployAccounts(number: Int) {
         var accountDicts = [SettingsDict]()
