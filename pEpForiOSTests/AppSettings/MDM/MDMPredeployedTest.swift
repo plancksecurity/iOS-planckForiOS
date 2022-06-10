@@ -121,7 +121,7 @@ class MDMPredeployedTest: XCTestCase {
     // MARK: - Util
 
     /// Wrapper around `MDMPredeployed.predeployAccounts` that makes it
-    /// sync and using exceptions, easier for tests to use.
+    /// a sync method throwing exceptions, easier for tests to use.
     func predeployAccounts() throws {
         var potentialError: Error?
 
