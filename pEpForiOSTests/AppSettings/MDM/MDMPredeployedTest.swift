@@ -149,14 +149,6 @@ class MDMPredeployedTest: XCTestCase {
 
     // MARK: - Setup Util
 
-    let accountDataImapServer = "imap"
-    let accountDataSmtpServer = "smtp"
-    let accountDataImapPort: UInt16 = 333
-    let accountDataSmtpPort: UInt16 = 444
-    let accountDataUserName = "userName"
-    let accountDataLoginName = "loginName"
-    let accountDataPassword = "password"
-
     /// Contains account data for double-checking what has been set up.
     struct AccountStruct {
         let userAddress: String
