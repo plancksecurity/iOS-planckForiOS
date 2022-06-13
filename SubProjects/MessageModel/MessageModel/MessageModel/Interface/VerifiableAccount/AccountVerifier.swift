@@ -9,13 +9,14 @@
 import Foundation
 
 import PantomimeFramework
+import pEpIOSToolbox
 
 /// Wrapper around `VerifiableAccount` using a callback instead of a delegate.
 public class AccountVerifier {
 
     // MARK: - Public API
 
-    public typealias AccountVerifierCallback = (_ address: String, _ error: Error?) -> ()
+    public typealias AccountVerifierCallback = (_ error: Error?) -> ()
 
     init(address: String? = nil,
          userName: String? = nil,
@@ -54,7 +55,19 @@ public class AccountVerifier {
 
 extension AccountVerifier: VerifiableAccountDelegate {
     public func didEndVerification(result: Result<Void, Error>) {
-        // TODO Invoke the callback
+        guard let cb = verifiedCallback else {
+            Log.shared.errorAndCrash(message: "No verifiedCallback")
+            return
+        }
+
+        switch result {
+        case .failure(let err):
+            cb(err)
+        case .success():
+            cb(nil)
+        }
+
+        // Break possible retain cycles
         self.verifiedCallback = nil
     }
 }
