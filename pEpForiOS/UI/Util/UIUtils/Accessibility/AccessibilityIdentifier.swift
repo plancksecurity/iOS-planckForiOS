@@ -25,6 +25,8 @@ class AccessibilityIdentifier {
     static let editButton = "Edit Button"
     static let settingsButton = "Settings Button"
     static let saveButton = "Save Button"
+    static let mailboxesButton = "Mailboxes Button"
+    static let showHideFoldersButton = "Show / Hide Folders Button"
 
     //Trust
     static let secureAndTrusted = "Secure and Trusted"

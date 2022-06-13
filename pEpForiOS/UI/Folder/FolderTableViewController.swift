@@ -471,6 +471,7 @@ extension FolderTableViewController {
         header?.sectionButton.addTarget(self,
                                         action: #selector(hideShowSection(sender:)),
                                         for: .touchUpInside)
+        header?.sectionButton.accessibilityIdentifier = AccessibilityIdentifier.showHideFoldersButton
         let arrow = UIImage(named:"chevron-icon-right-gray")
         header?.sectionButton.setImage(arrow, for: .normal)
         header?.sectionButton.contentHorizontalAlignment = .trailing

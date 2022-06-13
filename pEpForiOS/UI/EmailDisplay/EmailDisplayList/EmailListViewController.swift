@@ -100,6 +100,9 @@ final class EmailListViewController: UIViewController {
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         navigationController?.setToolbarHidden(false, animated: true)
+        navigationController?.navigationItem.leftBarButtonItem?.accessibilityIdentifier = AccessibilityIdentifier.mailboxesButton
+        navigationController?.navigationItem.rightBarButtonItem?.accessibilityIdentifier = AccessibilityIdentifier.editButton
+
         if MiscUtil.isUnitTest() {
             return
         }
@@ -214,6 +217,7 @@ final class EmailListViewController: UIViewController {
     }
 
     private func setupTextFilter() {
+        textFilterButton.accessibilityIdentifier = AccessibilityIdentifier.filterButton
         textFilterButton.isEnabled = false
         textFilterButton.action = #selector(showFilterOptions)
         textFilterButton.target = self
