@@ -49,6 +49,7 @@ public class AccountVerifier {
     // MARK: - Private
 
     private var verifiedCallback: AccountVerifierCallback?
+    private var verifiableAccount: VerifiableAccountProtocol?
 }
 
 // MARK: - VerifiableAccountDelegate
@@ -68,6 +69,7 @@ extension AccountVerifier: VerifiableAccountDelegate {
         }
 
         // Break possible retain cycles
-        self.verifiedCallback = nil
+        verifiedCallback = nil
+        verifiableAccount = nil
     }
 }
