@@ -27,7 +27,16 @@ public class AccountVerifier {
                        portSMTP: UInt16,
                        verifiedCallback: @escaping AccountVerifierCallback) {
         self.verifiedCallback = verifiedCallback
-        // TODO Kick off the verification
+        let verifier = VerifiableAccount(verifiableAccountDelegate: self,
+                                         address: address,
+                                         userName: userName,
+                                         imapPassword: password,
+                                         smtpPassword: password,
+                                         serverIMAP: serverIMAP,
+                                         portIMAP: portIMAP,
+                                         serverSMTP: serverSMTP,
+                                         portSMTP: portSMTP)
+        self.verifiableAccount = verifier
     }
 
     // MARK: - Private
