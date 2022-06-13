@@ -42,12 +42,29 @@ public class AccountVerifier {
 
         // Keep it alive
         self.verifiableAccount = verifier
+
+        do {
+            try verifier.verify()
+        } catch {
+            verifiedCallback(error)
+
+            // Break possible retain cycles
+            resetToNil()
+        }
     }
 
     // MARK: - Private
 
     private var verifiedCallback: AccountVerifierCallback?
     private var verifiableAccount: VerifiableAccountProtocol?
+
+    /// Set retained member vars to nil, in order to break retain cycles.
+    ///
+    /// Use after a succesful verification, or on error.
+    func resetToNil() {
+        verifiedCallback = nil
+        verifiableAccount = nil
+    }
 }
 
 // MARK: - VerifiableAccountDelegate
@@ -67,8 +84,7 @@ extension AccountVerifier: VerifiableAccountDelegate {
         }
 
         // Break possible retain cycles
-        verifiedCallback = nil
-        verifiableAccount = nil
+        resetToNil()
     }
 }
 
