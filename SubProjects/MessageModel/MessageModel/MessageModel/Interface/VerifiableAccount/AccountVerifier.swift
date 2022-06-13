@@ -40,7 +40,9 @@ public class AccountVerifier {
          originalSmtpPassword: String? = nil) {
     }
 
-    public func verify(verifiedCallback: AccountVerifierCallback) {
+    public func verify(verifiedCallback: @escaping AccountVerifierCallback) {
+        self.verifiedCallback = verifiedCallback
+        // TODO Kick off the verification
     }
 
     // MARK: - Private
@@ -52,5 +54,7 @@ public class AccountVerifier {
 
 extension AccountVerifier: VerifiableAccountDelegate {
     public func didEndVerification(result: Result<Void, Error>) {
+        // TODO Invoke the callback
+        self.verifiedCallback = nil
     }
 }
