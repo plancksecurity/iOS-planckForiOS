@@ -35,7 +35,8 @@ public class AccountVerifier {
                                          serverIMAP: serverIMAP,
                                          portIMAP: portIMAP,
                                          serverSMTP: serverSMTP,
-                                         portSMTP: portSMTP)
+                                         portSMTP: portSMTP,
+                                         usePEPFolderProvider: self)
         self.verifiableAccount = verifier
     }
 
@@ -64,5 +65,11 @@ extension AccountVerifier: VerifiableAccountDelegate {
         // Break possible retain cycles
         verifiedCallback = nil
         verifiableAccount = nil
+    }
+}
+
+extension AccountVerifier: UsePEPFolderProviderProtocol {
+    public var usePepFolder: Bool {
+        return true
     }
 }
