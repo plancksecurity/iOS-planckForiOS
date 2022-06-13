@@ -26,7 +26,9 @@ public class AccountVerifier {
                        serverSMTP: String,
                        portSMTP: UInt16,
                        verifiedCallback: @escaping AccountVerifierCallback) {
+        // Store for later use by the delegate (ourselves)
         self.verifiedCallback = verifiedCallback
+
         let verifier = VerifiableAccount(verifiableAccountDelegate: self,
                                          address: address,
                                          userName: userName,
@@ -37,6 +39,8 @@ public class AccountVerifier {
                                          serverSMTP: serverSMTP,
                                          portSMTP: portSMTP,
                                          usePEPFolderProvider: self)
+
+        // Keep it alive
         self.verifiableAccount = verifier
     }
 
