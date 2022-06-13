@@ -18,6 +18,10 @@ public class AccountVerifier {
 
     public typealias AccountVerifierCallback = (_ error: Error?) -> ()
 
+    // Needed as public method, even if empty.
+    public init() {
+    }
+
     public func verify(address: String,
                        userName: String,
                        password: String,
