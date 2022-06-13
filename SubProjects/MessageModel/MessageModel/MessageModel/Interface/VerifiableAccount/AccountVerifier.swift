@@ -35,7 +35,11 @@ public class AccountVerifier {
          containsCompleteServerInfo: Bool = false,
          usePEPFolderProvider: UsePEPFolderProviderProtocol? = nil,
          originalImapPassword: String? = nil,
-         originalSmtpPassword: String? = nil,
-         verifiedCallback: (_ address: String, _ error: Error?) -> ()) {
+         originalSmtpPassword: String? = nil) {
+    }
+
+    // MARK: - API
+
+    public func verify(verifiedCallback: (_ address: String, _ error: Error?) -> ()) {
     }
 }
