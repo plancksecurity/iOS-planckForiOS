@@ -54,8 +54,6 @@ extension MDMPredeployed: MDMPredeployedProtocol {
             return
         }
 
-        let session = Session.main
-
         var haveWipedExistingAccounts = false
         for accDict in predeployedAccounts {
             guard let userName = accDict[MDMPredeployed.keyUserName] as? String else {
@@ -100,6 +98,8 @@ extension MDMPredeployed: MDMPredeployedProtocol {
             }
 
             if !haveWipedExistingAccounts {
+                let session = Session.main
+
                 let allAccounts = Account.all()
                 for accountToDelete in allAccounts {
                     accountToDelete.delete()
@@ -109,31 +109,7 @@ extension MDMPredeployed: MDMPredeployedProtocol {
 
                 haveWipedExistingAccounts = true
             }
-
-            let id = Identity.init(address: userAddress,
-                                   userID: nil,
-                                   addressBookID: nil,
-                                   userName: userName,
-                                   session: session)
-
-            let credentials = ServerCredentials.init(loginName: loginName, clientCertificate: nil)
-            credentials.password = password
-
-            let imapServer = Server.create(serverType: .imap,
-                                           port: imapPortNumber.uint16Value,
-                                           address: imapServerAddress,
-                                           transport: .tls,
-                                           credentials: credentials)
-
-            let smtpServer = Server.create(serverType: .smtp,
-                                           port: smtpPortNumber.uint16Value,
-                                           address: smtpServerAddress,
-                                           transport: .tls,
-                                           credentials: credentials)
-
-            let _ = Account.init(user: id, servers: [imapServer, smtpServer], session: session)
         }
-        session.commit()
 
         mdmDict[MDMPredeployed.keyPredeployedAccounts] = nil
         UserDefaults.standard.set(mdmDict, forKey: MDMPredeployed.keyMDM)
