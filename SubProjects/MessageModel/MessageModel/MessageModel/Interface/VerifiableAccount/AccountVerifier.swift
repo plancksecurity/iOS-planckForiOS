@@ -13,9 +13,9 @@ import PantomimeFramework
 /// Wrapper around `VerifiableAccount` using a callback instead of a delegate.
 public class AccountVerifier {
 
-    public typealias AccountVerifierCallback = (_ address: String, _ error: Error?) -> ()
+    // MARK: - Public API
 
-    // MARK: - Life Cycle
+    public typealias AccountVerifierCallback = (_ address: String, _ error: Error?) -> ()
 
     init(address: String? = nil,
          userName: String? = nil,
@@ -40,10 +40,12 @@ public class AccountVerifier {
          originalSmtpPassword: String? = nil) {
     }
 
-    // MARK: - API
-
     public func verify(verifiedCallback: AccountVerifierCallback) {
     }
+
+    // MARK: - Private
+
+    private var verifiedCallback: AccountVerifierCallback?
 }
 
 // MARK: - VerifiableAccountDelegate
