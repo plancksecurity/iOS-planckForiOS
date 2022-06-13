@@ -18,27 +18,13 @@ public class AccountVerifier {
 
     public typealias AccountVerifierCallback = (_ error: Error?) -> ()
 
-    public func verify(address: String? = nil,
-                       userName: String? = nil,
-                       authMethod: AuthMethod? = nil,
-                       imapPassword: String? = nil,
-                       smtpPassword: String? = nil,
-                       accessToken: OAuth2AccessTokenProtocol? = nil,
-                       loginNameIMAP: String? = nil,
-                       serverIMAP: String? = nil,
-                       portIMAP: UInt16 = 993,
-                       transportIMAP: ConnectionTransport = ConnectionTransport.TLS,
-                       loginNameSMTP: String? = nil,
-                       serverSMTP: String? = nil,
-                       portSMTP: UInt16 = 587,
-                       transportSMTP: ConnectionTransport = ConnectionTransport.startTLS,
-                       automaticallyTrustedImapServer: Bool = false,
-                       manuallyTrustedImapServer: Bool = false,
-                       keySyncEnable: Bool = true,
-                       containsCompleteServerInfo: Bool = false,
-                       usePEPFolderProvider: UsePEPFolderProviderProtocol? = nil,
-                       originalImapPassword: String? = nil,
-                       originalSmtpPassword: String? = nil,
+    public func verify(address: String,
+                       userName: String,
+                       password: String,
+                       serverIMAP: String,
+                       portIMAP: UInt16,
+                       serverSMTP: String,
+                       portSMTP: UInt16,
                        verifiedCallback: @escaping AccountVerifierCallback) {
         self.verifiedCallback = verifiedCallback
         // TODO Kick off the verification
