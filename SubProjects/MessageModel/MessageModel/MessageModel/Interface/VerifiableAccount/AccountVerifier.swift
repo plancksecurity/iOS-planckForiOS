@@ -12,6 +12,7 @@ import PantomimeFramework
 
 /// Wrapper around `VerifiableAccount` using a callback instead of a delegate.
 public class AccountVerifier {
+
     // MARK: - Life Cycle
 
     init(address: String? = nil,
