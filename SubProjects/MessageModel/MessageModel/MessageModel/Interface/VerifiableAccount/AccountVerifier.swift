@@ -43,3 +43,10 @@ public class AccountVerifier {
     public func verify(verifiedCallback: (_ address: String, _ error: Error?) -> ()) {
     }
 }
+
+// MARK: - VerifiableAccountDelegate
+
+extension AccountVerifier: VerifiableAccountDelegate {
+    public func didEndVerification(result: Result<Void, Error>) {
+    }
+}
