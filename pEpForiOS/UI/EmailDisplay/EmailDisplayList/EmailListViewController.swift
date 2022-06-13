@@ -248,6 +248,7 @@ final class EmailListViewController: UIViewController {
 
     private func setupSearchBar() {
         searchController.isActive = false
+        searchController.searchBar.accessibilityIdentifier = AccessibilityIdentifier.searchBar
         searchController.searchResultsUpdater = self
         searchController.obscuresBackgroundDuringPresentation = false
         searchController.delegate = self
