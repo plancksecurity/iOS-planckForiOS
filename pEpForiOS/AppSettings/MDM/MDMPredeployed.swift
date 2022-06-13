@@ -109,6 +109,18 @@ extension MDMPredeployed: MDMPredeployedProtocol {
 
                 haveWipedExistingAccounts = true
             }
+
+            let verifier = AccountVerifier()
+            verifier.verify(address: userAddress,
+                            userName: userName,
+                            password: password,
+                            loginName: loginName,
+                            serverIMAP: imapServerAddress,
+                            portIMAP: UInt16(imapPortNumber.int16Value),
+                            serverSMTP: smtpServerAddress,
+                            portSMTP: UInt16(smtpPortNumber.int16Value)) { error in
+                // TODO
+            }
         }
 
         mdmDict[MDMPredeployed.keyPredeployedAccounts] = nil
