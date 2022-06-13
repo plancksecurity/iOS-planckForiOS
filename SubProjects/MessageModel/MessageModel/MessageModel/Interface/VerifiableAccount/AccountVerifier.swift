@@ -14,7 +14,7 @@ import PantomimeFramework
 public class AccountVerifier {
     // MARK: - Life Cycle
 
-    init(address: String? = nil,
+    init(address: String,
          userName: String? = nil,
          authMethod: AuthMethod? = nil,
          imapPassword: String? = nil,
@@ -34,6 +34,7 @@ public class AccountVerifier {
          containsCompleteServerInfo: Bool = false,
          usePEPFolderProvider: UsePEPFolderProviderProtocol? = nil,
          originalImapPassword: String? = nil,
-         originalSmtpPassword: String? = nil) {
+         originalSmtpPassword: String? = nil,
+         verifiedCallback: (_ address: String, _ error: Error?) -> ()) {
     }
 }
