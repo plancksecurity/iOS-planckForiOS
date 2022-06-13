@@ -14,7 +14,7 @@ import PantomimeFramework
 public class AccountVerifier {
     // MARK: - Life Cycle
 
-    init(address: String,
+    init(address: String? = nil,
          userName: String? = nil,
          authMethod: AuthMethod? = nil,
          imapPassword: String? = nil,
