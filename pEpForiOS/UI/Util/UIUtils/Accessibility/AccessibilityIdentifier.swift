@@ -10,7 +10,7 @@ import Foundation
 
 /// Accessibility identifiers shared around the code base.
 class AccessibilityIdentifier {
-    //Butttons
+    // MARK: - Butttons
     static let replyButton = "Reply Button"
     static let nextButton = "Next Button"
     static let previousButton = "Previous Button"
@@ -28,13 +28,13 @@ class AccessibilityIdentifier {
     static let mailboxesButton = "Mailboxes Button"
     static let showHideFoldersButton = "Show / Hide Folders Button"
 
-    //Trust
+    // MARK: - Trust
     static let secureAndTrusted = "Secure and Trusted"
     static let mistrusted = "Mistrusted"
     static let unknownTrust = "Unknown Trust"
     static let secure = "Secure"
-    // Others
+
+    // MARK: - Others
     static let searchBar = "Search Bar"
     static let emailTextView = "Email Text View"
-
 }
