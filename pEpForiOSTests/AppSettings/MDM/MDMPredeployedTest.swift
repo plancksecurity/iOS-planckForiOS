@@ -207,7 +207,7 @@ class MDMPredeployedTest: XCTestCase {
     // MARK: - Setup Util Util
 
     private func accountWithServerDictionary(appendixNumber: Int = 0) -> SettingsDict {
-        let testData = TestData().createVerifiableAccountSettings(number: appendixNumber)
+        let testData = SecretTestData().createVerifiableAccountSettings(number: appendixNumber)
 
         let loginName = testData.imapLoginName ?? testData.smtpLoginName ?? testData.idAddress
 
