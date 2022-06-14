@@ -14,7 +14,7 @@ class MDMAccountPredeploymentViewModel {
     /// Checks for predeployed accounts, and acts on them.
     ///
     /// - Note: Silently fails if there was an error is the account description.
-    func predeployAccounts(callback: (_ predeploymentError: MDMPredeployedError?) -> ()) {
+    func predeployAccounts(callback: @escaping (_ predeploymentError: MDMPredeployedError?) -> ()) {
         if !AppSettings.shared.mdmPredeployAccounts {
             return
         }

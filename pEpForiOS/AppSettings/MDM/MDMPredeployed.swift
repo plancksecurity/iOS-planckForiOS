@@ -43,7 +43,7 @@ extension MDMPredeployed: MDMPredeployedProtocol {
     ///
     /// "A managed app can respond to new configurations that arrive while the app is running by observing the
     /// NSUserDefaultsDidChangeNotification notification."
-    func predeployAccounts(callback: (_ error: MDMPredeployedError?) -> ()) {
+    func predeployAccounts(callback: @escaping (_ error: MDMPredeployedError?) -> ()) {
         guard var mdmDict = UserDefaults.standard.dictionary(forKey: MDMPredeployed.keyMDM) else {
             callback(nil)
             return
@@ -53,6 +53,12 @@ extension MDMPredeployed: MDMPredeployedProtocol {
             callback(nil)
             return
         }
+
+        // Syncronize the callbacks of all account verifications
+        let group = DispatchGroup()
+
+        // Note the first error that occurred
+        var firstError: Error?
 
         var haveWipedExistingAccounts = false
         for accDict in predeployedAccounts {
@@ -111,6 +117,7 @@ extension MDMPredeployed: MDMPredeployedProtocol {
             }
 
             let verifier = AccountVerifier()
+            group.enter()
             verifier.verify(address: userAddress,
                             userName: userName,
                             password: password,
@@ -119,13 +126,23 @@ extension MDMPredeployed: MDMPredeployedProtocol {
                             portIMAP: UInt16(imapPortNumber.int16Value),
                             serverSMTP: smtpServerAddress,
                             portSMTP: UInt16(smtpPortNumber.int16Value)) { error in
-                // TODO
+                if let err = error {
+                    if firstError == nil {
+                        firstError = err
+                    }
+                }
+                group.leave()
             }
         }
 
-        mdmDict[MDMPredeployed.keyPredeployedAccounts] = nil
-        UserDefaults.standard.set(mdmDict, forKey: MDMPredeployed.keyMDM)
-
-        callback(nil)
+        group.notify(queue: DispatchQueue.main) {
+            mdmDict[MDMPredeployed.keyPredeployedAccounts] = nil
+            UserDefaults.standard.set(mdmDict, forKey: MDMPredeployed.keyMDM)
+            if let _ = firstError {
+                callback(.networkError)
+            } else {
+                callback(nil)
+            }
+        }
     }
 }

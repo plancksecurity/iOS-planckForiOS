@@ -40,5 +40,5 @@ protocol MDMPredeployedProtocol {
     ///     smtpServer: Dictionary
     ///       name: String
     ///       port: Integer
-    func predeployAccounts(callback: (_ error: MDMPredeployedError?) -> ())
+    func predeployAccounts(callback: @escaping (_ error: MDMPredeployedError?) -> ())
 }

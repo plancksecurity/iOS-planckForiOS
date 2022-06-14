@@ -8,6 +8,8 @@
 
 import UIKit
 
+import pEpIOSToolbox
+
 class MDMAccountPredeploymentViewController: UIViewController {
     // MARK: - Storyboard
 
@@ -37,10 +39,14 @@ class MDMAccountPredeploymentViewController: UIViewController {
         activityIndicator.startAnimating()
         activityIndicator.isHidden = false
 
-        viewModel.predeployAccounts { predeploymentError in
-            activityIndicator.stopAnimating()
-            activityIndicator.isHidden = true
-            messageLabel.text = NSLocalizedString("MDM Error",
+        viewModel.predeployAccounts { [weak self] predeploymentError in
+            guard let theSelf = self else {
+                Log.shared.lostMySelf()
+                return
+            }
+            theSelf.activityIndicator.stopAnimating()
+            theSelf.activityIndicator.isHidden = true
+            theSelf.messageLabel.text = NSLocalizedString("MDM Error",
                                                   comment: "MDM Predeployment went wrong")
         }
     }
