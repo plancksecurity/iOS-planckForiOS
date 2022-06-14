@@ -15,7 +15,7 @@ class MDMAccountPredeploymentViewModel {
     ///
     /// - Note: Silently fails if there was an error is the account description.
     func predeployAccounts(callback: @escaping (_ predeploymentError: MDMPredeployedError?) -> ()) {
-        if !AppSettings.shared.mdmPredeployAccounts {
+        if !AppSettings.shared.mdmPredeployedAccounts {
             return
         }
 
@@ -39,7 +39,7 @@ private typealias SettingsDict = [String:Any]
 
 extension MDMAccountPredeploymentViewModel {
     static func addTestData() {
-        AppSettings.shared.mdmPredeployAccounts = true
+        AppSettings.shared.mdmPredeployedAccounts = true
 
         let server = "server.example.com"
         let email = "email@\(server)"

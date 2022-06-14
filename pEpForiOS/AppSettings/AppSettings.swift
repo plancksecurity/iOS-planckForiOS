@@ -36,7 +36,7 @@ extension AppSettings {
     static private let keyVerboseLogginEnabled = "keyVerboseLogginEnabled"
     static private let keyCollapsingState = "keyCollapsingState"
     static private let keyFolderViewAccountCollapsedState = "keyFolderViewAccountCollapsedState-162844EB-1F32-4F66-8F92-9B77664523F1"
-    static private let keyMdmPredeployAccounts = "keyMdmPredeployAccounts"
+    static private let keyMdmPredeployedAccounts = "keyMdmPredeployedAccounts"
 }
 
 // MARK: - AppSettings
@@ -113,7 +113,7 @@ extension AppSettings {
         defaults[AppSettings.keyUnsecureReplyWarningEnabled] = false
         defaults[AppSettings.keyAccountSignature] = [String:String]()
         defaults[AppSettings.keyVerboseLogginEnabled] = false
-        defaults[AppSettings.keyMdmPredeployAccounts] = true // TMP
+        defaults[AppSettings.keyMdmPredeployedAccounts] = true // TMP
         AppSettings.userDefaults.register(defaults: defaults)
     }
 
@@ -290,13 +290,13 @@ extension AppSettings: AppSettingsProtocol {
         }
     }
 
-    public var mdmPredeployAccounts: Bool {
+    public var mdmPredeployedAccounts: Bool {
         get {
-            return AppSettings.userDefaults.bool(forKey: AppSettings.keyMdmPredeployAccounts)
+            return AppSettings.userDefaults.bool(forKey: AppSettings.keyMdmPredeployedAccounts)
         }
         set {
             AppSettings.userDefaults.set(newValue,
-                                         forKey: AppSettings.keyMdmPredeployAccounts)
+                                         forKey: AppSettings.keyMdmPredeployedAccounts)
         }
     }
 }

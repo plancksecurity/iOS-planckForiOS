@@ -62,7 +62,7 @@ class MockAppSettings: AppSettingsProtocol {
 
     var verboseLogginEnabled: Bool = false
 
-    var mdmPredeployAccounts: Bool = false
+    var mdmPredeployedAccounts: Bool = false
 
     // MARK: - Collapsing State
 

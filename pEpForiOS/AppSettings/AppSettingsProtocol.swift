@@ -34,7 +34,7 @@ public protocol AppSettingsProtocol {
 
     /// If this is `true`, it means that accounts were pre-deployed by MDM, and hence
     /// account settings are unchangable.
-    var mdmPredeployAccounts: Bool { get set }
+    var mdmPredeployedAccounts: Bool { get set }
 
     // MARK:- Collapsing State
 
