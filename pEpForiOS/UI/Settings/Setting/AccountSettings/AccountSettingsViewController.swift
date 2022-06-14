@@ -45,6 +45,8 @@ final class AccountSettingsViewController: UIViewController {
         showNavigationBar()
         title = NSLocalizedString("Account", comment: "Account view title")
         navigationController?.navigationController?.setToolbarHidden(true, animated: false)
+        navigationController?.navigationItem.rightBarButtonItem?.accessibilityIdentifier = AccessibilityIdentifier.editButton
+        navigationController?.navigationItem.leftBarButtonItem?.accessibilityIdentifier = AccessibilityIdentifier.settingsButton
     }
     
     enum SegueIdentifier: String {
@@ -128,6 +130,7 @@ extension AccountSettingsViewController : UITableViewDataSource {
                     Log.shared.errorAndCrash(message: "Cell can't be dequeued")
                     return T()
             }
+            dequeuedCell.accessibilityIdentifier = row.title
             return dequeuedCell
         }
 
