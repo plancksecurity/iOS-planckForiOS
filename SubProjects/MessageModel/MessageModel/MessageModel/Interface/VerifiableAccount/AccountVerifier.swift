@@ -42,6 +42,7 @@ public class AccountVerifier {
                                          loginNameIMAP: loginName,
                                          serverIMAP: serverIMAP,
                                          portIMAP: portIMAP,
+                                         loginNameSMTP: loginName,
                                          serverSMTP: serverSMTP,
                                          portSMTP: portSMTP,
                                          usePEPFolderProvider: self)
