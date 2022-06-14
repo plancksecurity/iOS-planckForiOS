@@ -32,7 +32,8 @@ public protocol AppSettingsProtocol {
     /// Should the logging be verbose, or not?
     var verboseLogginEnabled: Bool { get set }
 
-    /// Are accounts predeployed by the MDM?
+    /// If this is `true`, it means that accounts were pre-deployed by MDM, and hence
+    /// account settings are unchangable.
     var mdmPredeployAccounts: Bool { get set }
 
     // MARK:- Collapsing State
