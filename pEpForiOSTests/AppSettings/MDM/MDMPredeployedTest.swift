@@ -132,7 +132,7 @@ class MDMPredeployedTest: XCTestCase {
                 }
             }
         }
-        wait(for: [expDeployed], timeout: TestUtil.waitTimeLocal)
+        wait(for: [expDeployed], timeout: TestUtil.waitTime)
 
         if let error = potentialError {
             throw error
