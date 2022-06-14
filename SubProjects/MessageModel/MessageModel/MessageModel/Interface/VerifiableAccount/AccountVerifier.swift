@@ -11,7 +11,7 @@ import Foundation
 import PantomimeFramework
 import pEpIOSToolbox
 
-/// Wrapper around `VerifiableAccount` using a callback instead of a delegate.
+/// Wrapper around `VerifiableAccount` with a simplified interface, and using a callback instead of a delegate.
 public class AccountVerifier {
 
     // MARK: - Public API
