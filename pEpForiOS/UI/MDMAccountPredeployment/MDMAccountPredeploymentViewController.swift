@@ -47,7 +47,7 @@ class MDMAccountPredeploymentViewController: UIViewController {
             theSelf.activityIndicator.stopAnimating()
             theSelf.activityIndicator.isHidden = true
             theSelf.messageLabel.text = NSLocalizedString("MDM Error",
-                                                  comment: "MDM Predeployment went wrong")
+                                                          comment: "MDM Predeployment went wrong")
         }
     }
 
