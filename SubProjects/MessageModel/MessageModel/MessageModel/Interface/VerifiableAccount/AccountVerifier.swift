@@ -73,7 +73,7 @@ public class AccountVerifier {
     /// Set retained member vars to nil, in order to break retain cycles.
     ///
     /// Use after a succesful verification, or on error.
-    func resetToNil() {
+    private func resetToNil() {
         verifiedCallback = nil
         verifiableAccount = nil
     }
