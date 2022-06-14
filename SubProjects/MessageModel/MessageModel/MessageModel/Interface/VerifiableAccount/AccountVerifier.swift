@@ -83,15 +83,32 @@ extension AccountVerifier: VerifiableAccountDelegate {
             return
         }
 
+        guard let verifiable = verifiableAccount else {
+            Log.shared.errorAndCrash(message: "No verifiableAccount")
+            return
+        }
+
         switch result {
         case .failure(let err):
             cb(err)
+            // Break possible retain cycles
+            resetToNil()
         case .success():
-            cb(nil)
+            verifiable.save { [weak self] (result) in
+                guard let theSelf = self else {
+                    Log.shared.lostMySelf()
+                    return
+                }
+                switch result {
+                case .success:
+                    cb(nil)
+                case .failure(let error):
+                    cb(error)
+                }
+                // Break possible retain cycles
+                theSelf.resetToNil()
+            }
         }
-
-        // Break possible retain cycles
-        resetToNil()
     }
 }
 
