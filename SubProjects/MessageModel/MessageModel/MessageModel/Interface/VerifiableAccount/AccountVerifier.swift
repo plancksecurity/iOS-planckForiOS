@@ -11,7 +11,12 @@ import Foundation
 import PantomimeFramework
 import pEpIOSToolbox
 
-/// Wrapper around `VerifiableAccount` with a simplified interface, and using a callback instead of a delegate.
+/// Wrapper around `VerifiableAccount` with some additions and changes,
+/// suitable for use in an MDM context.
+///
+/// * Simplified interface
+/// * Uses a callback instead of a delegate.
+/// * Saves the account after successful verification.
 public class AccountVerifier {
 
     // MARK: - Public API
