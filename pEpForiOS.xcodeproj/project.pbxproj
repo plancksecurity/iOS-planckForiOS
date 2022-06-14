@@ -430,6 +430,7 @@
 		43D530F82844D5B5007E227E /* MDMAccountPredeploymentViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43D530F72844D5B5007E227E /* MDMAccountPredeploymentViewModel.swift */; };
 		43D531052844F524007E227E /* MDMAccountPredeployment.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 43D531042844F524007E227E /* MDMAccountPredeployment.storyboard */; };
 		43D531112844FBCB007E227E /* MDMAccountPredeployment.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 43D531042844F524007E227E /* MDMAccountPredeployment.storyboard */; };
+		43DACD1228587F47000FC3F1 /* SecretTestData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43DACD1128587F47000FC3F1 /* SecretTestData.swift */; };
 		43DC6308262DCC8A0017D1BD /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = 43DC6306262DCC8A0017D1BD /* Localizable.strings */; };
 		43E15D1C2833CA4D00EDEAB7 /* AccessibilityIdentifier.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43285973282D4E9D00493791 /* AccessibilityIdentifier.swift */; };
 		43E1619120D7B2D6003F1514 /* UpdateThreadListDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43E1619020D7B2D6003F1514 /* UpdateThreadListDelegate.swift */; };
@@ -1099,6 +1100,7 @@
 		43D530F52844C55B007E227E /* MDMAccountPredeploymentViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MDMAccountPredeploymentViewController.swift; sourceTree = "<group>"; };
 		43D530F72844D5B5007E227E /* MDMAccountPredeploymentViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MDMAccountPredeploymentViewModel.swift; sourceTree = "<group>"; };
 		43D531042844F524007E227E /* MDMAccountPredeployment.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = MDMAccountPredeployment.storyboard; sourceTree = "<group>"; };
+		43DACD1128587F47000FC3F1 /* SecretTestData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SecretTestData.swift; sourceTree = "<group>"; };
 		43DC6307262DCC8A0017D1BD /* de */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = de; path = de.lproj/Localizable.strings; sourceTree = "<group>"; };
 		43E1619020D7B2D6003F1514 /* UpdateThreadListDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UpdateThreadListDelegate.swift; sourceTree = "<group>"; };
 		43E366892836254A00C4A4CB /* MDMPredeployedProtocol.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MDMPredeployedProtocol.swift; sourceTree = "<group>"; };
@@ -1409,6 +1411,7 @@
 			children = (
 				151F71EC202A06750057C74D /* TestDataBase.swift */,
 				158BCFEF24237FDB00E41F67 /* TestData.swift */,
+				43DACD1128587F47000FC3F1 /* SecretTestData.swift */,
 				154D173C2373327C001FDF78 /* AccountDrivenTestBase.swift */,
 				151F71F5202A06750057C74D /* TestUtil.swift */,
 				49A6114D2179F3A1006BA3C5 /* UnitTestUtils.swift */,
@@ -3867,6 +3870,7 @@
 				3A7F89C1252B4FDA00A38460 /* EmailListViewModel+DraftsPreviewTests.swift in Sources */,
 				154D173D2373327C001FDF78 /* AccountDrivenTestBase.swift in Sources */,
 				00DF2C3B2164C53F004EBA6C /* FolderViewModelTest.swift in Sources */,
+				43DACD1228587F47000FC3F1 /* SecretTestData.swift in Sources */,
 				5BF505FE253EFBA50051FBD3 /* MailtoTest.swift in Sources */,
 				5BFBB20825D2A87700F269C4 /* EmailViewModelTest.swift in Sources */,
 				157C05482180756300E530DE /* DocumentAttachmentPickerViewModelTest.swift in Sources */,
