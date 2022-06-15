@@ -310,7 +310,7 @@ extension FolderTableViewController: SegueHandlerType {
             if vm.shouldShowFolders {
                 showEmailList(folder:vm.folderToShow)
             } else {
-                if AppSettings.shared.mdmPredeployedAccounts {
+                if MDMPredeployed().haveAccountsToPredeploy {
                     performSegue(withIdentifier:.mdmPredeployAccounts, sender: self)
                 } else {
                     performSegue(withIdentifier:.newAccount, sender: self)
