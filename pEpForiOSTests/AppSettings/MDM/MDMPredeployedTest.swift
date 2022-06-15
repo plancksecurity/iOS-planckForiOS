@@ -26,13 +26,13 @@ class MDMPredeployedTest: XCTestCase {
     }
 
     func testSingleAccount() throws {
-        XCTAssertFalse(MDMPredeployed().havePredeployableAccount)
+        XCTAssertFalse(MDMPredeployed().haveAccountsToPredeploy)
         setupSinglePredeployedAccount()
-        XCTAssertTrue(MDMPredeployed().havePredeployableAccount)
+        XCTAssertTrue(MDMPredeployed().haveAccountsToPredeploy)
 
         try predeployAccounts()
 
-        XCTAssertFalse(MDMPredeployed().havePredeployableAccount)
+        XCTAssertFalse(MDMPredeployed().haveAccountsToPredeploy)
 
         let accounts = Account.all()
         XCTAssertEqual(accounts.count, 1)
@@ -63,13 +63,13 @@ class MDMPredeployedTest: XCTestCase {
     func testMoreThanOneAccount() throws {
         let numAccounts = 2
 
-        XCTAssertFalse(MDMPredeployed().havePredeployableAccount)
+        XCTAssertFalse(MDMPredeployed().haveAccountsToPredeploy)
         setupPredeployAccounts(number: numAccounts)
-        XCTAssertTrue(MDMPredeployed().havePredeployableAccount)
+        XCTAssertTrue(MDMPredeployed().haveAccountsToPredeploy)
 
         try predeployAccounts()
 
-        XCTAssertFalse(MDMPredeployed().havePredeployableAccount)
+        XCTAssertFalse(MDMPredeployed().haveAccountsToPredeploy)
 
         let accounts = Account.all()
         XCTAssertEqual(accounts.count, numAccounts)
@@ -91,13 +91,13 @@ class MDMPredeployedTest: XCTestCase {
         let _ = createAccount(baseName: "acc1", portBase: 555, index: 1)
         let _ = createAccount(baseName: "acc2", portBase: 556, index: 2)
 
-        XCTAssertFalse(MDMPredeployed().havePredeployableAccount)
+        XCTAssertFalse(MDMPredeployed().haveAccountsToPredeploy)
         setupSinglePredeployedAccount()
-        XCTAssertTrue(MDMPredeployed().havePredeployableAccount)
+        XCTAssertTrue(MDMPredeployed().haveAccountsToPredeploy)
 
         try predeployAccounts()
 
-        XCTAssertFalse(MDMPredeployed().havePredeployableAccount)
+        XCTAssertFalse(MDMPredeployed().haveAccountsToPredeploy)
 
         let accounts = Account.all()
         XCTAssertEqual(accounts.count, 1)
