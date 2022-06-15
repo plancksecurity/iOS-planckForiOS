@@ -15,10 +15,6 @@ class MDMAccountPredeploymentViewModel {
     ///
     /// - Note: Silently fails if there was an error is the account description.
     func predeployAccounts(callback: @escaping (_ predeploymentError: MDMPredeployedError?) -> ()) {
-        if !AppSettings.shared.mdmPredeployedAccounts {
-            return
-        }
-
         let predeployer: MDMPredeployedProtocol = MDMPredeployed()
         predeployer.predeployAccounts { maybeError in
             if let error = maybeError {
@@ -39,8 +35,6 @@ private typealias SettingsDict = [String:Any]
 
 extension MDMAccountPredeploymentViewModel {
     static func addTestData() {
-        AppSettings.shared.mdmPredeployedAccounts = true
-
         let testData = SecretTestData().createVerifiableAccountSettings(number: 0)
 
         predeployAccount(userName: testData.idUserName!,

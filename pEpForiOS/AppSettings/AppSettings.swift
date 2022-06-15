@@ -289,16 +289,6 @@ extension AppSettings: AppSettingsProtocol {
             Log.shared.verboseLoggingEnabled = newValue
         }
     }
-
-    public var mdmPredeployedAccounts: Bool {
-        get {
-            return AppSettings.userDefaults.bool(forKey: AppSettings.keyMdmPredeployedAccounts)
-        }
-        set {
-            AppSettings.userDefaults.set(newValue,
-                                         forKey: AppSettings.keyMdmPredeployedAccounts)
-        }
-    }
 }
 
 //MARK: Collapsing State

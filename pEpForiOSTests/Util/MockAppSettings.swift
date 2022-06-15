@@ -62,8 +62,6 @@ class MockAppSettings: AppSettingsProtocol {
 
     var verboseLogginEnabled: Bool = false
 
-    var mdmPredeployedAccounts: Bool = false
-
     // MARK: - Collapsing State
 
     func removeFolderViewCollapsedStateOfAccountWith(address: String) {
