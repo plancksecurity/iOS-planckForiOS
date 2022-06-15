@@ -33,6 +33,8 @@ class MDMAccountPredeploymentViewController: UIViewController {
         } else {
             // Modal is modal already?
         }
+
+        navigationController?.setNavigationBarHidden(true, animated: false)
     }
 
     override func viewWillAppear(_ animated: Bool) {
