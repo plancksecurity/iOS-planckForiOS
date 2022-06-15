@@ -45,7 +45,7 @@ extension MDMAccountPredeploymentViewModel {
 
         predeployAccount(userName: testData.idUserName!,
                          userAddress: testData.idAddress,
-                         loginName: testData.imapLoginName!,
+                         loginName: testData.imapLoginName ?? testData.idAddress,
                          password: testData.imapPassword!,
                          imapServerName: testData.imapServerAddress,
                          imapServerPort: Int(testData.imapServerPort),
