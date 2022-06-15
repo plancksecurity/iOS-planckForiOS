@@ -39,17 +39,30 @@ class MDMAccountPredeploymentViewController: UIViewController {
         activityIndicator.startAnimating()
         activityIndicator.isHidden = false
         messageLabel.text = NSLocalizedString("Deploying Accounts",
-                                              comment: "MDM Predeployment message")
+                                              comment: "MDM predeployment message")
 
-        viewModel.predeployAccounts { [weak self] predeploymentError in
+        viewModel.predeployAccounts { [weak self] maybeError in
             guard let theSelf = self else {
                 Log.shared.lostMySelf()
                 return
             }
             theSelf.activityIndicator.stopAnimating()
             theSelf.activityIndicator.isHidden = true
-            theSelf.messageLabel.text = NSLocalizedString("MDM Error",
-                                                          comment: "MDM Predeployment went wrong")
+
+            if let error = maybeError {
+                switch error {
+                case .networkError:
+                    theSelf.messageLabel.text = NSLocalizedString("MDM Error: Could not connect to account",
+                                                                  comment: "MDM predeployment error")
+                case .malformedAccountData:
+                    theSelf.messageLabel.text = NSLocalizedString("MDM Error: Wrong Account Data",
+                                                                  comment: "MDM predeployment error")
+                }
+            } else {
+                theSelf.messageLabel.text = NSLocalizedString("Accounts Deployed",
+                                                              comment: "MDM predeployment message, all ok")
+                // TODO: Skip to the next view
+            }
         }
     }
 
