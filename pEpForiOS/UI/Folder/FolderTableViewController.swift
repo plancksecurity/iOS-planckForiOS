@@ -290,7 +290,8 @@ extension FolderTableViewController: SegueHandlerType {
 
      /// Unwind segue for the case of adding an account that requires manual setup
     @IBAction private func segueUnwindAfterAccountCreation(segue: UIStoryboardSegue) {
-        // After adding an account with manual setup the user should see the email list view
+        // After adding an account with manual setup the user should see the email list view,
+        // as well after pre-deploying accounts.
         shouldPresentNextView = true
     }
 
