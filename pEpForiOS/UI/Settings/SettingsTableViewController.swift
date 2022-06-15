@@ -109,6 +109,7 @@ extension SettingsTableViewController {
             Log.shared.errorAndCrash("Invalid state.")
             return SettingSwitchTableViewCell()
         }
+        cell.accessibilityIdentifier = row.title
         cell.switchDescription.text = row.title
         cell.switchDescription.font = UIFont.pepFont(style: .body, weight: .regular)
         cell.switchDescription.textColor = viewModel.titleColor(rowIdentifier: row.identifier)
@@ -127,6 +128,7 @@ extension SettingsTableViewController {
         let dequeuedCell = tableView.dequeueReusableCell(withIdentifier: cellId, for: indexPath)
         Appearance.configureSelectedBackgroundViewForPep(tableViewCell: dequeuedCell)
         let row : SettingsRowProtocol = viewModel.section(for: indexPath.section).rows[indexPath.row]
+        dequeuedCell.accessibilityIdentifier = row.title
         switch row.identifier {
         case .account:
             return prepareSwipeTableViewCell(dequeuedCell, for: row)
