@@ -38,6 +38,8 @@ class MDMAccountPredeploymentViewController: UIViewController {
     override func viewWillAppear(_ animated: Bool) {
         activityIndicator.startAnimating()
         activityIndicator.isHidden = false
+        messageLabel.text = NSLocalizedString("Deploying Accounts",
+                                              comment: "MDM Predeployment message")
 
         viewModel.predeployAccounts { [weak self] predeploymentError in
             guard let theSelf = self else {
