@@ -88,7 +88,7 @@ class MDMAccountPredeploymentViewController: UIViewController {
     }
 }
 
-// MARK: - MDMAccountPredeploymentViewController
+// MARK: - SegueHandlerType
 
 extension MDMAccountPredeploymentViewController: SegueHandlerType {
     enum SegueIdentifier: String {
