@@ -20,6 +20,9 @@ class FolderTableViewController: UITableViewController {
 
     @IBOutlet private weak var addAccountButton: UIButton!
 
+    // TMP: Used to only test-deploy once, like in real-world situations.
+    var haveDeployedOnce = false
+
     // MARK: - Life Cycle
 
     override func viewDidLoad() {
@@ -304,7 +307,10 @@ extension FolderTableViewController: SegueHandlerType {
         }
 
         // TMP: Simulate account pre-deployment
-        MDMAccountPredeploymentViewModel.addTestData()
+        if !haveDeployedOnce {
+            MDMAccountPredeploymentViewModel.addTestData()
+            haveDeployedOnce = true
+        }
 
         if shouldPresentNextView {
             if vm.shouldShowFolders {
