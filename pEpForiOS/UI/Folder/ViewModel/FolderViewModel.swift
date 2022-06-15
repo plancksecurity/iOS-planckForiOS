@@ -51,9 +51,7 @@ public class FolderViewModel {
     }
 
     public var shouldShowFolders: Bool {
-        // TMP
-        return false
-        //return shouldShowUnifiedFolders || folderForEmailListView != nil
+        return shouldShowUnifiedFolders || folderForEmailListView != nil
     }
 
     public var folderToShow: DisplayableFolderProtocol {
