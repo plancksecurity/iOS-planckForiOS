@@ -145,4 +145,16 @@ extension MDMPredeployed: MDMPredeployedProtocol {
             }
         }
     }
+
+    var havePredeployableAccount: Bool {
+        guard let mdmDict = UserDefaults.standard.dictionary(forKey: MDMPredeployed.keyMDM) else {
+            return false
+        }
+
+        guard let predeployedAccounts = mdmDict[MDMPredeployed.keyPredeployedAccounts] as? [SettingsDict] else {
+            return false
+        }
+
+        return !predeployedAccounts.isEmpty
+    }
 }

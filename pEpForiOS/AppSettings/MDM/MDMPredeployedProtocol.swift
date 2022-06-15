@@ -41,4 +41,7 @@ protocol MDMPredeployedProtocol {
     ///       name: String
     ///       port: Integer
     func predeployAccounts(callback: @escaping (_ error: MDMPredeployedError?) -> ())
+
+    /// Returns `true` if there are accounts to be predeployed, `false` otherwise.
+    var havePredeployableAccount: Bool { get }
 }
