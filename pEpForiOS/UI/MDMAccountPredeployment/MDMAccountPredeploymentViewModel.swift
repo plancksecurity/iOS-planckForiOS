@@ -41,17 +41,16 @@ extension MDMAccountPredeploymentViewModel {
     static func addTestData() {
         AppSettings.shared.mdmPredeployedAccounts = true
 
-        let server = "server.example.com"
-        let email = "email@\(server)"
+        let testData = SecretTestData().createVerifiableAccountSettings(number: 0)
 
-        predeployAccount(userName: "User Name",
-                         userAddress: email,
-                         loginName: email,
-                         password: "password",
-                         imapServerName: server,
-                         imapServerPort: 993,
-                         smtpServerName: server,
-                         smtpServerPort: 465)
+        predeployAccount(userName: testData.idUserName!,
+                         userAddress: testData.idAddress,
+                         loginName: testData.imapLoginName!,
+                         password: testData.imapPassword!,
+                         imapServerName: testData.imapServerAddress,
+                         imapServerPort: Int(testData.imapServerPort),
+                         smtpServerName: testData.smtpServerAddress,
+                         smtpServerPort: Int(testData.smtpServerPort))
     }
 
     /// Temporary test function for adding MDM account data.
