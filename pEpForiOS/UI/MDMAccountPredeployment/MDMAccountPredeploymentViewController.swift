@@ -67,7 +67,7 @@ class MDMAccountPredeploymentViewController: UIViewController {
             } else {
                 theSelf.messageLabel.text = NSLocalizedString("Accounts Deployed",
                                                               comment: "MDM predeployment message, all ok")
-                
+                theSelf.performSegue(withIdentifier: .segueUnwindAfterAccountCreation, sender: theSelf)
             }
         }
     }
