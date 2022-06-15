@@ -26,9 +26,13 @@ class MDMPredeployedTest: XCTestCase {
     }
 
     func testSingleAccount() throws {
+        XCTAssertFalse(MDMPredeployed().havePredeployableAccount)
         setupSinglePredeployedAccount()
+        XCTAssertTrue(MDMPredeployed().havePredeployableAccount)
 
         try predeployAccounts()
+
+        XCTAssertFalse(MDMPredeployed().havePredeployableAccount)
 
         let accounts = Account.all()
         XCTAssertEqual(accounts.count, 1)
@@ -59,9 +63,13 @@ class MDMPredeployedTest: XCTestCase {
     func testMoreThanOneAccount() throws {
         let numAccounts = 2
 
+        XCTAssertFalse(MDMPredeployed().havePredeployableAccount)
         setupPredeployAccounts(number: numAccounts)
+        XCTAssertTrue(MDMPredeployed().havePredeployableAccount)
 
         try predeployAccounts()
+
+        XCTAssertFalse(MDMPredeployed().havePredeployableAccount)
 
         let accounts = Account.all()
         XCTAssertEqual(accounts.count, numAccounts)
@@ -83,9 +91,13 @@ class MDMPredeployedTest: XCTestCase {
         let _ = createAccount(baseName: "acc1", portBase: 555, index: 1)
         let _ = createAccount(baseName: "acc2", portBase: 556, index: 2)
 
+        XCTAssertFalse(MDMPredeployed().havePredeployableAccount)
         setupSinglePredeployedAccount()
+        XCTAssertTrue(MDMPredeployed().havePredeployableAccount)
 
         try predeployAccounts()
+
+        XCTAssertFalse(MDMPredeployed().havePredeployableAccount)
 
         let accounts = Account.all()
         XCTAssertEqual(accounts.count, 1)
