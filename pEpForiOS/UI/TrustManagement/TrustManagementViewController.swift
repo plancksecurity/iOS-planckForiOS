@@ -202,6 +202,7 @@ extension TrustManagementViewController {
                 let cancelAction = UIAlertAction(title: cancel, style: .cancel) { _ in
                     alertController.dismiss(animated: true, completion: nil)
                 }
+                cancelAction.accessibilityIdentifier = AccessibilityIdentifier.cancelButton
                 alertController.addAction(cancelAction)
 
                 //Ipad behavior.

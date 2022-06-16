@@ -41,6 +41,8 @@ class EditableAccountSettingsViewController: UIViewController {
         setKeyboardHandling()
         tableView.delegate = self
         tableView.dataSource = self
+        navigationController?.navigationItem.rightBarButtonItem?.accessibilityIdentifier = AccessibilityIdentifier.saveButton
+        navigationController?.navigationItem.leftBarButtonItem?.accessibilityIdentifier = AccessibilityIdentifier.cancelButton
     }
 
     override func viewWillTransition(to size: CGSize, with coordinator: UIViewControllerTransitionCoordinator) {
@@ -95,7 +97,7 @@ extension EditableAccountSettingsViewController: UITableViewDataSource {
         }
 
         let row = vm.sections[indexPath.section].rows[indexPath.row]
-
+        cell.accessibilityIdentifier = row.title
         switch row.type {
         case .certificate:
             guard let row = row as? AccountSettingsViewModel.ActionRow else {
