@@ -14,15 +14,6 @@ import PantomimeFramework
 
 class VerifiableAccountTest: PersistentStoreDrivenTestBase {
 
-    var account1 : Account?
-    var account2 : Account?
-
-    override func setUp() {
-        super.setUp()
-        account1 = SecretTestData().createWorkingAccount()
-        account2 = SecretTestData().createWorkingAccount(number: 1)
-    }
-
     func testFailingValidation() {
         let (exceptionOnVerify, exceptionOnSave) = checkFailingValidation() {
             var newOne = $0
