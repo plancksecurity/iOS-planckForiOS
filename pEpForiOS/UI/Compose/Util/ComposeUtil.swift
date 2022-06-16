@@ -145,7 +145,7 @@ struct ComposeUtil {
         if let om = om {
             isInDraftsOrOutbox = om.isInDraftsOrOutbox
         }
-        return composeMode == .forward || isInDraftsOrOutbox
+        return composeMode == .forward || isInDraftsOrOutbox || composeMode == .replyFrom
     }
 
     // Creates a message from the given ComposeView State on a new, independent Session

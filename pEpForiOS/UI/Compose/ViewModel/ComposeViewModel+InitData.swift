@@ -205,7 +205,7 @@ extension ComposeViewModel {
             }
             switch composeMode {
             case .replyFrom:
-                setInitialBody(text: ReplyUtil.quotedMessageText(message: message, replyAll: false))
+                setBodyPotetionallyTakingOverAttachments()
             case .replyAll:
                 setInitialBody(text: ReplyUtil.quotedMessageText(message: message, replyAll: true))
             case .forward:
@@ -229,7 +229,7 @@ extension ComposeViewModel {
                 return
             }
 
-            guard isDrafts || composeMode == .forward else {
+            guard isDrafts || composeMode == .forward || composeMode == .replyFrom else {
                 Log.shared.errorAndCrash("Unsupported mode or message")
                 return
             }
@@ -241,7 +241,7 @@ extension ComposeViewModel {
                     inlinedAttachments: inlinedAttachments, session: attachmentSession)
                 let attributedString = html.htmlToAttributedString(attachmentDelegate: parserDelegate)
                 var result = attributedString
-                if composeMode == .forward {
+                if composeMode == .forward || composeMode == .replyFrom {
                     // forwarded messges must have a cite header ("yxz wrote on ...")
                     result = ReplyUtil.citedMessageText(textToCite: attributedString,
                                                         fromMessage: msg)
