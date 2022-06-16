@@ -392,6 +392,7 @@
 		43607DE423FE8D6F00FA66B8 /* ClientCertificateUtilTestInternal.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43607DE323FE8D6F00FA66B8 /* ClientCertificateUtilTestInternal.swift */; };
 		43607DF6240031FE00FA66B8 /* CdClientCertificate+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43607DF5240031FE00FA66B8 /* CdClientCertificate+Extension.swift */; };
 		4360AA1A22281B7100E62E5A /* PEPSession+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4360AA1922281B7100E62E5A /* PEPSession+Extensions.swift */; };
+		4362D7C6285B6E8B00F7EFE3 /* AccountVerifierProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4362D7C5285B6E8B00F7EFE3 /* AccountVerifierProtocol.swift */; };
 		43648283249246FF00DD44ED /* XCTestCase+IMAP.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43648282249246FF00DD44ED /* XCTestCase+IMAP.swift */; };
 		43648287249A3F6900DD44ED /* IOS-211-duplicated-attachments.txt in Resources */ = {isa = PBXBuildFile; fileRef = 43648286249A3F6900DD44ED /* IOS-211-duplicated-attachments.txt */; };
 		4367342F22F18462005FC567 /* CdMessagePredicateFactory+KeySync.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4367342E22F18462005FC567 /* CdMessagePredicateFactory+KeySync.swift */; };
@@ -979,6 +980,7 @@
 		43607DEC2400201300FA66B8 /* 1.0.913.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = 1.0.913.xcdatamodel; sourceTree = "<group>"; };
 		43607DF5240031FE00FA66B8 /* CdClientCertificate+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "CdClientCertificate+Extension.swift"; sourceTree = "<group>"; };
 		4360AA1922281B7100E62E5A /* PEPSession+Extensions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "PEPSession+Extensions.swift"; sourceTree = "<group>"; };
+		4362D7C5285B6E8B00F7EFE3 /* AccountVerifierProtocol.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AccountVerifierProtocol.swift; sourceTree = "<group>"; };
 		43648282249246FF00DD44ED /* XCTestCase+IMAP.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "XCTestCase+IMAP.swift"; sourceTree = "<group>"; };
 		43648286249A3F6900DD44ED /* IOS-211-duplicated-attachments.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = "IOS-211-duplicated-attachments.txt"; sourceTree = "<group>"; };
 		4367342E22F18462005FC567 /* CdMessagePredicateFactory+KeySync.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "CdMessagePredicateFactory+KeySync.swift"; sourceTree = "<group>"; };
@@ -2254,6 +2256,7 @@
 				43C123DF223A7FCF00F6A9B2 /* AccountVerificationResult.swift */,
 				439B16A122802A8700201DE5 /* VerifiableAccountProtocol.swift */,
 				439B16A522802B6B00201DE5 /* VerifiableAccount.swift */,
+				4362D7C5285B6E8B00F7EFE3 /* AccountVerifierProtocol.swift */,
 				43E5F7C528571D2000115686 /* AccountVerifier.swift */,
 			);
 			path = VerifiableAccount;
@@ -3384,6 +3387,7 @@
 				B7F6F479234CD662003DF84A /* IdentityQueryResultsProtocol.swift in Sources */,
 				43753CDE222D2DA7002EE98B /* ContentDispositionType+Conversion.swift in Sources */,
 				15795B9F22C0F48F00010938 /* CdFolder+ImapFolder.swift in Sources */,
+				4362D7C6285B6E8B00F7EFE3 /* AccountVerifierProtocol.swift in Sources */,
 				15175ECE221DC39300C91DB8 /* QueryResultsControllerDelegate.swift in Sources */,
 				152701892294537900197378 /* CdMessage+FakeMessage.swift in Sources */,
 				158A6DFE2305BBFE006A9ECE /* CdExtraKeys+Convenience.swift in Sources */,

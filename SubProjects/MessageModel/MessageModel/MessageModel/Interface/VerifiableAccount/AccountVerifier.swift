@@ -17,11 +17,9 @@ import pEpIOSToolbox
 /// * Simplified interface
 /// * Uses a callback instead of a delegate.
 /// * Saves the account after successful verification.
-public class AccountVerifier {
+public class AccountVerifier: AccountVerifierProtocol {
 
     // MARK: - Public API
-
-    public typealias AccountVerifierCallback = (_ error: Error?) -> ()
 
     // Needed as public method, even if empty.
     public init() {
