@@ -11,6 +11,13 @@ import Foundation
 import MessageModel
 
 class MDMPredeployed {
+    init(accountverifier: AccountVerifierProtocol? = nil) {
+        maybeAccountverifier = accountverifier
+    }
+
+    // MARK: - Private vars
+
+    private var maybeAccountverifier: AccountVerifierProtocol?
 }
 
 // MARK: - Dictionary key constants
