@@ -219,42 +219,14 @@ class MDMPredeployedTest: XCTestCase {
     // MARK: - Setup Util Util
 
     private func accountWithServerDictionary(appendixNumber: Int = 0) -> SettingsDict {
-        let testData = TestDataBase.AccountSettings(accountName: "account \(appendixNumber)",
-                                                    idAddress: "account\(appendixNumber)@example.com",
-                                                    idUserName: "userName\(appendixNumber)",
-                                                    imapLoginName: "imapLogin\(appendixNumber)",
-                                                    imapServerAddress: "imapServer\(appendixNumber)",
-                                                    imapServerType: .imap,
-                                                    imapServerTransport: .tls,
-                                                    imapServerPort: 993,
-                                                    smtpLoginName: "smtpLogin\(appendixNumber)",
-                                                    smtpServerAddress: "smtpServer\(appendixNumber)",
-                                                    smtpServerType: .smtp,
-                                                    smtpServerTransport: .startTls,
-                                                    smtpServerPort: 587,
-                                                    imapPassword: "imapPassword\(appendixNumber)",
-                                                    smtpPassword: "smtpPassword\(appendixNumber)")
-
-        let loginName = testData.imapLoginName ?? testData.smtpLoginName ?? testData.idAddress
-
-        guard let password = testData.imapPassword ?? testData.smtpPassword else {
-            XCTFail()
-            return [:]
-        }
-
-        guard let username = testData.idUserName else {
-            XCTFail()
-            return [:]
-        }
-
-        let accountData = AccountStruct(userAddress: testData.idAddress,
-                                        imapServer: testData.imapServerAddress,
-                                        imapPort: testData.imapServerPort,
-                                        smtpServer: testData.smtpServerAddress,
-                                        smtpPort: testData.smtpServerPort,
-                                        userName: username,
-                                        loginName: loginName,
-                                        password: password)
+        let accountData = AccountStruct(userAddress: "account\(appendixNumber)@example.com",
+                                        imapServer: "imapServer\(appendixNumber)",
+                                        imapPort: 993,
+                                        smtpServer: "smtpServer\(appendixNumber)",
+                                        smtpPort: 587,
+                                        userName: "userName\(appendixNumber)",
+                                        loginName: "loginName\(appendixNumber)",
+                                        password: "password\(appendixNumber)")
         if setupAccountData.count > appendixNumber {
             XCTFail()
             return [:]
