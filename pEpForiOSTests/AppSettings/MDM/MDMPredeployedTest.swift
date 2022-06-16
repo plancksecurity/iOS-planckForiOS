@@ -219,7 +219,21 @@ class MDMPredeployedTest: XCTestCase {
     // MARK: - Setup Util Util
 
     private func accountWithServerDictionary(appendixNumber: Int = 0) -> SettingsDict {
-        let testData = SecretTestData().createVerifiableAccountSettings(number: appendixNumber)
+        let testData = TestDataBase.AccountSettings(accountName: "account \(appendixNumber)",
+                                                    idAddress: "account\(appendixNumber)@example.com",
+                                                    idUserName: "userName\(appendixNumber)",
+                                                    imapLoginName: "imapLogin\(appendixNumber)",
+                                                    imapServerAddress: "imapServer\(appendixNumber)",
+                                                    imapServerType: .imap,
+                                                    imapServerTransport: .tls,
+                                                    imapServerPort: 993,
+                                                    smtpLoginName: "smtpLogin\(appendixNumber)",
+                                                    smtpServerAddress: "smtpServer\(appendixNumber)",
+                                                    smtpServerType: .smtp,
+                                                    smtpServerTransport: .startTls,
+                                                    smtpServerPort: 587,
+                                                    imapPassword: "imapPassword\(appendixNumber)",
+                                                    smtpPassword: "smtpPassword\(appendixNumber)")
 
         let loginName = testData.imapLoginName ?? testData.smtpLoginName ?? testData.idAddress
 
