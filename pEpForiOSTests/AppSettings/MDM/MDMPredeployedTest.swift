@@ -44,33 +44,6 @@ class MDMPredeployedTest: XCTestCase {
         XCTAssertEqual(accounts.count, 0)
     }
 
-    func testMoreThanOneAccount() throws {
-        let numAccounts = 2
-
-        XCTAssertFalse(MDMPredeployed().haveAccountsToPredeploy)
-        setupPredeployAccounts(number: numAccounts)
-        XCTAssertTrue(MDMPredeployed().haveAccountsToPredeploy)
-
-        try predeployAccounts()
-
-        XCTAssertFalse(MDMPredeployed().haveAccountsToPredeploy)
-
-        let accounts = Account.all()
-        XCTAssertEqual(accounts.count, numAccounts)
-
-        var optionalPrevAccount: Account? = nil
-        for acc in accounts {
-            if let account1 = optionalPrevAccount {
-                XCTAssertNotEqual(account1.user.userName, acc.user.userName)
-                XCTAssertNotEqual(account1.imapServer?.credentials.loginName,
-                                  acc.imapServer?.credentials.loginName)
-                XCTAssertNotEqual(account1.smtpServer?.credentials.loginName,
-                                  acc.smtpServer?.credentials.loginName)
-            }
-            optionalPrevAccount = acc
-        }
-    }
-
     func testAllExistingAccountsHaveBeenWiped() throws {
         let _ = createAccount(baseName: "acc1", portBase: 555, index: 1)
         let _ = createAccount(baseName: "acc2", portBase: 556, index: 2)
