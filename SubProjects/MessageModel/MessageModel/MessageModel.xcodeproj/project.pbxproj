@@ -205,6 +205,7 @@
 		431995C224DACCD3004B2811 /* KeySyncHandshakeResult+PEPSyncHandshakeResult.swift in Sources */ = {isa = PBXBuildFile; fileRef = 431995C124DACCD3004B2811 /* KeySyncHandshakeResult+PEPSyncHandshakeResult.swift */; };
 		431BAE34246D4F330043490F /* KeyImportUtil.swift in Sources */ = {isa = PBXBuildFile; fileRef = 431BAE33246D4F330043490F /* KeyImportUtil.swift */; };
 		431BAE39246D5BEF0043490F /* KeyImportUtilTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 431BAE38246D5BEF0043490F /* KeyImportUtilTest.swift */; };
+		431F1BD6285C8EBC00B1D12E /* AccountVerifierTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 431F1BD5285C8EBC00B1D12E /* AccountVerifierTest.swift */; };
 		431FD70522EEF1A30001FF37 /* Message+PredicateFactory+KeySync.swift in Sources */ = {isa = PBXBuildFile; fileRef = 431FD70422EEF1A30001FF37 /* Message+PredicateFactory+KeySync.swift */; };
 		43236E6824598F4C00D8318D /* Account+AccountType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43236E6724598F4C00D8318D /* Account+AccountType.swift */; };
 		4331CE75229BD7E100DDDC65 /* UseFirstHTMLPartAsBodyTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4331CE74229BD7E100DDDC65 /* UseFirstHTMLPartAsBodyTest.swift */; };
@@ -934,6 +935,7 @@
 		431995C124DACCD3004B2811 /* KeySyncHandshakeResult+PEPSyncHandshakeResult.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "KeySyncHandshakeResult+PEPSyncHandshakeResult.swift"; sourceTree = "<group>"; };
 		431BAE33246D4F330043490F /* KeyImportUtil.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KeyImportUtil.swift; sourceTree = "<group>"; };
 		431BAE38246D5BEF0043490F /* KeyImportUtilTest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KeyImportUtilTest.swift; sourceTree = "<group>"; };
+		431F1BD5285C8EBC00B1D12E /* AccountVerifierTest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AccountVerifierTest.swift; sourceTree = "<group>"; };
 		431FD70422EEF1A30001FF37 /* Message+PredicateFactory+KeySync.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Message+PredicateFactory+KeySync.swift"; sourceTree = "<group>"; };
 		43236E6724598F4C00D8318D /* Account+AccountType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Account+AccountType.swift"; sourceTree = "<group>"; };
 		4331CE74229BD7E100DDDC65 /* UseFirstHTMLPartAsBodyTest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UseFirstHTMLPartAsBodyTest.swift; sourceTree = "<group>"; };
@@ -2274,6 +2276,7 @@
 				43ACAA832608A5380013AE20 /* MigrateKeychainService */,
 				152E3C9E231BE34100C1420B /* BackgroundTaskManagerTest.swift */,
 				439B16B122802D3800201DE5 /* VerifiableAccountTest.swift */,
+				431F1BD5285C8EBC00B1D12E /* AccountVerifierTest.swift */,
 				B7A1152422C4B55E00FB6E91 /* PrepareAccountForSavingServiceTest.swift */,
 				377B8C7A22C371720007803B /* NetworkService */,
 				B745C15E231D270900D3CC69 /* FetchImapFolderTest.swift */,
@@ -3670,6 +3673,7 @@
 				158A6E042305C2F5006A9ECE /* PEPUtil+EncryptionTest.swift in Sources */,
 				154D173B237331FE001FDF78 /* ImapFlagsTests.swift in Sources */,
 				43607DE123FE870C00FA66B8 /* ClientCertificates+TestUtils.swift in Sources */,
+				431F1BD6285C8EBC00B1D12E /* AccountVerifierTest.swift in Sources */,
 				4384D402243F3626006CCBA2 /* MimeTests.swift in Sources */,
 				37FED96E228328ED004C7804 /* MimeTypeUtilsTest.swift in Sources */,
 				B7FD55D92338D01F00C9FC55 /* IdentityQueryResultsTest.swift in Sources */,
