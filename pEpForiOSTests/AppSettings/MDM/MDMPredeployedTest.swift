@@ -44,7 +44,7 @@ class MDMPredeployedTest: XCTestCase {
         XCTAssertEqual(accounts.count, 0)
     }
 
-    func testAllExistingAccountsHaveBeenWiped() throws {
+    func testAllExistingAccountsHaveBeenWipedEvenAfterNetworkFail() throws {
         let _ = createAccount(baseName: "acc1", portBase: 555, index: 1)
         let _ = createAccount(baseName: "acc2", portBase: 556, index: 2)
 
@@ -52,34 +52,18 @@ class MDMPredeployedTest: XCTestCase {
         setupSinglePredeployedAccount()
         XCTAssertTrue(MDMPredeployed().haveAccountsToPredeploy)
 
-        try predeployAccounts()
+        do {
+            try predeployAccounts()
+            XCTFail()
+        } catch MDMPredeployedError.networkError {
+        } catch {
+            XCTFail()
+        }
 
         XCTAssertFalse(MDMPredeployed().haveAccountsToPredeploy)
 
         let accounts = Account.all()
-        XCTAssertEqual(accounts.count, 1)
-
-        guard let account1 = accounts.first else {
-            // The number of accounts has already been checked
-            return
-        }
-
-        XCTAssertEqual(account1.imapServer?.address,
-                       setupAccountData[0].imapServer)
-        XCTAssertEqual(account1.smtpServer?.address,
-                       setupAccountData[0].smtpServer)
-        XCTAssertEqual(account1.imapServer?.port, setupAccountData[0].imapPort)
-        XCTAssertEqual(account1.smtpServer?.port, setupAccountData[0].smtpPort)
-        XCTAssertEqual(account1.user.userName,
-                       setupAccountData[0].userName)
-        XCTAssertEqual(account1.imapServer?.credentials.loginName,
-                       setupAccountData[0].loginName)
-        XCTAssertEqual(account1.smtpServer?.credentials.loginName,
-                       setupAccountData[0].loginName)
-        XCTAssertEqual(account1.imapServer?.credentials.password,
-                       setupAccountData[0].password)
-        XCTAssertEqual(account1.smtpServer?.credentials.password,
-                       setupAccountData[0].password)
+        XCTAssertEqual(accounts.count, 0)
     }
 
     // MARK: - Util
