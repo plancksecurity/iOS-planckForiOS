@@ -9,7 +9,6 @@
 import XCTest
 
 @testable import MessageModel
-import PEPObjCTypes_iOS
 
 class VerifiableAccountTest: PersistentStoreDrivenTestBase {
 
