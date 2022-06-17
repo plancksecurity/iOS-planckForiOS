@@ -204,16 +204,15 @@ extension String {
     }
 
 
-    /// Get the substring between two Strings. The resultant string is not included.
+    /// Get the substring between two Strings. The resultant string does not include the starting and end string.
     ///
     /// - Parameters:
     ///   - start: The starting string.
     ///   - end: The end string.
-    ///   - options: Compare options.
     /// - Returns: The string if found as Substring. Nil otherwise.
-    private func getSubstring<S: StringProtocol, T: StringProtocol>(from start: S, upTo end: T, options: String.CompareOptions = []) -> SubSequence? {
-        guard let lower = range(of: start, options: options)?.upperBound,
-            let upper = self[lower...].range(of: end, options: options)?.lowerBound
+    private func getSubstring<S: StringProtocol, T: StringProtocol>(from start: S, upTo end: T) -> SubSequence? {
+        guard let lower = range(of: start, options: [])?.upperBound,
+            let upper = self[lower...].range(of: end, options: [])?.lowerBound
         else { return nil }
         return self[lower..<upper]
     }
