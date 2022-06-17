@@ -105,7 +105,8 @@ extension String {
         // we change cid to image coded with base64
         var html = htmlConvertImageLinksToImageMarkdownString(html: htmlWithCitedChars, attachmentDelegate: attachmentDelegate)
         html.removeFontFaces()
-        let htmlData = html.data(using: .utf8,
+
+        let htmlData = html.data(using: .unicode,
                                  allowLossyConversion: true)
         let options: [NSAttributedString.DocumentReadingOptionKey : Any] =
             [.documentType : NSAttributedString.DocumentType.html]
