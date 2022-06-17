@@ -204,7 +204,8 @@ extension String {
     }
 
 
-    /// Get the substring between two Strings. The resultant string does not include the starting and end string.
+    /// Get the substring between two Strings.
+    /// The resultant string does not include the starting and end string.
     ///
     /// - Parameters:
     ///   - start: The starting string.
@@ -216,5 +217,4 @@ extension String {
         else { return nil }
         return self[lower..<upper]
     }
-
 }
