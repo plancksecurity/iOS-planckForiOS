@@ -7,11 +7,13 @@
 //
 
 import Foundation
+import UIKit
 
 #if EXT_SHARE
 import pEpIOSToolboxForExtensions
 #else
 import pEpIOSToolbox
+import UIKit
 #endif
 
 extension String {
@@ -53,7 +55,7 @@ extension String {
         return result.count > 0
     }
 
-    public func htmlConvertImageLinksToImageMarkdownString(html: String, attachmentDelegate: HtmlToAttributedTextSaxParserAttachmentDelegate? = nil) -> String {
+    public func htmlConvertImageLinksToImageMarkdownString(html: String) -> String {
 
         //Pattern to get all images tags in the current html
         let pattern = """
@@ -71,7 +73,6 @@ extension String {
             let parser = HtmlTagParser(data: data)
             let src = parser.src.first ?? "empty src"
             let alt = parser.alt.first ?? ""
-
             htmlConverted = htmlConverted.replacingOccurrences(of: result, with: "![\(alt)](\(src))<img ")
         }
 
@@ -103,7 +104,7 @@ extension String {
 
         // prepare HTML for HTML foundation framework parsing
         // we change cid to image coded with base64
-        var html = htmlConvertImageLinksToImageMarkdownString(html: htmlWithCitedChars, attachmentDelegate: attachmentDelegate)
+        var html = htmlConvertImageLinksToImageMarkdownString(html: htmlWithCitedChars)
         html.removeFontFaces()
         let htmlData = html.data(using: .utf8,
                                  allowLossyConversion: true)
@@ -136,7 +137,24 @@ extension String {
             if let attachment = attachmentDelegate?.imageAttachment(src: src, alt: alt) {
                 guard let image = attachment.image else { return string }
                 let textAttachment = BodyCellViewModel.TextAttachment()
-                textAttachment.image = image
+                var widthToSet: String?
+                var heightToSet: String?
+                if let width = htmlWithCitedChars.getSubstring(from: "width=\"", upTo: "\"") {
+                    widthToSet = String(width)
+                }
+                if let height = htmlWithCitedChars.getSubstring(from: "height=\"", upTo: "\"") {
+                    heightToSet = String(height)
+                }
+                if let height = heightToSet, let width = widthToSet {
+                    let formatter = NumberFormatter()
+                    if let width = formatter.number(from: width),
+                        let height = formatter.number(from: height) {
+                        let size = CGSize(width: CGFloat(truncating: width), height: CGFloat(truncating: height))
+                        textAttachment.image = image.resizeImage(targetSize: size)
+                    }
+                } else {
+                    textAttachment.image = image
+                }
                 textAttachment.attachment = attachment
                 let imageString = NSAttributedString(attachment: textAttachment)
                 let replaceTo = deleteInlinePictures
@@ -184,4 +202,20 @@ extension String {
         }
         return html
     }
+
+
+    /// Get the substring between two Strings. The resultant string is not included.
+    ///
+    /// - Parameters:
+    ///   - start: The starting string.
+    ///   - end: The end string.
+    ///   - options: Compare options.
+    /// - Returns: The string if found as Substring. Nil otherwise.
+    private func getSubstring<S: StringProtocol, T: StringProtocol>(from start: S, upTo end: T, options: String.CompareOptions = []) -> SubSequence? {
+        guard let lower = range(of: start, options: options)?.upperBound,
+            let upper = self[lower...].range(of: end, options: options)?.lowerBound
+        else { return nil }
+        return self[lower..<upper]
+    }
+
 }
