@@ -25,47 +25,6 @@ class MDMPredeployedTest: XCTestCase {
         try super.tearDownWithError()
     }
 
-    func testSingleAccountNetworkError() throws {
-        XCTAssertFalse(MDMPredeployed().haveAccountsToPredeploy)
-        setupSinglePredeployedAccount()
-        XCTAssertTrue(MDMPredeployed().haveAccountsToPredeploy)
-
-        do {
-            try predeployAccounts()
-            XCTFail()
-        } catch MDMPredeployedError.networkError {
-        } catch {
-            XCTFail()
-        }
-
-        XCTAssertFalse(MDMPredeployed().haveAccountsToPredeploy)
-
-        let accounts = Account.all()
-        XCTAssertEqual(accounts.count, 0)
-    }
-
-    func testAllExistingAccountsHaveBeenWipedAfterNetworkFail() throws {
-        let _ = createAccount(baseName: "acc1", portBase: 555, index: 1)
-        let _ = createAccount(baseName: "acc2", portBase: 556, index: 2)
-
-        XCTAssertFalse(MDMPredeployed().haveAccountsToPredeploy)
-        setupSinglePredeployedAccount()
-        XCTAssertTrue(MDMPredeployed().haveAccountsToPredeploy)
-
-        do {
-            try predeployAccounts()
-            XCTFail()
-        } catch MDMPredeployedError.networkError {
-        } catch {
-            XCTFail()
-        }
-
-        XCTAssertFalse(MDMPredeployed().haveAccountsToPredeploy)
-
-        let accounts = Account.all()
-        XCTAssertEqual(accounts.count, 0)
-    }
-
     func testSingleAccount() throws {
         XCTAssertFalse(MDMPredeployed().haveAccountsToPredeploy)
         setupSinglePredeployedAccount()
