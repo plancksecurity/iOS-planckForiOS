@@ -106,10 +106,11 @@ extension String {
         var html = htmlConvertImageLinksToImageMarkdownString(html: htmlWithCitedChars, attachmentDelegate: attachmentDelegate)
         html.removeFontFaces()
 
-        let htmlData = html.data(using: .unicode,
-                                 allowLossyConversion: true)
+        // To show cyrillic and german characters we need to use .utf16 encoding.
+        let htmlData = html.data(using: .utf16, allowLossyConversion: true)
         let options: [NSAttributedString.DocumentReadingOptionKey : Any] =
-            [.documentType : NSAttributedString.DocumentType.html]
+            [.documentType : NSAttributedString.DocumentType.html,
+             .characterEncoding: String.Encoding.utf16]
 
         guard var string = try? NSAttributedString(data: htmlData ?? Data(),
                                                          options: options,
