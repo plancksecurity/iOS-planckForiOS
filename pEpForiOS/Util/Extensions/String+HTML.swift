@@ -110,7 +110,7 @@ extension String {
         let htmlData = html.data(using: .utf16, allowLossyConversion: true)
         let options: [NSAttributedString.DocumentReadingOptionKey : Any] =
             [.documentType : NSAttributedString.DocumentType.html,
-             .characterEncoding: String.Encoding.utf16]
+             .characterEncoding: String.Encoding.utf16.rawValue]
 
         guard var string = try? NSAttributedString(data: htmlData ?? Data(),
                                                          options: options,
