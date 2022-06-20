@@ -77,9 +77,7 @@ public struct ReplyUtil {
     public static func citedMessageText(textToCite: NSAttributedString,
                                         fromMessage msg: Message) -> NSAttributedString {
         let citation = citationHeaderForMessage(msg)
-        let defaultFont = UIFont.preferredFont(forTextStyle: .body)
-        let result = NSAttributedString(string: "\n\n\(footer(for: msg))\n\n\(citation)\n\n",
-            attributes: [NSAttributedString.Key(rawValue: "NSFont"): defaultFont])
+        let result = NSAttributedString(string: "\n\n\(footer(for: msg))\n\n\(citation)\n\n")
 
         return result + textToCite.toCitation(addCitationLevel: true)
     }
@@ -140,7 +138,7 @@ public struct ReplyUtil {
         guard let formatted = message.longMessageFormatted else {
             return NSAttributedString.normalAttributedString(from: textToQuote ?? "")
         }
-        return formatted.htmlToAttributedString(deleteInlinePictures: true,
+        return formatted.htmlToAttributedString(deleteInlinePictures: false,
                                                 attachmentDelegate: nil)
     }
 
