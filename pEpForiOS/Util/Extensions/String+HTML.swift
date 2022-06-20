@@ -13,7 +13,6 @@ import UIKit
 import pEpIOSToolboxForExtensions
 #else
 import pEpIOSToolbox
-import UIKit
 #endif
 
 extension String {
