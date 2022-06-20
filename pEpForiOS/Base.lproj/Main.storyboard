@@ -561,7 +561,7 @@
                                                                                     <button opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="1000" horizontalCompressionResistancePriority="1000" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Hzm-le-K14" customClass="RecipientButton" customModule="pEpForiOS" customModuleProvider="target">
                                                                                         <rect key="frame" x="0.0" y="0.0" width="50" height="50"/>
                                                                                         <fontDescription key="fontDescription" style="UICTFontTextStyleHeadline"/>
-                                                                                        <state key="normal" title="mb@pep.security">
+                                                                                        <state key="normal" title="some@example.com">
                                                                                             <color key="titleColor" systemColor="labelColor"/>
                                                                                         </state>
                                                                                     </button>
@@ -618,7 +618,7 @@
                                                                                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="O1c-Wt-hEV" customClass="RecipientButton" customModule="pEpForiOS" customModuleProvider="target">
                                                                                                 <rect key="frame" x="0.0" y="0.0" width="50" height="50"/>
                                                                                                 <fontDescription key="fontDescription" style="UICTFontTextStyleFootnote"/>
-                                                                                                <state key="normal" title="mb@pep.security">
+                                                                                                <state key="normal" title="some@example.com">
                                                                                                     <color key="titleColor" systemColor="labelColor"/>
                                                                                                 </state>
                                                                                             </button>
@@ -680,7 +680,7 @@
                                                                                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="QAi-jk-Clh" customClass="RecipientButton" customModule="pEpForiOS" customModuleProvider="target">
                                                                                                 <rect key="frame" x="0.0" y="0.0" width="50" height="50"/>
                                                                                                 <fontDescription key="fontDescription" style="UICTFontTextStyleFootnote"/>
-                                                                                                <state key="normal" title="mb@pep.security">
+                                                                                                <state key="normal" title="some@example.com">
                                                                                                     <color key="titleColor" systemColor="labelColor"/>
                                                                                                 </state>
                                                                                             </button>
@@ -742,7 +742,7 @@
                                                                                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="WEf-77-c23" customClass="RecipientButton" customModule="pEpForiOS" customModuleProvider="target">
                                                                                                 <rect key="frame" x="0.0" y="0.0" width="50" height="50"/>
                                                                                                 <fontDescription key="fontDescription" style="UICTFontTextStyleFootnote"/>
-                                                                                                <state key="normal" title="mb@pep.security">
+                                                                                                <state key="normal" title="some@example.com">
                                                                                                     <color key="titleColor" systemColor="labelColor"/>
                                                                                                 </state>
                                                                                             </button>
