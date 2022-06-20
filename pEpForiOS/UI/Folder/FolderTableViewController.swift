@@ -20,6 +20,9 @@ class FolderTableViewController: UITableViewController {
 
     @IBOutlet private weak var addAccountButton: UIButton!
 
+    // TMP: Used to only test-deploy once, like in real-world situations.
+    var haveDeployedOnce = false
+
     // MARK: - Life Cycle
 
     override func viewDidLoad() {
@@ -302,6 +305,12 @@ extension FolderTableViewController: SegueHandlerType {
         guard let vm = folderVM else {
             Log.shared.errorAndCrash("VM not Found")
             return
+        }
+
+        // TMP: Simulate account pre-deployment
+        if !haveDeployedOnce {
+            MDMAccountPredeploymentViewModel.addTestData()
+            haveDeployedOnce = true
         }
 
         if shouldPresentNextView {
