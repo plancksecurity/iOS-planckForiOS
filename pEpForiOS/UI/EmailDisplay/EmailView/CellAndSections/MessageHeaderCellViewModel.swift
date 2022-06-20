@@ -90,6 +90,7 @@ class MessageHeaderCellViewModel {
         switch type {
         case .from:
             guard let numberOfFrom = fromCollectionViewViewModel?.numberOfCollectionViewCellViewModels, numberOfFrom == 1 else {
+                Log.shared.errorAndCrash("There should be only 1 From recipient")
                 return 0
             }
             return numberOfFrom
