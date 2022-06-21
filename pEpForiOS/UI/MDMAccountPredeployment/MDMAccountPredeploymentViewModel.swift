@@ -12,8 +12,6 @@ import pEpIOSToolbox
 
 class MDMAccountPredeploymentViewModel {
     /// Checks for predeployed accounts, and acts on them.
-    ///
-    /// - Note: Silently fails if there was an error is the account description.
     func predeployAccounts(callback: @escaping (_ predeploymentError: MDMPredeployedError?) -> ()) {
         let predeployer: MDMPredeployedProtocol = MDMPredeployed()
         predeployer.predeployAccounts { maybeError in
