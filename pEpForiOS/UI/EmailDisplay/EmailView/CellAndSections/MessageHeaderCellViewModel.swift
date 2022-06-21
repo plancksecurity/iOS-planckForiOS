@@ -96,7 +96,6 @@ class MessageHeaderCellViewModel {
             return numberOfFrom
         case .to:
             guard let numberOfTos = tosCollectionViewViewModel?.numberOfCollectionViewCellViewModels, numberOfTos > 0 else {
-                Log.shared.errorAndCrash("There should be at least 1 To recipient")
                 return 0
             }
             return numberOfTos
