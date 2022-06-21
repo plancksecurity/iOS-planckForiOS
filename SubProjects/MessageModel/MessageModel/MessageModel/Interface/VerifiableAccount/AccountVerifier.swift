@@ -14,6 +14,8 @@ import pEpIOSToolbox
 /// Wrapper around `VerifiableAccount` with some additions and changes,
 /// suitable for use in an MDM context.
 ///
+/// Differences to `VerifiableAccount`:
+///
 /// * Simplified interface
 /// * Uses a callback instead of a delegate.
 /// * Saves the account after successful verification.
