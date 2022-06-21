@@ -99,7 +99,7 @@ extension MDMAccountPredeploymentViewController: SegueHandlerType {
         view.endEditing(true)
         switch segueIdentifier(for: segue) {
         case .segueUnwindAfterAccountCreation:
-            // nothing to do, since it's an unwind segue the targets already are configured
+            // nothing to do, since it's an unwind segue the targets are configured already
             break
         }
     }
