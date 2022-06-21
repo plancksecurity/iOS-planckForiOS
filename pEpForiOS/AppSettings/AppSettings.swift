@@ -47,8 +47,8 @@ public final class AppSettings: KeySyncStateProvider {
     /// [AccountAddress : [ key : isCollapsedStatus ] ]
     ///
     /// For example:
-    /// ["mb@pep.security" : [ keyFolderViewAccountCollapsedState : true ] ] indicates the account is collapsed. Do not change the key keyFolderViewAccountCollapsedState
-    /// ["mb@pep.security" : [ "SomeFolderName" : true ] ] indicates the folder is collapsed.
+    /// ["some@example.com" : [ keyFolderViewAccountCollapsedState : true ] ] indicates the account is collapsed. Do not change the key keyFolderViewAccountCollapsedState
+    /// ["some@example.com" : [ "SomeFolderName" : true ] ] indicates the folder is collapsed.
     private typealias CollapsingState = [String: [String: Bool]]
 
     // MARK: - Singleton
