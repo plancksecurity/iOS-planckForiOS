@@ -12,7 +12,7 @@ import pEp4iosIntern
 
 class AppSettingsTest: XCTestCase {
 
-    let address1 = "mb@pep.security"
+    let address1 = "some@example.com"
     let address2 = "iostest017@pep.security"
     let address3 = "iostest018@pep.security"
 
