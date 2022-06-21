@@ -19,9 +19,6 @@ class MDMAccountPredeploymentViewModel {
         predeployer.predeployAccounts { maybeError in
             if let error = maybeError {
                 callback(error)
-            } else if let error = maybeError {
-                // This should not happen
-                Log.shared.errorAndCrash(error: error)
             } else {
                 callback(nil)
             }
