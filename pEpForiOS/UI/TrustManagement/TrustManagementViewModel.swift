@@ -352,19 +352,24 @@ final class TrustManagementViewModel {
         rows[indexPath.row].forceRed = false
         trustManagementUtil.resetTrust(for: row.handshakeCombination.partnerIdentity,
                                        completion: { [weak self] in
-                                        DispatchQueue.main.async {
-                                            guard let me = self else {
-                                                // UI, can happen
-                                                return
-                                            }
-                                            me.reevaluateMessage(forRowAt: indexPath)
-                                        }
-                                       })
+            DispatchQueue.main.async {
+                guard let me = self else {
+                    // UI, can happen
+                    return
+                }
+                me.reevaluateMessage(forRowAt: indexPath)
+            }
+        })
     }
 
     /// - returns: the available languages.
     public func languages(completion: @escaping ([String]) -> ()) {
-        return trustManagementUtil.languagesList(completion: completion)
+        guard let settings = Bundle.main.infoDictionary,
+        let acceptedLanguages = settings["acceptedLanguages"] as? [String] else {
+            trustManagementUtil.languagesList(acceptedLanguages: nil, completion: completion)
+            return
+        }
+        trustManagementUtil.languagesList(acceptedLanguages: acceptedLanguages, completion: completion)
     }
     
     /// Updates the selected language for that row.

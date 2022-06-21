@@ -183,7 +183,6 @@ extension TrustManagementViewController {
                     // Valid case. We might have been dismissed already.
                     return
                 }
-
                 for language in langs {
                     guard let languageName = NSLocale.current.localizedString(forLanguageCode: language)?.capitalized
                         else {

@@ -16,7 +16,7 @@ import pEpIOSToolbox
 #endif
 
 /// Util that contains all handshake related actions.
-public protocol TrustManagementUtilProtocol: class {
+public protocol TrustManagementUtilProtocol: AnyObject {
     
     /// Method to obtain the related trustwords for an identity.
     /// - Parameters:
@@ -67,7 +67,7 @@ public protocol TrustManagementUtilProtocol: class {
 
     /// Calls the completion block with a list of available languages codes
     /// in ISO 639-1 for the self identity
-    func languagesList(completion: @escaping ([String]) -> ())
+    func languagesList(acceptedLanguages: [String]?, completion: @escaping ([String]) -> ())
     
     func getFingerprint(for identity: Identity,
                         completion: @escaping (String?) -> ())
@@ -109,12 +109,19 @@ public class TrustManagementUtil {
 // MARK: - TrustManagementUtilProtocol
 
 extension TrustManagementUtil : TrustManagementUtilProtocol {
-    public func languagesList(completion: @escaping ([String]) -> ()) {
+
+    public func languagesList(acceptedLanguages: [String]?, completion: @escaping ([String]) -> ()) {
         PEPSession().languageList({ error in
             Log.shared.error("Missing lenguage list")
             completion([])
         }) { langs in
-            completion(langs.map { $0.code })
+            guard let acceptedLangs = acceptedLanguages else {
+                completion(langs.map { $0.code })
+                return
+            }
+
+            let filteredLanguages = langs.filter({acceptedLangs.contains($0.code)})
+            completion(filteredLanguages.map { $0.code })
         }
     }
 

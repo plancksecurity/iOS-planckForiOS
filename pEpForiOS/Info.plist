@@ -156,6 +156,11 @@
 			</dict>
 		</dict>
 	</array>
+	<key>acceptedLanguages</key>
+	<array>
+		<string>de</string>
+		<string>en</string>
+	</array>
 	<key>security.pEp.apps.pEpForiOS.oauth2</key>
 	<string>Verify OAuth2 authorization requests</string>
 </dict>
