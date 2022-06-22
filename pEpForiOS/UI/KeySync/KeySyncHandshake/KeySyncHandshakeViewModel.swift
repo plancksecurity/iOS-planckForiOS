@@ -55,13 +55,8 @@ final class KeySyncHandshakeViewModel {
                 if langs.isEmpty {
                     Log.shared.errorAndCrash("There must be trustwords languages defined")
                 }
-                guard let settings = Bundle.main.infoDictionary,
-                let acceptedLanguages = settings["acceptedLanguages"] as? [String] else {
-                    me._languages = langs
-                    completion(langs)
-                    return
-                }
 
+                let acceptedLanguages = AppSettings.shared.acceptedLanguagesCodes
                 let filteredLangs = langs.filter({acceptedLanguages.contains($0.code)})
                 me._languages = filteredLangs
                 completion(filteredLangs)

@@ -364,11 +364,7 @@ final class TrustManagementViewModel {
 
     /// - returns: the available languages.
     public func languages(completion: @escaping ([String]) -> ()) {
-        guard let settings = Bundle.main.infoDictionary,
-        let acceptedLanguages = settings["acceptedLanguages"] as? [String] else {
-            trustManagementUtil.languagesList(acceptedLanguages: nil, completion: completion)
-            return
-        }
+        let acceptedLanguages = AppSettings.shared.acceptedLanguagesCodes
         trustManagementUtil.languagesList(acceptedLanguages: acceptedLanguages, completion: completion)
     }
     

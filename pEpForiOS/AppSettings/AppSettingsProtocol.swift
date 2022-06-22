@@ -32,6 +32,9 @@ public protocol AppSettingsProtocol {
     /// Should the logging be verbose, or not?
     var verboseLogginEnabled: Bool { get set }
 
+    /// The list of the accepted languages codes
+    var acceptedLanguagesCodes: [String] { get set }
+
     // MARK:- Collapsing State
 
     /// Removes the collapsing state for the account address passed by parameter.
