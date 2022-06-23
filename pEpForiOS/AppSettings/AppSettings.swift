@@ -114,10 +114,10 @@ extension AppSettings {
         defaults[AppSettings.keyAccountSignature] = [String:String]()
         defaults[AppSettings.keyVerboseLogginEnabled] = false
         // TODO:
-        // The restriction to English (en) and German (de) is clearly not the default.
+        // The languages restriction to English (en) and German (de) is clearly not the default.
         // It's only for one customer.
-        // For the rest of the users all languages should be the default.
-        // When it's possible to set it up as a config, change this to set all languages as default. 
+        // For the rest of the users all languages should be the default, that is nil.
+        // When we can distinguish in code that specific customer fix it. 
         defaults[AppSettings.keyAcceptedLanguagesCodes] = ["de", "en"]
         AppSettings.userDefaults.register(defaults: defaults)
     }
@@ -298,8 +298,7 @@ extension AppSettings: AppSettingsProtocol {
     public var acceptedLanguagesCodes: [String] {
         get {
             guard let codes = AppSettings.userDefaults.object(forKey: AppSettings.keyAcceptedLanguagesCodes) as? [String] else {
-                Log.shared.errorAndCrash(message: "Languages codes not found")
-                return ["en", "de"]
+                return []
             }
             return codes
         }
