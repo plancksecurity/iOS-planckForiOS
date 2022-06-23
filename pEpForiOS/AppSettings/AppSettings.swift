@@ -113,6 +113,11 @@ extension AppSettings {
         defaults[AppSettings.keyUnsecureReplyWarningEnabled] = false
         defaults[AppSettings.keyAccountSignature] = [String:String]()
         defaults[AppSettings.keyVerboseLogginEnabled] = false
+        // TODO:
+        // The restriction to English (en) and German (de) is clearly not the default.
+        // It's only for one customer.
+        // For the rest of the users all languages should be the default.
+        // When it's possible to set it up as a config, change this to set all languages as default. 
         defaults[AppSettings.keyAcceptedLanguagesCodes] = ["de", "en"]
         AppSettings.userDefaults.register(defaults: defaults)
     }

@@ -57,9 +57,14 @@ final class KeySyncHandshakeViewModel {
                 }
 
                 let acceptedLanguages = AppSettings.shared.acceptedLanguagesCodes
-                let filteredLangs = langs.filter({acceptedLanguages.contains($0.code)})
-                me._languages = filteredLangs
-                completion(filteredLangs)
+                if acceptedLanguages.isEmpty {
+                    me._languages = langs
+                    completion(langs)
+                } else {
+                    let filteredLangs = langs.filter({acceptedLanguages.contains($0.code)})
+                    me._languages = filteredLangs
+                    completion(filteredLangs)
+                }
             }
         }
     }
