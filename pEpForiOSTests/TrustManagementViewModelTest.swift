@@ -213,7 +213,7 @@ class TrustManagementUtilMock: TrustManagementUtilProtocol {
         self.undoExpectation = undoExpectation
     }
     
-    func languagesList(acceptedLanguages: [String], completion: @escaping ([String]) -> ()) {
+    func languagesList(acceptedLanguages: [String]?, completion: @escaping ([String]) -> ()) {
         languagesExpectation?.fulfill()
         completion(TrustManagementUtilMock.languages)
     }

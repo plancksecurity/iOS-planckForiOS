@@ -67,10 +67,15 @@ public protocol TrustManagementUtilProtocol: AnyObject {
 
     /// Calls the completion block with a list of available languages codes
     /// in ISO 639-1 for the self identity
+    ///
     /// - Parameters:
     ///   - acceptedLanguages: The list of the accepted languages codes.
+    ///   Nil if don't want any filter at all.
+    ///   For example: ["de", "en"] for german and english.
+    ///   This list will be used to filter the languages retrieved by the engine. 
+    ///
     ///   - completion: The completion block
-    func languagesList(acceptedLanguages: [String], completion: @escaping ([String]) -> ())
+    func languagesList(acceptedLanguages: [String]?, completion: @escaping ([String]) -> ())
     
     func getFingerprint(for identity: Identity,
                         completion: @escaping (String?) -> ())
@@ -113,14 +118,18 @@ public class TrustManagementUtil {
 
 extension TrustManagementUtil : TrustManagementUtilProtocol {
 
-    public func languagesList(acceptedLanguages: [String], completion: @escaping ([String]) -> ()) {
+    public func languagesList(acceptedLanguages: [String]?, completion: @escaping ([String]) -> ()) {
         PEPSession().languageList({ error in
             Log.shared.error("Missing lenguage list")
             completion([])
         }) { langs in
 
-            let filteredLanguages = langs.filter({acceptedLanguages.contains($0.code)})
-            completion(filteredLanguages.map { $0.code })
+            if let acceptedLanguages = acceptedLanguages {
+                let filteredLanguages = langs.filter({acceptedLanguages.contains($0.code)})
+                completion(filteredLanguages.map { $0.code })
+            } else {
+                completion(langs.map { $0.code })
+            }
         }
     }
 
