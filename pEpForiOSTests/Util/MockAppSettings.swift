@@ -13,6 +13,7 @@ import XCTest
 
 
 class MockAppSettings: AppSettingsProtocol {
+    var acceptedLanguagesCodes: [String] = ["de", "en"]
 
     var removeFolderViewCollapsedStateOfAccountWithExpectation: XCTestExpectation?
     // getters
