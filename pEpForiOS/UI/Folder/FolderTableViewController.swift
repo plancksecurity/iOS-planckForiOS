@@ -303,8 +303,16 @@ extension FolderTableViewController: SegueHandlerType {
     @available(iOS 13.0, *)
     override func canPerformUnwindSegueAction(_ action: Selector, from fromViewController: UIViewController, sender: Any?) -> Bool {
         let superResult = super.canPerformUnwindSegueAction(action, from: fromViewController, sender: sender)
-        print("*** \(action) -> \(superResult)")
-        if action == #selector(segueUnwindLastAccountDeleted) {
+        let myResult = myCanPerformUnwindSegueAction(action, from: fromViewController, sender: sender)
+
+        print("*** super \(action) -> \(superResult)")
+        print("*** my    \(action) -> \(myResult)")
+
+        return myResult
+    }
+
+    func myCanPerformUnwindSegueAction(_ action: Selector, from fromViewController: UIViewController, sender: Any?) -> Bool {
+        if action == #selector(segueUnwindLastAccountDeleted) || action == #selector(segueUnwindAfterAccountCreation) {
             return true
         }
         return false
