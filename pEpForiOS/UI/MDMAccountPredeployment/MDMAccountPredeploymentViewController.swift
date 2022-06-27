@@ -67,8 +67,22 @@ class MDMAccountPredeploymentViewController: UIViewController {
             } else {
                 theSelf.messageLabel.text = NSLocalizedString("Accounts Deployed",
                                                               comment: "MDM predeployment message, all ok")
+
+                let controller = theSelf.parentSearch(currentVC: theSelf)
                 theSelf.performSegue(withIdentifier: .segueUnwindAfterAccountCreation,
                                      sender: theSelf)
+            }
+        }
+    }
+
+    func parentSearch(currentVC: UIViewController) -> UIViewController? {
+        if currentVC.responds(to: #selector(FolderTableViewController.segueUnwindAfterAccountCreation)) {
+            return currentVC
+        } else {
+            if let theParent = currentVC.parent {
+                return parentSearch(currentVC: theParent)
+            } else {
+                return nil
             }
         }
     }
