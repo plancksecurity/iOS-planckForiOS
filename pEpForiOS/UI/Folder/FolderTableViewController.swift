@@ -300,6 +300,15 @@ extension FolderTableViewController: SegueHandlerType {
         shouldPresentNextView = true
     }
 
+    @available(iOS 13.0, *)
+    override func canPerformUnwindSegueAction(_ action: Selector, from fromViewController: UIViewController, sender: Any?) -> Bool {
+        let superResult = super.canPerformUnwindSegueAction(action, from: fromViewController, sender: sender)
+        if action == #selector(segueUnwindLastAccountDeleted) {
+            return true
+        }
+        return false
+    }
+
     /// If needed, will show the email list of new account view.
     private func showNextViewIfNeeded() {
         guard let vm = folderVM else {
