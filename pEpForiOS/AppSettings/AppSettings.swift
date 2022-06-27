@@ -36,6 +36,7 @@ extension AppSettings {
     static private let keyVerboseLogginEnabled = "keyVerboseLogginEnabled"
     static private let keyCollapsingState = "keyCollapsingState"
     static private let keyFolderViewAccountCollapsedState = "keyFolderViewAccountCollapsedState-162844EB-1F32-4F66-8F92-9B77664523F1"
+    static private let keyAcceptedLanguagesCodes = "acceptedLanguagesCodes"
 }
 
 // MARK: - AppSettings
@@ -112,6 +113,12 @@ extension AppSettings {
         defaults[AppSettings.keyUnsecureReplyWarningEnabled] = false
         defaults[AppSettings.keyAccountSignature] = [String:String]()
         defaults[AppSettings.keyVerboseLogginEnabled] = false
+        // TODO:
+        // The languages restriction to English (en) and German (de) is clearly not the default.
+        // It's only for one customer.
+        // For the rest of the users all languages should be the default, that is nil.
+        // When we can distinguish in code that specific customer fix it. 
+        defaults[AppSettings.keyAcceptedLanguagesCodes] = ["de", "en"]
         AppSettings.userDefaults.register(defaults: defaults)
     }
 
@@ -285,6 +292,18 @@ extension AppSettings: AppSettingsProtocol {
             AppSettings.userDefaults.set(newValue,
                                          forKey: AppSettings.keyVerboseLogginEnabled)
             Log.shared.verboseLoggingEnabled = newValue
+        }
+    }
+
+    public var acceptedLanguagesCodes: [String] {
+        get {
+            guard let codes = AppSettings.userDefaults.object(forKey: AppSettings.keyAcceptedLanguagesCodes) as? [String] else {
+                return []
+            }
+            return codes
+        }
+        set {
+            return AppSettings.userDefaults.set(newValue, forKey: AppSettings.keyAcceptedLanguagesCodes)
         }
     }
 }
