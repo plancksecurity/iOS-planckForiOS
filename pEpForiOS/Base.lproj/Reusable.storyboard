@@ -328,8 +328,8 @@
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="cFd-dO-xyH" customClass="KeyInputView" customModule="pEpForiOS" customModuleProvider="target">
                                 <rect key="frame" x="57.5" y="194.5" width="260" height="278.5"/>
                                 <subviews>
-                                    <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" alignment="center" spacing="3" translatesAutoresizingMaskIntoConstraints="NO" id="USV-ch-gmd">
-                                        <rect key="frame" x="0.0" y="10" width="260" height="268.5"/>
+                                    <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" alignment="center" spacing="6" translatesAutoresizingMaskIntoConstraints="NO" id="USV-ch-gmd">
+                                        <rect key="frame" x="0.0" y="10" width="310" height="280"/>
                                         <subviews>
                                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="2Ag-A8-lJe">
                                                 <rect key="frame" x="12" y="0.0" width="236" height="5"/>
@@ -373,7 +373,7 @@
                                                 </constraints>
                                             </view>
                                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="66h-xV-F9x">
-                                                <rect key="frame" x="0.0" y="222.5" width="260" height="46"/>
+                                                <rect key="frame" x="0.0" y="234" width="310" height="46"/>
                                                 <subviews>
                                                     <stackView opaque="NO" contentMode="scaleToFill" distribution="fillEqually" spacing="1" translatesAutoresizingMaskIntoConstraints="NO" id="8Bk-30-sb6">
                                                         <rect key="frame" x="0.0" y="1" width="260" height="45"/>
@@ -408,7 +408,9 @@
                                     <constraint firstAttribute="bottom" secondItem="USV-ch-gmd" secondAttribute="bottom" id="CCJ-Ga-LuR"/>
                                     <constraint firstAttribute="trailing" secondItem="USV-ch-gmd" secondAttribute="trailing" id="HLq-1K-s9h"/>
                                     <constraint firstItem="USV-ch-gmd" firstAttribute="leading" secondItem="cFd-dO-xyH" secondAttribute="leading" id="apf-oT-F5f"/>
-                                    <constraint firstAttribute="width" constant="260" id="nH2-6V-K5b"/>
+                                    <constraint firstAttribute="width" constant="310" id="nH2-6V-K5b">
+                                        <variation key="heightClass=regular-widthClass=regular" constant="320"/>
+                                    </constraint>
                                     <constraint firstItem="USV-ch-gmd" firstAttribute="top" secondItem="cFd-dO-xyH" secondAttribute="top" constant="10" id="sNU-hi-rPD"/>
                                 </constraints>
                                 <userDefinedRuntimeAttributes>
