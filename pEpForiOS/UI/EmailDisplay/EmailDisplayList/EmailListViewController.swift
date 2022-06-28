@@ -131,7 +131,14 @@ final class EmailListViewController: UIViewController {
             return
         }
         vm.handleBannerIfNeeded()
-        Amplitude.instance().logEvent(ConstantEvents.ViewWasPresented, withEventProperties:[ConstantEvents.Attributes.viewName: ConstantEvents.ViewNames.EmailList])
+
+        let date = Date()
+        let dateFormatter = DateFormatter()
+        let attributes =
+        [ConstantEvents.Attributes.viewName : ConstantEvents.ViewNames.EmailList,
+         ConstantEvents.Attributes.datetime : dateFormatter.string(from: date)
+        ]
+        Amplitude.instance().logEvent(ConstantEvents.ViewWasPresented, withEventProperties:attributes)
     }
 
     override func viewWillTransition(to size: CGSize, with coordinator: UIViewControllerTransitionCoordinator) {

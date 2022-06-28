@@ -77,7 +77,24 @@ final class LoginViewController: UIViewController {
 
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
-        Amplitude.instance().logEvent(ConstantEvents.ViewWasPresented, withEventProperties:[ConstantEvents.Attributes.viewName: ConstantEvents.ViewNames.Login])
+        let date = Date()
+        let dateFormatter = DateFormatter()
+        let attributes =
+        [ConstantEvents.Attributes.viewName : ConstantEvents.ViewNames.Login,
+         ConstantEvents.Attributes.datetime : dateFormatter.string(from: date)
+        ]
+        Amplitude.instance().logEvent(ConstantEvents.ViewWasPresented, withEventProperties:attributes)
+    }
+
+    override func viewDidDisappear(_ animated: Bool) {
+        super.viewDidDisappear(animated)
+        let date = Date()
+        let dateFormatter = DateFormatter()
+        let attributes =
+        [ConstantEvents.Attributes.viewName : ConstantEvents.ViewNames.Login,
+         ConstantEvents.Attributes.datetime : dateFormatter.string(from: date)
+        ]
+        Amplitude.instance().logEvent(ConstantEvents.ViewWasDismissed, withEventProperties:attributes)
     }
 
     override func viewDidLayoutSubviews() {

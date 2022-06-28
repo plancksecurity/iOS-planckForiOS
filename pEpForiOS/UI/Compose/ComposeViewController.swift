@@ -17,6 +17,7 @@ import SwipeCellKit
 import MessageModelForAppExtensions
 import pEpIOSToolboxForExtensions
 #else
+import Amplitude
 import MessageModel
 import pEpIOSToolbox
 #endif
@@ -108,7 +109,10 @@ class ComposeViewController: UIViewController {
         if !NetworkMonitorUtil.shared.netOn {
             UIUtils.showNoInternetConnectionBanner(viewController: self)
         }
+#else
+        Amplitude.instance().logEvent(ConstantEvents.ViewWasPresented, withEventProperties:[ConstantEvents.Attributes.viewName: ConstantEvents.ViewNames.ComposeView])
 #endif
+
     }
 
     deinit {

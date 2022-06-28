@@ -9,6 +9,7 @@
 import Foundation
 import UIKit
 
+import Amplitude
 import pEpIOSToolbox
 
 class TutorialStep2iPhoneViewController: TutorialStepViewController {
@@ -30,6 +31,18 @@ class TutorialStep2iPhoneViewController: TutorialStepViewController {
         setupTrustwordsContainer()
         setupTrustwordsLabel()
     }
+
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
+        let date = Date()
+        let dateFormatter = DateFormatter()
+        let attributes =
+        [ConstantEvents.Attributes.viewName : ConstantEvents.ViewNames.TutorialStep2View,
+         ConstantEvents.Attributes.datetime : dateFormatter.string(from: date)
+        ]
+        Amplitude.instance().logEvent(ConstantEvents.ViewWasPresented, withEventProperties:attributes)
+    }
+
 }
 
 // MARK: - Private - Setup View

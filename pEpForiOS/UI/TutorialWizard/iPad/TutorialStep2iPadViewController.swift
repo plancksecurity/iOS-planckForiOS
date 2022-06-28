@@ -7,6 +7,8 @@
 //
 
 import UIKit
+import Amplitude
+import pEpIOSToolbox
 
 class TutorialStep2iPadViewController : TutorialStepViewController {
 
@@ -24,6 +26,17 @@ class TutorialStep2iPadViewController : TutorialStepViewController {
         setupTrustButtons()
         setupPrivacyStatusExplanationLabel()
         setupcCnfirmTrustwordsExplanationLabel()
+    }
+
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
+        let date = Date()
+        let dateFormatter = DateFormatter()
+        let attributes =
+        [ConstantEvents.Attributes.viewName : ConstantEvents.ViewNames.TutorialStep2View,
+         ConstantEvents.Attributes.datetime : dateFormatter.string(from: date)
+        ]
+        Amplitude.instance().logEvent(ConstantEvents.ViewWasPresented, withEventProperties:attributes)
     }
 
     private func setupHandshakeTitle() {

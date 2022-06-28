@@ -7,7 +7,7 @@
 //
 
 import UIKit
-
+import Amplitude
 import pEpIOSToolbox
 
 /// ViewController that configures the layout of the first step of the tutorial.
@@ -28,6 +28,17 @@ class TutorialStep0iPadViewController: TutorialStepViewController {
     public override func configureView() {
         setBackgroundColor()
         setupLabels()
+    }
+
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
+        let date = Date()
+        let dateFormatter = DateFormatter()
+        let attributes =
+        [ConstantEvents.Attributes.viewName : ConstantEvents.ViewNames.TutorialStep0View,
+         ConstantEvents.Attributes.datetime : dateFormatter.string(from: date)
+        ]
+        Amplitude.instance().logEvent(ConstantEvents.ViewWasPresented, withEventProperties:attributes)
     }
 
     private func setupLabels() {

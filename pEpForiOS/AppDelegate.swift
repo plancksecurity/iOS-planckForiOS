@@ -122,7 +122,14 @@ extension AppDelegate {
         // Set server zone
         Amplitude.instance().setServerZone(AMPServerZone.EU)
         // Send an event
-        Amplitude.instance().logEvent(ConstantEvents.AppStarted)
+        let date = Date()
+        let dateFormatter = DateFormatter()
+        let attributes =
+        [
+         ConstantEvents.Attributes.datetime : dateFormatter.string(from: date)
+        ]
+        Amplitude.instance().logEvent(ConstantEvents.AppStarted, withEventProperties:attributes)
+
 
         return result
     }

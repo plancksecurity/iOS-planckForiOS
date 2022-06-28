@@ -7,6 +7,8 @@
 //
 
 import UIKit
+import Amplitude
+import pEpIOSToolbox
 
 class TutorialStep1iPhoneViewController: TutorialStepViewController {
     @IBOutlet private weak var secureLabel: UILabel!
@@ -24,6 +26,15 @@ class TutorialStep1iPhoneViewController: TutorialStepViewController {
         setupSecureAndTrustedDescriptionLabel()
         setupMistrustedLabel()
         setupMistrustedDescriptionLabel()
+    }
+
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
+        let attributes =
+        [ConstantEvents.Attributes.viewName : ConstantEvents.ViewNames.TutorialStep1View,
+         ConstantEvents.Attributes.datetime : dateFormatter.string(from: date)
+        ]
+        Amplitude.instance().logEvent(ConstantEvents.ViewWasPresented, withEventProperties:attributes)
     }
 }
 

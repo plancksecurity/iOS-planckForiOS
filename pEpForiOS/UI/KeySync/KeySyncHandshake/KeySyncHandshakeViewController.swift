@@ -7,6 +7,8 @@
 //
 
 import UIKit
+import Amplitude
+import pEpIOSToolbox
 
 final class KeySyncHandshakeViewController: UIViewController {
     enum Action {
@@ -141,6 +143,14 @@ final class KeySyncHandshakeViewController: UIViewController {
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
         message.text = viewModel.getMessage()
+
+        let date = Date()
+        let dateFormatter = DateFormatter()
+        let attributes =
+        [ConstantEvents.Attributes.viewName : ConstantEvents.ViewNames.KeySyncHandshakeView,
+         ConstantEvents.Attributes.datetime : dateFormatter.string(from: date)
+        ]
+        Amplitude.instance().logEvent(ConstantEvents.ViewWasPresented, withEventProperties:attributes)
     }
 
     func setFingerPrints(meFPR: String,

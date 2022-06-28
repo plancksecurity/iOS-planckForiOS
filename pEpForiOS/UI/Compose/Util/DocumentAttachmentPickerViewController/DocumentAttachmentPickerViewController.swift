@@ -8,6 +8,11 @@
 
 import UIKit
 
+#if !EXT_SHARE
+import Amplitude
+import pEpIOSToolbox
+#endif
+
 class DocumentAttachmentPickerViewController: UIDocumentPickerViewController {
     var viewModel: DocumentAttachmentPickerViewModel?
 
@@ -23,6 +28,19 @@ class DocumentAttachmentPickerViewController: UIDocumentPickerViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         delegate = self
+    }
+
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
+#if !EXT_SHARE
+        let date = Date()
+        let dateFormatter = DateFormatter()
+        let attributes =
+        [ConstantEvents.Attributes.viewName : ConstantEvents.ViewNames.TutorialStep3View,
+         ConstantEvents.Attributes.datetime : dateFormatter.string(from: date)
+        ]
+        Amplitude.instance().logEvent(ConstantEvents.ViewWasPresented, withEventProperties:attributes)
+#endif
     }
 }
 

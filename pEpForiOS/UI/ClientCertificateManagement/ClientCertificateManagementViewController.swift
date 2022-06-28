@@ -55,7 +55,14 @@ final class ClientCertificateManagementViewController: UIViewController {
 
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
-        Amplitude.instance().logEvent(ConstantEvents.ViewWasPresented, withEventProperties:[ConstantEvents.Attributes.viewName: ConstantEvents.ViewNames.ClientCertificateManagement])
+
+        let date = Date()
+        let dateFormatter = DateFormatter()
+        let attributes =
+        [ConstantEvents.Attributes.viewName : ConstantEvents.ViewNames.ClientCertificateManagement,
+         ConstantEvents.Attributes.datetime : dateFormatter.string(from: date)
+        ]
+        Amplitude.instance().logEvent(ConstantEvents.ViewWasPresented, withEventProperties: attributes)
     }
 
     @IBAction func addCertificateButtonPressed(_ sender: Any) {

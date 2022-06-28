@@ -9,6 +9,8 @@
 import UIKit
 
 import pEpIOSToolbox
+import Amplitude
+import pEpIOSToolbox
 
 class TutorialStep3iPhoneViewController: TutorialStepViewController {
     
@@ -22,6 +24,18 @@ class TutorialStep3iPhoneViewController: TutorialStepViewController {
         setupTitleLabel()
         setupExplanationLabel()
         setupCommonDenominatorLabel()
+    }
+
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
+
+        let date = Date()
+        let dateFormatter = DateFormatter()
+        let attributes =
+        [ConstantEvents.Attributes.viewName : ConstantEvents.ViewNames.TutorialStep3View,
+         ConstantEvents.Attributes.datetime : dateFormatter.string(from: date)
+        ]
+        Amplitude.instance().logEvent(ConstantEvents.ViewWasPresented, withEventProperties:attributes)
     }
     
     private func setupTitleLabel() {
