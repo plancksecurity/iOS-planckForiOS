@@ -251,14 +251,14 @@ final class EmailListViewController: UIViewController {
     // MARK: - Search Bar
 
     private func setupSearchBar() {
-        searchController.isActive = false
+        searchController.isActive = true
         searchController.searchBar.accessibilityIdentifier = AccessibilityIdentifier.searchBar
         searchController.searchResultsUpdater = self
         searchController.obscuresBackgroundDuringPresentation = false
         searchController.delegate = self
         definesPresentationContext = true
         navigationItem.searchController = searchController
-        navigationItem.hidesSearchBarWhenScrolling = true
+        navigationItem.hidesSearchBarWhenScrolling = false
     }
 
     /// Called on pull-to-refresh triggered
