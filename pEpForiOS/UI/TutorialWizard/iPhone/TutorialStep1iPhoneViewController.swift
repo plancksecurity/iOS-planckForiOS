@@ -30,6 +30,9 @@ class TutorialStep1iPhoneViewController: TutorialStepViewController {
 
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
+        let date = Date()
+        let dateFormatter = DateFormatter()
+
         let attributes =
         [ConstantEvents.Attributes.viewName : ConstantEvents.ViewNames.TutorialStep1View,
          ConstantEvents.Attributes.datetime : dateFormatter.string(from: date)
