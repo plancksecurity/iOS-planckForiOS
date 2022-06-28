@@ -10,6 +10,7 @@ import UIKit
 
 import SwipeCellKit
 import pEpIOSToolbox
+import Amplitude
 
 final class EmailListViewController: UIViewController {
 
@@ -130,6 +131,7 @@ final class EmailListViewController: UIViewController {
             return
         }
         vm.handleBannerIfNeeded()
+        Amplitude.instance().logEvent(ConstantEvents.ViewWasPresented, withEventProperties:[ConstantEvents.Attributes.viewName: ConstantEvents.ViewNames.EmailList])
     }
 
     override func viewWillTransition(to size: CGSize, with coordinator: UIViewControllerTransitionCoordinator) {

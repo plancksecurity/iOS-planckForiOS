@@ -10,6 +10,7 @@ import UIKit
 import pEpIOSToolbox
 import EventKit
 import EventKitUI
+import Amplitude
 
 class CalendarEventBannerViewController: UIViewController {
 
@@ -29,6 +30,11 @@ class CalendarEventBannerViewController: UIViewController {
     override func viewDidLayoutSubviews() {
         super.viewDidLayoutSubviews()
         calculatePreferredSize()
+    }
+
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
+        Amplitude.instance().logEvent(ConstantEvents.ViewWasPresented, withEventProperties:[ConstantEvents.Attributes.viewName: ConstantEvents.ViewNames.CalendarEventBanner])
     }
 }
 

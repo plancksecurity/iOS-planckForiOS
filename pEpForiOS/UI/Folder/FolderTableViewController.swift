@@ -9,6 +9,7 @@
 import UIKit
 import pEpIOSToolbox
 import MessageModel
+import Amplitude
 
 class FolderTableViewController: UITableViewController {
 
@@ -38,6 +39,11 @@ class FolderTableViewController: UITableViewController {
         updateRefreshControl()
         folderVM?.refreshFolderList()
         UIUtils.hideBanner()
+    }
+
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
+        Amplitude.instance().logEvent(ConstantEvents.ViewWasPresented, withEventProperties:[ConstantEvents.Attributes.viewName: ConstantEvents.ViewNames.Folders])
     }
 
     override func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {

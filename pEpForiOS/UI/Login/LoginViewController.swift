@@ -10,6 +10,7 @@ import UIKit
 
 import pEpIOSToolbox
 import MessageModel
+import Amplitude
 
 protocol LoginViewControllerDelegate: AnyObject  {
     func loginViewControllerDidCreateNewAccount(_ loginViewController: LoginViewController)
@@ -72,6 +73,11 @@ final class LoginViewController: UIViewController {
         if accountType == .icloud {
             showiCloudAlert()
         }
+    }
+
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
+        Amplitude.instance().logEvent(ConstantEvents.ViewWasPresented, withEventProperties:[ConstantEvents.Attributes.viewName: ConstantEvents.ViewNames.Login])
     }
 
     override func viewDidLayoutSubviews() {

@@ -118,9 +118,11 @@ extension AppDelegate {
         // Initialize SDK
         Amplitude.instance().initializeApiKey("API_KEY")
         // Set userId
-        Amplitude.instance().setUserId("userId")
+        Amplitude.instance().setUserId(UUID().uuidString)
+        // Set server zone
+        Amplitude.instance().setServerZone(AMPServerZone.EU)
         // Send an event
-        Amplitude.instance().logEvent("app_start")
+        Amplitude.instance().logEvent(ConstantEvents.AppStarted)
 
         return result
     }
