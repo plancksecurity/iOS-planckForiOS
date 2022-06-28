@@ -11,6 +11,7 @@ import BackgroundTasks
 import pEpIOSToolbox
 import MessageModel
 import pEp4iosIntern
+import Amplitude
 
 @UIApplicationMain
 class AppDelegate: UIResponder, UIApplicationDelegate {
@@ -112,6 +113,14 @@ extension AppDelegate {
             result = handleUrlTheOSHasBroughtUsToForgroundFor(openedToOpenFile)
         }
         self.reachabilityManager = ReachabilityManager.shared
+        // Enable sending automatic session events
+        Amplitude.instance().trackingSessionEvents = true
+        // Initialize SDK
+        Amplitude.instance().initializeApiKey("API_KEY")
+        // Set userId
+        Amplitude.instance().setUserId("userId")
+        // Send an event
+        Amplitude.instance().logEvent("app_start")
 
         return result
     }
