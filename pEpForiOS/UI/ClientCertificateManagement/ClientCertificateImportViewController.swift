@@ -17,7 +17,7 @@ extension ClientCertificateImportViewController {
     static public let storyboadIdentifier = "ClientCertificatePasswordViewController"
 }
 
-protocol ClientCertificateImportViewControllerDelegate: class {
+protocol ClientCertificateImportViewControllerDelegate: AnyObject {
     func certificateCouldImported()
 }
 

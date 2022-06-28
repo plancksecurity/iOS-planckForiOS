@@ -9,6 +9,7 @@
 import UIKit
 import SwipeCellKit
 import pEpIOSToolbox
+import Amplitude
 
 private struct Localized {
     static let importDate = NSLocalizedString("Import date",
@@ -50,6 +51,11 @@ final class ClientCertificateManagementViewController: UIViewController {
         if vm.shouldHideCancelButton {
             cancelButtonContainer.isHidden = true
         }
+    }
+
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
+        Amplitude.instance().logEvent(ConstantEvents.ViewWasPresented, withEventProperties:[ConstantEvents.Attributes.viewName: ConstantEvents.ViewNames.ClientCertificateManagement])
     }
 
     @IBAction func addCertificateButtonPressed(_ sender: Any) {
