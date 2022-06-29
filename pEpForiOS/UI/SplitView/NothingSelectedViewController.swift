@@ -9,8 +9,8 @@
 import UIKit
 #if !EXT_SHARE
 import Amplitude
-#endif
 import pEpIOSToolbox
+#endif
 
 class NothingSelectedViewController: UIViewController {
     @IBOutlet weak var labelMessage: UILabel!
