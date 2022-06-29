@@ -68,7 +68,6 @@ class FolderTableViewController: UITableViewController {
     }
 
     deinit {
-        print("*** FolderTableViewController deinit")
         NotificationCenter.default.removeObserver(self)
     }
 
@@ -299,24 +298,6 @@ extension FolderTableViewController: SegueHandlerType {
     @IBAction private func segueUnwindLastAccountDeleted(segue: UIStoryboardSegue) {
         // The last account was deleted, so the user should be prompt to add a new one.
         shouldPresentNextView = true
-    }
-
-    @available(iOS 13.0, *)
-    override func canPerformUnwindSegueAction(_ action: Selector, from fromViewController: UIViewController, sender: Any?) -> Bool {
-        let superResult = super.canPerformUnwindSegueAction(action, from: fromViewController, sender: sender)
-        let myResult = myCanPerformUnwindSegueAction(action, from: fromViewController, sender: sender)
-
-        print("*** super \(action) -> \(superResult)")
-        print("*** my    \(action) -> \(myResult)")
-
-        return myResult
-    }
-
-    func myCanPerformUnwindSegueAction(_ action: Selector, from fromViewController: UIViewController, sender: Any?) -> Bool {
-        if action == #selector(segueUnwindLastAccountDeleted) || action == #selector(segueUnwindAfterAccountCreation) {
-            return true
-        }
-        return false
     }
 
     /// If needed, will show the email list of new account view.
