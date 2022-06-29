@@ -68,6 +68,7 @@ class FolderTableViewController: UITableViewController {
     }
 
     deinit {
+        print("*** FolderTableViewController deinit")
         NotificationCenter.default.removeObserver(self)
     }
 
