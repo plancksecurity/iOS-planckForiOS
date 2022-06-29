@@ -7,7 +7,7 @@
 //
 
 import UIKit
-
+import Amplitude
 import pEpIOSToolbox
 
 class TrustedServerSettingsViewController: UIViewController {
@@ -50,6 +50,30 @@ class TrustedServerSettingsViewController: UIViewController {
         super.viewWillAppear(animated)
         showNavigationBar()
     }
+
+    override func viewDidDisappear(_ animated: Bool) {
+        super.viewDidAppear(animated)
+
+        let date = Date()
+        let dateFormatter = DateFormatter()
+        let attributes =
+        [ConstantEvents.Attributes.viewName : ConstantEvents.ViewNames.ExtraKeysSettingView,
+         ConstantEvents.Attributes.datetime : dateFormatter.string(from: date)
+        ]
+        Amplitude.instance().logEvent(ConstantEvents.ViewWasPresented, withEventProperties:attributes)
+    }
+
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
+        let date = Date()
+        let dateFormatter = DateFormatter()
+        let attributes =
+        [ConstantEvents.Attributes.viewName : ConstantEvents.ViewNames.ExtraKeysSettingView,
+         ConstantEvents.Attributes.datetime : dateFormatter.string(from: date)
+        ]
+        Amplitude.instance().logEvent(ConstantEvents.ViewWasDismissed, withEventProperties:attributes)
+    }
+
 }
 
 // MARK: -  UITableViewDataSource

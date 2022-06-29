@@ -7,6 +7,7 @@
 //
 
 import pEpIOSToolbox
+import Amplitude
 
 class ExtraKeysSettingViewController: UIViewController {
     static private let uiTableViewCellID = "ExtraKeysSettingCell"
@@ -44,9 +45,28 @@ class ExtraKeysSettingViewController: UIViewController {
     }
 
     override func viewDidDisappear(_ animated: Bool) {
-        super.viewDidAppear(animated)
+        super.viewDidDisappear(animated)
         AppSettings.shared.extraKeysEditable = false
         navigationItem.setHidesBackButton(true, animated: false)
+
+        let date = Date()
+        let dateFormatter = DateFormatter()
+        let attributes =
+        [ConstantEvents.Attributes.viewName : ConstantEvents.ViewNames.ExtraKeysSettingView,
+         ConstantEvents.Attributes.datetime : dateFormatter.string(from: date)
+        ]
+        Amplitude.instance().logEvent(ConstantEvents.ViewWasPresented, withEventProperties:attributes)
+    }
+
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
+        let date = Date()
+        let dateFormatter = DateFormatter()
+        let attributes =
+        [ConstantEvents.Attributes.viewName : ConstantEvents.ViewNames.ExtraKeysSettingView,
+         ConstantEvents.Attributes.datetime : dateFormatter.string(from: date)
+        ]
+        Amplitude.instance().logEvent(ConstantEvents.ViewWasDismissed, withEventProperties:attributes)
     }
 
     deinit {

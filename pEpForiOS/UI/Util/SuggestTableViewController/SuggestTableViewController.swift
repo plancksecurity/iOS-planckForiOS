@@ -55,7 +55,7 @@ class SuggestTableViewController: UITableViewController {
         [ConstantEvents.Attributes.viewName : ConstantEvents.ViewNames.SuggestTableView,
          ConstantEvents.Attributes.datetime : dateFormatter.string(from: date)
         ]
-        Amplitude.instance().logEvent(ConstantEvents.ViewWasPresented, withEventProperties:attributes)
+        Amplitude.instance().logEvent(ConstantEvents.ViewWasDismissed, withEventProperties:attributes)
     }
 #endif
 

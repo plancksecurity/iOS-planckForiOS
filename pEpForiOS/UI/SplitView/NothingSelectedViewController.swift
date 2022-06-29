@@ -52,7 +52,7 @@ class NothingSelectedViewController: UIViewController {
         [ConstantEvents.Attributes.viewName : ConstantEvents.ViewNames.NothingSelectedView,
          ConstantEvents.Attributes.datetime : dateFormatter.string(from: date)
         ]
-        Amplitude.instance().logEvent(ConstantEvents.ViewWasPresented, withEventProperties:attributes)
+        Amplitude.instance().logEvent(ConstantEvents.ViewWasDismissed, withEventProperties:attributes)
     }
 #endif
 

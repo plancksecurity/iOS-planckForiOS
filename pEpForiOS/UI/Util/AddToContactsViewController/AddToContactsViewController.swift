@@ -13,6 +13,7 @@ import ContactsUI
 import pEpIOSToolboxForExtensions
 #else
 import pEpIOSToolbox
+import Amplitude
 #endif
 
 /// Represents ContactsUI for "add a contact" to the system address book
@@ -29,6 +30,30 @@ class AddToContactsViewController: UIViewController {
         super.viewDidLoad()
         setupContactVc()
     }
+
+#if !EXT_SHARE
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
+        let date = Date()
+        let dateFormatter = DateFormatter()
+        let attributes =
+        [ConstantEvents.Attributes.viewName : ConstantEvents.ViewNames.AddToContactsView,
+         ConstantEvents.Attributes.datetime : dateFormatter.string(from: date)
+        ]
+        Amplitude.instance().logEvent(ConstantEvents.ViewWasPresented, withEventProperties:attributes)
+    }
+
+    override func viewDidDisappear(_ animated: Bool) {
+        super.viewDidDisappear(animated)
+        let date = Date()
+        let dateFormatter = DateFormatter()
+        let attributes =
+        [ConstantEvents.Attributes.viewName : ConstantEvents.ViewNames.AddToContactsView,
+         ConstantEvents.Attributes.datetime : dateFormatter.string(from: date)
+        ]
+        Amplitude.instance().logEvent(ConstantEvents.ViewWasDismissed, withEventProperties:attributes)
+    }
+#endif
 
     func setupContactVc() {
         guard let address = emailAddress else {
