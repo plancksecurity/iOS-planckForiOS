@@ -7,6 +7,10 @@
 //
 
 import UIKit
+#if !EXT_SHARE
+import Amplitude
+#endif
+import pEpIOSToolbox
 
 class NothingSelectedViewController: UIViewController {
     @IBOutlet weak var labelMessage: UILabel!
@@ -22,10 +26,35 @@ class NothingSelectedViewController: UIViewController {
         comment: "Default message in detail view when nothing has been selected")
 
     override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
         updateView()
         navigationController?.isNavigationBarHidden = true
         hideNavigationBarIfSplitViewShown()
     }
+
+#if !EXT_SHARE
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
+        let date = Date()
+        let dateFormatter = DateFormatter()
+        let attributes =
+        [ConstantEvents.Attributes.viewName : ConstantEvents.ViewNames.NothingSelectedView,
+         ConstantEvents.Attributes.datetime : dateFormatter.string(from: date)
+        ]
+        Amplitude.instance().logEvent(ConstantEvents.ViewWasPresented, withEventProperties:attributes)
+    }
+
+    override func viewDidDisappear(_ animated: Bool) {
+        super.viewDidDisappear(animated)
+        let date = Date()
+        let dateFormatter = DateFormatter()
+        let attributes =
+        [ConstantEvents.Attributes.viewName : ConstantEvents.ViewNames.NothingSelectedView,
+         ConstantEvents.Attributes.datetime : dateFormatter.string(from: date)
+        ]
+        Amplitude.instance().logEvent(ConstantEvents.ViewWasPresented, withEventProperties:attributes)
+    }
+#endif
 
     /// Call this if you changed the message.
     func updateView() {
