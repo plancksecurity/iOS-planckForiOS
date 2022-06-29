@@ -237,7 +237,6 @@ extension FolderTableViewController: SegueHandlerType {
     enum SegueIdentifier: String {
         case newAccount
         case settingsSegue
-        case mdmPredeployAccounts
     }
 
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
@@ -261,13 +260,6 @@ extension FolderTableViewController: SegueHandlerType {
                 return
             }
             dvc.hidesBottomBarWhenPushed = true
-
-        case .mdmPredeployAccounts:
-            guard let navVC = segue.destination as? UINavigationController,
-                  let _ = navVC.rootViewController as? MDMAccountPredeploymentViewController else {
-                Log.shared.errorAndCrash("Error casting to MDMAccountPredeploymentViewController")
-                return
-            }
         }
     }
 
@@ -318,7 +310,7 @@ extension FolderTableViewController: SegueHandlerType {
                 showEmailList(folder:vm.folderToShow)
             } else {
                 if MDMPredeployed().haveAccountsToPredeploy {
-                    performSegue(withIdentifier:.mdmPredeployAccounts, sender: self)
+                    // TODO
                 } else {
                     performSegue(withIdentifier:.newAccount, sender: self)
                 }
