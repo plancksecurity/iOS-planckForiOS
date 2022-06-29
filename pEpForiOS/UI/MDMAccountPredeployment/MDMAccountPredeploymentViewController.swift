@@ -18,6 +18,8 @@ class MDMAccountPredeploymentViewController: UIViewController {
 
     let viewModel = MDMAccountPredeploymentViewModel()
 
+    static let storyboardId = "mdmAccountPredeploymentViewController"
+
     // MARK: - Lifecycle
 
     override func viewDidLoad() {
