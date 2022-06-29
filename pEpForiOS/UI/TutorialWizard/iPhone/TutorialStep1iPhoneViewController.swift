@@ -49,7 +49,7 @@ class TutorialStep1iPhoneViewController: TutorialStepViewController {
         [ConstantEvents.Attributes.viewName : ConstantEvents.ViewNames.TutorialStep1View,
          ConstantEvents.Attributes.datetime : dateFormatter.string(from: date)
         ]
-        Amplitude.instance().logEvent(ConstantEvents.ViewWasPresented, withEventProperties:attributes)
+        Amplitude.instance().logEvent(ConstantEvents.ViewWasDismissed, withEventProperties:attributes)
     }
 }
 

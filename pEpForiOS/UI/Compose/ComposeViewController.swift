@@ -115,6 +115,13 @@ class ComposeViewController: UIViewController {
 
     }
 
+    override func viewDidDisappear(_ animated: Bool) {
+        super.viewDidDisappear(animated)
+#if !EXT_SHARE
+        Amplitude.instance().logEvent(ConstantEvents.ViewWasDismissed, withEventProperties:[ConstantEvents.Attributes.viewName: ConstantEvents.ViewNames.ComposeView])
+#endif
+    }
+
     deinit {
         NotificationCenter.default.removeObserver(self)
     }
