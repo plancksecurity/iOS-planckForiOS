@@ -310,7 +310,16 @@ extension FolderTableViewController: SegueHandlerType {
                 showEmailList(folder:vm.folderToShow)
             } else {
                 if MDMPredeployed().haveAccountsToPredeploy {
-                    // TODO
+                    let storyboard = UIStoryboard(name: Constants.mdmAccountPredeploymentStoryboard,
+                                                  bundle: .main)
+                    guard let mdmVC = storyboard.instantiateViewController(withIdentifier: MDMAccountPredeploymentViewController.storyboardId) as? MDMAccountPredeploymentViewController else {
+                        Log.shared.errorAndCrash("Fail to instantiate MDMAccountPredeploymentViewController")
+                        return
+                    }
+                    present(mdmVC, animated: true) {
+                        // TODO
+                        print("*** done")
+                    }
                 } else {
                     performSegue(withIdentifier:.newAccount, sender: self)
                 }
