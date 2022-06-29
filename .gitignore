@@ -75,4 +75,3 @@ playground.xcworkspace
 
 ## Test data that shall never be leaked
 **/SecretTestData.swift
-

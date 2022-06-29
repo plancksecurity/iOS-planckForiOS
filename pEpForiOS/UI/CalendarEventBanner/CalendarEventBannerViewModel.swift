@@ -111,10 +111,10 @@ class CalendarEventsBannerViewModel: NSObject {
     /// The banner title
     public var title: String {
         if numberOfEvents > 1 {
-            let format = NSLocalizedString("%@ Events found", comment: "Calendar Event Banner title - plural")
+            let format = NSLocalizedString("%@ Events Found", comment: "Calendar Event Banner title - plural")
             return String(format: format, "\(events.count)")
         }
-        return NSLocalizedString("1 Event found", comment: "Calendar Event Banner title - singular")
+        return NSLocalizedString("1 Event Found", comment: "Calendar Event Banner title - singular")
     }
 
     /// Handle the close button was tapped
