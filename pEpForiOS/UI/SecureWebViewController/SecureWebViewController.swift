@@ -73,7 +73,7 @@ class SecureWebViewController: UIViewController {
         [ConstantEvents.Attributes.viewName : ConstantEvents.ViewNames.SecureWebView,
          ConstantEvents.Attributes.datetime : Date.getCurrentDatetimeAsString()
         ]
-        EventTrackingUtil.shared.logEvent(ConstantEvents.ViewWasPresented, withEventProperties:attributes)
+        EventTrackingUtil.shared.logEvent(ConstantEvents.ViewDidAppear, withEventProperties:attributes)
     }
 
     override func viewDidDisappear(_ animated: Bool) {
@@ -83,7 +83,7 @@ class SecureWebViewController: UIViewController {
         [ConstantEvents.Attributes.viewName : ConstantEvents.ViewNames.SecureWebView,
          ConstantEvents.Attributes.datetime : Date.getCurrentDatetimeAsString()
         ]
-        EventTrackingUtil.shared.logEvent(ConstantEvents.ViewWasDismissed, withEventProperties:attributes)
+        EventTrackingUtil.shared.logEvent(ConstantEvents.ViewDidDisappear, withEventProperties:attributes)
     }
 
     override func viewWillDisappear(_ animated: Bool) {

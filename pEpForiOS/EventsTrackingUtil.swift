@@ -8,6 +8,7 @@
 
 import Foundation
 import Amplitude
+import pEpIOSToolbox
 
 protocol EventTrackingUtilProtocol {
 
@@ -15,7 +16,7 @@ protocol EventTrackingUtilProtocol {
     func setup()
 
     /// Tracks an event. Events are saved locally.
-    /// Settings may prevent any event log. 
+    /// Settings may prevent any event log.
     /// Uploads are batched to occur every 30 events or every 30 seconds (whichever comes first), as well as on app close.
     /// - Parameters:
     ///   - eventType: The name of the event you wish to track.
@@ -32,8 +33,15 @@ class EventTrackingUtil: EventTrackingUtilProtocol {
     private init() { }
 
     public func setup() {
+        guard let settings = Bundle.main.infoDictionary,
+              let amplitudeApiKey = settings["AMPLITUDE_API_KEY"] as? String else {
+            Log.shared.errorAndCrash(message: "Amplitude Api Key not found")
+            return
+        }
+
         Amplitude.instance().trackingSessionEvents = true
-        Amplitude.instance().initializeApiKey("API_KEY")
+        Amplitude.instance().initializeApiKey(amplitudeApiKey)
+        Amplitude.instance().minTimeBetweenSessionsMillis = 10 * 60 * 1000 // 10 minutes
         Amplitude.instance().setUserId(UUID().uuidString)
         Amplitude.instance().setServerZone(AMPServerZone.EU)
     }

@@ -56,7 +56,7 @@ class TrustedServerSettingsViewController: UIViewController {
         [ConstantEvents.Attributes.viewName : ConstantEvents.ViewNames.ExtraKeysSettingView,
          ConstantEvents.Attributes.datetime : Date.getCurrentDatetimeAsString()
         ]
-        EventTrackingUtil.shared.logEvent(ConstantEvents.ViewWasPresented, withEventProperties:attributes)
+        EventTrackingUtil.shared.logEvent(ConstantEvents.ViewDidAppear, withEventProperties:attributes)
     }
 
     override func viewDidAppear(_ animated: Bool) {
@@ -65,7 +65,7 @@ class TrustedServerSettingsViewController: UIViewController {
         [ConstantEvents.Attributes.viewName : ConstantEvents.ViewNames.ExtraKeysSettingView,
          ConstantEvents.Attributes.datetime : Date.getCurrentDatetimeAsString()
         ]
-        EventTrackingUtil.shared.logEvent(ConstantEvents.ViewWasDismissed, withEventProperties:attributes)
+        EventTrackingUtil.shared.logEvent(ConstantEvents.ViewDidDisappear, withEventProperties:attributes)
     }
 }
 

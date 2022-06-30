@@ -109,7 +109,7 @@ class ComposeViewController: UIViewController {
             UIUtils.showNoInternetConnectionBanner(viewController: self)
         }
 #else
-        EventTrackingUtil.shared.logEvent(ConstantEvents.ViewWasPresented, withEventProperties:[ConstantEvents.Attributes.viewName: ConstantEvents.ViewNames.ComposeView])
+        EventTrackingUtil.shared.logEvent(ConstantEvents.ViewDidAppear, withEventProperties:[ConstantEvents.Attributes.viewName: ConstantEvents.ViewNames.ComposeView])
 #endif
 
     }
@@ -117,7 +117,7 @@ class ComposeViewController: UIViewController {
     override func viewDidDisappear(_ animated: Bool) {
         super.viewDidDisappear(animated)
 #if !EXT_SHARE
-        EventTrackingUtil.shared.logEvent(ConstantEvents.ViewWasDismissed, withEventProperties:[ConstantEvents.Attributes.viewName: ConstantEvents.ViewNames.ComposeView])
+        EventTrackingUtil.shared.logEvent(ConstantEvents.ViewDidDisappear, withEventProperties:[ConstantEvents.Attributes.viewName: ConstantEvents.ViewNames.ComposeView])
 #endif
     }
 

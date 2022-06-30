@@ -48,7 +48,7 @@ class FolderTableViewController: UITableViewController {
          ConstantEvents.Attributes.datetime : Date.getCurrentDatetimeAsString()
         ]
 
-        EventTrackingUtil.shared.logEvent(ConstantEvents.ViewWasPresented, withEventProperties:attributes)
+        EventTrackingUtil.shared.logEvent(ConstantEvents.ViewDidAppear, withEventProperties:attributes)
     }
 
     override func viewDidDisappear(_ animated: Bool) {
@@ -58,7 +58,7 @@ class FolderTableViewController: UITableViewController {
          ConstantEvents.Attributes.datetime : Date.getCurrentDatetimeAsString()
         ]
 
-        EventTrackingUtil.shared.logEvent(ConstantEvents.ViewWasDismissed, withEventProperties:attributes)
+        EventTrackingUtil.shared.logEvent(ConstantEvents.ViewDidDisappear, withEventProperties:attributes)
     }
 
     override func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {

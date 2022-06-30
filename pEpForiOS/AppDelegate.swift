@@ -152,12 +152,24 @@ extension AppDelegate {
         if #available(iOS 13.0, *) {
             scheduleAppRefresh()
         }
+        let attributes =
+        [
+            ConstantEvents.Attributes.datetime : Date.getCurrentDatetimeAsString()
+        ]
+        EventTrackingUtil.shared.logEvent(ConstantEvents.AppEnteredBackground, withEventProperties:attributes)
+
     }
 
     /// Called as part of the transition from the background to the inactive state; here you can
     /// undo many of the changes made on entering the background.
     func applicationWillEnterForeground(_ application: UIApplication) {
-        // do nothing (?)
+        // do nothing but tracking
+        let attributes =
+        [
+            ConstantEvents.Attributes.datetime : Date.getCurrentDatetimeAsString()
+        ]
+        EventTrackingUtil.shared.logEvent(ConstantEvents.AppEnteredForeground, withEventProperties:attributes)
+
     }
 
     /// Restart any tasks that were paused (or not yet started) while the application was inactive.
@@ -178,6 +190,7 @@ extension AppDelegate {
     /// applicationDidEnterBackground:.
     /// Saves changes in the application's managed object context before the application terminates.
     func applicationWillTerminate(_ application: UIApplication) {
+
         messageModelService?.stop()
         // Make sure we do not permanently disable auto locking
         UIApplication.shared.enableAutoLockingDevice()

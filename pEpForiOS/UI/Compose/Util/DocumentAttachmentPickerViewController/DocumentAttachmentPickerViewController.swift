@@ -36,7 +36,7 @@ class DocumentAttachmentPickerViewController: UIDocumentPickerViewController {
         [ConstantEvents.Attributes.viewName : ConstantEvents.ViewNames.TutorialStep3View,
          ConstantEvents.Attributes.datetime : Date.getCurrentDatetimeAsString()
         ]
-        EventTrackingUtil.shared.logEvent(ConstantEvents.ViewWasPresented, withEventProperties:attributes)
+        EventTrackingUtil.shared.logEvent(ConstantEvents.ViewDidAppear, withEventProperties:attributes)
 #endif
     }
 
@@ -47,7 +47,7 @@ class DocumentAttachmentPickerViewController: UIDocumentPickerViewController {
         [ConstantEvents.Attributes.viewName : ConstantEvents.ViewNames.TutorialStep3View,
          ConstantEvents.Attributes.datetime : Date.getCurrentDatetimeAsString()
         ]
-        EventTrackingUtil.shared.logEvent(ConstantEvents.ViewWasDismissed, withEventProperties:attributes)
+        EventTrackingUtil.shared.logEvent(ConstantEvents.ViewDidDisappear, withEventProperties:attributes)
 #endif
     }
 }

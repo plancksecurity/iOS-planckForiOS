@@ -33,7 +33,7 @@ class TutorialStep1iPhoneViewController: TutorialStepViewController {
         [ConstantEvents.Attributes.viewName : ConstantEvents.ViewNames.TutorialStep1View,
          ConstantEvents.Attributes.datetime : Date.getCurrentDatetimeAsString()
         ]
-        EventTrackingUtil.shared.logEvent(ConstantEvents.ViewWasPresented, withEventProperties:attributes)
+        EventTrackingUtil.shared.logEvent(ConstantEvents.ViewDidAppear, withEventProperties:attributes)
     }
 
     override func viewDidDisappear(_ animated: Bool) {
@@ -42,7 +42,7 @@ class TutorialStep1iPhoneViewController: TutorialStepViewController {
         [ConstantEvents.Attributes.viewName : ConstantEvents.ViewNames.TutorialStep1View,
          ConstantEvents.Attributes.datetime : Date.getCurrentDatetimeAsString()
         ]
-        EventTrackingUtil.shared.logEvent(ConstantEvents.ViewWasDismissed, withEventProperties:attributes)
+        EventTrackingUtil.shared.logEvent(ConstantEvents.ViewDidDisappear, withEventProperties:attributes)
     }
 }
 

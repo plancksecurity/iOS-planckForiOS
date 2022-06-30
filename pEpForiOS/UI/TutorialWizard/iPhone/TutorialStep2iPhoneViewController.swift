@@ -36,7 +36,7 @@ class TutorialStep2iPhoneViewController: TutorialStepViewController {
         [ConstantEvents.Attributes.viewName : ConstantEvents.ViewNames.TutorialStep2View,
          ConstantEvents.Attributes.datetime : Date.getCurrentDatetimeAsString()
         ]
-        EventTrackingUtil.shared.logEvent(ConstantEvents.ViewWasPresented, withEventProperties:attributes)
+        EventTrackingUtil.shared.logEvent(ConstantEvents.ViewDidAppear, withEventProperties:attributes)
     }
 
 
@@ -48,7 +48,7 @@ class TutorialStep2iPhoneViewController: TutorialStepViewController {
         [ConstantEvents.Attributes.viewName : ConstantEvents.ViewNames.TutorialStep2View,
          ConstantEvents.Attributes.datetime : Date.getCurrentDatetimeAsString()
         ]
-        EventTrackingUtil.shared.logEvent(ConstantEvents.ViewWasDismissed, withEventProperties:attributes)
+        EventTrackingUtil.shared.logEvent(ConstantEvents.ViewDidDisappear, withEventProperties:attributes)
     }
 }
 
