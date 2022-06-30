@@ -12,7 +12,7 @@ import pEpIOSToolbox
 
 protocol EventTrackingUtilProtocol {
 
-    /// Initial setup. Must be called only once before any event is logged.
+    /// Initial setup
     func setup()
 
     /// Tracks an event. Events are saved locally.
@@ -28,21 +28,22 @@ protocol EventTrackingUtilProtocol {
 class EventTrackingUtil: EventTrackingUtilProtocol {
 
     /// The shared instance
-    static public let shared = EventTrackingUtil()
+    public static let shared = EventTrackingUtil()
+    private let amplitudeKey = "AMPLITUDE_API_KEY"
 
     private init() { }
 
     public func setup() {
         guard let settings = Bundle.main.infoDictionary,
-              let amplitudeApiKey = settings["AMPLITUDE_API_KEY"] as? String else {
+              let amplitudeApiKey = settings[amplitudeKey] as? String else {
             Log.shared.errorAndCrash(message: "Amplitude Api Key not found")
             return
         }
 
         Amplitude.instance().trackingSessionEvents = true
-        Amplitude.instance().initializeApiKey(amplitudeApiKey)
-        Amplitude.instance().minTimeBetweenSessionsMillis = 10 * 60 * 1000 // 10 minutes
+        Amplitude.instance().initializeApiKey(amplitudeApiKey)//, userId: UUID().uuidString)
         Amplitude.instance().setUserId(UUID().uuidString)
+        Amplitude.instance().minTimeBetweenSessionsMillis = 10 * 60 * 1000 // 10 minutes
         Amplitude.instance().setServerZone(AMPServerZone.EU)
     }
 
