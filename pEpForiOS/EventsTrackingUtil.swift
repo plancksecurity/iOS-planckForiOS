@@ -42,9 +42,11 @@ class EventTrackingUtil: EventTrackingUtilProtocol {
 
         Amplitude.instance().trackingSessionEvents = true
         Amplitude.instance().initializeApiKey(amplitudeApiKey)//, userId: UUID().uuidString)
-        Amplitude.instance().setUserId(UUID().uuidString)
+//        Amplitude.instance().setUserId(UUID().uuidString)
         Amplitude.instance().minTimeBetweenSessionsMillis = 10 * 60 * 1000 // 10 minutes
-        Amplitude.instance().setServerZone(AMPServerZone.EU)
+
+        //MB:- This breaks the log. MUST investigate.
+//        Amplitude.instance().setServerZone(AMPServerZone.EU)
     }
 
     public func logEvent(_ eventType: String, withEventProperties eventProperties: [AnyHashable : Any]?) {
