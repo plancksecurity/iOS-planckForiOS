@@ -316,10 +316,7 @@ extension FolderTableViewController: SegueHandlerType {
                         Log.shared.errorAndCrash("Fail to instantiate MDMAccountPredeploymentViewController")
                         return
                     }
-                    present(mdmVC, animated: true) {
-                        // TODO
-                        print("*** done")
-                    }
+                    present(mdmVC, animated: true)
                 } else {
                     performSegue(withIdentifier:.newAccount, sender: self)
                 }
