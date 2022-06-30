@@ -69,8 +69,7 @@ class MDMAccountPredeploymentViewController: UIViewController {
             } else {
                 theSelf.messageLabel.text = NSLocalizedString("Accounts Deployed",
                                                               comment: "MDM predeployment message, all ok")
-                theSelf.performSegue(withIdentifier: .segueUnwindAfterAccountCreation,
-                                     sender: theSelf)
+                theSelf.navigationController?.dismiss(animated: true)
             }
         }
     }
@@ -88,22 +87,5 @@ class MDMAccountPredeploymentViewController: UIViewController {
 
     private func configureView(for traitCollection: UITraitCollection) {
         view.setNeedsLayout()
-    }
-}
-
-// MARK: - SegueHandlerType
-
-extension MDMAccountPredeploymentViewController: SegueHandlerType {
-    enum SegueIdentifier: String {
-        case segueUnwindAfterAccountCreation
-    }
-
-    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        view.endEditing(true)
-        switch segueIdentifier(for: segue) {
-        case .segueUnwindAfterAccountCreation:
-            // nothing to do, since it's an unwind segue the targets are configured already
-            break
-        }
     }
 }
