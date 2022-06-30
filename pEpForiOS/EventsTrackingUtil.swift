@@ -15,6 +15,7 @@ protocol EventTrackingUtilProtocol {
     func setup()
 
     /// Tracks an event. Events are saved locally.
+    /// Settings may prevent any event log. 
     /// Uploads are batched to occur every 30 events or every 30 seconds (whichever comes first), as well as on app close.
     /// - Parameters:
     ///   - eventType: The name of the event you wish to track.
