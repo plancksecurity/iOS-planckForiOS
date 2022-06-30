@@ -35,6 +35,9 @@ public protocol AppSettingsProtocol {
     /// The list of the accepted languages codes for truswords. 
     var acceptedLanguagesCodes: [String] { get set }
 
+    var shouldTrackEvents: Bool { get set }
+
+
     // MARK:- Collapsing State
 
     /// Removes the collapsing state for the account address passed by parameter.

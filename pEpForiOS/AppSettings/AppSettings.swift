@@ -37,6 +37,7 @@ extension AppSettings {
     static private let keyCollapsingState = "keyCollapsingState"
     static private let keyFolderViewAccountCollapsedState = "keyFolderViewAccountCollapsedState-162844EB-1F32-4F66-8F92-9B77664523F1"
     static private let keyAcceptedLanguagesCodes = "acceptedLanguagesCodes"
+    static private let keyShouldTrackEvents = "keyShouldTrackEvents"
 }
 
 // MARK: - AppSettings
@@ -113,6 +114,7 @@ extension AppSettings {
         defaults[AppSettings.keyUnsecureReplyWarningEnabled] = false
         defaults[AppSettings.keyAccountSignature] = [String:String]()
         defaults[AppSettings.keyVerboseLogginEnabled] = false
+        defaults[AppSettings.keyShouldTrackEvents] = true
         // TODO:
         // The languages restriction to English (en) and German (de) is clearly not the default.
         // It's only for one customer.
@@ -145,6 +147,16 @@ extension AppSettings {
 // MARK: - AppSettingsProtocol
 
 extension AppSettings: AppSettingsProtocol {
+    public var shouldTrackEvents: Bool {
+        get {
+            return AppSettings.userDefaults.bool(forKey: AppSettings.keyShouldTrackEvents)
+        }
+        set {
+            AppSettings.userDefaults.set(newValue,
+                                         forKey: AppSettings.keyShouldTrackEvents)
+        }
+    }
+
     public var keySyncEnabled: Bool {
         get {
             return AppSettings.userDefaults.bool(forKey: AppSettings.keyKeySyncEnabled)

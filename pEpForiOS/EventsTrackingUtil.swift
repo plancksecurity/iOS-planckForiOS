@@ -38,6 +38,10 @@ class EventTrackingUtil: EventTrackingUtilProtocol {
     }
 
     public func logEvent(_ eventType: String, withEventProperties eventProperties: [AnyHashable : Any]?) {
+        guard AppSettings.shared.shouldTrackEvents else {
+            // We must not track events, nothing to do.
+            return
+        }
         Amplitude.instance().logEvent(eventType, withEventProperties: eventProperties)
     }
 }
