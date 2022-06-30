@@ -12,7 +12,6 @@ import UIKit
 import pEpIOSToolboxForExtensions
 #else
 import pEpIOSToolbox
-import Amplitude
 #endif
 
 /// Suggests a list of Identities that fit to a given sarch string
@@ -38,24 +37,22 @@ class SuggestTableViewController: UITableViewController {
 #if !EXT_SHARE
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
-        let date = Date()
-        let dateFormatter = DateFormatter()
+                
         let attributes =
         [ConstantEvents.Attributes.viewName : ConstantEvents.ViewNames.SuggestTableView,
-         ConstantEvents.Attributes.datetime : dateFormatter.string(from: date)
+         ConstantEvents.Attributes.datetime : Date.getCurrentDatetimeAsString()
         ]
-        Amplitude.instance().logEvent(ConstantEvents.ViewWasPresented, withEventProperties:attributes)
+        EventTrackingUtil.shared.logEvent(ConstantEvents.ViewWasPresented, withEventProperties:attributes)
     }
 
     override func viewDidDisappear(_ animated: Bool) {
         super.viewDidDisappear(animated)
-        let date = Date()
-        let dateFormatter = DateFormatter()
+                
         let attributes =
         [ConstantEvents.Attributes.viewName : ConstantEvents.ViewNames.SuggestTableView,
-         ConstantEvents.Attributes.datetime : dateFormatter.string(from: date)
+         ConstantEvents.Attributes.datetime : Date.getCurrentDatetimeAsString()
         ]
-        Amplitude.instance().logEvent(ConstantEvents.ViewWasDismissed, withEventProperties:attributes)
+        EventTrackingUtil.shared.logEvent(ConstantEvents.ViewWasDismissed, withEventProperties:attributes)
     }
 #endif
 

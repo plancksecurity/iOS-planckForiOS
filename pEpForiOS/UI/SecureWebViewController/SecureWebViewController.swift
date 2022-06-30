@@ -8,7 +8,6 @@
 
 import WebKit
 import pEpIOSToolbox
-import Amplitude
 
 protocol SecureWebViewControllerDelegate: AnyObject {
     /// Called on content size changes while content is loaded.
@@ -69,24 +68,22 @@ class SecureWebViewController: UIViewController {
 
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
-        let date = Date()
-        let dateFormatter = DateFormatter()
+                
         let attributes =
         [ConstantEvents.Attributes.viewName : ConstantEvents.ViewNames.SecureWebView,
-         ConstantEvents.Attributes.datetime : dateFormatter.string(from: date)
+         ConstantEvents.Attributes.datetime : Date.getCurrentDatetimeAsString()
         ]
-        Amplitude.instance().logEvent(ConstantEvents.ViewWasPresented, withEventProperties:attributes)
+        EventTrackingUtil.shared.logEvent(ConstantEvents.ViewWasPresented, withEventProperties:attributes)
     }
 
     override func viewDidDisappear(_ animated: Bool) {
         super.viewDidDisappear(animated)
-        let date = Date()
-        let dateFormatter = DateFormatter()
+                
         let attributes =
         [ConstantEvents.Attributes.viewName : ConstantEvents.ViewNames.SecureWebView,
-         ConstantEvents.Attributes.datetime : dateFormatter.string(from: date)
+         ConstantEvents.Attributes.datetime : Date.getCurrentDatetimeAsString()
         ]
-        Amplitude.instance().logEvent(ConstantEvents.ViewWasDismissed, withEventProperties:attributes)
+        EventTrackingUtil.shared.logEvent(ConstantEvents.ViewWasDismissed, withEventProperties:attributes)
     }
 
     override func viewWillDisappear(_ animated: Bool) {

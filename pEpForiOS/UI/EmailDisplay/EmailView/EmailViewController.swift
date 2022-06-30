@@ -8,12 +8,8 @@
 
 import pEpIOSToolbox
 import QuickLook
-
-import Amplitude
-
 import EventKit
 import EventKitUI
-import pEpIOSToolbox
 
 protocol EmailViewControllerDelegate: AnyObject {
     func openQLPreviewController(toShowDocumentWithUrl url: URL)
@@ -377,25 +373,20 @@ extension EmailViewController: MessageHeaderCellDelegate {
         // This workaround prevents a wrong layout in the collection view of the recipient fields.
         // For some unknown reason it seems to layout the cells in a container of the size of what's in the IB, ignoring the real device dimensions.
         tableView.reloadData()
-
-        let date = Date()
-        let dateFormatter = DateFormatter()
         let attributes =
         [ConstantEvents.Attributes.viewName : ConstantEvents.ViewNames.Email,
-         ConstantEvents.Attributes.datetime : dateFormatter.string(from: date)
+         ConstantEvents.Attributes.datetime : Date.getCurrentDatetimeAsString()
         ]
-        Amplitude.instance().logEvent(ConstantEvents.ViewWasPresented, withEventProperties:attributes)
+        EventTrackingUtil.shared.logEvent(ConstantEvents.ViewWasPresented, withEventProperties:attributes)
     }
 
     override func viewDidDisappear(_ animated: Bool) {
         super.viewDidDisappear(animated)
-        let date = Date()
-        let dateFormatter = DateFormatter()
         let attributes =
         [ConstantEvents.Attributes.viewName : ConstantEvents.ViewNames.Email,
-         ConstantEvents.Attributes.datetime : dateFormatter.string(from: date)
+         ConstantEvents.Attributes.datetime : Date.getCurrentDatetimeAsString()
         ]
-        Amplitude.instance().logEvent(ConstantEvents.ViewWasDismissed, withEventProperties:attributes)
+        EventTrackingUtil.shared.logEvent(ConstantEvents.ViewWasDismissed, withEventProperties:attributes)
     }
 }
 

@@ -7,7 +7,6 @@
 //
 
 import UIKit
-import Amplitude
 
 import pEpIOSToolbox
 
@@ -54,24 +53,20 @@ final class ClientCertificateImportViewController: UIViewController {
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
         viewModel?.importClientCertificate()
-        let date = Date()
-        let dateFormatter = DateFormatter()
         let attributes =
         [ConstantEvents.Attributes.viewName : ConstantEvents.ViewNames.ClientCertificateImportView,
-         ConstantEvents.Attributes.datetime : dateFormatter.string(from: date)
+         ConstantEvents.Attributes.datetime : Date.getCurrentDatetimeAsString()
         ]
-        Amplitude.instance().logEvent(ConstantEvents.ViewWasPresented, withEventProperties:attributes)
+        EventTrackingUtil.shared.logEvent(ConstantEvents.ViewWasPresented, withEventProperties:attributes)
     }
 
     override func viewDidDisappear(_ animated: Bool) {
         super.viewDidDisappear(animated)
-        let date = Date()
-        let dateFormatter = DateFormatter()
         let attributes =
         [ConstantEvents.Attributes.viewName : ConstantEvents.ViewNames.ClientCertificateImportView,
-         ConstantEvents.Attributes.datetime : dateFormatter.string(from: date)
+         ConstantEvents.Attributes.datetime : Date.getCurrentDatetimeAsString()
         ]
-        Amplitude.instance().logEvent(ConstantEvents.ViewWasDismissed, withEventProperties:attributes)
+        EventTrackingUtil.shared.logEvent(ConstantEvents.ViewWasDismissed, withEventProperties:attributes)
     }
 }
 

@@ -7,11 +7,9 @@
 //
 
 import BackgroundTasks
-
 import pEpIOSToolbox
 import MessageModel
 import pEp4iosIntern
-import Amplitude
 
 @UIApplicationMain
 class AppDelegate: UIResponder, UIApplicationDelegate {
@@ -113,22 +111,12 @@ extension AppDelegate {
             result = handleUrlTheOSHasBroughtUsToForgroundFor(openedToOpenFile)
         }
         self.reachabilityManager = ReachabilityManager.shared
-        // Enable sending automatic session events
-        Amplitude.instance().trackingSessionEvents = true
-        // Initialize SDK
-        Amplitude.instance().initializeApiKey("API_KEY")
-        // Set userId
-        Amplitude.instance().setUserId(UUID().uuidString)
-        // Set server zone
-        Amplitude.instance().setServerZone(AMPServerZone.EU)
-        // Send an event
-        let date = Date()
-        let dateFormatter = DateFormatter()
+        EventTrackingUtil.shared.setup()
         let attributes =
         [
-         ConstantEvents.Attributes.datetime : dateFormatter.string(from: date)
+            ConstantEvents.Attributes.datetime : Date.getCurrentDatetimeAsString()
         ]
-        Amplitude.instance().logEvent(ConstantEvents.AppStarted, withEventProperties:attributes)
+        EventTrackingUtil.shared.logEvent(ConstantEvents.AppStarted, withEventProperties:attributes)
 
 
         return result

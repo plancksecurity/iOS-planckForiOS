@@ -17,7 +17,6 @@ import SwipeCellKit
 import MessageModelForAppExtensions
 import pEpIOSToolboxForExtensions
 #else
-import Amplitude
 import MessageModel
 import pEpIOSToolbox
 #endif
@@ -110,7 +109,7 @@ class ComposeViewController: UIViewController {
             UIUtils.showNoInternetConnectionBanner(viewController: self)
         }
 #else
-        Amplitude.instance().logEvent(ConstantEvents.ViewWasPresented, withEventProperties:[ConstantEvents.Attributes.viewName: ConstantEvents.ViewNames.ComposeView])
+        EventTrackingUtil.shared.logEvent(ConstantEvents.ViewWasPresented, withEventProperties:[ConstantEvents.Attributes.viewName: ConstantEvents.ViewNames.ComposeView])
 #endif
 
     }
@@ -118,7 +117,7 @@ class ComposeViewController: UIViewController {
     override func viewDidDisappear(_ animated: Bool) {
         super.viewDidDisappear(animated)
 #if !EXT_SHARE
-        Amplitude.instance().logEvent(ConstantEvents.ViewWasDismissed, withEventProperties:[ConstantEvents.Attributes.viewName: ConstantEvents.ViewNames.ComposeView])
+        EventTrackingUtil.shared.logEvent(ConstantEvents.ViewWasDismissed, withEventProperties:[ConstantEvents.Attributes.viewName: ConstantEvents.ViewNames.ComposeView])
 #endif
     }
 

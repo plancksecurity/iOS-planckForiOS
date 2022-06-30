@@ -9,7 +9,6 @@
 import UIKit
 
 #if !EXT_SHARE
-import Amplitude
 import pEpIOSToolbox
 #endif
 
@@ -33,26 +32,22 @@ class DocumentAttachmentPickerViewController: UIDocumentPickerViewController {
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
 #if !EXT_SHARE
-        let date = Date()
-        let dateFormatter = DateFormatter()
         let attributes =
         [ConstantEvents.Attributes.viewName : ConstantEvents.ViewNames.TutorialStep3View,
-         ConstantEvents.Attributes.datetime : dateFormatter.string(from: date)
+         ConstantEvents.Attributes.datetime : Date.getCurrentDatetimeAsString()
         ]
-        Amplitude.instance().logEvent(ConstantEvents.ViewWasPresented, withEventProperties:attributes)
+        EventTrackingUtil.shared.logEvent(ConstantEvents.ViewWasPresented, withEventProperties:attributes)
 #endif
     }
 
     override func viewDidDisappear(_ animated: Bool) {
         super.viewDidDisappear(animated)
 #if !EXT_SHARE
-        let date = Date()
-        let dateFormatter = DateFormatter()
         let attributes =
         [ConstantEvents.Attributes.viewName : ConstantEvents.ViewNames.TutorialStep3View,
-         ConstantEvents.Attributes.datetime : dateFormatter.string(from: date)
+         ConstantEvents.Attributes.datetime : Date.getCurrentDatetimeAsString()
         ]
-        Amplitude.instance().logEvent(ConstantEvents.ViewWasDismissed, withEventProperties:attributes)
+        EventTrackingUtil.shared.logEvent(ConstantEvents.ViewWasDismissed, withEventProperties:attributes)
 #endif
     }
 }

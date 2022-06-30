@@ -265,6 +265,14 @@ class ComposeViewModel {
     }
 
     private func send(option: JPEGQuality) {
+        //    Attributes: datetime, isEncrypted, attachment type, size, format type, encoding, client
+                var attributes =
+                [ConstantEvents.Attributes.isEncrypted: ConstantEvents.Values.´true´,
+                 ConstantEvents.Attributes.datetime : Date.getCurrentDatetimeAsString(),
+                 ConstantEvents.Attributes.client: ConstantEvents.Values.iOS
+                ]
+
+
         let safeState = state.makeSafe(forSession: Session.main)
         let sendClosure: (() -> Message?) = { [weak self] in
             guard let me = self else {
@@ -322,6 +330,9 @@ class ComposeViewModel {
             return msg
         }
 
+        #if !EXT_SHARE
+        EventTrackingUtil.shared.logEvent(ConstantEvents.EmailSent, withEventProperties: attributes)
+        #endif
         showAlertFordwardingLessSecureIfRequired(forState: safeState) { [weak self] (accepted) in
             guard let me = self else {
                 Log.shared.lostMySelf()
@@ -337,6 +348,7 @@ class ComposeViewModel {
 
             if let theMsg = msg {
                 me.composeViewModelEndActionDelegate?.userWantsToSend(message: theMsg)
+
             } else {
                 me.composeViewModelEndActionDelegate?.couldNotCreateOutgoingMessage()
             }

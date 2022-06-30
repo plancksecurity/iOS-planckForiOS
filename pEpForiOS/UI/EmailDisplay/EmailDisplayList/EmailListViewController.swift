@@ -10,7 +10,6 @@ import UIKit
 
 import SwipeCellKit
 import pEpIOSToolbox
-import Amplitude
 
 final class EmailListViewController: UIViewController {
 
@@ -131,25 +130,20 @@ final class EmailListViewController: UIViewController {
             return
         }
         vm.handleBannerIfNeeded()
-
-        let date = Date()
-        let dateFormatter = DateFormatter()
         let attributes =
         [ConstantEvents.Attributes.viewName : ConstantEvents.ViewNames.EmailList,
-         ConstantEvents.Attributes.datetime : dateFormatter.string(from: date)
+         ConstantEvents.Attributes.datetime : Date.getCurrentDatetimeAsString()
         ]
-        Amplitude.instance().logEvent(ConstantEvents.ViewWasPresented, withEventProperties:attributes)
+        EventTrackingUtil.shared.logEvent(ConstantEvents.ViewWasPresented, withEventProperties:attributes)
     }
 
     override func viewDidDisappear(_ animated: Bool) {
         super.viewDidDisappear(animated)
-        let date = Date()
-        let dateFormatter = DateFormatter()
         let attributes =
         [ConstantEvents.Attributes.viewName : ConstantEvents.ViewNames.EmailList,
-         ConstantEvents.Attributes.datetime : dateFormatter.string(from: date)
+         ConstantEvents.Attributes.datetime : Date.getCurrentDatetimeAsString()
         ]
-        Amplitude.instance().logEvent(ConstantEvents.ViewWasDismissed, withEventProperties:attributes)
+        EventTrackingUtil.shared.logEvent(ConstantEvents.ViewWasDismissed, withEventProperties:attributes)
 
     }
 
@@ -244,7 +238,7 @@ final class EmailListViewController: UIViewController {
         textFilterButton.target = self
 
         let fontSize = CGFloat(10.0)
-        let font = UIFont.boldSystemFont(ofSize: fontSize)
+        let font = UIFont.boldSystemFont(ofSize: fontSize)        
         let attributes = [NSAttributedString.Key.font: font]
         textFilterButton.setTitleTextAttributes(attributes, for: .normal)
         textFilterButton.setTitleTextAttributes(attributes, for: .selected)
