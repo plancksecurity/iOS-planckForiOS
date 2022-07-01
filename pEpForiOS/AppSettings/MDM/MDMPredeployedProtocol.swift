@@ -8,9 +8,9 @@
 
 import Foundation
 
-/// Error cases thrown by `MDMPredeployedProtocol.predeployAccounts`.
+/// All error cases thrown by `MDMPredeployedProtocol.predeployAccounts`.
 enum MDMPredeployedError: Error {
-    /// Account settings were found, but the format could not be read.
+    /// Account settings were found, but the format could not be read/parsed.
     case malformedAccountData
 
     /// A network error occurred when trying to verify the account
