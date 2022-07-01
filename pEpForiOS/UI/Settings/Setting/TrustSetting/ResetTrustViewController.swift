@@ -32,6 +32,24 @@ class ResetTrustViewController: UIViewController, UISearchControllerDelegate, UI
         setupView()
     }
 
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
+        let attributes =
+        [ConstantEvents.Attributes.viewName : ConstantEvents.ViewNames.ResetTrustView,
+         ConstantEvents.Attributes.datetime : Date.getCurrentDatetimeAsString()
+        ]
+        EventTrackingUtil.shared.logEvent(ConstantEvents.ViewDidAppear, withEventProperties:attributes)
+    }
+
+    override func viewDidDisappear(_ animated: Bool) {
+        super.viewDidDisappear(animated)
+        let attributes =
+        [ConstantEvents.Attributes.viewName : ConstantEvents.ViewNames.ResetTrustView,
+         ConstantEvents.Attributes.datetime : Date.getCurrentDatetimeAsString()
+        ]
+        EventTrackingUtil.shared.logEvent(ConstantEvents.ViewDidDisappear, withEventProperties:attributes)
+    }
+
     func setupView() {
         // set up tableview delegate and datasource
         tableView.dataSource = self

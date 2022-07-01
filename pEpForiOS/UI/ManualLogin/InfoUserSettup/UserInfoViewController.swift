@@ -56,7 +56,23 @@ final class UserInfoViewController: UIViewController {
             return
         }
         firstResponder(!verifiableAccount.loginNameIsValid)
+
+        let attributes =
+        [ConstantEvents.Attributes.viewName : ConstantEvents.ViewNames.UserInfoView,
+         ConstantEvents.Attributes.datetime : Date.getCurrentDatetimeAsString()
+        ]
+        EventTrackingUtil.shared.logEvent(ConstantEvents.ViewDidAppear, withEventProperties:attributes)
     }
+
+    override func viewDidDisappear(_ animated: Bool) {
+        super.viewDidDisappear(animated)
+        let attributes =
+        [ConstantEvents.Attributes.viewName : ConstantEvents.ViewNames.UserInfoView,
+         ConstantEvents.Attributes.datetime : Date.getCurrentDatetimeAsString()
+        ]
+        EventTrackingUtil.shared.logEvent(ConstantEvents.ViewDidDisappear, withEventProperties: attributes)
+    }
+
 
     /// Update view state from the view model
     /// - Parameter animated: this property only apply to  items with animations, list AnimatedPlaceholderTextFields

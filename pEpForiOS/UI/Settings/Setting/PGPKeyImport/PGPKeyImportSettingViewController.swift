@@ -42,6 +42,24 @@ class PGPKeyImportSettingViewController: UIViewController {
         super.viewWillAppear(animated)
         showNavigationBar()
     }
+
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
+        let attributes =
+        [ConstantEvents.Attributes.viewName : ConstantEvents.ViewNames.PGPKeyImportSettingView,
+         ConstantEvents.Attributes.datetime : Date.getCurrentDatetimeAsString()
+        ]
+        EventTrackingUtil.shared.logEvent(ConstantEvents.ViewDidAppear, withEventProperties:attributes)
+    }
+
+    override func viewDidDisappear(_ animated: Bool) {
+        super.viewDidDisappear(animated)
+        let attributes =
+        [ConstantEvents.Attributes.viewName : ConstantEvents.ViewNames.PGPKeyImportSettingView,
+         ConstantEvents.Attributes.datetime : Date.getCurrentDatetimeAsString()
+        ]
+        EventTrackingUtil.shared.logEvent(ConstantEvents.ViewDidDisappear, withEventProperties:attributes)
+    }
 }
 
 // MARK: - UITableViewDelegate

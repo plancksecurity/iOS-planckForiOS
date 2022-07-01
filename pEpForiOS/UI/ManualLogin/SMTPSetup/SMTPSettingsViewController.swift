@@ -49,6 +49,20 @@ final class SMTPSettingsViewController: UIViewController, TextfieldResponder {
             return
         }
         firstResponder(verifiableAccount.loginNameSMTP == nil)
+        let attributes =
+        [ConstantEvents.Attributes.viewName : ConstantEvents.ViewNames.SMTPSettingsView,
+         ConstantEvents.Attributes.datetime : Date.getCurrentDatetimeAsString()
+        ]
+        EventTrackingUtil.shared.logEvent(ConstantEvents.ViewDidAppear, withEventProperties:attributes)
+    }
+
+    override func viewDidDisappear(_ animated: Bool) {
+        super.viewDidDisappear(animated)
+        let attributes =
+        [ConstantEvents.Attributes.viewName : ConstantEvents.ViewNames.SMTPSettingsView,
+         ConstantEvents.Attributes.datetime : Date.getCurrentDatetimeAsString()
+        ]
+        EventTrackingUtil.shared.logEvent(ConstantEvents.ViewDidDisappear, withEventProperties: attributes)
     }
 
     @IBAction private func didTapOnView(_ sender: Any) {

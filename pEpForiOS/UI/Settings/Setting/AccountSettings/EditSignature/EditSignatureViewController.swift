@@ -33,6 +33,11 @@ class EditSignatureViewController: UIViewController {
         if let cell = tableView.cellForRow(at: indexPath) as? SignatureTableViewCell {
             cell.textView.becomeFirstResponder()
         }
+        let attributes =
+        [ConstantEvents.Attributes.viewName : ConstantEvents.ViewNames.EditSignatureView,
+         ConstantEvents.Attributes.datetime : Date.getCurrentDatetimeAsString()
+        ]
+        EventTrackingUtil.shared.logEvent(ConstantEvents.ViewDidAppear, withEventProperties:attributes)
     }
 
     override func viewWillDisappear(_ animated: Bool) {
@@ -42,6 +47,12 @@ class EditSignatureViewController: UIViewController {
             return
         }
         vm.updateSignature()
+
+        let attributes =
+        [ConstantEvents.Attributes.viewName : ConstantEvents.ViewNames.EditSignatureView,
+         ConstantEvents.Attributes.datetime : Date.getCurrentDatetimeAsString()
+        ]
+        EventTrackingUtil.shared.logEvent(ConstantEvents.ViewDidDisappear, withEventProperties:attributes)
     }
 
     @IBAction private func clearButtonPressed() {

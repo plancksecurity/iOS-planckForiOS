@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import pEpIOSToolbox
 
 class SetOwnKeyViewController: UIViewController {
     private let viewModel = SetOwnKeyViewModel()
@@ -41,6 +42,24 @@ class SetOwnKeyViewController: UIViewController {
         showNavigationBar()
         errorTextField.text = nil
         title = NSLocalizedString("Set Own Key", comment: "Set Own Key title")
+    }
+
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
+        let attributes =
+        [ConstantEvents.Attributes.viewName : ConstantEvents.ViewNames.SetOwnKeyView,
+         ConstantEvents.Attributes.datetime : Date.getCurrentDatetimeAsString()
+        ]
+        EventTrackingUtil.shared.logEvent(ConstantEvents.ViewDidAppear, withEventProperties:attributes)
+    }
+
+    override func viewDidDisappear(_ animated: Bool) {
+        super.viewDidDisappear(animated)
+        let attributes =
+        [ConstantEvents.Attributes.viewName : ConstantEvents.ViewNames.SetOwnKeyView,
+         ConstantEvents.Attributes.datetime : Date.getCurrentDatetimeAsString()
+        ]
+        EventTrackingUtil.shared.logEvent(ConstantEvents.ViewDidDisappear, withEventProperties:attributes)
     }
 
     override func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {

@@ -57,6 +57,21 @@ final class IMAPSettingsViewController: UIViewController, TextfieldResponder {
             return
         }
         firstResponder(verifiableAccount.loginNameIMAP == nil)
+
+        let attributes =
+        [ConstantEvents.Attributes.viewName : ConstantEvents.ViewNames.IMAPSettingsView,
+         ConstantEvents.Attributes.datetime : Date.getCurrentDatetimeAsString()
+        ]
+        EventTrackingUtil.shared.logEvent(ConstantEvents.ViewDidAppear, withEventProperties:attributes)
+    }
+
+    override func viewDidDisappear(_ animated: Bool) {
+        super.viewDidDisappear(animated)
+        let attributes =
+        [ConstantEvents.Attributes.viewName : ConstantEvents.ViewNames.IMAPSettingsView,
+         ConstantEvents.Attributes.datetime : Date.getCurrentDatetimeAsString()
+        ]
+        EventTrackingUtil.shared.logEvent(ConstantEvents.ViewDidDisappear, withEventProperties: attributes)
     }
 
     @IBAction private func didTapOnView(_ sender: Any) {
