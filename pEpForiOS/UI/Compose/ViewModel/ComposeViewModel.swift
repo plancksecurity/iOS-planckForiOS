@@ -265,13 +265,10 @@ class ComposeViewModel {
     }
 
     private func send(option: JPEGQuality) {
-        //    Attributes: datetime, isEncrypted, attachment type, size, format type, encoding, client
-                var attributes =
-                [ConstantEvents.Attributes.isEncrypted: ConstantEvents.Values.´true´,
-                 ConstantEvents.Attributes.datetime : Date.getCurrentDatetimeAsString(),
-                 ConstantEvents.Attributes.client: ConstantEvents.Values.iOS
-                ]
-
+        var attributes =
+        [
+            ConstantEvents.Attributes.datetime : Date.getCurrentDatetimeAsString()
+        ] as [String : Any]
 
         let safeState = state.makeSafe(forSession: Session.main)
         let sendClosure: (() -> Message?) = { [weak self] in
@@ -295,16 +292,29 @@ class ComposeViewModel {
                 return nil
             }
 
+            func getDataToTrack(attachment: Attachment, index: Int) -> [String : [String : String]] {
+                let key = attachment.fileName ?? "Attachment \(index)"
+                let type = attachment.mimeType?.lowercased() ?? "-"
+                let bytes : Int64 = Int64(attachment.size ?? 0)
+                let size = ByteCountFormatter.string(fromByteCount:bytes, countStyle: .binary)
+                return [key : [ ConstantEvents.Attributes.attachmentSize: size,
+                                ConstantEvents.Attributes.attachmentType: type] ]
+            }
+
             //Update image and data values only to prevent inconsistent states
             me.session.performAndWait {
                 for (index, attachment) in inlined.enumerated() {
                     safeState.inlinedAttachments[index].image = attachment.image
                     safeState.inlinedAttachments[index].data = attachment.data
+
+                    attributes["inlinedAttachments"] = getDataToTrack(attachment: attachment, index: index)
                 }
 
                 for (index, attachment) in nonInlined.enumerated() {
                     safeState.nonInlinedAttachments[index].image = attachment.image
                     safeState.nonInlinedAttachments[index].data = attachment.data
+
+                    attributes["nonInlinedAttachments"] = getDataToTrack(attachment: attachment, index: index)
                 }
             }
 
