@@ -55,6 +55,7 @@ class MDMAccountPredeploymentViewController: UIViewController {
             theSelf.activityIndicator.stopAnimating()
             theSelf.activityIndicator.isHidden = true
 
+            // TODO: Put some of this logic into the VM
             if let error = maybeError {
                 switch error {
                 case .networkError:
