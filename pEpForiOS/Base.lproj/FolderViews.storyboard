@@ -129,6 +129,7 @@
                     <connections>
                         <outlet property="addAccountButton" destination="NEj-lZ-p6O" id="wRw-yI-H5s"/>
                         <segue destination="uKb-Ku-Cng" kind="presentation" identifier="newAccount" id="kBC-vv-Cfe"/>
+                        <segue destination="sKj-cp-Cdr" kind="presentation" identifier="mdmPredeployAccounts" id="KOS-pV-IL5"/>
                     </connections>
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="o2c-UY-yR4" userLabel="First Responder" sceneMemberID="firstResponder"/>
@@ -144,6 +145,16 @@
                 <placeholder placeholderIdentifier="IBFirstResponder" id="7bq-Lz-J44" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="10718" y="-1165"/>
+        </scene>
+        <!--MDMAccountPredeployment-->
+        <scene sceneID="EZB-nr-rfX">
+            <objects>
+                <viewControllerPlaceholder storyboardName="MDMAccountPredeployment" id="sKj-cp-Cdr" sceneMemberID="viewController">
+                    <navigationItem key="navigationItem" id="5ON-90-ygt"/>
+                </viewControllerPlaceholder>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="W5N-V4-UX6" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="10774" y="-1084"/>
         </scene>
         <!--NothingSelected-->
         <scene sceneID="eeX-Fr-Vs1">
