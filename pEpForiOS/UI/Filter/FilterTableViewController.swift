@@ -77,14 +77,13 @@ class FilterTableViewController: UITableViewController {
             return model[section].title
         } else {
             return ""
-        }    }
+        }
+    }
 
     override func tableView(_ tableView: UITableView, willDisplayHeaderView view: UIView, forSection section: Int) {
-
         let header = view as! UITableViewHeaderFooterView
         header.textLabel?.font = UIFont(name: "Futura", size: 11)
         header.textLabel?.textColor = UIColor.lightGray
-
     }
 
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {

@@ -152,7 +152,6 @@ final class KeySyncHandshakeViewController: UIViewController {
     override func viewDidDisappear(_ animated: Bool) {
         super.viewDidDisappear(animated)
 
-                
         let attributes =
         [ConstantEvents.Attributes.viewName : ConstantEvents.ViewNames.KeySyncHandshakeView,
          ConstantEvents.Attributes.datetime : Date.getCurrentDatetimeAsString()

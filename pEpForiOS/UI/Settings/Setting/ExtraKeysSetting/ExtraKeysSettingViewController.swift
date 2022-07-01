@@ -48,7 +48,6 @@ class ExtraKeysSettingViewController: UIViewController {
         AppSettings.shared.extraKeysEditable = false
         navigationItem.setHidesBackButton(true, animated: false)
 
-                
         let attributes =
         [ConstantEvents.Attributes.viewName : ConstantEvents.ViewNames.ExtraKeysSettingView,
          ConstantEvents.Attributes.datetime : Date.getCurrentDatetimeAsString()

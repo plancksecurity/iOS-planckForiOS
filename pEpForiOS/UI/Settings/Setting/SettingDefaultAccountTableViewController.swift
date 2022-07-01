@@ -7,8 +7,8 @@
 //
 
 import UIKit
-
 import MessageModel
+import pEpIOSToolbox
 
 /// Lets the user choose the mail account used as default,
 /// e.g. when composing a mail in unified inbox, the default account is used as "From".
@@ -31,6 +31,24 @@ class SettingDefaultAccountTableViewController: UITableViewController {
         showNavigationBar()
         title = NSLocalizedString("Default Account", comment: "Default account view title")
         navigationController?.title = title
+    }
+
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
+        let attributes =
+        [ConstantEvents.Attributes.viewName : ConstantEvents.ViewNames.SettingDefaultAccountView,
+         ConstantEvents.Attributes.datetime : Date.getCurrentDatetimeAsString()
+        ]
+        EventTrackingUtil.shared.logEvent(ConstantEvents.ViewDidAppear, withEventProperties:attributes)
+    }
+
+    override func viewDidDisappear(_ animated: Bool) {
+        super.viewDidDisappear(animated)
+        let attributes =
+        [ConstantEvents.Attributes.viewName : ConstantEvents.ViewNames.SettingDefaultAccountView,
+         ConstantEvents.Attributes.datetime : Date.getCurrentDatetimeAsString()
+        ]
+        EventTrackingUtil.shared.logEvent(ConstantEvents.ViewDidDisappear, withEventProperties:attributes)
     }
 
     override var collapsedBehavior: CollapsedSplitViewBehavior {

@@ -55,7 +55,7 @@ final class ClientCertificateManagementViewController: UIViewController {
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
         let attributes =
-        [ConstantEvents.Attributes.viewName : ConstantEvents.ViewNames.ClientCertificateManagement,
+        [ConstantEvents.Attributes.viewName : ConstantEvents.ViewNames.ClientCertificateManagementView,
          ConstantEvents.Attributes.datetime : Date.getCurrentDatetimeAsString()
         ]
         EventTrackingUtil.shared.logEvent(ConstantEvents.ViewDidAppear, withEventProperties: attributes)
@@ -64,7 +64,7 @@ final class ClientCertificateManagementViewController: UIViewController {
     override func viewDidDisappear(_ animated: Bool) {
         super.viewDidDisappear(animated)
         let attributes =
-        [ConstantEvents.Attributes.viewName : ConstantEvents.ViewNames.ClientCertificateManagement,
+        [ConstantEvents.Attributes.viewName : ConstantEvents.ViewNames.ClientCertificateManagementView,
          ConstantEvents.Attributes.datetime : Date.getCurrentDatetimeAsString()
         ]
         EventTrackingUtil.shared.logEvent(ConstantEvents.ViewDidDisappear, withEventProperties: attributes)

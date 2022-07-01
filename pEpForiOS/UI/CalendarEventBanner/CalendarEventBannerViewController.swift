@@ -14,7 +14,22 @@ import EventKitUI
 class CalendarEventBannerViewController: UIViewController {
 
     public weak var delegate: CalendarEventEditDelegate?
-    public var viewModel: CalendarEventsBannerViewModel?
+
+    public var viewModel: CalendarEventsBannerViewModel? {
+        didSet {
+            guard let vm = viewModel else {
+                Log.shared.errorAndCrash("VM not found")
+                return
+            }
+            if vm.shouldShowEventsBanner {
+                let attributes =
+                [ConstantEvents.Attributes.viewName : ConstantEvents.ViewNames.CalendarEventBannerView,
+                 ConstantEvents.Attributes.datetime : Date.getCurrentDatetimeAsString()
+                ]
+                EventTrackingUtil.shared.logEvent(ConstantEvents.ViewDidAppear, withEventProperties:attributes)
+            }
+        }
+    }
     private var presentedEvent: ICSEvent?
     @IBOutlet private weak var tableView: UITableView!
     @IBOutlet private weak var dayOfTheWeekLabel: UILabel!
@@ -31,22 +46,19 @@ class CalendarEventBannerViewController: UIViewController {
         calculatePreferredSize()
     }
 
-    override func viewDidAppear(_ animated: Bool) {
-        super.viewDidAppear(animated)
-        let attributes =
-        [ConstantEvents.Attributes.viewName : ConstantEvents.ViewNames.CalendarEventBanner,
-         ConstantEvents.Attributes.datetime : Date.getCurrentDatetimeAsString()
-        ]
-        EventTrackingUtil.shared.logEvent(ConstantEvents.ViewDidAppear, withEventProperties:attributes)
-    }
-
     override func viewDidDisappear(_ animated: Bool) {
         super.viewDidDisappear(animated)
-        let attributes =
-        [ConstantEvents.Attributes.viewName : ConstantEvents.ViewNames.CalendarEventBanner,
-         ConstantEvents.Attributes.datetime : Date.getCurrentDatetimeAsString()
-        ]
-        EventTrackingUtil.shared.logEvent(ConstantEvents.ViewDidDisappear, withEventProperties:attributes)
+        guard let vm = viewModel else {
+            // As this view is not always shown, the vc might not be set. 
+            return
+        }
+        if vm.shouldShowEventsBanner {
+            let attributes =
+            [ConstantEvents.Attributes.viewName : ConstantEvents.ViewNames.CalendarEventBannerView,
+             ConstantEvents.Attributes.datetime : Date.getCurrentDatetimeAsString()
+            ]
+            EventTrackingUtil.shared.logEvent(ConstantEvents.ViewDidDisappear, withEventProperties:attributes)
+        }
     }
 
 }
