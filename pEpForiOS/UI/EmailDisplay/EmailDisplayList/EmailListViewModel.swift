@@ -618,6 +618,42 @@ extension EmailListViewModel: QueryResultsIndexPathRowDelegate {
         if updatesEnabled {
             delegate?.emailListViewModel(viewModel: self, didInsertDataAt: [indexPath])
         }
+
+        var attributes =
+        [
+            ConstantEvents.Attributes.datetime : Date.getCurrentDatetimeAsString()
+        ] as [String : Any]
+
+        let messageToTrack = messageQueryResults[indexPath.row]
+        messageToTrack.pEpRating { rating in
+            attributes[ConstantEvents.Attributes.isEncrypted] =
+            rating == .unencrypted ? ConstantEvents.Values.´false´ : ConstantEvents.Values.´true´
+            attributes[ConstantEvents.Attributes.emailEncoding] = (messageToTrack.longMessageFormatted != nil) ? ConstantEvents.Values.htmlBody : ConstantEvents.Values.plainText
+        }
+
+        func getDataToTrack(attachment: Attachment, index: Int) -> [String : [String : String]] {
+            let key = attachment.fileName ?? "Attachment \(index)"
+            let type = attachment.mimeType?.lowercased() ?? "-"
+            let bytes : Int64 = Int64(attachment.size ?? 0)
+            let size = ByteCountFormatter.string(fromByteCount:bytes, countStyle: .binary)
+            return [key : [ ConstantEvents.Attributes.attachmentSize: size,
+                            ConstantEvents.Attributes.attachmentType: type] ]
+        }
+
+        let inlined = messageToTrack.attachments.filter{ $0.isInlined }
+        let nonInlined = messageToTrack.attachments.filter{ !$0.isInlined }
+
+
+        for (index, attachment) in inlined.enumerated() {
+            attributes["inlinedAttachments"] = getDataToTrack(attachment: attachment, index: index)
+        }
+
+        for (index, attachment) in nonInlined.enumerated() {
+            attributes["nonInlinedAttachments"] = getDataToTrack(attachment: attachment, index: index)
+        }
+
+        EventTrackingUtil.shared.logEvent(ConstantEvents.EmailReceived, withEventProperties: attributes)
+
     }
 
     func didUpdateRow(indexPath: IndexPath) {

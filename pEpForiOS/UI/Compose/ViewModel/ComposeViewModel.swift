@@ -325,6 +325,9 @@ class ComposeViewModel {
 
             attributes[ConstantEvents.Attributes.isEncrypted] = safeState.rating == .unencrypted ? ConstantEvents.Values.´false´ : ConstantEvents.Values.´true´
             attributes[ConstantEvents.Attributes.emailEncoding] = (msg.longMessageFormatted != nil) ? ConstantEvents.Values.htmlBody : ConstantEvents.Values.plainText
+#if !EXT_SHARE
+            EventTrackingUtil.shared.logEvent(ConstantEvents.EmailSent, withEventProperties: attributes)
+#endif
 
             msg.sent = Date()
             msg.session.commit()
