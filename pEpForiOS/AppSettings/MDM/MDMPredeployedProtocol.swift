@@ -18,8 +18,10 @@ enum MDMPredeployedError: Error {
 }
 
 protocol MDMPredeployedProtocol {
-    /// Finds out about pre-deployed accounts, and if there are any configured, erases the local DB
-    /// and sets them up, wiping the very configuration settings that triggered the set up after that.
+    /// Finds out about pre-deployed accounts (via settings that can be pre-deployed via MDM),
+    /// and if there are any configured, erases any accounts already set up in the local DB
+    /// and sets up the MDM configured accounts,
+    /// wiping the MDM configuration settings that triggered the set up after that.
     ///
     /// Calls the given callback when finished, indicating an error (`MDMPredeployedError`, if any),
     /// or complete success.
