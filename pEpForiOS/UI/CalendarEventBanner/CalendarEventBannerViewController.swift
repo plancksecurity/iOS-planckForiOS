@@ -30,6 +30,7 @@ class CalendarEventBannerViewController: UIViewController {
             }
         }
     }
+
     private var presentedEvent: ICSEvent?
     @IBOutlet private weak var tableView: UITableView!
     @IBOutlet private weak var dayOfTheWeekLabel: UILabel!
@@ -60,7 +61,6 @@ class CalendarEventBannerViewController: UIViewController {
             EventTrackingUtil.shared.logEvent(ConstantEvents.ViewDidDisappear, withEventProperties:attributes)
         }
     }
-
 }
 
 // MARK: - UITableViewDataSource
@@ -164,7 +164,6 @@ extension CalendarEventBannerViewController {
         }
     }
 }
-
 
 // MARK: - UINavigationControllerDelegate
 
