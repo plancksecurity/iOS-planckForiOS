@@ -9,5 +9,5 @@
 import UIKit
 
 class MessageSubjectCell: UITableViewCell {
-    @IBOutlet public weak var subjectLabel: UILabel!
+    @IBOutlet public weak var subjectLabel: CopyableLabel!
 }

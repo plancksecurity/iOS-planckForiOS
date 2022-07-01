@@ -825,8 +825,8 @@
                                                     <rect key="frame" x="0.0" y="0.0" width="414" height="60"/>
                                                     <autoresizingMask key="autoresizingMask"/>
                                                     <subviews>
-                                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalCompressionResistancePriority="1000" text="Subject" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontForContentSizeCategory="YES" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="7WS-qg-fiH" userLabel="Subject Label">
-                                                            <rect key="frame" x="20" y="20" width="366" height="31"/>
+                                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalCompressionResistancePriority="1000" text="Subject" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontForContentSizeCategory="YES" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="7WS-qg-fiH" userLabel="Subject Label" customClass="CopyableLabel" customModule="pEpForiOS" customModuleProvider="target">
+                                                            <rect key="frame" x="19.999999999999996" y="20" width="51.666666666666657" height="31"/>
                                                             <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                                             <fontDescription key="fontDescription" style="UICTFontTextStyleHeadline"/>
                                                             <nil key="highlightedColor"/>
@@ -844,7 +844,7 @@
                                                         <constraint firstItem="7WS-qg-fiH" firstAttribute="leading" secondItem="kkm-Hl-To6" secondAttribute="leading" constant="20" symbolic="YES" id="FD7-y5-qKl"/>
                                                         <constraint firstItem="Wyd-Sj-Zn2" firstAttribute="top" secondItem="7WS-qg-fiH" secondAttribute="bottom" constant="8" symbolic="YES" id="Lof-os-Vf9"/>
                                                         <constraint firstAttribute="bottom" secondItem="Wyd-Sj-Zn2" secondAttribute="bottom" id="R3k-ia-637"/>
-                                                        <constraint firstAttribute="trailingMargin" secondItem="7WS-qg-fiH" secondAttribute="trailing" constant="8" id="cta-3F-is6"/>
+                                                        <constraint firstAttribute="trailingMargin" relation="greaterThanOrEqual" secondItem="7WS-qg-fiH" secondAttribute="trailing" constant="8" id="cta-3F-is6"/>
                                                         <constraint firstItem="7WS-qg-fiH" firstAttribute="top" secondItem="kkm-Hl-To6" secondAttribute="top" constant="20" symbolic="YES" id="okj-9X-qMa"/>
                                                     </constraints>
                                                 </tableViewCellContentView>
@@ -1563,9 +1563,9 @@
         </designable>
     </designables>
     <inferredMetricsTieBreakers>
-        <segue reference="cRe-YG-393"/>
+        <segue reference="e2D-Sv-Lmt"/>
         <segue reference="jct-YG-JYz"/>
-        <segue reference="yAp-Cu-TCw"/>
+        <segue reference="wZp-rH-OFv"/>
     </inferredMetricsTieBreakers>
     <resources>
         <image name="attachment-list-icon" width="14" height="15"/>
