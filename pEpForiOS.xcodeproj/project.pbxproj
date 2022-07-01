@@ -1001,7 +1001,6 @@
 		43A469F921513B10002E1036 /* PEPSwipeTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PEPSwipeTableViewCell.swift; sourceTree = "<group>"; };
 		43A9818B24E53BFF00830603 /* Color+PrivacyStatusDescription.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Color+PrivacyStatusDescription.swift"; sourceTree = "<group>"; };
 		43A9818D24E53CF800830603 /* Color+UI.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Color+UI.swift"; sourceTree = "<group>"; };
-		43AE508728609D9E00965106 /* SecretTestData.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SecretTestData.swift; sourceTree = "<group>"; };
 		43B0444B20077323007BCE3F /* OAuth2Configuration.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OAuth2Configuration.swift; sourceTree = "<group>"; };
 		43B10C7F1EC2EE7F003E849F /* CppDummy.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = CppDummy.cpp; sourceTree = "<group>"; };
 		43C4156125EE5BD80071C608 /* Attachment+InlinedImage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Attachment+InlinedImage.swift"; sourceTree = "<group>"; };
@@ -1319,7 +1318,6 @@
 		151F71EB202A06750057C74D /* TestUtils */ = {
 			isa = PBXGroup;
 			children = (
-				43AE508728609D9E00965106 /* SecretTestData.swift */,
 				151F71EC202A06750057C74D /* TestDataBase.swift */,
 				158BCFEF24237FDB00E41F67 /* TestData.swift */,
 				154D173C2373327C001FDF78 /* AccountDrivenTestBase.swift */,
