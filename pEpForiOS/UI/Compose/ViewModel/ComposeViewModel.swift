@@ -323,6 +323,9 @@ class ComposeViewModel {
                 return nil
             }
 
+            attributes[ConstantEvents.Attributes.isEncrypted] = safeState.rating == .unencrypted ? ConstantEvents.Values.´false´ : ConstantEvents.Values.´true´
+            attributes[ConstantEvents.Attributes.emailEncoding] = (msg.longMessageFormatted != nil) ? ConstantEvents.Values.htmlBody : ConstantEvents.Values.plainText
+
             msg.sent = Date()
             msg.session.commit()
 
