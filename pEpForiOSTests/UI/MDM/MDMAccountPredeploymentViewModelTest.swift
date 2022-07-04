@@ -18,22 +18,39 @@ class MDMAccountPredeploymentViewModelTest: XCTestCase {
     override func tearDownWithError() throws {
     }
 
-    func testNothingToDeploy() throws {
-        deploy(haveAccountsToPredeploy: false)
+    func testSuccess() throws {
+        deploy(resultingError: nil)
+    }
+
+    func testMalformedAccountData() throws {
+        deploy(resultingError: .malformedAccountData)
+    }
+
+    func testNetworkError() throws {
+        deploy(resultingError: .networkError)
     }
 }
 
 // MARK: - Util
 
 extension MDMAccountPredeploymentViewModelTest {
-    func deploy(haveAccountsToPredeploy: Bool,
-                result: MDMAccountPredeploymentViewModel.Result = .error(message: "blarg")) {
-        let deployer = DummyDeployer(haveAccountsToPredeploy: haveAccountsToPredeploy)
+    /// Invokes a VM with the dummy deployer and checks if the result of that
+    /// is congruent with the given error,
+    /// i.e. that it was successful when there was no error given, and an error case
+    /// otherwise.
+    func deploy(resultingError: MDMPredeployedError?) {
+        let deployer = DummyDeployer(resultingError: resultingError)
         let vm = MDMAccountPredeploymentViewModel()
 
         let expDeployed = expectation(description: "expDeployed")
 
         vm.predeployAccounts(predeployer: deployer) { result in
+            switch result {
+            case .success(message: _):
+                XCTAssertNil(resultingError)
+            case .error(message: _):
+                XCTAssertNotNil(resultingError)
+            }
             expDeployed.fulfill()
         }
 
@@ -43,16 +60,16 @@ extension MDMAccountPredeploymentViewModelTest {
 
 // MARK: - Util Classes
 
+/// Dummy deployer that synchronously gives the result given in the initializer.
 class DummyDeployer: MDMPredeployedProtocol {
-    init(haveAccountsToPredeploy: Bool,
-         result: MDMAccountPredeploymentViewModel.Result = .error(message: "blarg")) {
-        self.haveAccountsToPredeploy = haveAccountsToPredeploy
-        self.result = result
+    init(resultingError: MDMPredeployedError?) {
+        self.resultingError = resultingError
     }
 
     func predeployAccounts(callback: @escaping (MDMPredeployedError?) -> ()) {
+        callback(resultingError)
     }
 
-    let haveAccountsToPredeploy: Bool
-    let result: MDMAccountPredeploymentViewModel.Result
+    let haveAccountsToPredeploy = true
+    let resultingError: MDMPredeployedError?
 }
