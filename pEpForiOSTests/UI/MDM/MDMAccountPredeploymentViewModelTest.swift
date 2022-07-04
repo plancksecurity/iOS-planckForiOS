@@ -8,6 +8,8 @@
 
 import XCTest
 
+@testable import pEpForiOS
+
 class MDMAccountPredeploymentViewModelTest: XCTestCase {
 
     override func setUpWithError() throws {
@@ -15,4 +17,18 @@ class MDMAccountPredeploymentViewModelTest: XCTestCase {
 
     override func tearDownWithError() throws {
     }
+}
+
+class DummyDeployer: MDMPredeployedProtocol {
+    init(haveAccountsToPredeploy: Bool,
+         result: MDMAccountPredeploymentViewModel.Result = .error(message: "blarg")) {
+        self.haveAccountsToPredeploy = haveAccountsToPredeploy
+        self.result = result
+    }
+
+    func predeployAccounts(callback: @escaping (MDMPredeployedError?) -> ()) {
+    }
+
+    let haveAccountsToPredeploy: Bool
+    let result: MDMAccountPredeploymentViewModel.Result
 }
