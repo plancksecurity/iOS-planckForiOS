@@ -26,6 +26,9 @@ protocol MDMPredeployedProtocol {
     /// Calls the given callback when finished, indicating an error (`MDMPredeployedError`, if any),
     /// or complete success.
     ///
+    /// - Note: It is an error to call `predeployAccounts` with `haveAccountsToPredeploy`
+    /// being `false`, with undefined behavior.
+    ///
     /// The format of the required settings is as follows:
     ///
     ///     MDM: Dictionary
