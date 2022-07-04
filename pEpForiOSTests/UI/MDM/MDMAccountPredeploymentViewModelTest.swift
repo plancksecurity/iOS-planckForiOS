@@ -17,7 +17,31 @@ class MDMAccountPredeploymentViewModelTest: XCTestCase {
 
     override func tearDownWithError() throws {
     }
+
+    func testNothingToDeploy() throws {
+        deploy(haveAccountsToPredeploy: false)
+    }
 }
+
+// MARK: - Util
+
+extension MDMAccountPredeploymentViewModelTest {
+    func deploy(haveAccountsToPredeploy: Bool,
+                result: MDMAccountPredeploymentViewModel.Result = .error(message: "blarg")) {
+        let deployer = DummyDeployer(haveAccountsToPredeploy: haveAccountsToPredeploy)
+        let vm = MDMAccountPredeploymentViewModel()
+
+        let expDeployed = expectation(description: "expDeployed")
+
+        vm.predeployAccounts(predeployer: deployer) { result in
+            expDeployed.fulfill()
+        }
+
+        wait(for: [expDeployed], timeout: TestUtil.waitTimeLocal)
+    }
+}
+
+// MARK: - Util Classes
 
 class DummyDeployer: MDMPredeployedProtocol {
     init(haveAccountsToPredeploy: Bool,
