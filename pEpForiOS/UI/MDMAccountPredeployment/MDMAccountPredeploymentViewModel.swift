@@ -11,6 +11,20 @@ import Foundation
 import pEpIOSToolbox
 
 class MDMAccountPredeploymentViewModel {
+    enum State {
+        /// Before doing anything
+        case initial
+
+        /// In the middle of running
+        case checking
+
+        /// An error ocurred during the pre-deployment
+        case error
+
+        /// The pre-deployment succeeded
+        case success
+    }
+
     /// Checks for predeployed accounts, and acts on them.
     func predeployAccounts(callback: @escaping (_ predeploymentError: MDMPredeployedError?) -> ()) {
         let predeployer: MDMPredeployedProtocol = MDMPredeployed()
