@@ -36,6 +36,9 @@ class MDMAccountPredeploymentViewModel {
 
                 callback(error)
             } else {
+                let message = NSLocalizedString("Accounts Deployed",
+                                                comment: "MDM predeployment message, all ok")
+
                 callback(nil)
             }
         }
