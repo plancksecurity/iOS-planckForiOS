@@ -52,6 +52,7 @@ class MDMAccountPredeploymentViewController: UIViewController {
                 Log.shared.lostMySelf()
                 return
             }
+
             theSelf.activityIndicator.stopAnimating()
             theSelf.activityIndicator.isHidden = true
 
