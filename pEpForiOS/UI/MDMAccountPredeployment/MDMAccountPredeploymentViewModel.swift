@@ -13,14 +13,14 @@ import pEpIOSToolbox
 class MDMAccountPredeploymentViewModel {
     enum Result {
         /// An error ocurred during the pre-deployment
-        case error(errorMessage: String)
+        case error(message: String)
 
         /// The pre-deployment succeeded
-        case success(successMessage: String)
+        case success(message: String)
     }
 
     /// Checks for predeployed accounts, and acts on them.
-    func predeployAccounts(callback: @escaping (_ predeploymentError: MDMPredeployedError?) -> ()) {
+    func predeployAccounts(callback: @escaping (_ result: Result) -> ()) {
         let predeployer: MDMPredeployedProtocol = MDMPredeployed()
         predeployer.predeployAccounts { maybeError in
             if let error = maybeError {
@@ -34,12 +34,12 @@ class MDMAccountPredeploymentViewModel {
                                                 comment: "MDM predeployment error")
                 }
 
-                callback(error)
+                callback(.error(message: message))
             } else {
                 let message = NSLocalizedString("Accounts Deployed",
                                                 comment: "MDM predeployment message, all ok")
 
-                callback(nil)
+                callback(.success(message: message))
             }
         }
     }

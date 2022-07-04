@@ -47,7 +47,7 @@ class MDMAccountPredeploymentViewController: UIViewController {
         messageLabel.text = NSLocalizedString("Deploying Accounts",
                                               comment: "MDM predeployment message")
 
-        viewModel.predeployAccounts { [weak self] maybeError in
+        viewModel.predeployAccounts { [weak self] result in
             guard let theSelf = self else {
                 Log.shared.lostMySelf()
                 return
@@ -56,19 +56,12 @@ class MDMAccountPredeploymentViewController: UIViewController {
             theSelf.activityIndicator.stopAnimating()
             theSelf.activityIndicator.isHidden = true
 
-            // TODO: Put some of this logic into the VM
-            if let error = maybeError {
-                switch error {
-                case .networkError:
-                    theSelf.messageLabel.text = NSLocalizedString("MDM Error: Could not connect to account",
-                                                                  comment: "MDM predeployment error")
-                case .malformedAccountData:
-                    theSelf.messageLabel.text = NSLocalizedString("MDM Error: Wrong Account Data",
-                                                                  comment: "MDM predeployment error")
-                }
-            } else {
-                theSelf.messageLabel.text = NSLocalizedString("Accounts Deployed",
-                                                              comment: "MDM predeployment message, all ok")
+            switch result {
+            case .error(let message):
+                theSelf.messageLabel.text = message
+                // let this view hang there forever
+            case .success(let message):
+                theSelf.messageLabel.text = message
                 theSelf.navigationController?.dismiss(animated: true)
             }
         }
