@@ -11,18 +11,12 @@ import Foundation
 import pEpIOSToolbox
 
 class MDMAccountPredeploymentViewModel {
-    enum State {
-        /// Before doing anything
-        case initial
-
-        /// In the middle of running
-        case checking
-
+    enum Result {
         /// An error ocurred during the pre-deployment
-        case error
+        case error(errorMessage: String)
 
         /// The pre-deployment succeeded
-        case success
+        case success(successMessage: String)
     }
 
     /// Checks for predeployed accounts, and acts on them.
@@ -30,6 +24,16 @@ class MDMAccountPredeploymentViewModel {
         let predeployer: MDMPredeployedProtocol = MDMPredeployed()
         predeployer.predeployAccounts { maybeError in
             if let error = maybeError {
+                var message: String
+                switch error {
+                case .networkError:
+                    message = NSLocalizedString("MDM Error: Could not connect to account",
+                                                comment: "MDM predeployment error")
+                case .malformedAccountData:
+                    message = NSLocalizedString("MDM Error: Wrong Account Data",
+                                                comment: "MDM predeployment error")
+                }
+
                 callback(error)
             } else {
                 callback(nil)
