@@ -11,7 +11,7 @@ import Foundation
 import pEpIOSToolbox
 
 class MDMAccountPredeploymentViewModel {
-    enum Result {
+    enum Result: Equatable {
         /// An error ocurred during the pre-deployment
         case error(message: String)
 
