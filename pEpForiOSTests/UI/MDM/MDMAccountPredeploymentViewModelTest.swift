@@ -36,8 +36,8 @@ class MDMAccountPredeploymentViewModelTest: XCTestCase {
 extension MDMAccountPredeploymentViewModelTest {
     /// Invokes a VM with the dummy deployer and checks if the result of that
     /// is congruent with the given error,
-    /// i.e. that it was successful when there was no error given, and an error case
-    /// otherwise.
+    /// i.e. that it was successful when there was no error given, and
+    /// that it gives an error result otherwise.
     func deploy(resultingError: MDMPredeployedError?) {
         let deployer = DummyDeployer(resultingError: resultingError)
         let vm = MDMAccountPredeploymentViewModel()
