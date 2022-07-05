@@ -100,6 +100,10 @@ class SMTPSettingsViewModel {
 extension SMTPSettingsViewModel: VerifiableAccountDelegate {
 
     func didEndVerification(result: Result<Void, Error>) {
+        guard let delegate = delegate else {
+            Log.shared.errorAndCrash("Delegate not found")
+            return
+        }
 
         switch result {
         case .success:
@@ -112,10 +116,10 @@ extension SMTPSettingsViewModel: VerifiableAccountDelegate {
                     switch savingResult {
                     case .success:
                         me.isCurrentlyVerifying = false
-                        me.delegate?.accountVerifiedSuccessfully()
+                        delegate.accountVerifiedSuccessfully()
                     case .failure(_):
                         me.isCurrentlyVerifying = false
-                        me.delegate?.showError(error: VerifiableAccountValidationError.invalidUserData)
+                        delegate.showError(error: VerifiableAccountValidationError.invalidUserData)
                     }
                 }
             })
@@ -127,7 +131,7 @@ extension SMTPSettingsViewModel: VerifiableAccountDelegate {
                     return
                 }
                 me.isCurrentlyVerifying = false
-                me.delegate?.showError(error: error)
+                delegate.showError(error: error)
             }
         }
     }
