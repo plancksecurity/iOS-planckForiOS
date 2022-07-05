@@ -27,7 +27,7 @@ class MDMPredeployedTest: XCTestCase {
 
     func testSingleAccountNetworkError() throws {
         XCTAssertFalse(MDMPredeployed().haveAccountsToPredeploy)
-        setupSinglePredeployedAccount()
+        setupSingleFailingPredeployedAccount()
         XCTAssertTrue(MDMPredeployed().haveAccountsToPredeploy)
 
         do {
@@ -49,7 +49,7 @@ class MDMPredeployedTest: XCTestCase {
         let _ = createAccount(baseName: "acc2", portBase: 556, index: 2)
 
         XCTAssertFalse(MDMPredeployed().haveAccountsToPredeploy)
-        setupSinglePredeployedAccount()
+        setupSingleFailingPredeployedAccount()
         XCTAssertTrue(MDMPredeployed().haveAccountsToPredeploy)
 
         do {
@@ -209,6 +209,12 @@ class MDMPredeployedTest: XCTestCase {
     /// An array of all accounts that are expected to be set up
     var setupAccountData = [AccountStruct]()
 
+    func setupSinglePredeployedAccount(appendixNumber: Int = 0) {
+        let accountDict = accountWithServerDictionary(appendixNumber: appendixNumber)
+        let predeployedAccounts: SettingsDict = [MDMPredeployed.keyPredeployedAccounts:[accountDict]]
+        UserDefaults.standard.set(predeployedAccounts, forKey: MDMPredeployed.keyMDM)
+    }
+
     func setupPredeployAccounts(number: Int) {
         var accountDicts = [SettingsDict]()
 
@@ -221,8 +227,8 @@ class MDMPredeployedTest: XCTestCase {
         UserDefaults.standard.set(predeployedAccounts, forKey: MDMPredeployed.keyMDM)
     }
 
-    func setupSinglePredeployedAccount(appendixNumber: Int = 0) {
-        let accountDict = accountWithServerDictionary(appendixNumber: appendixNumber)
+    func setupSingleFailingPredeployedAccount(appendixNumber: Int = 0) {
+        let accountDict = failingAccountWithServerDictionary(appendixNumber: appendixNumber)
         let predeployedAccounts: SettingsDict = [MDMPredeployed.keyPredeployedAccounts:[accountDict]]
         UserDefaults.standard.set(predeployedAccounts, forKey: MDMPredeployed.keyMDM)
     }
@@ -282,6 +288,35 @@ class MDMPredeployedTest: XCTestCase {
                                         userName: username,
                                         loginName: loginName,
                                         password: password)
+        if setupAccountData.count > appendixNumber {
+            XCTFail()
+            return [:]
+        }
+        setupAccountData.append(accountData)
+
+        let imapServer = serverDictionary(name: accountData.imapServer,
+                                          port: accountData.imapPort)
+        let smtpServer = serverDictionary(name: accountData.smtpServer,
+                                          port: accountData.smtpPort)
+        let accountDict = accountDictionary(userName: accountData.userName,
+                                            userAddress: accountData.userAddress,
+                                            loginName: accountData.loginName,
+                                            password: accountData.password,
+                                            imapServer: imapServer,
+                                            smtpServer: smtpServer)
+
+        return accountDict
+    }
+
+    private func failingAccountWithServerDictionary(appendixNumber: Int = 0) -> SettingsDict {
+        let accountData = AccountStruct(userAddress: "account\(appendixNumber)@example.com",
+                                        imapServer: "imapServer\(appendixNumber)",
+                                        imapPort: 993,
+                                        smtpServer: "smtpServer\(appendixNumber)",
+                                        smtpPort: 587,
+                                        userName: "userName\(appendixNumber)",
+                                        loginName: "loginName\(appendixNumber)",
+                                        password: "password\(appendixNumber)")
         if setupAccountData.count > appendixNumber {
             XCTFail()
             return [:]
