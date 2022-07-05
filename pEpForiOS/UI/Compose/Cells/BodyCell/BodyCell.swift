@@ -21,8 +21,13 @@ class BodyCell: TextViewContainingTableViewCell {
 
     var viewModel: BodyCellViewModel? {
         didSet {
-            viewModel?.delegate = self
-            viewModel?.maxTextattachmentWidth = textView.contentSize.width
+            guard let vm = viewModel else {
+                Log.shared.errorAndCrash("VM not found")
+                return
+            }
+
+            vm.delegate = self
+            vm.maxTextattachmentWidth = textView.contentSize.width
             setupInitialText()
         }
     }
@@ -79,8 +84,12 @@ extension BodyCell: BodyCellViewModelDelegate {
         let attrText = NSMutableAttributedString(attributedString: textView.attributedText)
         attrText.replaceCharacters(in: selectedRange, with: text)
         textView.attributedText = attrText
-        viewModel?.handleTextChange(newText: textView.text,
-                                    newAttributedText: textView.attributedText)
+        guard let vm = viewModel else {
+            Log.shared.errorAndCrash("VM not found")
+            return
+        }
+        vm.handleTextChange(newText: textView.text,
+                            newAttributedText: textView.attributedText)
     }
 }
 
@@ -95,22 +104,38 @@ extension BodyCell {
         }
         let cursorPosition = textView.offset(from: textView.beginningOfDocument,
                                              to: textRange.start)
-        viewModel?.handleCursorPositionChange(newPosition: cursorPosition)
+        guard let vm = viewModel else {
+            Log.shared.errorAndCrash("VM not found")
+            return
+        }
+        vm.handleCursorPositionChange(newPosition: cursorPosition)
     }
 
     public func textViewDidChange(_ textView: UITextView) {
-        viewModel?.handleTextChange(newText: textView.text,
-                                    newAttributedText: textView.attributedText)
+        guard let vm = viewModel else {
+            Log.shared.errorAndCrash("VM not found")
+            return
+        }
+        vm.handleTextChange(newText: textView.text,
+                            newAttributedText: textView.attributedText)
     }
 
     func textViewDidBeginEditing(_ textView: UITextView) {
-        viewModel?.maxTextattachmentWidth = textView.bounds.width
+        guard let vm = viewModel else {
+            Log.shared.errorAndCrash("VM not found")
+            return
+        }
+        vm.maxTextattachmentWidth = textView.bounds.width
         setupContextMenu()
         textView.setLabelTextColor()
     }
 
     func textViewDidEndEditing(_ textView: UITextView) {
-        viewModel?.handleDidEndEditing(attributedText: textView.attributedText)
+        guard let vm = viewModel else {
+            Log.shared.errorAndCrash("VM not found")
+            return
+        }
+        vm.handleDidEndEditing(attributedText: textView.attributedText)
         tearDownContextMenu()
     }
 
@@ -141,9 +166,13 @@ extension BodyCell {
 
 extension BodyCell {
     private func setupContextMenu() {
-        let media = UIMenuItem(title: viewModel?.contextMenuItemTitleAddPhotoOrVideo ?? "",
+        guard let vm = viewModel else {
+            Log.shared.errorAndCrash("VM not found")
+            return
+        }
+        let media = UIMenuItem(title: vm.contextMenuItemTitleAddPhotoOrVideo,
                                action: #selector(userClickedSelectMedia))
-        let attachment = UIMenuItem(title: viewModel?.contextMenuItemTitleAddDocument ?? "",
+        let attachment = UIMenuItem(title: vm.contextMenuItemTitleAddDocument,
                                     action: #selector(userClickedSelectDocument))
         UIMenuController.shared.menuItems = [media, attachment]
     }
@@ -154,11 +183,19 @@ extension BodyCell {
 
     @objc //required for usage in selector
     private func userClickedSelectMedia() {
-        viewModel?.handleUserClickedSelectMedia()
+        guard let vm = viewModel else {
+            Log.shared.errorAndCrash("VM not found")
+            return
+        }
+        vm.handleUserClickedSelectMedia()
     }
 
     @objc //required for usage in selector
     private func userClickedSelectDocument() {
-        viewModel?.handleUserClickedSelectDocument()
+        guard let vm = viewModel else {
+            Log.shared.errorAndCrash("VM not found")
+            return
+        }
+        vm.handleUserClickedSelectDocument()
     }
 }
