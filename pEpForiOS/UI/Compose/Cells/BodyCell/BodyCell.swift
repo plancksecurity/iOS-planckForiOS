@@ -21,13 +21,8 @@ class BodyCell: TextViewContainingTableViewCell {
 
     var viewModel: BodyCellViewModel? {
         didSet {
-            guard let vm = viewModel else {
-                Log.shared.errorAndCrash("VM not found")
-                return
-            }
-
-            vm.delegate = self
-            vm.maxTextattachmentWidth = textView.contentSize.width
+            viewModel?.delegate = self
+            viewModel?.maxTextattachmentWidth = textView.contentSize.width
             setupInitialText()
         }
     }

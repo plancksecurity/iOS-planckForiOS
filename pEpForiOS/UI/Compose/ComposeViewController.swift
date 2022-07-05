@@ -55,11 +55,7 @@ class ComposeViewController: UIViewController {
     var viewModel: ComposeViewModel? {
         didSet {
             // Make sure we are the delegate. Always.
-            guard let vm = viewModel else {
-                Log.shared.errorAndCrash("VM not found")
-                return
-            }
-            vm.delegate = self
+            viewModel?.delegate = self
         }
     }
 

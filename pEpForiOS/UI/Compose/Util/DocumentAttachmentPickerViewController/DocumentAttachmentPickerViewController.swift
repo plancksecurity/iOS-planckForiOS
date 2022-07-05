@@ -7,6 +7,11 @@
 //
 
 import UIKit
+#if EXT_SHARE
+import pEpIOSToolboxForExtensions
+#else
+import pEpIOSToolbox
+#endif
 
 class DocumentAttachmentPickerViewController: UIDocumentPickerViewController {
     var viewModel: DocumentAttachmentPickerViewModel?
@@ -30,9 +35,18 @@ extension DocumentAttachmentPickerViewController: UIDocumentPickerDelegate {
 
     func documentPicker(_ controller: UIDocumentPickerViewController,
                         didPickDocumentsAt urls: [URL]) {
-        viewModel?.handleDidPickDocuments(at: urls)
+        guard let vm = viewModel else {
+            Log.shared.errorAndCrash("VM not found")
+            return
+        }
+        vm.handleDidPickDocuments(at: urls)
     }
+
     func documentPickerWasCancelled(_ controller: UIDocumentPickerViewController) {
-        viewModel?.handleDidCancel()
+        guard let vm = viewModel else {
+            Log.shared.errorAndCrash("VM not found")
+            return
+        }
+        vm.handleDidCancel()
     }
 }

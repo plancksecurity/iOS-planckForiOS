@@ -23,12 +23,20 @@ class RecipientTextView: UITextView {
     }
 
     private func reportWidthChange() {
-        viewModel?.maxTextattachmentWidth = bounds.width
+        guard let vm = viewModel else {
+            Log.shared.errorAndCrash("VM not found")
+            return
+        }
+        vm.maxTextattachmentWidth = bounds.width
     }
 
     public func setInitialText() {
         reportWidthChange()
-        if let attr = viewModel?.inititalText(), attr.string != "" {
+        guard let vm = viewModel else {
+            Log.shared.errorAndCrash("VM not found")
+            return
+        }
+        if let attr = vm.inititalText(), attr.string != "" {
             attributedText = attr
         } else {
             text = " "
@@ -43,7 +51,11 @@ extension RecipientTextView: UITextViewDelegate {
     public func textViewDidBeginEditing(_ textView: UITextView) {
         reportWidthChange()
         setLabelTextColor()
-        viewModel?.handleDidBeginEditing(text: textView.text)
+        guard let vm = viewModel else {
+            Log.shared.errorAndCrash("VM not found")
+            return
+        }
+        vm.handleDidBeginEditing(text: textView.text)
     }
 
     public func textViewDidChange(_ textView: UITextView) {

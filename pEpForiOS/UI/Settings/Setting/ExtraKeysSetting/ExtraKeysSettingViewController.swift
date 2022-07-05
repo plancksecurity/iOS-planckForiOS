@@ -56,7 +56,11 @@ class ExtraKeysSettingViewController: UIViewController {
     // MARK: - Action
 
     @IBAction func addExtraKeyButtonPressed(_ sender: UIButton) {
-        viewModel?.handleAddButtonPress(fpr: fpr.text)
+        guard let vm = viewModel else {
+            Log.shared.errorAndCrash("VM not found")
+            return
+        }
+        vm.handleAddButtonPress(fpr: fpr.text)
         fpr.resignFirstResponder()
         fpr.text = ""
     }
@@ -67,6 +71,11 @@ class ExtraKeysSettingViewController: UIViewController {
 extension ExtraKeysSettingViewController {
     
     private func setup() {
+        guard let vm = viewModel else {
+            Log.shared.errorAndCrash("VM not found")
+            return
+        }
+
         tableView.dataSource = self
         tableView.delegate = self
         tableView.tableFooterView = UIView(frame: CGRect.zero) // Hides lines for non empty rows
@@ -77,7 +86,7 @@ extension ExtraKeysSettingViewController {
         viewModel = ExtraKeysSettingViewModel(delegate: self)
 
         // Editable
-        let isEditable = viewModel?.isEditable ?? false
+        let isEditable = vm.isEditable
         tableView.isEditing = isEditable
         addFprView.isHidden = !isEditable
 
@@ -125,7 +134,11 @@ extension ExtraKeysSettingViewController {
 extension ExtraKeysSettingViewController: UITableViewDataSource {
 
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return viewModel?.numRows ?? 0
+        guard let vm = viewModel else {
+            Log.shared.errorAndCrash("VM not found")
+            return 0
+        }
+        return vm.numRows
     }
 
     func tableView(_ tableView: UITableView,
@@ -142,8 +155,12 @@ extension ExtraKeysSettingViewController: UITableViewDataSource {
     }
 
     func tableView(_ tableView: UITableView, canEditRowAt indexPath: IndexPath) -> Bool {
+        guard let vm = viewModel else {
+            Log.shared.errorAndCrash("VM not found")
+            return false
+        }
         // Enables swipe to delete
-        return viewModel?.isEditable ?? false
+        return vm.isEditable
     }
 
     func tableView(_ tableView: UITableView, editingStyleForRowAt indexPath: IndexPath) -> UITableViewCell.EditingStyle {
