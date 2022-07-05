@@ -20,9 +20,6 @@ class FolderTableViewController: UITableViewController {
 
     @IBOutlet private weak var addAccountButton: UIButton!
 
-    // TMP: Used to only test-deploy once, like in real-world situations.
-    var haveDeployedOnce = false
-
     // MARK: - Life Cycle
 
     override func viewDidLoad() {
@@ -292,8 +289,7 @@ extension FolderTableViewController: SegueHandlerType {
 
      /// Unwind segue for the case of adding an account that requires manual setup
     @IBAction private func segueUnwindAfterAccountCreation(segue: UIStoryboardSegue) {
-        // After adding an account with manual setup the user should see the email list view,
-        // as well after pre-deploying accounts.
+        // After adding an account with manual setup the user should see the email list view
         shouldPresentNextView = true
     }
 
@@ -307,12 +303,6 @@ extension FolderTableViewController: SegueHandlerType {
         guard let vm = folderVM else {
             Log.shared.errorAndCrash("VM not Found")
             return
-        }
-
-        // TMP: Simulate account pre-deployment
-        if !haveDeployedOnce {
-            MDMAccountPredeploymentViewModel.addTestData()
-            haveDeployedOnce = true
         }
 
         if shouldPresentNextView {

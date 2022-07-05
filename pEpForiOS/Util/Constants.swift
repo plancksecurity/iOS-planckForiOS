@@ -40,9 +40,6 @@ extension Constants {
     /// Name of Storyboard that contains KeySyncWizardViewController.
     static let keySyncWizardStoryboard = "Reusable"
 
-    /// Name of the storyboard for MDM-driven account setup (deployment).
-    static let mdmAccountPredeploymentStoryboard = "MDMAccountPredeployment"
-
     struct XibNames {
         static let loadingInterface = "LoadingInterface"
     }

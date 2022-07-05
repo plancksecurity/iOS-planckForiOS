@@ -13,8 +13,8 @@ import pEpIOSToolbox
 final class AccountTypeSelectorViewController: UIViewController {
 
     var viewModel = AccountTypeSelectorViewModel()
-    var delegate: AccountTypeSelectorViewModelDelegate?
-    var loginDelegate: LoginViewControllerDelegate?
+    weak var delegate: AccountTypeSelectorViewModelDelegate?
+    weak var loginDelegate: LoginViewControllerDelegate?
 
     @IBOutlet private weak var selectAccountTypeLabel: UILabel!
     @IBOutlet private weak var welcomeToPepLabel: UILabel!

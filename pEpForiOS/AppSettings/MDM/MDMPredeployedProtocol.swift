@@ -8,9 +8,9 @@
 
 import Foundation
 
-/// Error cases thrown by `MDMPredeployedProtocol.predeployAccounts`.
+/// All error cases thrown by `MDMPredeployedProtocol.predeployAccounts`.
 enum MDMPredeployedError: Error {
-    /// Account settings were found, but the format could not be read.
+    /// Account settings were found, but the format could not be read/parsed.
     case malformedAccountData
 
     /// A network error occurred when trying to verify the account
@@ -18,11 +18,16 @@ enum MDMPredeployedError: Error {
 }
 
 protocol MDMPredeployedProtocol {
-    /// Finds out about pre-deployed accounts, and if there are any configured, erases the local DB
-    /// and sets them up, wiping the very configuration settings that triggered the set up after that.
+    /// Finds out about pre-deployed accounts (via settings that can be pre-deployed via MDM),
+    /// and if there are any configured, erases any accounts already set up in the local DB
+    /// and sets up the MDM configured accounts,
+    /// wiping the MDM configuration settings that triggered the set up after that.
     ///
     /// Calls the given callback when finished, indicating an error (`MDMPredeployedError`, if any),
     /// or complete success.
+    ///
+    /// - Note: It is an error to call `predeployAccounts` with `haveAccountsToPredeploy`
+    /// being `false`, with undefined behavior.
     ///
     /// The format of the required settings is as follows:
     ///
