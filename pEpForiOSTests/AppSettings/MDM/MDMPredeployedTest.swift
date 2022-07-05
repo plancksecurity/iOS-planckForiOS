@@ -27,7 +27,7 @@ class MDMPredeployedTest: XCTestCase {
 
     func testSingleAccountNetworkError() throws {
         XCTAssertFalse(MDMPredeployed().haveAccountsToPredeploy)
-        setupSinglePredeployedAccount()
+        setupSingleFailingPredeployedAccount()
         XCTAssertTrue(MDMPredeployed().haveAccountsToPredeploy)
 
         do {
@@ -49,7 +49,7 @@ class MDMPredeployedTest: XCTestCase {
         let _ = createAccount(baseName: "acc2", portBase: 556, index: 2)
 
         XCTAssertFalse(MDMPredeployed().haveAccountsToPredeploy)
-        setupSinglePredeployedAccount()
+        setupSingleFailingPredeployedAccount()
         XCTAssertTrue(MDMPredeployed().haveAccountsToPredeploy)
 
         do {
@@ -109,11 +109,11 @@ class MDMPredeployedTest: XCTestCase {
     /// An array of all accounts that are expected to be set up
     var setupAccountData = [AccountStruct]()
 
-    func setupPredeployAccounts(number: Int) {
+    func setupFailingPredeployAccounts(number: Int) {
         var accountDicts = [SettingsDict]()
 
         for i in 0...number-1 {
-            let accDict = accountWithServerDictionary(appendixNumber: i)
+            let accDict = failingAccountWithServerDictionary(appendixNumber: i)
             accountDicts.append(accDict)
         }
 
@@ -121,8 +121,8 @@ class MDMPredeployedTest: XCTestCase {
         UserDefaults.standard.set(predeployedAccounts, forKey: MDMPredeployed.keyMDM)
     }
 
-    func setupSinglePredeployedAccount(appendixNumber: Int = 0) {
-        let accountDict = accountWithServerDictionary(appendixNumber: appendixNumber)
+    func setupSingleFailingPredeployedAccount(appendixNumber: Int = 0) {
+        let accountDict = failingAccountWithServerDictionary(appendixNumber: appendixNumber)
         let predeployedAccounts: SettingsDict = [MDMPredeployed.keyPredeployedAccounts:[accountDict]]
         UserDefaults.standard.set(predeployedAccounts, forKey: MDMPredeployed.keyMDM)
     }
@@ -159,7 +159,7 @@ class MDMPredeployedTest: XCTestCase {
 
     // MARK: - Setup Util Util
 
-    private func accountWithServerDictionary(appendixNumber: Int = 0) -> SettingsDict {
+    private func failingAccountWithServerDictionary(appendixNumber: Int = 0) -> SettingsDict {
         let accountData = AccountStruct(userAddress: "account\(appendixNumber)@example.com",
                                         imapServer: "imapServer\(appendixNumber)",
                                         imapPort: 993,
