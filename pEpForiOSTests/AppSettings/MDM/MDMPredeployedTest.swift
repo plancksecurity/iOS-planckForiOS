@@ -66,6 +66,106 @@ class MDMPredeployedTest: XCTestCase {
         XCTAssertEqual(accounts.count, 0)
     }
 
+    func testSingleAccount() throws {
+        XCTAssertFalse(MDMPredeployed().haveAccountsToPredeploy)
+        setupSinglePredeployedAccount()
+        XCTAssertTrue(MDMPredeployed().haveAccountsToPredeploy)
+
+        try predeployAccounts()
+
+        XCTAssertFalse(MDMPredeployed().haveAccountsToPredeploy)
+
+        let accounts = Account.all()
+        XCTAssertEqual(accounts.count, 1)
+
+        guard let account1 = accounts.first else {
+            // The number of accounts has already been checked
+            return
+        }
+
+        XCTAssertEqual(account1.imapServer?.address,
+                       setupAccountData[0].imapServer)
+        XCTAssertEqual(account1.smtpServer?.address,
+                       setupAccountData[0].smtpServer)
+        XCTAssertEqual(account1.imapServer?.port, setupAccountData[0].imapPort)
+        XCTAssertEqual(account1.smtpServer?.port, setupAccountData[0].smtpPort)
+        XCTAssertEqual(account1.user.userName,
+                       setupAccountData[0].userName)
+        XCTAssertEqual(account1.imapServer?.credentials.loginName,
+                       setupAccountData[0].loginName)
+        XCTAssertEqual(account1.smtpServer?.credentials.loginName,
+                       setupAccountData[0].loginName)
+        XCTAssertEqual(account1.imapServer?.credentials.password,
+                       setupAccountData[0].password)
+        XCTAssertEqual(account1.smtpServer?.credentials.password,
+                       setupAccountData[0].password)
+    }
+
+    func testMoreThanOneAccount() throws {
+        let numAccounts = 2
+
+        XCTAssertFalse(MDMPredeployed().haveAccountsToPredeploy)
+        setupPredeployAccounts(number: numAccounts)
+        XCTAssertTrue(MDMPredeployed().haveAccountsToPredeploy)
+
+        try predeployAccounts()
+
+        XCTAssertFalse(MDMPredeployed().haveAccountsToPredeploy)
+
+        let accounts = Account.all()
+        XCTAssertEqual(accounts.count, numAccounts)
+
+        var optionalPrevAccount: Account? = nil
+        for acc in accounts {
+            if let account1 = optionalPrevAccount {
+                XCTAssertNotEqual(account1.user.userName, acc.user.userName)
+                XCTAssertNotEqual(account1.imapServer?.credentials.loginName,
+                                  acc.imapServer?.credentials.loginName)
+                XCTAssertNotEqual(account1.smtpServer?.credentials.loginName,
+                                  acc.smtpServer?.credentials.loginName)
+            }
+            optionalPrevAccount = acc
+        }
+    }
+
+    func testAllExistingAccountsHaveBeenWiped() throws {
+        let _ = createAccount(baseName: "acc1", portBase: 555, index: 1)
+        let _ = createAccount(baseName: "acc2", portBase: 556, index: 2)
+
+        XCTAssertFalse(MDMPredeployed().haveAccountsToPredeploy)
+        setupSinglePredeployedAccount()
+        XCTAssertTrue(MDMPredeployed().haveAccountsToPredeploy)
+
+        try predeployAccounts()
+
+        XCTAssertFalse(MDMPredeployed().haveAccountsToPredeploy)
+
+        let accounts = Account.all()
+        XCTAssertEqual(accounts.count, 1)
+
+        guard let account1 = accounts.first else {
+            // The number of accounts has already been checked
+            return
+        }
+
+        XCTAssertEqual(account1.imapServer?.address,
+                       setupAccountData[0].imapServer)
+        XCTAssertEqual(account1.smtpServer?.address,
+                       setupAccountData[0].smtpServer)
+        XCTAssertEqual(account1.imapServer?.port, setupAccountData[0].imapPort)
+        XCTAssertEqual(account1.smtpServer?.port, setupAccountData[0].smtpPort)
+        XCTAssertEqual(account1.user.userName,
+                       setupAccountData[0].userName)
+        XCTAssertEqual(account1.imapServer?.credentials.loginName,
+                       setupAccountData[0].loginName)
+        XCTAssertEqual(account1.smtpServer?.credentials.loginName,
+                       setupAccountData[0].loginName)
+        XCTAssertEqual(account1.imapServer?.credentials.password,
+                       setupAccountData[0].password)
+        XCTAssertEqual(account1.smtpServer?.credentials.password,
+                       setupAccountData[0].password)
+    }
+
     // MARK: - Util
 
     /// Wrapper around `MDMPredeployed.predeployAccounts` that makes it
@@ -160,14 +260,28 @@ class MDMPredeployedTest: XCTestCase {
     // MARK: - Setup Util Util
 
     private func accountWithServerDictionary(appendixNumber: Int = 0) -> SettingsDict {
-        let accountData = AccountStruct(userAddress: "account\(appendixNumber)@example.com",
-                                        imapServer: "imapServer\(appendixNumber)",
-                                        imapPort: 993,
-                                        smtpServer: "smtpServer\(appendixNumber)",
-                                        smtpPort: 587,
-                                        userName: "userName\(appendixNumber)",
-                                        loginName: "loginName\(appendixNumber)",
-                                        password: "password\(appendixNumber)")
+        let testData = SecretTestData().createVerifiableAccountSettings(number: appendixNumber)
+
+        let loginName = testData.imapLoginName ?? testData.smtpLoginName ?? testData.idAddress
+
+        guard let password = testData.imapPassword ?? testData.smtpPassword else {
+            XCTFail()
+            return [:]
+        }
+
+        guard let username = testData.idUserName else {
+            XCTFail()
+            return [:]
+        }
+
+        let accountData = AccountStruct(userAddress: testData.idAddress,
+                                        imapServer: testData.imapServerAddress,
+                                        imapPort: testData.imapServerPort,
+                                        smtpServer: testData.smtpServerAddress,
+                                        smtpPort: testData.smtpServerPort,
+                                        userName: username,
+                                        loginName: loginName,
+                                        password: password)
         if setupAccountData.count > appendixNumber {
             XCTFail()
             return [:]
