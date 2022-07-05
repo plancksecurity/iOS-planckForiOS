@@ -7,24 +7,19 @@
 //
 
 import UIKit
-
 import pEpIOSToolbox
 import MessageModel
 import PantomimeFramework
 
 final class SMTPSettingsViewController: UIViewController, TextfieldResponder {
+
     @IBOutlet weak var manualAccountSetupContainerView: ManualAccountSetupContainerView!
 
-    /// - Note: This VC doesn't have a view model yet, so this is used for the model.
-    var verifiableAccount: VerifiableAccountProtocol?
+    public var viewModel : SMTPSettingsViewModel?
 
-    var fields = [UITextField]()
-    var responder = 0
-    var isCurrentlyVerifying = false {
-        didSet {
-            updateView()
-        }
-    }
+    internal var fields = [UITextField]()
+
+    internal var responder = 0
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -44,11 +39,12 @@ final class SMTPSettingsViewController: UIViewController, TextfieldResponder {
 
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
-        guard let verifiableAccount = verifiableAccount else {
-            Log.shared.errorAndCrash("No Verifiable account")
+        guard let vm = viewModel else {
+            Log.shared.errorAndCrash("VM not found")
             return
         }
-        firstResponder(verifiableAccount.loginNameSMTP == nil)
+
+        firstResponder(vm.verifiableAccount.loginNameSMTP == nil)
     }
 
     @IBAction private func didTapOnView(_ sender: Any) {
@@ -104,63 +100,48 @@ extension SMTPSettingsViewController: UITextFieldDelegate {
 // MARK: - ManualAccountSetupViewDelegate
 
 extension SMTPSettingsViewController: ManualAccountSetupViewDelegate {
+
     func didPressCancelButton() {
         navigationController?.popViewController(animated: true)
     }
 
     func didPressNextButton() {
-        do {
-            try verifyAccount()
-            hideKeybord()
-        } catch {
-            let errorTopic = NSLocalizedString("Empty Field",
-                                               comment: "Title of alert: a required field is empty")
-            isCurrentlyVerifying =  false
-
-            var errorMessage = ""
-
-            if let verifiableError = error as? VerifiableAccountValidationError {
-                switch verifiableError {
-                case .invalidUserData:
-                    errorMessage = NSLocalizedString("Some mandatory fields are empty",
-                                                     comment: "Message of alert: a required field is empty")
-                case .unknown:
-                    errorMessage = NSLocalizedString("Something went wrong.",
-                                                     comment: "Message of alert: something went wrong.")
-                }
-            } else {
-                errorMessage = error.localizedDescription
-            }
-            informUser(about: errorMessage, title: errorTopic)
+        guard let vm = viewModel else {
+            Log.shared.errorAndCrash("VM not found")
+            return
         }
+        vm.handleDidPressNextButton()
     }
 
     // Username
     func didChangeFirst(_ textField: UITextField) {
-        guard var verifiableAccount = verifiableAccount else {
-            Log.shared.errorAndCrash("No Verifiable account")
+        guard let vm = viewModel else {
+            Log.shared.errorAndCrash("VM not found")
             return
         }
-        verifiableAccount.loginNameSMTP = textField.text
+
+        vm.verifiableAccount.loginNameSMTP = textField.text
         updateView()
     }
 
     // Password
     func didChangeSecond(_ textField: UITextField) {
-        guard var verifiableAccount = verifiableAccount else {
-            Log.shared.errorAndCrash("No Verifiable account")
+        guard let vm = viewModel else {
+            Log.shared.errorAndCrash("VM not found")
             return
         }
-        verifiableAccount.smtpPassword = textField.text
+
+        vm.verifiableAccount.smtpPassword = textField.text
     }
 
     // Server
     func didChangeThird(_ textField: UITextField) {
-        guard var verifiableAccount = verifiableAccount else {
-            Log.shared.errorAndCrash("No Verifiable account")
+        guard let vm = viewModel else {
+            Log.shared.errorAndCrash("VM not found")
             return
         }
-        verifiableAccount.serverSMTP = textField.text
+
+        vm.verifiableAccount.serverSMTP = textField.text
     }
 
     // Port
@@ -170,11 +151,11 @@ extension SMTPSettingsViewController: ManualAccountSetupViewDelegate {
             //If not UInt16 then do nothing. Example empty string
             return
         }
-        guard var verifiableAccount = verifiableAccount else {
-            Log.shared.errorAndCrash("No Verifiable account")
+        guard let vm = viewModel else {
+            Log.shared.errorAndCrash("VM not found")
             return
         }
-        verifiableAccount.portSMTP = port
+        vm.verifiableAccount.portSMTP = port
     }
 
     // Transport security
@@ -202,106 +183,108 @@ extension SMTPSettingsViewController: SegueHandlerType {
     }
 }
 
-// MARK: - VerifiableAccountDelegate
+// MARK: - SMTPSettingsDelegate
 
-extension SMTPSettingsViewController: VerifiableAccountDelegate {
-    func didEndVerification(result: Result<Void, Error>) {
-        guard let verifiableAccount = verifiableAccount else {
-            Log.shared.errorAndCrash("Verifiable account not found")
-            return
-        }
-
-        switch result {
-        case .success:
-            verifiableAccount.save(completion: { [weak self] (savingResult) in
-                guard let me = self else {
-                    // Valid case. We might have been dismissed already.
-                    return
-                }
-                DispatchQueue.main.async {
-                    switch savingResult {
-                    case .success:
-                        me.isCurrentlyVerifying = false
-                        me.performSegue(withIdentifier: .backToEmailListSegue, sender: me)
-                    case .failure(_):
-                        me.isCurrentlyVerifying = false
-                        UIUtils.show(error: VerifiableAccountValidationError.invalidUserData)
-                    }
-                }
-            })
-
-        case .failure(let error):
-            DispatchQueue.main.async { [weak self] in
-                guard let me = self else {
-                    // Valid case. We might have been dismissed already.
-                    return
-                }
-                me.isCurrentlyVerifying = false
-                UIUtils.show(error: error)
-            }
-        }
-    }
-}
-
-// MARK: - Private
-
-extension SMTPSettingsViewController {
+extension SMTPSettingsViewController: SMTPSettingsDelegate {
 
     /// Update view state from view model
     /// - Parameter animated: this property only apply to  items with animations, list AnimatedPlaceholderTextFields
-    private func updateView(animated: Bool = true) {
+    func updateView(animated: Bool = true) {
         guard let setupView = manualAccountSetupContainerView.setupView else {
             Log.shared.errorAndCrash("Fail to get manualAccountSetupView")
             return
         }
-        guard let verifiableAccount = verifiableAccount else {
-            Log.shared.errorAndCrash("No Verifiable account")
+        guard let vm = viewModel else {
+            Log.shared.errorAndCrash("VM not found")
             return
         }
 
-        setupView.firstTextField.set(text: verifiableAccount.loginNameSMTP,
+
+        setupView.firstTextField.set(text: vm.verifiableAccount.loginNameSMTP,
                                      animated: animated)
-        setupView.secondTextField.set(text: verifiableAccount.smtpPassword,
+        setupView.secondTextField.set(text: vm.verifiableAccount.smtpPassword,
                                       animated: animated)
-        setupView.thirdTextField.set(text: verifiableAccount.serverSMTP,
+        setupView.thirdTextField.set(text: vm.verifiableAccount.serverSMTP,
                                      animated: animated)
-        setupView.fourthTextField.set(text: String(verifiableAccount.portSMTP),
+        setupView.fourthTextField.set(text: String(vm.verifiableAccount.portSMTP),
                                       animated: animated)
-        setupView.fifthTextField.set(text: verifiableAccount.transportSMTP.localizedString(),
+        setupView.fifthTextField.set(text: vm.verifiableAccount.transportSMTP.localizedString(),
                                      animated: animated)
 
-        setupView.pEpSyncSwitch.isOn = verifiableAccount.keySyncEnable
+        setupView.pEpSyncSwitch.isOn = vm.verifiableAccount.keySyncEnable
 
-        setupView.nextButton.isEnabled = verifiableAccount.isValidUser
-        setupView.nextRightButton.isEnabled = verifiableAccount.isValidUser
+        setupView.nextButton.isEnabled = vm.verifiableAccount.isValidUser
+        setupView.nextRightButton.isEnabled = vm.verifiableAccount.isValidUser
 
-        if isCurrentlyVerifying {
-            LoadingInterface.showLoadingInterface()
-        } else {
-            LoadingInterface.removeLoadingInterface()
-        }
-        navigationItem.rightBarButtonItem?.isEnabled = !isCurrentlyVerifying
+        vm.handleLoading()
+        navigationItem.rightBarButtonItem?.isEnabled = !vm.isCurrentlyVerifying
     }
 
-    /// Triggers verification for given data.
-    ///
-    /// - Throws: AccountVerificationError
-    private func verifyAccount() throws {
-        guard var viewModel = verifiableAccount else {
-            Log.shared.errorAndCrash("No view model in STMP ViewController")
-            return
-        }
-        isCurrentlyVerifying =  true
-        viewModel.verifiableAccountDelegate = self
-        try viewModel.verify()
+    func hideKeyboard() {
+        view.endEditing(true)
     }
 
-    private func informUser(about message: String, title: String) {
+    func accountVerifiedSuccessfully() {
+        performSegue(withIdentifier: .backToEmailListSegue, sender: self)
+    }
+
+    func showError(error: Error) {
+        UIUtils.show(error: error)
+    }
+
+    func inform(message: String, title: String) {
         UIUtils.showAlertWithOnlyPositiveButton(title: title, message: message)
     }
+}
 
-    private func hideKeybord() {
-        view.endEditing(true)
+//MARK: - Private
+
+extension SMTPSettingsViewController {
+
+    private func setUpContainerView() {
+        guard let setupView = manualAccountSetupContainerView.setupView else {
+            Log.shared.errorAndCrash("Fail to get manualAccountSetupView")
+            return
+        }
+        if UIDevice.current.userInterfaceIdiom == .pad {
+            setupView.scrollView.isScrollEnabled = false
+        }
+    }
+
+    private func presentActionSheetWithTransportSecurityValues(_ sender: UITextField) {
+        let title = NSLocalizedString("Transport protocol",
+                                 comment: "UI alert title for transport protocol")
+        let message = NSLocalizedString("Choose a Security protocol for your accont",
+                                   comment: "UI alert message for transport protocol")
+        let alertController = UIUtils.actionSheet(title: title, message: message)
+        let transportBlock: (ConnectionTransport) -> () = { [weak self] transport in
+            guard let me = self else {
+                Log.shared.errorAndCrash("Lost myself")
+                return
+            }
+
+            guard let vm = me.viewModel else {
+                Log.shared.errorAndCrash("VM not found")
+                return
+            }
+
+            vm.verifiableAccount.transportSMTP = transport
+            sender.text = transport.localizedString()
+        }
+
+        if let popoverPresentationController = alertController.popoverPresentationController {
+            popoverPresentationController.sourceView = sender
+            popoverPresentationController.sourceRect = sender.bounds
+        }
+
+        alertController.setupActionFromConnectionTransport(.plain, block: transportBlock)
+        alertController.setupActionFromConnectionTransport(.TLS, block: transportBlock)
+        alertController.setupActionFromConnectionTransport(.startTLS, block: transportBlock)
+
+        let actionTitle = NSLocalizedString("Cancel", comment: "Cancel for an alert view")
+        let cancelAction = UIUtils.action(actionTitle, .cancel)
+        alertController.addAction(cancelAction)
+        present(alertController, animated: true)
     }
 
     private func setUpTextFieldsInputTraits() {
@@ -344,41 +327,5 @@ extension SMTPSettingsViewController {
 
         let transportSecurityPlaceholder = NSLocalizedString("Transport Security", comment: "TransportSecurity placeholder for manual account SMTP setup")
         setupView.fifthTextField.placeholder = transportSecurityPlaceholder
-    }
-
-    private func presentActionSheetWithTransportSecurityValues(_ sender: UITextField) {
-        let title = NSLocalizedString("Transport protocol",
-                                 comment: "UI alert title for transport protocol")
-        let message = NSLocalizedString("Choose a Security protocol for your accont",
-                                   comment: "UI alert message for transport protocol")
-        let alertController = UIUtils.actionSheet(title: title, message: message)
-        let block: (ConnectionTransport) -> () = { transport in
-            self.verifiableAccount?.transportSMTP = transport
-            sender.text = transport.localizedString()
-        }
-
-        if let popoverPresentationController = alertController.popoverPresentationController {
-            popoverPresentationController.sourceView = sender
-            popoverPresentationController.sourceRect = sender.bounds
-        }
-
-        alertController.setupActionFromConnectionTransport(.plain, block: block)
-        alertController.setupActionFromConnectionTransport(.TLS, block: block)
-        alertController.setupActionFromConnectionTransport(.startTLS, block: block)
-
-        let actionTitle = NSLocalizedString("Cancel", comment: "Cancel for an alert view")
-        let cancelAction = UIUtils.action(actionTitle, .cancel)
-        alertController.addAction(cancelAction)
-        present(alertController, animated: true) {}
-    }
-
-    private func setUpContainerView() {
-        guard let setupView = manualAccountSetupContainerView.setupView else {
-            Log.shared.errorAndCrash("Fail to get manualAccountSetupView")
-            return
-        }
-        if UIDevice.current.userInterfaceIdiom == .pad {
-            setupView.scrollView.isScrollEnabled = false
-        }
     }
 }

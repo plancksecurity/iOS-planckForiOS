@@ -123,11 +123,12 @@ extension IMAPSettingsViewController: SegueHandlerType {
         view.endEditing(true)
         switch segueIdentifier(for: segue) {
         case .SMTPSettings:
-            if let destination = segue.destination as? SMTPSettingsViewController {
-                destination.verifiableAccount = verifiableAccount
+            if let destination = segue.destination as? SMTPSettingsViewController,
+                let verifiableAccount = verifiableAccount {
+                destination.viewModel = SMTPSettingsViewModel(delegate: destination, verifiableAccount: verifiableAccount)
             } else {
                 Log.shared.errorAndCrash(
-                    "Seque is .SMTPSettings, but controller is not a SMTPSettingsViewController")
+                    "Seque is .SMTPSettings, but cant instanciate VM")
             }
             break
         default:()
