@@ -341,10 +341,13 @@
                         <constraints>
                             <constraint firstAttribute="trailing" secondItem="xwh-71-o4X" secondAttribute="trailing" id="6dj-HV-KIE"/>
                             <constraint firstItem="xwh-71-o4X" firstAttribute="top" secondItem="MFw-tL-ska" secondAttribute="top" id="Dlj-xX-Arp"/>
+                            <constraint firstItem="DDs-Gv-cZH" firstAttribute="leading" secondItem="MFw-tL-ska" secondAttribute="leading" constant="10" id="SCs-Z5-dFM"/>
+                            <constraint firstAttribute="trailing" relation="greaterThanOrEqual" secondItem="DDs-Gv-cZH" secondAttribute="trailing" constant="8" id="XZf-2U-fcS"/>
                             <constraint firstItem="PG6-XN-MQm" firstAttribute="trailing" secondItem="MFw-tL-ska" secondAttribute="trailing" id="ZS1-ex-qZP"/>
                             <constraint firstItem="PG6-XN-MQm" firstAttribute="leading" secondItem="MFw-tL-ska" secondAttribute="leading" id="bqW-S5-e7M"/>
                             <constraint firstItem="xwh-71-o4X" firstAttribute="leading" secondItem="MFw-tL-ska" secondAttribute="leading" id="h7D-Db-2bK"/>
                             <constraint firstAttribute="bottomMargin" secondItem="PG6-XN-MQm" secondAttribute="bottom" id="icq-he-U1m"/>
+                            <constraint firstItem="DDs-Gv-cZH" firstAttribute="top" secondItem="Vlu-NT-6w2" secondAttribute="bottom" constant="10" id="vC9-89-UIO"/>
                             <constraint firstItem="PG6-XN-MQm" firstAttribute="top" secondItem="xwh-71-o4X" secondAttribute="bottom" id="vLH-8z-dxl"/>
                         </constraints>
                     </view>
@@ -353,6 +356,7 @@
                         <outlet property="addExtraKeyButton" destination="J2v-Vi-URg" id="y2f-4x-YZS"/>
                         <outlet property="addFprView" destination="PG6-XN-MQm" id="Xdx-jc-jYu"/>
                         <outlet property="fpr" destination="zHk-jf-vFQ" id="bca-yo-WNG"/>
+                        <outlet property="noExtraKeysFoundLabel" destination="DDs-Gv-cZH" id="zta-7M-b5O"/>
                         <outlet property="tableView" destination="xwh-71-o4X" id="Tiv-pl-sxU"/>
                     </connections>
                 </viewController>
