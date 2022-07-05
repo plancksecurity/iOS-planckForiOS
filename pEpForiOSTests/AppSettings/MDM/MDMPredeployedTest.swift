@@ -109,18 +109,6 @@ class MDMPredeployedTest: XCTestCase {
     /// An array of all accounts that are expected to be set up
     var setupAccountData = [AccountStruct]()
 
-    func setupFailingPredeployAccounts(number: Int) {
-        var accountDicts = [SettingsDict]()
-
-        for i in 0...number-1 {
-            let accDict = failingAccountWithServerDictionary(appendixNumber: i)
-            accountDicts.append(accDict)
-        }
-
-        let predeployedAccounts: SettingsDict = [MDMPredeployed.keyPredeployedAccounts:accountDicts]
-        UserDefaults.standard.set(predeployedAccounts, forKey: MDMPredeployed.keyMDM)
-    }
-
     func setupSingleFailingPredeployedAccount(appendixNumber: Int = 0) {
         let accountDict = failingAccountWithServerDictionary(appendixNumber: appendixNumber)
         let predeployedAccounts: SettingsDict = [MDMPredeployed.keyPredeployedAccounts:[accountDict]]
