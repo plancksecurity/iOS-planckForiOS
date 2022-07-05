@@ -151,7 +151,7 @@ final class EmailListViewCell: PEPSwipeTableViewCell, MessageViewModelConfigurab
 
     public func clear() {
         guard let vm = viewModel else {
-            Log.shared.errorAndCrash("VM not found")
+            //Nothing to do 
             return
         }
         vm.unsubscribeForUpdates()

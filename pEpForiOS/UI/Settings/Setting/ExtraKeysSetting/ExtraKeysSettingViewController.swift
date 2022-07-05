@@ -71,6 +71,8 @@ class ExtraKeysSettingViewController: UIViewController {
 extension ExtraKeysSettingViewController {
     
     private func setup() {
+        viewModel = ExtraKeysSettingViewModel(delegate: self)
+
         guard let vm = viewModel else {
             Log.shared.errorAndCrash("VM not found")
             return
@@ -83,7 +85,6 @@ extension ExtraKeysSettingViewController {
                            forCellReuseIdentifier: ExtraKeysSettingViewController.uiTableViewCellID)
         tableView.rowHeight = UITableView.automaticDimension
 
-        viewModel = ExtraKeysSettingViewModel(delegate: self)
 
         // Editable
         let isEditable = vm.isEditable
