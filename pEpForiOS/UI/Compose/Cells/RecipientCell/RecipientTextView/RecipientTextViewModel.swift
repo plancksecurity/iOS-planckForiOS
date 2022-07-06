@@ -14,7 +14,7 @@ import MessageModelForAppExtensions
 import MessageModel
 #endif
 
-public protocol RecipientTextViewModelResultDelegate: class {
+public protocol RecipientTextViewModelResultDelegate: AnyObject {
 
     func recipientTextViewModel(_ vm: RecipientTextViewModel,
                                 didChangeRecipients newRecipients: [Identity])
@@ -26,7 +26,7 @@ public protocol RecipientTextViewModelResultDelegate: class {
     func recipientTextViewModel(_ vm: RecipientTextViewModel, textChanged newText: String)
 }
 
-public protocol RecipientTextViewModelDelegate: class {
+public protocol RecipientTextViewModelDelegate: AnyObject {
     
     func textChanged(newText: NSAttributedString)
 

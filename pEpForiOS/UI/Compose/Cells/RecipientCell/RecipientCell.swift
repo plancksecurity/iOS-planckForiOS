@@ -7,6 +7,11 @@
 //
 
 import UIKit
+#if EXT_SHARE
+import pEpIOSToolboxForExtensions
+#else
+import pEpIOSToolbox
+#endif
 
 final class RecipientCell: TextViewContainingTableViewCell {
     static let reuseId = "RecipientCell"
@@ -46,7 +51,11 @@ final class RecipientCell: TextViewContainingTableViewCell {
     }
 
     @IBAction func addContactTapped(_ sender: Any) {
-        viewModel?.addContactAction()
+        guard let vm = viewModel else {
+            Log.shared.errorAndCrash("VM not found")
+            return
+        }
+        vm.addContactAction()
     }
 
 }

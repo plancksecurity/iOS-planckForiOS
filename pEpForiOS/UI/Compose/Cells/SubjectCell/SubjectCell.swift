@@ -7,6 +7,11 @@
 //
 
 import UIKit
+#if EXT_SHARE
+import pEpIOSToolboxForExtensions
+#else
+import pEpIOSToolbox
+#endif
 
 final class SubjectCell: TextViewContainingTableViewCell {
 
@@ -34,13 +39,22 @@ final class SubjectCell: TextViewContainingTableViewCell {
 extension SubjectCell {
 
     func textViewDidChange(_ textView: UITextView) {
-        viewModel?.handleTextChanged(to: textView.text)
+        guard let vm = viewModel else {
+            Log.shared.errorAndCrash("VM not found")
+            return
+        }
+        vm.handleTextChanged(to: textView.text)
     }
 
     public func textView(_ textView: UITextView,
                          shouldChangeTextIn range: NSRange,
                          replacementText text: String) -> Bool {
-       return viewModel?.shouldChangeText(to: text) ?? true
+        guard let vm = viewModel else {
+            Log.shared.errorAndCrash("VM not found")
+            return true
+        }
+
+       return vm.shouldChangeText(to: text)
     }
 
     // MARK: First Baseline Alignment Workaround
