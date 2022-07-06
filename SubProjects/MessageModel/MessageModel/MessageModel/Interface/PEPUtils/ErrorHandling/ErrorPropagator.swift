@@ -15,7 +15,7 @@ import pEpIOSToolbox
 #endif
 
 /// Conform to this if you want to be a subscriber of ErrorPropagator.
-public protocol ErrorPropagatorSubscriber: class {
+public protocol ErrorPropagatorSubscriber: AnyObject {
     /// Called whenever an Error is added.
     /// - Parameters:
     ///   - propagator: the sender

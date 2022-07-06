@@ -68,14 +68,10 @@ extension CalendarEventBannerViewController: EKEventEditViewDelegate {
                 return
             }
             if let attachment = vm.getAttachmentOfEvent(icsEvent: event) {
-                delegate?.handleDidAddEvent(icsEvent: event, attachment: attachment, completion: { [weak self] in
+                delegate?.handleDidAddEvent(icsEvent: event, attachment: attachment, completion: {
                     //Dismiss the EKEventEditViewController
                     controller.dismiss(animated: true, completion: nil)
-                    guard let me = self else {
-                        Log.shared.errorAndCrash("Lost myself")
-                        return
-                    }
-                    me.viewModel?.removeIcs(event: event)
+                    vm.removeIcs(event: event)
                 })
             }
         } else {

@@ -11,7 +11,7 @@ import Foundation
 import MessageModel
 import pEpIOSToolbox
 
-protocol AccountTypeSelectorViewModelDelegate: class {
+protocol AccountTypeSelectorViewModelDelegate: AnyObject {
     func showMustImportClientCertificateAlert()
     func showClientCertificateSeletionView()
 }

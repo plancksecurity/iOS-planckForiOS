@@ -14,7 +14,7 @@ import pEpIOSToolbox
 
 import PantomimeFramework
 
-protocol ImapConnectionDelegateErrorHandlerProtocol: class {
+protocol ImapConnectionDelegateErrorHandlerProtocol: AnyObject {
     func handle(error: Error)
 }
 

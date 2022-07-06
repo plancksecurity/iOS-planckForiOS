@@ -8,7 +8,7 @@
 
 import UIKit
 
-protocol SwitchCellDelegate: class {
+protocol SwitchCellDelegate: AnyObject {
     func switchSettingCell(_ sender: SettingSwitchTableViewCell, didChangeSwitchStateTo newValue: Bool)
 }
 
