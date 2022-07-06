@@ -11,7 +11,7 @@
 //import Foundation
 //import pEpIOSToolbox
 //
-//protocol ThreadedEmailViewModelDelegate: class {
+//protocol ThreadedEmailViewModelDelegate: AnyObject {
 //    func emailViewModel(viewModel: ThreadedEmailViewModel, didInsertDataAt index: Int)
 //    func emailViewModel(viewModel: ThreadedEmailViewModel, didUpdateDataAt index: Int)
 //    func emailViewModel(viewModel: ThreadedEmailViewModel, didRemoveDataAt index: Int)

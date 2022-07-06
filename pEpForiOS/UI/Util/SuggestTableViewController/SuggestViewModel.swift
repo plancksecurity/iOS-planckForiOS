@@ -17,14 +17,14 @@ import MessageModel
 import pEpIOSToolbox
 #endif
 
-protocol SuggestViewModelResultDelegate: class {
+protocol SuggestViewModelResultDelegate: AnyObject {
     /// Will be called whenever the user selects an Identity.
     func suggestViewModelDidSelectContact(identity: Identity)
 
     func suggestViewModel(_ vm: SuggestViewModel, didToggleVisibilityTo newValue: Bool)
 }
 
-protocol SuggestViewModelDelegate: class {
+protocol SuggestViewModelDelegate: AnyObject {
     func suggestViewModelDidResetModel(showResults: Bool)
 }
 

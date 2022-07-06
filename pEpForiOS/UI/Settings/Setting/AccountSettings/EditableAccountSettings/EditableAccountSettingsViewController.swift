@@ -175,8 +175,12 @@ extension EditableAccountSettingsViewController: EditableAccountSettingsDelegate
         guard let vc = UIStoryboard.init(name: "AccountCreation", bundle: nil).instantiateViewController(withIdentifier: ClientCertificateManagementViewController.storyboardIdentifier) as? ClientCertificateManagementViewController else {
             return
         }
-        let nextViewModel = viewModel?.clientCertificateManagementViewModel()
-        nextViewModel?.delegate = vc
+        guard let vm = viewModel else {
+            Log.shared.errorAndCrash("VM not found")
+            return
+        }
+        let nextViewModel = vm.clientCertificateManagementViewModel()
+        nextViewModel.delegate = vc
         vc.viewModel = nextViewModel
         navigationController?.modalPresentationStyle = .fullScreen
         vc.modalPresentationStyle = .overFullScreen
