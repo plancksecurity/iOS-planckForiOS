@@ -65,11 +65,19 @@ extension MediaAttachmentPickerProvider: UIImagePickerControllerDelegate {
 
     public func imagePickerController( _ picker: UIImagePickerController,
                                        didFinishPickingMediaWithInfo info: [UIImagePickerController.InfoKey: Any]) {
-        viewModel?.handleDidFinishPickingMedia(info: info)
+        guard let vm = viewModel else {
+            Log.shared.errorAndCrash("VM not found")
+            return
+        }
+        vm.handleDidFinishPickingMedia(info: info)
     }
 
     func imagePickerControllerDidCancel(_ picker: UIImagePickerController) {
-        viewModel?.handleDidCancel()
+        guard let vm = viewModel else {
+            Log.shared.errorAndCrash("VM not found")
+            return
+        }
+        vm.handleDidCancel()
     }
 }
 

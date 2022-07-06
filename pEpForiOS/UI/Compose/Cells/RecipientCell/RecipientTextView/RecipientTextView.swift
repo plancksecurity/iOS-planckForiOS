@@ -23,12 +23,20 @@ class RecipientTextView: UITextView {
     }
 
     private func reportWidthChange() {
-        viewModel?.maxTextattachmentWidth = bounds.width
+        guard let vm = viewModel else {
+            Log.shared.errorAndCrash("VM not found")
+            return
+        }
+        vm.maxTextattachmentWidth = bounds.width
     }
 
     public func setInitialText() {
         reportWidthChange()
-        if let attr = viewModel?.inititalText(), attr.string != "" {
+        guard let vm = viewModel else {
+            Log.shared.errorAndCrash("VM not found")
+            return
+        }
+        if let attr = vm.inititalText(), attr.string != "" {
             attributedText = attr
         } else {
             text = " "
@@ -43,11 +51,19 @@ extension RecipientTextView: UITextViewDelegate {
     public func textViewDidBeginEditing(_ textView: UITextView) {
         reportWidthChange()
         setLabelTextColor()
-        viewModel?.handleDidBeginEditing(text: textView.text)
+        guard let vm = viewModel else {
+            Log.shared.errorAndCrash("VM not found")
+            return
+        }
+        vm.handleDidBeginEditing(text: textView.text)
     }
 
     public func textViewDidChange(_ textView: UITextView) {
-        viewModel?.handleTextChange(newText: textView.text, newAttributedText: attributedText)
+        guard let vm = viewModel else {
+            Log.shared.errorAndCrash("VM not found")
+            return
+        }
+        vm.handleTextChange(newText: textView.text, newAttributedText: attributedText)
     }
 
     public func textView(_ textView: UITextView,
@@ -89,7 +105,11 @@ extension RecipientTextView: UITextViewDelegate {
     }
 
     public func textViewDidEndEditing(_ textView: UITextView) {
-        viewModel?.handleDidEndEditing(range: textView.selectedRange, of: textView.attributedText)
+        guard let vm = viewModel else {
+            Log.shared.errorAndCrash("VM not found")
+            return
+        }
+        vm.handleDidEndEditing(range: textView.selectedRange, of: textView.attributedText)
     }
 
     func textView(_ textView: UITextView,
@@ -161,7 +181,11 @@ extension RecipientTextView: UITextViewDelegate {
         /// So we just trigger the focus manually.
         /// For more information please go to https://pep.foundation/jira/browse/IOS-2472
         if #available(iOS 14, *) {
-            textView.selectedRange = NSRange(location: viewModel?.numberOfRecipientAttachments ?? 1, length: 0)
+            guard let vm = viewModel else {
+                Log.shared.errorAndCrash("VM not found")
+                return true
+            }
+            textView.selectedRange = NSRange(location: vm.numberOfRecipientAttachments, length: 0)
             textView.becomeFirstResponder()
         }
         return true
@@ -181,7 +205,11 @@ extension RecipientTextView: RecipientTextViewModelDelegate {
         let createe = NSMutableAttributedString(attributedString: attributedText)
         createe.append(NSAttributedString(string: recipient))
         attributedText = NSAttributedString(attributedString: createe)
-        viewModel?.handleDidEndEditing(range: selectedRange, of: attributedText)
+        guard let vm = viewModel else {
+            Log.shared.errorAndCrash("VM not found")
+            return
+        }
+        vm.handleDidEndEditing(range: selectedRange, of: attributedText)
         if #available(iOS 13.0, *) {
             textColor = .label
         } else {

@@ -8,7 +8,7 @@
 
 import UIKit
 
-protocol TrustedServerSettingCellDelegate: class {
+protocol TrustedServerSettingCellDelegate: AnyObject {
     func trustedServerSettingCell(sender: TrustedServerSettingCell, didChangeSwitchValue newValue: Bool)
 }
 
