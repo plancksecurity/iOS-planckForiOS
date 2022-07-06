@@ -52,10 +52,18 @@ final class EmailListViewController: UIViewController {
 
     private var lastSelectedIndexPath: IndexPath? {
         get {
-            viewModel?.lastSelectedIndexPath
+            guard let vm = viewModel else {
+                Log.shared.errorAndCrash("VM not found")
+                return nil
+            }
+            return vm.lastSelectedIndexPath
         }
         set {
-            viewModel?.lastSelectedIndexPath = newValue
+            guard let vm = viewModel else {
+                Log.shared.errorAndCrash("VM not found")
+                return
+            }
+            vm.lastSelectedIndexPath = newValue
         }
     }
 
@@ -230,7 +238,11 @@ final class EmailListViewController: UIViewController {
     }
 
     private func setupNavigationBar() {
-        title = viewModel?.folderName
+        guard let vm = viewModel else {
+            Log.shared.errorAndCrash("VM not found")
+            return
+        }
+        title = vm.folderName
         navigationController?.title = title
 
         editButton = UIBarButtonItem(title: NSLocalizedString("Edit",
@@ -587,7 +599,11 @@ final class EmailListViewController: UIViewController {
     // MARK: - Memory Warning
 
     override func didReceiveMemoryWarning() {
-        viewModel?.freeMemory()
+        guard let vm = viewModel else {
+            Log.shared.errorAndCrash("VM not found")
+            return
+        }
+        vm.freeMemory()
     }
 }
 
@@ -596,7 +612,12 @@ final class EmailListViewController: UIViewController {
 extension EmailListViewController: UITableViewDataSource, UITableViewDelegate {
 
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        let valueToReturn = viewModel?.rowCount ?? 0
+        guard let vm = viewModel else {
+            Log.shared.errorAndCrash("VM not found")
+            return 0
+        }
+
+        let valueToReturn = vm.rowCount
 //        if there is no message to show then there is no message selected and also
 //        no message selected screen is shown
         if valueToReturn == 0 {
@@ -613,8 +634,11 @@ extension EmailListViewController: UITableViewDataSource, UITableViewDelegate {
                                                  for: indexPath)
         if let theCell = cell as? EmailListViewCell {
             theCell.delegate = self
-
-            guard let viewModel = viewModel?.viewModel(for: indexPath.row) else {
+            guard let vm = viewModel else {
+                Log.shared.errorAndCrash("VM not found")
+                return UITableViewCell()
+            }
+            guard let viewModel = vm.viewModel(for: indexPath.row) else {
                 return cell
             }
             theCell.configure(for: viewModel)
@@ -1098,7 +1122,11 @@ extension EmailListViewController {
     }
 
     private func createReadOrUnReadAction(forRowAt indexPath: IndexPath) -> UIAlertAction {
-        let seenState = viewModel?.viewModel(for: indexPath.row)?.isSeen ?? false
+        guard let vm = viewModel else {
+            Log.shared.errorAndCrash("VM not found")
+            return UIAlertAction()
+        }
+        let seenState = vm.viewModel(for: indexPath.row)?.isSeen ?? false
 
         var title = ""
         if seenState {
@@ -1183,7 +1211,11 @@ extension EmailListViewController {
 extension EmailListViewController {
 
     private func readAction(forCellAt indexPath: IndexPath) {
-        guard let row = viewModel?.viewModel(for: indexPath.row) else {
+        guard let vm = viewModel else {
+            Log.shared.errorAndCrash("VM not found")
+            return
+        }
+        guard let row = vm.viewModel(for: indexPath.row) else {
             Log.shared.errorAndCrash("No data for indexPath!")
             return
         }
@@ -1201,12 +1233,12 @@ extension EmailListViewController {
     }
 
     private func flagAction(forCellAt indexPath: IndexPath) {
-        guard let row = viewModel?.viewModel(for: indexPath.row) else {
-            Log.shared.errorAndCrash("No data for indexPath!")
-            return
-        }
         guard let vm = viewModel else {
             Log.shared.errorAndCrash("VM not found")
+            return
+        }
+        guard let row = vm.viewModel(for: indexPath.row) else {
+            Log.shared.errorAndCrash("No data for indexPath!")
             return
         }
 
@@ -1236,7 +1268,11 @@ extension EmailListViewController {
     }
 
     private func deleteAction(forCellAt indexPath: IndexPath) {
-        viewModel?.delete(forIndexPath: indexPath)
+        guard let vm = viewModel else {
+            Log.shared.errorAndCrash("VM not found")
+            return
+        }
+        vm.delete(forIndexPath: indexPath)
         updateEditButton()
     }
 
@@ -1337,8 +1373,11 @@ extension EmailListViewController: SegueHandlerType {
                     Log.shared.errorAndCrash("No DVC?")
                     return
             }
-            destination.viewModel
-                = viewModel?.getMoveToFolderViewModel(forSelectedMessages: selectedRows)
+            guard let vm = viewModel else {
+                Log.shared.errorAndCrash("VM not found")
+                return
+            }
+            destination.viewModel = vm.getMoveToFolderViewModel(forSelectedMessages: selectedRows)
         default:
             Log.shared.errorAndCrash("Unhandled segue")
         }
@@ -1421,8 +1460,12 @@ extension EmailListViewController {
 
         if #available(iOS 13.0, *) {
             if thePreviousTraitCollection.hasDifferentColorAppearance(comparedTo: traitCollection) {
+                guard let vm = viewModel else {
+                    Log.shared.errorAndCrash("VM not found")
+                    return
+                }
                 /// Clear the cache and get the correct version of the avatar..
-                viewModel?.freeMemory()
+                vm.freeMemory()
                 setSeparator()
                 tableView.reloadData()
             }
@@ -1482,10 +1525,15 @@ extension EmailListViewController {
     }
 
     @objc private func deselectAllCells() {
+        guard let vm = viewModel else {
+            Log.shared.errorAndCrash("VM not found")
+            return
+        }
+
         for row in 0..<tableView.numberOfRows(inSection: 0) {
             tableView.deselectRow(at: IndexPath(item: row, section: 0), animated: true)
         }
-        viewModel?.handleEditModeSelectionChange(selectedIndexPaths: [])
+        vm.handleEditModeSelectionChange(selectedIndexPaths: [])
         navigationItem.leftBarButtonItems = [selectAllBarButton]
     }
 }

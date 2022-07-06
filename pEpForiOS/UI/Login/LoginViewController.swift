@@ -64,12 +64,11 @@ final class LoginViewController: UIViewController {
         setup()
         updateView()
         setupPasswordField()
-
-        guard let accountType = viewModel?.verifiableAccount.accountType else {
-            Log.shared.errorAndCrash(message: "Lacking viewModel.verifiableAccount.accountType")
+        guard let vm = viewModel else {
+            Log.shared.errorAndCrash("VM not found")
             return
         }
-        if accountType == .icloud {
+        if vm.verifiableAccount.accountType == .icloud {
             showiCloudAlert()
         }
     }
