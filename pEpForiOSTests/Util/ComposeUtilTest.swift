@@ -482,7 +482,7 @@ class ComposeUtilTest: AccountDrivenTestBase {
                                        ccs: [Identity],
                                        bccs: [Identity]) -> Message {
         guard let parentFolder = account.firstFolder(ofType: type) else {
-            fatalError("No folder." +
+            Log.shared.errorAndCrash("No folder." +
                 "Sorry, I had to crash here. The burn or buy bill would be too negative " +
                 "returning an Optional ")
         }
