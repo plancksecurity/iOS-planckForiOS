@@ -16,6 +16,8 @@ class ExtraKeysSettingViewController: UIViewController {
     @IBOutlet private weak var fpr: UITextView!
     @IBOutlet private weak var tableView: UITableView!
 
+    @IBOutlet private weak var noExtraKeysFoundLabel: UILabel!
+
     private var viewModel: ExtraKeysSettingViewModel?
 
     override var collapsedBehavior: CollapsedSplitViewBehavior {
@@ -34,6 +36,9 @@ class ExtraKeysSettingViewController: UIViewController {
         fpr.font = UIFont.pepFont(style: .callout, weight: .regular)
         addExtraKeyButton.titleLabel?.font = UIFont.pepFont(style: .body, weight: .regular)
         subscribeForKeyboardNotifications()
+
+        noExtraKeysFoundLabel.text = NSLocalizedString("No extra keys were found", comment: "No extra keys were found")
+        noExtraKeysFoundLabel.setPEPFont(style: .body, weight: .regular)
     }
 
     override func viewWillAppear(_ animated: Bool) {
@@ -41,6 +46,15 @@ class ExtraKeysSettingViewController: UIViewController {
         subscribeForKeyboardNotifications()
         setup()
         tableView.reloadData()
+
+        guard let vm = viewModel else {
+            Log.shared.errorAndCrash("VM not found")
+            return
+        }
+        if vm.numRows == 0 {
+            noExtraKeysFoundLabel.isHidden = false
+            view.bringSubviewToFront(noExtraKeysFoundLabel)
+        }
     }
 
     override func viewDidDisappear(_ animated: Bool) {
