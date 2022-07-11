@@ -17,7 +17,7 @@ extension ClientCertificateImportViewController {
     static public let storyboadIdentifier = "ClientCertificatePasswordViewController"
 }
 
-protocol ClientCertificateImportViewControllerDelegate: class {
+protocol ClientCertificateImportViewControllerDelegate: AnyObject {
     func certificateCouldImported()
 }
 
@@ -52,7 +52,11 @@ final class ClientCertificateImportViewController: UIViewController {
 
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
-        viewModel?.importClientCertificate()
+        guard let vm = viewModel else {
+            Log.shared.errorAndCrash("VM not found")
+            return
+        }
+        vm.importClientCertificate()
     }
 }
 

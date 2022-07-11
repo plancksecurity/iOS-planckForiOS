@@ -12,7 +12,7 @@ import MessageModelForAppExtensions
 import MessageModel
 #endif
 
-protocol SubjectCellViewModelResultDelegate: class {
+protocol SubjectCellViewModelResultDelegate: AnyObject {
     func subjectCellViewModelDidChangeSubject(_ vm: SubjectCellViewModel)
 }
 

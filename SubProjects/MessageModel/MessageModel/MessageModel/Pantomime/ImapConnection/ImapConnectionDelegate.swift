@@ -8,7 +8,7 @@
 
 import Foundation
 
-protocol ImapConnectionDelegate: class {
+protocol ImapConnectionDelegate: AnyObject {
     func authenticationCompleted(_ imapConnection: ImapConnectionProtocol, notification: Notification?)
     func authenticationFailed(_ imapConnection: ImapConnectionProtocol, notification: Notification?)
     func connectionLost(_ imapConnection: ImapConnectionProtocol, notification: Notification?)
