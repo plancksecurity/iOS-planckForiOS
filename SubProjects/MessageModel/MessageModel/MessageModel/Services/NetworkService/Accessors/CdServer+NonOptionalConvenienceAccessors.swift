@@ -27,7 +27,8 @@ extension CdServer {
 
     var addressOrCrash: String {
         guard let theAddress = address else {
-            fatalError()
+            Log.shared.errorAndCrash(message: "Address not found")
+            return ""
         }
         return theAddress
     }
