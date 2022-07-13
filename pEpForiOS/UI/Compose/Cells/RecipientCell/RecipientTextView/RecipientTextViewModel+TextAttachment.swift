@@ -36,7 +36,10 @@ extension RecipientTextViewModel {
         }
 
         required init?(coder aDecoder: NSCoder) {
-            fatalError("init(coder:) has not been implemented")
+            recipient = Identity(address: "")
+            font = UIFont.systemFont(ofSize: 12)
+            super.init(coder: aDecoder)
+            Log.shared.errorAndCrash(message: "init(coder:) has not been implemented")
         }
 
         public override func attachmentBounds(for textContainer: NSTextContainer?,
