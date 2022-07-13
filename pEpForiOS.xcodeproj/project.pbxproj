@@ -475,6 +475,7 @@
 		5B41C6082418F15100C268CE /* TutorialStep3iPhoneViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5B41C6072418F15100C268CE /* TutorialStep3iPhoneViewController.swift */; };
 		5B41F9CF25CD517700E55EDF /* MockAppSettings.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5B41F9CE25CD517700E55EDF /* MockAppSettings.swift */; };
 		5B4A718A252CC4A500436FCF /* Mailto.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5B4A7189252CC4A500436FCF /* Mailto.swift */; };
+		5B5234AF2873266E00FE8D8B /* SMTPSettingsViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5B5234AE2873266E00FE8D8B /* SMTPSettingsViewModel.swift */; };
 		5B5BBC2B26A8240500430F73 /* UIUtils+CalendarEvents.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5B5BBC2A26A8240500430F73 /* UIUtils+CalendarEvents.swift */; };
 		5B5C2A8825D28CDB00F9C18A /* UIPopoverPresentationControllerProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5B5C2A8725D28CDB00F9C18A /* UIPopoverPresentationControllerProtocol.swift */; };
 		5B5C2A9225D2902C00F9C18A /* MessageAttachmentCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5B5C2A9125D2902C00F9C18A /* MessageAttachmentCell.swift */; };
@@ -1056,6 +1057,7 @@
 		5B41C6072418F15100C268CE /* TutorialStep3iPhoneViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TutorialStep3iPhoneViewController.swift; sourceTree = "<group>"; };
 		5B41F9CE25CD517700E55EDF /* MockAppSettings.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MockAppSettings.swift; sourceTree = "<group>"; };
 		5B4A7189252CC4A500436FCF /* Mailto.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Mailto.swift; sourceTree = "<group>"; };
+		5B5234AE2873266E00FE8D8B /* SMTPSettingsViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SMTPSettingsViewModel.swift; sourceTree = "<group>"; };
 		5B54428128198AFA00FF194B /* SwiftMessages.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = SwiftMessages.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		5B5BBC2A26A8240500430F73 /* UIUtils+CalendarEvents.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIUtils+CalendarEvents.swift"; sourceTree = "<group>"; };
 		5B5C2A8725D28CDB00F9C18A /* UIPopoverPresentationControllerProtocol.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIPopoverPresentationControllerProtocol.swift; sourceTree = "<group>"; };
@@ -2759,6 +2761,7 @@
 			isa = PBXGroup;
 			children = (
 				43ED536D1CC77F95006AB156 /* SMTPSettingsViewController.swift */,
+				5B5234AE2873266E00FE8D8B /* SMTPSettingsViewModel.swift */,
 			);
 			path = SMTPSetup;
 			sourceTree = "<group>";
@@ -3553,6 +3556,7 @@
 				4388A0E22008F813008CB98D /* (null) in Sources */,
 				5BCD37D2269F236D0052A030 /* CornerRadiusView.swift in Sources */,
 				152A39D021905C3E00D9F8E4 /* AttachmentCell.swift in Sources */,
+				5B5234AF2873266E00FE8D8B /* SMTPSettingsViewModel.swift in Sources */,
 				0033C08120D7F3C600224E61 /* ThreadViewController+ViewModelDelegate.swift in Sources */,
 				4351C2DB1F4441190053381F /* utf8.c in Sources */,
 				152A39CA21905C3E00D9F8E4 /* DocumentAttachmentPickerViewController.swift in Sources */,
