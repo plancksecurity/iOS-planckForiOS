@@ -71,6 +71,7 @@ extension Message {
     public static func setSeenValue(to messages: [Message], newValue seen: Bool) {
         messages.forEach {
             let imap = $0.imapFlags
+            $0.imapUIFlags = nil
             imap.seen = seen
             $0.imapFlags = imap
         }
