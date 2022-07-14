@@ -13,15 +13,16 @@ import pEpIOSToolbox
 /// Enables the user to move an IMAP message to a folder of her choice
 class MoveToAccountViewController: UIViewController {
     static let storyboardId = "MoveToAccountViewController"
-    @IBOutlet var tableview: UITableView!
-    var viewModel: MoveToAccountViewModel?
     private let cellId = "AccountCell"
+    private let showAccountSegueIdentifier = "showAccount"
     private var selectedViewModel : MoveToFolderViewModel?
+    @IBOutlet private var tableview: UITableView!
 
-    override func viewWillAppear(_ animated: Bool) {
-        super.viewWillAppear(animated)
+    var viewModel: MoveToAccountViewModel?
+
+    override func viewDidLoad() {
+        super.viewDidLoad()
         setup()
-        tableview.reloadData()
     }
 
     // MARK: - SETUP
@@ -29,6 +30,7 @@ class MoveToAccountViewController: UIViewController {
     private func setup() {
         setupNavigationBar()
         setupTableView()
+        view.backgroundColor = tableview.backgroundColor
     }
 
     private func setupTableView() {
@@ -57,20 +59,22 @@ class MoveToAccountViewController: UIViewController {
 extension MoveToAccountViewController: UITableViewDataSource {
 
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        if let vm = viewModel {
-            return vm.count
+        guard let vm = viewModel else {
+            Log.shared.errorAndCrash("VM not found")
+            return 0
         }
-        return 0
+        return vm.count
     }
 
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: cellId, for: indexPath)
-        guard let vm = viewModel?[indexPath.row] else {
-            Log.shared.errorAndCrash("VM not found.")
+        guard let vm = viewModel else {
+            Log.shared.errorAndCrash("VM not found")
             return UITableViewCell()
         }
+        let row = vm[indexPath.row]
         cell.accessoryType = .disclosureIndicator
-        cell.textLabel?.text = vm.title
+        cell.textLabel?.text = row.title
         cell.textLabel?.font = UIFont.pepFont(style: .callout, weight: .regular)
         return cell
     }
@@ -81,8 +85,12 @@ extension MoveToAccountViewController: UITableViewDataSource {
 extension MoveToAccountViewController: UITableViewDelegate {
 
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        self.selectedViewModel = viewModel?[indexPath.row].viewModel()
-        performSegue(withIdentifier: "showAccount", sender: self)
+        guard let vm = viewModel else {
+            Log.shared.errorAndCrash("VM not found")
+            return
+        }
+        selectedViewModel = vm[indexPath.row].viewModel()
+        performSegue(withIdentifier: showAccountSegueIdentifier, sender: self)
     }
 }
 
@@ -91,7 +99,7 @@ extension MoveToAccountViewController: UITableViewDelegate {
 extension MoveToAccountViewController {
 
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        if segue.identifier == "showAccount" {
+        if segue.identifier == showAccountSegueIdentifier {
             if let vc = segue.destination as? MoveToFolderTableViewController, let vm = selectedViewModel {
                 vc.viewModel = vm
             }
