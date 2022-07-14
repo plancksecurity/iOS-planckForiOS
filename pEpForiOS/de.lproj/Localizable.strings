@@ -495,9 +495,6 @@
 /* EmailList action title */
 "Move to Folder" = "Zu Ordner verschieben";
 
-/* File name used for videos the user attaches. */
-"Movie" = "Verschieben";
-
 /* username */
 "Name" = "Name";
 

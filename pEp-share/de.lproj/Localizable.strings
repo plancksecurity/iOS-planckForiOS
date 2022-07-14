@@ -8,6 +8,9 @@
 /* Reply to single contact, without date. Placeholder: Name. */
 "%1$@ wrote:" = "%1$@ schrieb:";
 
+/* Actual size action title */
+"Actual (%1$@)" = "Original (%1$@)";
+
 /* Insert document in message text context menu */
 "Add Document" = "Dokument hinzufügen";
 
@@ -111,6 +114,9 @@
 
 /* ComposeTableView: button to decide to Discharge changes made on a mail in outbox. */
 "Keep in Outbox" = "Im Postausgang behalten";
+
+/* Large size action title */
+"Large (%1$@)" = "Groß (%1$@)";
 
 /* TrustManagementView Back Button Title */
 "Message" = "Nachricht";
