@@ -133,9 +133,6 @@
 /* UIUtils.presentActionSheetWithContactOptions.button.title Copy Email */
 "Copy Email" = "Copy Email";
 
-/* Error description detecting account settings */
-"Could not find servers. Please enter manually" = "Could not find servers. Please enter manually.";
-
 /* Settings: Cell (button) title to view app credits */
 "Credits" = "Credits";
 
