@@ -273,12 +273,6 @@
 /* Invalid input for username */
 "Invalid username: %1$@" = "Invalid username: %1$@";
 
-/* Error message shown to the user in case the authentication to IMAP or SMTP server failed. */
-"It was impossible to login to %1$@. Username or password is wrong." = "It was not possible to log in to %1$@. Username or password is wrong.";
-
-/* Error message shown to the user in case the authentication to IMAP or SMTP server failed. */
-"It was impossible to login to the server. Username or password is wrong." = "It was not possible to log in to the server. Username or password is wrong.";
-
 /* ComposeTableView: button to decide to Discharge changes made on a mail in outbox. */
 "Keep in Outbox" = "Keep in Outbox";
 
@@ -303,9 +297,6 @@
 
 /* manual */
 "Manual configuration" = "Manual configuration";
-
-/* EmailList action title */
-"Mark as Read" = "Mark as read";
 
 /* EmailList action title */
 "Mark as unread" = "Mark as unread";
@@ -369,9 +360,6 @@
 /* Name of outbox (showing messages to send */
 "Outbox" = "Outbox";
 
-/* Alert message shown if user wants to add a photo attachment, but has denied to give the app permissions. */
-"p≡p has no permissions to access \nthe Photo Gallery. You can grand permissions in Settings App." = "p≡p does not have permission to access \nthe Photo Gallery. You can grant permission in App Settings.";
-
 /* Tableview section header */
 "p≡p sync" = "p≡p sync";
 
@@ -433,9 +421,6 @@
 /* keySync handshake alert message - more than two devices */
 "Please make sure you have the devices together so you can compare the Trustwords on the devices. Are the Trustwords below equal to the Trustwords on the other device?" = "Please make sure you have the devices together so you can compare the Trustwords on the devices. Are the Trustwords below equal to the Trustwords on the other device?";
 
-/* Validation error for set_own_key UI */
-"Please provide an email and a fingerprint. The email must match an existing account." = "Please provide an email address and a fingerprint. The email address must match an existing account.";
-
 /* action sheet title 1 */
 "Privacy Status" = "Privacy Status";
 
@@ -468,9 +453,6 @@
 
 /* alert action 1 */
 "Reset Trust For This Identity" = "Reset Trust for This Identity";
-
-/* ComposeTableView: button to decide to save changes made on a drafted mail. */
-"Save changes" = "Save Changes";
 
 /* compose email save */
 "Save Draft" = "Save Draft";
@@ -575,9 +557,6 @@
 
 /* Privacy status explanation */
 "This message does not contain enough information to determine if it is secure." = "This message does not contain enough information to determine if it is secure.";
-
-/* Privacy status explanation */
-"This message has a communication partner that has previously been marked as mistrusted." = "This message includes a communication partner that has previously been marked as mistrusted.";
 
 /* Privacy status suggestion */
 "This message has no reliable encryption or no signature. Ask your communication partner to upgrade their encryption solution or install p≡p." = "This message has no reliable encryption or no signature. Ask your communication partner to upgrade their encryption solution or install p≡p.";
