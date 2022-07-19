@@ -14,12 +14,6 @@
 /* Reply to single contact, without date. Placeholder: Name. */
 "%1$@ wrote:" = "%1$@ wrote:";
 
-/* error message for .missingPassword */
-"A non-empty password is required" = "Password is required";
-
-/* error message for .missingUsername */
-"A non-empty username is required" = "Username is required";
-
 /* KeySyncWizard introduction message - two devices */
 "A second device was detected. We can form a device group to sync all your privacy on both devices. Shall we start synchronizing?" = "A second device was detected. We can form a device group to sync all your privacy on both devices. Shall we start synchronizing?";
 
@@ -46,9 +40,6 @@
 /* Name of unified inbox (showing messages of all accoounts */
 "All" = "All";
 
-/* Error message shown to the user in case an error in the app occured that is not caused or related to the server */
-"An internal error occured. Sorry, that should not happen." = "An internal error occurred. Sorry, that shouldn't have happened.";
-
 /* error message for .noConnectData */
 "An internal error occurred" = "An internal error occurred";
 
@@ -70,14 +61,8 @@
 /* Attach photo/video (message text context menu) */
 "Attach media" = "Attach media";
 
-/* Alt text for image attachment in markdown. Placeholders: Attachment number, extension. */
-"Attached Image %1$d (%2$@)" = "Attached image %1$d (%2$@)";
-
 /* title attachments filter cell */
 "Attachments" = "Attachments";
-
-/* Compose field title */
-"BCC:" = "Bcc:";
 
 /* Privacy status title */
 "Broken" = "Broken";
@@ -100,19 +85,10 @@
 "Cannot Decrypt" = "Cannot Decrypt";
 
 /* Compose field title */
-"CC:" = "Cc:";
-
-/* Compose field title */
 "Cc/Bcc:" = "Cc/Bcc:";
-
-/* UI alert message for transport protocol */
-"Choose a Security protocol for your accont" = "Choose a Security protocol for your account";
 
 /* Empty IMAP transport security method */
 "Choose IMAP transport security method." = "Choose IMAP transport security method.";
-
-/* Empty SMTP transport security method */
-"Choose SMTP transport security method." = "Choose SMTP transport security method";
 
 /* Privacy status suggestion */
 "Complete a handshake with your communication partner. A handshake is needed only once per partner and will ensure secure and trusted communication." = "Complete a handshake with your communication partner. A handshake is needed only once per partner and will ensure secure and trusted communication.";
@@ -136,9 +112,6 @@
 /* Settings: Cell (button) title to view app credits */
 "Credits" = "Credits";
 
-/* Incorrect trustwords/PGP fingerprint */
-"Decline" = "Reject";
-
 /* Default Account Setting Section Title
    Settings: Cell (button) title to view default account setting */
 "Default Account" = "Default Account";
@@ -152,9 +125,6 @@
 
 /* Account delete confirmation comment */
 "delete account message" = "delete account message";
-
-/* possible private status action */
-"Disable Protection" = "Disable protection";
 
 /* ComposeTableView: button to decide to discharge changes made on a drafted mail. */
 "Discharge changes" = "Discharge changes";
@@ -221,14 +191,8 @@
 /* Tableview section footer */
 "If enabled, message subjects are also protected." = "If enabled, message subjects are also protected.";
 
-/* Privacy status suggestion */
-"If this message was addressed to you, please inform the sender that you don't have the key." = "If this message was addressed to you. Please inform the sender that you don't have the key.";
-
 /* Manual account setup */
 "IMAP" = "IMAP";
-
-/* Empty IMAP port server message */
-"IMAP Port must not be empty." = "IMAP port must not be empty.";
 
 /* Empty IMAP server message */
 "IMAP server must not be empty." = "IMAP server must not be empty.";
@@ -292,9 +256,6 @@
 /* Privacy status suggestion */
 "Make sure the privacy status for each communication partner listed is at least secure" = "Make sure the privacy status for each communication partner listed is at least secure";
 
-/* privacyStatusDescription yellow */
-"Make this communication partner secure & trusted by comparing the trustwords below with your partner, for example by making a phone call" = "Make this communication partner secure and trusted by comparing the trustwords below with them, for example by making a phone call";
-
 /* manual */
 "Manual configuration" = "Manual configuration";
 
@@ -307,9 +268,6 @@
 
 /* more button in slide-left menu */
 "More" = "More";
-
-/* MoveToFolderViewController title */
-"Move To" = "Move to";
 
 /* EmailList action title */
 "Move to Folder" = "Move to Folder";
@@ -448,12 +406,6 @@
    Message actions */
 "Reply All" = "Reply All";
 
-/* alert action 2 */
-"Reset Trust For All Identities" = "Reset Trust for All Identities";
-
-/* alert action 1 */
-"Reset Trust For This Identity" = "Reset Trust for This Identity";
-
 /* compose email save */
 "Save Draft" = "Save Draft";
 
@@ -464,9 +416,6 @@
 /* Privacy status title
    privacyStatusTitle green */
 "Secure & Trusted" = "Secure & Trusted";
-
-/* Privacy status suggestion */
-"Separately verify the content of this message with your communication partner." = "Verify the content of this message with your communication partner separately.";
 
 /* Title of error alert shown to the user in case we can not connect to the IMAP server
    Title of error alert shown to the user in case we can not connect to the SMTP server */
@@ -491,9 +440,6 @@
 /* Manual account setup */
 "SMTP" = "SMTP";
 
-/* Empty SMTP port server message */
-"SMTP Port must not be empty." = "IMAP port must not be empty.";
-
 /* Empty SMTP server message */
 "SMTP server must not be empty." = "SMTP server must not be empty.";
 
@@ -512,9 +458,6 @@
 /* keySyncWizard error view message */
 "Something went wrong with syncing the devices. Please try again." = "Something went wrong with syncing the devices. Please try again.";
 
-/* AccountSettings viewModel no account error */
-"Something went wrong, please try again later" = "Something went wrong. Please try again later";
-
 /* Stop/trust button in handshake overview */
 "Start Trusting" = "Start Trusting";
 
@@ -528,17 +471,11 @@
 /* Compose field title */
 "Subject:" = "Subject:";
 
-/* error message for .accountExistence */
-"The account already exists" = "This account already exists";
-
 /* KeySyncWizard complete message - more than two devices */
 "The device is now member of your device group. All your privacy is now synchronized." = "The device is now member of your device group. All your privacy is now synchronized.";
 
 /* Error message shown to the user in case a message could not be sent. */
 "The message could not be sent. Please try again later." = "The message could not be sent. Please try again later.";
-
-/* error message for .minimumLengthUsername */
-"The username must contain more than 1 characters" = "The username must contain more than 1 character";
 
 /* privacyStatusDescription red */
 "This communication partner is mistrusted" = "This communication partner is mistrusted";
@@ -560,9 +497,6 @@
 
 /* Privacy status suggestion */
 "This message has no reliable encryption or no signature. Ask your communication partner to upgrade their encryption solution or install p≡p." = "This message has no reliable encryption or no signature. Ask your communication partner to upgrade their encryption solution or install p≡p.";
-
-/* Privacy status explanation */
-"This message has unreliable protection" = "This message has unreliable protection.";
 
 /* Compose field title */
 "This message is from a mailing list." = "This message is from a mailing list.";
@@ -587,9 +521,6 @@
 
 /* Compose field title */
 "To:" = "To:";
-
-/* Compose field title */
-"To: " = "To:";
 
 /* UI alert title for transport protocol */
 "Transport protocol" = "Transport protocol";
@@ -657,4 +588,3 @@
 
 /* Incorrect trustwords (pEp, long version) */
 "Wrong Trustwords" = "Wrong Trustwords";
-
