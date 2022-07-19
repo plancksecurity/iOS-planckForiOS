@@ -197,6 +197,9 @@
 /* Privacy status suggestion */
 "Separately verify the content of this message with your communication partner." = "Überprüfen Sie mit Ihrem Kommunikationspartner den Inhalt dieser Nachricht.";
 
+/* The server is not available error message */
+"Server Unreachable" = "Server konnte nicht erreicht werden";
+
 /* Reply to unknown sender with date */
 "Someone wrote on %1$@:" = "Jemand schrieb am %1$@:";
 
