@@ -502,9 +502,8 @@ extension VerifiableAccount {
             let imapError = ImapSyncOperationError.connectionTimedOut(#function)
             me.imapResult = .failure(imapError)
             me.checkSuccess()
-            imapResult = nil
-            smtpResult = nil
-
+            me.imapResult = nil
+            me.smtpResult = nil
         }
     }
 
