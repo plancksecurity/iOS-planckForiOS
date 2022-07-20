@@ -74,7 +74,9 @@ extension ComposeViewModel {
 
             // Plural
             if numberOfImages > 1 {
-                return title(with: NSLocalizedString("The attachments of this message are %1$@. You can reduce message size by scaling the images to one of the sizes below", comment: "Reduce attachments size title"), andSize: size)
+                return title(with: NSLocalizedString("The attachments of this message are %1$@. You can reduce message size by scaling the images to one of the sizes below",
+                                                     comment: "Reduce attachment size title. The placeholder will be replaced by something like '5 KB'."),
+                             andSize: size)
             }
             return title(with: NSLocalizedString("The attachment of this message is %1$@. You can reduce message size by scaling the image to one of the sizes below",
                                                  comment: "Reduce attachment size title. The placeholder will be replaced by something like '5 KB'."),
