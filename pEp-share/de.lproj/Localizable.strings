@@ -155,9 +155,6 @@
 /* Options */
 "Options" = "Optionen";
 
-/* Alert message shown if user wants to add a photo attachment, but has denied to give the app permissions. */
-"p≡p has no permissions to access \nthe Photo Gallery. You can grand permissions in Settings App." = "p≡p hat keine Berechtigung für den Zugriff auf\ndie Fotogalerie. Sie können die Berechtigung in den Einstellungen erteilen.";
-
 /* Privacy status suggestion */
 "Please add the necessary information." = "Bitte fügen Sie die notwendigen Informationen hinzu.";
 

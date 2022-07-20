@@ -569,9 +569,6 @@
 /* Some trustwords */
 "OUTDISTANCE   CORRINA   ETHIOPIA    OUTDRAW   FLEECER" = "GÄRTNER   KNURREN   WAHLHEIMAT   QUIRL   HEIZEN";
 
-/* Alert message shown if user wants to add a photo attachment, but has denied to give the app permissions. */
-"p≡p has no permissions to access \nthe Photo Gallery. You can grand permissions in Settings App." = "p≡p hat keine Berechtigung für den Zugriff auf\ndie Fotogalerie. Sie können die Berechtigung in den Einstellungen erteilen.";
-
 /* Tableview section header */
 "p≡p sync" = "p≡p Synchronisierung";
 
