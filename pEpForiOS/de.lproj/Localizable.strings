@@ -70,9 +70,6 @@
 /* Name of unified inbox (showing messages of all accoounts */
 "All" = "Alle";
 
-/* Error message shown to the user in case an error in the app occured that is not caused or related to the server */
-"An internal error occured. Sorry, that should not happen." = "Es ist ein interner Fehler aufgetreten. Entschuldigen Sie, das hätte nicht passieren dürfen.";
-
 /* error message for .noConnectData */
 "An internal error occurred" = "Es ist ein interner Fehler aufgetreten";
 
@@ -99,9 +96,6 @@
 
 /* Alt text for image attachment in markdown. Placeholders: Attachment number, extension. */
 "Attached Image (%1$@)" = "Angehängtes Bild (%1$@)";
-
-/* Alt text for image attachment in markdown. Placeholders: Attachment number, extension. */
-"Attached Image %1$d (%2$@)" = "Angehängtes Bild %1$d (%2$@)";
 
 /* title attachments filter cell */
 "Attachments" = "Anhänge";
@@ -229,7 +223,8 @@
 /* Leave device group confirmation */
 "Disable p≡p Sync" = "p≡p Sync deaktivieren";
 
-/* possible private status action */
+/* Disable Protection
+   Disable Protection button title of pEp protection toggle action sheet */
 "Disable Protection" = "Schutz abschalten";
 
 /* ComposeTableView: button to decide to discharge changes made on a drafted mail. */
@@ -457,9 +452,6 @@
 
 /* Privacy status suggestion */
 "Make sure the privacy status for each communication partner listed is at least secure" = "Stellen Sie sicher, dass der Datenschutzstatus für jeden Kommunikationspartner mindestens Sicher ist";
-
-/* privacyStatusDescription yellow */
-"Make this communication partner secure & trusted by comparing the trustwords below with your partner, for example by making a phone call" = "Machen Sie diesen Kontakt sicher und vertrauenswürdig, indem Sie die folgenden Trustwords mit dem Kontakt vergleichen, z. B. indem Sie einen Anruf tätigen";
 
 /* manual */
 "Manual configuration" = "Manuelle Konfiguration";
@@ -744,9 +736,6 @@
 /* alert action 2 */
 "Reset Trust For All Identities" = "Vertrauen für alle Identitäten zurücksetzen";
 
-/* alert action 1 */
-"Reset Trust For This Identity" = "Vertrauen für diese Identität zurücksetzen";
-
 /* compose email save */
 "Save Draft" = "Entwurf speichern";
 
@@ -838,7 +827,7 @@
 /* keySyncWizard error view message */
 "Something went wrong with syncing the devices. Please try again." = "Etwas ist beim Synchronisieren der Geräte schief gelaufen. Bitte versuchen Sie es noch einmal.";
 
-/* AccountSettings viewModel no account error */
+/* AccountSettings viewModel: no account error */
 "Something went wrong, please try again later" = "Etwas ist schief gelaufen. Bitte versuchen Sie es später noch einmal";
 
 /* Error description when something went wrong
@@ -974,9 +963,6 @@
 
 /* Compose field title */
 "To:" = "An:";
-
-/* Compose field title */
-"To: " = "An:";
 
 /* UI alert title for transport protocol */
 "Transport protocol" = "Transport-Protokoll";
