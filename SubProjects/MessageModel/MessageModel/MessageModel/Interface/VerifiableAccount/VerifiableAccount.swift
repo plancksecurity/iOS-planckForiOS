@@ -133,6 +133,7 @@ public class VerifiableAccount: VerifiableAccountProtocol {
 
         try startImapVerification()
         try startSmtpVerification()
+        triggerTimoutIn(seconds: 10)
     }
 
     /// Saves the account if possible.
@@ -483,6 +484,30 @@ extension VerifiableAccount {
 
         return server
     }
+
+    //Trigger a timeout error on the verification process after seconds passed by param.
+    /// - Parameter seconds: The seconds to trigger the timeout.
+    private func triggerTimoutIn(seconds: CGFloat) {
+        let queueLabel = "security.pep.accountVerification"
+        DispatchQueue(label: queueLabel, qos: .userInitiated).asyncAfter(deadline: .now() + seconds) { [weak self] in
+            guard let me = self else {
+                //The account has been verified.
+                return
+            }
+            me.imapVerifier.stop()
+            me.smtpVerifier.stop()
+
+            let smtpError = SmtpSendError.connectionTimedOut(#function, "Timeout")
+            me.smtpResult = .failure(smtpError)
+            let imapError = ImapSyncOperationError.connectionTimedOut(#function)
+            me.imapResult = .failure(imapError)
+            me.checkSuccess()
+            imapResult = nil
+            smtpResult = nil
+
+        }
+    }
+
 }
 
 // MARK: - VerifiableAccountIMAPDelegate
