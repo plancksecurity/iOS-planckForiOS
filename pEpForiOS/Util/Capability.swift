@@ -72,7 +72,7 @@ public struct Capability {
                                                   comment:
                         "Alert title shown if user wants to add a photo attachment, but has denied to give the app permissions.")
                     let message = NSLocalizedString(
-                        "p≡p has no permissions to access \nthe Photo Gallery. You can grant permissions in Settings App.",
+                        "p≡p has no permissions to access \nthe Photo Gallery. You can grant permissions in the Settings app.",
                                                     comment:
                         "Alert message shown if user wants to add a photo attachment, but has denied to give the app permissions.")
                     UIUtils.showAlertWithOnlyPositiveButton(title: title,
