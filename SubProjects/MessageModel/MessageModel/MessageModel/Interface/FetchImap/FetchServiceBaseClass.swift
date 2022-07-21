@@ -115,6 +115,7 @@ public class FetchServiceBaseClass {
     func operationToRun(errorContainer: ErrorContainerProtocol,
                         imapConnection: ImapConnectionProtocol,
                         folderName: String) -> FetchMessagesInImapFolderOperation{
-        fatalError("Subclasses need to implement this method.")
+        Log.shared.errorAndCrash(message: "Subclasses need to implement this method")
+        return FetchMessagesInImapFolderOperation(context: nil, errorContainer: errorContainer, imapConnection: imapConnection, folderName: "")
     }
 }

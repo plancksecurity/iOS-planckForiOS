@@ -75,7 +75,8 @@ class EmailDisplayViewModel {
 
     //Abstract. Has to be overridden.
     public func getMoveToFolderViewModel(forSelectedMessages: [IndexPath])  -> MoveToAccountViewModel? {
-        fatalError("Must be overridden")
+        Log.shared.errorAndCrash(message: "Must be overridden")
+        return nil
     }
 
     //!!!: this should be internal (not part of the protocol). VC and Cells MUST not know the model (Message).
