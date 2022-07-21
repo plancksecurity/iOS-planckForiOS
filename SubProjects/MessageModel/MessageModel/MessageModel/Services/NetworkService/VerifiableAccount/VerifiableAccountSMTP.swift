@@ -35,7 +35,7 @@ class VerifiableAccountSMTP {
 
     /// Stops the verification.
     func stop() {
-        smtpConnection?.stop()
+        smtpConnection?.close()
     }
 
 }

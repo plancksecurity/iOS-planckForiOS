@@ -68,7 +68,7 @@ class SmtpConnection: SmtpConnectionProtocol {
         smtp.connectInBackgroundAndNotify()
     }
 
-    func stop() {
+    func close() {
         smtp.close()
     }
 }
