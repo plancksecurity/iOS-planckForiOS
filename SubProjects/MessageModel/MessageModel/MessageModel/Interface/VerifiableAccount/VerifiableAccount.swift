@@ -488,8 +488,11 @@ extension VerifiableAccount {
     //Trigger a timeout error on the verification process after seconds passed by param.
     /// - Parameter seconds: The seconds to trigger the timeout.
     private func triggerTimoutIn(seconds: CGFloat) {
+        let group = DispatchGroup()
+        group.enter()
         let queueLabel = "security.pep.accountVerification"
         DispatchQueue(label: queueLabel, qos: .userInteractive).asyncAfter(deadline: .now() + seconds) { [weak self] in
+            defer { group.leave() }
             guard let me = self else {
                 //The account has been verified.
                 return
@@ -505,8 +508,8 @@ extension VerifiableAccount {
             me.imapResult = nil
             me.smtpResult = nil
         }
+        group.wait()
     }
-
 }
 
 // MARK: - VerifiableAccountIMAPDelegate
