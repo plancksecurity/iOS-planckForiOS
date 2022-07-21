@@ -465,6 +465,9 @@
 /* EmailList action title */
 "Mark as unread" = "Als ungelesen markieren";
 
+/* Medium size action title */
+"Medium (%1$@)" = "Medium (%1$@)";
+
 /* TrustManagementView Back Button Title */
 "Message" = "Nachricht";
 
@@ -802,6 +805,9 @@
 
 /* Body for notifications show on lock screen for new mail(s) */
 "Slide for more" = "Wischen um mehr zu sehen";
+
+/* Small size action title */
+"Small (%1$@)" = "Klein (%1$@)";
 
 /* Manual account setup */
 "SMTP" = "SMTP";

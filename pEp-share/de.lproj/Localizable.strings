@@ -118,6 +118,9 @@
 /* Large size action title */
 "Large (%1$@)" = "Groß (%1$@)";
 
+/* Medium size action title */
+"Medium (%1$@)" = "Medium (%1$@)";
+
 /* TrustManagementView Back Button Title */
 "Message" = "Nachricht";
 
@@ -196,6 +199,9 @@
 
 /* The server is not available error message */
 "Server Unreachable" = "Server konnte nicht erreicht werden";
+
+/* Small size action title */
+"Small (%1$@)" = "Klein (%1$@)";
 
 /* Reply to unknown sender with date */
 "Someone wrote on %1$@:" = "Jemand schrieb am %1$@:";
