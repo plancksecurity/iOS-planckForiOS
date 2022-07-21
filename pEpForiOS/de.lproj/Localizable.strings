@@ -14,6 +14,9 @@
 /* Reply to single contact, without date. Placeholder: Name. */
 "%1$@ wrote:" = "%1$@ schrieb:";
 
+/* Calendar Event Banner title - plural */
+"%1d Events Found" = "%1d Ereignisse gefunden";
+
 /* Title for notification show on lock screen for *several* new mails */
 "%1d new messages received" = "%1d neue Nachrichten erhalten";
 
@@ -197,6 +200,9 @@
 /* Client certificate import: corrupted file error alert title */
 "Corrupted File" = "Beschädigte Datei";
 
+/* Error description detecting account settings */
+"Could not find servers. Please enter manually." = "Keine Server gefunden. Bitte manuell eingeben.";
+
 /* Settings: Cell (button) title to view app credits */
 "Credits" = "Mitwirkung";
 
@@ -242,6 +248,9 @@
 /* Display Name placeholder for manual account setup
    Display Name TextField Placeholder in Login Screen */
 "Display Name" = "Anzeigename";
+
+/* Alert view message - warning */
+"Do you really want to export p≡p databases to Documents/pEp/db-export/ on your local file system?\nWarning: The databases contain confidential information like private keys." = "Wollen Sie wirklich p≡p Datenbanken nach Dokumente/pEp/db-export/ in Ihrem lokalen Dateisystem exportieren?\nWarnung: Die Datenbanken enthalten vertrauliche Informationen, wie z.B. private Schlüssel.";
 
 /* Name of Drafts folder (showing draft messages, of one account) */
 "Drafts" = "Entwürfe";
@@ -949,6 +958,9 @@
 
 /* Message when asking user for confirmation about importing keys */
 "The fingerprint of the selected key is:\n%1$@\n%2$@\n\nImport and use this key?" = "Der Fingerabdruck des gewählten Schlüssels ist:\n%1$@\n%2$@\n\nSoll dieser Schlüssel importiert und verwendet werden?";
+
+/* Privacy Status Explanation */
+"The icon in the top bar reflects the Privacy Status of the message, which is the lowest common denominator of all communication partners of that message, for example:" = "Das Symbol am oberen Rand gibt den Datenschutz der Nachricht an, den kleinsten gemeinsamen Nenner aller Kommunikationspartner, z.B.:";
 
 /* Error message shown to the user in case a message could not be sent. */
 "The message could not be sent. Please try again later." = "Die Nachricht konnte nicht versandt werden. Bitte versuchen Sie es später noch einmal.";
