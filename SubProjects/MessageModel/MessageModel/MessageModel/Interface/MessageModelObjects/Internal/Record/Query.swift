@@ -55,7 +55,7 @@ extension NSManagedObject {
         return name
         //!!!: fix test setup to not create multiple in-memory- stores per test suite
 //        guard let entityName = entity().name else {
-//            fatalError("Entity without name!")
+//            Log.shared.errorAndCrash("Entity without name!")
 //        }
 //        return entityName
     }

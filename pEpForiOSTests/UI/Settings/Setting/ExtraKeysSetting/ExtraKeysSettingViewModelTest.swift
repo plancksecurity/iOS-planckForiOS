@@ -129,7 +129,7 @@ extension ExtraKeysSettingViewModelTest {
         }
 
         func refreshView() {
-            fatalError()
+            Log.shared.errorAndCrash()
         }
     }
 }
