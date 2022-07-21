@@ -32,7 +32,7 @@
 //
 //    func emailDisplayDidChangeMarkSeen(message: Message) {
 //        //FIXME: when implementing message threading
-//        fatalError("Unimplemented stub")
+//        Log.shared.errorAndCrash("Unimplemented stub")
 //    }
 //
 //    func emailDisplayDidChangeRating(message: Message) {

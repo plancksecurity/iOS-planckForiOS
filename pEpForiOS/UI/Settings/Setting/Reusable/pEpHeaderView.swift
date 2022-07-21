@@ -8,6 +8,7 @@
 
 import UIKit
 
+import pEpIOSToolbox
 
 extension PEPHeaderView {
     private struct Constants {
@@ -66,7 +67,8 @@ final class PEPHeaderView: UITableViewHeaderFooterView {
     }
 
     required init?(coder: NSCoder) {
-        fatalError("init(coder:) has not been implemented")
+        super.init(coder: coder)
+        Log.shared.errorAndCrash(message: "init(coder:) has not been implemented")
     }
 
     override init(reuseIdentifier: String?) {

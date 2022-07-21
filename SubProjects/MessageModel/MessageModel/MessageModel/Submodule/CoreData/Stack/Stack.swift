@@ -23,7 +23,8 @@ class Stack {
     static private(set) var shared = Stack() {
         didSet {
             guard MiscUtil.isUnitTest() else {
-                fatalError("This dirty trick is allowed in unit tests only")
+                Log.shared.errorAndCrash(message: "This dirty trick is allowed in unit tests only")
+                return
             }
         }
     }
@@ -37,7 +38,8 @@ class Stack {
                 try loadCoreDataStack()
             }
         } catch {
-            fatalError("No Stack, no running app, sorry.")
+
+            Log.shared.errorAndCrash(message:"No Stack, no running app, sorry.")
         }
     }
 
@@ -91,7 +93,8 @@ extension Stack {
         guard let directoryURL =
             FileManager.default.containerURL(forSecurityApplicationGroupIdentifier: kAppGroupIdentifier)
             else {
-                fatalError("No DB, no app, sorry.")
+            Log.shared.errorAndCrash(message:"No DB, no app, sorry.")
+            return URL(fileURLWithPath: "")
         }
         let storeName = "\(name).sqlite"
         let storeUrl = directoryURL.appendingPathComponent(storeName)
@@ -187,7 +190,10 @@ extension Stack {
     func reset() {
         objc_sync_enter(Stack.unitTestLock)
         defer { objc_sync_exit(Stack.unitTestLock) }
-        guard MiscUtil.isUnitTest() else { fatalError("Not permited to use in production code.") }
+        guard MiscUtil.isUnitTest() else {
+            Log.shared.errorAndCrash(message: "Not permited to use in production code.")
+            return
+        }
 
         // A `reset(context:)` can involve a merge, which can crash a test.
         // Not wanted.
@@ -202,7 +208,7 @@ extension Stack {
         do {
             try loadCoreDataStack(storeType: NSInMemoryStoreType)
         } catch {
-            fatalError("No Stack, no running app, sorry.")
+            Log.shared.errorAndCrash(message: "No Stack, no running app, sorry.")
         }
     }
 
