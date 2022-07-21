@@ -8,6 +8,8 @@
 
 import UIKit
 
+import pEpIOSToolbox
+
 final class pEpFooterView: UITableViewHeaderFooterView {
 
     static let reuseIdentifier = "pEp Section Footer"
@@ -21,7 +23,8 @@ final class pEpFooterView: UITableViewHeaderFooterView {
     }
 
     required init?(coder: NSCoder) {
-        fatalError("init(coder:) has not been implemented")
+        super.init(coder: coder)
+        Log.shared.errorAndCrash(message: "init(coder:) has not been implemented")
     }
 
     override init(reuseIdentifier: String?) {
