@@ -7,8 +7,14 @@
 /* (No Comment) */
 "Client Certificate" = "Client-Zertifikat";
 
+/* Privacy - Calendars Usage Description */
+"NSCalendarsUsageDescription" = "Ermöglicht es, Ereignisse direkt zum Kalendar hinzuzufügen";
+
 /* Privacy - Camera Usage Description */
 "NSCameraUsageDescription" = "Kamera verwenden";
+
+/* Privacy - Contacts Usage Description */
+"NSContactsUsageDescription" = "- p≡p ist eine App für verschlüsselte Kommunikation. Um Nachrichten\nan bereits bestehende Kontakte zu schicken, ist es notwendig, p≡p\nden Zugriff zu erlauben.\n\n- Diese Daten verlassen dieses Gerät nicht, und werden weder an p≡p\nnoch an Dritte gesendet.";
 
 /* Privacy - Photo Library Additions Usage Description */
 "NSPhotoLibraryAddUsageDescription" = "Ermöglicht es, Fotos in der Galerie zu speichern";

@@ -158,6 +158,9 @@
 /* Options */
 "Options" = "Optionen";
 
+/* Alert message shown if user wants to add a photo attachment, but has denied to give the app permissions. */
+"p≡p has no permissions to access \nthe Photo Gallery. You can grant permissions in the Settings app." = "p≡p hat keinen Zugriff auf Fotos.\nSie können den Zugriff in der App „Einstellungen“ erlauben.";
+
 /* Privacy status suggestion */
 "Please add the necessary information." = "Bitte fügen Sie die notwendigen Informationen hinzu.";
 
@@ -214,6 +217,12 @@
 
 /* Sharing extension: Could not load or process the attachment */
 "The attachment could not be loaded:\n%1@" = "Der Anhang konnte nicht geladen werden:\n%1@";
+
+/* Reduce attachment size title. The placeholder will be replaced by something like '5 KB'. */
+"The attachment of this message is %1$@. You can reduce message size by scaling the image to one of the sizes below." = "Der Anhang dieser Mail hat %1$@. Sie können die Größe reduzieren indem Sie das Bild auf eine der unten angegebenen Größen skalieren lassen.";
+
+/* Reduce attachment size title. The placeholder will be replaced by something like '5 KB'. */
+"The attachments of this message are %1$@. You can reduce message size by scaling the images to one of the sizes below." = "Die Anhänge dieser Mail haben %1$@. Sie können die Größe reduzieren indem Sie die Bilder auf eine der unten angegebenen Größen skalieren lassen.";
 
 /* Privacy status explanation */
 "This contact is completely trusted. All communication will be the maximum level of privacy." = "Dieser Kontakt ist vertrauenswürdig. Die gesamte Kommunikation bietet ein Höchstmaß an Datenschutz.";
@@ -309,4 +318,7 @@
 
 /* Confirm less secure forwarding message alert body */
 "You are about to forward a secure message as unsecure. If you choose to proceed, confidential information might be leaked putting you and your communication partners at risk. Are you sure you want to continue?" = "Sie sind dabei, eine sichere Nachricht als unsicher weiterzuleiten. Wenn Sie fortfahren, können vertrauliche Informationen verloren gehen, die Sie und Ihre Kommunikationspartner gefährden. Sind Sie sicher, dass Sie fortfahren wollen?";
+
+/* You're offline error message */
+"You're offline" = "Keine Verbindung";
 

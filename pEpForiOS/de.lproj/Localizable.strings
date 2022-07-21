@@ -14,8 +14,14 @@
 /* Reply to single contact, without date. Placeholder: Name. */
 "%1$@ wrote:" = "%1$@ schrieb:";
 
+/* Title for notification show on lock screen for *several* new mails */
+"%1d new messages received" = "%1d neue Nachrichten erhalten";
+
 /* Number of filters instead of filter name */
 "%d filters" = "%d Filter";
+
+/* Calendar Event Banner title - singular */
+"1 Event Found" = "1 Ereignis gefunden";
 
 /* error message for .missingPassword */
 "A non-empty password is required" = "Passwort ist erforderlich";
@@ -72,6 +78,9 @@
 
 /* error message for .noConnectData */
 "An internal error occurred" = "Es ist ein interner Fehler aufgetreten";
+
+/* Error message shown to the user in case an error in the app occured that is not caused or related to the server */
+"An internal error occurred. Sorry, that should not happen." = "Interner Fehler";
 
 /* Tutorial Fourth text */
 "And in the top bar when you open or write an email:" = "Und in der oberen Leiste, wenn Sie eine E-Mail öffnen oder schreiben:";
@@ -285,6 +294,16 @@
 /* separator string between name and date */
 "Exp. date:" = "Ablaufdatum:";
 
+/* Alert view title - warning
+   setting row title: Export DBs */
+"Export p≡p databases to file system" = "p≡p Datenbanken in das Dateisystem exportieren";
+
+/* Error message */
+"Exporting databases failed" = "Fehler beim Datenbank-Export";
+
+/* Error message */
+"Exporting databases OK" = "Datenbank-Export erfolgreich";
+
 /* Settings: Cell (button) title to view Extra Keys setting */
 "Extra Keys" = "Extra Schlüssel";
 
@@ -425,6 +444,12 @@
 /* Invalid input for username */
 "Invalid username: %1$@" = "Ungültiger Benutzername: %1$@";
 
+/* Error message shown to the user in case the authentication to IMAP or SMTP server failed. */
+"It was impossible to login to %1$@. Username or password is wrong." = "Die Anmeldung bei %1$@ war nicht möglich. Benutzername oder Passwort ist falsch.";
+
+/* Error message shown to the user in case the authentication to IMAP or SMTP server failed. */
+"It was impossible to login to the server. Username or password is wrong." = "Die Anmeldung beim Server war nicht möglich. Benutzername oder Passwort ist falsch.";
+
 /* ComposeTableView: button to decide to Discharge changes made on a mail in outbox. */
 "Keep in Outbox" = "Im Postausgang behalten";
 
@@ -461,6 +486,9 @@
 
 /* Email Detail View reply button menu - toggle seen state button text: read */
 "Mark as read" = "Als gelesen markieren";
+
+/* EmailList action title */
+"Mark as Read" = "Als „gelesen“ markieren";
 
 /* EmailList action title */
 "Mark as unread" = "Als ungelesen markieren";
@@ -522,6 +550,9 @@
 /* No client certificate exists alert message */
 "No client certificate exists. You have to import your client certificate before entering login data." = "Es ist kein Client-Zertifikat vorhanden. Sie müssen Ihr Client-Zertifikat importieren, bevor Sie Anmeldedaten eingeben können.";
 
+/* No extra keys were found */
+"No extra keys were found" = "Keine Zusatzschlüssel gefunden";
+
 /* Alert title shown if user wants to add a photo attachment, but has denied to give the app permissions. */
 "No Permissions" = "Keine Berechtigung";
 
@@ -571,6 +602,9 @@
 
 /* Some trustwords */
 "OUTDISTANCE   CORRINA   ETHIOPIA    OUTDRAW   FLEECER" = "GÄRTNER   KNURREN   WAHLHEIMAT   QUIRL   HEIZEN";
+
+/* Alert message shown if user wants to add a photo attachment, but has denied to give the app permissions. */
+"p≡p has no permissions to access \nthe Photo Gallery. You can grant permissions in the Settings app." = "p≡p hat keinen Zugriff\nzu Fotos. Sie können den Zugriff in der App „Einstellungen“ erlauben.";
 
 /* Tableview section header */
 "p≡p sync" = "p≡p Synchronisierung";
@@ -681,6 +715,9 @@
 
 /* keySync handshake alert message - more than two devices */
 "Please make sure you have the devices together so you can compare the Trustwords on the devices. Are the Trustwords below equal to the Trustwords on the other device?" = "Bitte stellen Sie sicher, dass Sie beide Geräte vor sich haben, um die Trustwords zu vergleichen. Stimmen die Trustwords unten mit denen auf dem anderen Gerät überein?";
+
+/* Validation error for set_own_key UI */
+"Please provide an email and a fingerprint. The email must match an existing account." = "Bitte geben Sie eine E-Mail-Adresse und einen Fingerprint an. Die E-Mail-Adresse muss mit einem vorhandenen Konto übereinstimmen.";
 
 /* Port label in account settings
    Port placeholder for manual account IMAP setup
@@ -868,6 +905,9 @@
 /* Compose field title */
 "Subject:" = "Betreff:";
 
+/* Tableview section header: Support */
+"Support" = "Unterstützung";
+
 /* Tableview section header: (p≡p) Sync */
 "Sync" = "Synchronisieren";
 
@@ -877,11 +917,29 @@
 /* Error when account found for set_own_key UI, but has no user name */
 "The account with the given email address has no user name." = "Das Konto mit der angegebenen E-Mail-Adresse hat keinen Benutzernamen.";
 
+/* Reduce attachment size title. The placeholder will be replaced by something like '5 KB'. */
+"The attachment of this message is %1$@. You can reduce message size by scaling the image to one of the sizes below." = "Der Anhang dieser Nachricht hat %1$@. Sie können die Größe reduzieren, indem Sie das Bild auf eine der unten angegebenen Größen skalieren lassen.";
+
+/* Reduce attachment size title. The placeholder will be replaced by something like '5 KB'. */
+"The attachments of this message are %1$@. You can reduce message size by scaling the images to one of the sizes below." = "Die Anhänge dieser Nachricht haben %1$@. Sie können die Größe reduzieren, indem Sie die Bilder auf eine der unten angegebenen Größen skalieren lassen.";
+
+/* Lack of permissions error message */
+"The calendar access was denied or restricted" = "Kein Zugang zum Kalendar";
+
 /* Error message shown to the user on problems with the client certificate */
 "The client certificate was rejected by the server" = "Das Client-Zertifikat wurde vom Server abgelehnt";
 
 /* KeySyncWizard complete message - more than two devices */
 "The device is now member of your device group. All your privacy is now synchronized." = "Das Gerät ist nun Teil Ihrer Gerätegruppe. Ihre gesamten Datenschutz-Einstellungen sind jetzt synchronisiert.";
+
+/* Event already exists error message */
+"The event already exists in the calendar" = "Das Ereignis existiert bereits in Ihrem Kalendar";
+
+/* Can't delete the event */
+"The event can't be deleted" = "Das Ereignis kann nicht entfernt werden";
+
+/* Missing event error message */
+"The event does not exist in the calendar" = "Das Ereignis existiert nicht in Ihrem Kalendar";
 
 /* Client certificate import: corrupted file error alert message */
 "The file could not be imported" = "Die Datei konnte nicht importiert werden";
@@ -1069,6 +1127,9 @@
 /* AccountsView: Prefix for version. Shows up like this: \"Version: 2.0.1 build 234\" */
 "Version" = "Version";
 
+/* Can't add event to calendar error message */
+"Was not possible to add the event to the calendar" = "Es war nicht möglich, das Ereignis zum Kalendar hinzuzufügen";
+
 /* Error message shown to the user in case we can not connect to the IMAP server */
 "We could not connect to the IMAP server." = "Der IMAP-Server konnte nicht erreicht werden.";
 
@@ -1142,4 +1203,7 @@
 
 /* iCloud instructions */
 "You need to create an app-specific password in your iCloud account." = "Sie müssen ein app-spezifisches Passwort in Ihrem iCloud-Konto erstellen.";
+
+/* You're offline error message */
+"You're offline" = "Keine Verbindung";
 
