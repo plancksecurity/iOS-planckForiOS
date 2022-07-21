@@ -192,18 +192,12 @@ extension ComposeViewModel {
 
         public enum AttachmentSizeUtilError: Error {
             case invalidState
-
-            public var errorDescription: String? {
-                switch self {
-                case .invalidState:
-                    return NSLocalizedString( "This util has not yet been set up correctly. Please consider check if it scaling should be offered first ", comment: "Internal Error Message - Wrong util setup")
-                }
-            }
         }
 
         //MARK: -  Private
 
-        private func calculateAndGroupAttachments(inlinedAttachments: [Attachment], nonInlinedAttachments: [Attachment]) {
+        private func calculateAndGroupAttachments(inlinedAttachments: [Attachment],
+                                                  nonInlinedAttachments: [Attachment]) {
             var numberOfImages = 0
             var actualAttachments = [Attachment]()
             var smallAttachments = [Attachment]()
