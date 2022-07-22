@@ -7,6 +7,7 @@
 //
 
 import XCTest
+import pEpIOSToolbox
 
 @testable import MessageModel
 @testable import pEpForiOS
@@ -482,9 +483,9 @@ class ComposeUtilTest: AccountDrivenTestBase {
                                        ccs: [Identity],
                                        bccs: [Identity]) -> Message {
         guard let parentFolder = account.firstFolder(ofType: type) else {
-            Log.shared.errorAndCrash("No folder." +
-                "Sorry, I had to crash here. The burn or buy bill would be too negative " +
-                "returning an Optional ")
+            Log.shared.errorAndCrash("No folder. Sorry, I had to crash here. The burn or buy bill would be too negative returning an Optional ")
+            let testFolder = Folder(name: "Test name", parent: nil, account: account, folderType: .all)
+            return Message(uuid: "Invalid UUID", parentFolder: testFolder)
         }
         let createe = Message(uuid: UUID().uuidString, parentFolder: parentFolder)
         createe.from = from
