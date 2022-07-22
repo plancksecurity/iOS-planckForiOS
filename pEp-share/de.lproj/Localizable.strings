@@ -224,6 +224,9 @@
 /* Reduce attachment size title. The placeholder will be replaced by something like '5 KB'. */
 "The attachments of this message are %1$@. You can reduce message size by scaling the images to one of the sizes below." = "Die Anhänge dieser Mail haben %1$@. Sie können die Größe reduzieren indem Sie die Bilder auf eine der unten angegebenen Größen skalieren lassen.";
 
+/* Sharing extension: Attachment(s) too big */
+"The file is too big to send via email. The maximum file size is %1d MB." = "Die Datei ist zu groß. Das Maximum beträgt %1d MB.";
+
 /* Privacy status explanation */
 "This contact is completely trusted. All communication will be the maximum level of privacy." = "Dieser Kontakt ist vertrauenswürdig. Die gesamte Kommunikation bietet ein Höchstmaß an Datenschutz.";
 

@@ -215,6 +215,9 @@
 /* Client certificate import: corrupted file error alert title */
 "Corrupted File" = "Beschädigte Datei";
 
+/* Alert title: In case we could not encrypt a messge that was previously shown as yellow or green. */
+"Could Not Encrypt" = "Verschlüsselung war nicht möglich";
+
 /* Error description detecting account settings */
 "Could not find servers. Please enter manually." = "Keine Server gefunden. Bitte manuell eingeben.";
 
