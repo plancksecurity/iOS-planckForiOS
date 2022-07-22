@@ -7,6 +7,7 @@
 //
 
 import Foundation
+import UIKit
 
 // Original Source:
 // https://stackoverflow.com/questions/1246198/show-iphone-cut-copy-paste-menu-on-uilabel

@@ -13,6 +13,7 @@ import CoreData
 import PEPObjCTypes_iOS
 import PEPObjCAdapter_iOS
 import PantomimeFramework
+import pEpIOSToolbox
 
 /// Base class for test data.
 /// - Note:

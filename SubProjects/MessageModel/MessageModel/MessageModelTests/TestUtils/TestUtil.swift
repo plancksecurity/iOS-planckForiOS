@@ -113,7 +113,10 @@ extension TestUtil {
         newMessage.longMessageFormatted = text
         newMessage.sent = sentDate ?? (Date().addingTimeInterval(1.0))
         newMessage.parent = cdFolder
-        guard let me = cdFolder.account?.identity else {Log.shared.errorAndCrash("Account must have an Identity")}
+        guard let me = cdFolder.account?.identity else {
+            Log.shared.errorAndCrash("Account must have an Identity")
+            return CdMessage(context: moc)
+        }
         let communicationPartner = createIdentity(idAddress: "someone@else.where",
                                                   idUserName: "someone@else.where",
                                                   userID: "someone@else.where",
