@@ -129,10 +129,10 @@
 "Back" = "Zurück";
 
 /* Compose field title */
-"BCC:" = "Bcc:";
+"BCC:" = "BCC:";
 
 /* Privacy status title */
-"Broken" = "Defekt";
+"Broken" = "Fehlerhaft";
 
 /* external content label text */
 "By showing external content, your privacy may be invaded.\nThis may affect the privacy status of the message." = "Das Anzeigen externer Inhalte kann Ihren Datenschutz gefährden,\nwas Auswirkungen auf den Datenschutzstatus der Nachricht haben kann.";
@@ -393,7 +393,7 @@
 "If the Trustwords are not correct, there could be an attack by a man‑in‑the‑middle." = "Wenn die Trustwords nicht korrekt sind, kann es sich um eine man-in-the-middle Attacke handeln.";
 
 /* Privacy status suggestion */
-"If this message was addressed to you, please inform the sender that you don't have the key." = "Falls diese Nachricht an Sie gerichtet war. Bitte teilen Sie dem Absender mit, dass Sie den Schlüssel nicht haben.";
+"If this message was addressed to you, please inform the sender that you don't have the key." = "Wenn diese Nachricht an Sie gerichtet war, informieren Sie bitte den Absender, dass Sie den Schlüssel nicht haben.";
 
 /* Alert: Leave device group confirmation comment */
 "If you disable p≡p Sync, your accounts on your devices will not be synchronised anymore. Are you sure you want to disable p≡p Sync?" = "Wenn Sie p≡p Sync deaktivieren, werden Ihre Konten auf Ihren Geräten nicht mehr synchronisiert. Möchten Sie p≡p Sync wirklich deaktivieren?";
@@ -631,7 +631,7 @@
 "OUTDISTANCE   CORRINA   ETHIOPIA    OUTDRAW   FLEECER" = "GÄRTNER   KNURREN   WAHLHEIMAT   QUIRL   HEIZEN";
 
 /* Alert message shown if user wants to add a photo attachment, but has denied to give the app permissions. */
-"p≡p has no permissions to access \nthe Photo Gallery. You can grant permissions in the Settings app." = "p≡p hat keinen Zugriff\nzu Fotos. Sie können den Zugriff in der App „Einstellungen“ erlauben.";
+"p≡p has no permissions to access \nthe Photo Gallery. You can grant permissions in the Settings app." = "p≡p hat keinen Zugriff auf Fotos.\nSie können den Zugriff in der App „Einstellungen“ erlauben.";
 
 /* Tableview section header */
 "p≡p sync" = "p≡p Synchronisierung";
@@ -1035,7 +1035,7 @@
 "This message has no reliable encryption or no signature. Ask your communication partner to upgrade their encryption solution or install p≡p." = "Diese Nachricht besitzt keine zuverlässige Verschlüsselung oder keine digitale Signatur. Bitten Sie Ihren Kommunikationspartner, eine bessere Verschlüsselungslösung zu verwenden oder p≡p zu installieren.";
 
 /* Privacy status explanation */
-"This message has unreliable protection" = "Diese Nachricht wurde nicht zuverlässig geschützt.";
+"This message has unreliable protection" = "Diese Nachricht wurde nicht zuverlässig geschützt";
 
 /* Compose field title */
 "This message is from a mailing list." = "Diese E-Mail ist von einer Mailing-Liste.";

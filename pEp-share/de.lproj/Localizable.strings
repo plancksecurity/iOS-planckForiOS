@@ -219,10 +219,10 @@
 "The attachment could not be loaded:\n%1@" = "Der Anhang konnte nicht geladen werden:\n%1@";
 
 /* Reduce attachment size title. The placeholder will be replaced by something like '5 KB'. */
-"The attachment of this message is %1$@. You can reduce message size by scaling the image to one of the sizes below." = "Der Anhang dieser Mail hat %1$@. Sie können die Größe reduzieren indem Sie das Bild auf eine der unten angegebenen Größen skalieren lassen.";
+"The attachment of this message is %1$@. You can reduce message size by scaling the image to one of the sizes below." = "Der Anhang dieser Nachricht hat %1$@. Sie können die Größe reduzieren, indem Sie das Bild auf eine der unten angegebenen Größen skalieren lassen.";
 
 /* Reduce attachment size title. The placeholder will be replaced by something like '5 KB'. */
-"The attachments of this message are %1$@. You can reduce message size by scaling the images to one of the sizes below." = "Die Anhänge dieser Mail haben %1$@. Sie können die Größe reduzieren indem Sie die Bilder auf eine der unten angegebenen Größen skalieren lassen.";
+"The attachments of this message are %1$@. You can reduce message size by scaling the images to one of the sizes below." = "Die Anhänge dieser Nachricht haben %1$@. Sie können die Größe reduzieren, indem Sie die Bilder auf eine der unten angegebenen Größen skalieren lassen.";
 
 /* Sharing extension: Attachment(s) too big */
 "The file is too big to send via email. The maximum file size is %1d MB." = "Die Datei ist zu groß. Das Maximum beträgt %1d MB.";
@@ -255,7 +255,7 @@
 "This message has no reliable encryption or no signature. Ask your communication partner to upgrade their encryption solution or install p≡p." = "Diese Nachricht besitzt keine zuverlässige Verschlüsselung oder keine digitale Signatur. Bitten Sie Ihren Kommunikationspartner, eine bessere Verschlüsselungslösung zu verwenden oder p≡p zu installieren.";
 
 /* Privacy status explanation */
-"This message has unreliable protection" = "Diese Nachricht ist nicht zuverlässig geschützt";
+"This message has unreliable protection" = "Diese Nachricht wurde nicht zuverlässig geschützt";
 
 /* Privacy status explanation */
 "This message is not secure and has been tampered with." = "Diese Nachricht ist nicht sicher und wurde manipuliert.";
