@@ -49,6 +49,9 @@
 /* Class = "UILabel"; text = "To:"; ObjectID = "hUI-Rm-qg5"; */
 "hUI-Rm-qg5.text" = "An:";
 
+/* Class = "UIButton"; normalTitle = "some@example.com"; ObjectID = "Hzm-le-K14"; */
+"Hzm-le-K14.normalTitle" = "some@example.com";
+
 /* Class = "UIBarButtonItem"; title = "Cancel"; ObjectID = "ijh-vj-Bee"; */
 "ijh-vj-Bee.title" = "Abbrechen";
 

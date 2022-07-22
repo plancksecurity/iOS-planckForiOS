@@ -8,6 +8,12 @@
 /* Title for notification show on lock screen for new mails */
 "(numMails) new messages received" = "(numMails) neue Nachrichten erhalten";
 
+/* Indicate there are more recipients that will be shown when the user taps this button. */
+"& %1$@ more" = "& %1$@ weitere";
+
+/* and X more button title - this will only be used to compute a size. */
+"& 10 more" = "& 10 weitere";
+
 /* Reply to single contact, with date. Placeholders: Name, date. */
 "%1$@ wrote on %2$@:" = "%1$@ schrieb am %2$@:";
 
@@ -79,6 +85,9 @@
 /* Name of unified inbox (showing messages of all accoounts */
 "All" = "Alle";
 
+/* Alert message: In case we could not encrypt a messge that was previously shown as yellow or green. */
+"An error occured while encrypting your message. Do you want to send the message unencrypted?" = "Fehler beim Verschlüsseln der Nachricht. Möchten Sie sie unverschlüsselt senden?";
+
 /* error message for .noConnectData */
 "An internal error occurred" = "Es ist ein interner Fehler aufgetreten";
 
@@ -125,6 +134,9 @@
 /* Privacy status title */
 "Broken" = "Defekt";
 
+/* external content label text */
+"By showing external content, your privacy may be invaded.\nThis may affect the privacy status of the message." = "Das Anzeigen externer Inhalte kann Ihren Datenschutz gefährden,\nwas Auswirkungen auf den Datenschutzstatus der Nachricht haben kann.";
+
 /* alert action 3
    Cancel for an alert view
    Cancel reset account identity button title
@@ -165,6 +177,9 @@
 
 /* Empty SMTP transport security method */
 "Choose SMTP username." = "Wählen Sie den SMTP-Benutzernamen.";
+
+/* client certificate provider key */
+"Client\nCertificate" = "Client-\nZertifikat";
 
 /* Header for client certificate password screen */
 "Client Certificate" = "Client-Zertifikat";
@@ -1149,7 +1164,7 @@
 "We could not connect to the SMTP server: %1@" = "Wir konnten keine Verbindung mit dem SMTP-Server herstellen: %1@";
 
 /* Error message shown to the user in case we can not connect to the SMTP server */
-"We could not connect to the SMTP server." = "Der SMTP_Server konnte nicht erreicht werden.";
+"We could not connect to the SMTP server." = "Der SMTP-Server konnte nicht erreicht werden.";
 
 /* Client certificate import: wrong password alert message */
 "We could not import the certificate. The password is incorrect.\n\nTry again?" = "Wir konnten das Zertifikat nicht importieren. Das Passwort ist inkorrekt.\n\nNochmals versuchen?";
