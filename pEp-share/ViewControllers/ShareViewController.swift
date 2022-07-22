@@ -138,7 +138,7 @@ extension ShareViewController: ShareViewModelDelegate {
             extensionContext?.cancelRequest(withError: SharingError.attachmentLimitExceeded)
         }
 
-        let message = String(format: NSLocalizedString("The file is too big to send via email. The maximum file size is %1d MB",
+        let message = String(format: NSLocalizedString("The file is too big to send via email. The maximum file size is %1d MB.",
                                         comment: "Sharing extension: Attachment(s) too big"),
                              ShareViewModel.maximumAttachmentSize)
         let title = NSLocalizedString("Error", comment: "Sharing extension: Error title")
