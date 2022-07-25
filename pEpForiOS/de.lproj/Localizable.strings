@@ -1093,7 +1093,7 @@
 /* Privacy status title */
 "Under Attack" = "Manipuliert";
 
-/* Undo trust change verification button title */
+/* Yes, undo the recent trust change */
 "Undo" = "Rückgängig machen";
 
 /* Action name to be suggested at the moment of revert */

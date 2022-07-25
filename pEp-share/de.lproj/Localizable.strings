@@ -34,10 +34,10 @@
 
 /* Cancel
    Cancel button title of pEp protection toggle action sheet
-   Cancel trust change to be undone
    compose email cancel
    Default cancel button text
    Downscale Images ActionSheet - Cancel
+   No, cancel the undo of the recent trust change
    OK button title
    TrustManagementView: trustword language selector cancel button label
    UIUtils.showActionSheetWithContactOptions.button.title Cancel */
@@ -281,7 +281,7 @@
 /* Privacy status title */
 "Under Attack" = "Manipuliert";
 
-/* Undo trust change verification button title */
+/* Yes, undo the recent trust change */
 "Undo" = "Rückgängig machen";
 
 /* Action name to be suggested at the moment of revert */
