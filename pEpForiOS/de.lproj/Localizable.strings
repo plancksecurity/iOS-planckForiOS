@@ -888,6 +888,9 @@
 /* Title for address filter */
 "some address" = "irgendeine Adresse";
 
+/* Error description when failing to validate account fields (pEp4iOS) */
+"Some fields are not valid. Please check all input fields." = "Einige Felder sind nicht gültig. Bitte überprüfen Sie alle Eingabefelder.";
+
 /* Message of alert: a required field is empty */
 "Some mandatory fields are empty" = "Einige Pflichtfelder sind leer";
 
