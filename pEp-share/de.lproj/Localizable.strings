@@ -301,7 +301,7 @@
    Privacy status suggestion */
 "Unknown." = "Unbekannt.";
 
-/* file name used for unnamed attachments */
+/* file name used for unnamed attachments (sharing extension) */
 "unnamed" = "ohne Namen";
 
 /* unread button in slide-left menu */
