@@ -52,8 +52,10 @@ class TrustManagementViewController: UIViewController {
         guard let vm = viewModel, vm.canUndo() && motion == .motionShake,
             let actionName = vm.revertAction() else { return }
         let title = actionName // this is already localized
-        let confirmTitle = NSLocalizedString("Undo", comment: "Undo trust change verification button title")
-        let cancelTitle = NSLocalizedString("Cancel", comment: "Cancel trust change to be undone")
+        let confirmTitle = NSLocalizedString("Undo",
+                                             comment: "Undo trust change verification button title")
+        let cancelTitle = NSLocalizedString("Cancel",
+                                            comment: "Cancel trust change to be undone")
         UIUtils.showTwoButtonAlert(withTitle: title,
                                    cancelButtonText: cancelTitle,
                                    positiveButtonText: confirmTitle,
