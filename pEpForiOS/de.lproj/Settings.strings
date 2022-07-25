@@ -29,7 +29,7 @@
 "D99-2G-2i2.text" = "Titel";
 
 /* Class = "UILabel"; text = "No extra keys were found"; ObjectID = "DDs-Gv-cZH"; */
-"DDs-Gv-cZH.text" = "Keine Zusatzschlüssel gefunden";
+"DDs-Gv-cZH.text" = "Keine Generalschlüssel gefunden";
 
 /* Class = "UILabel"; text = "Verbose Logging"; ObjectID = "fGY-OS-V4W"; */
 "fGY-OS-V4W.text" = "Ausführliche Protokollierung";

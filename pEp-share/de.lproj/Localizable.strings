@@ -198,7 +198,7 @@
 "sent with p≡p" = "gesendet mit p≡p";
 
 /* Privacy status suggestion */
-"Separately verify the content of this message with your communication partner." = "Überprüfen Sie mit Ihrem Kommunikationspartner den Inhalt dieser Nachricht.";
+"Separately verify the content of this message with your communication partner." = "Überprüfen Sie den Inhalt dieser Nachricht separat mit Ihrem Kommunikationspartner.";
 
 /* The server is not available error message */
 "Server Unreachable" = "Server konnte nicht erreicht werden";

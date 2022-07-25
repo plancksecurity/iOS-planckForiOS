@@ -578,7 +578,7 @@
 "No client certificate exists. You have to import your client certificate before entering login data." = "Es ist kein Client-Zertifikat vorhanden. Sie müssen Ihr Client-Zertifikat importieren, bevor Sie Anmeldedaten eingeben können.";
 
 /* No extra keys were found */
-"No extra keys were found" = "Keine Zusatzschlüssel gefunden";
+"No extra keys were found" = "Keine Generalschlüssel gefunden";
 
 /* Alert title shown if user wants to add a photo attachment, but has denied to give the app permissions. */
 "No Permissions" = "Keine Berechtigung";
@@ -888,9 +888,6 @@
 /* Title for address filter */
 "some address" = "irgendeine Adresse";
 
-/* Error description when failing to validate account fields */
-"Some fields seems not to be valid. Please check all input fields." = "Einige Felder sind nicht gültig. Bitte überprüfen Sie alle Eingabefelder.";
-
 /* Message of alert: a required field is empty */
 "Some mandatory fields are empty" = "Einige Pflichtfelder sind leer";
 
@@ -906,7 +903,7 @@
 /* AccountSettings viewModel: no account error */
 "Something went wrong, please try again later" = "Etwas ist schief gelaufen. Bitte versuchen Sie es später noch einmal";
 
-/* Error description when something went wrong
+/* Error description when something went wrong (pEp4iOS)
    Message of alert: something went wrong. */
 "Something went wrong." = "Etwas ist schiefgelaufen.";
 
