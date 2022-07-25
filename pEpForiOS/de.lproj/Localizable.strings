@@ -1094,7 +1094,7 @@
 "Under Attack" = "Manipuliert";
 
 /* Yes, undo the recent trust change */
-"Undo" = "Rückgängig machen";
+"Undo" = "OK";
 
 /* Action name to be suggested at the moment of revert */
 "Undo Trust Confirmation" = "Vertrauensbestätigung rückgängig machen";
