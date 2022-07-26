@@ -743,7 +743,8 @@ extension EmailDetailViewController: QLPreviewControllerDataSource {
     func previewController(_ controller: QLPreviewController,
                            previewItemAt index: Int) -> QLPreviewItem {
         guard let url = pdfPreviewUrl else {
-            fatalError("Could not load URL")
+            Log.shared.errorAndCrash(message: "Could not load URL")
+            return URL(fileURLWithPath: "") as QLPreviewItem
         }
         return url as QLPreviewItem
     }

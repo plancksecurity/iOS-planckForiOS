@@ -83,10 +83,10 @@ public class MessageQueryResults: MessageQueryResultsProtocol {
         get {
             do {
                 return try getMessage(forIndex: index)
-            } catch{
+            } catch {
                 Log.shared.error("Fail to get message for subscript")
-                fatalError("Fail to get message for subscript")
             }
+            fatalError("Fail to get message for subscript")
         }
     }
 

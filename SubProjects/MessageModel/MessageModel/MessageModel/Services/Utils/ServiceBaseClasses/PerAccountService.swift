@@ -84,7 +84,8 @@ class PerAccountService: QueryBasedService<CdAccount>, PerAccountServiceAbstract
     func service(for cdAccount: CdAccount,
                  backgroundTaskManager: BackgroundTaskManagerProtocol,
                  errorPropagator: ErrorContainerProtocol) -> ServiceProtocol? {
-        fatalError("must be overridden")
+        Log.shared.errorAndCrash(message: "must be overridden")
+        return nil
     }
 }
 
