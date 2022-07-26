@@ -25,7 +25,7 @@ class MDMAccountPredeploymentViewController: UIViewController {
 
         // Here we use the font extension.
         messageLabel.setPEPFont(style: .largeTitle, weight: .regular)
-        configureView(for: traitCollection)
+        configureView()
 
         if #available(iOS 13.0, *) {
             // Prevent the user to be able to "swipe down" this VC
