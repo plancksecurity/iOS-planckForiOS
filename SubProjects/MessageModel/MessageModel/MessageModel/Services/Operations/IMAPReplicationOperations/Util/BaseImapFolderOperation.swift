@@ -72,7 +72,7 @@ class BaseImapFolderOperation: ImapSyncOperation {
 
     /// Override this in your derived class.
     func folderOpenCompleted(_ imapConnection: ImapConnectionProtocol) {
-        fatalError("must be overridden")
+        Log.shared.errorAndCrash("must be overridden")
     }
 }
 

@@ -41,7 +41,7 @@ extension UITableView {
     /// - Parameter indexPaths: The indexPaths of the rows to delete.
     public func deleteRows(at indexPaths: [IndexPath]) {
         beginUpdates()
-        deleteRows(at: indexPaths, with: .top)
+        deleteRows(at: indexPaths, with: .fade)
         endUpdates()
     }
 

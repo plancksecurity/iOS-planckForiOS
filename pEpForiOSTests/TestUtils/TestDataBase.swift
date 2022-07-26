@@ -188,7 +188,7 @@ class TestDataBase {
             imapPassword: "whatever_you_want",
             smtpPassword: "whatever_you_want"))
 
-        fatalError("Abstract method. Must be overridden")
+        Log.shared.errorAndCrash("Abstract method. Must be overridden")
     }
 
     private func addLocalTestAccount(userName: String) {

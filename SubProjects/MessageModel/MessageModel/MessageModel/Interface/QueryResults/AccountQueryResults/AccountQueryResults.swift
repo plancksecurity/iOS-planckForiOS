@@ -38,7 +38,7 @@ public class AccountQueryResults: QueryResults, QueryResultsProtocol {
         get {
             do {
                 return try getAccount(at: index)
-            } catch{
+            } catch {
                 Log.shared.errorAndCrash("Fail to get account for subscript")
             }
             fatalError("Fail to get account for subscript")
