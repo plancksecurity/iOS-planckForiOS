@@ -13,6 +13,7 @@ import CoreData
 import PEPObjCTypes_iOS
 import PEPObjCAdapter_iOS
 import PantomimeFramework
+import pEpIOSToolbox
 
 /// Base class for test data.
 /// - Note:
@@ -215,7 +216,7 @@ class TestDataBase {
             imapPassword: "whatever_you_want",
             smtpPassword: "whatever_you_want"))
 
-        fatalError("Abstract method. Must be overridden")
+        Log.shared.errorAndCrash("Abstract method. Must be overridden")
     }
 
     private func addLocalTestAccount(userName: String) {

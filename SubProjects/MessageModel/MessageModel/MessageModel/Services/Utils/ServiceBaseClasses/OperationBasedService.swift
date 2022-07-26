@@ -137,7 +137,8 @@ class OperationBasedService: Service, OperationBasedServiceProtocol {
     let privateMoc: NSManagedObjectContext
 
     func operations() -> [Operation] {
-        fatalError("You MUST override this")
+        Log.shared.errorAndCrash(message: "You MUST override this")
+        return [Operation]()
     }
 
     /// Waits for all operations to finish and ends background task.

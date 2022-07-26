@@ -39,7 +39,7 @@ public class FolderQueryResults: QueryResults, QueryResultsProtocol {
         get {
             do {
                 return try getFolder(at: index)
-            } catch{
+            } catch {
                 Log.shared.errorAndCrash("Fail to get account for subscript")
             }
             fatalError("Fail to get account for subscript")

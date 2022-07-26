@@ -74,11 +74,7 @@ final class AccountTypeSelectorViewController: UIViewController {
 
         imagebutton.setImage(image, for: .normal)
         imagebutton.addTarget(self, action: #selector(backButton), for: .touchUpInside)
-        if UIDevice.isLandscape {
-            imagebutton.imageEdgeInsets = UIEdgeInsets(top: 12, left: 12, bottom: 0, right: 12)
-        } else {
-            imagebutton.imageEdgeInsets = UIEdgeInsets(top: 12, left: 12, bottom: 12, right: 12)
-        }
+        imagebutton.imageEdgeInsets = UIEdgeInsets(top: 12, left: 12, bottom: 12, right: 12)
         let finalBarButton = UIBarButtonItem(customView: imagebutton)
         navigationItem.leftBarButtonItem = finalBarButton
     }
