@@ -29,6 +29,19 @@ public class AccountVerifier {
     public init() {
     }
 
+    /// Calls `VerifiableAccount` and reports the result to `verifiedCallback`.
+    /// - Parameters:
+    ///   - address: The email address to set up.
+    ///   - userName: The user name.
+    ///   - password: The password to use for logging into both IMAP and SMTP servers.
+    ///   - loginName: The login name to use for both IMAP and SMTP.
+    ///   - serverIMAP: The name (address) of the IMAP server.
+    ///   - portIMAP: The IMAP port.
+    ///   - serverSMTP: The name (address) of the SMTP server.
+    ///   - portSMTP: The SMTP port.
+    ///   - verifiedCallback: This closure will be called after the account has been verified successfully,
+    /// or in case of error. If there was an error, it will be indicated as the `Error` parameter.
+    /// In case of success, the `Error` parameter will be nil.
     public func verify(address: String,
                        userName: String,
                        password: String,
