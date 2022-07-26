@@ -43,6 +43,7 @@ class MDMAccountPredeploymentViewController: UIViewController {
     }
 
     override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
         activityIndicator.startAnimating()
         activityIndicator.isHidden = false
         messageLabel.text = NSLocalizedString("Deploying Accounts",
