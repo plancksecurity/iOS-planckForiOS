@@ -22,6 +22,9 @@ class TestUtil {
      */
     static let waitTime: TimeInterval = 30
 
+    /// The maximum time waiting for a local operation that is expected to go through very quickly.
+    static let waitTimeLocal: TimeInterval = 5
+
     // MARK: - Messages & Attachments
 
     static public func createMessage(stringData: String = "test",
