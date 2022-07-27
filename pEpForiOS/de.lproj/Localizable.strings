@@ -716,9 +716,6 @@
 /* No folder has been selected yet in the folders VC */
 "Please choose a folder" = "Bitte wählen Sie einen Ordner aus";
 
-/* No messages has been selected for detail view */
-"Please choose a message" = "Bitte wählen Sie eine Nachricht aus";
-
 /* No setting has been selected yet in the settings VC */
 "Please choose a setting" = "Bitte wählen Sie eine Einstellung aus";
 
@@ -1092,9 +1089,6 @@
 
 /* Privacy status title */
 "Under Attack" = "Manipuliert";
-
-/* Yes, undo the recent trust change */
-"Undo" = "OK";
 
 /* Action name to be suggested at the moment of revert */
 "Undo Trust Confirmation" = "Vertrauensbestätigung rückgängig machen";

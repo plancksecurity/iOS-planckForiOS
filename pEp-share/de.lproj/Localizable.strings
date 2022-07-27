@@ -152,7 +152,8 @@
 "Nothing Selected" = "Nichts ausgewählt";
 
 /* Default positive button text
-   OK button title */
+   OK button title
+   Yes, undo the recent trust change */
 "OK" = "OK";
 
 /* Options */
@@ -280,9 +281,6 @@
 
 /* Privacy status title */
 "Under Attack" = "Manipuliert";
-
-/* Yes, undo the recent trust change */
-"Undo" = "OK";
 
 /* Action name to be suggested at the moment of revert */
 "Undo Trust Confirmation" = "Vertrauensbestätigung rückgängig machen";
