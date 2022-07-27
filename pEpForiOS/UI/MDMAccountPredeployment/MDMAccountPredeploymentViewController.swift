@@ -25,7 +25,7 @@ class MDMAccountPredeploymentViewController: UIViewController {
 
         // Here we use the font extension.
         messageLabel.setPEPFont(style: .largeTitle, weight: .regular)
-        configureView(for: traitCollection)
+        configureView()
 
         if #available(iOS 13.0, *) {
             // Prevent the user to be able to "swipe down" this VC
@@ -38,10 +38,12 @@ class MDMAccountPredeploymentViewController: UIViewController {
     }
 
     override func viewWillDisappear(_ animated: Bool) {
+        super.viewWillDisappear(animated)
         navigationController?.setNavigationBarHidden(false, animated: false)
     }
 
     override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
         activityIndicator.startAnimating()
         activityIndicator.isHidden = false
         messageLabel.text = NSLocalizedString("Deploying Accounts",
@@ -74,11 +76,11 @@ class MDMAccountPredeploymentViewController: UIViewController {
 
         // Here we react to changes in the font size.
         if previousTraitCollection?.preferredContentSizeCategory != traitCollection.preferredContentSizeCategory {
-            configureView(for: traitCollection)
+            configureView()
         }
     }
 
-    private func configureView(for traitCollection: UITraitCollection) {
+    private func configureView() {
         view.setNeedsLayout()
     }
 }

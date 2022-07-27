@@ -12,12 +12,6 @@ import MessageModel
 
 class AccountVerifierTest: XCTestCase {
 
-    override func setUpWithError() throws {
-    }
-
-    override func tearDownWithError() throws {
-    }
-
     func testBasicFail() throws {
         let expVerification = expectation(description: "expVerification")
 

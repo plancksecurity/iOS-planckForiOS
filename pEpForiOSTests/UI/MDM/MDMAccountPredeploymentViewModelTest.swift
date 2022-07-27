@@ -12,12 +12,6 @@ import XCTest
 
 class MDMAccountPredeploymentViewModelTest: XCTestCase {
 
-    override func setUpWithError() throws {
-    }
-
-    override func tearDownWithError() throws {
-    }
-
     func testSuccess() throws {
         deploy(resultingError: nil)
     }

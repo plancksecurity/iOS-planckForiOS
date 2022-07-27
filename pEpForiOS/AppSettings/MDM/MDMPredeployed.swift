@@ -44,7 +44,7 @@ extension MDMPredeployed: MDMPredeployedProtocol {
     /// "A managed app can respond to new configurations that arrive while the app is running by observing the
     /// NSUserDefaultsDidChangeNotification notification."
     func predeployAccounts(callback: @escaping (_ error: MDMPredeployedError?) -> ()) {
-        guard var mdmDict = UserDefaults.standard.dictionary(forKey: MDMPredeployed.keyMDM) else {
+        guard var mdmDict = mdmPredeploymentDictionary() else {
             callback(nil)
             return
         }
@@ -61,24 +61,24 @@ extension MDMPredeployed: MDMPredeployedProtocol {
         var firstError: Error?
 
         var haveWipedExistingAccounts = false
-        for accDict in predeployedAccounts {
-            guard let userName = accDict[MDMPredeployed.keyUserName] as? String else {
+        for accountDictionary in predeployedAccounts {
+            guard let userName = accountDictionary[MDMPredeployed.keyUserName] as? String else {
                 callback(MDMPredeployedError.malformedAccountData)
                 return
             }
-            guard let userAddress = accDict[MDMPredeployed.keyUserAddress] as? String else {
+            guard let userAddress = accountDictionary[MDMPredeployed.keyUserAddress] as? String else {
                 callback(MDMPredeployedError.malformedAccountData)
                 return
             }
-            guard let loginName = accDict[MDMPredeployed.keyLoginName] as? String else {
+            guard let loginName = accountDictionary[MDMPredeployed.keyLoginName] as? String else {
                 callback(MDMPredeployedError.malformedAccountData)
                 return
             }
-            guard let password = accDict[MDMPredeployed.keyPassword] as? String else {
+            guard let password = accountDictionary[MDMPredeployed.keyPassword] as? String else {
                 callback(MDMPredeployedError.malformedAccountData)
                 return
             }
-            guard let imapServerDict = accDict[MDMPredeployed.keyImapServer] as? SettingsDict else {
+            guard let imapServerDict = accountDictionary[MDMPredeployed.keyImapServer] as? SettingsDict else {
                 callback(MDMPredeployedError.malformedAccountData)
                 return
             }
@@ -90,7 +90,7 @@ extension MDMPredeployed: MDMPredeployedProtocol {
                 callback(MDMPredeployedError.malformedAccountData)
                 return
             }
-            guard let smtpServerDict = accDict[MDMPredeployed.keySmtpServer] as? SettingsDict else {
+            guard let smtpServerDict = accountDictionary[MDMPredeployed.keySmtpServer] as? SettingsDict else {
                 callback(MDMPredeployedError.malformedAccountData)
                 return
             }
@@ -136,8 +136,12 @@ extension MDMPredeployed: MDMPredeployedProtocol {
         }
 
         group.notify(queue: DispatchQueue.main) {
+            // Overwrite the accounts to deploy with nil
+            // Please note the explicit use of UserDefaults,
+            // instead of the usual usage of AppSettings, since this use case is special.
             mdmDict[MDMPredeployed.keyPredeployedAccounts] = nil
             UserDefaults.standard.set(mdmDict, forKey: MDMPredeployed.keyMDM)
+
             if let _ = firstError {
                 callback(.networkError)
             } else {
@@ -147,7 +151,7 @@ extension MDMPredeployed: MDMPredeployedProtocol {
     }
 
     var haveAccountsToPredeploy: Bool {
-        guard let mdmDict = UserDefaults.standard.dictionary(forKey: MDMPredeployed.keyMDM) else {
+        guard let mdmDict = mdmPredeploymentDictionary() else {
             return false
         }
 
@@ -156,5 +160,11 @@ extension MDMPredeployed: MDMPredeployedProtocol {
         }
 
         return !predeployedAccounts.isEmpty
+    }
+
+    private func mdmPredeploymentDictionary() -> [String : Any]? {
+        // Please note the explicit use of UserDefaults for predeployment,
+        // instead of the usual usage of AppSettings, since this use case is special.
+        return UserDefaults.standard.dictionary(forKey: MDMPredeployed.keyMDM)
     }
 }
