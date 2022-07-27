@@ -311,8 +311,11 @@ final class EmailListViewController: UIViewController {
     }
 
     private func showNoMessageSelected() {
+        // Note that this message can appear after the inital deployment
+        // (account creation) while there is still no message in the list,
+        // and it's not even known if there will be any.
         showEmptyDetailViewIfApplicable(message: NSLocalizedString(
-            "Please choose a message",
+            "Nothing selected",
             comment: "No messages has been selected for detail view"))
     }
 

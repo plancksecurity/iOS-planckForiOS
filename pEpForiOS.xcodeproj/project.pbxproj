@@ -51,7 +51,6 @@
 		151C68012418158B00481F75 /* SFUIText-Medium.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 151C67FE2418158B00481F75 /* SFUIText-Medium.ttf */; };
 		151DE7DE1FC5D3E200CDC273 /* Settings.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 151DE7E01FC5D3E200CDC273 /* Settings.storyboard */; };
 		151DE7E41FC5D41600CDC273 /* FolderViews.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 151DE7E61FC5D41600CDC273 /* FolderViews.storyboard */; };
-		151F71F7202A06760057C74D /* TestDataBase.swift in Sources */ = {isa = PBXBuildFile; fileRef = 151F71EC202A06750057C74D /* TestDataBase.swift */; };
 		151F7200202A06760057C74D /* TestUtil.swift in Sources */ = {isa = PBXBuildFile; fileRef = 151F71F5202A06750057C74D /* TestUtil.swift */; };
 		1521B78D241BDAD3000EAE57 /* UIUtils+Settings.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1521B78C241BDAD3000EAE57 /* UIUtils+Settings.swift */; };
 		1521B78F241BDC27000EAE57 /* UIUtils+KeySyncWizard.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1521B78E241BDC27000EAE57 /* UIUtils+KeySyncWizard.swift */; };
@@ -352,6 +351,7 @@
 		434C1B3D25D42D5400F622DB /* NSString+Markdown.m in Sources */ = {isa = PBXBuildFile; fileRef = 4351C2DD1F4457620053381F /* NSString+Markdown.m */; };
 		434C1B4025D433D600F622DB /* HtmlTagParser.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A928C85242259E200FEFA4C /* HtmlTagParser.swift */; };
 		434C1B7425D5123A00F622DB /* NothingSelectedViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 00BEC89620B85FD300A36E60 /* NothingSelectedViewController.swift */; };
+		435174E12872ED5500F86CB8 /* MDMAccountPredeploymentViewModelTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 435174E02872ED5500F86CB8 /* MDMAccountPredeploymentViewModelTest.swift */; };
 		4351C2C81F4441190053381F /* blocks.c in Sources */ = {isa = PBXBuildFile; fileRef = 4351C2B31F4441190053381F /* blocks.c */; };
 		4351C2C91F4441190053381F /* buffer.c in Sources */ = {isa = PBXBuildFile; fileRef = 4351C2B41F4441190053381F /* buffer.c */; };
 		4351C2CB1F4441190053381F /* cmark.c in Sources */ = {isa = PBXBuildFile; fileRef = 4351C2B61F4441190053381F /* cmark.c */; };
@@ -403,6 +403,7 @@
 		43A9818E24E53CF800830603 /* Color+UI.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43A9818D24E53CF800830603 /* Color+UI.swift */; };
 		43B0444C20077323007BCE3F /* OAuth2Configuration.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43B0444B20077323007BCE3F /* OAuth2Configuration.swift */; };
 		43B10C801EC2EE7F003E849F /* CppDummy.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 43B10C7F1EC2EE7F003E849F /* CppDummy.cpp */; };
+		43B6343A286EFF2600203025 /* TestDataBase.swift in Sources */ = {isa = PBXBuildFile; fileRef = 151F71EC202A06750057C74D /* TestDataBase.swift */; };
 		43BDE03625DE7C8A00FC0C68 /* cmark.c in Sources */ = {isa = PBXBuildFile; fileRef = 4351C2B61F4441190053381F /* cmark.c */; };
 		43BDE03925DE7CFC00FC0C68 /* html.c in Sources */ = {isa = PBXBuildFile; fileRef = 4351C2BD1F4441190053381F /* html.c */; };
 		43BDE03C25DE7D0E00FC0C68 /* blocks.c in Sources */ = {isa = PBXBuildFile; fileRef = 4351C2B31F4441190053381F /* blocks.c */; };
@@ -426,9 +427,16 @@
 		43D070332133DC500013B120 /* AppSettings.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43D070322133DC500013B120 /* AppSettings.swift */; };
 		43D1900E2513734400A36973 /* SettingsViewModelTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43D1900D2513734400A36973 /* SettingsViewModelTest.swift */; };
 		43D2133B2237CABD00C060A1 /* libxml2.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = 43800D981D112A2A00821E34 /* libxml2.tbd */; };
+		43D530F62844C55B007E227E /* MDMAccountPredeploymentViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43D530F52844C55B007E227E /* MDMAccountPredeploymentViewController.swift */; };
+		43D530F82844D5B5007E227E /* MDMAccountPredeploymentViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43D530F72844D5B5007E227E /* MDMAccountPredeploymentViewModel.swift */; };
+		43D531052844F524007E227E /* MDMAccountPredeployment.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 43D531042844F524007E227E /* MDMAccountPredeployment.storyboard */; };
+		43D531112844FBCB007E227E /* MDMAccountPredeployment.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 43D531042844F524007E227E /* MDMAccountPredeployment.storyboard */; };
 		43DC6308262DCC8A0017D1BD /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = 43DC6306262DCC8A0017D1BD /* Localizable.strings */; };
 		43E15D1C2833CA4D00EDEAB7 /* AccessibilityIdentifier.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43285973282D4E9D00493791 /* AccessibilityIdentifier.swift */; };
 		43E1619120D7B2D6003F1514 /* UpdateThreadListDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43E1619020D7B2D6003F1514 /* UpdateThreadListDelegate.swift */; };
+		43E3668A2836254A00C4A4CB /* MDMPredeployedProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43E366892836254A00C4A4CB /* MDMPredeployedProtocol.swift */; };
+		43E3668C28362D4F00C4A4CB /* MDMPredeployed.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43E3668B28362D4F00C4A4CB /* MDMPredeployed.swift */; };
+		43E3668F2836304A00C4A4CB /* MDMPredeployedTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43E3668E2836304A00C4A4CB /* MDMPredeployedTest.swift */; };
 		43E60263262F0E8100232FE6 /* MessageModelForAppExtensions.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 43E60261262F0E8100232FE6 /* MessageModelForAppExtensions.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		43E657D11F3C33C30014CBEC /* String+HTML.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43E657D01F3C33C30014CBEC /* String+HTML.swift */; };
 		43E657E01F3C74030014CBEC /* AXHTMLParser.m in Sources */ = {isa = PBXBuildFile; fileRef = 43E657DD1F3C72360014CBEC /* AXHTMLParser.m */; };
@@ -914,6 +922,7 @@
 		434C1A9025D40CEC00F622DB /* UIUtils+ShowError.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIUtils+ShowError.swift"; sourceTree = "<group>"; };
 		434C1AA525D40F3B00F622DB /* UIUtils+DraftsPreview.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIUtils+DraftsPreview.swift"; sourceTree = "<group>"; };
 		434C1AB725D410F400F622DB /* SecureWebViewUrlClickHandlerProtocol.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SecureWebViewUrlClickHandlerProtocol.swift; sourceTree = "<group>"; };
+		435174E02872ED5500F86CB8 /* MDMAccountPredeploymentViewModelTest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MDMAccountPredeploymentViewModelTest.swift; sourceTree = "<group>"; };
 		4351C2A21F4441190053381F /* buffer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = buffer.h; sourceTree = "<group>"; };
 		4351C2A31F4441190053381F /* chunk.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = chunk.h; sourceTree = "<group>"; };
 		4351C2A41F4441190053381F /* cmark.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = cmark.h; sourceTree = "<group>"; };
@@ -1009,8 +1018,14 @@
 		43D070322133DC500013B120 /* AppSettings.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppSettings.swift; sourceTree = "<group>"; };
 		43D1900D2513734400A36973 /* SettingsViewModelTest.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SettingsViewModelTest.swift; sourceTree = "<group>"; };
 		43D213332237C8CA00C060A1 /* libAccountSettingsAdapter.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; path = libAccountSettingsAdapter.a; sourceTree = BUILT_PRODUCTS_DIR; };
+		43D530F52844C55B007E227E /* MDMAccountPredeploymentViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MDMAccountPredeploymentViewController.swift; sourceTree = "<group>"; };
+		43D530F72844D5B5007E227E /* MDMAccountPredeploymentViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MDMAccountPredeploymentViewModel.swift; sourceTree = "<group>"; };
+		43D531042844F524007E227E /* MDMAccountPredeployment.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = MDMAccountPredeployment.storyboard; sourceTree = "<group>"; };
 		43DC6307262DCC8A0017D1BD /* de */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = de; path = de.lproj/Localizable.strings; sourceTree = "<group>"; };
 		43E1619020D7B2D6003F1514 /* UpdateThreadListDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UpdateThreadListDelegate.swift; sourceTree = "<group>"; };
+		43E366892836254A00C4A4CB /* MDMPredeployedProtocol.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MDMPredeployedProtocol.swift; sourceTree = "<group>"; };
+		43E3668B28362D4F00C4A4CB /* MDMPredeployed.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MDMPredeployed.swift; sourceTree = "<group>"; };
+		43E3668E2836304A00C4A4CB /* MDMPredeployedTest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MDMPredeployedTest.swift; sourceTree = "<group>"; };
 		43E60228262F08A700232FE6 /* MessageModelForAppExtensions.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MessageModelForAppExtensions.framework; path = "../../../../Library/Developer/Xcode/DerivedData/pEpForiOS-cvmzenmcimtlkhhkjvpbxrfptqfc/Build/Products/Debug-iphoneos/MessageModelForAppExtensions.framework"; sourceTree = "<group>"; };
 		43E60261262F0E8100232FE6 /* MessageModelForAppExtensions.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = MessageModelForAppExtensions.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		43E657D01F3C33C30014CBEC /* String+HTML.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "String+HTML.swift"; sourceTree = "<group>"; };
@@ -1272,6 +1287,7 @@
 				158A6E2B230D53B8006A9ECE /* Settings */,
 				3705095B22CF465300CB73D6 /* KeySyncHandshake */,
 				15D4399D216F703100EB3933 /* Compose */,
+				435174DF2872ED3800F86CB8 /* MDM */,
 				4356FFEA21356CB600804089 /* Util */,
 			);
 			path = UI;
@@ -2098,6 +2114,14 @@
 			path = OAuth2;
 			sourceTree = "<group>";
 		};
+		435174DF2872ED3800F86CB8 /* MDM */ = {
+			isa = PBXGroup;
+			children = (
+				435174E02872ED5500F86CB8 /* MDMAccountPredeploymentViewModelTest.swift */,
+			);
+			path = MDM;
+			sourceTree = "<group>";
+		};
 		4351C2A01F4441190053381F /* Markdown */ = {
 			isa = PBXGroup;
 			children = (
@@ -2366,12 +2390,39 @@
 		43D0702D2133DB3F0013B120 /* AppSettings */ = {
 			isa = PBXGroup;
 			children = (
+				43E366882836254300C4A4CB /* MDM */,
 				43D070302133DB920013B120 /* AppSettingsProtocol.swift */,
 				43D070322133DC500013B120 /* AppSettings.swift */,
 				159AB56C23539D67008AB1F3 /* AppSettings+CNContactsAccessPermissionProvider.swift */,
 				15326E2C24A4BD1C00EA8C9B /* AppSettings+UsePEPFolderProvider.swift */,
 			);
 			path = AppSettings;
+			sourceTree = "<group>";
+		};
+		43D530F42844C50D007E227E /* MDMAccountPredeployment */ = {
+			isa = PBXGroup;
+			children = (
+				43D530F52844C55B007E227E /* MDMAccountPredeploymentViewController.swift */,
+				43D530F72844D5B5007E227E /* MDMAccountPredeploymentViewModel.swift */,
+			);
+			path = MDMAccountPredeployment;
+			sourceTree = "<group>";
+		};
+		43E366882836254300C4A4CB /* MDM */ = {
+			isa = PBXGroup;
+			children = (
+				43E366892836254A00C4A4CB /* MDMPredeployedProtocol.swift */,
+				43E3668B28362D4F00C4A4CB /* MDMPredeployed.swift */,
+			);
+			path = MDM;
+			sourceTree = "<group>";
+		};
+		43E3668D2836303400C4A4CB /* MDM */ = {
+			isa = PBXGroup;
+			children = (
+				43E3668E2836304A00C4A4CB /* MDMPredeployedTest.swift */,
+			);
+			path = MDM;
 			sourceTree = "<group>";
 		};
 		43E58EB21CBF8301008AA7A7 /* Models */ = {
@@ -2433,6 +2484,7 @@
 				003C0FAA20B57C2E0093A987 /* SplitView */,
 				492EF92B20C69547004EAE14 /* Thread */,
 				150DF6D12052A99800A9DCF7 /* SecureWebViewController */,
+				43D530F42844C50D007E227E /* MDMAccountPredeployment */,
 				43AA82511E9B925000ABD5A8 /* Util */,
 			);
 			path = UI;
@@ -2586,6 +2638,7 @@
 		5B6499F625C9BA000028B9ED /* AppSettings */ = {
 			isa = PBXGroup;
 			children = (
+				43E3668D2836303400C4A4CB /* MDM */,
 				5B6496D225C853670028B9ED /* AppSettingsTest.swift */,
 			);
 			path = AppSettings;
@@ -2717,6 +2770,7 @@
 				491B656020CFE0FD00C2ADDA /* Thread.storyboard */,
 				3A2119E624125AC60030C3E4 /* Certificates.storyboard */,
 				5B885DB425E7B0350027DD24 /* Tutorial_iPad.storyboard */,
+				43D531042844F524007E227E /* MDMAccountPredeployment.storyboard */,
 			);
 			name = StoryboardFiles;
 			path = ..;
@@ -3065,6 +3119,7 @@
 			files = (
 				434A6C1625D2A17900179335 /* TrustManagement.storyboard in Resources */,
 				5B3C0DFC28368BBA001B7A82 /* ErrorBannerView.xib in Resources */,
+				43D531112844FBCB007E227E /* MDMAccountPredeployment.storyboard in Resources */,
 				153169C2263863A6006E020D /* InfoPlist.strings in Resources */,
 				4313A55225E7C1F7001E6767 /* LaunchScreen.storyboard in Resources */,
 				4313A54C25E7C1D9001E6767 /* NothingSelected.storyboard in Resources */,
@@ -3103,6 +3158,7 @@
 				152A39D221905C3E00D9F8E4 /* AttachmentCell.xib in Resources */,
 				B78309C81EAA09040051A2E0 /* AccountCreation.storyboard in Resources */,
 				37156E50234DD3FB00845A28 /* LoadingInterface.xib in Resources */,
+				43D531052844F524007E227E /* MDMAccountPredeployment.storyboard in Resources */,
 				151C67FF2418158B00481F75 /* SFUIText-Semibold.ttf in Resources */,
 				433404CB2379789600E785F1 /* NothingSelected.storyboard in Resources */,
 				43C98AC3219C275E006418B0 /* Localizable.strings in Resources */,
@@ -3565,6 +3621,7 @@
 				4351C2CF1F4441190053381F /* houdini_href_e.c in Sources */,
 				4351C2D01F4441190053381F /* houdini_html_e.c in Sources */,
 				15D7D992219B154000A1A2B9 /* Attachment+Extensions.swift in Sources */,
+				43D530F62844C55B007E227E /* MDMAccountPredeploymentViewController.swift in Sources */,
 				B7DB7FC42215C4FF003968DA /* UINavigationController+Extensions.swift in Sources */,
 				15944A3523980FEC006B133B /* EmailDisplayViewModel.swift in Sources */,
 				430D73651E9CBD4E00EA6FA9 /* AttachmentViewOperation.swift in Sources */,
@@ -3576,6 +3633,7 @@
 				5BC4E60724113659008C01ED /* TutorialStep2iPhoneViewController.swift in Sources */,
 				4351C2CD1F4441190053381F /* commonmark.c in Sources */,
 				5BBEA012252F062300B34979 /* ComposeViewModel+Factory.swift in Sources */,
+				43D530F82844D5B5007E227E /* MDMAccountPredeploymentViewModel.swift in Sources */,
 				B722EC651E5B49BA00A2B9D5 /* FolderSectionViewModel.swift in Sources */,
 				490CEBA72100EAD500E8579C /* SelfDismissable.swift in Sources */,
 				152A39E321905C3E00D9F8E4 /* RecipientTextView.swift in Sources */,
@@ -3602,6 +3660,7 @@
 				152A39DE21905C3E00D9F8E4 /* AccountCellViewModel.swift in Sources */,
 				49D3BECC20F8F7330043E05D /* LoginViewController.swift in Sources */,
 				43425EDB1FE3DE6E004A2728 /* OAuth2ProviderProtocol.swift in Sources */,
+				43E3668A2836254A00C4A4CB /* MDMPredeployedProtocol.swift in Sources */,
 				150B8E991FCDACBB00374438 /* AccountSettingsUserInputError.swift in Sources */,
 				4351C2DE1F4457620053381F /* NSString+Markdown.m in Sources */,
 				43306EBE1FE125B50045DD00 /* OAuth2Authorization.swift in Sources */,
@@ -3650,6 +3709,7 @@
 				228038681DC9DE6D00F1CB45 /* TextfieldResponder.swift in Sources */,
 				B75FF00B1EFD420F00C57289 /* EmailListViewModel.swift in Sources */,
 				4380528B1FE3E2E800ACF729 /* OAuth2AuthorizationURLHandlerProtocol.swift in Sources */,
+				43E3668C28362D4F00C4A4CB /* MDMPredeployed.swift in Sources */,
 				43293EFB1EB9DD6700EEE010 /* UIViewController+Extension.swift in Sources */,
 				152A39D521905C3E00D9F8E4 /* SubjectCellViewModel.swift in Sources */,
 				37816542230EC72C00B967E3 /* PEPAlertViewController.swift in Sources */,
@@ -3702,7 +3762,6 @@
 				431C2B171F387C4100D87FFD /* LoginViewModelTests.swift in Sources */,
 				151AD7AD219D74C700FC36FF /* ComposeViewModelTest.swift in Sources */,
 				439EA1542472797B005D6C9A /* KeyImportViewModelTest.swift in Sources */,
-				151F71F7202A06760057C74D /* TestDataBase.swift in Sources */,
 				1541D7F01FC81ED900D52A5D /* URL+ExtensionsTest.swift in Sources */,
 				00262056217DCCB200DDAFB5 /* TrustedServerSettingsViewModelTest.swift in Sources */,
 				158BCFF024237FDB00E41F67 /* TestData.swift in Sources */,
@@ -3716,6 +3775,7 @@
 				B7F4A793212DDFC500507B76 /* EmailListViewModelTest.swift in Sources */,
 				157743B8217885EA0007222C /* RecipientTextViewModelTest.swift in Sources */,
 				49A6114E2179F3A1006BA3C5 /* UnitTestUtils.swift in Sources */,
+				43E3668F2836304A00C4A4CB /* MDMPredeployedTest.swift in Sources */,
 				5B3B019524B49DD700FBB4B5 /* AccountSettingsViewModelTest.swift in Sources */,
 				15410D1D2199C2E500BBF65F /* SubjectCellViewModelTest.swift in Sources */,
 				15410D1F2199CA1100BBF65F /* XCTTestCase+Utils.swift in Sources */,
@@ -3725,6 +3785,7 @@
 				5BAAD350257E2658002CACAA /* EditableAccountSettingsViewModelTest.swift in Sources */,
 				1574D07D2114696B00FEDC93 /* URL+MailToTest.swift in Sources */,
 				3705095D22CF4AC900CB73D6 /* KeySyncHandshakeViewModelTest.swift in Sources */,
+				435174E12872ED5500F86CB8 /* MDMAccountPredeploymentViewModelTest.swift in Sources */,
 				4356FFEC21356CB600804089 /* ReplyAllPossibleCheckerTest.swift in Sources */,
 				153D4A422540380200AE8A4E /* ExtraKey+TestUtils.swift in Sources */,
 				3A7F89C1252B4FDA00A38460 /* EmailListViewModel+DraftsPreviewTests.swift in Sources */,
@@ -3732,6 +3793,7 @@
 				00DF2C3B2164C53F004EBA6C /* FolderViewModelTest.swift in Sources */,
 				5BF505FE253EFBA50051FBD3 /* MailtoTest.swift in Sources */,
 				5BFBB20825D2A87700F269C4 /* EmailViewModelTest.swift in Sources */,
+				43B6343A286EFF2600203025 /* TestDataBase.swift in Sources */,
 				157C05482180756300E530DE /* DocumentAttachmentPickerViewModelTest.swift in Sources */,
 				151F7200202A06760057C74D /* TestUtil.swift in Sources */,
 				15410D252199ECD700BBF65F /* AttachmentViewModelTest.swift in Sources */,

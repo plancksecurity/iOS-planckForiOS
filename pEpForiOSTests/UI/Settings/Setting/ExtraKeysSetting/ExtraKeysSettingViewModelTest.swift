@@ -7,6 +7,7 @@
 //
 
 import XCTest
+import pEpIOSToolbox
 
 @testable import pEpForiOS
 import MessageModel
@@ -129,7 +130,7 @@ extension ExtraKeysSettingViewModelTest {
         }
 
         func refreshView() {
-            Log.shared.errorAndCrash()
+            Log.shared.errorAndCrash(message: "Should not be called")
         }
     }
 }

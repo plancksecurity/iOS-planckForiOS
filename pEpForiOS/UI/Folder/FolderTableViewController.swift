@@ -13,6 +13,7 @@ import MessageModel
 class FolderTableViewController: UITableViewController {
 
     var folderVM: FolderViewModel?
+
     // Indicates if it's needed to lead the user to a new screen,
     // the email list or the new account, for example.
     private var shouldPresentNextView: Bool = true
@@ -233,6 +234,7 @@ extension FolderTableViewController: SegueHandlerType {
     enum SegueIdentifier: String {
         case newAccount
         case settingsSegue
+        case mdmPredeployAccounts
     }
 
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
@@ -256,6 +258,15 @@ extension FolderTableViewController: SegueHandlerType {
                 return
             }
             dvc.hidesBottomBarWhenPushed = true
+
+        case .mdmPredeployAccounts:
+            guard let navVC = segue.destination as? UINavigationController,
+                  let vc = navVC.rootViewController as? MDMAccountPredeploymentViewController else {
+                Log.shared.errorAndCrash("Error casting to MDMAccountPredeploymentViewController")
+                return
+            }
+            navVC.modalPresentationStyle = .fullScreen
+            vc.hidesBottomBarWhenPushed = true
         }
     }
 
@@ -293,11 +304,16 @@ extension FolderTableViewController: SegueHandlerType {
             Log.shared.errorAndCrash("VM not Found")
             return
         }
+
         if shouldPresentNextView {
             if vm.shouldShowFolders {
                 showEmailList(folder:vm.folderToShow)
             } else {
-                performSegue(withIdentifier:.newAccount, sender: self)
+                if MDMPredeployed().haveAccountsToPredeploy {
+                    performSegue(withIdentifier:.mdmPredeployAccounts, sender: self)
+                } else {
+                    performSegue(withIdentifier:.newAccount, sender: self)
+                }
             }
         }
     }
