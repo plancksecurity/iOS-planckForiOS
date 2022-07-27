@@ -110,29 +110,23 @@ extension AccountVerifier: VerifiableAccountDelegate {
 
         switch result {
         case .failure(let err):
-            defer {
-                // Break possible retain cycles
-                resetToNil()
-            }
             cb(err)
+            // Break possible retain cycles
+            resetToNil()
         case .success():
             verifiable.save { [weak self] (result) in
                 guard let theSelf = self else {
                     Log.shared.lostMySelf()
                     return
                 }
-
-                defer {
-                    // Break possible retain cycles
-                    theSelf.resetToNil()
-                }
-
                 switch result {
                 case .success:
                     cb(nil)
                 case .failure(let error):
                     cb(error)
                 }
+                // Break possible retain cycles
+                theSelf.resetToNil()
             }
         }
     }
