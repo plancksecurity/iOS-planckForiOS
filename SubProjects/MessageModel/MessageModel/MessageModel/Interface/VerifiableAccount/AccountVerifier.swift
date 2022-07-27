@@ -70,15 +70,13 @@ public class AccountVerifier {
         // Keep it alive
         self.verifiableAccount = verifier
 
-        defer {
-            // Break possible retain cycles
-            resetToNil()
-        }
-
         do {
             try verifier.verify()
         } catch {
             verifiedCallback(error)
+
+            // Break possible retain cycles
+            resetToNil()
         }
     }
 
