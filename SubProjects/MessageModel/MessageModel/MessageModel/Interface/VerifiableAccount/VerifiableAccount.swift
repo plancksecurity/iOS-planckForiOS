@@ -485,13 +485,14 @@ extension VerifiableAccount {
         return server
     }
 
-    //Trigger a timeout error on the verification process after seconds passed by param.
+    /// Trigger a timeout error on the verification process after seconds passed by param.
+    ///
     /// - Parameter seconds: The seconds to trigger the timeout.
     private func triggerTimoutIn(seconds: CGFloat) {
         let group = DispatchGroup()
         group.enter()
         let queueLabel = "security.pep.accountVerification"
-        DispatchQueue(label: queueLabel, qos: .userInteractive).asyncAfter(deadline: .now() + seconds) { [weak self] in
+        DispatchQueue(label: queueLabel, qos: .default).asyncAfter(deadline: .now() + seconds) { [weak self] in
             defer { group.leave() }
             guard let me = self else {
                 //The account has been verified.
