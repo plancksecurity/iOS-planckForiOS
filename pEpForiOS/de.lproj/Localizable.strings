@@ -67,6 +67,9 @@
 /* Tableview section  header */
 "Accounts" = "Konten";
 
+/* MDM predeployment message, all ok */
+"Accounts Deployed" = "Konten eingerichtet";
+
 /* Actual size action title */
 "Actual (%1$@)" = "Original (%1$@)";
 
@@ -243,6 +246,9 @@
 
 /* ComposeTableView: button to decide to delete changes made on a drafted mail. */
 "Delete Changes" = "Änderungen löschen";
+
+/* MDM predeployment message */
+"Deploying Accounts" = "Konten werden eingerichtet";
 
 /* Deselect all emails */
 "Deselect all" = "Alle abwählen";
@@ -520,6 +526,12 @@
 /* EmailList action title */
 "Mark as unread" = "Als ungelesen markieren";
 
+/* MDM predeployment error */
+"MDM Error: Could not connect to account" = "MDM Fehler: Keine Verbindung zum Konto möglich";
+
+/* MDM predeployment error */
+"MDM Error: Wrong Account Data" = "MDM Fehler: Fehlerhafte Kontendaten";
+
 /* Medium size action title */
 "Medium (%1$@)" = "Medium (%1$@)";
 
@@ -599,6 +611,9 @@
 
 /* alert error title certificate delete */
 "Not possible to delete" = "Löschen nicht möglich";
+
+/* No messages has been selected for detail view */
+"Nothing selected" = "Nichts ausgewählt";
 
 /* Default message in detail view when nothing has been selected */
 "Nothing Selected" = "Nichts ausgewählt";
