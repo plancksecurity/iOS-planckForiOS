@@ -18,7 +18,7 @@ public enum VerifiableAccountValidationError: Error {
 }
 
 extension VerifiableAccountValidationError: LocalizedError {
-    // TODO This is duplicated in the app.
+    // TODO: This is duplicated in the app.
     public var errorDescription: String? {
         switch self {
         case .invalidUserData:

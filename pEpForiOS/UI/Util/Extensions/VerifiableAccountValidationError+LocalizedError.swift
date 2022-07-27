@@ -11,7 +11,7 @@ import Foundation
 import MessageModel
 
 extension VerifiableAccountValidationError {
-    // TODO This is duplicated in MM.
+    // TODO: This is duplicated in MM.
     public var errorDescription: String? {
         switch self {
         case .invalidUserData:
