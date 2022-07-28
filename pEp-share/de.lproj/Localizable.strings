@@ -8,6 +8,9 @@
 /* Reply to single contact, without date. Placeholder: Name. */
 "%1$@ wrote:" = "%1$@ schrieb:";
 
+/* Actual size action title */
+"Actual (%1$@)" = "Original (%1$@)";
+
 /* Insert document in message text context menu */
 "Add Document" = "Dokument hinzufügen";
 
@@ -31,10 +34,10 @@
 
 /* Cancel
    Cancel button title of pEp protection toggle action sheet
-   Cancel trust change to be undone
    compose email cancel
    Default cancel button text
    Downscale Images ActionSheet - Cancel
+   No, cancel the undo of the recent trust change
    OK button title
    TrustManagementView: trustword language selector cancel button label
    UIUtils.showActionSheetWithContactOptions.button.title Cancel */
@@ -112,6 +115,12 @@
 /* ComposeTableView: button to decide to Discharge changes made on a mail in outbox. */
 "Keep in Outbox" = "Im Postausgang behalten";
 
+/* Large size action title */
+"Large (%1$@)" = "Groß (%1$@)";
+
+/* Medium size action title */
+"Medium (%1$@)" = "Medium (%1$@)";
+
 /* TrustManagementView Back Button Title */
 "Message" = "Nachricht";
 
@@ -143,14 +152,15 @@
 "Nothing Selected" = "Nichts ausgewählt";
 
 /* Default positive button text
-   OK button title */
+   OK button title
+   Yes, undo the recent trust change */
 "OK" = "OK";
 
 /* Options */
 "Options" = "Optionen";
 
 /* Alert message shown if user wants to add a photo attachment, but has denied to give the app permissions. */
-"p≡p has no permissions to access \nthe Photo Gallery. You can grand permissions in Settings App." = "p≡p hat keine Berechtigung für den Zugriff auf\ndie Fotogalerie. Sie können die Berechtigung in den Einstellungen erteilen.";
+"p≡p has no permissions to access \nthe Photo Gallery. You can grant permissions in the Settings app." = "p≡p hat keinen Zugriff auf Fotos.\nSie können den Zugriff in der App „Einstellungen“ erlauben.";
 
 /* Privacy status suggestion */
 "Please add the necessary information." = "Bitte fügen Sie die notwendigen Informationen hinzu.";
@@ -189,7 +199,13 @@
 "sent with p≡p" = "gesendet mit p≡p";
 
 /* Privacy status suggestion */
-"Separately verify the content of this message with your communication partner." = "Überprüfen Sie mit Ihrem Kommunikationspartner den Inhalt dieser Nachricht.";
+"Separately verify the content of this message with your communication partner." = "Überprüfen Sie den Inhalt dieser Nachricht separat mit Ihrem Kommunikationspartner.";
+
+/* The server is not available error message */
+"Server Unreachable" = "Server konnte nicht erreicht werden";
+
+/* Small size action title */
+"Small (%1$@)" = "Klein (%1$@)";
 
 /* Reply to unknown sender with date */
 "Someone wrote on %1$@:" = "Jemand schrieb am %1$@:";
@@ -202,6 +218,15 @@
 
 /* Sharing extension: Could not load or process the attachment */
 "The attachment could not be loaded:\n%1@" = "Der Anhang konnte nicht geladen werden:\n%1@";
+
+/* Reduce attachment size title. The placeholder will be replaced by something like '5 KB'. */
+"The attachment of this message is %1$@. You can reduce message size by scaling the image to one of the sizes below." = "Der Anhang dieser Nachricht hat %1$@. Sie können die Größe reduzieren, indem Sie das Bild auf eine der unten angegebenen Größen skalieren lassen.";
+
+/* Reduce attachment size title. The placeholder will be replaced by something like '5 KB'. */
+"The attachments of this message are %1$@. You can reduce message size by scaling the images to one of the sizes below." = "Die Anhänge dieser Nachricht haben %1$@. Sie können die Größe reduzieren, indem Sie die Bilder auf eine der unten angegebenen Größen skalieren lassen.";
+
+/* Sharing extension: Attachment(s) too big */
+"The file is too big to send via email. The maximum file size is %1d MB." = "Die Datei ist zu groß. Das Maximum beträgt %1d MB.";
 
 /* Privacy status explanation */
 "This contact is completely trusted. All communication will be the maximum level of privacy." = "Dieser Kontakt ist vertrauenswürdig. Die gesamte Kommunikation bietet ein Höchstmaß an Datenschutz.";
@@ -231,7 +256,7 @@
 "This message has no reliable encryption or no signature. Ask your communication partner to upgrade their encryption solution or install p≡p." = "Diese Nachricht besitzt keine zuverlässige Verschlüsselung oder keine digitale Signatur. Bitten Sie Ihren Kommunikationspartner, eine bessere Verschlüsselungslösung zu verwenden oder p≡p zu installieren.";
 
 /* Privacy status explanation */
-"This message has unreliable protection" = "Diese Nachricht ist nicht zuverlässig geschützt";
+"This message has unreliable protection" = "Diese Nachricht wurde nicht zuverlässig geschützt";
 
 /* Privacy status explanation */
 "This message is not secure and has been tampered with." = "Diese Nachricht ist nicht sicher und wurde manipuliert.";
@@ -257,9 +282,6 @@
 /* Privacy status title */
 "Under Attack" = "Manipuliert";
 
-/* Undo trust change verification button title */
-"Undo" = "Rückgängig machen";
-
 /* Action name to be suggested at the moment of revert */
 "Undo Trust Confirmation" = "Vertrauensbestätigung rückgängig machen";
 
@@ -277,7 +299,7 @@
    Privacy status suggestion */
 "Unknown." = "Unbekannt.";
 
-/* file name used for unnamed attachments */
+/* file name used for unnamed attachments (sharing extension) */
 "unnamed" = "ohne Namen";
 
 /* unread button in slide-left menu */
@@ -297,4 +319,7 @@
 
 /* Confirm less secure forwarding message alert body */
 "You are about to forward a secure message as unsecure. If you choose to proceed, confidential information might be leaked putting you and your communication partners at risk. Are you sure you want to continue?" = "Sie sind dabei, eine sichere Nachricht als unsicher weiterzuleiten. Wenn Sie fortfahren, können vertrauliche Informationen verloren gehen, die Sie und Ihre Kommunikationspartner gefährden. Sind Sie sicher, dass Sie fortfahren wollen?";
+
+/* You're offline error message */
+"You're offline" = "Keine Verbindung";
 
