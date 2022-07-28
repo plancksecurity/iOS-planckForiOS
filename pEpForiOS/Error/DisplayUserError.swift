@@ -395,7 +395,7 @@ struct DisplayUserError: LocalizedError {
             }
         case .internalError:
             return NSLocalizedString(
-                "An internal error occured. Sorry, that should not happen.",
+                "An internal error occurred. Sorry, that should not happen.",
                 comment:
                 "Error message shown to the user in case an error in the app occured that is not caused or related to the server")
         case .loginValidationError:

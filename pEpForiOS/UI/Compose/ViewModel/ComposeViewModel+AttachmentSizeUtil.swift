@@ -74,9 +74,13 @@ extension ComposeViewModel {
 
             // Plural
             if numberOfImages > 1 {
-                return title(with: NSLocalizedString("The attachments of this message are %1$@. You can reduce message size by scaling the images to one of the sizes below", comment: "Reduce attachments size title"), andSize: size)
+                return title(with: NSLocalizedString("The attachments of this message are %1$@. You can reduce message size by scaling the images to one of the sizes below.",
+                                                     comment: "Reduce attachment size title. The placeholder will be replaced by something like '5 KB'."),
+                             andSize: size)
             }
-            return title(with: NSLocalizedString("The attachment of this message is %1$@. You can reduce message size by scaling the image to one of the sizes below", comment: "Reduce attachment size title"), andSize: size)
+            return title(with: NSLocalizedString("The attachment of this message is %1$@. You can reduce message size by scaling the image to one of the sizes below.",
+                                                 comment: "Reduce attachment size title. The placeholder will be replaced by something like '5 KB'."),
+                         andSize: size)
         }
 
         /// The title for the small size option
@@ -188,18 +192,12 @@ extension ComposeViewModel {
 
         public enum AttachmentSizeUtilError: Error {
             case invalidState
-
-            public var errorDescription: String? {
-                switch self {
-                case .invalidState:
-                    return NSLocalizedString( "This util has not yet been set up correctly. Please consider check if it scaling should be offered first ", comment: "Internal Error Message - Wrong util setup")
-                }
-            }
         }
 
         //MARK: -  Private
 
-        private func calculateAndGroupAttachments(inlinedAttachments: [Attachment], nonInlinedAttachments: [Attachment]) {
+        private func calculateAndGroupAttachments(inlinedAttachments: [Attachment],
+                                                  nonInlinedAttachments: [Attachment]) {
             var numberOfImages = 0
             var actualAttachments = [Attachment]()
             var smallAttachments = [Attachment]()
