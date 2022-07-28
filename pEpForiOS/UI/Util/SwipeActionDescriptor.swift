@@ -23,28 +23,28 @@ enum SwipeActionDescriptor {
         switch self {
         case .read:
             return NSLocalizedString("Read",
-                                     comment: "'Read' button in slide-left menu. Note: Very little screen space, please keep this one word.")
+                                     comment: "'Read' button in slide-left menu. Note: Very little screen space, please keep this one (short) word.")
         case .unread:
             return NSLocalizedString("Unread",
-                                     comment: "'Unread' button in slide-left menu. Note: Very little screen space, please keep this one word.")
+                                     comment: "'Unread' button in slide-left menu. Note: Very little screen space, please keep this one (short) word.")
         case .reply:
             return NSLocalizedString("Reply",
-                                     comment: "'Read' button in slide-left menu. Note: Very little screen space, please keep this one word.")
+                                     comment: "'Read' button in slide-left menu. Note: Very little screen space, please keep this one (short) word.")
         case .more:
             return NSLocalizedString("More",
-                                     comment: "'More' button in slide-left menu. Note: Very little screen space, please keep this one word.")
+                                     comment: "'More' button in slide-left menu. Note: Very little screen space, please keep this one (short) word.")
         case .flag:
             return NSLocalizedString("Flag",
-                                     comment: "'Flag' button in slide-left menu. Note: Very little screen space, please keep this one word.")
+                                     comment: "'Flag' button in slide-left menu. Note: Very little screen space, please keep this one (short) word.")
         case .unflag:
             return NSLocalizedString("Unflag",
-                                     comment: "'Unflag' button in slide-left menu. Note: Very little screen space, please keep this one word.")
+                                     comment: "'Unflag' button in slide-left menu. Note: Very little screen space, please keep this one (short) word.")
         case .trash:
             return NSLocalizedString("Trash",
-                                     comment: "'Trash' button in slide-left menu. Note: Very little screen space, please keep this one word.")
+                                     comment: "'Trash' button in slide-left menu. Note: Very little screen space, please keep this one (short) word.")
         case .archive:
             return NSLocalizedString("Archive",
-                                     comment: "'Archive' button in slide-left menu. Note: Very little screen space, please keep this one word.")
+                                     comment: "'Archive' button in slide-left menu. Note: Very little screen space, please keep this one (short) word.")
         
         }
     }
