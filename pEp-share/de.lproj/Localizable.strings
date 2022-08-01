@@ -20,7 +20,7 @@
 /* UIUtils.showActionSheetWithContactOptions.button.title Add to Contacts */
 "Add to Contacts" = "Zu Kontakten hinzufügen";
 
-/* Archive button in slide-left menu */
+/* 'Archive' button in slide-left menu. Note: Very little screen space, please keep this one (short) word. */
 "Archive" = "Archivieren";
 
 /* Alt text for image attachment in markdown. Placeholders: Attachment number, extension. */
@@ -97,7 +97,7 @@
 /* Sharing extension: Error title */
 "Error" = "Fehler";
 
-/* read button in slide-left menu */
+/* 'Flag' button in slide-left menu. Note: Very little screen space, please keep this one (short) word. */
 "Flag" = "Markieren";
 
 /* Title of account picker when composing a message */
@@ -127,7 +127,7 @@
 /* Privacy status title */
 "Mistrusted" = "Nicht vertrauenswürdig";
 
-/* more button in slide-left menu */
+/* 'More' button in slide-left menu. Note: Very little screen space, please keep this one (short) word. */
 "More" = "Mehr";
 
 /* File name used for videos the user attaches. */
@@ -171,13 +171,13 @@
 /* Privacy status suggestion */
 "Re-establish the connection with your communication partner and try to complete another handshake." = "Verbinden Sie sich erneut mit Ihrem Kommunikationspartner und führen Sie einen weiteren Handshake durch.";
 
-/* read button in slide-left menu */
+/* 'Read' button in slide-left menu. Note: Very little screen space, please keep this one (short) word. */
 "Read" = "Gelesen";
 
 /* ComposeTableView: Label of swipe left. Removing of attachment. */
 "Remove" = "Entfernen";
 
-/* read button in slide-left menu */
+/* 'Read' button in slide-left menu. Note: Very little screen space, please keep this one (short) word. */
 "Reply" = "Antworten";
 
 /* Reset all p≡p data for this comunication partner: */
@@ -276,7 +276,7 @@
 /* Compose field title */
 "To:" = "An:";
 
-/* Trash button in slide-left menu */
+/* 'Trash' button in slide-left menu. Note: Very little screen space, please keep this one (short) word. */
 "Trash" = "Papierkorb";
 
 /* Privacy status title */
@@ -288,7 +288,7 @@
 /* Action name to be suggested at the moment of revert */
 "Undo Trust Rejection" = "Vertrauensablehnung rückgängig machen";
 
-/* read button in slide-left menu */
+/* 'Unflag' button in slide-left menu. Note: Very little screen space, please keep this one (short) word. */
 "Unflag" = "Markierung entfernen";
 
 /* Privacy status title
@@ -302,7 +302,7 @@
 /* file name used for unnamed attachments (sharing extension) */
 "unnamed" = "ohne Namen";
 
-/* unread button in slide-left menu */
+/* 'Unread' button in slide-left menu. Note: Very little screen space, please keep this one (short) word. */
 "Unread" = "Ungelesen";
 
 /* Privacy status title */
