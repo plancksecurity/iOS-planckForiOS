@@ -98,7 +98,7 @@
 "Error" = "Fehler";
 
 /* 'Flag' button in slide-left menu. Note: Very little screen space, please keep this one (short) word. */
-"Flag" = "Markieren";
+"Flag" = "Markierung";
 
 /* Title of account picker when composing a message */
 "From:" = "Von:";
