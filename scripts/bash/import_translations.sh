@@ -17,8 +17,6 @@ function import_in_place() {
     # Eliminate empty translations Part 2
     sed -i '' 's/<target><\/target>//' $filename
 
-    echo \*\*\* xcodebuild -importLocalizations -project $2 -localizationPath $filename
-    echo
     xcodebuild -importLocalizations -project $2 -localizationPath $filename | grep -v -E "^(--- WARNING: )?Key \".*\" used with multiple comments" | grep -v -E "^ +"
 }
 
