@@ -1112,7 +1112,7 @@
 "Undo Trust Rejection" = "Vertrauensablehnung rückgängig machen";
 
 /* read button in slide-left menu */
-"Unflag" = "Markierung entfernen";
+"Unflag" = "Markierung";
 
 /* Displayed attachment filename if unknown */
 "unknown" = "unbekannt";

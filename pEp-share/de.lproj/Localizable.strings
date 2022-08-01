@@ -289,7 +289,7 @@
 "Undo Trust Rejection" = "Vertrauensablehnung rückgängig machen";
 
 /* 'Unflag' button in slide-left menu. Note: Very little screen space, please keep this one (short) word. */
-"Unflag" = "Markierung entfernen";
+"Unflag" = "Markierung";
 
 /* Privacy status title
    privacyStatusDescription no_color */
