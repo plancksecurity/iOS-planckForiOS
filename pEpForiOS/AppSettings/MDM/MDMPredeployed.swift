@@ -20,6 +20,8 @@ extension MDMPredeployed {
     static let keyPredeployedAccounts = "pep_mail_settings"
     static let keyUserAddress = "account_email_address"
 
+    static let kIncomingMailSettings = "incoming_mail_settings"
+
     static let keyServerName = "name"
     static let keyServerPort = "port"
     static let keyUserName = "userName"
