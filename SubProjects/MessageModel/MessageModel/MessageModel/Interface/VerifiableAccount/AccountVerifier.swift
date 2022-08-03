@@ -138,10 +138,29 @@ extension AccountVerifier: VerifiableAccountDelegate {
     }
 }
 
+// MARK: - UsePEPFolderProviderProtocol
+
 extension AccountVerifier: UsePEPFolderProviderProtocol {
     public var usePepFolder: Bool {
         // TODO: This may have to be connected to MDM settings, instead
         // of being hard-coded.
         return true
+    }
+}
+
+// MARK: - Parse connection transports
+
+extension AccountVerifier {
+    private func connectionTransport(fromString: String) -> ConnectionTransport {
+        switch (fromString) {
+        case "NONE":
+            return .plain
+        case "SSL/TLS":
+            return .TLS
+        case "STARTTLS":
+            return .startTLS
+        default:
+            return .TLS
+        }
     }
 }
