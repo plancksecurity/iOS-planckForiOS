@@ -107,15 +107,15 @@ extension MDMPredeployed: MDMPredeployedProtocol {
                 callback(MDMPredeployedError.malformedAccountData)
                 return
             }
-            guard let imapServerDict = accountDictionary[MDMPredeployed.keyImapServer] as? SettingsDict else {
+            guard let imapServerDict = accountDictionary[MDMPredeployed.kIncomingMailSettings] as? SettingsDict else {
                 callback(MDMPredeployedError.malformedAccountData)
                 return
             }
-            guard let imapServerAddress = imapServerDict[MDMPredeployed.keyServerName] as? String else {
+            guard let imapServerAddress = imapServerDict[MDMPredeployed.kIncomingMailSettingsServer] as? String else {
                 callback(MDMPredeployedError.malformedAccountData)
                 return
             }
-            guard let imapPortNumber = imapServerDict[MDMPredeployed.keyServerPort] as? NSNumber else {
+            guard let imapPortNumber = imapServerDict[MDMPredeployed.kIncomingMailSettingsPort] as? NSNumber else {
                 callback(MDMPredeployedError.malformedAccountData)
                 return
             }
