@@ -22,10 +22,28 @@ extension MDMPredeployed {
     /// The top-level key into MDM-deployed account settings.
     static let keyPredeployedAccounts = "pep_mail_settings"
 
-    /// The key into the MDM setting for an account's email address.
+    /// The key into the MDM settings for an account's email address.
     static let keyUserAddress = "account_email_address"
 
+    /// The MDM settings key for the incoming mail settings.
     static let kIncomingMailSettings = "incoming_mail_settings"
+
+    /// The MDM settings key for an incoming server address.
+    static let kIncomingMailSettingsServer = "incoming_mail_settings_server"
+
+    /// The MDM settings key for the connection type for an incoming server.
+    ///
+    /// Can be one of NONE, SSL/TLS, STARTTLS. Any other value or not providing it will default to SSL/TLS.
+    static let kIncomingMailSettingsSecurityType = "incoming_mail_settings_security_type"
+
+    /// The MDM settings key for the incoming mail server's port.
+    static let kIncomingMailSettingsPort = "incoming_mail_settings_port"
+
+    /// The MDM settings key for the incoming mail server's login name.
+    static let kIncomingMailSettingsUsername = "incoming_mail_settings_user_name"
+
+    /// The MDM settings key for the outgoing mail settings.
+    static let kOutgoingMailSettings = "outgoing_mail_settings"
 
     static let keyServerName = "name"
     static let keyServerPort = "port"
