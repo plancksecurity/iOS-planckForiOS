@@ -18,14 +18,15 @@ public enum VerifiableAccountValidationError: Error {
 }
 
 extension VerifiableAccountValidationError: LocalizedError {
+    // TODO: This is duplicated in the app.
     public var errorDescription: String? {
         switch self {
         case .invalidUserData:
-            return NSLocalizedString("Some fields seems not to be valid. Please check all input fields.",
-                                     comment: "Error description when failing to validate account fields")
+            return NSLocalizedString("Some fields are not valid. Please check all input fields.",
+                                     comment: "Error description when failing to validate account fields (MessageModel)")
         case .unknown:
             return NSLocalizedString("Something went wrong.",
-                                     comment: "Error description when failing for an unknown reason")
+                                     comment: "Error description when failing for an unknown reason (MessageModel)")
         }
     }
 }

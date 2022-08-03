@@ -16,5 +16,5 @@ import MessageModel
 
 extension Attachment {
     static public let defaultFilename = NSLocalizedString("unnamed",
-                                                          comment: "file name used for unnamed attachments")
+                                                          comment: "file name used for unnamed attachments (sharing extension)")
 }
