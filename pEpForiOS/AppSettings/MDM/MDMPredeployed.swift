@@ -47,7 +47,10 @@ extension MDMPredeployed {
 
     static let keyServerName = "name"
     static let keyServerPort = "port"
+
+    // TODO: It looks like this is not in the spec. Clarify.
     static let keyUserName = "userName"
+
     static let keyLoginName = "loginName"
     static let keyPassword = "password"
     static let keyImapServer = "imapServer"
