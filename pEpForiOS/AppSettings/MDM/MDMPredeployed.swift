@@ -10,9 +10,6 @@ import Foundation
 
 import MessageModel
 
-// TODO: Ugly. Needed for ConnectionTransport
-import PantomimeFramework
-
 class MDMPredeployed {
 }
 
@@ -200,13 +197,5 @@ extension MDMPredeployed: MDMPredeployedProtocol {
         // Please note the explicit use of UserDefaults for predeployment,
         // instead of the usual usage of AppSettings, since this use case is special.
         return UserDefaults.standard.dictionary(forKey: MDMPredeployed.keyMDM)
-    }
-}
-
-// MARK: - ConnectionTransport Parser Util
-
-extension MDMPredeployed {
-    private func parseConnectionTransport(connectionTransportString: String) -> ConnectionTransport {
-        return .TLS
     }
 }
