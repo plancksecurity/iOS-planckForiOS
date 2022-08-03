@@ -16,8 +16,13 @@ class MDMPredeployed {
 // MARK: - Dictionary key constants
 
 extension MDMPredeployed {
+    /// The 'global' settings key under which all MDM settings are supposed to land.
     static let keyMDM = "com.apple.configuration.managed"
+
+    /// The top-level key into MDM-deployed account settings.
     static let keyPredeployedAccounts = "pep_mail_settings"
+
+    /// The key into the MDM setting for an account's email address.
     static let keyUserAddress = "account_email_address"
 
     static let kIncomingMailSettings = "incoming_mail_settings"
