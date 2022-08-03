@@ -18,9 +18,10 @@ class MDMPredeployed {
 extension MDMPredeployed {
     static let keyMDM = "com.apple.configuration.managed"
     static let keyPredeployedAccounts = "pep_mail_settings"
+    static let keyUserAddress = "account_email_address"
+
     static let keyServerName = "name"
     static let keyServerPort = "port"
-    static let keyUserAddress = "account_email_address"
     static let keyUserName = "userName"
     static let keyLoginName = "loginName"
     static let keyPassword = "password"
