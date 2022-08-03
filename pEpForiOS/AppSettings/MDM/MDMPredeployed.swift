@@ -153,10 +153,10 @@ extension MDMPredeployed: MDMPredeployedProtocol {
                             loginName: loginName,
                             serverIMAP: imapServerAddress,
                             portIMAP: UInt16(imapPortNumber.int16Value),
-                            transportIMAP: "SSL/TLS",
+                            transportStringIMAP: "SSL/TLS",
                             serverSMTP: smtpServerAddress,
                             portSMTP: UInt16(smtpPortNumber.int16Value),
-                            transportSMTP: "SSL/TLS") { error in
+                            transportStringSMTP: "SSL/TLS") { error in
                 if let err = error {
                     if firstError == nil {
                         firstError = err

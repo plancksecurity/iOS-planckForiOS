@@ -22,8 +22,10 @@ class AccountVerifierTest: XCTestCase {
                         loginName: "none",
                         serverIMAP: "localhost",
                         portIMAP: 9999,
+                        transportStringIMAP: "blah",
                         serverSMTP: "localhost",
-                        portSMTP: 9999) { maybeError in
+                        portSMTP: 9999,
+                        transportStringSMTP: "blah") { maybeError in
             guard let _ = maybeError else {
                 XCTFail()
                 return

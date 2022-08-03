@@ -37,11 +37,11 @@ public class AccountVerifier {
     ///   - loginName: The login name to use for both IMAP and SMTP.
     ///   - serverIMAP: The name (address) of the IMAP server.
     ///   - portIMAP: The IMAP port.
-    ///   - transportIMAP: The transport to use for IMAP. Must be one of
+    ///   - transportStringIMAP: The transport to use for IMAP. Must be one of
     ///   NONE, SSL/TLS, STARTTLS. Any other value, or not providing it, will default to SSL/TLS.
     ///   - serverSMTP: The name (address) of the SMTP server.
     ///   - portSMTP: The SMTP port.
-    ///   - transportSMTP: The transport to use for SMTP. Must be one of
+    ///   - transportStringSMTP: The transport to use for SMTP. Must be one of
     ///   NONE, SSL/TLS, STARTTLS. Any other value, or not providing it, will default to SSL/TLS.
     ///   - verifiedCallback: This closure will be called after the account has been verified successfully,
     /// or in case of error. If there was an error, it will be indicated as the `Error` parameter.
@@ -52,13 +52,15 @@ public class AccountVerifier {
                        loginName: String,
                        serverIMAP: String,
                        portIMAP: UInt16,
-                       transportIMAP: String,
+                       transportStringIMAP: String,
                        serverSMTP: String,
                        portSMTP: UInt16,
-                       transportSMTP: String,
+                       transportStringSMTP: String,
                        verifiedCallback: @escaping AccountVerifierCallback) {
         // Store for later use by the delegate (ourselves)
         self.verifiedCallback = verifiedCallback
+
+        let transportIMAP = connectionTransport(fromString: transportStringIMAP)
 
         let verifier = VerifiableAccount(verifiableAccountDelegate: self,
                                          address: address,
@@ -68,6 +70,7 @@ public class AccountVerifier {
                                          loginNameIMAP: loginName,
                                          serverIMAP: serverIMAP,
                                          portIMAP: portIMAP,
+                                         transportIMAP: transportIMAP,
                                          loginNameSMTP: loginName,
                                          serverSMTP: serverSMTP,
                                          portSMTP: portSMTP,
