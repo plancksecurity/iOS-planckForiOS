@@ -223,7 +223,7 @@ extension MDMPredeployed: MDMPredeployedProtocol {
         return !predeployedAccounts.isEmpty
     }
 
-    private func mdmPredeploymentDictionary() -> [String : Any]? {
+    private func mdmPredeploymentDictionary() -> SettingsDict? {
         // Please note the explicit use of UserDefaults for predeployment,
         // instead of the usual usage of AppSettings, since this use case is special.
         return UserDefaults.standard.dictionary(forKey: MDMPredeployed.keyMDM)
