@@ -60,7 +60,8 @@ public class AccountVerifier {
         // Store for later use by the delegate (ourselves)
         self.verifiedCallback = verifiedCallback
 
-        let transportIMAP = connectionTransport(fromString: transportStringIMAP)
+        let transportIMAP = connectionTransport(fromString: transportStringIMAP,
+                                                defaultTransport: .TLS)
 
         let verifier = VerifiableAccount(verifiableAccountDelegate: self,
                                          address: address,
@@ -154,7 +155,8 @@ extension AccountVerifier: UsePEPFolderProviderProtocol {
 // MARK: - Parse connection transports
 
 extension AccountVerifier {
-    private func connectionTransport(fromString: String) -> ConnectionTransport {
+    private func connectionTransport(fromString: String,
+                                     defaultTransport: ConnectionTransport) -> ConnectionTransport {
         switch (fromString) {
         case "NONE":
             return .plain
@@ -163,7 +165,7 @@ extension AccountVerifier {
         case "STARTTLS":
             return .startTLS
         default:
-            return .TLS
+            return defaultTransport
         }
     }
 }
