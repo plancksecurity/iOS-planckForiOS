@@ -19,6 +19,12 @@ extension MDMPredeployed {
     /// The 'global' settings key under which all MDM settings are supposed to land.
     static let keyMDM = "com.apple.configuration.managed"
 
+    /// The key for entry into composition settings.
+    static let keyCompositionSettings = "composition_settings"
+
+    /// The key for the sender's name, which may get used as the user's name.
+    static let keyCompositionSenderName = "composition_sender_name"
+
     /// The top-level key into MDM-deployed account settings.
     static let keyPredeployedAccounts = "pep_mail_settings"
 
@@ -93,6 +99,13 @@ extension MDMPredeployed: MDMPredeployedProtocol {
         }
 
         // TODO: Extract the username here from mdmDict, and bail out if there is none.
+        var username: String
+        if let compositionSettings = mdmDict[MDMPredeployed.keyCompositionSettings] as? SettingsDict,
+           let compositionSenderName = compositionSettings[MDMPredeployed.keyCompositionSenderName] as? String {
+            username = compositionSenderName
+        } else {
+
+        }
 
         guard let predeployedAccounts = mdmDict[MDMPredeployed.keyPredeployedAccounts] as? [SettingsDict] else {
             callback(nil)
