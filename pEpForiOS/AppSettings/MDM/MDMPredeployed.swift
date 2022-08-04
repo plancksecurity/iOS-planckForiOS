@@ -123,7 +123,6 @@ extension MDMPredeployed: MDMPredeployedProtocol {
 
         var haveWipedExistingAccounts = false
         for accountDictionary in predeployedAccounts {
-            // TODO: Read intune's {{username}}
             guard let userName = accountDictionary[MDMPredeployed.keyUserName] as? String else {
                 callback(MDMPredeployedError.malformedAccountData)
                 return
@@ -132,6 +131,10 @@ extension MDMPredeployed: MDMPredeployedProtocol {
                 callback(MDMPredeployedError.malformedAccountData)
                 return
             }
+
+            // Make sure there is a username, falling back to the email address if needed
+            let accountUsername = username ?? userAddress
+
             guard let loginName = accountDictionary[MDMPredeployed.keyLoginName] as? String else {
                 callback(MDMPredeployedError.malformedAccountData)
                 return
