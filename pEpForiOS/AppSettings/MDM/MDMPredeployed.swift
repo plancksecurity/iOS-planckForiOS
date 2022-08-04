@@ -102,13 +102,7 @@ extension MDMPredeployed: MDMPredeployedProtocol {
             return
         }
 
-        var username: String?
-        if let compositionSettings = mdmDict[MDMPredeployed.keyCompositionSettings] as? SettingsDict,
-           let compositionSenderName = compositionSettings[MDMPredeployed.keyCompositionSenderName] as? String {
-            username = compositionSenderName
-        } else {
-            username = mdmDict[MDMPredeployed.keyAccountDescription] as? String
-        }
+        let username = mdmExtractUsername(mdmDictionary: mdmDict)
 
         guard let predeployedAccounts = mdmDict[MDMPredeployed.keyPredeployedAccounts] as? [SettingsDict] else {
             callback(nil)
@@ -233,5 +227,14 @@ extension MDMPredeployed: MDMPredeployedProtocol {
         // Please note the explicit use of UserDefaults for predeployment,
         // instead of the usual usage of AppSettings, since this use case is special.
         return UserDefaults.standard.dictionary(forKey: MDMPredeployed.keyMDM)
+    }
+
+    private func mdmExtractUsername(mdmDictionary: SettingsDict) -> String? {
+        if let compositionSettings = mdmDictionary[MDMPredeployed.keyCompositionSettings] as? SettingsDict,
+           let compositionSenderName = compositionSettings[MDMPredeployed.keyCompositionSenderName] as? String {
+            return compositionSenderName
+        } else {
+            return mdmDictionary[MDMPredeployed.keyAccountDescription] as? String
+        }
     }
 }
