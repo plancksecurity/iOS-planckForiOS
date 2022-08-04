@@ -51,6 +51,11 @@ extension MDMPredeployed {
     /// The MDM settings key for an outgoing server address.
     static let kOutgoingMailSettingsServer = "outgoing_mail_settings_server"
 
+    /// The MDM settings key for the connection type for an outgoing server.
+    ///
+    /// Can be one of NONE, SSL/TLS, STARTTLS. Any other value or not providing it will default to STARTTLS.
+    static let kOutgoingMailSettingsSecurityType = "outgoing_mail_settings_security_type"
+
     static let keyServerName = "name"
     static let keyServerPort = "port"
 
