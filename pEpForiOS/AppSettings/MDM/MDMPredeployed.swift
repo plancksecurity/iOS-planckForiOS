@@ -25,6 +25,10 @@ extension MDMPredeployed {
     /// The key for the sender's name, which may get used as the user's name.
     static let keyCompositionSenderName = "composition_sender_name"
 
+    /// The key for the account description, which an absence of a better name,
+    /// may get used as the user's name.
+    static let keyAccountDescription = "account_description"
+
     /// The top-level key into MDM-deployed account settings.
     static let keyPredeployedAccounts = "pep_mail_settings"
 
@@ -98,13 +102,12 @@ extension MDMPredeployed: MDMPredeployedProtocol {
             return
         }
 
-        // TODO: Extract the username here from mdmDict, and bail out if there is none.
-        var username: String
+        var username: String?
         if let compositionSettings = mdmDict[MDMPredeployed.keyCompositionSettings] as? SettingsDict,
            let compositionSenderName = compositionSettings[MDMPredeployed.keyCompositionSenderName] as? String {
             username = compositionSenderName
         } else {
-
+            username = mdmDict[MDMPredeployed.keyAccountDescription] as? String
         }
 
         guard let predeployedAccounts = mdmDict[MDMPredeployed.keyPredeployedAccounts] as? [SettingsDict] else {
