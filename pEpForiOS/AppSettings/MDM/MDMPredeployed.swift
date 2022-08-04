@@ -45,9 +45,6 @@ extension MDMPredeployed {
     /// The MDM settings key for the outgoing mail settings.
     static let kOutgoingMailSettings = "outgoing_mail_settings"
 
-    /// The MDM settings key for the outgoing mail settings.
-    static let kOutgoingMailSettings = "outgoing_mail_settings"
-
     /// The MDM settings key for an outgoing server address.
     static let kOutgoingMailSettingsServer = "outgoing_mail_settings_server"
 
