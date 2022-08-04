@@ -56,7 +56,7 @@ extension MDMPredeployed {
     static let keyServerName = "name"
     static let keyServerPort = "port"
 
-    // TODO: It looks like this is not in the spec. Clarify.
+    // TODO: Comes from intune's {{username}}
     static let keyUserName = "userName"
 
     static let keyLoginName = "loginName"
@@ -99,6 +99,7 @@ extension MDMPredeployed: MDMPredeployedProtocol {
 
         var haveWipedExistingAccounts = false
         for accountDictionary in predeployedAccounts {
+            // TODO: Read intune's {{username}}
             guard let userName = accountDictionary[MDMPredeployed.keyUserName] as? String else {
                 callback(MDMPredeployedError.malformedAccountData)
                 return
