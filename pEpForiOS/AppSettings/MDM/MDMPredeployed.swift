@@ -72,9 +72,6 @@ extension MDMPredeployed {
     static let keyServerName = "name"
     static let keyServerPort = "port"
 
-    // TODO: Comes from intune's {{username}}
-    static let keyUserName = "userName"
-
     static let keyLoginName = "loginName"
     static let keyPassword = "password"
     static let keyImapServer = "imapServer"
@@ -117,10 +114,6 @@ extension MDMPredeployed: MDMPredeployedProtocol {
 
         var haveWipedExistingAccounts = false
         for accountDictionary in predeployedAccounts {
-            guard let userName = accountDictionary[MDMPredeployed.keyUserName] as? String else {
-                callback(MDMPredeployedError.malformedAccountData)
-                return
-            }
             guard let userAddress = accountDictionary[MDMPredeployed.keyUserAddress] as? String else {
                 callback(MDMPredeployedError.malformedAccountData)
                 return
@@ -178,7 +171,7 @@ extension MDMPredeployed: MDMPredeployedProtocol {
             let verifier = AccountVerifier()
             group.enter()
             verifier.verify(address: userAddress,
-                            userName: userName,
+                            userName: accountUsername,
                             password: password,
                             loginName: loginName,
                             serverIMAP: imapServerAddress,
