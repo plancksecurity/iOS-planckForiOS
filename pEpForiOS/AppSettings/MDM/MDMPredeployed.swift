@@ -92,6 +92,8 @@ extension MDMPredeployed: MDMPredeployedProtocol {
             return
         }
 
+        // TODO: Extract the username here from mdmDict, and bail out if there is none.
+
         guard let predeployedAccounts = mdmDict[MDMPredeployed.keyPredeployedAccounts] as? [SettingsDict] else {
             callback(nil)
             return
