@@ -181,13 +181,14 @@ class MDMPredeployedTest: XCTestCase {
                 MDMPredeployed.keyServerPort: NSNumber(value: port)]
     }
 
+    // TODO: Adapt
     private func accountDictionary(userName: String,
                                    userAddress: String,
                                    loginName: String,
                                    password: String,
                                    imapServer: SettingsDict,
                                    smtpServer: SettingsDict) -> SettingsDict {
-        return [MDMPredeployed.keyUserName: userName,
+        return ["TODO": userName,
                 MDMPredeployed.keyUserAddress: userAddress,
                 MDMPredeployed.keyLoginName: loginName,
                 MDMPredeployed.keyPassword: password,
