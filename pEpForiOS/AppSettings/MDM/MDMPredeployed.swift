@@ -238,8 +238,9 @@ extension MDMPredeployed: MDMPredeployedProtocol {
             self.loginName = loginName
         }
 
-        static func from(serverSettings: SettingsDict) -> ServerData? {
-            guard let serverName = serverSettings["incoming_mail_settings_server"] as? String else {
+        static func from(serverSettings: SettingsDict,
+                         keyServerName: String) -> ServerData? {
+            guard let serverName = serverSettings[keyServerName] as? String else {
                 return nil
             }
             let transportString = serverSettings["incoming_mail_settings_security_type"] as? String ?? "NONE"
@@ -268,12 +269,14 @@ extension MDMPredeployed: MDMPredeployedProtocol {
         }
 
         if let imapServerSettings = settingsDict["incoming_mail_settings"] as? SettingsDict {
-            guard let serverData = ServerData.from(serverSettings: imapServerSettings) else {
+            guard let serverData = ServerData.from(serverSettings: imapServerSettings,
+                                                   keyServerName: "incoming_mail_settings_server") else {
                 return nil
             }
             return ServerSettings.imap(email, serverData)
         } else if let smtpServerSettings = settingsDict["outgoing_mail_settings"] as? SettingsDict {
-            guard let serverData = ServerData.from(serverSettings: smtpServerSettings) else {
+            guard let serverData = ServerData.from(serverSettings: smtpServerSettings,
+                                                   keyServerName: "outgoing_mail_settings_server") else {
                 return nil
             }
             return ServerSettings.smtp(email, serverData)
