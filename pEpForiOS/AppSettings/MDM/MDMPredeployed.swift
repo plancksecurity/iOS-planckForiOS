@@ -55,6 +55,9 @@ extension MDMPredeployed {
     /// The MDM name for plain transport.
     static let transportPlain = "NONE"
 
+    /// The MDM name for TLS transport.
+    static let transportTLS = "SSL/TLS"
+
     static let keyServerName = "name"
     static let keyServerPort = "port"
 
@@ -162,10 +165,10 @@ extension MDMPredeployed: MDMPredeployedProtocol {
                             loginName: loginName,
                             serverIMAP: imapServerAddress,
                             portIMAP: UInt16(imapPortNumber.int16Value),
-                            transportStringIMAP: "SSL/TLS",
+                            transportStringIMAP: MDMPredeployed.transportTLS,
                             serverSMTP: smtpServerAddress,
                             portSMTP: UInt16(smtpPortNumber.int16Value),
-                            transportStringSMTP: "SSL/TLS") { error in
+                            transportStringSMTP: MDMPredeployed.transportTLS) { error in
                 if let err = error {
                     if firstError == nil {
                         firstError = err
@@ -226,7 +229,9 @@ extension MDMPredeployed: MDMPredeployedProtocol {
 
         let loginName: String
 
-        private static let legitTransports: Set = [transportPlain, "SSL/TLS", "STARTTLS"]
+        private static let legitTransports: Set = [transportPlain,
+                                                   MDMPredeployed.transportTLS,
+                                                   "STARTTLS"]
 
         init?(hostName: String, port: Int, transportString: String, loginName: String) {
             self.port = UInt16(port)
