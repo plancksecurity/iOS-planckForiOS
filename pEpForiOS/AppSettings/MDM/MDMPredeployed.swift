@@ -297,7 +297,7 @@ extension MDMPredeployed: MDMPredeployedProtocol {
         case smtp(String, ServerData)
     }
 
-    private func mdmPEPMailSettings(settingsDict: SettingsDict) -> ServerSettings? {
+    private func mdmMailSettings(settingsDict: SettingsDict) -> ServerSettings? {
         guard let email = settingsDict[MDMPredeployed.keyUserAddress] as? String else {
             return nil
         }
