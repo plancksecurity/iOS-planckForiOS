@@ -176,23 +176,24 @@ class MDMPredeployedTest: XCTestCase {
         return accountDict
     }
 
+    // TODO: Adapt to new account setup
     private func serverDictionary(name: String, port: UInt16) -> SettingsDict {
-        return [MDMPredeployed.keyServerName: name,
-                MDMPredeployed.keyServerPort: NSNumber(value: port)]
+        return ["MDMPredeployed.keyServerName": name,
+                "MDMPredeployed.keyServerPort": NSNumber(value: port)]
     }
 
-    // TODO: Adapt
+    // TODO: Adapt to new account setup
     private func accountDictionary(userName: String,
                                    userAddress: String,
                                    loginName: String,
                                    password: String,
                                    imapServer: SettingsDict,
                                    smtpServer: SettingsDict) -> SettingsDict {
-        return ["TODO": userName,
-                MDMPredeployed.keyUserAddress: userAddress,
-                MDMPredeployed.keyLoginName: loginName,
-                MDMPredeployed.keyPassword: password,
-                MDMPredeployed.keyImapServer: imapServer,
-                MDMPredeployed.keySmtpServer: smtpServer]
+        return ["MDMPredeployed.keyUserName": userName,
+                "MDMPredeployed.keyUserAddress": userAddress,
+                "MDMPredeployed.keyLoginName": loginName,
+                "MDMPredeployed.keyPassword": password,
+                "MDMPredeployed.keyImapServer": imapServer,
+                "MDMPredeployed.keySmtpServer": smtpServer]
     }
 }

@@ -77,14 +77,6 @@ extension MDMPredeployed {
 
     /// The MDM name for the transport 'plain connect, followed by transition to TLS'.
     static let transportStartTLS = "STARTTLS"
-
-    static let keyServerName = "name"
-    static let keyServerPort = "port"
-
-    static let keyLoginName = "loginName"
-    static let keyPassword = "password"
-    static let keyImapServer = "imapServer"
-    static let keySmtpServer = "smtpServer"
 }
 
 private typealias SettingsDict = [String:Any]
