@@ -47,7 +47,7 @@ extension MDMPredeployed {
     static let keyIncomingMailSettingsSecurityType = "incoming_mail_settings_security_type"
 
     /// The MDM settings key for the incoming mail server's port.
-    static let kIncomingMailSettingsPort = "incoming_mail_settings_port"
+    static let keyIncomingMailSettingsPort = "incoming_mail_settings_port"
 
     /// The MDM settings key for the incoming mail server's login name.
     static let kIncomingMailSettingsUsername = "incoming_mail_settings_user_name"
@@ -121,7 +121,7 @@ extension MDMPredeployed: MDMPredeployedProtocol {
                 callback(MDMPredeployedError.malformedAccountData)
                 return
             }
-            guard let imapPortNumber = imapServerDict[MDMPredeployed.kIncomingMailSettingsPort] as? NSNumber else {
+            guard let imapPortNumber = imapServerDict[MDMPredeployed.keyIncomingMailSettingsPort] as? NSNumber else {
                 callback(MDMPredeployedError.malformedAccountData)
                 return
             }
