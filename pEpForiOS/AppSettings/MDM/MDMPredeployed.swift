@@ -272,9 +272,11 @@ extension MDMPredeployed: MDMPredeployedProtocol {
                 return nil
             }
             return ServerSettings.imap(email, serverData)
-        } else if let serverSettings = settingsDict["outgoing_mail_settings"] as? SettingsDict {
-            // SMTP
-            return nil
+        } else if let smtpServerSettings = settingsDict["outgoing_mail_settings"] as? SettingsDict {
+            guard let serverData = ServerData.from(serverSettings: smtpServerSettings) else {
+                return nil
+            }
+            return ServerSettings.smtp(email, serverData)
         } else {
             return nil
         }
