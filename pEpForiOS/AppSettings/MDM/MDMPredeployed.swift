@@ -230,4 +230,19 @@ extension MDMPredeployed: MDMPredeployedProtocol {
             return mdmDictionary[MDMPredeployed.keyAccountDescription] as? String
         }
     }
+
+    private struct ServerData {}
+
+    private enum ServerSettings {
+        case imap(ServerData)
+        case smtp(ServerData)
+    }
+
+    private func mdmPEPMailSettings(settingsDict: SettingsDict) -> ServerSettings? {
+        guard let email = settingsDict["account_email_address"] as? String else {
+            return nil
+        }
+
+        return nil
+    }
 }
