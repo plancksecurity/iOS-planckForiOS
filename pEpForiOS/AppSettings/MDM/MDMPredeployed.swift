@@ -49,6 +49,9 @@ extension MDMPredeployed {
     /// The MDM settings key for the incoming mail server's port.
     static let kIncomingMailSettingsPort = "incoming_mail_settings_port"
 
+    /// The MDM settings key for the incoming mail server's login name.
+    static let kIncomingMailSettingsUsername = "incoming_mail_settings_user_name"
+
     static let keyServerName = "name"
     static let keyServerPort = "port"
 
@@ -276,7 +279,7 @@ extension MDMPredeployed: MDMPredeployedProtocol {
                                                    keyServerName: "incoming_mail_settings_server",
                                                    keyTransport: "incoming_mail_settings_security_type",
                                                    keyPort: "incoming_mail_settings_port",
-                                                   keyLoginName: "incoming_mail_settings_user_name") else {
+                                                   keyLoginName: MDMPredeployed.kIncomingMailSettingsUsername) else {
                 return nil
             }
             return ServerSettings.imap(email, serverData)
