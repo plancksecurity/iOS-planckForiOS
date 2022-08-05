@@ -36,7 +36,7 @@ extension MDMPredeployed {
     static let keyUserAddress = "account_email_address"
 
     /// The MDM settings key for the incoming mail settings.
-    static let kIncomingMailSettings = "incoming_mail_settings"
+    static let keyIncomingMailSettings = "incoming_mail_settings"
 
     /// The MDM settings key for an incoming server address.
     static let kIncomingMailSettingsServer = "incoming_mail_settings_server"
@@ -113,7 +113,7 @@ extension MDMPredeployed: MDMPredeployedProtocol {
                 callback(MDMPredeployedError.malformedAccountData)
                 return
             }
-            guard let imapServerDict = accountDictionary[MDMPredeployed.kIncomingMailSettings] as? SettingsDict else {
+            guard let imapServerDict = accountDictionary[MDMPredeployed.keyIncomingMailSettings] as? SettingsDict else {
                 callback(MDMPredeployedError.malformedAccountData)
                 return
             }
