@@ -239,11 +239,12 @@ extension MDMPredeployed: MDMPredeployedProtocol {
         }
 
         static func from(serverSettings: SettingsDict,
-                         keyServerName: String) -> ServerData? {
+                         keyServerName: String,
+                         keyTransport: String) -> ServerData? {
             guard let serverName = serverSettings[keyServerName] as? String else {
                 return nil
             }
-            let transportString = serverSettings["incoming_mail_settings_security_type"] as? String ?? "NONE"
+            let transportString = serverSettings[keyTransport] as? String ?? "NONE"
             guard let port = serverSettings["incoming_mail_settings_port"] as? Int else {
                 return nil
             }
@@ -270,13 +271,15 @@ extension MDMPredeployed: MDMPredeployedProtocol {
 
         if let imapServerSettings = settingsDict["incoming_mail_settings"] as? SettingsDict {
             guard let serverData = ServerData.from(serverSettings: imapServerSettings,
-                                                   keyServerName: "incoming_mail_settings_server") else {
+                                                   keyServerName: "incoming_mail_settings_server",
+                                                   keyTransport: "incoming_mail_settings_security_type") else {
                 return nil
             }
             return ServerSettings.imap(email, serverData)
         } else if let smtpServerSettings = settingsDict["outgoing_mail_settings"] as? SettingsDict {
             guard let serverData = ServerData.from(serverSettings: smtpServerSettings,
-                                                   keyServerName: "outgoing_mail_settings_server") else {
+                                                   keyServerName: "outgoing_mail_settings_server",
+                                                   keyTransport: "outgoing_mail_settings_security_type") else {
                 return nil
             }
             return ServerSettings.smtp(email, serverData)
