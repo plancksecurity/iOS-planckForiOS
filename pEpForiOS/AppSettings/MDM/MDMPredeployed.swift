@@ -225,8 +225,8 @@ extension MDMPredeployed: MDMPredeployedProtocol {
         let loginName: String
 
         private static let legitTransports: Set = [transportPlain,
-                                                   MDMPredeployed.transportTLS,
-                                                   MDMPredeployed.transportStartTLS]
+                                                   transportTLS,
+                                                   transportStartTLS]
 
         init?(hostName: String, port: Int, transportString: String, loginName: String) {
             self.port = UInt16(port)
