@@ -58,6 +58,9 @@ extension MDMPredeployed {
     /// The MDM name for TLS transport.
     static let transportTLS = "SSL/TLS"
 
+    /// The MDM name for the transport 'plain connect, followed by transition to TLS'.
+    static let transportStartTLS = "STARTTLS"
+
     static let keyServerName = "name"
     static let keyServerPort = "port"
 
@@ -231,7 +234,7 @@ extension MDMPredeployed: MDMPredeployedProtocol {
 
         private static let legitTransports: Set = [transportPlain,
                                                    MDMPredeployed.transportTLS,
-                                                   "STARTTLS"]
+                                                   MDMPredeployed.transportStartTLS]
 
         init?(hostName: String, port: Int, transportString: String, loginName: String) {
             self.port = UInt16(port)
