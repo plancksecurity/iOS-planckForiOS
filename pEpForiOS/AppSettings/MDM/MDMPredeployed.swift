@@ -44,7 +44,7 @@ extension MDMPredeployed {
     /// The MDM settings key for the connection type for an incoming server.
     ///
     /// Can be one of NONE, SSL/TLS, STARTTLS. Any other value or not providing it will default to SSL/TLS.
-    static let kIncomingMailSettingsSecurityType = "incoming_mail_settings_security_type"
+    static let keyIncomingMailSettingsSecurityType = "incoming_mail_settings_security_type"
 
     /// The MDM settings key for the incoming mail server's port.
     static let kIncomingMailSettingsPort = "incoming_mail_settings_port"
