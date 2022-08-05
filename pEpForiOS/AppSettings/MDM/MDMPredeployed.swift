@@ -306,7 +306,7 @@ extension MDMPredeployed: MDMPredeployedProtocol {
             guard let serverData = ServerData.from(serverSettings: imapServerSettings,
                                                    keyServerName: MDMPredeployed.keyIncomingMailSettingsServer,
                                                    keyTransport: MDMPredeployed.keyIncomingMailSettingsSecurityType,
-                                                   keyPort: "incoming_mail_settings_port",
+                                                   keyPort: MDMPredeployed.keyIncomingMailSettingsPort,
                                                    keyLoginName: MDMPredeployed.keyIncomingMailSettingsUsername) else {
                 return nil
             }
