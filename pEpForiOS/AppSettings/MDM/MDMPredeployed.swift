@@ -258,8 +258,8 @@ extension MDMPredeployed: MDMPredeployedProtocol {
     }
 
     private enum ServerSettings {
-        case imap(ServerData)
-        case smtp(ServerData)
+        case imap(String, ServerData)
+        case smtp(String, ServerData)
     }
 
     private func mdmPEPMailSettings(settingsDict: SettingsDict) -> ServerSettings? {
@@ -271,7 +271,7 @@ extension MDMPredeployed: MDMPredeployedProtocol {
             guard let serverData = ServerData.from(serverSettings: imapServerSettings) else {
                 return nil
             }
-            return ServerSettings.imap(serverData)
+            return ServerSettings.imap(email, serverData)
         } else if let serverSettings = settingsDict["outgoing_mail_settings"] as? SettingsDict {
             // SMTP
             return nil
