@@ -243,6 +243,12 @@ extension MDMPredeployed: MDMPredeployedProtocol {
             return nil
         }
 
-        return nil
+        if let imapSettings = settingsDict["incoming_mail_settings"] as? SettingsDict {
+            return nil
+        } else if let smtpSettings = settingsDict["outgoing_mail_settings"] as? SettingsDict {
+            return nil
+        } else {
+            return nil
+        }
     }
 }
