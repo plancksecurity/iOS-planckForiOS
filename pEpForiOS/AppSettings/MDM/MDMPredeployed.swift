@@ -213,9 +213,48 @@ extension MDMPredeployed: MDMPredeployedProtocol {
 
     private struct ServerData {
         let hostName: String
+        let port: UInt16
 
         /// - Note: Can only be "NONE", "SSL/TLS" or "STARTTLS".
         let transportString: String
+
+        let loginName: String
+
+        private static let legitTransports: Set = ["NONE", "SSL/TLS", "STARTTLS"]
+
+        init?(hostName: String, port: Int, transportString: String, loginName: String) {
+            self.port = UInt16(port)
+            if Int(self.port) != port {
+                return nil
+            }
+
+            if ServerData.legitTransports.contains(transportString) {
+                self.transportString = transportString
+            } else {
+                return nil
+            }
+
+            self.hostName = hostName
+            self.loginName = loginName
+        }
+
+        static func from(serverSettings: SettingsDict) -> ServerData? {
+            guard let serverName = serverSettings["incoming_mail_settings_server"] as? String else {
+                return nil
+            }
+            let transportString = serverSettings["incoming_mail_settings_security_type"] as? String ?? "NONE"
+            guard let port = serverSettings["incoming_mail_settings_port"] as? Int else {
+                return nil
+            }
+            guard let loginName = serverSettings["incoming_mail_settings_user_name"] as? String else {
+                return nil
+            }
+
+            return ServerData(hostName: serverName,
+                              port: port,
+                              transportString: transportString,
+                              loginName: loginName)
+        }
     }
 
     private enum ServerSettings {
@@ -228,27 +267,8 @@ extension MDMPredeployed: MDMPredeployedProtocol {
             return nil
         }
 
-        let legitTransports: Set = ["NONE", "SSL/TLS", "STARTTLS"]
-
         if let serverSettings = settingsDict["incoming_mail_settings"] as? SettingsDict {
             // IMAP
-            guard let serverName = serverSettings["incoming_mail_settings_server"] as? String else {
-                return nil
-            }
-            var transportString: String = "NONE"
-            if let explicitTransportString = serverSettings["incoming_mail_settings_security_type"] as? String {
-                if legitTransports.contains(explicitTransportString) {
-                    transportString = explicitTransportString
-                } else {
-                    return nil
-                }
-            }
-            guard let portString = serverSettings["incoming_mail_settings_port"] as? Int else {
-                return nil
-            }
-            guard let loginName = serverSettings["incoming_mail_settings_user_name"] as? String else {
-                return nil
-            }
             return nil
         } else if let serverSettings = settingsDict["outgoing_mail_settings"] as? SettingsDict {
             // SMTP
