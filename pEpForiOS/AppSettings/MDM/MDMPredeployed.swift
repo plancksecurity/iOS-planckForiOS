@@ -211,7 +211,12 @@ extension MDMPredeployed: MDMPredeployedProtocol {
         }
     }
 
-    private struct ServerData {}
+    private struct ServerData {
+        let hostName: String
+
+        /// - Note: Can only be "NONE", "SSL/TLS" or "STARTTLS".
+        let transportString: String
+    }
 
     private enum ServerSettings {
         case imap(ServerData)
@@ -223,9 +228,30 @@ extension MDMPredeployed: MDMPredeployedProtocol {
             return nil
         }
 
-        if let imapSettings = settingsDict["incoming_mail_settings"] as? SettingsDict {
+        let legitTransports: Set = ["NONE", "SSL/TLS", "STARTTLS"]
+
+        if let serverSettings = settingsDict["incoming_mail_settings"] as? SettingsDict {
+            // IMAP
+            guard let serverName = serverSettings["incoming_mail_settings_server"] as? String else {
+                return nil
+            }
+            var transportString: String = "NONE"
+            if let explicitTransportString = serverSettings["incoming_mail_settings_security_type"] as? String {
+                if legitTransports.contains(explicitTransportString) {
+                    transportString = explicitTransportString
+                } else {
+                    return nil
+                }
+            }
+            guard let portString = serverSettings["incoming_mail_settings_port"] as? Int else {
+                return nil
+            }
+            guard let loginName = serverSettings["incoming_mail_settings_user_name"] as? String else {
+                return nil
+            }
             return nil
-        } else if let smtpSettings = settingsDict["outgoing_mail_settings"] as? SettingsDict {
+        } else if let serverSettings = settingsDict["outgoing_mail_settings"] as? SettingsDict {
+            // SMTP
             return nil
         } else {
             return nil
