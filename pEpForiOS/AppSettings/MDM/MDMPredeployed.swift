@@ -66,6 +66,9 @@ extension MDMPredeployed {
     /// The MDM settings key for the outgoing mail server's port.
     static let keyOutgoingMailSettingsPort = "outgoing_mail_settings_port"
 
+    /// The MDM settings key for the outgoing mail server's login name.
+    static let keyOutgoingMailSettingsUsername = "outgoing_mail_settings_user_name"
+
     /// The MDM name for plain transport.
     static let transportPlain = "NONE"
 
@@ -313,7 +316,7 @@ extension MDMPredeployed: MDMPredeployedProtocol {
                                                    keyServerName: MDMPredeployed.keyOutgoingMailSettingsServer,
                                                    keyTransport: MDMPredeployed.keyOutgoingMailSettingsSecurityType,
                                                    keyPort: MDMPredeployed.keyOutgoingMailSettingsPort,
-                                                   keyLoginName: "outgoing_mail_settings_user_name") else {
+                                                   keyLoginName: MDMPredeployed.keyOutgoingMailSettingsUsername) else {
                 return nil
             }
             return ServerSettings.smtp(email, serverData)
