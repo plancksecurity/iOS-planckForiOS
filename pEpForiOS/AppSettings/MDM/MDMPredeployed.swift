@@ -63,6 +63,9 @@ extension MDMPredeployed {
     /// Can be one of NONE, SSL/TLS, STARTTLS. Any other value or not providing it will default to STARTTLS.
     static let keyOutgoingMailSettingsSecurityType = "outgoing_mail_settings_security_type"
 
+    /// The MDM settings key for the outgoing mail server's port.
+    static let keyOutgoingMailSettingsPort = "outgoing_mail_settings_port"
+
     /// The MDM name for plain transport.
     static let transportPlain = "NONE"
 
@@ -309,7 +312,7 @@ extension MDMPredeployed: MDMPredeployedProtocol {
             guard let serverData = ServerData.from(serverSettings: smtpServerSettings,
                                                    keyServerName: MDMPredeployed.keyOutgoingMailSettingsServer,
                                                    keyTransport: MDMPredeployed.keyOutgoingMailSettingsSecurityType,
-                                                   keyPort: "outgoing_mail_settings_port",
+                                                   keyPort: MDMPredeployed:keyOutgoingMailSettingsPort,
                                                    keyLoginName: "outgoing_mail_settings_user_name") else {
                 return nil
             }
