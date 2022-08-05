@@ -121,7 +121,7 @@ extension MDMPredeployed: MDMPredeployedProtocol {
         // Note the first error that occurred
         var firstError: Error?
 
-        var haveWipedExistingAccounts = false
+        var serverSettings = [ServerSettings]()
         for accountDictionary in predeployedAccounts {
             guard let userAddress = accountDictionary[MDMPredeployed.keyUserAddress] as? String else {
                 callback(MDMPredeployedError.malformedAccountData)
@@ -131,40 +131,14 @@ extension MDMPredeployed: MDMPredeployedProtocol {
             // Make sure there is a username, falling back to the email address if needed
             let accountUsername = username ?? userAddress
 
-            guard let loginName = accountDictionary[MDMPredeployed.keyLoginName] as? String else {
-                callback(MDMPredeployedError.malformedAccountData)
-                return
-            }
-            guard let password = accountDictionary[MDMPredeployed.keyPassword] as? String else {
-                callback(MDMPredeployedError.malformedAccountData)
-                return
-            }
-            guard let imapServerDict = accountDictionary[MDMPredeployed.keyIncomingMailSettings] as? SettingsDict else {
-                callback(MDMPredeployedError.malformedAccountData)
-                return
-            }
-            guard let imapServerAddress = imapServerDict[MDMPredeployed.keyIncomingMailSettingsServer] as? String else {
-                callback(MDMPredeployedError.malformedAccountData)
-                return
-            }
-            guard let imapPortNumber = imapServerDict[MDMPredeployed.keyIncomingMailSettingsPort] as? NSNumber else {
-                callback(MDMPredeployedError.malformedAccountData)
-                return
-            }
-            guard let smtpServerDict = accountDictionary[MDMPredeployed.keySmtpServer] as? SettingsDict else {
-                callback(MDMPredeployedError.malformedAccountData)
-                return
-            }
-            guard let smtpServerAddress = smtpServerDict[MDMPredeployed.keyServerName] as? String else {
-                callback(MDMPredeployedError.malformedAccountData)
-                return
-            }
-            guard let smtpPortNumber = smtpServerDict[MDMPredeployed.keyServerPort] as? NSNumber else {
+            guard let potentialServer = mdmMailSettings(settingsDict: accountDictionary) else {
                 callback(MDMPredeployedError.malformedAccountData)
                 return
             }
 
-            if !haveWipedExistingAccounts {
+            serverSettings.append(potentialServer)
+
+            func wipeAccounts() {
                 let session = Session.main
 
                 let allAccounts = Account.all()
@@ -173,29 +147,38 @@ extension MDMPredeployed: MDMPredeployedProtocol {
                 }
 
                 session.commit()
-
-                haveWipedExistingAccounts = true
             }
 
-            let verifier = AccountVerifier()
-            group.enter()
-            verifier.verify(address: userAddress,
-                            userName: accountUsername,
-                            password: password,
-                            loginName: loginName,
-                            serverIMAP: imapServerAddress,
-                            portIMAP: UInt16(imapPortNumber.int16Value),
-                            transportStringIMAP: MDMPredeployed.transportTLS,
-                            serverSMTP: smtpServerAddress,
-                            portSMTP: UInt16(smtpPortNumber.int16Value),
-                            transportStringSMTP: MDMPredeployed.transportTLS) { error in
-                if let err = error {
-                    if firstError == nil {
-                        firstError = err
+            func verify(userAddress: String,
+                        userName: String,
+                        loginName: String,
+                        password: String,
+                        imapServerAddress: String,
+                        imapPortNumber: NSNumber,
+                        smtpServerAddress: String,
+                        smtpPortNumber: NSNumber) {
+                let verifier = AccountVerifier()
+                group.enter()
+                verifier.verify(address: userAddress,
+                                userName: accountUsername,
+                                password: password,
+                                loginName: loginName,
+                                serverIMAP: imapServerAddress,
+                                portIMAP: UInt16(imapPortNumber.int16Value),
+                                transportStringIMAP: MDMPredeployed.transportTLS,
+                                serverSMTP: smtpServerAddress,
+                                portSMTP: UInt16(smtpPortNumber.int16Value),
+                                transportStringSMTP: MDMPredeployed.transportTLS) { error in
+                    if let err = error {
+                        if firstError == nil {
+                            firstError = err
+                        }
                     }
+                    group.leave()
                 }
-                group.leave()
             }
+
+            // TODO: Check server settings
         }
 
         group.notify(queue: DispatchQueue.main) {
