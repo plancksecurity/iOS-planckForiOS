@@ -241,7 +241,8 @@ extension MDMPredeployed: MDMPredeployedProtocol {
         static func from(serverSettings: SettingsDict,
                          keyServerName: String,
                          keyTransport: String,
-                         keyPort: String) -> ServerData? {
+                         keyPort: String,
+                         keyLoginName: String) -> ServerData? {
             guard let serverName = serverSettings[keyServerName] as? String else {
                 return nil
             }
@@ -249,7 +250,7 @@ extension MDMPredeployed: MDMPredeployedProtocol {
             guard let port = serverSettings[keyPort] as? Int else {
                 return nil
             }
-            guard let loginName = serverSettings["incoming_mail_settings_user_name"] as? String else {
+            guard let loginName = serverSettings[keyLoginName] as? String else {
                 return nil
             }
 
@@ -274,7 +275,8 @@ extension MDMPredeployed: MDMPredeployedProtocol {
             guard let serverData = ServerData.from(serverSettings: imapServerSettings,
                                                    keyServerName: "incoming_mail_settings_server",
                                                    keyTransport: "incoming_mail_settings_security_type",
-                                                   keyPort: "incoming_mail_settings_port") else {
+                                                   keyPort: "incoming_mail_settings_port",
+                                                   keyLoginName: "incoming_mail_settings_user_name") else {
                 return nil
             }
             return ServerSettings.imap(email, serverData)
@@ -282,7 +284,8 @@ extension MDMPredeployed: MDMPredeployedProtocol {
             guard let serverData = ServerData.from(serverSettings: smtpServerSettings,
                                                    keyServerName: "outgoing_mail_settings_server",
                                                    keyTransport: "outgoing_mail_settings_security_type",
-                                                   keyPort: "outgoing_mail_settings_port") else {
+                                                   keyPort: "outgoing_mail_settings_port",
+                                                   keyLoginName: "outgoing_mail_settings_user_name") else {
                 return nil
             }
             return ServerSettings.smtp(email, serverData)
