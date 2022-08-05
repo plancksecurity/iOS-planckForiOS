@@ -52,6 +52,9 @@ extension MDMPredeployed {
     /// The MDM settings key for the incoming mail server's login name.
     static let keyIncomingMailSettingsUsername = "incoming_mail_settings_user_name"
 
+    /// The MDM name for plain transport.
+    static let transportPlain = "NONE"
+
     static let keyServerName = "name"
     static let keyServerPort = "port"
 
@@ -223,7 +226,7 @@ extension MDMPredeployed: MDMPredeployedProtocol {
 
         let loginName: String
 
-        private static let legitTransports: Set = ["NONE", "SSL/TLS", "STARTTLS"]
+        private static let legitTransports: Set = [transportPlain, "SSL/TLS", "STARTTLS"]
 
         init?(hostName: String, port: Int, transportString: String, loginName: String) {
             self.port = UInt16(port)
@@ -249,7 +252,7 @@ extension MDMPredeployed: MDMPredeployedProtocol {
             guard let serverName = serverSettings[keyServerName] as? String else {
                 return nil
             }
-            let transportString = serverSettings[keyTransport] as? String ?? "NONE"
+            let transportString = serverSettings[keyTransport] as? String ?? transportPlain
             guard let port = serverSettings[keyPort] as? Int else {
                 return nil
             }
