@@ -302,7 +302,7 @@ extension MDMPredeployed: MDMPredeployedProtocol {
             return nil
         }
 
-        if let imapServerSettings = settingsDict["incoming_mail_settings"] as? SettingsDict {
+        if let imapServerSettings = settingsDict[MDMPredeployed.keyIncomingMailSettings] as? SettingsDict {
             guard let serverData = ServerData.from(serverSettings: imapServerSettings,
                                                    keyServerName: "incoming_mail_settings_server",
                                                    keyTransport: "incoming_mail_settings_security_type",
