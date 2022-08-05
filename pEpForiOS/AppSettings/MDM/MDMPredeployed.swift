@@ -312,7 +312,7 @@ extension MDMPredeployed: MDMPredeployedProtocol {
             guard let serverData = ServerData.from(serverSettings: smtpServerSettings,
                                                    keyServerName: MDMPredeployed.keyOutgoingMailSettingsServer,
                                                    keyTransport: MDMPredeployed.keyOutgoingMailSettingsSecurityType,
-                                                   keyPort: MDMPredeployed:keyOutgoingMailSettingsPort,
+                                                   keyPort: MDMPredeployed.keyOutgoingMailSettingsPort,
                                                    keyLoginName: "outgoing_mail_settings_user_name") else {
                 return nil
             }
