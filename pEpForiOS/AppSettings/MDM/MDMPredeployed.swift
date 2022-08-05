@@ -49,26 +49,6 @@ extension MDMPredeployed {
     /// The MDM settings key for the incoming mail server's port.
     static let kIncomingMailSettingsPort = "incoming_mail_settings_port"
 
-    /// The MDM settings key for the incoming mail server's login name.
-    static let kIncomingMailSettingsUsername = "incoming_mail_settings_user_name"
-
-    /// The MDM settings key for the outgoing mail settings.
-    static let kOutgoingMailSettings = "outgoing_mail_settings"
-
-    /// The MDM settings key for an outgoing server address.
-    static let kOutgoingMailSettingsServer = "outgoing_mail_settings_server"
-
-    /// The MDM settings key for the connection type for an outgoing server.
-    ///
-    /// Can be one of NONE, SSL/TLS, STARTTLS. Any other value or not providing it will default to STARTTLS.
-    static let kOutgoingMailSettingsSecurityType = "outgoing_mail_settings_security_type"
-
-    /// The MDM settings key for the outgoing mail server's port.
-    static let kOutgoingMailSettingsPort = "outgoing_mail_settings_port"
-
-    /// The MDM settings key for the outgoing mail server's login name.
-    static let kOutgoingMailSettingsUsername = "outgoing_mail_settings_user_name"
-
     static let keyServerName = "name"
     static let keyServerPort = "port"
 
