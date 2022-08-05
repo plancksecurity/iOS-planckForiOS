@@ -52,6 +52,9 @@ extension MDMPredeployed {
     /// The MDM settings key for the incoming mail server's login name.
     static let keyIncomingMailSettingsUsername = "incoming_mail_settings_user_name"
 
+    /// The MDM settings key for the outgoing mail settings.
+    static let keyOutgoingMailSettings = "outgoing_mail_settings"
+
     /// The MDM name for plain transport.
     static let transportPlain = "NONE"
 
@@ -294,7 +297,7 @@ extension MDMPredeployed: MDMPredeployedProtocol {
                 return nil
             }
             return ServerSettings.imap(email, serverData)
-        } else if let smtpServerSettings = settingsDict["outgoing_mail_settings"] as? SettingsDict {
+        } else if let smtpServerSettings = settingsDict[MDMPredeployed.keyOutgoingMailSettings] as? SettingsDict {
             guard let serverData = ServerData.from(serverSettings: smtpServerSettings,
                                                    keyServerName: "outgoing_mail_settings_server",
                                                    keyTransport: "outgoing_mail_settings_security_type",
