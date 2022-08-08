@@ -59,8 +59,8 @@ public protocol AppSettingsProtocol {
 
     /// Extra keys can be provided using this setting
     /// extra keys can be removed if the setting is provided and all fingerprint elements are blank.
-    /// So the lack of extra keys could be nil or empty.
-    var mdmPEPExtraKeys: [String]? { get set }
+    /// So the lack of extra keys willl be an empty array.
+    var mdmPEPExtraKeys: [String] { get set }
 
     /// This is an advanced feature.
     /// It allows using a handshake method to establish trust between two users.

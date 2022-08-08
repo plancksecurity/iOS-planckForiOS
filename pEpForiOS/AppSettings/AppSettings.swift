@@ -357,9 +357,9 @@ extension AppSettings: AppSettingsProtocol {
         }
     }
 
-    public var mdmPEPExtraKeys : [String]? {
+    public var mdmPEPExtraKeys : [String] {
         get {
-            return AppSettings.userDefaults.stringArray(forKey: AppSettings.keyPEPExtraKeys)
+            return AppSettings.userDefaults.stringArray(forKey: AppSettings.keyPEPExtraKeys) ?? []
         }
         set {
             AppSettings.userDefaults.set(newValue, forKey: AppSettings.keyPEPExtraKeys)
