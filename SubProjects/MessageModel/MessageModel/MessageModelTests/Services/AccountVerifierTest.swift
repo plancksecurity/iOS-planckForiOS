@@ -16,16 +16,28 @@ class AccountVerifierTest: XCTestCase {
         let expVerification = expectation(description: "expVerification")
 
         let verifier = AccountVerifier()
-        verifier.verify(address: "blagrg@example.com",
-                        userName: "none",
+
+        guard let imapServer = AccountVerifier.ServerData(loginName: "none",
+                                                          hostName: "localhost",
+                                                          port: 9999,
+                                                          transport: .TLS) else {
+            XCTFail()
+            return
+        }
+
+        guard let smtpServer = AccountVerifier.ServerData(loginName: "none",
+                                                          hostName: "localhost",
+                                                          port: 9999,
+                                                          transport: .TLS) else {
+            XCTFail()
+            return
+        }
+
+        verifier.verify(userName: "none",
+                        address: "blagrg@example.com",
                         password: "none",
-                        loginName: "none",
-                        serverIMAP: "localhost",
-                        portIMAP: 9999,
-                        transportStringIMAP: "blah",
-                        serverSMTP: "localhost",
-                        portSMTP: 9999,
-                        transportStringSMTP: "blah") { maybeError in
+                        imapServer: imapServer,
+                        smtpServer: smtpServer) { maybeError in
             guard let _ = maybeError else {
                 XCTFail()
                 return
