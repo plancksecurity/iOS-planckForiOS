@@ -30,7 +30,7 @@ public protocol AppSettingsProtocol {
     /// Indicates if Passive mode is on.
     var passiveMode: Bool { get set }
 
-    /// The email address of the default account. 
+    /// The email address of the default account.
     var defaultAccount: String? { get set }
 
     var lastKnownDeviceGroupState: DeviceGroupState { get set }
@@ -55,16 +55,16 @@ public protocol AppSettingsProtocol {
     /// https://confluence.pep.security/pages/viewpage.action?pageId=10223902 (see Settings meaning and structure)
 
     /// Enable or disable pEp privacy protection for the user or device's account.
-    var mdmPepEnablePrivacyProtection: Bool { get set }
+    var mdmPEPEnablePrivacyProtection: Bool { get set }
 
     /// Extra keys can be provided using this setting
     /// extra keys can be removed if the setting is provided and all fingerprint elements are blank.
     /// So the lack of extra keys could be nil or empty.
-    var mdmPepExtraKeys: [String]? { get set }
+    var mdmPEPExtraKeys: [String]? { get set }
 
     /// This is an advanced feature.
     /// It allows using a handshake method to establish trust between two users.
-    var mdmPepUseTrustwords: Bool { get set }
+    var mdmPEPUseTrustwords: Bool { get set }
 
     /// When this setting is enabled, the unsecure Recipients in the "to", "cc", "bcc" fields from Message Compose screen
     ///  will appear highlighted in red color.
@@ -75,7 +75,7 @@ public protocol AppSettingsProtocol {
     /// When enabled, a dedicated pEp folder is used for pEp sync messages.
     /// When disabled, Inbox folder will be user for these messages instead.
     /// Default is true.
-    var mdmPepSyncFolder: Bool { get set }
+    var mdmPEPSyncFolder: Bool { get set }
 
     /// This is an advanced feature. When enabled, debug log can be displayed in a console.
     /// Default is false.
@@ -142,16 +142,16 @@ public protocol AppSettingsProtocol {
 
     /// This is an advanced feature. Whether to enable the account to perform pEp sync.
     /// Default is true.
-    var mdmPepSaveEncryptedOnServer: Bool { get set }
+    var mdmPEPSaveEncryptedOnServer: Bool { get set }
 
     /// This is an advanced feature. Whether to enable the account to perform pEp sync.
     /// Default is true.
-    var mdmPepEnableSyncAccount: Bool { get set }
+    var mdmPEPEnableSyncAccount: Bool { get set }
 
     /// This setting can be enabled from MDM to allow to add new devices for an existing user (mail address).
     /// After the sync is done it should be set to false again.
     /// Default is false.
-    var mdmAllowPepSyncNewDevices: Bool { get set }
+    var mdmAllowPEPSyncNewDevices: Bool { get set }
 
     // MARK: - Collapsing State
 

@@ -40,11 +40,11 @@ extension AppSettings {
 
     // MARK: - MDM Settings
 
-    static private var keyPepEnablePrivacyProtection = "keyPepEnablePrivacyProtection"
-    static private var keyPepExtraKeys = "keyPepExtraKeys"
-    static private var keyPepUseTrustwords = "keyPepUseTrustwords"
+    static private var keyPEPEnablePrivacyProtection = "keyPepEnablePrivacyProtection"
+    static private var keyPEPExtraKeys = "keyPepExtraKeys"
+    static private var keyPEPUseTrustwords = "keyPepUseTrustwords"
     static private var keyUnsecureDeliveryWarning = "keyUnsecureDeliveryWarning"
-    static private var keyPepSyncFolder = "keyPepSyncFolder"
+    static private var keyPEPSyncFolder = "keyPepSyncFolder"
     static private var keyDebugLogging = "keyDebugLogging"
     static private var keyAccountDisplayCount = "keyAccountDisplayCount"
     static private var keyMaxPushFolders = "keyMaxPushFolders"
@@ -57,9 +57,9 @@ extension AppSettings {
     static private var keyAccountDefaultFolders = "keyAccountDefaultFolders"
     static private var keyRemoteSearchEnabled = "keyRemoteSearchEnabled"
     static private var keyAccountRemoteSearchNumResults = "keyAccountRemoteSearchNumResults"
-    static private var keyPepSaveEncryptedOnServer = "keyPepSaveEncryptedOnServer"
-    static private var keyPepEnableSyncAccount = "keyPepEnableSyncAccount"
-    static private var keyAllowPepSyncNewDevices = "keyAllowPepSyncNewDevices"
+    static private var keyPEPSaveEncryptedOnServer = "keyPepSaveEncryptedOnServer"
+    static private var keyPEPEnableSyncAccount = "keyPepEnableSyncAccount"
+    static private var keyAllowPEPSyncNewDevices = "keyAllowPepSyncNewDevices"
 }
 
 // MARK: - AppSettings
@@ -145,7 +145,7 @@ extension AppSettings {
 
         // MARK: - MDM Defaults
         defaults[AppSettings.keyUnsecureDeliveryWarning] = true
-        defaults[AppSettings.keyPepSyncFolder] = true
+        defaults[AppSettings.keyPEPSyncFolder] = true
         defaults[AppSettings.keyDebugLogging] = false
         defaults[AppSettings.keyAccountDisplayCount] = 250
         defaults[AppSettings.keyCompositionUseSignature] = true
@@ -154,9 +154,9 @@ extension AppSettings {
         defaults[AppSettings.keyAccountDefaultFolders] = []
         defaults[AppSettings.keyRemoteSearchEnabled] = true
         defaults[AppSettings.keyAccountRemoteSearchNumResults] = 50
-        defaults[AppSettings.keyPepSaveEncryptedOnServer] = true
-        defaults[AppSettings.keyPepEnableSyncAccount] = true
-        defaults[AppSettings.keyAllowPepSyncNewDevices] = false
+        defaults[AppSettings.keyPEPSaveEncryptedOnServer] = true
+        defaults[AppSettings.keyPEPEnableSyncAccount] = true
+        defaults[AppSettings.keyAllowPEPSyncNewDevices] = false
         AppSettings.userDefaults.register(defaults: defaults)
     }
 
@@ -348,30 +348,30 @@ extension AppSettings: AppSettingsProtocol {
 
     // MARK: - MDM
 
-    public var mdmPepEnablePrivacyProtection : Bool {
+    public var mdmPEPEnablePrivacyProtection : Bool {
         get {
-            return AppSettings.userDefaults.bool(forKey: AppSettings.keyPepEnablePrivacyProtection)
+            return AppSettings.userDefaults.bool(forKey: AppSettings.keyPEPEnablePrivacyProtection)
         }
         set {
-            AppSettings.userDefaults.set(newValue, forKey: AppSettings.keyPepEnablePrivacyProtection)
+            AppSettings.userDefaults.set(newValue, forKey: AppSettings.keyPEPEnablePrivacyProtection)
         }
     }
 
-    public var mdmPepExtraKeys : [String]? {
+    public var mdmPEPExtraKeys : [String]? {
         get {
-            return AppSettings.userDefaults.stringArray(forKey: AppSettings.keyPepExtraKeys)
+            return AppSettings.userDefaults.stringArray(forKey: AppSettings.keyPEPExtraKeys)
         }
         set {
-            AppSettings.userDefaults.set(newValue, forKey: AppSettings.keyPepExtraKeys)
+            AppSettings.userDefaults.set(newValue, forKey: AppSettings.keyPEPExtraKeys)
         }
     }
 
-    public var mdmPepUseTrustwords : Bool {
+    public var mdmPEPUseTrustwords : Bool {
         get {
-            AppSettings.userDefaults.bool(forKey: AppSettings.keyPepUseTrustwords)
+            AppSettings.userDefaults.bool(forKey: AppSettings.keyPEPUseTrustwords)
         }
         set {
-            AppSettings.userDefaults.set(newValue, forKey: AppSettings.keyPepUseTrustwords)
+            AppSettings.userDefaults.set(newValue, forKey: AppSettings.keyPEPUseTrustwords)
         }
     }
 
@@ -384,12 +384,12 @@ extension AppSettings: AppSettingsProtocol {
         }
     }
 
-    public var mdmPepSyncFolder : Bool {
+    public var mdmPEPSyncFolder : Bool {
         get {
-            AppSettings.userDefaults.bool(forKey: AppSettings.keyPepSyncFolder)
+            AppSettings.userDefaults.bool(forKey: AppSettings.keyPEPSyncFolder)
         }
         set {
-            AppSettings.userDefaults.set(newValue, forKey: AppSettings.keyPepSyncFolder)
+            AppSettings.userDefaults.set(newValue, forKey: AppSettings.keyPEPSyncFolder)
         }
     }
 
@@ -500,30 +500,30 @@ extension AppSettings: AppSettingsProtocol {
         }
     }
 
-    public var mdmPepSaveEncryptedOnServer : Bool {
+    public var mdmPEPSaveEncryptedOnServer : Bool {
         get {
-            AppSettings.userDefaults.bool(forKey: AppSettings.keyPepSaveEncryptedOnServer)
+            AppSettings.userDefaults.bool(forKey: AppSettings.keyPEPSaveEncryptedOnServer)
         }
         set {
-            AppSettings.userDefaults.set(newValue, forKey: AppSettings.keyPepSaveEncryptedOnServer)
+            AppSettings.userDefaults.set(newValue, forKey: AppSettings.keyPEPSaveEncryptedOnServer)
         }
     }
 
-    public var mdmPepEnableSyncAccount : Bool {
+    public var mdmPEPEnableSyncAccount : Bool {
         get {
-            AppSettings.userDefaults.bool(forKey: AppSettings.keyPepEnableSyncAccount)
+            AppSettings.userDefaults.bool(forKey: AppSettings.keyPEPEnableSyncAccount)
         }
         set {
-            AppSettings.userDefaults.set(newValue, forKey: AppSettings.keyPepEnableSyncAccount)
+            AppSettings.userDefaults.set(newValue, forKey: AppSettings.keyPEPEnableSyncAccount)
         }
     }
 
-    public var mdmAllowPepSyncNewDevices : Bool {
+    public var mdmAllowPEPSyncNewDevices : Bool {
         get {
-            AppSettings.userDefaults.bool(forKey: AppSettings.keyAllowPepSyncNewDevices)
+            AppSettings.userDefaults.bool(forKey: AppSettings.keyAllowPEPSyncNewDevices)
         }
         set {
-            AppSettings.userDefaults.set(newValue, forKey: AppSettings.keyAllowPepSyncNewDevices)
+            AppSettings.userDefaults.set(newValue, forKey: AppSettings.keyAllowPEPSyncNewDevices)
         }
     }
 }
