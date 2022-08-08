@@ -208,19 +208,27 @@ extension MDMPredeployed: MDMPredeployedProtocol {
         var malformedData = false
         let success = traverseInPairs(elements: serverSettings) { server0, server1 in
             switch server0 {
-            case .imap(_, _, _):
+            case .imap(let imapAccountName, let imapEmailAddress, _):
                 switch server1 {
-                case .smtp(_, _, _):
-                    serverPairs.append((server0, server1))
+                case .smtp(let smtpAccountName, let smtpEmailAddress, _):
+                    if (imapAccountName != smtpAccountName || imapEmailAddress != smtpEmailAddress) {
+                        malformedData = true
+                    } else {
+                        serverPairs.append((server0, server1))
+                    }
                 case .imap(_, _, _):
                     malformedData = true
                 }
-            case .smtp(_, _, _):
+            case .smtp(let smtpAccountName, let smtpEmailAddress, _):
                 switch server1 {
                 case .smtp(_, _, _):
                     malformedData = true
-                case .imap(_, _, _):
-                    serverPairs.append((server1, server0))
+                case .imap(let imapAccountName, let imapEmailAddress, _):
+                    if (imapAccountName != smtpAccountName || imapEmailAddress != smtpEmailAddress) {
+                        malformedData = true
+                    } else {
+                        serverPairs.append((server1, server0))
+                    }
                 }
             }
         }
