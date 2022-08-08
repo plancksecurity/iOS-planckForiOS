@@ -57,50 +57,34 @@ public class AccountVerifier {
 
     /// Calls `VerifiableAccount` and reports the result to `verifiedCallback`.
     /// - Parameters:
-    ///   - address: The email address to set up.
     ///   - userName: The user name.
-    ///   - password: The password to use for logging into both IMAP and SMTP servers.
-    ///   - loginName: The login name to use for both IMAP and SMTP.
-    ///   - serverIMAP: The name (address) of the IMAP server.
-    ///   - portIMAP: The IMAP port.
-    ///   - transportStringIMAP: The transport to use for IMAP. Must be one of
-    ///   NONE, SSL/TLS, STARTTLS. Any other value, or not providing it, will default to SSL/TLS.
-    ///   - serverSMTP: The name (address) of the SMTP server.
-    ///   - portSMTP: The SMTP port.
-    ///   - transportStringSMTP: The transport to use for SMTP. Must be one of
-    ///   NONE, SSL/TLS, STARTTLS. Any other value, or not providing it, will default to SSL/TLS.
+    ///   - address: The email address to set up.
+    ///   - imapSever: The `ServerData` for the IMAP server.
+    ///   - smtpSever: The `ServerData` for the SMTP server.
     ///   - verifiedCallback: This closure will be called after the account has been verified successfully,
     /// or in case of error. If there was an error, it will be indicated as the `Error` parameter.
     /// In case of success, the `Error` parameter will be nil.
-    public func verify(address: String,
-                       userName: String,
+    public func verify(userName: String,
+                       address: String,
                        password: String,
-                       loginName: String,
-                       serverIMAP: String,
-                       portIMAP: UInt16,
-                       transportStringIMAP: String,
-                       serverSMTP: String,
-                       portSMTP: UInt16,
-                       transportStringSMTP: String,
+                       imapServer: ServerData,
+                       smtpServer: ServerData,
                        verifiedCallback: @escaping AccountVerifierCallback) {
         // Store for later use by the delegate (ourselves)
         self.verifiedCallback = verifiedCallback
-
-        let transportIMAP = connectionTransport(fromString: transportStringIMAP,
-                                                defaultTransport: .TLS)
 
         let verifier = VerifiableAccount(verifiableAccountDelegate: self,
                                          address: address,
                                          userName: userName,
                                          imapPassword: password,
                                          smtpPassword: password,
-                                         loginNameIMAP: loginName,
-                                         serverIMAP: serverIMAP,
-                                         portIMAP: portIMAP,
-                                         transportIMAP: transportIMAP,
-                                         loginNameSMTP: loginName,
-                                         serverSMTP: serverSMTP,
-                                         portSMTP: portSMTP,
+                                         loginNameIMAP: imapServer.loginName,
+                                         serverIMAP: imapServer.hostName,
+                                         portIMAP: imapServer.port,
+                                         transportIMAP: imapServer.transport,
+                                         loginNameSMTP: smtpServer.loginName,
+                                         serverSMTP: smtpServer.hostName,
+                                         portSMTP: smtpServer.port,
                                          usePEPFolderProvider: self)
 
         // Keep it alive
@@ -175,24 +159,5 @@ extension AccountVerifier: UsePEPFolderProviderProtocol {
         // TODO: This may have to be connected to MDM settings, instead
         // of being hard-coded.
         return true
-    }
-}
-
-// MARK: - Parse connection transports
-
-extension AccountVerifier {
-    // TODO: This must go away.
-    private func connectionTransport(fromString: String,
-                                     defaultTransport: ConnectionTransport) -> ConnectionTransport {
-        switch (fromString) {
-        case "NONE":
-            return .plain
-        case "SSL/TLS":
-            return .TLS
-        case "STARTTLS":
-            return .startTLS
-        default:
-            return defaultTransport
-        }
     }
 }
