@@ -230,7 +230,26 @@ extension MDMPredeployed: MDMPredeployedProtocol {
             return
         }
 
-        // TODO: Check server settings
+        for (imap, smtp) in serverPairs {
+            switch imap {
+            case .smtp(_, _, _):
+                // This should not happen anymore, we already checked,
+                // but make the compiler happy.
+                callback(MDMPredeployedError.malformedAccountData)
+                return
+            case .imap(let imapAccountName, let imapEmailAddress, let imapServer):
+                switch smtp {
+                case .imap(_, _, _):
+                    // This should not happen anymore, we already checked,
+                    // but make the compiler happy.
+                    callback(MDMPredeployedError.malformedAccountData)
+                    return
+                case .smtp(let smtpAccountName, let smtpEmailAddress, let smtpServer):
+                    // TODO: Invoke verification
+                    break
+                }
+            }
+        }
 
         func wipeAccounts() {
             let session = Session.main
