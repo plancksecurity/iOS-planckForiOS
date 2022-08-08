@@ -348,9 +348,9 @@ extension AppSettings: AppSettingsProtocol {
 
     // MARK: - MDM
 
-    public var mdmPepEnablePrivacyProtection : String? {
+    public var mdmPepEnablePrivacyProtection : Bool {
         get {
-            return AppSettings.userDefaults.string(forKey: AppSettings.keyPepEnablePrivacyProtection)
+            return AppSettings.userDefaults.bool(forKey: AppSettings.keyPepEnablePrivacyProtection)
         }
         set {
             AppSettings.userDefaults.set(newValue, forKey: AppSettings.keyPepEnablePrivacyProtection)

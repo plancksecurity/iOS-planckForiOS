@@ -37,12 +37,17 @@ public protocol AppSettingsProtocol {
 
     // MARK: - MDM
 
+    // Here we have a list of settings needed for the initial setup when using MDM.
+    // https://confluence.pep.security/pages/viewpage.action?pageId=10223902 (see Settings meaning and structure)
+
     // Enable or disable pEp privacy protection for the user or device's account.
-    var mdmPepEnablePrivacyProtection : String? { get set }
+    var mdmPepEnablePrivacyProtection : Bool { get set }
+
     // Extra keys can be provided using this setting
     // extra keys can be removed if the setting is provided and all fingerprint elements are blank.
     // So the lack of extra keys could be nil or empty.
     var mdmPepExtraKeys : [String]? { get set }
+
     // This is an advanced feature.
     // It allows using a handshake method to establish trust between two users.
     var mdmPepUseTrustwords : Bool { get set }
@@ -52,7 +57,8 @@ public protocol AppSettingsProtocol {
     var mdmUnsecureDeliveryWarning : Bool { get set }
 
     // This is an advanced feature.
-    // When enabled, a dedicated pEp folder is used for pEp sync messages. When disabled, Inbox folder will be user for these messages instead.
+    // When enabled, a dedicated pEp folder is used for pEp sync messages.
+    // When disabled, Inbox folder will be user for these messages instead.
     // Default is true.
     var mdmPepSyncFolder : Bool { get set }
 
@@ -86,16 +92,19 @@ public protocol AppSettingsProtocol {
     // Signature to include in outgoing emails when composition_use_signature is enabled
     var mdmCompositionSignature : String? { get set }
 
-    // Whether to position the sender's signature before the quoted message in replies/forwards. (Signature after quoted message by default).
+    // Whether to position the sender's signature before the quoted message in replies/forwards.
+    // (Signature after quoted message by default).
     // Default is false.
     var mdmCompositionSignatureBeforeQuotedMessage : String? { get set }
 
-    // Whether to position sender signature before the quoted message in replies/forwards. (Signature after quoted message by default).
+    // Whether to position sender signature before the quoted message in replies/forwards.
+    // (Signature after quoted message by default).
     // Default is false.
     var mdmDefaultQuotedTextShown : String? { get set }
 
     // Folders that the application will use as special archive, drafts, sent, spam, trash folders.
-    // By default all of them are empty, which means the app will try to find the relevant folders from the server.
+    // By default all of them are empty.
+    // This means the app will try to find the relevant folders from the server.
     // Removing folder elements from JSON has the same effect in this case.
     //
     // Folders keys are:
@@ -107,7 +116,8 @@ public protocol AppSettingsProtocol {
     // - The special value "-NONE-" can be entered to unassign a special folder.
     var mdmAccountDefaultFolders : [String]? { get set }
 
-    // When enabled, a button for remote search will appear in local search scren, so that the user can get more search results from the server.
+    // When enabled, a button for remote search will appear in local search screen,
+    // so that the user can get more search results from the server.
     // Default is true.
     var mdmRemoteSearchEnabled : Bool { get set }
 
@@ -123,7 +133,8 @@ public protocol AppSettingsProtocol {
     // Default is true.
     var mdmPepEnableSyncAccount : Bool { get set }
 
-    // This setting can be enabled from MDM to allow to add new devices for an existing user (mail address). After the sync is done it should be set to false again.
+    // This setting can be enabled from MDM to allow to add new devices for an existing user (mail address).
+    // After the sync is done it should be set to false again.
     // Default is false.
     var mdmAllowPepSyncNewDevices : Bool { get set }
 
