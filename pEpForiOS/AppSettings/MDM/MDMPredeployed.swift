@@ -209,8 +209,8 @@ extension MDMPredeployed: MDMPredeployedProtocol {
             return true
         }
 
-        // Pairs of (imap, smtp)
-        var serverPairs = [(ServerSettings, ServerSettings)]()
+        // Tuple of (accountName, email, imap, smtp)
+        var serverTuples = [(String, String, ServerSettings, ServerSettings)]()
 
         let success = traverseInPairs(elements: serverSettings) { server0, server1 in
             switch server0 {
@@ -220,7 +220,7 @@ extension MDMPredeployed: MDMPredeployedProtocol {
                     if (imapAccountName != smtpAccountName || imapEmailAddress != smtpEmailAddress) {
                         return false
                     } else {
-                        serverPairs.append((server0, server1))
+                        serverTuples.append((imapAccountName, imapEmailAddress, server0, server1))
                         return true
                     }
                 case .imap(_, _, _):
@@ -234,7 +234,7 @@ extension MDMPredeployed: MDMPredeployedProtocol {
                     if (imapAccountName != smtpAccountName || imapEmailAddress != smtpEmailAddress) {
                         return false
                     } else {
-                        serverPairs.append((server1, server0))
+                        serverTuples.append((smtpAccountName, smtpEmailAddress, server1, server0))
                         return true
                     }
                 }
@@ -246,28 +246,8 @@ extension MDMPredeployed: MDMPredeployedProtocol {
             return
         }
 
-        for (imap, smtp) in serverPairs {
-            switch imap {
-            case .smtp(_, _, _):
-                // This should not happen anymore, we already checked,
-                // but make the compiler happy.
-                callback(MDMPredeployedError.malformedAccountData)
-                return
-            case .imap(let imapAccountName, let imapEmailAddress, let imapServer):
-                switch smtp {
-                case .imap(_, _, _):
-                    // This should not happen anymore, we already checked,
-                    // but make the compiler happy.
-                    callback(MDMPredeployedError.malformedAccountData)
-                    return
-                case .smtp(_, _, let smtpServer):
-                    // Note that we already checked that the account name and email address
-                    // are the same for both IMAP and SMTP, so we only need the IMAP version.
-
-                    // TODO: Invoke verification
-                    break
-                }
-            }
+        for (accountName, email, imap, smtp) in serverTuples {
+            // TODO: Invoke verification
         }
 
         func wipeAccounts() {
