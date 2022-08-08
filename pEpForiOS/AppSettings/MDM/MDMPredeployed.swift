@@ -185,8 +185,6 @@ extension MDMPredeployed: MDMPredeployedProtocol {
             serverSettings.append(potentialServer)
         }
 
-        // TODO: Check server settings
-
         /// Invoke the given callback with pairs found in the given array.
         /// - Returns: `false` if the array contained an uneven amount of elements, `true` otherwise.
         func traverseInPairs<T>(elements: Array<T>, callback: (T, T) -> Void) -> Bool {
@@ -203,6 +201,36 @@ extension MDMPredeployed: MDMPredeployedProtocol {
 
             return true
         }
+
+        // Pairs of (imap, smtp)
+        var serverPairs = [(ServerSettings, ServerSettings)]()
+
+        var malformedData = false
+        let success = traverseInPairs(elements: serverSettings) { server0, server1 in
+            switch server0 {
+            case .imap(_, _, _):
+                switch server1 {
+                case .smtp(_, _, _):
+                    serverPairs.append((server0, server1))
+                case .imap(_, _, _):
+                    malformedData = true
+                }
+            case .smtp(_, _, _):
+                switch server1 {
+                case .smtp(_, _, _):
+                    malformedData = true
+                case .imap(_, _, _):
+                    serverPairs.append((server1, server0))
+                }
+            }
+        }
+
+        if !success || malformedData {
+            callback(MDMPredeployedError.malformedAccountData)
+            return
+        }
+
+        // TODO: Check server settings
 
         func wipeAccounts() {
             let session = Session.main
