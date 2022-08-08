@@ -121,8 +121,9 @@ extension ServerData {
         }
 
         let transportString = serverSettings[keyTransport] as? String ?? transportPlain
-
-        // TODO: Parse the transport string into a ConnectionTransport
+        guard let transport = connectionTransport(fromString: transportString) else {
+            return nil
+        }
 
         guard let port = serverSettings[keyPort] as? Int else {
             return nil
@@ -133,8 +134,21 @@ extension ServerData {
 
         return ServerData(hostName: serverName,
                           port: port,
-                          transport: .TLS, // TODO: Parse this correctly
+                          transport: transport,
                           loginName: loginName)
+    }
+
+    private static func connectionTransport(fromString: String) -> ConnectionTransport? {
+        switch (fromString) {
+        case "NONE":
+            return .plain
+        case "SSL/TLS":
+            return .TLS
+        case "STARTTLS":
+            return .startTLS
+        default:
+            return nil
+        }
     }
 }
 
