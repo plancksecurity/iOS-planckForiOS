@@ -68,7 +68,39 @@ extension MDMPredeployed {
 
     /// The MDM settings key for the outgoing mail server's login name.
     static let keyOutgoingMailSettingsUsername = "outgoing_mail_settings_user_name"
+}
 
+private typealias SettingsDict = [String:Any]
+
+// MARK: - ServerData
+
+private struct ServerData {
+    let hostName: String
+    let port: UInt16
+
+    /// - Note: Can only be "NONE", "SSL/TLS" or "STARTTLS".
+    let transportString: String
+
+    let loginName: String
+
+    init?(hostName: String, port: Int, transportString: String, loginName: String) {
+        self.port = UInt16(port)
+        if Int(self.port) != port {
+            return nil
+        }
+
+        if ServerData.legitTransports.contains(transportString) {
+            self.transportString = transportString
+        } else {
+            return nil
+        }
+
+        self.hostName = hostName
+        self.loginName = loginName
+    }
+}
+
+extension ServerData {
     /// The MDM name for plain transport.
     static let transportPlain = "NONE"
 
@@ -77,9 +109,33 @@ extension MDMPredeployed {
 
     /// The MDM name for the transport 'plain connect, followed by transition to TLS'.
     static let transportStartTLS = "STARTTLS"
-}
 
-private typealias SettingsDict = [String:Any]
+    private static let legitTransports: Set = [transportPlain,
+                                               transportTLS,
+                                               transportStartTLS]
+
+    static func from(serverSettings: SettingsDict,
+                     keyServerName: String,
+                     keyTransport: String,
+                     keyPort: String,
+                     keyLoginName: String) -> ServerData? {
+        guard let serverName = serverSettings[keyServerName] as? String else {
+            return nil
+        }
+        let transportString = serverSettings[keyTransport] as? String ?? transportPlain
+        guard let port = serverSettings[keyPort] as? Int else {
+            return nil
+        }
+        guard let loginName = serverSettings[keyLoginName] as? String else {
+            return nil
+        }
+
+        return ServerData(hostName: serverName,
+                          port: port,
+                          transportString: transportString,
+                          loginName: loginName)
+    }
+}
 
 // MARK: - MDMPredeployedProtocol
 
@@ -157,10 +213,10 @@ extension MDMPredeployed: MDMPredeployedProtocol {
                                 loginName: loginName,
                                 serverIMAP: imapServerAddress,
                                 portIMAP: UInt16(imapPortNumber.int16Value),
-                                transportStringIMAP: MDMPredeployed.transportTLS,
+                                transportStringIMAP: "TODO",
                                 serverSMTP: smtpServerAddress,
                                 portSMTP: UInt16(smtpPortNumber.int16Value),
-                                transportStringSMTP: MDMPredeployed.transportTLS) { error in
+                                transportStringSMTP: "TODO") { error in
                     if let err = error {
                         if firstError == nil {
                             firstError = err
@@ -212,58 +268,6 @@ extension MDMPredeployed: MDMPredeployedProtocol {
             return compositionSenderName
         } else {
             return mdmDictionary[MDMPredeployed.keyAccountDescription] as? String
-        }
-    }
-
-    private struct ServerData {
-        let hostName: String
-        let port: UInt16
-
-        /// - Note: Can only be "NONE", "SSL/TLS" or "STARTTLS".
-        let transportString: String
-
-        let loginName: String
-
-        private static let legitTransports: Set = [transportPlain,
-                                                   transportTLS,
-                                                   transportStartTLS]
-
-        init?(hostName: String, port: Int, transportString: String, loginName: String) {
-            self.port = UInt16(port)
-            if Int(self.port) != port {
-                return nil
-            }
-
-            if ServerData.legitTransports.contains(transportString) {
-                self.transportString = transportString
-            } else {
-                return nil
-            }
-
-            self.hostName = hostName
-            self.loginName = loginName
-        }
-
-        static func from(serverSettings: SettingsDict,
-                         keyServerName: String,
-                         keyTransport: String,
-                         keyPort: String,
-                         keyLoginName: String) -> ServerData? {
-            guard let serverName = serverSettings[keyServerName] as? String else {
-                return nil
-            }
-            let transportString = serverSettings[keyTransport] as? String ?? transportPlain
-            guard let port = serverSettings[keyPort] as? Int else {
-                return nil
-            }
-            guard let loginName = serverSettings[keyLoginName] as? String else {
-                return nil
-            }
-
-            return ServerData(hostName: serverName,
-                              port: port,
-                              transportString: transportString,
-                              loginName: loginName)
         }
     }
 
