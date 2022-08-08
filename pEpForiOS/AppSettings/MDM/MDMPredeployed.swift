@@ -174,6 +174,7 @@ extension MDMPredeployed: MDMPredeployedProtocol {
             }
 
             // Make sure there is a username, falling back to the email address if needed
+            // TODO: Store this somewhere
             let accountUsername = username ?? userAddress
 
             guard let potentialServer = mdmMailSettings(settingsDict: accountDictionary) else {
@@ -182,48 +183,48 @@ extension MDMPredeployed: MDMPredeployedProtocol {
             }
 
             serverSettings.append(potentialServer)
+        }
 
-            func wipeAccounts() {
-                let session = Session.main
+        // TODO: Check server settings
 
-                let allAccounts = Account.all()
-                for accountToDelete in allAccounts {
-                    accountToDelete.delete()
-                }
+        func wipeAccounts() {
+            let session = Session.main
 
-                session.commit()
+            let allAccounts = Account.all()
+            for accountToDelete in allAccounts {
+                accountToDelete.delete()
             }
 
-            func verify(userAddress: String,
-                        userName: String,
-                        loginName: String,
-                        password: String,
-                        imapServerAddress: String,
-                        imapPortNumber: NSNumber,
-                        smtpServerAddress: String,
-                        smtpPortNumber: NSNumber) {
-                let verifier = AccountVerifier()
-                group.enter()
-                verifier.verify(address: userAddress,
-                                userName: accountUsername,
-                                password: password,
-                                loginName: loginName,
-                                serverIMAP: imapServerAddress,
-                                portIMAP: UInt16(imapPortNumber.int16Value),
-                                transportStringIMAP: "TODO",
-                                serverSMTP: smtpServerAddress,
-                                portSMTP: UInt16(smtpPortNumber.int16Value),
-                                transportStringSMTP: "TODO") { error in
-                    if let err = error {
-                        if firstError == nil {
-                            firstError = err
-                        }
+            session.commit()
+        }
+
+        func verify(userAddress: String,
+                    userName: String,
+                    loginName: String,
+                    password: String,
+                    imapServerAddress: String,
+                    imapPortNumber: NSNumber,
+                    smtpServerAddress: String,
+                    smtpPortNumber: NSNumber) {
+            let verifier = AccountVerifier()
+            group.enter()
+            verifier.verify(address: userAddress,
+                            userName: "TODO: accountUsername",
+                            password: password,
+                            loginName: loginName,
+                            serverIMAP: imapServerAddress,
+                            portIMAP: UInt16(imapPortNumber.int16Value),
+                            transportStringIMAP: "TODO",
+                            serverSMTP: smtpServerAddress,
+                            portSMTP: UInt16(smtpPortNumber.int16Value),
+                            transportStringSMTP: "TODO") { error in
+                if let err = error {
+                    if firstError == nil {
+                        firstError = err
                     }
-                    group.leave()
                 }
+                group.leave()
             }
-
-            // TODO: Check server settings
         }
 
         group.notify(queue: DispatchQueue.main) {
