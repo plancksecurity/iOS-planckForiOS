@@ -30,23 +30,24 @@ public class AccountVerifier {
     // MARK: - ServerData
 
     public struct ServerData {
+        let loginName: String
         let hostName: String
         let port: UInt16
         let transport: ConnectionTransport
-        let loginName: String
 
-        public init?(hostName: String,
+        public init?(loginName: String,
+                     hostName: String,
                      port: Int,
-                     transport: ConnectionTransport,
-                     loginName: String) {
+                     transport: ConnectionTransport) {
+            // Check the port first, since this can fail.
             self.port = UInt16(port)
             if Int(self.port) != port {
                 return nil
             }
 
-            self.transport = transport
-            self.hostName = hostName
             self.loginName = loginName
+            self.hostName = hostName
+            self.transport = transport
         }
     }
 

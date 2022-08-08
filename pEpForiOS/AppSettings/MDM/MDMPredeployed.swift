@@ -114,10 +114,10 @@ extension AccountVerifier.ServerData {
             return nil
         }
 
-        return AccountVerifier.ServerData(hostName: serverName,
+        return AccountVerifier.ServerData(loginName: loginName,
+                                          hostName: serverName,
                                           port: port,
-                                          transport: transport,
-                                          loginName: loginName)
+                                          transport: transport)
     }
 
     private static func connectionTransport(fromString: String) -> ConnectionTransport? {
