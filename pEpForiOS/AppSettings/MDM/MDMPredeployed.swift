@@ -262,25 +262,17 @@ extension MDMPredeployed: MDMPredeployedProtocol {
         }
 
         func verify(userAddress: String,
-                    userName: String,
-                    loginName: String,
+                    username: String,
                     password: String,
-                    imapServerAddress: String,
-                    imapPortNumber: NSNumber,
-                    smtpServerAddress: String,
-                    smtpPortNumber: NSNumber) {
+                    imapServer: AccountVerifier.ServerData,
+                    smtpServer: AccountVerifier.ServerData) {
             let verifier = AccountVerifier()
             group.enter()
-            verifier.verify(address: userAddress,
-                            userName: "TODO: accountUsername",
+            verifier.verify(userName: username,
+                            address: userAddress,
                             password: password,
-                            loginName: loginName,
-                            serverIMAP: imapServerAddress,
-                            portIMAP: UInt16(imapPortNumber.int16Value),
-                            transportStringIMAP: "TODO",
-                            serverSMTP: smtpServerAddress,
-                            portSMTP: UInt16(smtpPortNumber.int16Value),
-                            transportStringSMTP: "TODO") { error in
+                            imapServer: imapServer,
+                            smtpServer: smtpServer) { error in
                 if let err = error {
                     if firstError == nil {
                         firstError = err
