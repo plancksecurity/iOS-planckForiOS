@@ -27,6 +27,29 @@ public class AccountVerifier {
 
     public typealias AccountVerifierCallback = (_ error: Error?) -> ()
 
+    // MARK: - ServerData
+
+    public struct ServerData {
+        let hostName: String
+        let port: UInt16
+        let transport: ConnectionTransport
+        let loginName: String
+
+        public init?(hostName: String,
+                     port: Int,
+                     transport: ConnectionTransport,
+                     loginName: String) {
+            self.port = UInt16(port)
+            if Int(self.port) != port {
+                return nil
+            }
+
+            self.transport = transport
+            self.hostName = hostName
+            self.loginName = loginName
+        }
+    }
+
     // Needed as public method, even if empty.
     public init() {
     }

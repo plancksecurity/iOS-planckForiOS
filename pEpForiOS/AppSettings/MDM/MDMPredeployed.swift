@@ -77,25 +77,7 @@ private typealias SettingsDict = [String:Any]
 
 // MARK: - ServerData
 
-private struct ServerData {
-    let hostName: String
-    let port: UInt16
-    let transport: ConnectionTransport
-    let loginName: String
-
-    init?(hostName: String, port: Int, transport: ConnectionTransport, loginName: String) {
-        self.port = UInt16(port)
-        if Int(self.port) != port {
-            return nil
-        }
-
-        self.transport = transport
-        self.hostName = hostName
-        self.loginName = loginName
-    }
-}
-
-extension ServerData {
+extension AccountVerifier.ServerData {
     /// The MDM name for plain transport.
     static let transportPlain = "NONE"
 
@@ -105,12 +87,12 @@ extension ServerData {
     /// The MDM name for the transport 'plain connect, followed by transition to TLS'.
     static let transportStartTLS = "STARTTLS"
 
-    static func from(serverSettings: SettingsDict,
-                     defaultTransport: ConnectionTransport,
-                     keyServerName: String,
-                     keyTransport: String,
-                     keyPort: String,
-                     keyLoginName: String) -> ServerData? {
+    fileprivate static func from(serverSettings: SettingsDict,
+                                 defaultTransport: ConnectionTransport,
+                                 keyServerName: String,
+                                 keyTransport: String,
+                                 keyPort: String,
+                                 keyLoginName: String) -> AccountVerifier.ServerData? {
         guard let serverName = serverSettings[keyServerName] as? String else {
             return nil
         }
@@ -132,10 +114,10 @@ extension ServerData {
             return nil
         }
 
-        return ServerData(hostName: serverName,
-                          port: port,
-                          transport: transport,
-                          loginName: loginName)
+        return AccountVerifier.ServerData(hostName: serverName,
+                                          port: port,
+                                          transport: transport,
+                                          loginName: loginName)
     }
 
     private static func connectionTransport(fromString: String) -> ConnectionTransport? {
@@ -287,8 +269,8 @@ extension MDMPredeployed: MDMPredeployedProtocol {
     }
 
     private enum ServerSettings {
-        case imap(String, ServerData)
-        case smtp(String, ServerData)
+        case imap(String, AccountVerifier.ServerData)
+        case smtp(String, AccountVerifier.ServerData)
     }
 
     private func mdmMailSettings(settingsDict: SettingsDict) -> ServerSettings? {
@@ -297,22 +279,22 @@ extension MDMPredeployed: MDMPredeployedProtocol {
         }
 
         if let imapServerSettings = settingsDict[MDMPredeployed.keyIncomingMailSettings] as? SettingsDict {
-            guard let serverData = ServerData.from(serverSettings: imapServerSettings,
-                                                   defaultTransport: .TLS,
-                                                   keyServerName: MDMPredeployed.keyIncomingMailSettingsServer,
-                                                   keyTransport: MDMPredeployed.keyIncomingMailSettingsSecurityType,
-                                                   keyPort: MDMPredeployed.keyIncomingMailSettingsPort,
-                                                   keyLoginName: MDMPredeployed.keyIncomingMailSettingsUsername) else {
+            guard let serverData = AccountVerifier.ServerData.from(serverSettings: imapServerSettings,
+                                                                   defaultTransport: .TLS,
+                                                                   keyServerName: MDMPredeployed.keyIncomingMailSettingsServer,
+                                                                   keyTransport: MDMPredeployed.keyIncomingMailSettingsSecurityType,
+                                                                   keyPort: MDMPredeployed.keyIncomingMailSettingsPort,
+                                                                   keyLoginName: MDMPredeployed.keyIncomingMailSettingsUsername) else {
                 return nil
             }
             return ServerSettings.imap(email, serverData)
         } else if let smtpServerSettings = settingsDict[MDMPredeployed.keyOutgoingMailSettings] as? SettingsDict {
-            guard let serverData = ServerData.from(serverSettings: smtpServerSettings,
-                                                   defaultTransport: .startTLS,
-                                                   keyServerName: MDMPredeployed.keyOutgoingMailSettingsServer,
-                                                   keyTransport: MDMPredeployed.keyOutgoingMailSettingsSecurityType,
-                                                   keyPort: MDMPredeployed.keyOutgoingMailSettingsPort,
-                                                   keyLoginName: MDMPredeployed.keyOutgoingMailSettingsUsername) else {
+            guard let serverData = AccountVerifier.ServerData.from(serverSettings: smtpServerSettings,
+                                                                   defaultTransport: .startTLS,
+                                                                   keyServerName: MDMPredeployed.keyOutgoingMailSettingsServer,
+                                                                   keyTransport: MDMPredeployed.keyOutgoingMailSettingsSecurityType,
+                                                                   keyPort: MDMPredeployed.keyOutgoingMailSettingsPort,
+                                                                   keyLoginName: MDMPredeployed.keyOutgoingMailSettingsUsername) else {
                 return nil
             }
             return ServerSettings.smtp(email, serverData)
