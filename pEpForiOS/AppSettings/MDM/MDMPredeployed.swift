@@ -80,9 +80,7 @@ private typealias SettingsDict = [String:Any]
 private struct ServerData {
     let hostName: String
     let port: UInt16
-
     let transport: ConnectionTransport
-
     let loginName: String
 
     init?(hostName: String, port: Int, transport: ConnectionTransport, loginName: String) {
