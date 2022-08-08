@@ -181,6 +181,7 @@ extension AccountVerifier: UsePEPFolderProviderProtocol {
 // MARK: - Parse connection transports
 
 extension AccountVerifier {
+    // TODO: This must go away.
     private func connectionTransport(fromString: String,
                                      defaultTransport: ConnectionTransport) -> ConnectionTransport {
         switch (fromString) {
