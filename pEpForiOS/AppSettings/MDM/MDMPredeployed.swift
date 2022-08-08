@@ -185,9 +185,13 @@ extension MDMPredeployed: MDMPredeployedProtocol {
             serverSettings.append(potentialServer)
         }
 
-        /// Invoke the given callback with pairs found in the given array.
-        /// - Returns: `false` if the array contained an uneven amount of elements, `true` otherwise.
-        func traverseInPairs<T>(elements: Array<T>, callback: (T, T) -> Void) -> Bool {
+        /// Invoke the given callback with pairs found in the given array and react according to its boolean result.
+        ///
+        /// Traversal stops if `callback` returns `false` for any of the elements, and effects the overall result.
+        ///
+        /// - Returns: `false` if the array contained an uneven amount of elements,
+        /// or the callback returned `false`, `true` otherwise.
+        func traverseInPairs<T>(elements: Array<T>, callback: (T, T) -> Bool) -> Bool {
             for i in 0..<elements.count {
                 if i + 1 == elements.count {
                     return false
@@ -196,7 +200,10 @@ extension MDMPredeployed: MDMPredeployedProtocol {
                 let e0 = elements[i]
                 let e1 = elements[i+1]
 
-                callback(e0, e1)
+                let success = callback(e0, e1)
+                if !success {
+                    return false
+                }
             }
 
             return true
@@ -205,35 +212,36 @@ extension MDMPredeployed: MDMPredeployedProtocol {
         // Pairs of (imap, smtp)
         var serverPairs = [(ServerSettings, ServerSettings)]()
 
-        var malformedData = false
         let success = traverseInPairs(elements: serverSettings) { server0, server1 in
             switch server0 {
             case .imap(let imapAccountName, let imapEmailAddress, _):
                 switch server1 {
                 case .smtp(let smtpAccountName, let smtpEmailAddress, _):
                     if (imapAccountName != smtpAccountName || imapEmailAddress != smtpEmailAddress) {
-                        malformedData = true
+                        return false
                     } else {
                         serverPairs.append((server0, server1))
+                        return true
                     }
                 case .imap(_, _, _):
-                    malformedData = true
+                    return false
                 }
             case .smtp(let smtpAccountName, let smtpEmailAddress, _):
                 switch server1 {
                 case .smtp(_, _, _):
-                    malformedData = true
+                    return false
                 case .imap(let imapAccountName, let imapEmailAddress, _):
                     if (imapAccountName != smtpAccountName || imapEmailAddress != smtpEmailAddress) {
-                        malformedData = true
+                        return false
                     } else {
                         serverPairs.append((server1, server0))
+                        return true
                     }
                 }
             }
         }
 
-        if !success || malformedData {
+        if !success {
             callback(MDMPredeployedError.malformedAccountData)
             return
         }
