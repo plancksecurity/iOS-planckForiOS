@@ -107,10 +107,6 @@ extension ServerData {
     /// The MDM name for the transport 'plain connect, followed by transition to TLS'.
     static let transportStartTLS = "STARTTLS"
 
-    private static let legitTransports: Set = [transportPlain,
-                                               transportTLS,
-                                               transportStartTLS]
-
     static func from(serverSettings: SettingsDict,
                      keyServerName: String,
                      keyTransport: String,
