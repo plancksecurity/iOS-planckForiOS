@@ -8,8 +8,10 @@
 
 import Foundation
 
-import PantomimeFramework
 import pEpIOSToolbox
+
+// TODO: For ConnectionTransport. Eliminate?
+import PantomimeFramework
 
 /// Wrapper around `VerifiableAccount` with some additions and changes,
 /// suitable for use in an MDM context.
