@@ -117,7 +117,7 @@ public protocol AppSettingsProtocol {
     /// Default is false.
     var mdmDefaultQuotedTextShown: String? { get set }
 
-    /// Folders that the application will use as special archive, drafts, sent, spam, trash folders.
+    /// Dictionary of Folders names that the application will use as special archive, drafts, sent, spam, trash folders and its keys.
     /// By default all of them are empty.
     /// This means the app will try to find the relevant folders from the server.
     /// Removing folder elements from JSON has the same effect in this case.
@@ -129,7 +129,7 @@ public protocol AppSettingsProtocol {
     /// - spam_folder: Folder where mails marked as spam are stored.
     /// - trash_folder: Folder where deleted mails are temporarily stored until they are permanently deleted.
     /// - The special value "-NONE-" can be entered to unassign a special folder.
-    var mdmAccountDefaultFolders: [String]? { get set }
+    var mdmAccountDefaultFolders: [String:Any] { get set }
 
     /// When enabled, a button for remote search will appear in local search screen,
     /// so that the user can get more search results from the server.

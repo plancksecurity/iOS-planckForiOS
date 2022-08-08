@@ -473,9 +473,10 @@ extension AppSettings: AppSettingsProtocol {
         }
     }
 
-    public var mdmAccountDefaultFolders : [String]? {
+    public var mdmAccountDefaultFolders : [String: Any] {
         get {
-            return AppSettings.userDefaults.stringArray(forKey: AppSettings.keyAccountDefaultFolders)
+
+            return AppSettings.userDefaults.dictionary(forKey: AppSettings.keyAccountDefaultFolders) ?? [String:Any]()
         }
         set {
             AppSettings.userDefaults.set(newValue, forKey: AppSettings.keyAccountDefaultFolders)
