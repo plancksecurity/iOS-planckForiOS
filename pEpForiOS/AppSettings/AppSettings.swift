@@ -151,8 +151,7 @@ extension AppSettings: AppSettingsProtocol {
             return AppSettings.userDefaults.bool(forKey: AppSettings.keyIsMDM)
         }
         set {
-            AppSettings.userDefaults.set(newValue,
-                                         forKey: AppSettings.keyIsMDM)
+            AppSettings.userDefaults.set(newValue, forKey: AppSettings.keyIsMDM)
         }
     }
 
