@@ -68,6 +68,15 @@ class SmtpConnection: SmtpConnectionProtocol {
         smtp.connectInBackgroundAndNotify()
     }
 
+    func close() {
+        smtp.close()
+    }
+}
+
+//MARK: - Private
+
+extension SmtpConnection {
+
     private func bestAuthMethodFromList(_ mechanisms: [String]) -> AuthMethod {
         if mechanisms.count > 0 {
             let mechanismsLC = mechanisms.map() { mech in

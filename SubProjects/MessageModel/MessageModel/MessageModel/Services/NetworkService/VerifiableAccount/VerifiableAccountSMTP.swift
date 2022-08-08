@@ -32,6 +32,12 @@ class VerifiableAccountSMTP {
         smtpConnection?.delegate = self
         smtpConnection?.start()
     }
+
+    /// Stops the verification.
+    func stop() {
+        smtpConnection?.close()
+    }
+
 }
 
 // MARK: - SmtpConnectionDelegate
