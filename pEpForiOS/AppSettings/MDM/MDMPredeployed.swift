@@ -252,7 +252,10 @@ extension MDMPredeployed: MDMPredeployedProtocol {
                     // but make the compiler happy.
                     callback(MDMPredeployedError.malformedAccountData)
                     return
-                case .smtp(let smtpAccountName, let smtpEmailAddress, let smtpServer):
+                case .smtp(_, _, let smtpServer):
+                    // Note that we already checked that the account name and email address
+                    // are the same for both IMAP and SMTP, so we only need the IMAP version.
+
                     // TODO: Invoke verification
                     break
                 }
