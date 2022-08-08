@@ -174,10 +174,10 @@ extension MDMPredeployed: MDMPredeployedProtocol {
             }
 
             // Make sure there is a username, falling back to the email address if needed
-            // TODO: Store this somewhere
             let accountUsername = username ?? userAddress
 
-            guard let potentialServer = mdmMailSettings(settingsDict: accountDictionary) else {
+            guard let potentialServer = mdmMailSettings(accountUsername: accountUsername,
+                                                        settingsDict: accountDictionary) else {
                 callback(MDMPredeployedError.malformedAccountData)
                 return
             }
@@ -270,11 +270,15 @@ extension MDMPredeployed: MDMPredeployedProtocol {
     }
 
     private enum ServerSettings {
-        case imap(String, AccountVerifier.ServerData)
-        case smtp(String, AccountVerifier.ServerData)
+        /// An IMAP server consisting of username, email address, server data.
+        case imap(String, String, AccountVerifier.ServerData)
+
+        /// An SMTP server consisting of username, email address, server data.
+        case smtp(String, String, AccountVerifier.ServerData)
     }
 
-    private func mdmMailSettings(settingsDict: SettingsDict) -> ServerSettings? {
+    private func mdmMailSettings(accountUsername: String,
+                                 settingsDict: SettingsDict) -> ServerSettings? {
         guard let email = settingsDict[MDMPredeployed.keyUserAddress] as? String else {
             return nil
         }
@@ -288,7 +292,7 @@ extension MDMPredeployed: MDMPredeployedProtocol {
                                                                    keyLoginName: MDMPredeployed.keyIncomingMailSettingsUsername) else {
                 return nil
             }
-            return ServerSettings.imap(email, serverData)
+            return ServerSettings.imap(accountUsername, email, serverData)
         } else if let smtpServerSettings = settingsDict[MDMPredeployed.keyOutgoingMailSettings] as? SettingsDict {
             guard let serverData = AccountVerifier.ServerData.from(serverSettings: smtpServerSettings,
                                                                    defaultTransport: .startTLS,
@@ -298,7 +302,7 @@ extension MDMPredeployed: MDMPredeployedProtocol {
                                                                    keyLoginName: MDMPredeployed.keyOutgoingMailSettingsUsername) else {
                 return nil
             }
-            return ServerSettings.smtp(email, serverData)
+            return ServerSettings.smtp(accountUsername, email, serverData)
         } else {
             return nil
         }
