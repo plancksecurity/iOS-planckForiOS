@@ -187,6 +187,23 @@ extension MDMPredeployed: MDMPredeployedProtocol {
 
         // TODO: Check server settings
 
+        /// Invoke the given callback with pairs found in the given array.
+        /// - Returns: `false` if the array contained an uneven amount of elements, `true` otherwise.
+        func traverseInPairs<T>(elements: Array<T>, callback: (T, T) -> Void) -> Bool {
+            for i in 0..<elements.count {
+                if i + 1 == elements.count {
+                    return false
+                }
+
+                let e0 = elements[i]
+                let e1 = elements[i+1]
+
+                callback(e0, e1)
+            }
+
+            return true
+        }
+
         func wipeAccounts() {
             let session = Session.main
 
