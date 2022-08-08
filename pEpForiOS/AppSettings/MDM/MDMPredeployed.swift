@@ -10,6 +10,9 @@ import Foundation
 
 import MessageModel
 
+// TODO: For ConnectionTransport. Eliminate?
+import PantomimeFramework
+
 class MDMPredeployed {
 }
 
@@ -78,23 +81,17 @@ private struct ServerData {
     let hostName: String
     let port: UInt16
 
-    /// - Note: Can only be "NONE", "SSL/TLS" or "STARTTLS".
-    let transportString: String
+    let transport: ConnectionTransport
 
     let loginName: String
 
-    init?(hostName: String, port: Int, transportString: String, loginName: String) {
+    init?(hostName: String, port: Int, transport: ConnectionTransport, loginName: String) {
         self.port = UInt16(port)
         if Int(self.port) != port {
             return nil
         }
 
-        if ServerData.legitTransports.contains(transportString) {
-            self.transportString = transportString
-        } else {
-            return nil
-        }
-
+        self.transport = transport
         self.hostName = hostName
         self.loginName = loginName
     }
@@ -122,7 +119,11 @@ extension ServerData {
         guard let serverName = serverSettings[keyServerName] as? String else {
             return nil
         }
+
         let transportString = serverSettings[keyTransport] as? String ?? transportPlain
+
+        // TODO: Parse the transport string into a ConnectionTransport
+
         guard let port = serverSettings[keyPort] as? Int else {
             return nil
         }
@@ -132,7 +133,7 @@ extension ServerData {
 
         return ServerData(hostName: serverName,
                           port: port,
-                          transportString: transportString,
+                          transport: .TLS, // TODO: Parse this correctly
                           loginName: loginName)
     }
 }
