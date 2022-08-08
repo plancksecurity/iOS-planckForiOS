@@ -10,6 +10,8 @@ import Foundation
 
 import MessageModel
 import pEpIOSToolbox
+
+// TODO: This is only for ConnectionTransport. Eliminate?
 import PantomimeFramework
 
 // MARK: - OAuth2Parameters
