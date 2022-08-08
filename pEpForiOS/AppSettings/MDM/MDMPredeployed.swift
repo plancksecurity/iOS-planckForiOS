@@ -108,6 +108,7 @@ extension ServerData {
     static let transportStartTLS = "STARTTLS"
 
     static func from(serverSettings: SettingsDict,
+                     defaultTransport: ConnectionTransport,
                      keyServerName: String,
                      keyTransport: String,
                      keyPort: String,
@@ -116,9 +117,14 @@ extension ServerData {
             return nil
         }
 
-        let transportString = serverSettings[keyTransport] as? String ?? transportPlain
-        guard let transport = connectionTransport(fromString: transportString) else {
-            return nil
+        var transport: ConnectionTransport
+        if let transportString = serverSettings[keyTransport] as? String {
+            guard let theTransport = connectionTransport(fromString: transportString) else {
+                return nil
+            }
+            transport = theTransport
+        } else {
+            transport = defaultTransport
         }
 
         guard let port = serverSettings[keyPort] as? Int else {
@@ -294,6 +300,7 @@ extension MDMPredeployed: MDMPredeployedProtocol {
 
         if let imapServerSettings = settingsDict[MDMPredeployed.keyIncomingMailSettings] as? SettingsDict {
             guard let serverData = ServerData.from(serverSettings: imapServerSettings,
+                                                   defaultTransport: .TLS,
                                                    keyServerName: MDMPredeployed.keyIncomingMailSettingsServer,
                                                    keyTransport: MDMPredeployed.keyIncomingMailSettingsSecurityType,
                                                    keyPort: MDMPredeployed.keyIncomingMailSettingsPort,
@@ -303,6 +310,7 @@ extension MDMPredeployed: MDMPredeployedProtocol {
             return ServerSettings.imap(email, serverData)
         } else if let smtpServerSettings = settingsDict[MDMPredeployed.keyOutgoingMailSettings] as? SettingsDict {
             guard let serverData = ServerData.from(serverSettings: smtpServerSettings,
+                                                   defaultTransport: .startTLS,
                                                    keyServerName: MDMPredeployed.keyOutgoingMailSettingsServer,
                                                    keyTransport: MDMPredeployed.keyOutgoingMailSettingsSecurityType,
                                                    keyPort: MDMPredeployed.keyOutgoingMailSettingsPort,
