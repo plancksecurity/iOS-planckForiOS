@@ -140,11 +140,11 @@ extension ServerData {
 
     private static func connectionTransport(fromString: String) -> ConnectionTransport? {
         switch (fromString) {
-        case "NONE":
+        case transportPlain:
             return .plain
-        case "SSL/TLS":
+        case transportTLS:
             return .TLS
-        case "STARTTLS":
+        case transportStartTLS:
             return .startTLS
         default:
             return nil
