@@ -60,14 +60,14 @@ class DummyDeployer: MDMPredeployedProtocol {
         self.resultingError = resultingError
     }
 
-    func accountsToPredeploy() throws -> [MDMPredeployed.AccountData] {
-        return []
+    func accountToPredeploy() throws -> MDMPredeployed.AccountData? {
+        return nil
     }
 
     func predeployAccounts(callback: @escaping (MDMPredeployedError?) -> ()) {
         callback(resultingError)
     }
 
-    let haveAccountsToPredeploy = true
+    let haveAccountToPredeploy = true
     let resultingError: MDMPredeployedError?
 }

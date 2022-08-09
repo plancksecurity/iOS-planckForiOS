@@ -40,6 +40,6 @@ protocol MDMPredeployedProtocol {
     /// (see "Settings meaning and structure")
     func predeployAccounts(callback: @escaping (_ error: MDMPredeployedError?) -> ())
 
-    /// Returns `true` if there are accounts to be predeployed, `false` otherwise.
-    var haveAccountsToPredeploy: Bool { get }
+    /// Returns `true` if there is an account to be predeployed, `false` otherwise.
+    var haveAccountToPredeploy: Bool { get }
 }

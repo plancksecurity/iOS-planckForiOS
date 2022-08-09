@@ -162,10 +162,10 @@ extension MDMPredeployed: MDMPredeployedProtocol {
     /// "A managed app can respond to new configurations that arrive while the app is running by observing the
     /// NSUserDefaultsDidChangeNotification notification."
     func predeployAccounts(callback: @escaping (_ error: MDMPredeployedError?) -> ()) {
-        let serverTuples: [MDMPredeployed.AccountData]
+        let accountData: MDMPredeployed.AccountData?
 
         do {
-            serverTuples = try mdmAccountsToDeploy()
+            accountData = try mdmAccountToDeploy()
         } catch (let error as MDMPredeployedError) {
             callback(error)
             return
@@ -180,10 +180,8 @@ extension MDMPredeployed: MDMPredeployedProtocol {
         // Note the first error that occurred
         var firstError: Error?
 
-        for (accountData) in serverTuples {
-            // TODO: Get the password
-            // TODO: Invoke verification
-        }
+        // TODO: Get the password
+        // TODO: Invoke verification
 
         func wipeAccounts() {
             let session = Session.main
@@ -238,10 +236,10 @@ extension MDMPredeployed: MDMPredeployedProtocol {
         }
     }
 
-    var haveAccountsToPredeploy: Bool {
+    var haveAccountToPredeploy: Bool {
         do {
-            let accounts = try mdmAccountsToDeploy()
-            return !accounts.isEmpty
+            let account = try mdmAccountToDeploy()
+            return account != nil
         } catch {
             return false
         }
@@ -251,20 +249,18 @@ extension MDMPredeployed: MDMPredeployedProtocol {
 // MARK: - Utility
 
 extension MDMPredeployed {
-    /// Gathers all deployable accounts.
-    /// - Returns: An array account data with their meta-data
-    /// (Username/account description, email address, imap server settings, smtp server settings).
-    /// This array can be empty if now accounts are to be deployed.
+    /// Loads the data from MDM for the account to be deployed.
+    /// - Returns: An account, ready to be deployed, from MDM, or nil, if nothing could be found.
     /// - Throws:`MDMPredeployedError`
-    private func mdmAccountsToDeploy() throws -> [AccountData] {
+    private func mdmAccountToDeploy() throws -> AccountData? {
         guard let mdmDict = mdmPredeploymentDictionary() else {
-            return []
+            return nil
         }
 
         let username = mdmExtractUsername(mdmDictionary: mdmDict)
 
         guard let predeployedAccounts = mdmDict[MDMPredeployed.keyPredeployedAccounts] as? [SettingsDict] else {
-            return []
+            return nil
         }
 
         var serverSettings = [ServerSettings]()
@@ -311,6 +307,8 @@ extension MDMPredeployed {
         // Tuple of (accountName, email, imap, smtp)
         var accountDatas = [AccountData]()
 
+        // Note that this may be overkill for just _one_ IMAP and SMTP server,
+        // but it was written before that was clear, and it's still correct.
         let success = traverseInPairs(elements: serverSettings) { server0, server1 in
             switch server0 {
             case .imap(let imapAccountName, let imapEmailAddress, let serverData0):
@@ -352,7 +350,7 @@ extension MDMPredeployed {
             throw MDMPredeployedError.malformedAccountData
         }
 
-        return accountDatas
+        return accountDatas.first
     }
 
     private func mdmPredeploymentDictionary() -> SettingsDict? {
