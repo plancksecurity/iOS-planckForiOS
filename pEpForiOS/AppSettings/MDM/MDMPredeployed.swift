@@ -148,76 +148,79 @@ extension MDMPredeployed: MDMPredeployedProtocol {
     /// "A managed app can respond to new configurations that arrive while the app is running by observing the
     /// NSUserDefaultsDidChangeNotification notification."
     func predeployAccounts(callback: @escaping (_ error: MDMPredeployedError?) -> ()) {
+        let serverTuples: [(String, String, MDMPredeployed.ServerSettings, MDMPredeployed.ServerSettings)]
+
         do {
-            let serverTuples = try mdmAccountsToDeploy()
-
-            // Syncronize the callbacks of all account verifications
-            let group = DispatchGroup()
-
-            // Note the first error that occurred
-            var firstError: Error?
-
-            for (accountName, email, imap, smtp) in serverTuples {
-                // TODO: Get the password
-                // TODO: Invoke verification
-            }
-
-            func wipeAccounts() {
-                let session = Session.main
-
-                let allAccounts = Account.all()
-                for accountToDelete in allAccounts {
-                    accountToDelete.delete()
-                }
-
-                session.commit()
-            }
-
-            func verify(userAddress: String,
-                        username: String,
-                        password: String,
-                        imapServer: AccountVerifier.ServerData,
-                        smtpServer: AccountVerifier.ServerData) {
-                let verifier = AccountVerifier()
-                group.enter()
-                verifier.verify(userName: username,
-                                address: userAddress,
-                                password: password,
-                                imapServer: imapServer,
-                                smtpServer: smtpServer) { error in
-                    if let err = error {
-                        if firstError == nil {
-                            firstError = err
-                        }
-                    }
-                    group.leave()
-                }
-            }
-
-            // Fetch the MDM dictionary to reset in the following
-            // group notification group.
-            guard var mdmDict = mdmPredeploymentDictionary() else {
-                return
-            }
-
-            group.notify(queue: DispatchQueue.main) {
-                // Overwrite the accounts to deploy with nil
-                // Please note the explicit use of UserDefaults,
-                // instead of the usual usage of AppSettings, since this use case is special.
-                mdmDict[MDMPredeployed.keyPredeployedAccounts] = nil
-                UserDefaults.standard.set(mdmDict, forKey: MDMPredeployed.keyMDM)
-
-                if let _ = firstError {
-                    callback(.networkError)
-                } else {
-                    callback(nil)
-                }
-            }
+            serverTuples = try mdmAccountsToDeploy()
         } catch (let error as MDMPredeployedError) {
             callback(error)
             return
         } catch {
             callback(.malformedAccountData)
+            return
+        }
+
+        // Syncronize the callbacks of all account verifications
+        let group = DispatchGroup()
+
+        // Note the first error that occurred
+        var firstError: Error?
+
+        for (accountName, email, imap, smtp) in serverTuples {
+            // TODO: Get the password
+            // TODO: Invoke verification
+        }
+
+        func wipeAccounts() {
+            let session = Session.main
+
+            let allAccounts = Account.all()
+            for accountToDelete in allAccounts {
+                accountToDelete.delete()
+            }
+
+            session.commit()
+        }
+
+        func verify(userAddress: String,
+                    username: String,
+                    password: String,
+                    imapServer: AccountVerifier.ServerData,
+                    smtpServer: AccountVerifier.ServerData) {
+            let verifier = AccountVerifier()
+            group.enter()
+            verifier.verify(userName: username,
+                            address: userAddress,
+                            password: password,
+                            imapServer: imapServer,
+                            smtpServer: smtpServer) { error in
+                if let err = error {
+                    if firstError == nil {
+                        firstError = err
+                    }
+                }
+                group.leave()
+            }
+        }
+
+        // Fetch the MDM dictionary to reset in the following
+        // group notification group.
+        guard var mdmDict = mdmPredeploymentDictionary() else {
+            return
+        }
+
+        group.notify(queue: DispatchQueue.main) {
+            // Overwrite the accounts to deploy with nil
+            // Please note the explicit use of UserDefaults,
+            // instead of the usual usage of AppSettings, since this use case is special.
+            mdmDict[MDMPredeployed.keyPredeployedAccounts] = nil
+            UserDefaults.standard.set(mdmDict, forKey: MDMPredeployed.keyMDM)
+
+            if let _ = firstError {
+                callback(.networkError)
+            } else {
+                callback(nil)
+            }
         }
     }
 
