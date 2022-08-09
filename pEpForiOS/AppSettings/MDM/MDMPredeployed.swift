@@ -148,153 +148,76 @@ extension MDMPredeployed: MDMPredeployedProtocol {
     /// "A managed app can respond to new configurations that arrive while the app is running by observing the
     /// NSUserDefaultsDidChangeNotification notification."
     func predeployAccounts(callback: @escaping (_ error: MDMPredeployedError?) -> ()) {
-        guard var mdmDict = mdmPredeploymentDictionary() else {
-            callback(nil)
-            return
-        }
+        do {
+            let serverTuples = try mdmAccountsToDeploy()
 
-        let username = mdmExtractUsername(mdmDictionary: mdmDict)
+            // Syncronize the callbacks of all account verifications
+            let group = DispatchGroup()
 
-        guard let predeployedAccounts = mdmDict[MDMPredeployed.keyPredeployedAccounts] as? [SettingsDict] else {
-            callback(nil)
-            return
-        }
+            // Note the first error that occurred
+            var firstError: Error?
 
-        // Syncronize the callbacks of all account verifications
-        let group = DispatchGroup()
+            for (accountName, email, imap, smtp) in serverTuples {
+                // TODO: Get the password
+                // TODO: Invoke verification
+            }
 
-        // Note the first error that occurred
-        var firstError: Error?
+            func wipeAccounts() {
+                let session = Session.main
 
-        var serverSettings = [ServerSettings]()
-        for accountDictionary in predeployedAccounts {
-            guard let userAddress = accountDictionary[MDMPredeployed.keyUserAddress] as? String else {
-                callback(MDMPredeployedError.malformedAccountData)
+                let allAccounts = Account.all()
+                for accountToDelete in allAccounts {
+                    accountToDelete.delete()
+                }
+
+                session.commit()
+            }
+
+            func verify(userAddress: String,
+                        username: String,
+                        password: String,
+                        imapServer: AccountVerifier.ServerData,
+                        smtpServer: AccountVerifier.ServerData) {
+                let verifier = AccountVerifier()
+                group.enter()
+                verifier.verify(userName: username,
+                                address: userAddress,
+                                password: password,
+                                imapServer: imapServer,
+                                smtpServer: smtpServer) { error in
+                    if let err = error {
+                        if firstError == nil {
+                            firstError = err
+                        }
+                    }
+                    group.leave()
+                }
+            }
+
+            // Fetch the MDM dictionary to reset in the following
+            // group notification group.
+            guard var mdmDict = mdmPredeploymentDictionary() else {
                 return
             }
 
-            // Make sure there is a username, falling back to the email address if needed
-            let accountUsername = username ?? userAddress
+            group.notify(queue: DispatchQueue.main) {
+                // Overwrite the accounts to deploy with nil
+                // Please note the explicit use of UserDefaults,
+                // instead of the usual usage of AppSettings, since this use case is special.
+                mdmDict[MDMPredeployed.keyPredeployedAccounts] = nil
+                UserDefaults.standard.set(mdmDict, forKey: MDMPredeployed.keyMDM)
 
-            guard let potentialServer = mdmMailSettings(accountUsername: accountUsername,
-                                                        settingsDict: accountDictionary) else {
-                callback(MDMPredeployedError.malformedAccountData)
-                return
-            }
-
-            serverSettings.append(potentialServer)
-        }
-
-        /// Invoke the given callback with pairs found in the given array and react according to its boolean result.
-        ///
-        /// Traversal stops if `callback` returns `false` for any of the elements, and effects the overall result.
-        ///
-        /// - Returns: `false` if the array contained an uneven amount of elements,
-        /// or the callback returned `false`, `true` otherwise.
-        func traverseInPairs<T>(elements: Array<T>, callback: (T, T) -> Bool) -> Bool {
-            for i in 0..<elements.count {
-                if i + 1 == elements.count {
-                    return false
-                }
-
-                let e0 = elements[i]
-                let e1 = elements[i+1]
-
-                let success = callback(e0, e1)
-                if !success {
-                    return false
+                if let _ = firstError {
+                    callback(.networkError)
+                } else {
+                    callback(nil)
                 }
             }
-
-            return true
-        }
-
-        // Tuple of (accountName, email, imap, smtp)
-        var serverTuples = [(String, String, ServerSettings, ServerSettings)]()
-
-        let success = traverseInPairs(elements: serverSettings) { server0, server1 in
-            switch server0 {
-            case .imap(let imapAccountName, let imapEmailAddress, _):
-                switch server1 {
-                case .smtp(let smtpAccountName, let smtpEmailAddress, _):
-                    if (imapAccountName != smtpAccountName || imapEmailAddress != smtpEmailAddress) {
-                        return false
-                    } else {
-                        serverTuples.append((imapAccountName, imapEmailAddress, server0, server1))
-                        return true
-                    }
-                case .imap(_, _, _):
-                    return false
-                }
-            case .smtp(let smtpAccountName, let smtpEmailAddress, _):
-                switch server1 {
-                case .smtp(_, _, _):
-                    return false
-                case .imap(let imapAccountName, let imapEmailAddress, _):
-                    if (imapAccountName != smtpAccountName || imapEmailAddress != smtpEmailAddress) {
-                        return false
-                    } else {
-                        serverTuples.append((smtpAccountName, smtpEmailAddress, server1, server0))
-                        return true
-                    }
-                }
-            }
-        }
-
-        if !success {
-            callback(MDMPredeployedError.malformedAccountData)
+        } catch (let error as MDMPredeployedError) {
+            callback(error)
             return
-        }
-
-        for (accountName, email, imap, smtp) in serverTuples {
-            // TODO: Get the password
-            // TODO: Invoke verification
-        }
-
-        func wipeAccounts() {
-            let session = Session.main
-
-            let allAccounts = Account.all()
-            for accountToDelete in allAccounts {
-                accountToDelete.delete()
-            }
-
-            session.commit()
-        }
-
-        func verify(userAddress: String,
-                    username: String,
-                    password: String,
-                    imapServer: AccountVerifier.ServerData,
-                    smtpServer: AccountVerifier.ServerData) {
-            let verifier = AccountVerifier()
-            group.enter()
-            verifier.verify(userName: username,
-                            address: userAddress,
-                            password: password,
-                            imapServer: imapServer,
-                            smtpServer: smtpServer) { error in
-                if let err = error {
-                    if firstError == nil {
-                        firstError = err
-                    }
-                }
-                group.leave()
-            }
-        }
-
-        group.notify(queue: DispatchQueue.main) {
-            // Overwrite the accounts to deploy with nil
-            // Please note the explicit use of UserDefaults,
-            // instead of the usual usage of AppSettings, since this use case is special.
-            mdmDict[MDMPredeployed.keyPredeployedAccounts] = nil
-            UserDefaults.standard.set(mdmDict, forKey: MDMPredeployed.keyMDM)
-
-            if let _ = firstError {
-                callback(.networkError)
-            } else {
-                callback(nil)
-            }
+        } catch {
+            callback(.malformedAccountData)
         }
     }
 
