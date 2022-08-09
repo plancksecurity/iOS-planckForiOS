@@ -11,84 +11,73 @@
 public protocol MDMAppSettingsProtocol {
 
     /// Enable or disable pEp privacy protection for the user or device's account.
-    var mdmPEPPrivacyProtectionEnabled: Bool { get set }
+    var mdmPEPPrivacyProtectionEnabled: Bool { get }
 
     /// Provide or remove Extra Keys
     ///
-    /// Extra keys can be provided using this setting.
-    /// Extra keys can be removed if the setting is provided and all fingerprint elements are blank.
-    /// The lack of extra keys willl be an empty array.
-    var mdmPEPExtraKeys: [String] { get set }
+    var mdmPEPExtraKeys: [String] { get }
 
     /// Enable or disable the use of trustwords.
     ///
-    /// It allows using a handshake method to establish trust between two users.
-    var mdmPEPTrustwordsEnabled: Bool { get set }
+    /// If disabled, it's impossible to invoke the trust management.
+    var mdmPEPTrustwordsEnabled: Bool { get }
 
     /// Indicate if Unsecure delivery warning is enabled
     ///
     /// When this setting is enabled, the unsecure Recipients in the
     /// "to", "cc", "bcc" fields from Message Compose screen will appear highlighted.
     /// Default is true.
-    var mdmUnsecureDeliveryWarningEnabled: Bool { get set }
+    var mdmUnsecureDeliveryWarningEnabled: Bool { get }
 
     /// Indicate if Sync Folder is enabled
     ///
     /// When enabled, a dedicated pEp folder is used for pEp sync messages.
     /// When disabled, Inbox folder will be user for these messages instead.
     /// Default is true.
-    var mdmPEPSyncFolderEnabled: Bool { get set }
+    var mdmPEPSyncFolderEnabled: Bool { get }
 
     /// Enable or disable the debug logging.
     ///
-    /// When enabled, debug log can be displayed in a console.
+    /// When enabled, debug log will be displayed in a console.
     /// Default is false.
-    var mdmDebugLoggingEnabled: Bool { get set }
+    var mdmDebugLoggingEnabled: Bool { get }
 
     /// Number of mails displayed in Message List screen.
     ///
     /// The user can always refresh more mails from the server.
     /// Configuration designers like Intune's one are handy for this setting.
     /// Default is 250.
-    var mdmAccountDisplayCount: Int { get set }
+    var mdmAccountDisplayCount: Int { get }
 
     /// Max folders to check with push.
-    var mdmMaxPushFolders: Int { get set }
-
-    /// Account description provided via MDM
-    ///
-    /// Default is MDM's {{username}}.
-    /// If not provided or it's empty, the email address will be used instead.
-    /// This is the name that will be displayed associated with the user account.
-    /// Setting this value is optional for deployment.
-    var mdmAccountDescription: String? { get set }
+    var mdmMaxPushFolders: Int { get }
 
     /// Composition sender name
     ///
     /// Defaults to MDM's {{username}}, recommended for deployment.
     /// If not provided or empty, email address will be used instead.
-    var mdmCompositionSenderName: String? { get set }
+    var mdmCompositionSenderName: String? { get }
 
     /// Indicate if the signature should be used.
     ///
     /// Whether to include sender signature when composing emails.
     /// Default is true.
-    var mdmCompositionSignatureEnabled: Bool { get set }
+    var mdmCompositionSignatureEnabled: Bool { get }
 
     /// Signature to include in outgoing emails when mdmCompositionSignatureEnabled is enabled
-    var mdmCompositionSignature: String? { get set }
+    var mdmCompositionSignature: String? { get }
 
     /// Whether to position the sender's signature before the quoted message in replies/forwards.
     /// (Signature after quoted message by default).
     ///
     /// Default is false.
-    var mdmCompositionSignatureBeforeQuotedMessage: String? { get set }
+    var mdmCompositionSignatureBeforeQuotedMessage: String? { get }
 
     /// Indicate whether to position sender signature before the quoted message in replies/forwards.
     /// (Signature after quoted message by default).
     ///
     /// Default is false.
-    var mdmDefaultQuotedTextShown: Bool { get set }
+    var mdmDefaultQuotedTextShown: Bool { get }
 
     /// Dictionary of Folders names that the application will use as special archive, drafts, sent, spam, trash folders and its keys.
     ///
@@ -103,32 +92,32 @@ public protocol MDMAppSettingsProtocol {
     /// - spam_folder: Folder where mails marked as spam are stored.
     /// - trash_folder: Folder where deleted mails are temporarily stored until they are permanently deleted.
     /// - The special value "-NONE-" can be entered to unassign a special folder.
-    var mdmAccountDefaultFolders: [String: String] { get set }
+    var mdmAccountDefaultFolders: [String: String] { get }
 
     /// When enabled, a button for remote search will appear in local search screen,
     /// so that the user can get more search results from the server.
     ///
     /// Default is true.
-    var mdmRemoteSearchEnabled: Bool { get set }
+    var mdmRemoteSearchEnabled: Bool { get }
 
     /// Number of messages retrieved when a remote search is performed.
     ///
     /// Default is 50.
-    var mdmAccountRemoteSearchNumResults: Int { get set }
+    var mdmAccountRemoteSearchNumResults: Int { get }
 
     /// Whether to enable the account to perform pEp sync.
     ///
     /// Default is true.
-    var mdmPEPSaveEncryptedOnServerEnabled: Bool { get set }
+    var mdmPEPSaveEncryptedOnServerEnabled: Bool { get }
 
     /// Whether to enable the account to perform pEp sync.
     ///
     /// Default is true.
-    var mdmPEPSyncAccountEnabled: Bool { get set }
+    var mdmPEPSyncAccountEnabled: Bool { get }
 
     /// Indicate if new devices can be added for an existing user identified by its email address.
     ///
     /// After the sync is done it should be set to false again.
     /// Default is false.
-    var mdmPEPSyncNewDevicesEnabled: Bool { get set }
+    var mdmPEPSyncNewDevicesEnabled: Bool { get }
 }

@@ -40,6 +40,8 @@ extension AppSettings {
 
     // MARK: - MDM Settings
 
+    static private let mdmDictionaryKey = "com.apple.configuration.managed"
+
     static private var keyPEPEnablePrivacyProtectionEnabled = "keyPEPEnablePrivacyProtectionEnabled"
     static private var keyPEPExtraKeys = "keyPEPExtraKeys"
     static private var keyPEPTrustwordsEnabled = "keyPEPTrustwordsEnabled"
@@ -143,20 +145,6 @@ extension AppSettings {
         // When we can distinguish in code that specific customer fix it. 
         defaults[AppSettings.keyAcceptedLanguagesCodes] = ["de", "en"]
 
-        // MARK: - MDM Defaults
-        defaults[AppSettings.keyUnsecureDeliveryWarningEnabled] = true
-        defaults[AppSettings.keyPEPSyncFolderEnabled] = true
-        defaults[AppSettings.keyDebugLoggingEnabled] = false
-        defaults[AppSettings.keyAccountDisplayCount] = 250
-        defaults[AppSettings.keyCompositionSignatureEnabled] = true
-        defaults[AppSettings.keyCompositionSignatureBeforeQuotedMessageEnabled] = false
-        defaults[AppSettings.keyDefaultQuotedTextShownEnabled] = false
-        defaults[AppSettings.keyAccountDefaultFolders] = []
-        defaults[AppSettings.keyRemoteSearchEnabled] = true
-        defaults[AppSettings.keyAccountRemoteSearchNumResults] = 50
-        defaults[AppSettings.keyPEPSaveEncryptedOnServerEnabled] = true
-        defaults[AppSettings.keyPEPEnableSyncAccountEnabled] = true
-        defaults[AppSettings.keyPEPSyncNewDevicesEnabled] = false
         AppSettings.userDefaults.register(defaults: defaults)
     }
 
@@ -426,64 +414,73 @@ extension AppSettings: MDMAppSettingsProtocol {
 
     public var mdmPEPPrivacyProtectionEnabled : Bool {
         get {
-            return AppSettings.userDefaults.bool(forKey: AppSettings.keyPEPEnablePrivacyProtectionEnabled)
-        }
-        set {
-            AppSettings.userDefaults.set(newValue, forKey: AppSettings.keyPEPEnablePrivacyProtectionEnabled)
+            guard let dictionary = AppSettings.userDefaults.dictionary(forKey: AppSettings.mdmDictionaryKey),
+                    let value = dictionary[AppSettings.keyPEPEnablePrivacyProtectionEnabled] as? Bool else {
+                return false
+            }
+            return value
         }
     }
 
     public var mdmPEPExtraKeys : [String] {
         get {
-            return AppSettings.userDefaults.stringArray(forKey: AppSettings.keyPEPExtraKeys) ?? []
-        }
-        set {
-            AppSettings.userDefaults.set(newValue, forKey: AppSettings.keyPEPExtraKeys)
+            guard let dictionary = AppSettings.userDefaults.dictionary(forKey: AppSettings.mdmDictionaryKey),
+                    let value = dictionary[AppSettings.keyPEPExtraKeys] as? [String] else {
+                return []
+            }
+            return value
         }
     }
 
     public var mdmPEPTrustwordsEnabled : Bool {
         get {
-            AppSettings.userDefaults.bool(forKey: AppSettings.keyPEPTrustwordsEnabled)
-        }
-        set {
-            AppSettings.userDefaults.set(newValue, forKey: AppSettings.keyPEPTrustwordsEnabled)
+            guard let dictionary = AppSettings.userDefaults.dictionary(forKey: AppSettings.mdmDictionaryKey),
+                    let value = dictionary[AppSettings.keyPEPTrustwordsEnabled] as? Bool else {
+                return false
+            }
+            return value
         }
     }
 
     public var mdmUnsecureDeliveryWarningEnabled : Bool {
         get {
-            AppSettings.userDefaults.bool(forKey: AppSettings.keyUnsecureDeliveryWarningEnabled)
-        }
-        set {
-            AppSettings.userDefaults.set(newValue, forKey: AppSettings.keyUnsecureDeliveryWarningEnabled)
+            guard let dictionary = AppSettings.userDefaults.dictionary(forKey: AppSettings.mdmDictionaryKey),
+                    let value = dictionary[AppSettings.keyUnsecureDeliveryWarningEnabled] as? Bool else {
+                return true
+            }
+            return value
         }
     }
 
     public var mdmPEPSyncFolderEnabled : Bool {
         get {
-            AppSettings.userDefaults.bool(forKey: AppSettings.keyPEPSyncFolderEnabled)
-        }
-        set {
-            AppSettings.userDefaults.set(newValue, forKey: AppSettings.keyPEPSyncFolderEnabled)
+            guard let dictionary = AppSettings.userDefaults.dictionary(forKey: AppSettings.mdmDictionaryKey),
+                    let value = dictionary[AppSettings.keyPEPSyncFolderEnabled] as? Bool else {
+                return false
+            }
+            return value
         }
     }
 
     public var mdmDebugLoggingEnabled : Bool {
         get {
-            AppSettings.userDefaults.bool(forKey: AppSettings.keyDebugLoggingEnabled)
-        }
-        set {
-            AppSettings.userDefaults.set(newValue, forKey: AppSettings.keyDebugLoggingEnabled)
+            guard let dictionary = AppSettings.userDefaults.dictionary(forKey: AppSettings.mdmDictionaryKey),
+                    let value = dictionary[AppSettings.keyDebugLoggingEnabled] as? Bool else {
+                //Default value
+                return false
+            }
+            return value
         }
     }
 
     public var mdmAccountDisplayCount: Int {
         get {
-            AppSettings.userDefaults.integer(forKey: AppSettings.keyAccountDisplayCount)
-        }
-        set {
-            AppSettings.userDefaults.set(newValue, forKey: AppSettings.keyAccountDisplayCount)
+            guard let dictionary = AppSettings.userDefaults.dictionary(forKey: AppSettings.mdmDictionaryKey),
+                    let value = dictionary[AppSettings.keyAccountDisplayCount] as? Int else {
+                //Default value
+                return 250
+            }
+            return value
         }
     }
 
@@ -491,118 +488,124 @@ extension AppSettings: MDMAppSettingsProtocol {
         get {
             AppSettings.userDefaults.integer(forKey: AppSettings.keyMaxPushFolders)
         }
-        set {
-            AppSettings.userDefaults.set(newValue, forKey: AppSettings.keyMaxPushFolders)
-        }
-    }
-
-    public var mdmAccountDescription : String? {
-        get {
-            return AppSettings.userDefaults.string(forKey: AppSettings.keyAccountDescription)
-        }
-        set {
-            AppSettings.userDefaults.set(newValue, forKey: AppSettings.keyAccountDescription)
-        }
     }
 
     public var mdmCompositionSenderName : String? {
         get {
-            return AppSettings.userDefaults.string(forKey: AppSettings.keyCompositionSenderName)
-        }
-        set {
-            AppSettings.userDefaults.set(newValue, forKey: AppSettings.keyCompositionSenderName)
+            guard let dictionary = AppSettings.userDefaults.dictionary(forKey: AppSettings.mdmDictionaryKey),
+                    let value = dictionary[AppSettings.keyCompositionSenderName] as? String else {
+                return nil
+            }
+            return value
         }
     }
 
     public var mdmCompositionSignatureEnabled : Bool {
         get {
-            return AppSettings.userDefaults.bool(forKey: AppSettings.keyCompositionSignatureEnabled)
-        }
-        set {
-            AppSettings.userDefaults.set(newValue, forKey: AppSettings.keyCompositionSignatureEnabled)
+            guard let dictionary = AppSettings.userDefaults.dictionary(forKey: AppSettings.mdmDictionaryKey),
+                    let value = dictionary[AppSettings.keyCompositionSignatureEnabled] as? Bool else {
+                //Default value
+                return true
+            }
+            return value
         }
     }
+
     public var mdmCompositionSignature : String? {
         get {
-            return AppSettings.userDefaults.string(forKey: AppSettings.keyCompositionSignature)
-        }
-        set {
-            AppSettings.userDefaults.set(newValue, forKey: AppSettings.keyCompositionSignature)
+            guard let dictionary = AppSettings.userDefaults.dictionary(forKey: AppSettings.mdmDictionaryKey),
+                    let value = dictionary[AppSettings.keyCompositionSignature] as? String else {
+                return nil
+            }
+            return value
         }
     }
 
     public var mdmCompositionSignatureBeforeQuotedMessage : String? {
         get {
-            return AppSettings.userDefaults.string(forKey: AppSettings.keyCompositionSignatureBeforeQuotedMessageEnabled)
-        }
-        set {
-            AppSettings.userDefaults.set(newValue, forKey: AppSettings.keyCompositionSignatureBeforeQuotedMessageEnabled)
+            guard let dictionary = AppSettings.userDefaults.dictionary(forKey: AppSettings.mdmDictionaryKey),
+                    let value = dictionary[AppSettings.keyCompositionSignatureBeforeQuotedMessageEnabled] as? String else {
+                return nil
+            }
+            return value
         }
     }
 
     public var mdmDefaultQuotedTextShown : Bool {
         get {
-            return AppSettings.userDefaults.bool(forKey: AppSettings.keyDefaultQuotedTextShownEnabled)
-        }
-        set {
-            AppSettings.userDefaults.set(newValue, forKey: AppSettings.keyDefaultQuotedTextShownEnabled)
+            guard let dictionary = AppSettings.userDefaults.dictionary(forKey: AppSettings.mdmDictionaryKey),
+                    let value = dictionary[AppSettings.keyDefaultQuotedTextShownEnabled] as? Bool else {
+                //Default value
+                return false
+            }
+            return value
         }
     }
 
     public var mdmAccountDefaultFolders : [String: String] {
         get {
-            if let accountDefaultFolders = AppSettings.userDefaults.dictionary(forKey: AppSettings.keyAccountDefaultFolders) as? [String: String] {
-                return accountDefaultFolders
+            guard let dictionary = AppSettings.userDefaults.dictionary(forKey: AppSettings.mdmDictionaryKey),
+                    let value = dictionary[AppSettings.keyAccountDefaultFolders] as? [String: String] else {
+                //Default value
+                return [String:String]()
             }
-            return [String:String]()
-        }
-        set {
-            AppSettings.userDefaults.set(newValue, forKey: AppSettings.keyAccountDefaultFolders)
+            return value
         }
     }
 
     public var mdmRemoteSearchEnabled : Bool {
         get {
-            return AppSettings.userDefaults.bool(forKey: AppSettings.keyRemoteSearchEnabled)
-        }
-        set {
-            AppSettings.userDefaults.set(newValue, forKey: AppSettings.keyRemoteSearchEnabled)
+            guard let dictionary = AppSettings.userDefaults.dictionary(forKey: AppSettings.mdmDictionaryKey),
+                    let value = dictionary[AppSettings.keyRemoteSearchEnabled] as? Bool else {
+                //Default value
+                return true
+            }
+            return value
         }
     }
 
     public var mdmAccountRemoteSearchNumResults : Int {
         get {
-            AppSettings.userDefaults.integer(forKey: AppSettings.keyAccountRemoteSearchNumResults)
-        }
-        set {
-            AppSettings.userDefaults.set(newValue, forKey: AppSettings.keyAccountRemoteSearchNumResults)
+            guard let dictionary = AppSettings.userDefaults.dictionary(forKey: AppSettings.mdmDictionaryKey),
+                    let value = dictionary[AppSettings.keyAccountRemoteSearchNumResults] as? Int else {
+                //Default value
+                return 50
+            }
+            return value
         }
     }
 
     public var mdmPEPSaveEncryptedOnServerEnabled : Bool {
         get {
-            AppSettings.userDefaults.bool(forKey: AppSettings.keyPEPSaveEncryptedOnServerEnabled)
-        }
-        set {
-            AppSettings.userDefaults.set(newValue, forKey: AppSettings.keyPEPSaveEncryptedOnServerEnabled)
+            guard let dictionary = AppSettings.userDefaults.dictionary(forKey: AppSettings.mdmDictionaryKey),
+                    let value = dictionary[AppSettings.keyPEPSaveEncryptedOnServerEnabled] as? Bool else {
+                //Default value
+                return true
+            }
+            return value
         }
     }
 
     public var mdmPEPSyncAccountEnabled : Bool {
         get {
-            AppSettings.userDefaults.bool(forKey: AppSettings.keyPEPEnableSyncAccountEnabled)
-        }
-        set {
-            AppSettings.userDefaults.set(newValue, forKey: AppSettings.keyPEPEnableSyncAccountEnabled)
+            guard let dictionary = AppSettings.userDefaults.dictionary(forKey: AppSettings.mdmDictionaryKey),
+                    let value = dictionary[AppSettings.keyPEPEnableSyncAccountEnabled] as? Bool else {
+                //Default value
+                return true
+            }
+            return value
+
         }
     }
 
     public var mdmPEPSyncNewDevicesEnabled : Bool {
         get {
-            AppSettings.userDefaults.bool(forKey: AppSettings.keyPEPSyncNewDevicesEnabled)
-        }
-        set {
-            AppSettings.userDefaults.set(newValue, forKey: AppSettings.keyPEPSyncNewDevicesEnabled)
+            guard let dictionary = AppSettings.userDefaults.dictionary(forKey: AppSettings.mdmDictionaryKey),
+                    let value = dictionary[AppSettings.keyPEPSyncNewDevicesEnabled] as? Bool else {
+                //Default value
+                return false
+            }
+            return value
         }
     }
 }
