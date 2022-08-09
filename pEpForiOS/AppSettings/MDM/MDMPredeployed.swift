@@ -299,15 +299,12 @@ extension MDMPredeployed: MDMPredeployedProtocol {
     }
 
     var haveAccountsToPredeploy: Bool {
-        guard let mdmDict = mdmPredeploymentDictionary() else {
+        do {
+            let accounts = try mdmAccountsToDeploy()
+            return !accounts.isEmpty
+        } catch {
             return false
         }
-
-        guard let predeployedAccounts = mdmDict[MDMPredeployed.keyPredeployedAccounts] as? [SettingsDict] else {
-            return false
-        }
-
-        return !predeployedAccounts.isEmpty
     }
 }
 
