@@ -8,8 +8,6 @@
 
 import Foundation
 
-import MessageModel
-
 /// All error cases thrown by `MDMPredeployedProtocol.predeployAccounts`.
 enum MDMPredeployedError: Error {
     /// Account settings were found, but the format could not be read/parsed.
