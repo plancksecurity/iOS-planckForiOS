@@ -147,8 +147,8 @@ extension AccountVerifier.ServerData {
 // MARK: - MDMPredeployedProtocol
 
 extension MDMPredeployed: MDMPredeployedProtocol {
-    func accountsToPredeploy() throws -> [MDMPredeployed.AccountData] {
-        return []
+    func accountToPredeploy() throws -> MDMPredeployed.AccountData? {
+        return nil
     }
 
     /// Implementation details:
