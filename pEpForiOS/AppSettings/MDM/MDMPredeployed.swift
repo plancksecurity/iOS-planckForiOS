@@ -20,7 +20,8 @@ extension MDMPredeployed {
     struct AccountData {
         let accountName: String
         let email: String
-        let accountDetails: AccountVerifier.ServerData
+        fileprivate let imapServer: AccountVerifier.ServerData
+        fileprivate let smtpServer: AccountVerifier.ServerData
     }
 }
 
@@ -161,7 +162,7 @@ extension MDMPredeployed: MDMPredeployedProtocol {
     /// "A managed app can respond to new configurations that arrive while the app is running by observing the
     /// NSUserDefaultsDidChangeNotification notification."
     func predeployAccounts(callback: @escaping (_ error: MDMPredeployedError?) -> ()) {
-        let serverTuples: [(String, String, AccountVerifier.ServerData, AccountVerifier.ServerData)]
+        let serverTuples: [MDMPredeployed.AccountData]
 
         do {
             serverTuples = try mdmAccountsToDeploy()
@@ -179,7 +180,7 @@ extension MDMPredeployed: MDMPredeployedProtocol {
         // Note the first error that occurred
         var firstError: Error?
 
-        for (accountName, email, imap, smtp) in serverTuples {
+        for (accountData) in serverTuples {
             // TODO: Get the password
             // TODO: Invoke verification
         }
@@ -251,11 +252,11 @@ extension MDMPredeployed: MDMPredeployedProtocol {
 
 extension MDMPredeployed {
     /// Gathers all deployable accounts.
-    /// - Returns: An array of all accounts with their meta-data as tuples of
-    /// Username/account descrption, email address, imap server settings, smtp server settings.
+    /// - Returns: An array account data with their meta-data
+    /// (Username/account description, email address, imap server settings, smtp server settings).
     /// This array can be empty if now accounts are to be deployed.
     /// - Throws:`MDMPredeployedError`
-    private func mdmAccountsToDeploy() throws -> [(String, String, AccountVerifier.ServerData, AccountVerifier.ServerData)] {
+    private func mdmAccountsToDeploy() throws -> [AccountData] {
         guard let mdmDict = mdmPredeploymentDictionary() else {
             return []
         }
@@ -308,10 +309,7 @@ extension MDMPredeployed {
         }
 
         // Tuple of (accountName, email, imap, smtp)
-        var serverTuples = [(String,
-                             String,
-                             AccountVerifier.ServerData,
-                             AccountVerifier.ServerData)]()
+        var accountDatas = [AccountData]()
 
         let success = traverseInPairs(elements: serverSettings) { server0, server1 in
             switch server0 {
@@ -321,10 +319,11 @@ extension MDMPredeployed {
                     if (imapAccountName != smtpAccountName || imapEmailAddress != smtpEmailAddress) {
                         return false
                     } else {
-                        serverTuples.append((imapAccountName,
-                                             imapEmailAddress,
-                                             serverData0,
-                                             serverData1))
+                        let accountData = AccountData(accountName: imapAccountName,
+                                                      email: imapEmailAddress,
+                                                      imapServer: serverData0,
+                                                      smtpServer: serverData1)
+                        accountDatas.append(accountData)
                         return true
                     }
                 case .imap(_, _, _):
@@ -338,10 +337,11 @@ extension MDMPredeployed {
                     if (imapAccountName != smtpAccountName || imapEmailAddress != smtpEmailAddress) {
                         return false
                     } else {
-                        serverTuples.append((smtpAccountName,
-                                             smtpEmailAddress,
-                                             serverData1,
-                                             serverData0))
+                        let accountData = AccountData(accountName: smtpAccountName,
+                                                      email: smtpEmailAddress,
+                                                      imapServer: serverData1,
+                                                      smtpServer: serverData0)
+                        accountDatas.append(accountData)
                         return true
                     }
                 }
@@ -352,7 +352,7 @@ extension MDMPredeployed {
             throw MDMPredeployedError.malformedAccountData
         }
 
-        return serverTuples
+        return accountDatas
     }
 
     private func mdmPredeploymentDictionary() -> SettingsDict? {
