@@ -486,7 +486,12 @@ extension AppSettings: MDMAppSettingsProtocol {
 
     public var mdmMaxPushFolders : Int {
         get {
-            AppSettings.userDefaults.integer(forKey: AppSettings.keyMaxPushFolders)
+            guard let dictionary = AppSettings.userDefaults.dictionary(forKey: AppSettings.mdmDictionaryKey),
+                    let value = dictionary[AppSettings.keyMaxPushFolders] as? Int else {
+                //Default value
+                return 0
+            }
+            return value
         }
     }
 
