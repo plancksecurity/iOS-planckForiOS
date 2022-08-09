@@ -309,7 +309,11 @@ extension MDMPredeployed: MDMPredeployedProtocol {
 
         return !predeployedAccounts.isEmpty
     }
+}
 
+// MARK: - Utility
+
+extension MDMPredeployed {
     private func mdmAccountsToDeploy() -> [(String, String, MDMPredeployed.ServerSettings, MDMPredeployed.ServerSettings)] {
         return []
     }
