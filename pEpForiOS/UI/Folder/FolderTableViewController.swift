@@ -107,7 +107,7 @@ class FolderTableViewController: UITableViewController {
         tableView.cellLayoutMarginsFollowReadableWidth = false
         addAccountButton.titleLabel?.numberOfLines = 0
         addAccountButton.titleLabel?.setPEPFont(style: .body, weight: .regular)
-        if AppSettings.shared.isMDMEnabled {
+        if AppSettings.shared.hasBeenMDMDeployed {
             addAccountButton.isHidden = true
         }
     }
