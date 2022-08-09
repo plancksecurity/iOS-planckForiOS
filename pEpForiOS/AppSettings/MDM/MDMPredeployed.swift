@@ -247,6 +247,7 @@ extension MDMPredeployed: MDMPredeployedProtocol {
         }
 
         for (accountName, email, imap, smtp) in serverTuples {
+            // TODO: Get the password
             // TODO: Invoke verification
         }
 
