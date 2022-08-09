@@ -29,22 +29,8 @@ protocol MDMPredeployedProtocol {
     /// - Note: It is an error to call `predeployAccounts` with `haveAccountsToPredeploy`
     /// being `false`, with undefined behavior.
     ///
-    /// The format of the required settings is as follows:
-    ///
-    ///     MDM: Dictionary
-    ///              predeployedAcounts: Array of AccountDictionary
-    ///
-    /// The format of a single account description (`AccountDictionary`):
-    ///
-    ///     userName: String
-    ///     loginName: String
-    ///     password: String
-    ///     imapServer: Dictionary
-    ///       name: String
-    ///       port: Integer
-    ///     smtpServer: Dictionary
-    ///       name: String
-    ///       port: Integer
+    /// The format of the required settings is described here:
+    /// https://confluence.pep.security/x/HgGc (see "Settings meaning and structure")
     func predeployAccounts(callback: @escaping (_ error: MDMPredeployedError?) -> ())
 
     /// Returns `true` if there are accounts to be predeployed, `false` otherwise.
