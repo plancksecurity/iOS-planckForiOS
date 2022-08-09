@@ -148,7 +148,7 @@ extension MDMPredeployed: MDMPredeployedProtocol {
     /// "A managed app can respond to new configurations that arrive while the app is running by observing the
     /// NSUserDefaultsDidChangeNotification notification."
     func predeployAccounts(callback: @escaping (_ error: MDMPredeployedError?) -> ()) {
-        let serverTuples: [(String, String, MDMPredeployed.ServerSettings, MDMPredeployed.ServerSettings)]
+        let serverTuples: [(String, String, AccountVerifier.ServerData, AccountVerifier.ServerData)]
 
         do {
             serverTuples = try mdmAccountsToDeploy()
@@ -242,7 +242,7 @@ extension MDMPredeployed {
     /// Username/account descrption, email address, imap server settings, smtp server settings.
     /// This array can be empty if now accounts are to be deployed.
     /// - Throws:`MDMPredeployedError`
-    private func mdmAccountsToDeploy() throws -> [(String, String, MDMPredeployed.ServerSettings, MDMPredeployed.ServerSettings)] {
+    private func mdmAccountsToDeploy() throws -> [(String, String, AccountVerifier.ServerData, AccountVerifier.ServerData)] {
         guard let mdmDict = mdmPredeploymentDictionary() else {
             return []
         }
@@ -295,31 +295,40 @@ extension MDMPredeployed {
         }
 
         // Tuple of (accountName, email, imap, smtp)
-        var serverTuples = [(String, String, ServerSettings, ServerSettings)]()
+        var serverTuples = [(String,
+                             String,
+                             AccountVerifier.ServerData,
+                             AccountVerifier.ServerData)]()
 
         let success = traverseInPairs(elements: serverSettings) { server0, server1 in
             switch server0 {
-            case .imap(let imapAccountName, let imapEmailAddress, _):
+            case .imap(let imapAccountName, let imapEmailAddress, let serverData0):
                 switch server1 {
-                case .smtp(let smtpAccountName, let smtpEmailAddress, _):
+                case .smtp(let smtpAccountName, let smtpEmailAddress, let serverData1):
                     if (imapAccountName != smtpAccountName || imapEmailAddress != smtpEmailAddress) {
                         return false
                     } else {
-                        serverTuples.append((imapAccountName, imapEmailAddress, server0, server1))
+                        serverTuples.append((imapAccountName,
+                                             imapEmailAddress,
+                                             serverData0,
+                                             serverData1))
                         return true
                     }
                 case .imap(_, _, _):
                     return false
                 }
-            case .smtp(let smtpAccountName, let smtpEmailAddress, _):
+            case .smtp(let smtpAccountName, let smtpEmailAddress, let serverData0):
                 switch server1 {
                 case .smtp(_, _, _):
                     return false
-                case .imap(let imapAccountName, let imapEmailAddress, _):
+                case .imap(let imapAccountName, let imapEmailAddress, let serverData1):
                     if (imapAccountName != smtpAccountName || imapEmailAddress != smtpEmailAddress) {
                         return false
                     } else {
-                        serverTuples.append((smtpAccountName, smtpEmailAddress, server1, server0))
+                        serverTuples.append((smtpAccountName,
+                                             smtpEmailAddress,
+                                             serverData1,
+                                             serverData0))
                         return true
                     }
                 }
