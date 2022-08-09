@@ -18,10 +18,10 @@ enum MDMPredeployedError: Error {
 }
 
 protocol MDMPredeployedProtocol {
-    /// Finds out about pre-deployed accounts (via settings that can be pre-deployed via MDM).
+    /// An MDM account (if any) that can be deployed.
     ///
-    /// - Returns: An account with meta-data, ready to be deployed once a password
-    /// is supplied, or nil, if nothing to deploy.
+    /// - Returns: A complete account, ready to be deployed once a password
+    /// is supplied, or nil, if no account exists that can be deployed.
     /// - Throws:`MDMPredeployedError`
     func accountToDeploy() throws -> MDMPredeployed.AccountData?
 
