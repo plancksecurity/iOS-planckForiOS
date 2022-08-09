@@ -75,11 +75,12 @@ public protocol MDMAppSettingsProtocol {
     /// Default is true.
     var mdmCompositionSignatureEnabled: Bool { get set }
 
-    /// Signature to include in outgoing emails when composition_use_signature is enabled
+    /// Signature to include in outgoing emails when mdmCompositionSignatureEnabled is enabled
     var mdmCompositionSignature: String? { get set }
 
     /// Whether to position the sender's signature before the quoted message in replies/forwards.
     /// (Signature after quoted message by default).
+    ///
     /// Default is false.
     var mdmCompositionSignatureBeforeQuotedMessage: String? { get set }
 
@@ -90,6 +91,7 @@ public protocol MDMAppSettingsProtocol {
     var mdmDefaultQuotedTextShown: Bool { get set }
 
     /// Dictionary of Folders names that the application will use as special archive, drafts, sent, spam, trash folders and its keys.
+    ///
     /// By default all of them are empty.
     /// This means the app will try to find the relevant folders from the server.
     /// Removing folder elements from JSON has the same effect in this case.
@@ -105,10 +107,12 @@ public protocol MDMAppSettingsProtocol {
 
     /// When enabled, a button for remote search will appear in local search screen,
     /// so that the user can get more search results from the server.
+    ///
     /// Default is true.
     var mdmRemoteSearchEnabled: Bool { get set }
 
     /// Number of messages retrieved when a remote search is performed.
+    ///
     /// Default is 50.
     var mdmAccountRemoteSearchNumResults: Int { get set }
 
