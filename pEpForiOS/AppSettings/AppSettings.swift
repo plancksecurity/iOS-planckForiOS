@@ -541,7 +541,7 @@ extension AppSettings: MDMAppSettingsProtocol {
             guard let dictionary = AppSettings.userDefaults.dictionary(forKey: AppSettings.mdmDictionaryKey),
                     let value = dictionary[AppSettings.keyDefaultQuotedTextShownEnabled] as? Bool else {
                 //Default value
-                return false
+                return true
             }
             return value
         }

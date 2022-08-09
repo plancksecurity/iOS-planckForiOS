@@ -67,19 +67,17 @@ public protocol MDMAppSettingsProtocol {
     /// Signature to include in outgoing emails when mdmCompositionSignatureEnabled is enabled
     var mdmCompositionSignature: String? { get }
 
-    /// Whether to position the sender's signature before the quoted message in replies/forwards.
-    /// (Signature after quoted message by default).
+    /// Indicate whether to position the sender's signature before the quoted message in replies/forwards.
     ///
     /// Default is false.
     var mdmCompositionSignatureBeforeQuotedMessage: String? { get }
 
-    /// Indicate whether to position sender signature before the quoted message in replies/forwards.
-    /// (Signature after quoted message by default).
+    /// Indicate whether to include quoted text in replied or forwarded mails
     ///
-    /// Default is false.
+    /// Default is true.
     var mdmDefaultQuotedTextShown: Bool { get }
 
-    /// Dictionary of Folders names that the application will use as special archive, drafts, sent, spam, trash folders and its keys.
+    /// Dictionary of Folders names that the application will use as special purposes and its keys.
     ///
     /// By default all of them are empty.
     /// This means the app will try to find the relevant folders from the server.
