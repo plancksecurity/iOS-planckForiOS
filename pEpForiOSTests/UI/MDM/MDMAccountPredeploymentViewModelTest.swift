@@ -61,7 +61,7 @@ class DummyDeployer: MDMPredeployedProtocol {
         self.resultingError = resultingError
     }
 
-    func accountsToPredeploy() throws -> [(String, String, AccountVerifier.ServerData, AccountVerifier.ServerData)] {
+    func accountsToPredeploy() throws -> [MDMPredeployed.AccountData] {
         return []
     }
 
