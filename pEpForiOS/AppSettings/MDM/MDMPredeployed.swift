@@ -310,6 +310,10 @@ extension MDMPredeployed: MDMPredeployedProtocol {
         return !predeployedAccounts.isEmpty
     }
 
+    private func mdmAccountsToDeploy() -> [(String, String, MDMPredeployed.ServerSettings, MDMPredeployed.ServerSettings)] {
+        return []
+    }
+
     private func mdmPredeploymentDictionary() -> SettingsDict? {
         // Please note the explicit use of UserDefaults for predeployment,
         // instead of the usual usage of AppSettings, since this use case is special.
