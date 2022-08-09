@@ -40,26 +40,26 @@ extension AppSettings {
 
     // MARK: - MDM Settings
 
-    static private var keyPEPEnablePrivacyProtectionEnabled = "keyPepEnablePrivacyProtection"
-    static private var keyPEPExtraKeys = "keyPepExtraKeys"
-    static private var keyPEPTrustwordsEnabled = "keyPepUseTrustwords"
-    static private var keyUnsecureDeliveryWarningEnabled = "keyUnsecureDeliveryWarning"
-    static private var keyPEPSyncFolderEnabled = "keyPepSyncFolder"
-    static private var keyDebugLoggingEnabled = "keyDebugLogging"
+    static private var keyPEPEnablePrivacyProtectionEnabled = "keyPEPEnablePrivacyProtectionEnabled"
+    static private var keyPEPExtraKeys = "keyPEPExtraKeys"
+    static private var keyPEPTrustwordsEnabled = "keyPEPTrustwordsEnabled"
+    static private var keyUnsecureDeliveryWarningEnabled = "keyUnsecureDeliveryWarningEnabled"
+    static private var keyPEPSyncFolderEnabled = "keyPEPSyncFolderEnabled"
+    static private var keyDebugLoggingEnabled = "keyDebugLoggingEnabled"
     static private var keyAccountDisplayCount = "keyAccountDisplayCount"
     static private var keyMaxPushFolders = "keyMaxPushFolders"
     static private var keyAccountDescription = "keyAccountDescription"
     static private var keyCompositionSenderName = "keyCompositionSenderName"
-    static private var keyCompositionUseSignature = "keyCompositionUseSignature"
+    static private var keyCompositionSignatureEnabled = "keyCompositionSignatureEnabled"
     static private var keyCompositionSignature = "keyCompositionSignature"
-    static private var keyCompositionSignatureBeforeQuotedMessage = "keyCompositionSignatureBeforeQuotedMessage"
-    static private var keyDefaultQuotedTextShown = "keyDefaultQuotedTextShown"
+    static private var keyCompositionSignatureBeforeQuotedMessageEnabled = "keyCompositionSignatureBeforeQuotedMessageEnabled"
+    static private var keyDefaultQuotedTextShownEnabled = "keyDefaultQuotedTextShownEnabled"
     static private var keyAccountDefaultFolders = "keyAccountDefaultFolders"
     static private var keyRemoteSearchEnabled = "keyRemoteSearchEnabled"
     static private var keyAccountRemoteSearchNumResults = "keyAccountRemoteSearchNumResults"
-    static private var keyPEPSaveEncryptedOnServerEnabled = "keyPepSaveEncryptedOnServer"
-    static private var keyPEPEnableSyncAccountEnabled = "keyPepEnableSyncAccount"
-    static private var keyPEPSyncNewDevicesEnabled = "keyAllowPepSyncNewDevices"
+    static private var keyPEPSaveEncryptedOnServerEnabled = "keyPEPSaveEncryptedOnServerEnabled"
+    static private var keyPEPEnableSyncAccountEnabled = "keyPEPEnableSyncAccountEnabled"
+    static private var keyPEPSyncNewDevicesEnabled = "keyPEPSyncNewDevicesEnabled"
 }
 
 // MARK: - AppSettings
@@ -148,9 +148,9 @@ extension AppSettings {
         defaults[AppSettings.keyPEPSyncFolderEnabled] = true
         defaults[AppSettings.keyDebugLoggingEnabled] = false
         defaults[AppSettings.keyAccountDisplayCount] = 250
-        defaults[AppSettings.keyCompositionUseSignature] = true
-        defaults[AppSettings.keyCompositionSignatureBeforeQuotedMessage] = false
-        defaults[AppSettings.keyDefaultQuotedTextShown] = false
+        defaults[AppSettings.keyCompositionSignatureEnabled] = true
+        defaults[AppSettings.keyCompositionSignatureBeforeQuotedMessageEnabled] = false
+        defaults[AppSettings.keyDefaultQuotedTextShownEnabled] = false
         defaults[AppSettings.keyAccountDefaultFolders] = []
         defaults[AppSettings.keyRemoteSearchEnabled] = true
         defaults[AppSettings.keyAccountRemoteSearchNumResults] = 50
@@ -516,10 +516,10 @@ extension AppSettings: MDMAppSettingsProtocol {
 
     public var mdmCompositionSignatureEnabled : Bool {
         get {
-            return AppSettings.userDefaults.bool(forKey: AppSettings.keyCompositionUseSignature)
+            return AppSettings.userDefaults.bool(forKey: AppSettings.keyCompositionSignatureEnabled)
         }
         set {
-            AppSettings.userDefaults.set(newValue, forKey: AppSettings.keyCompositionUseSignature)
+            AppSettings.userDefaults.set(newValue, forKey: AppSettings.keyCompositionSignatureEnabled)
         }
     }
     public var mdmCompositionSignature : String? {
@@ -533,26 +533,28 @@ extension AppSettings: MDMAppSettingsProtocol {
 
     public var mdmCompositionSignatureBeforeQuotedMessage : String? {
         get {
-            return AppSettings.userDefaults.string(forKey: AppSettings.keyCompositionSignatureBeforeQuotedMessage)
+            return AppSettings.userDefaults.string(forKey: AppSettings.keyCompositionSignatureBeforeQuotedMessageEnabled)
         }
         set {
-            AppSettings.userDefaults.set(newValue, forKey: AppSettings.keyCompositionSignatureBeforeQuotedMessage)
+            AppSettings.userDefaults.set(newValue, forKey: AppSettings.keyCompositionSignatureBeforeQuotedMessageEnabled)
         }
     }
 
     public var mdmDefaultQuotedTextShown : Bool {
         get {
-            return AppSettings.userDefaults.bool(forKey: AppSettings.keyDefaultQuotedTextShown)
+            return AppSettings.userDefaults.bool(forKey: AppSettings.keyDefaultQuotedTextShownEnabled)
         }
         set {
-            AppSettings.userDefaults.set(newValue, forKey: AppSettings.keyDefaultQuotedTextShown)
+            AppSettings.userDefaults.set(newValue, forKey: AppSettings.keyDefaultQuotedTextShownEnabled)
         }
     }
 
-    public var mdmAccountDefaultFolders : [String: Any] {
+    public var mdmAccountDefaultFolders : [String: String] {
         get {
-
-            return AppSettings.userDefaults.dictionary(forKey: AppSettings.keyAccountDefaultFolders) ?? [String:Any]()
+            if let accountDefaultFolders = AppSettings.userDefaults.dictionary(forKey: AppSettings.keyAccountDefaultFolders) as? [String: String] {
+                return accountDefaultFolders
+            }
+            return [String:String]()
         }
         set {
             AppSettings.userDefaults.set(newValue, forKey: AppSettings.keyAccountDefaultFolders)

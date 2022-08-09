@@ -101,7 +101,7 @@ public protocol MDMAppSettingsProtocol {
     /// - spam_folder: Folder where mails marked as spam are stored.
     /// - trash_folder: Folder where deleted mails are temporarily stored until they are permanently deleted.
     /// - The special value "-NONE-" can be entered to unassign a special folder.
-    var mdmAccountDefaultFolders: [String: Any] { get set }
+    var mdmAccountDefaultFolders: [String: String] { get set }
 
     /// When enabled, a button for remote search will appear in local search screen,
     /// so that the user can get more search results from the server.
