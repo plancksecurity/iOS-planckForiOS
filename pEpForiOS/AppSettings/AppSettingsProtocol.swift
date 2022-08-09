@@ -35,7 +35,8 @@ public protocol AppSettingsProtocol {
     /// The list of the accepted languages codes for truswords. 
     var acceptedLanguagesCodes: [String] { get set }
 
-    var isMDMEnabled: Bool { get set }
+    /// Indicate if the app has been deployed via MDM
+    var hasBeenMDMDeployed: Bool { get set }
 
     // MARK:- Collapsing State
 

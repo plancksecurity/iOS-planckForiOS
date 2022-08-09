@@ -21,7 +21,7 @@ import pEp4iosIntern
 // MARK: - Keys
 
 extension AppSettings {
-    static private let keyIsMDM = "keyIsMDM"
+    static private let keyhasBeenMDMDeployed = "keyhasBeenMDMDeployed"
     static private let keyKeySyncEnabled = "keyStartpEpSync"
     static private let keyUsePEPFolderEnabled = "keyUsePEPFolderEnabled"
     static private let keyUnencryptedSubjectEnabled = "keyUnencryptedSubjectEnabled"
@@ -146,12 +146,12 @@ extension AppSettings {
 // MARK: - AppSettingsProtocol
 
 extension AppSettings: AppSettingsProtocol {
-    public var isMDMEnabled: Bool {
+    public var hasBeenMDMDeployed: Bool {
         get {
-            return AppSettings.userDefaults.bool(forKey: AppSettings.keyIsMDM)
+            return AppSettings.userDefaults.bool(forKey: AppSettings.keyhasBeenMDMDeployed)
         }
         set {
-            AppSettings.userDefaults.set(newValue, forKey: AppSettings.keyIsMDM)
+            AppSettings.userDefaults.set(newValue, forKey: AppSettings.keyhasBeenMDMDeployed)
         }
     }
 
