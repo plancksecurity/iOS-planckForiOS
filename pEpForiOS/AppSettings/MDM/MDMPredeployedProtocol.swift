@@ -8,6 +8,8 @@
 
 import Foundation
 
+import MessageModel
+
 /// All error cases thrown by `MDMPredeployedProtocol.predeployAccounts`.
 enum MDMPredeployedError: Error {
     /// Account settings were found, but the format could not be read/parsed.
@@ -18,6 +20,14 @@ enum MDMPredeployedError: Error {
 }
 
 protocol MDMPredeployedProtocol {
+    /// Finds out about pre-deployed accounts (via settings that can be pre-deployed via MDM).
+    ///
+    /// - Returns: An array of all accounts with their meta-data as tuples of
+    /// Username/account descrption, email address, imap server settings, smtp server settings.
+    /// This array can be empty if now accounts are to be deployed.
+    /// - Throws:`MDMPredeployedError`
+    func accountsToPredeploy() throws -> [(String, String, AccountVerifier.ServerData, AccountVerifier.ServerData)]
+
     /// Finds out about pre-deployed accounts (via settings that can be pre-deployed via MDM),
     /// and if there are any configured, erases any accounts already set up in the local DB
     /// and sets up the MDM configured accounts,

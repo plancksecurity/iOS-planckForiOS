@@ -9,6 +9,7 @@
 import XCTest
 
 @testable import pEpForiOS
+import MessageModel
 
 class MDMAccountPredeploymentViewModelTest: XCTestCase {
 
@@ -58,6 +59,10 @@ extension MDMAccountPredeploymentViewModelTest {
 class DummyDeployer: MDMPredeployedProtocol {
     init(resultingError: MDMPredeployedError?) {
         self.resultingError = resultingError
+    }
+
+    func accountsToPredeploy() throws -> [(String, String, AccountVerifier.ServerData, AccountVerifier.ServerData)] {
+        return []
     }
 
     func predeployAccounts(callback: @escaping (MDMPredeployedError?) -> ()) {
