@@ -16,6 +16,12 @@ import PantomimeFramework
 class MDMPredeployed {
 }
 
+extension MDMPredeployed {
+    struct AccountData {
+    }
+}
+
+
 // MARK: - Dictionary key constants
 
 extension MDMPredeployed {
