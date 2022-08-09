@@ -60,7 +60,7 @@ class DummyDeployer: MDMPredeployedProtocol {
         self.resultingError = resultingError
     }
 
-    func accountToPredeploy() throws -> MDMPredeployed.AccountData? {
+    func accountToDeploy() throws -> MDMPredeployed.AccountData? {
         return nil
     }
 
