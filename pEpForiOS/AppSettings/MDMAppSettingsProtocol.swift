@@ -22,17 +22,17 @@ public protocol MDMAppSettingsProtocol {
     /// If disabled, it's impossible to invoke the trust management.
     var mdmPEPTrustwordsEnabled: Bool { get }
 
-    /// Indicate if Unsecure delivery warning is enabled
+    /// Indicate if the Unsecure delivery warning is enabled
     ///
-    /// When this setting is enabled, the unsecure Recipients in the
+    /// When it's enabled, the unsecure Recipients in the
     /// "to", "cc", "bcc" fields from Message Compose screen will appear highlighted.
     /// Default is true.
     var mdmUnsecureDeliveryWarningEnabled: Bool { get }
 
-    /// Indicate if Sync Folder is enabled
+    /// Indicate if a dedicated folder named is used to sync messages
     ///
-    /// When enabled, a dedicated pEp folder is used for pEp sync messages.
-    /// When disabled, Inbox folder will be user for these messages instead.
+    /// When enabled, it is used for pEp sync messages.
+    /// When disabled, Inbox folder will be use for these messages instead.
     /// Default is true.
     var mdmPEPSyncFolderEnabled: Bool { get }
 
@@ -42,10 +42,9 @@ public protocol MDMAppSettingsProtocol {
     /// Default is false.
     var mdmDebugLoggingEnabled: Bool { get }
 
-    /// Number of mails displayed in Message List screen.
+    /// Number of mails displayed in Email List view.
     ///
-    /// The user can always refresh more mails from the server.
-    /// Configuration designers like Intune's one are handy for this setting.
+    /// The user can always fetch more mails from the server.
     /// Default is 250.
     var mdmAccountDisplayCount: Int { get }
 
@@ -54,7 +53,6 @@ public protocol MDMAppSettingsProtocol {
 
     /// Composition sender name
     ///
-    /// Defaults to MDM's {{username}}, recommended for deployment.
     /// If not provided or empty, email address will be used instead.
     var mdmCompositionSenderName: String? { get }
 
