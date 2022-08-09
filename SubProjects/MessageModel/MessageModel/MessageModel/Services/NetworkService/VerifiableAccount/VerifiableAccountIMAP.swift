@@ -28,6 +28,11 @@ class VerifiableAccountIMAP {
     private var imapConnection: ImapConnection?
     private var syncDelegate: VerifiableAccountSyncDelegate?
 
+    /// Stops the verification.
+    func stop() {
+        imapConnection?.close()
+    }
+
     /// Tries to verify the given IMAP account.
     func verify(connectInfo: EmailConnectInfo) {
         let theSyncDelegate = VerifiableAccountSyncDelegate(errorHandler: self)
