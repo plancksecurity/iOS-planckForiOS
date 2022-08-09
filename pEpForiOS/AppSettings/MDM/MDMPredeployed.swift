@@ -18,6 +18,9 @@ class MDMPredeployed {
 
 extension MDMPredeployed {
     struct AccountData {
+        let accountName: String
+        let email: String
+        let accountDetails: AccountVerifier.ServerData
     }
 }
 
