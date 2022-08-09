@@ -40,12 +40,12 @@ extension AppSettings {
 
     // MARK: - MDM Settings
 
-    static private var keyPEPEnablePrivacyProtection = "keyPepEnablePrivacyProtection"
+    static private var keyPEPEnablePrivacyProtectionEnabled = "keyPepEnablePrivacyProtection"
     static private var keyPEPExtraKeys = "keyPepExtraKeys"
-    static private var keyPEPUseTrustwords = "keyPepUseTrustwords"
-    static private var keyUnsecureDeliveryWarning = "keyUnsecureDeliveryWarning"
-    static private var keyPEPSyncFolder = "keyPepSyncFolder"
-    static private var keyDebugLogging = "keyDebugLogging"
+    static private var keyPEPTrustwordsEnabled = "keyPepUseTrustwords"
+    static private var keyUnsecureDeliveryWarningEnabled = "keyUnsecureDeliveryWarning"
+    static private var keyPEPSyncFolderEnabled = "keyPepSyncFolder"
+    static private var keyDebugLoggingEnabled = "keyDebugLogging"
     static private var keyAccountDisplayCount = "keyAccountDisplayCount"
     static private var keyMaxPushFolders = "keyMaxPushFolders"
     static private var keyAccountDescription = "keyAccountDescription"
@@ -57,9 +57,9 @@ extension AppSettings {
     static private var keyAccountDefaultFolders = "keyAccountDefaultFolders"
     static private var keyRemoteSearchEnabled = "keyRemoteSearchEnabled"
     static private var keyAccountRemoteSearchNumResults = "keyAccountRemoteSearchNumResults"
-    static private var keyPEPSaveEncryptedOnServer = "keyPepSaveEncryptedOnServer"
-    static private var keyPEPEnableSyncAccount = "keyPepEnableSyncAccount"
-    static private var keyAllowPEPSyncNewDevices = "keyAllowPepSyncNewDevices"
+    static private var keyPEPSaveEncryptedOnServerEnabled = "keyPepSaveEncryptedOnServer"
+    static private var keyPEPEnableSyncAccountEnabled = "keyPepEnableSyncAccount"
+    static private var keyPEPSyncNewDevicesEnabled = "keyAllowPepSyncNewDevices"
 }
 
 // MARK: - AppSettings
@@ -144,9 +144,9 @@ extension AppSettings {
         defaults[AppSettings.keyAcceptedLanguagesCodes] = ["de", "en"]
 
         // MARK: - MDM Defaults
-        defaults[AppSettings.keyUnsecureDeliveryWarning] = true
-        defaults[AppSettings.keyPEPSyncFolder] = true
-        defaults[AppSettings.keyDebugLogging] = false
+        defaults[AppSettings.keyUnsecureDeliveryWarningEnabled] = true
+        defaults[AppSettings.keyPEPSyncFolderEnabled] = true
+        defaults[AppSettings.keyDebugLoggingEnabled] = false
         defaults[AppSettings.keyAccountDisplayCount] = 250
         defaults[AppSettings.keyCompositionUseSignature] = true
         defaults[AppSettings.keyCompositionSignatureBeforeQuotedMessage] = false
@@ -154,9 +154,9 @@ extension AppSettings {
         defaults[AppSettings.keyAccountDefaultFolders] = []
         defaults[AppSettings.keyRemoteSearchEnabled] = true
         defaults[AppSettings.keyAccountRemoteSearchNumResults] = 50
-        defaults[AppSettings.keyPEPSaveEncryptedOnServer] = true
-        defaults[AppSettings.keyPEPEnableSyncAccount] = true
-        defaults[AppSettings.keyAllowPEPSyncNewDevices] = false
+        defaults[AppSettings.keyPEPSaveEncryptedOnServerEnabled] = true
+        defaults[AppSettings.keyPEPEnableSyncAccountEnabled] = true
+        defaults[AppSettings.keyPEPSyncNewDevicesEnabled] = false
         AppSettings.userDefaults.register(defaults: defaults)
     }
 
@@ -345,188 +345,6 @@ extension AppSettings: AppSettingsProtocol {
             return AppSettings.userDefaults.set(newValue, forKey: AppSettings.keyAcceptedLanguagesCodes)
         }
     }
-
-    // MARK: - MDM
-
-    public var mdmPEPEnablePrivacyProtection : Bool {
-        get {
-            return AppSettings.userDefaults.bool(forKey: AppSettings.keyPEPEnablePrivacyProtection)
-        }
-        set {
-            AppSettings.userDefaults.set(newValue, forKey: AppSettings.keyPEPEnablePrivacyProtection)
-        }
-    }
-
-    public var mdmPEPExtraKeys : [String] {
-        get {
-            return AppSettings.userDefaults.stringArray(forKey: AppSettings.keyPEPExtraKeys) ?? []
-        }
-        set {
-            AppSettings.userDefaults.set(newValue, forKey: AppSettings.keyPEPExtraKeys)
-        }
-    }
-
-    public var mdmPEPUseTrustwords : Bool {
-        get {
-            AppSettings.userDefaults.bool(forKey: AppSettings.keyPEPUseTrustwords)
-        }
-        set {
-            AppSettings.userDefaults.set(newValue, forKey: AppSettings.keyPEPUseTrustwords)
-        }
-    }
-
-    public var mdmUnsecureDeliveryWarning : Bool {
-        get {
-            AppSettings.userDefaults.bool(forKey: AppSettings.keyUnsecureDeliveryWarning)
-        }
-        set {
-            AppSettings.userDefaults.set(newValue, forKey: AppSettings.keyUnsecureDeliveryWarning)
-        }
-    }
-
-    public var mdmPEPSyncFolder : Bool {
-        get {
-            AppSettings.userDefaults.bool(forKey: AppSettings.keyPEPSyncFolder)
-        }
-        set {
-            AppSettings.userDefaults.set(newValue, forKey: AppSettings.keyPEPSyncFolder)
-        }
-    }
-
-    public var mdmDebugLogging : Bool {
-        get {
-            AppSettings.userDefaults.bool(forKey: AppSettings.keyDebugLogging)
-        }
-        set {
-            AppSettings.userDefaults.set(newValue, forKey: AppSettings.keyDebugLogging)
-        }
-    }
-
-    public var mdmAccountDisplayCount: Int {
-        get {
-            AppSettings.userDefaults.integer(forKey: AppSettings.keyAccountDisplayCount)
-        }
-        set {
-            AppSettings.userDefaults.set(newValue, forKey: AppSettings.keyAccountDisplayCount)
-        }
-    }
-
-    public var mdmMaxPushFolders : Int {
-        get {
-            AppSettings.userDefaults.integer(forKey: AppSettings.keyMaxPushFolders)
-        }
-        set {
-            AppSettings.userDefaults.set(newValue, forKey: AppSettings.keyMaxPushFolders)
-        }
-    }
-
-    public var mdmAccountDescription : String? {
-        get {
-            return AppSettings.userDefaults.string(forKey: AppSettings.keyAccountDescription)
-        }
-        set {
-            AppSettings.userDefaults.set(newValue, forKey: AppSettings.keyAccountDescription)
-        }
-    }
-
-    public var mdmCompositionSenderName : String? {
-        get {
-            return AppSettings.userDefaults.string(forKey: AppSettings.keyCompositionSenderName)
-        }
-        set {
-            AppSettings.userDefaults.set(newValue, forKey: AppSettings.keyCompositionSenderName)
-        }
-    }
-
-    public var mdmCompositionUseSignature : String? {
-        get {
-            return AppSettings.userDefaults.string(forKey: AppSettings.keyCompositionUseSignature)
-        }
-        set {
-            AppSettings.userDefaults.set(newValue, forKey: AppSettings.keyCompositionUseSignature)
-        }
-    }
-    public var mdmCompositionSignature : String? {
-        get {
-            return AppSettings.userDefaults.string(forKey: AppSettings.keyCompositionSignature)
-        }
-        set {
-            AppSettings.userDefaults.set(newValue, forKey: AppSettings.keyCompositionSignature)
-        }
-    }
-
-    public var mdmCompositionSignatureBeforeQuotedMessage : String? {
-        get {
-            return AppSettings.userDefaults.string(forKey: AppSettings.keyCompositionSignatureBeforeQuotedMessage)
-        }
-        set {
-            AppSettings.userDefaults.set(newValue, forKey: AppSettings.keyCompositionSignatureBeforeQuotedMessage)
-        }
-    }
-
-    public var mdmDefaultQuotedTextShown : String? {
-        get {
-            return AppSettings.userDefaults.string(forKey: AppSettings.keyDefaultQuotedTextShown)
-        }
-        set {
-            AppSettings.userDefaults.set(newValue, forKey: AppSettings.keyDefaultQuotedTextShown)
-        }
-    }
-
-    public var mdmAccountDefaultFolders : [String: Any] {
-        get {
-
-            return AppSettings.userDefaults.dictionary(forKey: AppSettings.keyAccountDefaultFolders) ?? [String:Any]()
-        }
-        set {
-            AppSettings.userDefaults.set(newValue, forKey: AppSettings.keyAccountDefaultFolders)
-        }
-    }
-
-    public var mdmRemoteSearchEnabled : Bool {
-        get {
-            return AppSettings.userDefaults.bool(forKey: AppSettings.keyRemoteSearchEnabled)
-        }
-        set {
-            AppSettings.userDefaults.set(newValue, forKey: AppSettings.keyRemoteSearchEnabled)
-        }
-    }
-
-    public var mdmAccountRemoteSearchNumResults : Int {
-        get {
-            AppSettings.userDefaults.integer(forKey: AppSettings.keyAccountRemoteSearchNumResults)
-        }
-        set {
-            AppSettings.userDefaults.set(newValue, forKey: AppSettings.keyAccountRemoteSearchNumResults)
-        }
-    }
-
-    public var mdmPEPSaveEncryptedOnServer : Bool {
-        get {
-            AppSettings.userDefaults.bool(forKey: AppSettings.keyPEPSaveEncryptedOnServer)
-        }
-        set {
-            AppSettings.userDefaults.set(newValue, forKey: AppSettings.keyPEPSaveEncryptedOnServer)
-        }
-    }
-
-    public var mdmPEPEnableSyncAccount : Bool {
-        get {
-            AppSettings.userDefaults.bool(forKey: AppSettings.keyPEPEnableSyncAccount)
-        }
-        set {
-            AppSettings.userDefaults.set(newValue, forKey: AppSettings.keyPEPEnableSyncAccount)
-        }
-    }
-
-    public var mdmAllowPEPSyncNewDevices : Bool {
-        get {
-            AppSettings.userDefaults.bool(forKey: AppSettings.keyAllowPEPSyncNewDevices)
-        }
-        set {
-            AppSettings.userDefaults.set(newValue, forKey: AppSettings.keyAllowPEPSyncNewDevices)
-        }
-    }
 }
 
 //MARK: Collapsing State
@@ -600,4 +418,189 @@ extension AppSettings {
             AppSettings.userDefaults.set(newValue, forKey: AppSettings.keyCollapsingState)
         }
     }    
+}
+
+// MARK: - MDM
+
+extension AppSettings: MDMAppSettingsProtocol {
+
+    public var mdmPEPPrivacyProtectionEnabled : Bool {
+        get {
+            return AppSettings.userDefaults.bool(forKey: AppSettings.keyPEPEnablePrivacyProtectionEnabled)
+        }
+        set {
+            AppSettings.userDefaults.set(newValue, forKey: AppSettings.keyPEPEnablePrivacyProtectionEnabled)
+        }
+    }
+
+    public var mdmPEPExtraKeys : [String] {
+        get {
+            return AppSettings.userDefaults.stringArray(forKey: AppSettings.keyPEPExtraKeys) ?? []
+        }
+        set {
+            AppSettings.userDefaults.set(newValue, forKey: AppSettings.keyPEPExtraKeys)
+        }
+    }
+
+    public var mdmPEPTrustwordsEnabled : Bool {
+        get {
+            AppSettings.userDefaults.bool(forKey: AppSettings.keyPEPTrustwordsEnabled)
+        }
+        set {
+            AppSettings.userDefaults.set(newValue, forKey: AppSettings.keyPEPTrustwordsEnabled)
+        }
+    }
+
+    public var mdmUnsecureDeliveryWarningEnabled : Bool {
+        get {
+            AppSettings.userDefaults.bool(forKey: AppSettings.keyUnsecureDeliveryWarningEnabled)
+        }
+        set {
+            AppSettings.userDefaults.set(newValue, forKey: AppSettings.keyUnsecureDeliveryWarningEnabled)
+        }
+    }
+
+    public var mdmPEPSyncFolderEnabled : Bool {
+        get {
+            AppSettings.userDefaults.bool(forKey: AppSettings.keyPEPSyncFolderEnabled)
+        }
+        set {
+            AppSettings.userDefaults.set(newValue, forKey: AppSettings.keyPEPSyncFolderEnabled)
+        }
+    }
+
+    public var mdmDebugLoggingEnabled : Bool {
+        get {
+            AppSettings.userDefaults.bool(forKey: AppSettings.keyDebugLoggingEnabled)
+        }
+        set {
+            AppSettings.userDefaults.set(newValue, forKey: AppSettings.keyDebugLoggingEnabled)
+        }
+    }
+
+    public var mdmAccountDisplayCount: Int {
+        get {
+            AppSettings.userDefaults.integer(forKey: AppSettings.keyAccountDisplayCount)
+        }
+        set {
+            AppSettings.userDefaults.set(newValue, forKey: AppSettings.keyAccountDisplayCount)
+        }
+    }
+
+    public var mdmMaxPushFolders : Int {
+        get {
+            AppSettings.userDefaults.integer(forKey: AppSettings.keyMaxPushFolders)
+        }
+        set {
+            AppSettings.userDefaults.set(newValue, forKey: AppSettings.keyMaxPushFolders)
+        }
+    }
+
+    public var mdmAccountDescription : String? {
+        get {
+            return AppSettings.userDefaults.string(forKey: AppSettings.keyAccountDescription)
+        }
+        set {
+            AppSettings.userDefaults.set(newValue, forKey: AppSettings.keyAccountDescription)
+        }
+    }
+
+    public var mdmCompositionSenderName : String? {
+        get {
+            return AppSettings.userDefaults.string(forKey: AppSettings.keyCompositionSenderName)
+        }
+        set {
+            AppSettings.userDefaults.set(newValue, forKey: AppSettings.keyCompositionSenderName)
+        }
+    }
+
+    public var mdmCompositionSignatureEnabled : Bool {
+        get {
+            return AppSettings.userDefaults.bool(forKey: AppSettings.keyCompositionUseSignature)
+        }
+        set {
+            AppSettings.userDefaults.set(newValue, forKey: AppSettings.keyCompositionUseSignature)
+        }
+    }
+    public var mdmCompositionSignature : String? {
+        get {
+            return AppSettings.userDefaults.string(forKey: AppSettings.keyCompositionSignature)
+        }
+        set {
+            AppSettings.userDefaults.set(newValue, forKey: AppSettings.keyCompositionSignature)
+        }
+    }
+
+    public var mdmCompositionSignatureBeforeQuotedMessage : String? {
+        get {
+            return AppSettings.userDefaults.string(forKey: AppSettings.keyCompositionSignatureBeforeQuotedMessage)
+        }
+        set {
+            AppSettings.userDefaults.set(newValue, forKey: AppSettings.keyCompositionSignatureBeforeQuotedMessage)
+        }
+    }
+
+    public var mdmDefaultQuotedTextShown : Bool {
+        get {
+            return AppSettings.userDefaults.bool(forKey: AppSettings.keyDefaultQuotedTextShown)
+        }
+        set {
+            AppSettings.userDefaults.set(newValue, forKey: AppSettings.keyDefaultQuotedTextShown)
+        }
+    }
+
+    public var mdmAccountDefaultFolders : [String: Any] {
+        get {
+
+            return AppSettings.userDefaults.dictionary(forKey: AppSettings.keyAccountDefaultFolders) ?? [String:Any]()
+        }
+        set {
+            AppSettings.userDefaults.set(newValue, forKey: AppSettings.keyAccountDefaultFolders)
+        }
+    }
+
+    public var mdmRemoteSearchEnabled : Bool {
+        get {
+            return AppSettings.userDefaults.bool(forKey: AppSettings.keyRemoteSearchEnabled)
+        }
+        set {
+            AppSettings.userDefaults.set(newValue, forKey: AppSettings.keyRemoteSearchEnabled)
+        }
+    }
+
+    public var mdmAccountRemoteSearchNumResults : Int {
+        get {
+            AppSettings.userDefaults.integer(forKey: AppSettings.keyAccountRemoteSearchNumResults)
+        }
+        set {
+            AppSettings.userDefaults.set(newValue, forKey: AppSettings.keyAccountRemoteSearchNumResults)
+        }
+    }
+
+    public var mdmPEPSaveEncryptedOnServerEnabled : Bool {
+        get {
+            AppSettings.userDefaults.bool(forKey: AppSettings.keyPEPSaveEncryptedOnServerEnabled)
+        }
+        set {
+            AppSettings.userDefaults.set(newValue, forKey: AppSettings.keyPEPSaveEncryptedOnServerEnabled)
+        }
+    }
+
+    public var mdmPEPSyncAccountEnabled : Bool {
+        get {
+            AppSettings.userDefaults.bool(forKey: AppSettings.keyPEPEnableSyncAccountEnabled)
+        }
+        set {
+            AppSettings.userDefaults.set(newValue, forKey: AppSettings.keyPEPEnableSyncAccountEnabled)
+        }
+    }
+
+    public var mdmPEPSyncNewDevicesEnabled : Bool {
+        get {
+            AppSettings.userDefaults.bool(forKey: AppSettings.keyPEPSyncNewDevicesEnabled)
+        }
+        set {
+            AppSettings.userDefaults.set(newValue, forKey: AppSettings.keyPEPSyncNewDevicesEnabled)
+        }
+    }
 }
