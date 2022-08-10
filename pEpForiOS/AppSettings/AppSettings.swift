@@ -118,7 +118,7 @@ extension AppSettings {
 
     private func setupObjcAdapter() {
         MessageModelConfig.setUnEncryptedSubjectEnabled(unencryptedSubjectEnabled)
-        MessageModelConfig.setPassiveModeEnabled(passiveMode)
+        MessageModelConfig.setPassiveModeEnabled(passiveModeEnabled)
     }
 
     private func registerDefaults() {
@@ -219,7 +219,7 @@ extension AppSettings: AppSettingsProtocol {
         }
     }
 
-    public var passiveMode: Bool {
+    public var passiveModeEnabled: Bool {
         get {
             return AppSettings.userDefaults.bool(forKey: AppSettings.keyPassiveMode)
         }

@@ -27,8 +27,8 @@ public protocol AppSettingsProtocol {
 
     var threadedViewEnabled: Bool { get set }
 
-    /// Indicates if Passive mode is on.
-    var passiveMode: Bool { get set }
+    /// Indicates if Passive mode is enabled.
+    var passiveModeEnabled: Bool { get set }
 
     /// The email address of the default account.
     var defaultAccount: String? { get set }
