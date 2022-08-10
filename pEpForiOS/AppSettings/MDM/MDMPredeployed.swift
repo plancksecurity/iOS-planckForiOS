@@ -254,103 +254,50 @@ extension MDMPredeployed {
     /// - Throws:`MDMPredeployedError`, e.g. if the data was malformatted.
     private func mdmAccountToDeploy() throws -> AccountData? {
         guard let mdmDict = mdmPredeploymentDictionary() else {
+            // Note, this is not considered an error. It just means there is no MDM
+            // configured account.
             return nil
         }
 
         let username = mdmExtractUsername(mdmDictionary: mdmDict)
 
-        guard let mailSettings = mdmDict[MDMPredeployed.keyPredeployedAccounts] as? [SettingsDict] else {
+        guard let mailSettings = mdmDict[MDMPredeployed.keyPredeployedAccounts] as? SettingsDict else {
+            // Note, this is not considered an error. It just means there is no MDM
+            // configured account.
             return nil
         }
 
-        var serverSettings = [ServerSettings]()
-        for accountDictionary in mailSettings {
-            guard let userAddress = accountDictionary[MDMPredeployed.keyUserAddress] as? String else {
-                throw MDMPredeployedError.malformedAccountData
-            }
-
-            // Make sure there is a username, falling back to the email address if needed
-            let accountUsername = username ?? userAddress
-
-            guard let potentialServer = mdmMailSettings(accountUsername: accountUsername,
-                                                        settingsDict: accountDictionary) else {
-                throw MDMPredeployedError.malformedAccountData
-            }
-
-            serverSettings.append(potentialServer)
-        }
-
-        /// Invoke the given callback with pairs found in the given array and react according to its boolean result.
-        ///
-        /// Traversal stops if `callback` returns `false` for any of the elements, and effects the overall result.
-        ///
-        /// - Returns: `false` if the array contained an uneven amount of elements,
-        /// or the callback returned `false`, `true` otherwise.
-        func traverseInPairs<T>(elements: Array<T>, callback: (T, T) -> Bool) -> Bool {
-            for i in 0..<elements.count {
-                if i + 1 == elements.count {
-                    return false
-                }
-
-                let e0 = elements[i]
-                let e1 = elements[i+1]
-
-                let success = callback(e0, e1)
-                if !success {
-                    return false
-                }
-            }
-
-            return true
-        }
-
-        // Tuple of (accountName, email, imap, smtp)
-        var accountDatas = [AccountData]()
-
-        // Note that this may be overkill for just _one_ IMAP and SMTP server,
-        // but it was written before that was clear, and it's still correct.
-        let success = traverseInPairs(elements: serverSettings) { server0, server1 in
-            switch server0 {
-            case .imap(let imapAccountName, let imapEmailAddress, let serverData0):
-                switch server1 {
-                case .smtp(let smtpAccountName, let smtpEmailAddress, let serverData1):
-                    if (imapAccountName != smtpAccountName || imapEmailAddress != smtpEmailAddress) {
-                        return false
-                    } else {
-                        let accountData = AccountData(accountName: imapAccountName,
-                                                      email: imapEmailAddress,
-                                                      imapServer: serverData0,
-                                                      smtpServer: serverData1)
-                        accountDatas.append(accountData)
-                        return true
-                    }
-                case .imap(_, _, _):
-                    return false
-                }
-            case .smtp(let smtpAccountName, let smtpEmailAddress, let serverData0):
-                switch server1 {
-                case .smtp(_, _, _):
-                    return false
-                case .imap(let imapAccountName, let imapEmailAddress, let serverData1):
-                    if (imapAccountName != smtpAccountName || imapEmailAddress != smtpEmailAddress) {
-                        return false
-                    } else {
-                        let accountData = AccountData(accountName: smtpAccountName,
-                                                      email: smtpEmailAddress,
-                                                      imapServer: serverData1,
-                                                      smtpServer: serverData0)
-                        accountDatas.append(accountData)
-                        return true
-                    }
-                }
-            }
-        }
-
-        if !success {
+        guard let userAddress = mailSettings[MDMPredeployed.keyUserAddress] as? String else {
             throw MDMPredeployedError.malformedAccountData
         }
 
-        return accountDatas.first
+        // Make sure there is a username, falling back to the email address if needed
+        let accountUsername = username ?? userAddress
+
+        guard let imapServerData = AccountVerifier.ServerData.from(serverSettings: mailSettings,
+                                                                   defaultTransport: .TLS,
+                                                                   keyServerName: MDMPredeployed.keyIncomingMailSettingsServer,
+                                                                   keyTransport: MDMPredeployed.keyIncomingMailSettingsSecurityType,
+                                                                   keyPort: MDMPredeployed.keyIncomingMailSettingsPort,
+                                                                   keyLoginName: MDMPredeployed.keyIncomingMailSettingsUsername) else {
+            throw MDMPredeployedError.malformedAccountData
+        }
+
+        guard let smtpServerData = AccountVerifier.ServerData.from(serverSettings: mailSettings,
+                                                                   defaultTransport: .startTLS,
+                                                                   keyServerName: MDMPredeployed.keyOutgoingMailSettingsServer,
+                                                                   keyTransport: MDMPredeployed.keyOutgoingMailSettingsSecurityType,
+                                                                   keyPort: MDMPredeployed.keyOutgoingMailSettingsPort,
+                                                                   keyLoginName: MDMPredeployed.keyOutgoingMailSettingsUsername) else {
+            throw MDMPredeployedError.malformedAccountData
+        }
+
+        let accountData = AccountData(accountName: accountUsername,
+                                      email: userAddress,
+                                      imapServer: imapServerData,
+                                      smtpServer: smtpServerData)
+
+        return accountData
     }
 
     private func mdmPredeploymentDictionary() -> SettingsDict? {
@@ -359,51 +306,14 @@ extension MDMPredeployed {
         return UserDefaults.standard.dictionary(forKey: MDMPredeployed.keyMDM)
     }
 
+    /// Extracts the user name from composition_settings/composition_sender_name.
+    /// This is recommended, but not mandatory, so the result could be nil.
     private func mdmExtractUsername(mdmDictionary: SettingsDict) -> String? {
         if let compositionSettings = mdmDictionary[MDMPredeployed.keyCompositionSettings] as? SettingsDict,
            let compositionSenderName = compositionSettings[MDMPredeployed.keyCompositionSenderName] as? String {
             return compositionSenderName
         } else {
             return mdmDictionary[MDMPredeployed.keyAccountDescription] as? String
-        }
-    }
-
-    private enum ServerSettings {
-        /// An IMAP server consisting of username, email address, server data.
-        case imap(String, String, AccountVerifier.ServerData)
-
-        /// An SMTP server consisting of username, email address, server data.
-        case smtp(String, String, AccountVerifier.ServerData)
-    }
-
-    private func mdmMailSettings(accountUsername: String,
-                                 settingsDict: SettingsDict) -> ServerSettings? {
-        guard let email = settingsDict[MDMPredeployed.keyUserAddress] as? String else {
-            return nil
-        }
-
-        if let imapServerSettings = settingsDict[MDMPredeployed.keyIncomingMailSettings] as? SettingsDict {
-            guard let serverData = AccountVerifier.ServerData.from(serverSettings: imapServerSettings,
-                                                                   defaultTransport: .TLS,
-                                                                   keyServerName: MDMPredeployed.keyIncomingMailSettingsServer,
-                                                                   keyTransport: MDMPredeployed.keyIncomingMailSettingsSecurityType,
-                                                                   keyPort: MDMPredeployed.keyIncomingMailSettingsPort,
-                                                                   keyLoginName: MDMPredeployed.keyIncomingMailSettingsUsername) else {
-                return nil
-            }
-            return ServerSettings.imap(accountUsername, email, serverData)
-        } else if let smtpServerSettings = settingsDict[MDMPredeployed.keyOutgoingMailSettings] as? SettingsDict {
-            guard let serverData = AccountVerifier.ServerData.from(serverSettings: smtpServerSettings,
-                                                                   defaultTransport: .startTLS,
-                                                                   keyServerName: MDMPredeployed.keyOutgoingMailSettingsServer,
-                                                                   keyTransport: MDMPredeployed.keyOutgoingMailSettingsSecurityType,
-                                                                   keyPort: MDMPredeployed.keyOutgoingMailSettingsPort,
-                                                                   keyLoginName: MDMPredeployed.keyOutgoingMailSettingsUsername) else {
-                return nil
-            }
-            return ServerSettings.smtp(accountUsername, email, serverData)
-        } else {
-            return nil
         }
     }
 }
