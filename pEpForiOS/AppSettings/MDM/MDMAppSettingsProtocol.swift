@@ -90,8 +90,7 @@ public protocol MDMAppSettingsProtocol {
     /// - The special value "-NONE-" can be entered to unassign a special folder.
     var mdmAccountDefaultFolders: [String: String] { get }
 
-    /// When enabled, a button for remote search will appear in local search screen,
-    /// so that the user can get more search results from the server.
+    /// When enabled the user can get more search results from the server.
     ///
     /// Default is true.
     var mdmRemoteSearchEnabled: Bool { get }
