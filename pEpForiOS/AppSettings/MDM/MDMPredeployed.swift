@@ -274,21 +274,11 @@ extension MDMPredeployed {
         // Make sure there is a username, falling back to the email address if needed
         let accountUsername = username ?? userAddress
 
-        guard let imapServerData = AccountVerifier.ServerData.from(serverSettings: mailSettings,
-                                                                   defaultTransport: .TLS,
-                                                                   keyServerName: MDMPredeployed.keyIncomingMailSettingsServer,
-                                                                   keyTransport: MDMPredeployed.keyIncomingMailSettingsSecurityType,
-                                                                   keyPort: MDMPredeployed.keyIncomingMailSettingsPort,
-                                                                   keyLoginName: MDMPredeployed.keyIncomingMailSettingsUsername) else {
+        guard let imapServerData = mdmExtractImapServerSettings(mailSettings: mailSettings) else {
             throw MDMPredeployedError.malformedAccountData
         }
 
-        guard let smtpServerData = AccountVerifier.ServerData.from(serverSettings: mailSettings,
-                                                                   defaultTransport: .startTLS,
-                                                                   keyServerName: MDMPredeployed.keyOutgoingMailSettingsServer,
-                                                                   keyTransport: MDMPredeployed.keyOutgoingMailSettingsSecurityType,
-                                                                   keyPort: MDMPredeployed.keyOutgoingMailSettingsPort,
-                                                                   keyLoginName: MDMPredeployed.keyOutgoingMailSettingsUsername) else {
+        guard let smtpServerData = mdmExtractSmtpServerSettings(mailSettings: mailSettings) else {
             throw MDMPredeployedError.malformedAccountData
         }
 
@@ -315,5 +305,25 @@ extension MDMPredeployed {
         } else {
             return mdmDictionary[MDMPredeployed.keyAccountDescription] as? String
         }
+    }
+
+    /// Tries to construct IMAP ServerData from the contents of the given pep_mail_settings.
+    private func mdmExtractImapServerSettings(mailSettings: SettingsDict) -> AccountVerifier.ServerData? {
+        return AccountVerifier.ServerData.from(serverSettings: mailSettings,
+                                               defaultTransport: .TLS,
+                                               keyServerName: MDMPredeployed.keyIncomingMailSettingsServer,
+                                               keyTransport: MDMPredeployed.keyIncomingMailSettingsSecurityType,
+                                               keyPort: MDMPredeployed.keyIncomingMailSettingsPort,
+                                               keyLoginName: MDMPredeployed.keyIncomingMailSettingsUsername)
+    }
+
+    /// Tries to construct SMTP ServerData from the contents of the given pep_mail_settings.
+    private func mdmExtractSmtpServerSettings(mailSettings: SettingsDict) -> AccountVerifier.ServerData? {
+        return AccountVerifier.ServerData.from(serverSettings: mailSettings,
+                                               defaultTransport: .startTLS,
+                                               keyServerName: MDMPredeployed.keyOutgoingMailSettingsServer,
+                                               keyTransport: MDMPredeployed.keyOutgoingMailSettingsSecurityType,
+                                               keyPort: MDMPredeployed.keyOutgoingMailSettingsPort,
+                                               keyLoginName: MDMPredeployed.keyOutgoingMailSettingsUsername)
     }
 }
