@@ -236,7 +236,7 @@ extension MDMPredeployed: MDMPredeployedProtocol {
         }
     }
 
-    var haveAccountToPredeploy: Bool {
+    var haveAccountToDeploy: Bool {
         do {
             let account = try mdmAccountToDeploy()
             return account != nil

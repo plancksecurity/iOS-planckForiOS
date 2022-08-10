@@ -68,6 +68,6 @@ class DummyDeployer: MDMPredeployedProtocol {
         callback(resultingError)
     }
 
-    let haveAccountToPredeploy = true
+    let haveAccountToDeploy = true
     let resultingError: MDMPredeployedError?
 }
