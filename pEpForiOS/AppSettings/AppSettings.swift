@@ -67,11 +67,11 @@ extension AppSettings {
 public final class AppSettings: KeySyncStateProvider {
 
     /// This structure keeps the collapsing state of folders and accounts.
-    /// [AccountAddress : [ key : isCollapsedStatus ] ]
+    /// [AccountAddress: [ key: isCollapsedStatus ] ]
     ///
     /// For example:
-    /// ["some@example.com" : [ keyFolderViewAccountCollapsedState : true ] ] indicates the account is collapsed. Do not change the key keyFolderViewAccountCollapsedState
-    /// ["some@example.com" : [ "SomeFolderName" : true ] ] indicates the folder is collapsed.
+    /// ["some@example.com": [ keyFolderViewAccountCollapsedState: true ] ] indicates the account is collapsed. Do not change the key keyFolderViewAccountCollapsedState
+    /// ["some@example.com": [ "SomeFolderName": true ] ] indicates the folder is collapsed.
     private typealias CollapsingState = [String: [String: Bool]]
 
     // MARK: - Singleton
@@ -409,192 +409,192 @@ extension AppSettings {
 
 extension AppSettings: MDMAppSettingsProtocol {
 
-    public var mdmPEPPrivacyProtectionEnabled : Bool {
+    public var mdmPEPPrivacyProtectionEnabled: Bool {
         get {
-            guard let value = mdmDictionary[AppSettings.keyPEPEnablePrivacyProtectionEnabled] as? Bool else {
+            guard let isPrivacyProtectionEnabled = mdmDictionary[AppSettings.keyPEPEnablePrivacyProtectionEnabled] as? Bool else {
                 return false
             }
-            return value
+            return isPrivacyProtectionEnabled
         }
     }
 
-    public var mdmPEPExtraKeys : [String] {
+    public var mdmPEPExtraKeys: [String] {
         get {
-            guard let value = mdmDictionary[AppSettings.keyPEPExtraKeys] as? [String] else {
+            guard let extraKeys = mdmDictionary[AppSettings.keyPEPExtraKeys] as? [String] else {
                 return []
             }
-            return value
+            return extraKeys
         }
     }
 
-    public var mdmPEPTrustwordsEnabled : Bool {
+    public var mdmPEPTrustwordsEnabled: Bool {
         get {
-            guard let value = mdmDictionary[AppSettings.keyPEPTrustwordsEnabled] as? Bool else {
+            guard let isTrustManagementEnabled = mdmDictionary[AppSettings.keyPEPTrustwordsEnabled] as? Bool else {
                 return false
             }
-            return value
+            return isTrustManagementEnabled
         }
     }
 
-    public var mdmUnsecureDeliveryWarningEnabled : Bool {
+    public var mdmUnsecureDeliveryWarningEnabled: Bool {
         get {
-            guard let value = mdmDictionary[AppSettings.keyUnsecureDeliveryWarningEnabled] as? Bool else {
+            guard let isUnsecureDeliveryWarningEnabled = mdmDictionary[AppSettings.keyUnsecureDeliveryWarningEnabled] as? Bool else {
                 return true
             }
-            return value
+            return isUnsecureDeliveryWarningEnabled
         }
     }
 
-    public var mdmPEPSyncFolderEnabled : Bool {
+    public var mdmPEPSyncFolderEnabled: Bool {
         get {
-            guard let value = mdmDictionary[AppSettings.keyPEPSyncFolderEnabled] as? Bool else {
+            guard let isSyncFolderEnabled = mdmDictionary[AppSettings.keyPEPSyncFolderEnabled] as? Bool else {
                 return false
             }
-            return value
+            return isSyncFolderEnabled
         }
     }
 
-    public var mdmDebugLoggingEnabled : Bool {
+    public var mdmDebugLoggingEnabled: Bool {
         get {
-            guard let value = mdmDictionary[AppSettings.keyDebugLoggingEnabled] as? Bool else {
+            guard let isDebugLogginEnabled = mdmDictionary[AppSettings.keyDebugLoggingEnabled] as? Bool else {
                 //Default value
                 return false
             }
-            return value
+            return isDebugLogginEnabled
         }
     }
 
     public var mdmAccountDisplayCount: Int {
         get {
-            guard let value = mdmDictionary[AppSettings.keyAccountDisplayCount] as? Int else {
+            guard let accountDisplayCount = mdmDictionary[AppSettings.keyAccountDisplayCount] as? Int else {
                 //Default value
                 return 250
             }
-            return value
+            return accountDisplayCount
         }
     }
 
-    public var mdmMaxPushFolders : Int {
+    public var mdmMaxPushFolders: Int {
         get {
-            guard let value = mdmDictionary[AppSettings.keyMaxPushFolders] as? Int else {
+            guard let maxPushFolder = mdmDictionary[AppSettings.keyMaxPushFolders] as? Int else {
                 //Default value
                 return 0
             }
-            return value
+            return maxPushFolder
         }
     }
 
-    public var mdmCompositionSenderName : String? {
+    public var mdmCompositionSenderName: String? {
         get {
-            guard let value = mdmDictionary[AppSettings.keyCompositionSenderName] as? String else {
+            guard let senderName = mdmDictionary[AppSettings.keyCompositionSenderName] as? String else {
                 return nil
             }
-            return value
+            return senderName
         }
     }
 
-    public var mdmCompositionSignatureEnabled : Bool {
+    public var mdmCompositionSignatureEnabled: Bool {
         get {
-            guard let value = mdmDictionary[AppSettings.keyCompositionSignatureEnabled] as? Bool else {
+            guard let isSignatureEnabled = mdmDictionary[AppSettings.keyCompositionSignatureEnabled] as? Bool else {
                 //Default value
                 return true
             }
-            return value
+            return isSignatureEnabled
         }
     }
 
-    public var mdmCompositionSignature : String? {
+    public var mdmCompositionSignature: String? {
         get {
-            guard let value = mdmDictionary[AppSettings.keyCompositionSignature] as? String else {
+            guard let signature = mdmDictionary[AppSettings.keyCompositionSignature] as? String else {
                 return nil
             }
-            return value
+            return signature
         }
     }
 
-    public var mdmCompositionSignatureBeforeQuotedMessage : String? {
+    public var mdmCompositionSignatureBeforeQuotedMessage: String? {
         get {
-            guard let value = mdmDictionary[AppSettings.keyCompositionSignatureBeforeQuotedMessageEnabled] as? String else {
+            guard let compositionSignatureBeforeQuotedMessage = mdmDictionary[AppSettings.keyCompositionSignatureBeforeQuotedMessageEnabled] as? String else {
                 return nil
             }
-            return value
+            return compositionSignatureBeforeQuotedMessage
         }
     }
 
-    public var mdmDefaultQuotedTextShown : Bool {
+    public var mdmDefaultQuotedTextShown: Bool {
         get {
-            guard let value = mdmDictionary[AppSettings.keyDefaultQuotedTextShownEnabled] as? Bool else {
+            guard let isDefaultQuotedTextShown = mdmDictionary[AppSettings.keyDefaultQuotedTextShownEnabled] as? Bool else {
                 //Default value
                 return true
             }
-            return value
+            return isDefaultQuotedTextShown
         }
     }
 
-    public var mdmAccountDefaultFolders : [String: String] {
+    public var mdmAccountDefaultFolders: [String: String] {
         get {
-            guard let value = mdmDictionary[AppSettings.keyAccountDefaultFolders] as? [String: String] else {
+            guard let folders = mdmDictionary[AppSettings.keyAccountDefaultFolders] as? [String: String] else {
                 //Default value
                 return [String:String]()
             }
-            return value
+            return folders
         }
     }
 
-    public var mdmRemoteSearchEnabled : Bool {
+    public var mdmRemoteSearchEnabled: Bool {
         get {
-            guard let value = mdmDictionary[AppSettings.keyRemoteSearchEnabled] as? Bool else {
+            guard let isRemoteSearchEnabled = mdmDictionary[AppSettings.keyRemoteSearchEnabled] as? Bool else {
                 //Default value
                 return true
             }
-            return value
+            return isRemoteSearchEnabled
         }
     }
 
-    public var mdmAccountRemoteSearchNumResults : Int {
+    public var mdmAccountRemoteSearchNumResults: Int {
         get {
-            guard let value = mdmDictionary[AppSettings.keyAccountRemoteSearchNumResults] as? Int else {
+            guard let numberOfRemoteSearchResults = mdmDictionary[AppSettings.keyAccountRemoteSearchNumResults] as? Int else {
                 //Default value
                 return 50
             }
-            return value
+            return numberOfRemoteSearchResults
         }
     }
 
-    public var mdmPEPSaveEncryptedOnServerEnabled : Bool {
+    public var mdmPEPSaveEncryptedOnServerEnabled: Bool {
         get {
-            guard let value = mdmDictionary[AppSettings.keyPEPSaveEncryptedOnServerEnabled] as? Bool else {
+            guard let isSaveEncryptedOnServerEnabled = mdmDictionary[AppSettings.keyPEPSaveEncryptedOnServerEnabled] as? Bool else {
                 //Default value
                 return true
             }
-            return value
+            return isSaveEncryptedOnServerEnabled
         }
     }
 
-    public var mdmPEPSyncAccountEnabled : Bool {
+    public var mdmPEPSyncAccountEnabled: Bool {
         get {
-            guard let value = mdmDictionary[AppSettings.keyPEPEnableSyncAccountEnabled] as? Bool else {
+            guard let isSyncEnabled = mdmDictionary[AppSettings.keyPEPEnableSyncAccountEnabled] as? Bool else {
                 //Default value
                 return true
             }
-            return value
+            return isSyncEnabled
 
         }
     }
 
-    public var mdmPEPSyncNewDevicesEnabled : Bool {
+    public var mdmPEPSyncNewDevicesEnabled: Bool {
         get {
-            guard let value = mdmDictionary[AppSettings.keyPEPSyncNewDevicesEnabled] as? Bool else {
+            guard let isSyncNewDevicesEnabled = mdmDictionary[AppSettings.keyPEPSyncNewDevicesEnabled] as? Bool else {
                 //Default value
                 return false
             }
-            return value
+            return isSyncNewDevicesEnabled
         }
     }
 
     //MARK: - Private
 
-    private var mdmDictionary : [String: Any] {
+    private var mdmDictionary: [String: Any] {
         guard let dictionary = AppSettings.userDefaults.dictionary(forKey: MDMPredeployed.keyMDM) else {
             return [String:Any]()
         }
