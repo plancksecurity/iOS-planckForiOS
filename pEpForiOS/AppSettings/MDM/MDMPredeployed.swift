@@ -259,12 +259,12 @@ extension MDMPredeployed {
 
         let username = mdmExtractUsername(mdmDictionary: mdmDict)
 
-        guard let predeployedAccounts = mdmDict[MDMPredeployed.keyPredeployedAccounts] as? [SettingsDict] else {
+        guard let mailSettings = mdmDict[MDMPredeployed.keyPredeployedAccounts] as? [SettingsDict] else {
             return nil
         }
 
         var serverSettings = [ServerSettings]()
-        for accountDictionary in predeployedAccounts {
+        for accountDictionary in mailSettings {
             guard let userAddress = accountDictionary[MDMPredeployed.keyUserAddress] as? String else {
                 throw MDMPredeployedError.malformedAccountData
             }
