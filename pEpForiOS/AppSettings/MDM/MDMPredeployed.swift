@@ -249,9 +249,9 @@ extension MDMPredeployed: MDMPredeployedProtocol {
 // MARK: - Utility
 
 extension MDMPredeployed {
-    /// Loads the data from MDM for the account to be deployed.
-    /// - Returns: An account, ready to be deployed, from MDM, or nil, if nothing could be found.
-    /// - Throws:`MDMPredeployedError`
+    /// Loads the account data from MDM for the account to be deployed, if it exists.
+    /// - Returns: An account, ready to be deployed, set up via MDM, or nil, if nothing could be found.
+    /// - Throws:`MDMPredeployedError`, e.g. if the data was malformatted.
     private func mdmAccountToDeploy() throws -> AccountData? {
         guard let mdmDict = mdmPredeploymentDictionary() else {
             return nil
