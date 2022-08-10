@@ -332,11 +332,11 @@ extension AppSettings: AppSettingsProtocol {
     }
 }
 
-//MARK: Collapsing State
+// MARK: - Collapsing State
 
 extension AppSettings {
 
-    //MARK: Setters
+    // MARK: - Setters
 
     public func setFolderViewCollapsedState(forAccountWith address: String, to value: Bool) {
         var current = collapsingState
@@ -368,7 +368,7 @@ extension AppSettings {
         collapsingState = current
     }
 
-    //MARK: Getters
+    // MARK: - Getters
 
     public func folderViewCollapsedState(forAccountWith address: String) -> Bool {
         let key = AppSettings.keyFolderViewAccountCollapsedState
@@ -578,7 +578,6 @@ extension AppSettings: MDMAppSettingsProtocol {
                 return true
             }
             return isSyncEnabled
-
         }
     }
 
@@ -592,7 +591,7 @@ extension AppSettings: MDMAppSettingsProtocol {
         }
     }
 
-    //MARK: - Private
+    // MARK: - Private
 
     private var mdmDictionary: [String: Any] {
         guard let dictionary = AppSettings.userDefaults.dictionary(forKey: MDMPredeployed.keyMDM) else {
