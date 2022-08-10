@@ -407,7 +407,6 @@ extension AppSettings {
 
 // MARK: - MDM
 
-
 extension AppSettings: MDMAppSettingsProtocol {
 
     public var mdmPEPPrivacyProtectionEnabled : Bool {
