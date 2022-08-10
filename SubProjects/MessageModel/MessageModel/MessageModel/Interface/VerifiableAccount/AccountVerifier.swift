@@ -7,9 +7,13 @@
 //
 
 import Foundation
-
 import PantomimeFramework
+
+#if EXT_SHARE
+import pEpIOSToolboxForExtensions
+#else
 import pEpIOSToolbox
+#endif
 
 /// Wrapper around `VerifiableAccount` with some additions and changes,
 /// suitable for use in an MDM context.

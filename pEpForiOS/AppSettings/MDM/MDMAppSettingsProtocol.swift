@@ -13,8 +13,9 @@ public protocol MDMAppSettingsProtocol {
     /// Enable or disable pEp privacy protection for the user or device's account.
     var mdmPEPPrivacyProtectionEnabled: Bool { get }
 
-    /// Provide or remove Extra Keys
+    /// Provide Extra Keys.
     ///
+    /// To remove them just set an empty array. 
     var mdmPEPExtraKeys: [String] { get }
 
     /// Enable or disable the use of trustwords.
