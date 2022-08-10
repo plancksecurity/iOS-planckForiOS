@@ -76,11 +76,10 @@ public protocol MDMAppSettingsProtocol {
     /// Default is true.
     var mdmDefaultQuotedTextShown: Bool { get }
 
-    /// Dictionary of Folders names that the application will use as special purposes and its keys.
+    /// Dictionary of folders names that the application will use for special purposes and their respective keys.
     ///
     /// By default all of them are empty.
     /// This means the app will try to find the relevant folders from the server.
-    /// Removing folder elements from JSON has the same effect in this case.
     ///
     /// Folders keys are:
     /// - archive_folder: Folder where archived email are stored.
