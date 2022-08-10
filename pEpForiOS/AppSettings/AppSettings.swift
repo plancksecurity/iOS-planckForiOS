@@ -411,8 +411,7 @@ extension AppSettings: MDMAppSettingsProtocol {
 
     public var mdmPEPPrivacyProtectionEnabled : Bool {
         get {
-            guard let dictionary = AppSettings.userDefaults.dictionary(forKey: MDMPredeployed.keyMDM),
-                    let value = dictionary[AppSettings.keyPEPEnablePrivacyProtectionEnabled] as? Bool else {
+            guard let value = mdmDictionary[AppSettings.keyPEPEnablePrivacyProtectionEnabled] as? Bool else {
                 return false
             }
             return value
@@ -421,8 +420,7 @@ extension AppSettings: MDMAppSettingsProtocol {
 
     public var mdmPEPExtraKeys : [String] {
         get {
-            guard let dictionary = AppSettings.userDefaults.dictionary(forKey: MDMPredeployed.keyMDM),
-                    let value = dictionary[AppSettings.keyPEPExtraKeys] as? [String] else {
+            guard let value = mdmDictionary[AppSettings.keyPEPExtraKeys] as? [String] else {
                 return []
             }
             return value
@@ -431,8 +429,7 @@ extension AppSettings: MDMAppSettingsProtocol {
 
     public var mdmPEPTrustwordsEnabled : Bool {
         get {
-            guard let dictionary = AppSettings.userDefaults.dictionary(forKey: MDMPredeployed.keyMDM),
-                    let value = dictionary[AppSettings.keyPEPTrustwordsEnabled] as? Bool else {
+            guard let value = mdmDictionary[AppSettings.keyPEPTrustwordsEnabled] as? Bool else {
                 return false
             }
             return value
@@ -441,8 +438,7 @@ extension AppSettings: MDMAppSettingsProtocol {
 
     public var mdmUnsecureDeliveryWarningEnabled : Bool {
         get {
-            guard let dictionary = AppSettings.userDefaults.dictionary(forKey: MDMPredeployed.keyMDM),
-                    let value = dictionary[AppSettings.keyUnsecureDeliveryWarningEnabled] as? Bool else {
+            guard let value = mdmDictionary[AppSettings.keyUnsecureDeliveryWarningEnabled] as? Bool else {
                 return true
             }
             return value
@@ -451,8 +447,7 @@ extension AppSettings: MDMAppSettingsProtocol {
 
     public var mdmPEPSyncFolderEnabled : Bool {
         get {
-            guard let dictionary = AppSettings.userDefaults.dictionary(forKey: MDMPredeployed.keyMDM),
-                    let value = dictionary[AppSettings.keyPEPSyncFolderEnabled] as? Bool else {
+            guard let value = mdmDictionary[AppSettings.keyPEPSyncFolderEnabled] as? Bool else {
                 return false
             }
             return value
@@ -461,8 +456,7 @@ extension AppSettings: MDMAppSettingsProtocol {
 
     public var mdmDebugLoggingEnabled : Bool {
         get {
-            guard let dictionary = AppSettings.userDefaults.dictionary(forKey: MDMPredeployed.keyMDM),
-                    let value = dictionary[AppSettings.keyDebugLoggingEnabled] as? Bool else {
+            guard let value = mdmDictionary[AppSettings.keyDebugLoggingEnabled] as? Bool else {
                 //Default value
                 return false
             }
@@ -472,8 +466,7 @@ extension AppSettings: MDMAppSettingsProtocol {
 
     public var mdmAccountDisplayCount: Int {
         get {
-            guard let dictionary = AppSettings.userDefaults.dictionary(forKey: MDMPredeployed.keyMDM),
-                    let value = dictionary[AppSettings.keyAccountDisplayCount] as? Int else {
+            guard let value = mdmDictionary[AppSettings.keyAccountDisplayCount] as? Int else {
                 //Default value
                 return 250
             }
@@ -483,8 +476,7 @@ extension AppSettings: MDMAppSettingsProtocol {
 
     public var mdmMaxPushFolders : Int {
         get {
-            guard let dictionary = AppSettings.userDefaults.dictionary(forKey: MDMPredeployed.keyMDM),
-                    let value = dictionary[AppSettings.keyMaxPushFolders] as? Int else {
+            guard let value = mdmDictionary[AppSettings.keyMaxPushFolders] as? Int else {
                 //Default value
                 return 0
             }
@@ -494,8 +486,7 @@ extension AppSettings: MDMAppSettingsProtocol {
 
     public var mdmCompositionSenderName : String? {
         get {
-            guard let dictionary = AppSettings.userDefaults.dictionary(forKey: MDMPredeployed.keyMDM),
-                    let value = dictionary[AppSettings.keyCompositionSenderName] as? String else {
+            guard let value = mdmDictionary[AppSettings.keyCompositionSenderName] as? String else {
                 return nil
             }
             return value
@@ -504,8 +495,7 @@ extension AppSettings: MDMAppSettingsProtocol {
 
     public var mdmCompositionSignatureEnabled : Bool {
         get {
-            guard let dictionary = AppSettings.userDefaults.dictionary(forKey: MDMPredeployed.keyMDM),
-                    let value = dictionary[AppSettings.keyCompositionSignatureEnabled] as? Bool else {
+            guard let value = mdmDictionary[AppSettings.keyCompositionSignatureEnabled] as? Bool else {
                 //Default value
                 return true
             }
@@ -515,8 +505,7 @@ extension AppSettings: MDMAppSettingsProtocol {
 
     public var mdmCompositionSignature : String? {
         get {
-            guard let dictionary = AppSettings.userDefaults.dictionary(forKey: MDMPredeployed.keyMDM),
-                    let value = dictionary[AppSettings.keyCompositionSignature] as? String else {
+            guard let value = mdmDictionary[AppSettings.keyCompositionSignature] as? String else {
                 return nil
             }
             return value
@@ -525,8 +514,7 @@ extension AppSettings: MDMAppSettingsProtocol {
 
     public var mdmCompositionSignatureBeforeQuotedMessage : String? {
         get {
-            guard let dictionary = AppSettings.userDefaults.dictionary(forKey: MDMPredeployed.keyMDM),
-                    let value = dictionary[AppSettings.keyCompositionSignatureBeforeQuotedMessageEnabled] as? String else {
+            guard let value = mdmDictionary[AppSettings.keyCompositionSignatureBeforeQuotedMessageEnabled] as? String else {
                 return nil
             }
             return value
@@ -535,8 +523,7 @@ extension AppSettings: MDMAppSettingsProtocol {
 
     public var mdmDefaultQuotedTextShown : Bool {
         get {
-            guard let dictionary = AppSettings.userDefaults.dictionary(forKey: MDMPredeployed.keyMDM),
-                    let value = dictionary[AppSettings.keyDefaultQuotedTextShownEnabled] as? Bool else {
+            guard let value = mdmDictionary[AppSettings.keyDefaultQuotedTextShownEnabled] as? Bool else {
                 //Default value
                 return true
             }
@@ -546,8 +533,7 @@ extension AppSettings: MDMAppSettingsProtocol {
 
     public var mdmAccountDefaultFolders : [String: String] {
         get {
-            guard let dictionary = AppSettings.userDefaults.dictionary(forKey: MDMPredeployed.keyMDM),
-                    let value = dictionary[AppSettings.keyAccountDefaultFolders] as? [String: String] else {
+            guard let value = mdmDictionary[AppSettings.keyAccountDefaultFolders] as? [String: String] else {
                 //Default value
                 return [String:String]()
             }
@@ -557,8 +543,7 @@ extension AppSettings: MDMAppSettingsProtocol {
 
     public var mdmRemoteSearchEnabled : Bool {
         get {
-            guard let dictionary = AppSettings.userDefaults.dictionary(forKey: MDMPredeployed.keyMDM),
-                    let value = dictionary[AppSettings.keyRemoteSearchEnabled] as? Bool else {
+            guard let value = mdmDictionary[AppSettings.keyRemoteSearchEnabled] as? Bool else {
                 //Default value
                 return true
             }
@@ -568,8 +553,7 @@ extension AppSettings: MDMAppSettingsProtocol {
 
     public var mdmAccountRemoteSearchNumResults : Int {
         get {
-            guard let dictionary = AppSettings.userDefaults.dictionary(forKey: MDMPredeployed.keyMDM),
-                    let value = dictionary[AppSettings.keyAccountRemoteSearchNumResults] as? Int else {
+            guard let value = mdmDictionary[AppSettings.keyAccountRemoteSearchNumResults] as? Int else {
                 //Default value
                 return 50
             }
@@ -579,8 +563,7 @@ extension AppSettings: MDMAppSettingsProtocol {
 
     public var mdmPEPSaveEncryptedOnServerEnabled : Bool {
         get {
-            guard let dictionary = AppSettings.userDefaults.dictionary(forKey: MDMPredeployed.keyMDM),
-                    let value = dictionary[AppSettings.keyPEPSaveEncryptedOnServerEnabled] as? Bool else {
+            guard let value = mdmDictionary[AppSettings.keyPEPSaveEncryptedOnServerEnabled] as? Bool else {
                 //Default value
                 return true
             }
@@ -590,8 +573,7 @@ extension AppSettings: MDMAppSettingsProtocol {
 
     public var mdmPEPSyncAccountEnabled : Bool {
         get {
-            guard let dictionary = AppSettings.userDefaults.dictionary(forKey: MDMPredeployed.keyMDM),
-                    let value = dictionary[AppSettings.keyPEPEnableSyncAccountEnabled] as? Bool else {
+            guard let value = mdmDictionary[AppSettings.keyPEPEnableSyncAccountEnabled] as? Bool else {
                 //Default value
                 return true
             }
@@ -602,12 +584,20 @@ extension AppSettings: MDMAppSettingsProtocol {
 
     public var mdmPEPSyncNewDevicesEnabled : Bool {
         get {
-            guard let dictionary = AppSettings.userDefaults.dictionary(forKey: MDMPredeployed.keyMDM),
-                    let value = dictionary[AppSettings.keyPEPSyncNewDevicesEnabled] as? Bool else {
+            guard let value = mdmDictionary[AppSettings.keyPEPSyncNewDevicesEnabled] as? Bool else {
                 //Default value
                 return false
             }
             return value
         }
+    }
+
+    //MARK: - Private
+
+    private var mdmDictionary : [String: Any] {
+        guard let dictionary = AppSettings.userDefaults.dictionary(forKey: MDMPredeployed.keyMDM) else {
+            return [String:Any]()
+        }
+        return dictionary
     }
 }
