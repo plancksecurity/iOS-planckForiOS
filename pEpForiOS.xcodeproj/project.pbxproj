@@ -496,6 +496,10 @@
 		5B71016E243619CF00BAE405 /* TrustedServerSettingsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5B71016D243619CF00BAE405 /* TrustedServerSettingsViewController.swift */; };
 		5B7235D125E0013100033F88 /* TutorialStep0iPadViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5B7235D025E0013100033F88 /* TutorialStep0iPadViewController.swift */; };
 		5B74C00D249B7EA300802704 /* FolderTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5B74C00C249B7EA300802704 /* FolderTableViewCell.swift */; };
+		5B7A261C28A2597B0041F4A3 /* MDMAppSettingsProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5B7A261B28A2597B0041F4A3 /* MDMAppSettingsProtocol.swift */; };
+		5B7A262128A3A9AF0041F4A3 /* MDMAppSettingsProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5B7A261B28A2597B0041F4A3 /* MDMAppSettingsProtocol.swift */; };
+		5B7A262428A3B0650041F4A3 /* MDMPredeployed.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43E3668B28362D4F00C4A4CB /* MDMPredeployed.swift */; };
+		5B7A262528A3B0C50041F4A3 /* MDMPredeployedProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43E366892836254A00C4A4CB /* MDMPredeployedProtocol.swift */; };
 		5B818DC325E3FEC2004D04F0 /* TutorialStep1iPadViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5B818DC225E3FEC2004D04F0 /* TutorialStep1iPadViewController.swift */; };
 		5B884B44257A90FE006B2022 /* EditableAccountSettingsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5B884B43257A90FE006B2022 /* EditableAccountSettingsViewController.swift */; };
 		5B885DB225E7B0350027DD24 /* Tutorial_iPad.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 5B885DB425E7B0350027DD24 /* Tutorial_iPad.storyboard */; };
@@ -1086,6 +1090,7 @@
 		5B71016D243619CF00BAE405 /* TrustedServerSettingsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TrustedServerSettingsViewController.swift; sourceTree = "<group>"; };
 		5B7235D025E0013100033F88 /* TutorialStep0iPadViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TutorialStep0iPadViewController.swift; sourceTree = "<group>"; };
 		5B74C00C249B7EA300802704 /* FolderTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = FolderTableViewCell.swift; path = Folder/FolderTableViewCell.swift; sourceTree = "<group>"; };
+		5B7A261B28A2597B0041F4A3 /* MDMAppSettingsProtocol.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MDMAppSettingsProtocol.swift; sourceTree = "<group>"; };
 		5B818DC225E3FEC2004D04F0 /* TutorialStep1iPadViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TutorialStep1iPadViewController.swift; sourceTree = "<group>"; };
 		5B884B43257A90FE006B2022 /* EditableAccountSettingsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditableAccountSettingsViewController.swift; sourceTree = "<group>"; };
 		5B885DB325E7B0350027DD24 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Tutorial_iPad.storyboard; sourceTree = "<group>"; };
@@ -2413,6 +2418,7 @@
 			children = (
 				43E366892836254A00C4A4CB /* MDMPredeployedProtocol.swift */,
 				43E3668B28362D4F00C4A4CB /* MDMPredeployed.swift */,
+				5B7A261B28A2597B0041F4A3 /* MDMAppSettingsProtocol.swift */,
 			);
 			path = MDM;
 			sourceTree = "<group>";
@@ -3262,6 +3268,7 @@
 				434C1AAC25D40FF800F622DB /* AddToContactsViewController.swift in Sources */,
 				434A6C7525D2A3E700179335 /* SubjectCell.swift in Sources */,
 				43E15D1C2833CA4D00EDEAB7 /* AccessibilityIdentifier.swift in Sources */,
+				5B7A262528A3B0C50041F4A3 /* MDMPredeployedProtocol.swift in Sources */,
 				3A503A9F253737B20070AB6A /* ShareViewController.swift in Sources */,
 				434C1AD825D4136A00F622DB /* String+pEp.swift in Sources */,
 				43BDE05D25DE826000FC0C68 /* houdini_html_e.c in Sources */,
@@ -3269,6 +3276,7 @@
 				434A6C4B25D2A39C00179335 /* ComposeViewModelState.swift in Sources */,
 				434C1A8325D40B4000F622DB /* PEPSplitViewController.swift in Sources */,
 				434C1A9925D40DB700F622DB /* Mailto.swift in Sources */,
+				5B7A262128A3A9AF0041F4A3 /* MDMAppSettingsProtocol.swift in Sources */,
 				434A6C5E25D2A3C200179335 /* BodyCell.swift in Sources */,
 				43BDE05125DE818C00FC0C68 /* references.c in Sources */,
 				434C1ACF25D412B600F622DB /* TrustManagementViewController.swift in Sources */,
@@ -3318,6 +3326,7 @@
 				5BCD37DD269F3CBF0052A030 /* UIImageView+ContactImage.swift in Sources */,
 				439C659426135008001893BD /* UIView+ActivityIndicator.swift in Sources */,
 				43C415C725EE687A0071C608 /* NSItemProvider+MimeType.swift in Sources */,
+				5B7A262428A3B0650041F4A3 /* MDMPredeployed.swift in Sources */,
 				434C1AC325D411B700F622DB /* UIUtils+Alerts.swift in Sources */,
 				434A6C6925D2A3D200179335 /* RecipientCellViewModel+FieldType.swift in Sources */,
 				43BDE03925DE7CFC00FC0C68 /* html.c in Sources */,
@@ -3673,6 +3682,7 @@
 				15FE1F761FE122D900CC2D97 /* CreditsViewController.swift in Sources */,
 				152A39942190587200D9F8E4 /* TextViewInTableViewScrollUtil.swift in Sources */,
 				5B0FDAD6268249B6000420A7 /* UIImage+Attachment.swift in Sources */,
+				5B7A261C28A2597B0041F4A3 /* MDMAppSettingsProtocol.swift in Sources */,
 				1521B791241BDCD9000EAE57 /* UIUtils+Alerts.swift in Sources */,
 				5BF39DA8257A737A00A00A96 /* AccountSettingsHelper.swift in Sources */,
 				1579348F246D499600E2D8D2 /* PGPKeyImportSettingViewModel.swift in Sources */,
