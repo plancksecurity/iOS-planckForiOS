@@ -637,6 +637,7 @@
 		5B4A715C252B5B6F00436FCF /* NSError+Passphrase.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5B4A715A252B5B6F00436FCF /* NSError+Passphrase.swift */; };
 		5B4A715D252B5B6F00436FCF /* Error+Passphrase.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5B4A715B252B5B6F00436FCF /* Error+Passphrase.swift */; };
 		5B64966025C82D570028B9ED /* CdAccount+FetchedResultsController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5B64965F25C82D570028B9ED /* CdAccount+FetchedResultsController.swift */; };
+		5B7A262628A3B1270041F4A3 /* AccountVerifier.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43E5F7C528571D2000115686 /* AccountVerifier.swift */; };
 		5B87D79A23F3117D009DACAA /* String+Fingerprint.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5B87D79923F3117D009DACAA /* String+Fingerprint.swift */; };
 		5B88A19D2406C1A2003240B8 /* TrustManagementUtil.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5B88A19C2406C1A2003240B8 /* TrustManagementUtil.swift */; };
 		5BAD433F28183F1D000BA5FF /* ImapUIFlags+SessionAware.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5BAD433E28183F1D000BA5FF /* ImapUIFlags+SessionAware.swift */; };
@@ -3189,6 +3190,7 @@
 				43BDDD7E25DD42F200FC0C68 /* ProviderSpecificInformationProtocol.swift in Sources */,
 				43BDDDCA25DD634B00FC0C68 /* Message+FakeMessage.swift in Sources */,
 				436FD22125DA80C300D929B3 /* Identity+SessionAware.swift in Sources */,
+				5B7A262628A3B1270041F4A3 /* AccountVerifier.swift in Sources */,
 				43FD3F2F261484AF0032F809 /* AppendMailsOperation.swift in Sources */,
 				434C221525D6998200F622DB /* CdMessageReference.swift in Sources */,
 				434C219F25D6976C00F622DB /* Account+Fetching.swift in Sources */,
