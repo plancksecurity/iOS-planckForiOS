@@ -263,8 +263,8 @@ extension SettingsViewModel {
             })
             rows.append(generateSwitchRow(type: .passiveMode,
                                           isDangerous: false,
-                                          isOn: AppSettings.shared.passiveMode) { [weak self] (value) in
-                                            AppSettings.shared.passiveMode = value
+                                          isOn: AppSettings.shared.passiveModeEnabled) { [weak self] (value) in
+                                            AppSettings.shared.passiveModeEnabled = value
                 guard let me = self else {
                     Log.shared.errorAndCrash("Lost myself")
                     return
