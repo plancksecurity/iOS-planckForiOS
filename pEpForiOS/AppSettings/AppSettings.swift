@@ -457,7 +457,7 @@ extension AppSettings: MDMAppSettingsProtocol {
     public var mdmDebugLoggingEnabled: Bool {
         get {
             guard let isDebugLogginEnabled = mdmDictionary[AppSettings.keyDebugLoggingEnabled] as? Bool else {
-                //Default value
+                //Default value from documentation
                 return false
             }
             return isDebugLogginEnabled
@@ -467,7 +467,7 @@ extension AppSettings: MDMAppSettingsProtocol {
     public var mdmAccountDisplayCount: Int {
         get {
             guard let accountDisplayCount = mdmDictionary[AppSettings.keyAccountDisplayCount] as? Int else {
-                //Default value
+                //Default value from documentation
                 return 250
             }
             return accountDisplayCount
@@ -477,7 +477,7 @@ extension AppSettings: MDMAppSettingsProtocol {
     public var mdmMaxPushFolders: Int {
         get {
             guard let maxPushFolder = mdmDictionary[AppSettings.keyMaxPushFolders] as? Int else {
-                //Default value
+                //Default value from documentation
                 return 0
             }
             return maxPushFolder
@@ -524,7 +524,7 @@ extension AppSettings: MDMAppSettingsProtocol {
     public var mdmDefaultQuotedTextShown: Bool {
         get {
             guard let isDefaultQuotedTextShown = mdmDictionary[AppSettings.keyDefaultQuotedTextShownEnabled] as? Bool else {
-                //Default value
+                // Default value from documentation
                 return true
             }
             return isDefaultQuotedTextShown
@@ -534,7 +534,7 @@ extension AppSettings: MDMAppSettingsProtocol {
     public var mdmAccountDefaultFolders: [String: String] {
         get {
             guard let folders = mdmDictionary[AppSettings.keyAccountDefaultFolders] as? [String: String] else {
-                //Default value
+                // Default value from documentation
                 return [String:String]()
             }
             return folders
@@ -544,7 +544,7 @@ extension AppSettings: MDMAppSettingsProtocol {
     public var mdmRemoteSearchEnabled: Bool {
         get {
             guard let isRemoteSearchEnabled = mdmDictionary[AppSettings.keyRemoteSearchEnabled] as? Bool else {
-                //Default value
+                // Default value from documentation
                 return true
             }
             return isRemoteSearchEnabled
@@ -554,7 +554,7 @@ extension AppSettings: MDMAppSettingsProtocol {
     public var mdmAccountRemoteSearchNumResults: Int {
         get {
             guard let numberOfRemoteSearchResults = mdmDictionary[AppSettings.keyAccountRemoteSearchNumResults] as? Int else {
-                //Default value
+                // Default value from documentation
                 return 50
             }
             return numberOfRemoteSearchResults
@@ -564,7 +564,7 @@ extension AppSettings: MDMAppSettingsProtocol {
     public var mdmPEPSaveEncryptedOnServerEnabled: Bool {
         get {
             guard let isSaveEncryptedOnServerEnabled = mdmDictionary[AppSettings.keyPEPSaveEncryptedOnServerEnabled] as? Bool else {
-                //Default value
+                // Default value from documentation
                 return true
             }
             return isSaveEncryptedOnServerEnabled
@@ -574,7 +574,7 @@ extension AppSettings: MDMAppSettingsProtocol {
     public var mdmPEPSyncAccountEnabled: Bool {
         get {
             guard let isSyncEnabled = mdmDictionary[AppSettings.keyPEPEnableSyncAccountEnabled] as? Bool else {
-                //Default value
+                // Default value from documentation
                 return true
             }
             return isSyncEnabled
@@ -584,7 +584,7 @@ extension AppSettings: MDMAppSettingsProtocol {
     public var mdmPEPSyncNewDevicesEnabled: Bool {
         get {
             guard let isSyncNewDevicesEnabled = mdmDictionary[AppSettings.keyPEPSyncNewDevicesEnabled] as? Bool else {
-                //Default value
+                // Default value from documentation
                 return false
             }
             return isSyncNewDevicesEnabled
