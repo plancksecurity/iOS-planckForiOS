@@ -44,10 +44,10 @@ public protocol AppSettingsProtocol {
     var unsecureReplyWarningEnabled: Bool { get set }
 
     /// Should the logging be verbose, or not?
-    var verboseLogginEnabled : Bool { get set }
+    var verboseLogginEnabled: Bool { get set }
 
     /// The list of the accepted languages codes for truswords. 
-    var acceptedLanguagesCodes : [String] { get set }
+    var acceptedLanguagesCodes: [String] { get set }
 
     // MARK: - Collapsing State
 
