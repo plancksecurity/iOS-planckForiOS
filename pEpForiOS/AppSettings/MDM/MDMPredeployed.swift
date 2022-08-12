@@ -8,7 +8,11 @@
 
 import Foundation
 
+#if EXT_SHARE
+import MessageModelForAppExtensions
+#else
 import MessageModel
+#endif
 
 // TODO: For ConnectionTransport. Eliminate?
 import PantomimeFramework
