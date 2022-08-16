@@ -80,7 +80,8 @@ class MDMDeploymentTest: XCTestCase {
                                               "incoming_mail_settings_port": NSNumber(value: 1993),
                                               "incoming_mail_settings_user_name": loginname]
 
-        let mailSettingsDict = ["incoming_mail_settings": imapSettingsDict]
+        let mailSettingsDict: [String:Any] = ["account_email_address": "email@example.com",
+                                              "incoming_mail_settings": imapSettingsDict]
 
         let mdmDict = ["composition_settings": compositionSettingsDict,
                        "pep_mail_settings": mailSettingsDict]
