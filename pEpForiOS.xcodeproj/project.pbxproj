@@ -2404,13 +2404,13 @@
 			path = AppSettings;
 			sourceTree = "<group>";
 		};
-		43D530F42844C50D007E227E /* MDMAccountPredeployment */ = {
+		43D530F42844C50D007E227E /* MDMAccountDeployment */ = {
 			isa = PBXGroup;
 			children = (
 				43D530F52844C55B007E227E /* MDMAccountPredeploymentViewController.swift */,
 				43D530F72844D5B5007E227E /* MDMAccountPredeploymentViewModel.swift */,
 			);
-			path = MDMAccountPredeployment;
+			path = MDMAccountDeployment;
 			sourceTree = "<group>";
 		};
 		43E366882836254300C4A4CB /* MDM */ = {
@@ -2490,7 +2490,7 @@
 				003C0FAA20B57C2E0093A987 /* SplitView */,
 				492EF92B20C69547004EAE14 /* Thread */,
 				150DF6D12052A99800A9DCF7 /* SecureWebViewController */,
-				43D530F42844C50D007E227E /* MDMAccountPredeployment */,
+				43D530F42844C50D007E227E /* MDMAccountDeployment */,
 				43AA82511E9B925000ABD5A8 /* Util */,
 			);
 			path = UI;
