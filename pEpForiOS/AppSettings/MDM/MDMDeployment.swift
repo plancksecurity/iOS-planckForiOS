@@ -152,7 +152,41 @@ extension AccountVerifier.ServerData {
 
 extension MDMDeployment: MDMDeploymentProtocol {
     func accountToDeploy() throws -> MDMDeployment.AccountData? {
-        return try mdmAccountToDeploy()
+        guard let mdmDict = mdmPredeploymentDictionary() else {
+            // Note, this is not considered an error. It just means there is no MDM
+            // configured account.
+            return nil
+        }
+
+        let username = mdmExtractUsername(mdmDictionary: mdmDict)
+
+        guard let mailSettings = mdmDict[MDMDeployment.keyPredeployedAccounts] as? SettingsDict else {
+            // Note, this is not considered an error. It just means there is no MDM
+            // configured account.
+            return nil
+        }
+
+        guard let userAddress = mailSettings[MDMDeployment.keyUserAddress] as? String else {
+            throw MDMDeploymentError.malformedAccountData
+        }
+
+        // Make sure there is a username, falling back to the email address if needed
+        let accountUsername = username ?? userAddress
+
+        guard let imapServerData = mdmExtractImapServerSettings(mailSettings: mailSettings) else {
+            throw MDMDeploymentError.malformedAccountData
+        }
+
+        guard let smtpServerData = mdmExtractSmtpServerSettings(mailSettings: mailSettings) else {
+            throw MDMDeploymentError.malformedAccountData
+        }
+
+        let accountData = AccountData(accountName: accountUsername,
+                                      email: userAddress,
+                                      imapServer: imapServerData,
+                                      smtpServer: smtpServerData)
+
+        return accountData
     }
 
     /// Implementation details:
@@ -169,7 +203,7 @@ extension MDMDeployment: MDMDeploymentProtocol {
         let accountData: MDMDeployment.AccountData?
 
         do {
-            accountData = try mdmAccountToDeploy()
+            accountData = try accountToDeploy()
         } catch (let error as MDMDeploymentError) {
             callback(error)
             return
@@ -242,7 +276,7 @@ extension MDMDeployment: MDMDeploymentProtocol {
 
     var haveAccountToDeploy: Bool {
         do {
-            let account = try mdmAccountToDeploy()
+            let account = try accountToDeploy()
             return account != nil
         } catch {
             return false
@@ -253,47 +287,6 @@ extension MDMDeployment: MDMDeploymentProtocol {
 // MARK: - Utility
 
 extension MDMDeployment {
-    /// Loads the account data from MDM for the account to be deployed, if it exists.
-    /// - Returns: An account, ready to be deployed, set up via MDM, or nil, if nothing could be found.
-    /// - Throws:`MDMDeploymentError`, e.g. if the data was malformatted.
-    private func mdmAccountToDeploy() throws -> AccountData? {
-        guard let mdmDict = mdmPredeploymentDictionary() else {
-            // Note, this is not considered an error. It just means there is no MDM
-            // configured account.
-            return nil
-        }
-
-        let username = mdmExtractUsername(mdmDictionary: mdmDict)
-
-        guard let mailSettings = mdmDict[MDMDeployment.keyPredeployedAccounts] as? SettingsDict else {
-            // Note, this is not considered an error. It just means there is no MDM
-            // configured account.
-            return nil
-        }
-
-        guard let userAddress = mailSettings[MDMDeployment.keyUserAddress] as? String else {
-            throw MDMDeploymentError.malformedAccountData
-        }
-
-        // Make sure there is a username, falling back to the email address if needed
-        let accountUsername = username ?? userAddress
-
-        guard let imapServerData = mdmExtractImapServerSettings(mailSettings: mailSettings) else {
-            throw MDMDeploymentError.malformedAccountData
-        }
-
-        guard let smtpServerData = mdmExtractSmtpServerSettings(mailSettings: mailSettings) else {
-            throw MDMDeploymentError.malformedAccountData
-        }
-
-        let accountData = AccountData(accountName: accountUsername,
-                                      email: userAddress,
-                                      imapServer: imapServerData,
-                                      smtpServer: smtpServerData)
-
-        return accountData
-    }
-
     private func mdmPredeploymentDictionary() -> SettingsDict? {
         // Please note the explicit use of UserDefaults for predeployment,
         // instead of the usual usage of AppSettings, since this use case is special.
