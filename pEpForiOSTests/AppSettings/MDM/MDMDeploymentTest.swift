@@ -73,19 +73,19 @@ class MDMDeploymentTest: XCTestCase {
     func setupDeployableAccountData() {
         let loginname = "login_name"
 
-        let compositionSettingsDict = ["composition_sender_name": "sender_name"] as SettingsDict
+        let compositionSettingsDict: SettingsDict = ["composition_sender_name": "sender_name"]
 
-        let imapSettingsDict: [String:Any] = ["incoming_mail_settings_server": "imap_server",
+        let imapSettingsDict: SettingsDict = ["incoming_mail_settings_server": "imap_server",
                                               "incoming_mail_settings_security_type": "SSL/TLS",
                                               "incoming_mail_settings_port": NSNumber(value: 1993),
                                               "incoming_mail_settings_user_name": loginname]
 
-        let smtpSettingsDict: [String:Any] = ["outgoing_mail_settings_server": "smtp_server",
+        let smtpSettingsDict: SettingsDict = ["outgoing_mail_settings_server": "smtp_server",
                                               "outgoing_mail_settings_security_type": "STARTTLS",
                                               "outgoing_mail_settings_port": NSNumber(value: 1465),
                                               "outgoing_mail_settings_user_name": loginname]
 
-        let mailSettingsDict: [String:Any] = ["account_email_address": "email@example.com",
+        let mailSettingsDict: SettingsDict = ["account_email_address": "email@example.com",
                                               "incoming_mail_settings": imapSettingsDict,
                                               "outgoing_mail_settings": smtpSettingsDict]
 
