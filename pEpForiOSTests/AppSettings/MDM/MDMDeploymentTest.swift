@@ -22,6 +22,7 @@ class MDMDeploymentTest: XCTestCase {
     }
 
     func testNetworkError() throws {
+        XCTAssertFalse(AppSettings.shared.hasBeenMDMDeployed)
         XCTAssertFalse(MDMDeployment().haveAccountToDeploy)
         setupDeployableAccountData()
         XCTAssertTrue(MDMDeployment().haveAccountToDeploy)
@@ -33,6 +34,8 @@ class MDMDeploymentTest: XCTestCase {
         } catch {
             XCTFail()
         }
+
+        XCTAssertFalse(AppSettings.shared.hasBeenMDMDeployed)
 
         let accounts = Account.all()
         XCTAssertEqual(accounts.count, 0)

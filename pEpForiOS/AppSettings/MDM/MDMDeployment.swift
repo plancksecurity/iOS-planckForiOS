@@ -152,6 +152,11 @@ extension AccountVerifier.ServerData {
 
 extension MDMDeployment: MDMDeploymentProtocol {
     func accountToDeploy() throws -> MDMDeployment.AccountData? {
+        if AppSettings.shared.hasBeenMDMDeployed {
+            // Deploy only once
+            return nil
+        }
+
         guard let mdmDict = mdmPredeploymentDictionary() else {
             // Note, this is not considered an error. It just means there is no MDM
             // configured account.
@@ -200,6 +205,12 @@ extension MDMDeployment: MDMDeploymentProtocol {
     /// "A managed app can respond to new configurations that arrive while the app is running by observing the
     /// NSUserDefaultsDidChangeNotification notification."
     func deployAccounts(callback: @escaping (_ error: MDMDeploymentError?) -> ()) {
+        if AppSettings.shared.hasBeenMDMDeployed {
+            // Deploy only once
+            callback(MDMDeploymentError.alreadyDeployed)
+            return
+        }
+
         let accountData: MDMDeployment.AccountData?
 
         do {
@@ -253,18 +264,8 @@ extension MDMDeployment: MDMDeploymentProtocol {
             }
         }
 
-        // Fetch the MDM dictionary to reset in the following
-        // group notification group.
-        guard var mdmDict = mdmPredeploymentDictionary() else {
-            return
-        }
-
         group.notify(queue: DispatchQueue.main) {
-            // Overwrite the accounts to deploy with nil
-            // Please note the explicit use of UserDefaults,
-            // instead of the usual usage of AppSettings, since this use case is special.
-            mdmDict[MDMDeployment.keyPredeployedAccounts] = nil
-            UserDefaults.standard.set(mdmDict, forKey: MDMDeployment.keyMDM)
+            AppSettings.shared.hasBeenMDMDeployed = true
 
             if let _ = firstError {
                 callback(.networkError)

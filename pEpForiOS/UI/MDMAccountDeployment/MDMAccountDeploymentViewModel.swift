@@ -26,6 +26,9 @@ class MDMAccountPredeploymentViewModel {
             if let error = maybeError {
                 var message: String
                 switch error {
+                case .alreadyDeployed:
+                    message = NSLocalizedString("MDM Error: Already deployed",
+                                                comment: "MDM predeployment error")
                 case .networkError:
                     message = NSLocalizedString("MDM Error: Could not connect to account",
                                                 comment: "MDM predeployment error")

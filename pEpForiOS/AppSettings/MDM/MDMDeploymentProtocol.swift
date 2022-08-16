@@ -10,6 +10,9 @@ import Foundation
 
 /// All error cases thrown by `MDMDeploymentProtocol.deployAccounts`.
 enum MDMDeploymentError: Error {
+    /// MDM account has already been deployed.
+    case alreadyDeployed
+
     /// Account settings were found, but the format could not be read/parsed.
     case malformedAccountData
 
@@ -33,8 +36,9 @@ protocol MDMDeploymentProtocol {
     /// Calls the given callback when finished, indicating an error (`MDMDeploymentError`, if any),
     /// or complete success.
     ///
-    /// - Note: It is an error to call `predeployAccounts` with `haveAccountsToPredeploy`
-    /// being `false`, with undefined behavior.
+    /// - Note: It is an error to call `deployAccounts` with `haveAccountsToPredeploy`
+    /// being `false`, with undefined behavior. It is also an error to call `deployAccounts`
+    /// after the initial deployment has already been done.
     ///
     /// The format of the required settings is described here: https://confluence.pep.security/x/HgGc
     /// (see "Settings meaning and structure")
