@@ -157,39 +157,6 @@ extension AccountVerifier.ServerData {
                                           transport: transport)
     }
 
-    fileprivate static func from(serverSettings: SettingsDict,
-                                 defaultTransport: ConnectionTransport,
-                                 keyServerName: String,
-                                 keyTransport: String,
-                                 keyPort: String,
-                                 keyLoginName: String) -> AccountVerifier.ServerData? {
-        guard let serverName = serverSettings[keyServerName] as? String else {
-            return nil
-        }
-
-        var transport: ConnectionTransport
-        if let transportString = serverSettings[keyTransport] as? String {
-            guard let theTransport = connectionTransport(fromString: transportString) else {
-                return nil
-            }
-            transport = theTransport
-        } else {
-            transport = defaultTransport
-        }
-
-        guard let port = serverSettings[keyPort] as? Int else {
-            return nil
-        }
-        guard let loginName = serverSettings[keyLoginName] as? String else {
-            return nil
-        }
-
-        return AccountVerifier.ServerData(loginName: loginName,
-                                          hostName: serverName,
-                                          port: port,
-                                          transport: transport)
-    }
-
     private static func connectionTransport(fromString: String) -> ConnectionTransport? {
         switch (fromString) {
         case transportPlain:
@@ -234,19 +201,19 @@ extension MDMDeployment: MDMDeploymentProtocol {
         // Make sure there is a username, falling back to the email address if needed
         let accountUsername = username ?? userAddress
 
-        guard let incomingServerSettings = mailSettings[MDMDeployment.keyIncomingMailSettings] else {
+        guard let incomingServerSettings = mailSettings[MDMDeployment.keyIncomingMailSettings] as? SettingsDict else {
             throw MDMDeploymentError.malformedAccountData
         }
 
-        guard let outgoingServerSettings = mailSettings[MDMDeployment.keyOutgoingMailSettings] else {
+        guard let outgoingServerSettings = mailSettings[MDMDeployment.keyOutgoingMailSettings] as? SettingsDict else {
             throw MDMDeploymentError.malformedAccountData
         }
 
-        guard let imapServerData = mdmExtractImapServerSettings(mailSettings: mailSettings) else {
+        guard let imapServerData = AccountVerifier.ServerData.fromIncoming(serverSettings: incomingServerSettings) else {
             throw MDMDeploymentError.malformedAccountData
         }
 
-        guard let smtpServerData = mdmExtractSmtpServerSettings(mailSettings: mailSettings) else {
+        guard let smtpServerData = AccountVerifier.ServerData.fromOutgoing(serverSettings: outgoingServerSettings) else {
             throw MDMDeploymentError.malformedAccountData
         }
 
@@ -367,25 +334,5 @@ extension MDMDeployment {
         } else {
             return mdmDictionary[MDMDeployment.keyAccountDescription] as? String
         }
-    }
-
-    /// Tries to construct IMAP ServerData from the contents of the given pep_mail_settings.
-    private func mdmExtractImapServerSettings(mailSettings: SettingsDict) -> AccountVerifier.ServerData? {
-        return AccountVerifier.ServerData.from(serverSettings: mailSettings,
-                                               defaultTransport: .TLS,
-                                               keyServerName: MDMDeployment.keyIncomingMailSettingsServer,
-                                               keyTransport: MDMDeployment.keyIncomingMailSettingsSecurityType,
-                                               keyPort: MDMDeployment.keyIncomingMailSettingsPort,
-                                               keyLoginName: MDMDeployment.keyIncomingMailSettingsUsername)
-    }
-
-    /// Tries to construct SMTP ServerData from the contents of the given pep_mail_settings.
-    private func mdmExtractSmtpServerSettings(mailSettings: SettingsDict) -> AccountVerifier.ServerData? {
-        return AccountVerifier.ServerData.from(serverSettings: mailSettings,
-                                               defaultTransport: .startTLS,
-                                               keyServerName: MDMDeployment.keyOutgoingMailSettingsServer,
-                                               keyTransport: MDMDeployment.keyOutgoingMailSettingsSecurityType,
-                                               keyPort: MDMDeployment.keyOutgoingMailSettingsPort,
-                                               keyLoginName: MDMDeployment.keyOutgoingMailSettingsUsername)
     }
 }
