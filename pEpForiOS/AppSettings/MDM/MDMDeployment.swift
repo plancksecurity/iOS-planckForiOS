@@ -129,6 +129,34 @@ extension AccountVerifier.ServerData {
                                           transport: transport)
     }
 
+    fileprivate static func fromOutgoing(serverSettings: SettingsDict) -> AccountVerifier.ServerData? {
+        guard let serverName = serverSettings[MDMDeployment.keyOutgoingMailSettingsServer] as? String else {
+            return nil
+        }
+
+        var transport: ConnectionTransport
+        if let transportString = serverSettings[MDMDeployment.keyOutgoingMailSettingsSecurityType] as? String {
+            guard let theTransport = connectionTransport(fromString: transportString) else {
+                return nil
+            }
+            transport = theTransport
+        } else {
+            transport = .startTLS
+        }
+
+        guard let port = serverSettings[MDMDeployment.keyOutgoingMailSettingsPort] as? Int else {
+            return nil
+        }
+        guard let loginName = serverSettings[MDMDeployment.keyOutgoingMailSettingsUsername] as? String else {
+            return nil
+        }
+
+        return AccountVerifier.ServerData(loginName: loginName,
+                                          hostName: serverName,
+                                          port: port,
+                                          transport: transport)
+    }
+
     fileprivate static func from(serverSettings: SettingsDict,
                                  defaultTransport: ConnectionTransport,
                                  keyServerName: String,
