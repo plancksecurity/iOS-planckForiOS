@@ -66,7 +66,7 @@ extension MDMDeployment {
     /// The MDM settings key for the incoming mail server's port.
     static let keyIncomingMailSettingsPort = "incoming_mail_settings_port"
 
-    /// The MDM settings key for the incoming mail server's login name.
+    /// The MDM settings key for the incoming mail server's _login_ name.
     static let keyIncomingMailSettingsUsername = "incoming_mail_settings_user_name"
 
     /// The MDM settings key for the outgoing mail settings.
@@ -83,7 +83,7 @@ extension MDMDeployment {
     /// The MDM settings key for the outgoing mail server's port.
     static let keyOutgoingMailSettingsPort = "outgoing_mail_settings_port"
 
-    /// The MDM settings key for the outgoing mail server's login name.
+    /// The MDM settings key for the outgoing mail server's _login_ name.
     static let keyOutgoingMailSettingsUsername = "outgoing_mail_settings_user_name"
 }
 
