@@ -38,8 +38,6 @@ class MDMDeploymentTest: XCTestCase {
             XCTFail()
         }
 
-        XCTAssertFalse(MDMDeployment().haveAccountToDeploy)
-
         let accounts = Account.all()
         XCTAssertEqual(accounts.count, 0)
     }
