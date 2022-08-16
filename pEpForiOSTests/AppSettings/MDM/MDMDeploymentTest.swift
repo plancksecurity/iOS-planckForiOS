@@ -73,15 +73,17 @@ class MDMDeploymentTest: XCTestCase {
     func setupDeployableAccountData() {
         let loginname = "login_name"
 
-        let compositionSettings = ["composition_sender_name": "sender_name"] as SettingsDict
+        let compositionSettingsDict = ["composition_sender_name": "sender_name"] as SettingsDict
 
-        let imapSettings: [String:Any] = ["incoming_mail_settings_server": "imap_server",
-                                          "incoming_mail_settings_security_type": "SSL/TLS",
-                                          "incoming_mail_settings_port": NSNumber(value: 1993),
-                                          "incoming_mail_settings_user_name": loginname]
+        let imapSettingsDict: [String:Any] = ["incoming_mail_settings_server": "imap_server",
+                                              "incoming_mail_settings_security_type": "SSL/TLS",
+                                              "incoming_mail_settings_port": NSNumber(value: 1993),
+                                              "incoming_mail_settings_user_name": loginname]
 
-        let mdmDict = ["composition_settings": compositionSettings,
-                       "incoming_mail_settings": imapSettings]
+        let mailSettingsDict = ["incoming_mail_settings": imapSettingsDict]
+
+        let mdmDict = ["composition_settings": compositionSettingsDict,
+                       "pep_mail_settings": mailSettingsDict]
 
         UserDefaults.standard.set(mdmDict, forKey: "com.apple.configuration.managed")
     }
