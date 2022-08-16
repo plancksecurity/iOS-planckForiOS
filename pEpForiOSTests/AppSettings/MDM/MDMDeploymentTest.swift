@@ -79,7 +79,7 @@ class MDMDeploymentTest: XCTestCase {
     func setupDeployableAccountData() {
         let loginname = "login_name"
 
-        let compositionSettingsDict: SettingsDict = ["composition_sender_name": "sender_name"]
+        let compositionSettingsDict = ["composition_sender_name": "sender_name"]
 
         let imapSettingsDict: SettingsDict = ["incoming_mail_settings_server": "imap_server",
                                               "incoming_mail_settings_security_type": "SSL/TLS",
@@ -95,8 +95,8 @@ class MDMDeploymentTest: XCTestCase {
                                               "incoming_mail_settings": imapSettingsDict,
                                               "outgoing_mail_settings": smtpSettingsDict]
 
-        let mdmDict: SettingsDict = ["composition_settings": compositionSettingsDict,
-                                     "pep_mail_settings": mailSettingsDict]
+        let mdmDict = ["composition_settings": compositionSettingsDict,
+                       "pep_mail_settings": mailSettingsDict]
 
         UserDefaults.standard.set(mdmDict, forKey: "com.apple.configuration.managed")
     }
