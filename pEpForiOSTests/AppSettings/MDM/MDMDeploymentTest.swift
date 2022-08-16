@@ -95,8 +95,8 @@ class MDMDeploymentTest: XCTestCase {
                                               "incoming_mail_settings": imapSettingsDict,
                                               "outgoing_mail_settings": smtpSettingsDict]
 
-        let mdmDict = ["composition_settings": compositionSettingsDict,
-                       "pep_mail_settings": mailSettingsDict]
+        let mdmDict: SettingsDict = ["composition_settings": compositionSettingsDict,
+                                     "pep_mail_settings": mailSettingsDict]
 
         UserDefaults.standard.set(mdmDict, forKey: "com.apple.configuration.managed")
     }
