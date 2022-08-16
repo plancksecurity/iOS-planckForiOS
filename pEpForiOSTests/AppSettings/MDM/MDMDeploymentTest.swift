@@ -15,9 +15,15 @@ import pEp4iosIntern
 private typealias SettingsDict = [String:Any]
 
 class MDMDeploymentTest: XCTestCase {
+    override func setUpWithError() throws {
+        AppSettings.shared.hasBeenMDMDeployed = false
+        try super.setUpWithError()
+    }
+
     override func tearDownWithError() throws {
         Stack.shared.reset()
         XCTAssertTrue(PEPUtils.pEpClean())
+        UserDefaults.standard.set([], forKey: "com.apple.configuration.managed")
         try super.tearDownWithError()
     }
 
