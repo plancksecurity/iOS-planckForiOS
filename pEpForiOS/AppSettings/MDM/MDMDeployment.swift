@@ -178,6 +178,14 @@ extension MDMDeployment: MDMDeploymentProtocol {
         // Make sure there is a username, falling back to the email address if needed
         let accountUsername = username ?? userAddress
 
+        guard let incomingServerSettings = mailSettings[MDMDeployment.keyIncomingMailSettings] else {
+            throw MDMDeploymentError.malformedAccountData
+        }
+
+        guard let outgoingServerSettings = mailSettings[MDMDeployment.keyOutgoingMailSettings] else {
+            throw MDMDeploymentError.malformedAccountData
+        }
+
         guard let imapServerData = mdmExtractImapServerSettings(mailSettings: mailSettings) else {
             throw MDMDeploymentError.malformedAccountData
         }
