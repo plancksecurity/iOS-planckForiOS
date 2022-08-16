@@ -41,8 +41,6 @@ class MDMDeploymentTest: XCTestCase {
             XCTFail()
         }
 
-        XCTAssertFalse(AppSettings.shared.hasBeenMDMDeployed)
-
         let accounts = Account.all()
         XCTAssertEqual(accounts.count, 0)
     }
@@ -60,10 +58,8 @@ class MDMDeploymentTest: XCTestCase {
             if let error = maybeError {
                 potentialError = error
             } else {
-                // After successful deploy, there should not be any accounts to predeploy anymore
-                if let mdmDictCheck = UserDefaults.standard.dictionary(forKey: MDMDeployment.keyMDM) {
-                    XCTAssertNil(mdmDictCheck[MDMDeployment.keyPredeployedAccounts])
-                }
+                // A successful deploy should be marked in the settings
+                XCTAssertTrue(AppSettings.shared.hasBeenMDMDeployed)
             }
         }
         wait(for: [expDeployed], timeout: TestUtil.waitTime)
