@@ -66,6 +66,10 @@ class MDMDeploymentTest: XCTestCase {
 
     // MARK: - Setup Util
 
+    /// - Note: The use of hard-coded strings as keys is intentional.
     func setupDeployableAccountData() {
+        let compositionSettings = ["composition_sender_name": "sender_name"] as SettingsDict
+        let mdmDict = ["composition_settings": compositionSettings]
+        UserDefaults.standard.set(mdmDict, forKey: "com.apple.configuration.managed")
     }
 }
