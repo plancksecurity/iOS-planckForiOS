@@ -1,5 +1,5 @@
 //
-//  MDMPredeployed.swift
+//  MDMDeployment.swift
 //  pEp
 //
 //  Created by Dirk Zimmermann on 19.05.22.
@@ -17,10 +17,10 @@ import MessageModel
 // TODO: For ConnectionTransport. Eliminate?
 import PantomimeFramework
 
-class MDMPredeployed {
+class MDMDeployment {
 }
 
-extension MDMPredeployed {
+extension MDMDeployment {
     struct AccountData {
         let accountName: String
         let email: String
@@ -32,7 +32,7 @@ extension MDMPredeployed {
 
 // MARK: - Dictionary key constants
 
-extension MDMPredeployed {
+extension MDMDeployment {
     /// The 'global' settings key under which all MDM settings are supposed to land.
     static let keyMDM = "com.apple.configuration.managed"
 
@@ -148,10 +148,10 @@ extension AccountVerifier.ServerData {
     }
 }
 
-// MARK: - MDMPredeployedProtocol
+// MARK: - MDMDeploymentProtocol
 
-extension MDMPredeployed: MDMPredeployedProtocol {
-    func accountToDeploy() throws -> MDMPredeployed.AccountData? {
+extension MDMDeployment: MDMDeploymentProtocol {
+    func accountToDeploy() throws -> MDMDeployment.AccountData? {
         return try mdmAccountToDeploy()
     }
 
@@ -165,12 +165,12 @@ extension MDMPredeployed: MDMPredeployedProtocol {
     ///
     /// "A managed app can respond to new configurations that arrive while the app is running by observing the
     /// NSUserDefaultsDidChangeNotification notification."
-    func predeployAccounts(callback: @escaping (_ error: MDMPredeployedError?) -> ()) {
-        let accountData: MDMPredeployed.AccountData?
+    func deployAccounts(callback: @escaping (_ error: MDMDeploymentError?) -> ()) {
+        let accountData: MDMDeployment.AccountData?
 
         do {
             accountData = try mdmAccountToDeploy()
-        } catch (let error as MDMPredeployedError) {
+        } catch (let error as MDMDeploymentError) {
             callback(error)
             return
         } catch {
@@ -229,8 +229,8 @@ extension MDMPredeployed: MDMPredeployedProtocol {
             // Overwrite the accounts to deploy with nil
             // Please note the explicit use of UserDefaults,
             // instead of the usual usage of AppSettings, since this use case is special.
-            mdmDict[MDMPredeployed.keyPredeployedAccounts] = nil
-            UserDefaults.standard.set(mdmDict, forKey: MDMPredeployed.keyMDM)
+            mdmDict[MDMDeployment.keyPredeployedAccounts] = nil
+            UserDefaults.standard.set(mdmDict, forKey: MDMDeployment.keyMDM)
 
             if let _ = firstError {
                 callback(.networkError)
@@ -252,10 +252,10 @@ extension MDMPredeployed: MDMPredeployedProtocol {
 
 // MARK: - Utility
 
-extension MDMPredeployed {
+extension MDMDeployment {
     /// Loads the account data from MDM for the account to be deployed, if it exists.
     /// - Returns: An account, ready to be deployed, set up via MDM, or nil, if nothing could be found.
-    /// - Throws:`MDMPredeployedError`, e.g. if the data was malformatted.
+    /// - Throws:`MDMDeploymentError`, e.g. if the data was malformatted.
     private func mdmAccountToDeploy() throws -> AccountData? {
         guard let mdmDict = mdmPredeploymentDictionary() else {
             // Note, this is not considered an error. It just means there is no MDM
@@ -265,25 +265,25 @@ extension MDMPredeployed {
 
         let username = mdmExtractUsername(mdmDictionary: mdmDict)
 
-        guard let mailSettings = mdmDict[MDMPredeployed.keyPredeployedAccounts] as? SettingsDict else {
+        guard let mailSettings = mdmDict[MDMDeployment.keyPredeployedAccounts] as? SettingsDict else {
             // Note, this is not considered an error. It just means there is no MDM
             // configured account.
             return nil
         }
 
-        guard let userAddress = mailSettings[MDMPredeployed.keyUserAddress] as? String else {
-            throw MDMPredeployedError.malformedAccountData
+        guard let userAddress = mailSettings[MDMDeployment.keyUserAddress] as? String else {
+            throw MDMDeploymentError.malformedAccountData
         }
 
         // Make sure there is a username, falling back to the email address if needed
         let accountUsername = username ?? userAddress
 
         guard let imapServerData = mdmExtractImapServerSettings(mailSettings: mailSettings) else {
-            throw MDMPredeployedError.malformedAccountData
+            throw MDMDeploymentError.malformedAccountData
         }
 
         guard let smtpServerData = mdmExtractSmtpServerSettings(mailSettings: mailSettings) else {
-            throw MDMPredeployedError.malformedAccountData
+            throw MDMDeploymentError.malformedAccountData
         }
 
         let accountData = AccountData(accountName: accountUsername,
@@ -297,17 +297,17 @@ extension MDMPredeployed {
     private func mdmPredeploymentDictionary() -> SettingsDict? {
         // Please note the explicit use of UserDefaults for predeployment,
         // instead of the usual usage of AppSettings, since this use case is special.
-        return UserDefaults.standard.dictionary(forKey: MDMPredeployed.keyMDM)
+        return UserDefaults.standard.dictionary(forKey: MDMDeployment.keyMDM)
     }
 
     /// Extracts the user name from composition_settings/composition_sender_name.
     /// This is recommended, but not mandatory, so the result could be nil.
     private func mdmExtractUsername(mdmDictionary: SettingsDict) -> String? {
-        if let compositionSettings = mdmDictionary[MDMPredeployed.keyCompositionSettings] as? SettingsDict,
-           let compositionSenderName = compositionSettings[MDMPredeployed.keyCompositionSenderName] as? String {
+        if let compositionSettings = mdmDictionary[MDMDeployment.keyCompositionSettings] as? SettingsDict,
+           let compositionSenderName = compositionSettings[MDMDeployment.keyCompositionSenderName] as? String {
             return compositionSenderName
         } else {
-            return mdmDictionary[MDMPredeployed.keyAccountDescription] as? String
+            return mdmDictionary[MDMDeployment.keyAccountDescription] as? String
         }
     }
 
@@ -315,19 +315,19 @@ extension MDMPredeployed {
     private func mdmExtractImapServerSettings(mailSettings: SettingsDict) -> AccountVerifier.ServerData? {
         return AccountVerifier.ServerData.from(serverSettings: mailSettings,
                                                defaultTransport: .TLS,
-                                               keyServerName: MDMPredeployed.keyIncomingMailSettingsServer,
-                                               keyTransport: MDMPredeployed.keyIncomingMailSettingsSecurityType,
-                                               keyPort: MDMPredeployed.keyIncomingMailSettingsPort,
-                                               keyLoginName: MDMPredeployed.keyIncomingMailSettingsUsername)
+                                               keyServerName: MDMDeployment.keyIncomingMailSettingsServer,
+                                               keyTransport: MDMDeployment.keyIncomingMailSettingsSecurityType,
+                                               keyPort: MDMDeployment.keyIncomingMailSettingsPort,
+                                               keyLoginName: MDMDeployment.keyIncomingMailSettingsUsername)
     }
 
     /// Tries to construct SMTP ServerData from the contents of the given pep_mail_settings.
     private func mdmExtractSmtpServerSettings(mailSettings: SettingsDict) -> AccountVerifier.ServerData? {
         return AccountVerifier.ServerData.from(serverSettings: mailSettings,
                                                defaultTransport: .startTLS,
-                                               keyServerName: MDMPredeployed.keyOutgoingMailSettingsServer,
-                                               keyTransport: MDMPredeployed.keyOutgoingMailSettingsSecurityType,
-                                               keyPort: MDMPredeployed.keyOutgoingMailSettingsPort,
-                                               keyLoginName: MDMPredeployed.keyOutgoingMailSettingsUsername)
+                                               keyServerName: MDMDeployment.keyOutgoingMailSettingsServer,
+                                               keyTransport: MDMDeployment.keyOutgoingMailSettingsSecurityType,
+                                               keyPort: MDMDeployment.keyOutgoingMailSettingsPort,
+                                               keyLoginName: MDMDeployment.keyOutgoingMailSettingsUsername)
     }
 }

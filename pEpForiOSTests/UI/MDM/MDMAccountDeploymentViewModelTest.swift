@@ -10,7 +10,7 @@ import XCTest
 
 @testable import pEpForiOS
 
-class MDMAccountPredeploymentViewModelTest: XCTestCase {
+class MDMAccountDeploymentViewModelTest: XCTestCase {
 
     func testSuccess() throws {
         deploy(resultingError: nil)
@@ -27,12 +27,12 @@ class MDMAccountPredeploymentViewModelTest: XCTestCase {
 
 // MARK: - Util
 
-extension MDMAccountPredeploymentViewModelTest {
+extension MDMAccountDeploymentViewModelTest {
     /// Invokes a VM with the dummy deployer and checks if the result of that
     /// is congruent with the given error,
     /// i.e. that it was successful when there was no error given, and
     /// that it gives an error result otherwise.
-    func deploy(resultingError: MDMPredeployedError?) {
+    func deploy(resultingError: MDMDeploymentError?) {
         let deployer = DummyDeployer(resultingError: resultingError)
         let vm = MDMAccountPredeploymentViewModel()
 
@@ -55,19 +55,19 @@ extension MDMAccountPredeploymentViewModelTest {
 // MARK: - Util Classes
 
 /// Dummy deployer that synchronously gives the result given in the initializer.
-class DummyDeployer: MDMPredeployedProtocol {
-    init(resultingError: MDMPredeployedError?) {
+class DummyDeployer: MDMDeploymentProtocol {
+    init(resultingError: MDMDeploymentError?) {
         self.resultingError = resultingError
     }
 
-    func accountToDeploy() throws -> MDMPredeployed.AccountData? {
+    func accountToDeploy() throws -> MDMDeployment.AccountData? {
         return nil
     }
 
-    func predeployAccounts(callback: @escaping (MDMPredeployedError?) -> ()) {
+    func deployAccounts(callback: @escaping (MDMDeploymentError?) -> ()) {
         callback(resultingError)
     }
 
     let haveAccountToDeploy = true
-    let resultingError: MDMPredeployedError?
+    let resultingError: MDMDeploymentError?
 }

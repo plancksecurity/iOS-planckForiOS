@@ -10,7 +10,7 @@ import UIKit
 
 import pEpIOSToolbox
 
-class MDMAccountPredeploymentViewController: UIViewController {
+class MDMAccountDeploymentViewController: UIViewController {
     // MARK: - Storyboard
 
     @IBOutlet weak var messageLabel: UILabel!

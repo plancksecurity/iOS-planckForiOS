@@ -1,5 +1,5 @@
 //
-//  MDMPredeployedTest.swift
+//  MDMDeploymentTest.swift
 //  pEpForiOSTests
 //
 //  Created by Dirk Zimmermann on 19.05.22.
@@ -14,7 +14,7 @@ import pEp4iosIntern
 
 private typealias SettingsDict = [String:Any]
 
-class MDMPredeployedTest: XCTestCase {
+class MDMDeploymentTest: XCTestCase {
     override func setUpWithError() throws {
         setupAccountData = []
     }
@@ -26,19 +26,19 @@ class MDMPredeployedTest: XCTestCase {
     }
 
     func testSingleAccountNetworkError() throws {
-        XCTAssertFalse(MDMPredeployed().haveAccountToDeploy)
+        XCTAssertFalse(MDMDeployment().haveAccountToDeploy)
         setupSingleFailingPredeployedAccount()
-        XCTAssertTrue(MDMPredeployed().haveAccountToDeploy)
+        XCTAssertTrue(MDMDeployment().haveAccountToDeploy)
 
         do {
             try predeployAccounts()
             XCTFail()
-        } catch MDMPredeployedError.networkError {
+        } catch MDMDeploymentError.networkError {
         } catch {
             XCTFail()
         }
 
-        XCTAssertFalse(MDMPredeployed().haveAccountToDeploy)
+        XCTAssertFalse(MDMDeployment().haveAccountToDeploy)
 
         let accounts = Account.all()
         XCTAssertEqual(accounts.count, 0)
@@ -48,19 +48,19 @@ class MDMPredeployedTest: XCTestCase {
         let _ = createAccount(baseName: "acc1", portBase: 555, index: 1)
         let _ = createAccount(baseName: "acc2", portBase: 556, index: 2)
 
-        XCTAssertFalse(MDMPredeployed().haveAccountToDeploy)
+        XCTAssertFalse(MDMDeployment().haveAccountToDeploy)
         setupSingleFailingPredeployedAccount()
-        XCTAssertTrue(MDMPredeployed().haveAccountToDeploy)
+        XCTAssertTrue(MDMDeployment().haveAccountToDeploy)
 
         do {
             try predeployAccounts()
             XCTFail()
-        } catch MDMPredeployedError.networkError {
+        } catch MDMDeploymentError.networkError {
         } catch {
             XCTFail()
         }
 
-        XCTAssertFalse(MDMPredeployed().haveAccountToDeploy)
+        XCTAssertFalse(MDMDeployment().haveAccountToDeploy)
 
         let accounts = Account.all()
         XCTAssertEqual(accounts.count, 0)
@@ -68,20 +68,20 @@ class MDMPredeployedTest: XCTestCase {
 
     // MARK: - Util
 
-    /// Wrapper around `MDMPredeployed.predeployAccounts` that makes it
+    /// Wrapper around `MDMDeployment.deployAccounts` that makes it
     /// a sync method throwing exceptions, easier for tests to use.
     func predeployAccounts() throws {
         var potentialError: Error?
 
         let expDeployed = expectation(description: "expDeployed")
-        MDMPredeployed().predeployAccounts { maybeError in
+        MDMDeployment().deployAccounts { maybeError in
             expDeployed.fulfill()
             if let error = maybeError {
                 potentialError = error
             } else {
                 // After successful deploy, there should not be any accounts to predeploy anymore
-                if let mdmDictCheck = UserDefaults.standard.dictionary(forKey: MDMPredeployed.keyMDM) {
-                    XCTAssertNil(mdmDictCheck[MDMPredeployed.keyPredeployedAccounts])
+                if let mdmDictCheck = UserDefaults.standard.dictionary(forKey: MDMDeployment.keyMDM) {
+                    XCTAssertNil(mdmDictCheck[MDMDeployment.keyPredeployedAccounts])
                 }
             }
         }
@@ -111,8 +111,8 @@ class MDMPredeployedTest: XCTestCase {
 
     func setupSingleFailingPredeployedAccount(appendixNumber: Int = 0) {
         let accountDict = failingAccountWithServerDictionary(appendixNumber: appendixNumber)
-        let predeployedAccounts: SettingsDict = [MDMPredeployed.keyPredeployedAccounts:[accountDict]]
-        UserDefaults.standard.set(predeployedAccounts, forKey: MDMPredeployed.keyMDM)
+        let predeployedAccounts: SettingsDict = [MDMDeployment.keyPredeployedAccounts:[accountDict]]
+        UserDefaults.standard.set(predeployedAccounts, forKey: MDMDeployment.keyMDM)
     }
 
     func createAccount(baseName: String, portBase: Int, index: Int) -> Account {
@@ -178,8 +178,8 @@ class MDMPredeployedTest: XCTestCase {
 
     // TODO: Adapt to new account setup
     private func serverDictionary(name: String, port: UInt16) -> SettingsDict {
-        return ["MDMPredeployed.keyServerName": name,
-                "MDMPredeployed.keyServerPort": NSNumber(value: port)]
+        return ["MDMDeployment.keyServerName": name,
+                "MDMDeployment.keyServerPort": NSNumber(value: port)]
     }
 
     // TODO: Adapt to new account setup
@@ -189,11 +189,11 @@ class MDMPredeployedTest: XCTestCase {
                                    password: String,
                                    imapServer: SettingsDict,
                                    smtpServer: SettingsDict) -> SettingsDict {
-        return ["MDMPredeployed.keyUserName": userName,
-                "MDMPredeployed.keyUserAddress": userAddress,
-                "MDMPredeployed.keyLoginName": loginName,
-                "MDMPredeployed.keyPassword": password,
-                "MDMPredeployed.keyImapServer": imapServer,
-                "MDMPredeployed.keySmtpServer": smtpServer]
+        return ["MDMDeployment.keyUserName": userName,
+                "MDMDeployment.keyUserAddress": userAddress,
+                "MDMDeployment.keyLoginName": loginName,
+                "MDMDeployment.keyPassword": password,
+                "MDMDeployment.keyImapServer": imapServer,
+                "MDMDeployment.keySmtpServer": smtpServer]
     }
 }
