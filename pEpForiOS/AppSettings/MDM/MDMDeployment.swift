@@ -101,6 +101,34 @@ extension AccountVerifier.ServerData {
     /// The MDM name for the transport 'plain connect, followed by transition to TLS'.
     static let transportStartTLS = "STARTTLS"
 
+    fileprivate static func fromIncoming(serverSettings: SettingsDict) -> AccountVerifier.ServerData? {
+        guard let serverName = serverSettings[MDMDeployment.keyIncomingMailSettingsServer] as? String else {
+            return nil
+        }
+
+        var transport: ConnectionTransport
+        if let transportString = serverSettings[MDMDeployment.keyIncomingMailSettingsSecurityType] as? String {
+            guard let theTransport = connectionTransport(fromString: transportString) else {
+                return nil
+            }
+            transport = theTransport
+        } else {
+            transport = .TLS
+        }
+
+        guard let port = serverSettings[MDMDeployment.keyIncomingMailSettingsPort] as? Int else {
+            return nil
+        }
+        guard let loginName = serverSettings[MDMDeployment.keyIncomingMailSettingsUsername] as? String else {
+            return nil
+        }
+
+        return AccountVerifier.ServerData(loginName: loginName,
+                                          hostName: serverName,
+                                          port: port,
+                                          transport: transport)
+    }
+
     fileprivate static func from(serverSettings: SettingsDict,
                                  defaultTransport: ConnectionTransport,
                                  keyServerName: String,
