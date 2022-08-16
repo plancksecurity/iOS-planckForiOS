@@ -15,10 +15,6 @@ import pEp4iosIntern
 private typealias SettingsDict = [String:Any]
 
 class MDMDeploymentTest: XCTestCase {
-    override func setUpWithError() throws {
-        setupAccountData = nil
-    }
-
     override func tearDownWithError() throws {
         Stack.shared.reset()
         XCTAssertTrue(PEPUtils.pEpClean())
@@ -69,9 +65,6 @@ class MDMDeploymentTest: XCTestCase {
     }
 
     // MARK: - Setup Util
-
-    /// The MDM account data that is expected to be deployed.
-    var setupAccountData: MDMDeployment.AccountData? = nil
 
     func setupDeployableAccountData() {
     }
