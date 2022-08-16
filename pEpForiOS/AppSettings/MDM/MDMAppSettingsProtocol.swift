@@ -10,7 +10,11 @@
 /// https://confluence.pep.security/pages/viewpage.action?pageId=10223902 (see Settings meaning and structure)
 public protocol MDMAppSettingsProtocol {
 
-    /// Indicate if the app has been deployed via MDM
+    /// Indicate if the app has been deployed via MDM.
+    /// - Note: Even though this setting is part of MDM, it is handled differently than other
+    /// MDM settings: It is _not_ actuallly coming from the MDM server, but part of the book-keeping
+    /// in the app about MDM. In other words, it is MDM-related, but handled by the app similar to other
+    /// settings.
     var hasBeenMDMDeployed: Bool { get }
 
     /// Enable or disable pEp privacy protection for the user or device's account.

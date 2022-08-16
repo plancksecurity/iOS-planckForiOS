@@ -172,10 +172,12 @@ extension AppSettings: AppSettingsProtocol {
 
     public var hasBeenMDMDeployed: Bool {
         get {
-            guard let hasBeenMDMDeployed = mdmDictionary[AppSettings.keyhasBeenMDMDeployed] as? Bool else {
-                return false
-            }
-            return hasBeenMDMDeployed
+            return AppSettings.userDefaults.bool(forKey: AppSettings.keyhasBeenMDMDeployed)
+        }
+        set {
+            AppSettings.userDefaults.set(newValue,
+                                         forKey: AppSettings.keyhasBeenMDMDeployed)
+            stateChangeHandler?(newValue)
         }
     }
 
