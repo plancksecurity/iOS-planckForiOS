@@ -38,7 +38,7 @@ extension MDMAccountDeploymentViewModelTest {
 
         let expDeployed = expectation(description: "expDeployed")
 
-        vm.predeployAccounts(predeployer: deployer) { result in
+        vm.deployAccount(predeployer: deployer) { result in
             switch result {
             case .success(message: _):
                 XCTAssertNil(resultingError)
@@ -64,7 +64,7 @@ class DummyDeployer: MDMDeploymentProtocol {
         return nil
     }
 
-    func deployAccounts(callback: @escaping (MDMDeploymentError?) -> ()) {
+    func deployAccount(callback: @escaping (MDMDeploymentError?) -> ()) {
         callback(resultingError)
     }
 

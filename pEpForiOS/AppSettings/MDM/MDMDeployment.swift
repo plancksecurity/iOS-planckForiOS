@@ -235,7 +235,7 @@ extension MDMDeployment: MDMDeploymentProtocol {
     ///
     /// "A managed app can respond to new configurations that arrive while the app is running by observing the
     /// NSUserDefaultsDidChangeNotification notification."
-    func deployAccounts(callback: @escaping (_ error: MDMDeploymentError?) -> ()) {
+    func deployAccount(callback: @escaping (_ error: MDMDeploymentError?) -> ()) {
         if AppSettings.shared.hasBeenMDMDeployed {
             // Deploy only once
             callback(MDMDeploymentError.alreadyDeployed)

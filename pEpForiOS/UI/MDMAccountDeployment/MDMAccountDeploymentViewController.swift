@@ -49,7 +49,7 @@ class MDMAccountDeploymentViewController: UIViewController {
         messageLabel.text = NSLocalizedString("Deploying Accounts",
                                               comment: "MDM predeployment message")
 
-        viewModel.predeployAccounts { [weak self] result in
+        viewModel.deployAccount { [weak self] result in
             guard let theSelf = self else {
                 Log.shared.lostMySelf()
                 return

@@ -34,7 +34,7 @@ class MDMDeploymentTest: XCTestCase {
         XCTAssertTrue(MDMDeployment().haveAccountToDeploy)
 
         do {
-            try predeployAccounts()
+            try deployAccount()
             XCTFail()
         } catch MDMDeploymentError.networkError {
         } catch {
@@ -47,13 +47,13 @@ class MDMDeploymentTest: XCTestCase {
 
     // MARK: - Util
 
-    /// Wrapper around `MDMDeployment.deployAccounts` that makes it
+    /// Wrapper around `MDMDeployment.deployAccount` that makes it
     /// a sync method throwing exceptions, easier for tests to use.
-    func predeployAccounts() throws {
+    func deployAccount() throws {
         var potentialError: Error?
 
         let expDeployed = expectation(description: "expDeployed")
-        MDMDeployment().deployAccounts { maybeError in
+        MDMDeployment().deployAccount { maybeError in
             expDeployed.fulfill()
             if let error = maybeError {
                 potentialError = error
