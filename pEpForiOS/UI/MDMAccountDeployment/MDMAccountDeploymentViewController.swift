@@ -16,7 +16,7 @@ class MDMAccountDeploymentViewController: UIViewController {
     @IBOutlet weak var messageLabel: UILabel!
     @IBOutlet weak var activityIndicator: UIActivityIndicatorView!
 
-    let viewModel = MDMAccountPredeploymentViewModel()
+    let viewModel = MDMAccountDeploymentViewModel()
 
     // MARK: - Lifecycle
 

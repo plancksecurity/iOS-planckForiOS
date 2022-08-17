@@ -34,7 +34,7 @@ extension MDMAccountDeploymentViewModelTest {
     /// that it gives an error result otherwise.
     func deploy(resultingError: MDMDeploymentError?) {
         let deployer = DummyDeployer(resultingError: resultingError)
-        let vm = MDMAccountPredeploymentViewModel()
+        let vm = MDMAccountDeploymentViewModel()
 
         let expDeployed = expectation(description: "expDeployed")
 

@@ -1,5 +1,5 @@
 //
-//  MDMAccountPredeploymentViewModel.swift
+//  MDMAccountDeploymentViewModel.swift
 //  pEp
 //
 //  Created by Dirk Zimmermann on 30.05.22.
@@ -10,7 +10,7 @@ import Foundation
 
 import pEpIOSToolbox
 
-class MDMAccountPredeploymentViewModel {
+class MDMAccountDeploymentViewModel {
     enum Result: Equatable {
         /// An error ocurred during the pre-deployment
         case error(message: String)
