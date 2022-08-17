@@ -26,6 +26,9 @@ class MDMAccountPredeploymentViewModel {
             if let error = maybeError {
                 var message: String
                 switch error {
+                case .localAccountsFound:
+                    message = NSLocalizedString("MDM Error: Account(s) already set up",
+                                                comment: "MDM predeployment error")
                 case .alreadyDeployed:
                     message = NSLocalizedString("MDM Error: Already deployed",
                                                 comment: "MDM predeployment error")

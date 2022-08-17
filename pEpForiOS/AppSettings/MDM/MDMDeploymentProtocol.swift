@@ -10,7 +10,10 @@ import Foundation
 
 /// All error cases thrown by `MDMDeploymentProtocol.deployAccount`.
 enum MDMDeploymentError: Error {
-    /// MDM account has already been deployed.
+    /// There are already local accounts, will not deploy.
+    case localAccountsFound
+
+    /// MDM account has already been deployed, will not repeat.
     case alreadyDeployed
 
     /// Account settings were found, but the format could not be read/parsed.

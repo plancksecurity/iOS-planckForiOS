@@ -237,8 +237,15 @@ extension MDMDeployment: MDMDeploymentProtocol {
     /// NSUserDefaultsDidChangeNotification notification."
     func deployAccount(callback: @escaping (_ error: MDMDeploymentError?) -> ()) {
         if AppSettings.shared.hasBeenMDMDeployed {
-            // Deploy only once
+            // Deploy only once.
             callback(MDMDeploymentError.alreadyDeployed)
+            return
+        }
+
+        let allAccounts = Account.all()
+        if !allAccounts.isEmpty {
+            // Don't overwrite any already existing accounts, are add to them.
+            callback(MDMDeploymentError.localAccountsFound)
             return
         }
 
