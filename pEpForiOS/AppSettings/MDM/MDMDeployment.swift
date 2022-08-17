@@ -270,17 +270,6 @@ extension MDMDeployment: MDMDeploymentProtocol {
         // TODO: Get the password
         // TODO: Invoke verification
 
-        func wipeAccounts() {
-            let session = Session.main
-
-            let allAccounts = Account.all()
-            for accountToDelete in allAccounts {
-                accountToDelete.delete()
-            }
-
-            session.commit()
-        }
-
         func verify(userAddress: String,
                     username: String,
                     password: String,
