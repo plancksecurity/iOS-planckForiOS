@@ -38,7 +38,7 @@ extension MDMAccountDeploymentViewModelTest {
 
         let expDeployed = expectation(description: "expDeployed")
 
-        vm.deployAccount(predeployer: deployer) { result in
+        vm.deployAccount(deployer: deployer) { result in
             switch result {
             case .success(message: _):
                 XCTAssertNil(resultingError)
