@@ -22,7 +22,8 @@ class MDMAccountPredeploymentViewModel {
     /// Checks for predeployed accounts, and acts on them.
     func deployAccount(predeployer: MDMDeploymentProtocol = MDMDeployment(),
                        callback: @escaping (_ result: Result) -> ()) {
-        predeployer.deployAccount { maybeError in
+        // TODO: Use a password from the user
+        predeployer.deployAccount(password: "") { maybeError in
             if let error = maybeError {
                 var message: String
                 switch error {

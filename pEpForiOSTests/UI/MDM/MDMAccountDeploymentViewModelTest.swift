@@ -64,7 +64,7 @@ class DummyDeployer: MDMDeploymentProtocol {
         return nil
     }
 
-    func deployAccount(callback: @escaping (MDMDeploymentError?) -> ()) {
+    func deployAccount(password: String, callback: @escaping (MDMDeploymentError?) -> ()) {
         callback(resultingError)
     }
 

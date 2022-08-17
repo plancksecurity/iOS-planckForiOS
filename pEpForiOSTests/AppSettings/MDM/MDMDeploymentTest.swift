@@ -59,7 +59,7 @@ class MDMDeploymentTest: XCTestCase {
         var potentialError: Error?
 
         let expDeployed = expectation(description: "expDeployed")
-        MDMDeployment().deployAccount { maybeError in
+        MDMDeployment().deployAccount(password: "") { maybeError in
             expDeployed.fulfill()
             if let error = maybeError {
                 potentialError = error

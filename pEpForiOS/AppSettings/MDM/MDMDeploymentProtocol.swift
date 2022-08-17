@@ -48,7 +48,11 @@ protocol MDMDeploymentProtocol {
     ///
     /// The format of the required settings is described here: https://confluence.pep.security/x/HgGc
     /// (see "Settings meaning and structure")
-    func deployAccount(callback: @escaping (_ error: MDMDeploymentError?) -> ())
+    ///
+    /// - Parameters:
+    ///   - password: The password (coming from the user) for this account.
+    ///   - callback: Called after account verification has either succeeded or failed.
+    func deployAccount(password: String, callback: @escaping (_ error: MDMDeploymentError?) -> ())
 
     /// Returns `true` if there is an account to be deployed, `false` otherwise.
     var haveAccountToDeploy: Bool { get }
