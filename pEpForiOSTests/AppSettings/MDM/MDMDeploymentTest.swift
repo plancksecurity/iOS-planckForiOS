@@ -45,7 +45,7 @@ class MDMDeploymentTest: XCTestCase {
 
     /// Resets everything.
     ///
-    /// May get call by both setup and tearDown to deal with interruptions during development.
+    /// May get called by both setup and tearDown to deal with interruptions during development.
     func reset() {
         AppSettings.shared.hasBeenMDMDeployed = false
         Stack.shared.reset()
