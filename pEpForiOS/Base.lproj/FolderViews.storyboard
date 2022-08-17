@@ -145,10 +145,10 @@
             </objects>
             <point key="canvasLocation" x="10718" y="-1165"/>
         </scene>
-        <!--MDMAccountPredeployment-->
+        <!--MDMAccountDeployment-->
         <scene sceneID="EZB-nr-rfX">
             <objects>
-                <viewControllerPlaceholder storyboardName="MDMAccountPredeployment" id="sKj-cp-Cdr" sceneMemberID="viewController">
+                <viewControllerPlaceholder storyboardName="MDMAccountDeployment" id="sKj-cp-Cdr" sceneMemberID="viewController">
                     <navigationItem key="navigationItem" id="5ON-90-ygt"/>
                 </viewControllerPlaceholder>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="W5N-V4-UX6" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>

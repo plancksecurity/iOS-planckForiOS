@@ -265,7 +265,7 @@ extension FolderTableViewController: SegueHandlerType {
         case .mdmDeployAccount:
             guard let navVC = segue.destination as? UINavigationController,
                   let vc = navVC.rootViewController as? MDMAccountDeploymentViewController else {
-                Log.shared.errorAndCrash("Error casting to MDMAccountPredeploymentViewController")
+                Log.shared.errorAndCrash("Error casting to MDMAccountDeploymentViewController")
                 return
             }
             navVC.modalPresentationStyle = .fullScreen

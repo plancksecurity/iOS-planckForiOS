@@ -29,22 +29,22 @@ class MDMAccountDeploymentViewModel {
                 switch error {
                 case .localAccountsFound:
                     message = NSLocalizedString("MDM Error: Account(s) already set up",
-                                                comment: "MDM predeployment error")
+                                                comment: "MDM deployment error")
                 case .alreadyDeployed:
                     message = NSLocalizedString("MDM Error: Already deployed",
-                                                comment: "MDM predeployment error")
+                                                comment: "MDM deployment error")
                 case .networkError:
                     message = NSLocalizedString("MDM Error: Could not connect to account",
-                                                comment: "MDM predeployment error")
+                                                comment: "MDM deployment error")
                 case .malformedAccountData:
                     message = NSLocalizedString("MDM Error: Wrong Account Data",
-                                                comment: "MDM predeployment error")
+                                                comment: "MDM deployment error")
                 }
 
                 callback(.error(message: message))
             } else {
                 let message = NSLocalizedString("Accounts Deployed",
-                                                comment: "MDM predeployment message, all ok")
+                                                comment: "MDM deployment message, all ok")
 
                 callback(.success(message: message))
             }

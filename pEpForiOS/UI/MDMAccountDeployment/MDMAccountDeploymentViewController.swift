@@ -1,5 +1,5 @@
 //
-//  MDMAccountPredeploymentViewController.swift
+//  MDMAccountDeploymentViewController.swift
 //  pEp
 //
 //  Created by Dirk Zimmermann on 30.05.22.
@@ -47,7 +47,7 @@ class MDMAccountDeploymentViewController: UIViewController {
         activityIndicator.startAnimating()
         activityIndicator.isHidden = false
         messageLabel.text = NSLocalizedString("Deploying Accounts",
-                                              comment: "MDM predeployment message")
+                                              comment: "MDM deployment message")
 
         viewModel.deployAccount { [weak self] result in
             guard let theSelf = self else {

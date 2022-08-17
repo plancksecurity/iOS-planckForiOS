@@ -47,7 +47,7 @@ extension MDMDeployment {
     static let keyAccountDescription = "account_description"
 
     /// The top-level key into MDM-deployed account settings.
-    static let keyPredeployedAccounts = "pep_mail_settings"
+    static let keyAccountDeploymentMailSettings = "pep_mail_settings"
 
     /// The key into the MDM settings for an account's email address.
     static let keyUserAddress = "account_email_address"
@@ -180,7 +180,7 @@ extension MDMDeployment: MDMDeploymentProtocol {
             return nil
         }
 
-        guard let mdmDict = mdmPredeploymentDictionary() else {
+        guard let mdmDict = mdmDeploymentDictionary() else {
             // Note, this is not considered an error. It just means there is no MDM
             // configured account.
             return nil
@@ -188,7 +188,7 @@ extension MDMDeployment: MDMDeploymentProtocol {
 
         let username = mdmExtractUsername(mdmDictionary: mdmDict)
 
-        guard let mailSettings = mdmDict[MDMDeployment.keyPredeployedAccounts] as? SettingsDict else {
+        guard let mailSettings = mdmDict[MDMDeployment.keyAccountDeploymentMailSettings] as? SettingsDict else {
             // Note, this is not considered an error. It just means there is no MDM
             // configured account.
             return nil
@@ -326,8 +326,8 @@ extension MDMDeployment: MDMDeploymentProtocol {
 // MARK: - Utility
 
 extension MDMDeployment {
-    private func mdmPredeploymentDictionary() -> SettingsDict? {
-        // Please note the explicit use of UserDefaults for predeployment,
+    private func mdmDeploymentDictionary() -> SettingsDict? {
+        // Please note the explicit use of UserDefaults for deployment,
         // instead of the usual usage of AppSettings, since this use case is special.
         return UserDefaults.standard.dictionary(forKey: MDMDeployment.keyMDM)
     }

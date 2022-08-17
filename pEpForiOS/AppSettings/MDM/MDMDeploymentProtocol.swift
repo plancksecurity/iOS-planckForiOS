@@ -41,7 +41,7 @@ protocol MDMDeploymentProtocol {
     /// Calls the given callback when finished, indicating an optional error (`MDMDeploymentError`),
     /// or success (in that case the error is `nil`).
     ///
-    /// - Note: Some known error conditions: Calling `deployAccount` with `haveAccountsToPredeploy`
+    /// - Note: Some known error conditions: Calling `deployAccount` with `accountToDeploy`
     /// being `false`, with undefined behavior. Calling `deployAccount`
     /// after the initial deployment has already been done. Calling `deployAccount` while having
     /// account(s) already set up.

@@ -1,5 +1,5 @@
 //
-//  MDMAccountPredeploymentViewModelTest.swift
+//  MDMAccountDeploymentViewModelTest.swift
 //  pEpForiOSTests
 //
 //  Created by Dirk Zimmermann on 04.07.22.
