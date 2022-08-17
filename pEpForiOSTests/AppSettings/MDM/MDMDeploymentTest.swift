@@ -16,15 +16,23 @@ private typealias SettingsDict = [String:Any]
 
 class MDMDeploymentTest: XCTestCase {
     override func setUpWithError() throws {
-        AppSettings.shared.hasBeenMDMDeployed = false
+        reset()
         try super.setUpWithError()
     }
 
     override func tearDownWithError() throws {
+        reset()
+        try super.tearDownWithError()
+    }
+
+    /// Resets everything.
+    ///
+    /// May get call by both setup and tearDown to deal with interruptions during development.
+    func reset() {
+        AppSettings.shared.hasBeenMDMDeployed = false
         Stack.shared.reset()
         XCTAssertTrue(PEPUtils.pEpClean())
         UserDefaults.standard.set([], forKey: "com.apple.configuration.managed")
-        try super.tearDownWithError()
     }
 
     func testNetworkError() throws {
