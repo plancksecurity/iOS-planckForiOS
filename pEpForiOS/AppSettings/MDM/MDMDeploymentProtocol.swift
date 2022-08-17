@@ -41,10 +41,13 @@ protocol MDMDeploymentProtocol {
     /// Calls the given callback when finished, indicating an optional error (`MDMDeploymentError`),
     /// or success (in that case the error is `nil`).
     ///
-    /// - Note: Some known error conditions: Calling `deployAccount` with `haveAccountsToPredeploy`
-    /// being `false`, with undefined behavior. Calling `deployAccount`
-    /// after the initial deployment has already been done. Calling `deployAccount` while having
-    /// account(s) already set up.
+    /// - Note: Some known error conditions:
+    ///   * Calling `deployAccount` with `haveAccountsToPredeploy`
+    ///     being `false`, with undefined behavior.
+    ///   * Calling `deployAccount`
+    ///     after the initial deployment has already been done.
+    ///   * Calling `deployAccount` while having
+    ///     account(s) already set up.
     ///
     /// The format of the required settings is described here: https://confluence.pep.security/x/HgGc
     /// (see "Settings meaning and structure")
