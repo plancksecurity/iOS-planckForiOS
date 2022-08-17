@@ -23,16 +23,6 @@ class MDMDeploymentTest: XCTestCase {
         reset()
     }
 
-    /// Resets everything.
-    ///
-    /// May get call by both setup and tearDown to deal with interruptions during development.
-    func reset() {
-        AppSettings.shared.hasBeenMDMDeployed = false
-        Stack.shared.reset()
-        XCTAssertTrue(PEPUtils.pEpClean())
-        UserDefaults.standard.set([], forKey: "com.apple.configuration.managed")
-    }
-
     func testNetworkError() throws {
         XCTAssertFalse(AppSettings.shared.hasBeenMDMDeployed)
         XCTAssertFalse(MDMDeployment().haveAccountToDeploy)
@@ -52,6 +42,16 @@ class MDMDeploymentTest: XCTestCase {
     }
 
     // MARK: - Util
+
+    /// Resets everything.
+    ///
+    /// May get call by both setup and tearDown to deal with interruptions during development.
+    func reset() {
+        AppSettings.shared.hasBeenMDMDeployed = false
+        Stack.shared.reset()
+        XCTAssertTrue(PEPUtils.pEpClean())
+        UserDefaults.standard.set([], forKey: "com.apple.configuration.managed")
+    }
 
     /// Wrapper around `MDMDeployment.deployAccount` that makes it
     /// a sync method throwing exceptions, easier for tests to use.
