@@ -26,6 +26,9 @@ enum MDMDeploymentError: Error {
 protocol MDMDeploymentProtocol {
     /// The MDM account (if any) that can be deployed.
     ///
+    /// The app typically checks for the existence of such an account,
+    /// and if it exists, can ask the user for the password and try to deploy it.
+    ///
     /// - Returns: A complete account, ready to be deployed once a password
     /// is supplied, or nil, if no account exists that can be deployed.
     /// - Throws:`MDMDeploymentError`
@@ -36,12 +39,12 @@ protocol MDMDeploymentProtocol {
     /// setting a flag after that that the local account has been MDM deployed.
     ///
     /// Calls the given callback when finished, indicating an optional error (`MDMDeploymentError`),
-    /// or success (the error is `nil`).
+    /// or success (in that case the error is `nil`).
     ///
-    /// - Note: Some error conditions: Call `deployAccount` with `haveAccountsToPredeploy`
-    /// being `false`, with undefined behavior. Call `deployAccount`
-    /// after the initial deployment has already been done. Call `deployAccount` while having
-    /// account already set up.
+    /// - Note: Some known error conditions: Calling `deployAccount` with `haveAccountsToPredeploy`
+    /// being `false`, with undefined behavior. Calling `deployAccount`
+    /// after the initial deployment has already been done. Calling `deployAccount` while having
+    /// account(s) already set up.
     ///
     /// The format of the required settings is described here: https://confluence.pep.security/x/HgGc
     /// (see "Settings meaning and structure")
