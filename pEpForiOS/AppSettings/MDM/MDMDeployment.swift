@@ -249,10 +249,10 @@ extension MDMDeployment: MDMDeploymentProtocol {
             return
         }
 
-        let accountData: MDMDeployment.AccountData?
+        let maybeAccountData: MDMDeployment.AccountData?
 
         do {
-            accountData = try accountToDeploy()
+            maybeAccountData = try accountToDeploy()
         } catch (let error as MDMDeploymentError) {
             callback(error)
             return
@@ -261,39 +261,19 @@ extension MDMDeployment: MDMDeploymentProtocol {
             return
         }
 
-        // Syncronize the callbacks of all account verifications
-        let group = DispatchGroup()
-
-        // Note the first error that occurred
-        var firstError: Error?
-
-        // TODO: Invoke verification
-
-        func verify(userAddress: String,
-                    username: String,
-                    password: String,
-                    imapServer: AccountVerifier.ServerData,
-                    smtpServer: AccountVerifier.ServerData) {
-            let verifier = AccountVerifier()
-            group.enter()
-            verifier.verify(userName: username,
-                            address: userAddress,
-                            password: password,
-                            imapServer: imapServer,
-                            smtpServer: smtpServer) { error in
-                if let err = error {
-                    if firstError == nil {
-                        firstError = err
-                    }
-                }
-                group.leave()
-            }
+        guard let accountData = maybeAccountData else {
+            callback(.malformedAccountData)
+            return
         }
 
-        group.notify(queue: DispatchQueue.main) {
-            AppSettings.shared.hasBeenMDMDeployed = true
+        let verifier = AccountVerifier()
 
-            if let _ = firstError {
+        verifier.verify(userName: accountData.accountName,
+                        address: accountData.email,
+                        password: password,
+                        imapServer: accountData.imapServer,
+                        smtpServer: accountData.smtpServer) { error in
+            if let _ = error {
                 callback(.networkError)
             } else {
                 callback(nil)
