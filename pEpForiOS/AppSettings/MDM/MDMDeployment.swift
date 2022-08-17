@@ -267,7 +267,6 @@ extension MDMDeployment: MDMDeploymentProtocol {
         // Note the first error that occurred
         var firstError: Error?
 
-        // TODO: Get the password
         // TODO: Invoke verification
 
         func verify(userAddress: String,
