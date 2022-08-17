@@ -17,12 +17,10 @@ private typealias SettingsDict = [String:Any]
 class MDMDeploymentTest: XCTestCase {
     override func setUpWithError() throws {
         reset()
-        try super.setUpWithError()
     }
 
     override func tearDownWithError() throws {
         reset()
-        try super.tearDownWithError()
     }
 
     /// Resets everything.
