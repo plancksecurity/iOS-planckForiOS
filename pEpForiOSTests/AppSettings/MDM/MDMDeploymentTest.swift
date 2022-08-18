@@ -52,14 +52,12 @@ class MDMDeploymentTest: XCTestCase {
 
         do {
             try deployAccount(password: password)
-            XCTFail()
-        } catch MDMDeploymentError.networkError {
         } catch {
             XCTFail()
         }
 
         let accounts = Account.all()
-        XCTAssertEqual(accounts.count, 0)
+        XCTAssertEqual(accounts.count, 1)
     }
 
     // MARK: - Internal Constants
