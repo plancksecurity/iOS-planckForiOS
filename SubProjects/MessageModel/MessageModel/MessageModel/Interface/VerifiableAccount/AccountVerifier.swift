@@ -112,7 +112,7 @@ public class AccountVerifier {
 
     private var verifiedCallback: AccountVerifierCallback?
     private var verifiableAccount: VerifiableAccountProtocol?
-    private var shouldUsePEPFolder: Bool
+    private var shouldUsePEPFolder: Bool?
 
     /// Set retained member vars to nil, in order to break retain cycles.
     ///
@@ -165,6 +165,6 @@ extension AccountVerifier: VerifiableAccountDelegate {
 
 extension AccountVerifier: UsePEPFolderProviderProtocol {
     public var usePEPFolder: Bool {
-        return shouldUsePEPFolder
+        return shouldUsePEPFolder ?? false
     }
 }
