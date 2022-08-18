@@ -298,8 +298,7 @@ extension MDMDeployment: MDMDeploymentProtocol {
                 }
 
                 if isAuthError {
-                    // TODO
-                    callback(.networkError)
+                    callback(.authenticationError)
                 } else {
                     callback(.networkError)
                 }

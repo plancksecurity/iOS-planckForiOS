@@ -19,6 +19,9 @@ enum MDMDeploymentError: Error {
     /// Account settings were found, but the format could not be read/parsed.
     case malformedAccountData
 
+    /// Could not log into the account, incoming or outgoing server.
+    case authenticationError
+
     /// A network error occurred when trying to verify the account
     case networkError
 }
