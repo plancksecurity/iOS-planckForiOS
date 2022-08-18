@@ -152,7 +152,7 @@ public class VerifiableAccount: VerifiableAccountProtocol {
                     Log.shared.lostMySelf()
                     return
                 }
-                let alsoCreatePEPFolder = me.keySyncEnable && (me.usePEPFolderProvider?.usePepFolder ?? false)
+                let alsoCreatePEPFolder = me.keySyncEnable && (me.usePEPFolderProvider?.usePEPFolder ?? false)
                 me.prepareAccountForSavingService.prepareAccount(cdAccount: cdAccount,
                                                           pEpSyncEnable: me.keySyncEnable,
                                                           alsoCreatePEPFolder: alsoCreatePEPFolder,

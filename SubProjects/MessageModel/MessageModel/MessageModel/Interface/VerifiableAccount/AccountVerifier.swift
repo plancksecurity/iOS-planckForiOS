@@ -159,7 +159,7 @@ extension AccountVerifier: VerifiableAccountDelegate {
 // MARK: - UsePEPFolderProviderProtocol
 
 extension AccountVerifier: UsePEPFolderProviderProtocol {
-    public var usePepFolder: Bool {
+    public var usePEPFolder: Bool {
         // TODO: This may have to be connected to MDM settings, instead
         // of being hard-coded.
         return true

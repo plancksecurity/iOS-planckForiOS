@@ -22,7 +22,7 @@ class CreatePepIMAPFolderService: OperationBasedService {
     }
 
     override func operations() -> [Operation] {
-        guard usePEPFolderProvider.usePepFolder else {
+        guard usePEPFolderProvider.usePEPFolder else {
             // we are not supposed to (create and) use pEp folder for sync messages.
             // Nothing to do.
             return []

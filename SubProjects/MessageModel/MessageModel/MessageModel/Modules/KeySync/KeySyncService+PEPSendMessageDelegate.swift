@@ -81,7 +81,7 @@ extension KeySyncService: PEPSendMessageDelegate {
                                 pEpMessage: PEPMessage) -> PEPStatus {
         for receiverAccount in receivingAccounts {
             let appendFolder: CdFolder?
-            if  usePEPFolderProvider.usePepFolder,
+            if  usePEPFolderProvider.usePEPFolder,
                 let pEpFolder = CdFolder.pEpSyncFolder(in: moc, cdAccount: receiverAccount) {
                 appendFolder = pEpFolder
             } else {
