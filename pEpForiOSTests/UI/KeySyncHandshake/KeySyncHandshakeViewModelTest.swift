@@ -15,13 +15,17 @@ final class KeySyncHandshakeViewModelTest: XCTestCase {
     var keySyncHandshakeVM: KeySyncHandshakeViewModel?
     var actual: State?
     var expected: State?
+    var expDelegateCalled: XCTestExpectation?
 
     override func setUp() {
         super.setUp()
 
         keySyncHandshakeVM = KeySyncHandshakeViewModel()
-        keySyncHandshakeVM?.setFingerPrints(meFPR: "", partnerFPR: "", isNewGroup: true)
         keySyncHandshakeVM?.delegate = self
+        expDelegateCalled = expectation(description: "expDelegateCalled")
+        keySyncHandshakeVM?.setFingerPrints(meFPR: "", partnerFPR: "", isNewGroup: true)
+
+        wait(for: [expDelegateCalled!], timeout: TestUtil.waitTimeLocal)
 
         setDefaultActualState()
         keySyncHandshakeVM?.completionHandler = { [weak self] action in
@@ -99,6 +103,7 @@ extension KeySyncHandshakeViewModelTest: KeySyncHandshakeViewModelDelegate {
     }
 
     func change(handshakeWordsTo: String) {
+        expDelegateCalled?.fulfill()
         actual?.didCallToUpdateTrustedWords = true
         actual?.fullWordsVersion = keySyncHandshakeVM?.fullTrustWords
     }
