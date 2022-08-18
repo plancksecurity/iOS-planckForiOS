@@ -79,6 +79,8 @@ public class AccountVerifier {
         // Store for later use by the delegate (ourselves)
         self.verifiedCallback = verifiedCallback
 
+        shouldUsePEPFolder = usePEPFolder
+
         let verifier = VerifiableAccount(verifiableAccountDelegate: self,
                                          address: address,
                                          userName: userName,
@@ -110,6 +112,7 @@ public class AccountVerifier {
 
     private var verifiedCallback: AccountVerifierCallback?
     private var verifiableAccount: VerifiableAccountProtocol?
+    private var shouldUsePEPFolder: Bool
 
     /// Set retained member vars to nil, in order to break retain cycles.
     ///
@@ -162,7 +165,6 @@ extension AccountVerifier: VerifiableAccountDelegate {
 
 extension AccountVerifier: UsePEPFolderProviderProtocol {
     public var usePEPFolder: Bool {
-        // TODO: Use the parameter.
-        return true
+        return shouldUsePEPFolder
     }
 }
