@@ -268,8 +268,7 @@ extension MDMDeployment: MDMDeploymentProtocol {
 
         let verifier = AccountVerifier()
 
-        // TODO: Get this from the settings
-        let usePEPFolder = true
+        let usePEPFolder = AppSettings.shared.mdmPEPSyncFolderEnabled
 
         verifier.verify(userName: accountData.accountName,
                         address: accountData.email,
