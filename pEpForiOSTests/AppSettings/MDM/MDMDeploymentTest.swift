@@ -30,7 +30,7 @@ class MDMDeploymentTest: XCTestCase {
         XCTAssertTrue(MDMDeployment().haveAccountToDeploy)
 
         do {
-            try deployAccount()
+            try deployAccount(password: "")
             XCTFail()
         } catch MDMDeploymentError.networkError {
         } catch {
@@ -40,6 +40,32 @@ class MDMDeploymentTest: XCTestCase {
         let accounts = Account.all()
         XCTAssertEqual(accounts.count, 0)
     }
+
+    func testOk() throws {
+        XCTAssertFalse(AppSettings.shared.hasBeenMDMDeployed)
+        XCTAssertFalse(MDMDeployment().haveAccountToDeploy)
+
+        let (password, mdmDict) = SecretTestDataMDMDeployment.settingsDictDeployable()
+        UserDefaults.standard.set(mdmDict, forKey: MDMDeploymentTest.keyMDM)
+
+        XCTAssertTrue(MDMDeployment().haveAccountToDeploy)
+
+        do {
+            try deployAccount(password: password)
+            XCTFail()
+        } catch MDMDeploymentError.networkError {
+        } catch {
+            XCTFail()
+        }
+
+        let accounts = Account.all()
+        XCTAssertEqual(accounts.count, 0)
+    }
+
+    // MARK: - Internal Constants
+
+    /// - Note: The use of using this hard-coded string as dictionary key is intentional.
+    private static let keyMDM = "com.apple.configuration.managed"
 
     // MARK: - Util
 
@@ -51,16 +77,16 @@ class MDMDeploymentTest: XCTestCase {
         Stack.shared.reset()
         XCTAssertTrue(PEPUtils.pEpClean())
         // Note: The use of hard-coded strings as settings keys is intentional.
-        UserDefaults.standard.set([], forKey: "com.apple.configuration.managed")
+        UserDefaults.standard.set([], forKey: MDMDeploymentTest.keyMDM)
     }
 
     /// Wrapper around `MDMDeployment.deployAccount` that makes it
     /// a sync method throwing exceptions, easier for tests to use.
-    func deployAccount() throws {
+    func deployAccount(password: String) throws {
         var potentialError: Error?
 
         let expDeployed = expectation(description: "expDeployed")
-        MDMDeployment().deployAccount(password: "") { maybeError in
+        MDMDeployment().deployAccount(password: password) { maybeError in
             expDeployed.fulfill()
             if let error = maybeError {
                 potentialError = error
@@ -102,6 +128,6 @@ class MDMDeploymentTest: XCTestCase {
         let mdmDict = ["composition_settings": compositionSettingsDict,
                        "pep_mail_settings": mailSettingsDict]
 
-        UserDefaults.standard.set(mdmDict, forKey: "com.apple.configuration.managed")
+        UserDefaults.standard.set(mdmDict, forKey: MDMDeploymentTest.keyMDM)
     }
 }
