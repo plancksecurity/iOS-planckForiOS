@@ -37,7 +37,8 @@ class AccountVerifierTest: XCTestCase {
                         address: "blagrg@example.com",
                         password: "none",
                         imapServer: imapServer,
-                        smtpServer: smtpServer) { maybeError in
+                        smtpServer: smtpServer,
+                        usePEPFolder: false) { maybeError in
             guard let _ = maybeError else {
                 XCTFail()
                 return

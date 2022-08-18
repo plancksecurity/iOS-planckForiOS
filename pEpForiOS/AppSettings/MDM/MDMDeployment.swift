@@ -268,11 +268,15 @@ extension MDMDeployment: MDMDeploymentProtocol {
 
         let verifier = AccountVerifier()
 
+        // TODO: Get this from the settings
+        let usePEPFolder = true
+
         verifier.verify(userName: accountData.accountName,
                         address: accountData.email,
                         password: password,
                         imapServer: accountData.imapServer,
-                        smtpServer: accountData.smtpServer) { error in
+                        smtpServer: accountData.smtpServer,
+                        usePEPFolder: usePEPFolder) { error in
             if let _ = error {
                 callback(.networkError)
             } else {

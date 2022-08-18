@@ -65,6 +65,7 @@ public class AccountVerifier {
     ///   - address: The email address to set up.
     ///   - imapSever: The `ServerData` for the IMAP server.
     ///   - smtpSever: The `ServerData` for the SMTP server.
+    ///   - usePEPFolder: Whether a special, designated folder should be used for key sync messages.
     ///   - verifiedCallback: This closure will be called after the account has been verified successfully,
     /// or in case of error. If there was an error, it will be indicated as the `Error` parameter.
     /// In case of success, the `Error` parameter will be nil.
@@ -73,6 +74,7 @@ public class AccountVerifier {
                        password: String,
                        imapServer: ServerData,
                        smtpServer: ServerData,
+                       usePEPFolder: Bool,
                        verifiedCallback: @escaping AccountVerifierCallback) {
         // Store for later use by the delegate (ourselves)
         self.verifiedCallback = verifiedCallback
