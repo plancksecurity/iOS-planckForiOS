@@ -33,6 +33,7 @@ class MDMDeploymentTest: XCTestCase {
             try deployAccount(password: "")
             XCTFail()
         } catch MDMDeploymentError.networkError {
+            // expected
         } catch {
             XCTFail()
         }
@@ -72,8 +73,10 @@ class MDMDeploymentTest: XCTestCase {
         do {
             try deployAccount(password: "surely wrong!")
             XCTFail()
+        } catch MDMDeploymentError.authenticationError {
+            // expected
         } catch {
-            // Good, but which exception?
+            XCTFail()
         }
 
         let accounts = Account.all()
