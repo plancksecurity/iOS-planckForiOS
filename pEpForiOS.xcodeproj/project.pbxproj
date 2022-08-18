@@ -424,6 +424,7 @@
 		43C415C725EE687A0071C608 /* NSItemProvider+MimeType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43C415C625EE687A0071C608 /* NSItemProvider+MimeType.swift */; };
 		43C9112726454538005B9CDE /* AppAuthForExtensions.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 43C9112526454538005B9CDE /* AppAuthForExtensions.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		43C98AC3219C275E006418B0 /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = 43C98AC1219C275E006418B0 /* Localizable.strings */; };
+		43C9A0F828AE6E280014F80E /* SecretTestDataMDMDeployment.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43C9A0F728AE6E280014F80E /* SecretTestDataMDMDeployment.swift */; };
 		43D070312133DB920013B120 /* AppSettingsProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43D070302133DB920013B120 /* AppSettingsProtocol.swift */; };
 		43D070332133DC500013B120 /* AppSettings.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43D070322133DC500013B120 /* AppSettings.swift */; };
 		43D1900E2513734400A36973 /* SettingsViewModelTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43D1900D2513734400A36973 /* SettingsViewModelTest.swift */; };
@@ -1020,6 +1021,7 @@
 		43C98AC0219C22E8006418B0 /* de */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = de; path = de.lproj/Settings.strings; sourceTree = "<group>"; };
 		43C98AC2219C275E006418B0 /* de */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = de; path = de.lproj/Localizable.strings; sourceTree = "<group>"; };
 		43C98AC4219C275E006418B0 /* de */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = de; path = de.lproj/Main.strings; sourceTree = "<group>"; };
+		43C9A0F728AE6E280014F80E /* SecretTestDataMDMDeployment.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SecretTestDataMDMDeployment.swift; sourceTree = "<group>"; };
 		43D070302133DB920013B120 /* AppSettingsProtocol.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppSettingsProtocol.swift; sourceTree = "<group>"; };
 		43D070322133DC500013B120 /* AppSettings.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppSettings.swift; sourceTree = "<group>"; };
 		43D1900D2513734400A36973 /* SettingsViewModelTest.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SettingsViewModelTest.swift; sourceTree = "<group>"; };
@@ -2430,6 +2432,7 @@
 			isa = PBXGroup;
 			children = (
 				43E3668E2836304A00C4A4CB /* MDMDeploymentTest.swift */,
+				43C9A0F728AE6E280014F80E /* SecretTestDataMDMDeployment.swift */,
 			);
 			path = MDM;
 			sourceTree = "<group>";
@@ -3817,6 +3820,7 @@
 				5BC14AC923E47A55005F0AF3 /* TrustManagementViewModelTest.swift in Sources */,
 				5B41F9CF25CD517700E55EDF /* MockAppSettings.swift in Sources */,
 				5B102FB92658008200A758D2 /* MessageHeaderCellViewModelTest.swift in Sources */,
+				43C9A0F828AE6E280014F80E /* SecretTestDataMDMDeployment.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
