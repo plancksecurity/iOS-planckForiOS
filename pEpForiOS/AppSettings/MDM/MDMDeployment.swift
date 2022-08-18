@@ -276,8 +276,33 @@ extension MDMDeployment: MDMDeploymentProtocol {
                         imapServer: accountData.imapServer,
                         smtpServer: accountData.smtpServer,
                         usePEPFolder: usePEPFolder) { error in
-            if let _ = error {
-                callback(.networkError)
+            if let generalError = error {
+                var isAuthError = false
+
+                if let imapError = generalError as? ImapSyncOperationError {
+                    switch imapError {
+                    case .authenticationFailed(_, _):
+                        isAuthError = true
+                    default:
+                        break
+                    }
+                }
+
+                if let smtpError = generalError as? SmtpSendError {
+                    switch smtpError {
+                    case .authenticationFailed(_, _):
+                        isAuthError = true
+                    default:
+                        break
+                    }
+                }
+
+                if isAuthError {
+                    // TODO
+                    callback(.networkError)
+                } else {
+                    callback(.networkError)
+                }
             } else {
                 AppSettings.shared.hasBeenMDMDeployed = true
                 callback(nil)
