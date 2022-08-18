@@ -50,6 +50,7 @@ class MDMDeploymentTest: XCTestCase {
         AppSettings.shared.hasBeenMDMDeployed = false
         Stack.shared.reset()
         XCTAssertTrue(PEPUtils.pEpClean())
+        // Note: The use of hard-coded strings as settings keys is intentional.
         UserDefaults.standard.set([], forKey: "com.apple.configuration.managed")
     }
 
@@ -77,9 +78,10 @@ class MDMDeploymentTest: XCTestCase {
 
     // MARK: - Setup Util
 
-    /// - Note: The use of hard-coded strings as keys is intentional.
     func setupDeployableAccountData() {
         let loginname = "login_name"
+
+        // Note: The use of hard-coded strings as settings keys is intentional.
 
         let compositionSettingsDict = ["composition_sender_name": "sender_name"]
 
