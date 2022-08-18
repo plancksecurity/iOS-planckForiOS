@@ -276,6 +276,7 @@ extension MDMDeployment: MDMDeploymentProtocol {
             if let _ = error {
                 callback(.networkError)
             } else {
+                AppSettings.shared.hasBeenMDMDeployed = true
                 callback(nil)
             }
         }
