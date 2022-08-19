@@ -93,9 +93,8 @@ class EmailViewController: UIViewController {
         navigationController?.title = title
         tableView.hideSeperatorForEmptyCells()
         removeExternalContentView()
+        UIUtils.hideBanner()
     }
-
-
 
     override func viewWillTransition(to size: CGSize, with coordinator: UIViewControllerTransitionCoordinator) {
         super.viewWillTransition(to: size, with: coordinator)

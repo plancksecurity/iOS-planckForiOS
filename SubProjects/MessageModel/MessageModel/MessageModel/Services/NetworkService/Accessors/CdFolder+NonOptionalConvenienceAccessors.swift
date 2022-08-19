@@ -20,14 +20,16 @@ import pEpIOSToolbox
 extension CdFolder {
     var nameOrCrash: String {
         guard let theName = name else {
-            fatalError()
+            Log.shared.errorAndCrash(message: "CdFolder Name not found")
+            return ""
         }
         return theName
     }
 
     var accountOrCrash: CdAccount {
         guard let theAccount = account else {
-            fatalError()
+            Log.shared.errorAndCrash(message: "CdAccount Name not found")
+            return CdAccount()
         }
         return theAccount
     }

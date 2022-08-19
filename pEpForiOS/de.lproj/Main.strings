@@ -1,8 +1,17 @@
+/* Class = "UILabel"; text = "Friday, 23 April from 18:30 to 21:00 & Saturday from 10 to 10:30"; ObjectID = "3ZJ-a1-otm"; */
+"3ZJ-a1-otm.text" = "Freitag, 23. April, 18:30 bis 21:00 & Samstag, 10 bis 10:30";
+
 /* Class = "UILabel"; text = "Subject"; ObjectID = "7WS-qg-fiH"; */
 "7WS-qg-fiH.text" = "Betreff";
 
+/* Class = "UILabel"; text = "10"; ObjectID = "9vI-5x-OAd"; */
+"9vI-5x-OAd.text" = "10";
+
 /* Class = "UILabel"; text = "Date"; ObjectID = "a1D-BW-3Rd"; */
 "a1D-BW-3Rd.text" = "Datum";
+
+/* Class = "UILabel"; text = "Cc:"; ObjectID = "am9-UT-atP"; */
+"am9-UT-atP.text" = "CC:";
 
 /* Class = "UINavigationItem"; title = "Inbox"; ObjectID = "aP4-ia-HTP"; */
 "aP4-ia-HTP.title" = "Posteingang";
@@ -13,6 +22,12 @@
 /* Class = "UILabel"; text = "Subject:"; ObjectID = "bCM-fK-pFW"; */
 "bCM-fK-pFW.text" = "Betreff:";
 
+/* Class = "UILabel"; text = "Friday, 23 April from 18:30 to 21:00 & Saturday from 10 to 10:30"; ObjectID = "bpO-8d-tOp"; */
+"bpO-8d-tOp.text" = "Freitag, 23. April, 18:30 bis 21:00 & Samstag, 10 bis 10:30";
+
+/* Class = "UIButton"; normalTitle = "View"; ObjectID = "bUl-qp-sQr"; */
+"bUl-qp-sQr.normalTitle" = "Ansicht";
+
 /* Class = "UIBarButtonItem"; title = "Send"; ObjectID = "d2A-SO-1Ce"; */
 "d2A-SO-1Ce.title" = "Senden";
 
@@ -22,11 +37,20 @@
 /* Class = "UIViewController"; title = "Move to Account"; ObjectID = "EmS-3d-sKb"; */
 "EmS-3d-sKb.title" = "Zu Konto verschieben";
 
+/* Class = "UILabel"; text = "Monday"; ObjectID = "gxa-9B-Yf0"; */
+"gxa-9B-Yf0.text" = "Montag";
+
 /* Class = "UILabel"; text = "just some placeholder text for storyboard"; ObjectID = "GZX-Q2-Z5a"; */
 "GZX-Q2-Z5a.text" = "just some placeholder text for storyboard";
 
 /* Class = "UILabel"; text = "Subject jlkfj glkafj kal jfa slfaj alsjf aslj fsajk"; ObjectID = "ha5-Vd-x3U"; */
 "ha5-Vd-x3U.text" = "Betreff jlkfj glkafj kal jfa slfaj alsjf aslj fsajk";
+
+/* Class = "UILabel"; text = "To:"; ObjectID = "hUI-Rm-qg5"; */
+"hUI-Rm-qg5.text" = "An:";
+
+/* Class = "UIButton"; normalTitle = "some@example.com"; ObjectID = "Hzm-le-K14"; */
+"Hzm-le-K14.normalTitle" = "some@example.com";
 
 /* Class = "UIBarButtonItem"; title = "Cancel"; ObjectID = "ijh-vj-Bee"; */
 "ijh-vj-Bee.title" = "Abbrechen";
@@ -37,20 +61,38 @@
 /* Class = "UIButton"; normalTitle = "Show External Content"; ObjectID = "kwH-Mw-szw"; */
 "kwH-Mw-szw.normalTitle" = "Externe Inhalte anzeigen";
 
+/* Class = "UIButton"; normalTitle = "some@example.com"; ObjectID = "O1c-Wt-hEV"; */
+"O1c-Wt-hEV.normalTitle" = "some@example.com";
+
 /* Class = "UILabel"; text = "Filename"; ObjectID = "oid-Cf-xYG"; */
 "oid-Cf-xYG.text" = "Dateiname";
 
 /* Class = "UILabel"; text = "Title"; ObjectID = "OLo-8A-CCo"; */
 "OLo-8A-CCo.text" = "Titel";
 
+/* Class = "UIButton"; normalTitle = "some@example.com"; ObjectID = "QAi-jk-Clh"; */
+"QAi-jk-Clh.normalTitle" = "some@example.com";
+
 /* Class = "UILabel"; text = "Title"; ObjectID = "riI-qM-PeJ"; */
 "riI-qM-PeJ.text" = "Titel";
+
+/* Class = "UILabel"; text = "Today, 14:00"; ObjectID = "SKU-fh-xu3"; */
+"SKU-fh-xu3.text" = "Heute, 14:00";
 
 /* Class = "UILabel"; text = "Summary"; ObjectID = "Tbi-dG-KCA"; */
 "Tbi-dG-KCA.text" = "Zusammenfassung";
 
+/* Class = "UILabel"; text = "2 Events Found"; ObjectID = "VZW-Pa-j99"; */
+"VZW-Pa-j99.text" = "2 Ereignisse gefunden";
+
+/* Class = "UIButton"; normalTitle = "some@example.com"; ObjectID = "WEf-77-c23"; */
+"WEf-77-c23.normalTitle" = "some@example.com";
+
 /* Class = "UILabel"; text = "ext"; ObjectID = "WPI-9n-ggz"; */
 "WPI-9n-ggz.text" = "ext";
+
+/* Class = "UILabel"; text = "BCC:"; ObjectID = "ZHe-Us-fIK"; */
+"ZHe-Us-fIK.text" = "BCC:";
 
 /* Class = "UILabel"; text = "Cc/Bcc:"; ObjectID = "ZpG-yk-ifY"; */
 "ZpG-yk-ifY.text" = "Cc/Bcc:";

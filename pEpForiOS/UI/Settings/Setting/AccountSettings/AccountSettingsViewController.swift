@@ -32,9 +32,13 @@ final class AccountSettingsViewController: UIViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
+        guard let vm = viewModel else {
+            Log.shared.errorAndCrash("VM not found")
+            return
+        }
         tableView.register(PEPHeaderView.self, forHeaderFooterViewReuseIdentifier: PEPHeaderView.reuseIdentifier)
         UIHelper.variableContentHeight(tableView)
-        viewModel?.delegate = self
+        vm.delegate = self
         tableView.delegate = self
         tableView.dataSource = self
         oauthViewModel.delegate = self
@@ -45,6 +49,8 @@ final class AccountSettingsViewController: UIViewController {
         showNavigationBar()
         title = NSLocalizedString("Account", comment: "Account view title")
         navigationController?.navigationController?.setToolbarHidden(true, animated: false)
+        navigationController?.navigationItem.rightBarButtonItem?.accessibilityIdentifier = AccessibilityIdentifier.editButton
+        navigationController?.navigationItem.leftBarButtonItem?.accessibilityIdentifier = AccessibilityIdentifier.settingsButton
     }
     
     enum SegueIdentifier: String {
@@ -106,19 +112,19 @@ extension AccountSettingsViewController : UITableViewDelegate {
 extension AccountSettingsViewController : UITableViewDataSource {
 
     func numberOfSections(in tableView: UITableView) -> Int {
-        guard let numberOfSections = viewModel?.sections.count else {
-            Log.shared.errorAndCrash("Without sections there is no table view.")
+        guard let vm = viewModel else {
+            Log.shared.errorAndCrash("VM not found")
             return 0
         }
-        return numberOfSections
+        return vm.sections.count
     }
 
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        guard let sections = viewModel?.sections else {
-            Log.shared.errorAndCrash("Without sections there is no table view.")
+        guard let vm = viewModel else {
+            Log.shared.errorAndCrash("VM not found")
             return 0
         }
-        return sections[section].rows.count
+        return vm.sections[section].rows.count
     }
 
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
@@ -128,6 +134,7 @@ extension AccountSettingsViewController : UITableViewDataSource {
                     Log.shared.errorAndCrash(message: "Cell can't be dequeued")
                     return T()
             }
+            dequeuedCell.accessibilityIdentifier = row.title
             return dequeuedCell
         }
 
@@ -208,11 +215,11 @@ extension AccountSettingsViewController : UITableViewDataSource {
             Log.shared.errorAndCrash("pEpHeaderView doesn't exist!")
             return nil
         }
-        guard let sections = viewModel?.sections else {
-            Log.shared.errorAndCrash("Without sections there is no table view.")
+        guard let vm = viewModel else {
+            Log.shared.errorAndCrash("VM not found")
             return nil
         }
-        headerView.title = sections[section].title.uppercased()
+        headerView.title = vm.sections[section].title.uppercased()
         return headerView
     }
 }
@@ -287,12 +294,13 @@ extension AccountSettingsViewController {
 
 extension AccountSettingsViewController: OAuthAuthorizerDelegate {
     func didAuthorize(oauth2Error: Error?, accessToken: OAuth2AccessTokenProtocol?) {
-        guard let sections = viewModel?.sections else {
-            Log.shared.errorAndCrash("Without sections there is no table view.")
+        guard let vm = viewModel else {
+            Log.shared.errorAndCrash("VM not found")
             return
         }
-        let sectionIndex = (sections.firstIndex(where: { $0.type == .account }) ?? 0) as Int
-        let rows = sections[sectionIndex].rows
+
+        let sectionIndex = (vm.sections.firstIndex(where: { $0.type == .account }) ?? 0) as Int
+        let rows = vm.sections[sectionIndex].rows
         let rowIndex = (rows.firstIndex(where: { $0.type == .oauth2Reauth }) ?? 0) as Int
         let indexPath = IndexPath(row: rowIndex, section: sectionIndex)
         guard let cell = tableView.cellForRow(at: indexPath) as?
@@ -309,7 +317,7 @@ extension AccountSettingsViewController: OAuthAuthorizerDelegate {
             showAlert(error: OAuthAuthorizerError.noToken)
             return
         }
-        viewModel?.updateToken(accessToken: token)
+        vm.updateToken(accessToken: token)
     }
 }
 
@@ -317,12 +325,14 @@ extension AccountSettingsViewController: OAuthAuthorizerDelegate {
 
 extension AccountSettingsViewController: SettingChangeDelegate {
     func didChange() {
+        guard let vm = viewModel else {
+            Log.shared.errorAndCrash("VM not found")
+            return
+        }
         /// As the data source of this table view provides the rows generated at the vm initialization,
         /// we re-init the view model in order re-generate those rows.
         /// With the rows having the data up-to-date we reload the table view.
-        if let account = viewModel?.account {
-            viewModel = AccountSettingsViewModel(account: account, delegate: self)
-            tableView.reloadData()
-        }
+        viewModel = AccountSettingsViewModel(account: vm.account, delegate: self)
+        tableView.reloadData()
     }
 }

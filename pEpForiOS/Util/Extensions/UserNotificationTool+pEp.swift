@@ -26,7 +26,7 @@ extension UserNotificationTool {
         } else {
             title = String(format: NSLocalizedString("%1d new messages received",
                                                      comment:
-                                                        "Title for notification show on lock screen for new mails"),
+                                                        "Title for notification show on lock screen for *several* new mails"),
                            numMails)
         }
         let body = NSLocalizedString("Slide for more",

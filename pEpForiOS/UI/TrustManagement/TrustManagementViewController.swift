@@ -52,8 +52,10 @@ class TrustManagementViewController: UIViewController {
         guard let vm = viewModel, vm.canUndo() && motion == .motionShake,
             let actionName = vm.revertAction() else { return }
         let title = actionName // this is already localized
-        let confirmTitle = NSLocalizedString("Undo", comment: "Undo trust change verification button title")
-        let cancelTitle = NSLocalizedString("Cancel", comment: "Cancel trust change to be undone")
+        let confirmTitle = NSLocalizedString("OK",
+                                             comment: "Yes, undo the recent trust change")
+        let cancelTitle = NSLocalizedString("Cancel",
+                                            comment: "No, cancel the undo of the recent trust change")
         UIUtils.showTwoButtonAlert(withTitle: title,
                                    cancelButtonText: cancelTitle,
                                    positiveButtonText: confirmTitle,
@@ -92,19 +94,19 @@ extension TrustManagementViewController {
 
 extension TrustManagementViewController : UITableViewDataSource  {
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        guard let numberOfRows = viewModel?.rows.count else {
-            Log.shared.error("The viewModel must not be nil")
+        guard let vm = viewModel else {
+            Log.shared.errorAndCrash("VM not found")
             return 0
         }
-        return numberOfRows
+        return vm.rows.count
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        guard let row = viewModel?.rows[indexPath.row] else {
-            Log.shared.error("The row couldn't be dequeued")
+        guard let vm = viewModel else {
+            Log.shared.errorAndCrash("VM not found")
             return UITableViewCell()
         }
-
+        let row = vm.rows[indexPath.row]
 
         if row.blockingColor() == .noColor {
             // Cell for reset
@@ -202,6 +204,7 @@ extension TrustManagementViewController {
                 let cancelAction = UIAlertAction(title: cancel, style: .cancel) { _ in
                     alertController.dismiss(animated: true, completion: nil)
                 }
+                cancelAction.accessibilityIdentifier = AccessibilityIdentifier.cancelButton
                 alertController.addAction(cancelAction)
 
                 //Ipad behavior.
@@ -327,17 +330,18 @@ extension TrustManagementViewController {
     ///   - indexPath: The indexPath of the row, to get the trustwords.
     private func setupCell(_ cell: TrustManagementTableViewCell, forRowAt indexPath: IndexPath) {
         setBackgroundColor(on: cell)
-        // After all async calls have returend the cell size need update
-        let updateSizeGroup = DispatchGroup()
-        guard let row = viewModel?.rows[indexPath.row] else {
-            Log.shared.errorAndCrash("No Row")
+        guard let vm = viewModel else {
+            Log.shared.errorAndCrash("VM not found")
             return
         }
+        // After all async calls have returend the cell size need update
+        let updateSizeGroup = DispatchGroup()
+        let row = vm.rows[indexPath.row]
 
         let identifier = cellIdentifier(forRowAt: indexPath)
 
         updateSizeGroup.enter()
-        viewModel?.getImage(forRowAt: indexPath) { (image) in
+        vm.getImage(forRowAt: indexPath) { (image) in
             cell.partnerImageView.image = image
             updateSizeGroup.leave()
         }
@@ -401,6 +405,10 @@ extension TrustManagementViewController {
     }
 
     private func setupCell(_ cell: TrustManagementResetTableViewCell, forRowAt indexPath: IndexPath) {
+        guard let vm = viewModel else {
+            Log.shared.errorAndCrash("VM not found")
+            return
+        }
         setBackgroundColor(on: cell)
         // After all async calls have returend the cell size need update
         let updateSizeGroup = DispatchGroup()
@@ -411,7 +419,7 @@ extension TrustManagementViewController {
         cell.delegate = self
         cell.partnerNameLabel.text = row.name
         updateSizeGroup.enter()
-        viewModel?.getImage(forRowAt: indexPath) { (image) in
+        vm.getImage(forRowAt: indexPath) { (image) in
             cell.partnerImageView.image = image
             updateSizeGroup.leave()
         }

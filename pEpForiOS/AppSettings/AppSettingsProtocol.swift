@@ -13,14 +13,28 @@ import MessageModel
 #endif
 
 public protocol AppSettingsProtocol {
+    /// Indicates if keySync is enabled
     var keySyncEnabled: Bool { get set }
+
+    /// Indicates if the PEP folder is enabled
     var usePEPFolderEnabled: Bool { get set }
+
+    /// Indicates if the extra keys are editable.
     var extraKeysEditable: Bool { get set }
+
+    /// Indicates if the unencryped subject is enabled.
     var unencryptedSubjectEnabled: Bool { get set }
+
     var threadedViewEnabled: Bool { get set }
-    var passiveMode: Bool { get set }
+
+    /// Indicates if Passive mode is enabled.
+    var passiveModeEnabled: Bool { get set }
+
+    /// The email address of the default account.
     var defaultAccount: String? { get set }
+
     var lastKnownDeviceGroupState: DeviceGroupState { get set }
+
     var shouldShowTutorialWizard: Bool { get set }
     /// Whether or not the user has already answered the "Do you want to allow pEp app to access 
     /// your contacts"
@@ -32,7 +46,10 @@ public protocol AppSettingsProtocol {
     /// Should the logging be verbose, or not?
     var verboseLogginEnabled: Bool { get set }
 
-    // MARK:- Collapsing State
+    /// The list of the accepted languages codes for truswords. 
+    var acceptedLanguagesCodes: [String] { get set }
+
+    // MARK: - Collapsing State
 
     /// Removes the collapsing state for the account address passed by parameter.
     /// - Parameter address: The address of the account to delete its collapsing states preferences.

@@ -55,18 +55,22 @@ public class HtmlConversions {
                 inlineAttachmentRanges.removeFirst()
             }
 
-            if range.location == NSNotFound {
-                continue
+            if line == "" {
+                mutableAttributedString.append(NSAttributedString(string: toAdd + " ") + NSAttributedString(string: "\n"))
+            } else {
+                if range.location == NSNotFound {
+                    continue
+                }
+                let subString = attribText.attributedSubstring(from: range)
+                mutableAttributedString.append(NSAttributedString(string: toAdd + " ") + subString + NSAttributedString(string: "\n"))
+                ranges[indexForStartLine] = (range: NSRange(location: indexForStartLine,
+                                                            length: line.count),
+                                             level: blockquoteLevels)
+
+                blockquoteLevels -= line.filter { $0 == "‹" }.count + difference - line.filter { $0 == "›" }.count
+
+                indexForStartLine += line.count
             }
-            let subString = attribText.attributedSubstring(from: range)
-            mutableAttributedString.append(NSAttributedString(string: toAdd + " ") + subString + NSAttributedString(string: "\n"))
-            ranges[indexForStartLine] = (range: NSRange(location: indexForStartLine,
-                                                        length: line.count),
-                                         level: blockquoteLevels)
-
-            blockquoteLevels -= line.filter { $0 == "‹" }.count + difference - line.filter { $0 == "›" }.count
-
-            indexForStartLine += line.count
         }
 
         return citationRemoveSpecialChars(attribText: NSAttributedString(attributedString: mutableAttributedString))

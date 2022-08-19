@@ -167,7 +167,20 @@ class ComposeViewModel {
 
     public func handleDidReAppear() {
         state.validate()
+#if !EXT_SHARE
+        checkConnectivity()
+#endif
     }
+
+#if !EXT_SHARE
+    private func checkConnectivity() {
+        if !NetworkMonitorUtil.shared.netOn {
+            UIUtils.showNoInternetConnectionBanner()
+        } else {
+            UIUtils.hideBanner()
+        }
+    }
+#endif
 
     public func viewModel(for indexPath: IndexPath) -> CellViewModel {
         return sections[indexPath.section].rows[indexPath.row]
@@ -767,7 +780,7 @@ extension ComposeViewModel {
 
     public var showCancelActions: Bool {
         if offerToSaveDraftOnCancel {
-            return existsDirtyCell() || state.edited
+            return state.edited
         } else {
             return false
         }

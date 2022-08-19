@@ -24,7 +24,6 @@ protocol VerifiableAccountSMTPDelegate: AnyObject {
 /// Helper for `VerifiableAccount` (verifies SMTP servers).
 class VerifiableAccountSMTP {
     weak var delegate: VerifiableAccountSMTPDelegate?
-
     private var smtpConnection: SmtpConnection?
 
     /// Tries to verify the given IMAP account.
@@ -33,9 +32,15 @@ class VerifiableAccountSMTP {
         smtpConnection?.delegate = self
         smtpConnection?.start()
     }
+
+    /// Stops the verification.
+    func stop() {
+        smtpConnection?.close()
+    }
+
 }
 
-// Mark: - SmtpConnectionDelegate
+// MARK: - SmtpConnectionDelegate
 
 extension VerifiableAccountSMTP: SmtpConnectionDelegate {
     private func notifyUnexpectedCallback(name: String) {

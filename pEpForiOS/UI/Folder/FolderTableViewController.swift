@@ -13,6 +13,7 @@ import MessageModel
 class FolderTableViewController: UITableViewController {
 
     var folderVM: FolderViewModel?
+
     // Indicates if it's needed to lead the user to a new screen,
     // the email list or the new account, for example.
     private var shouldPresentNextView: Bool = true
@@ -37,6 +38,7 @@ class FolderTableViewController: UITableViewController {
         showEmptyDetailViewIfNeeded()
         updateRefreshControl()
         folderVM?.refreshFolderList()
+        UIUtils.hideBanner()
     }
 
     override func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
@@ -105,6 +107,9 @@ class FolderTableViewController: UITableViewController {
         tableView.cellLayoutMarginsFollowReadableWidth = false
         addAccountButton.titleLabel?.numberOfLines = 0
         addAccountButton.titleLabel?.setPEPFont(style: .body, weight: .regular)
+        if AppSettings.shared.hasBeenMDMDeployed {
+            addAccountButton.isHidden = true
+        }
     }
 
     // MARK: - Action
@@ -232,6 +237,7 @@ extension FolderTableViewController: SegueHandlerType {
     enum SegueIdentifier: String {
         case newAccount
         case settingsSegue
+        case mdmPredeployAccounts
     }
 
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
@@ -255,6 +261,15 @@ extension FolderTableViewController: SegueHandlerType {
                 return
             }
             dvc.hidesBottomBarWhenPushed = true
+
+        case .mdmPredeployAccounts:
+            guard let navVC = segue.destination as? UINavigationController,
+                  let vc = navVC.rootViewController as? MDMAccountPredeploymentViewController else {
+                Log.shared.errorAndCrash("Error casting to MDMAccountPredeploymentViewController")
+                return
+            }
+            navVC.modalPresentationStyle = .fullScreen
+            vc.hidesBottomBarWhenPushed = true
         }
     }
 
@@ -292,11 +307,16 @@ extension FolderTableViewController: SegueHandlerType {
             Log.shared.errorAndCrash("VM not Found")
             return
         }
+
         if shouldPresentNextView {
             if vm.shouldShowFolders {
                 showEmailList(folder:vm.folderToShow)
             } else {
-                performSegue(withIdentifier:.newAccount, sender: self)
+                if MDMPredeployed().haveAccountsToPredeploy {
+                    performSegue(withIdentifier:.mdmPredeployAccounts, sender: self)
+                } else {
+                    performSegue(withIdentifier:.newAccount, sender: self)
+                }
             }
         }
     }
@@ -470,6 +490,7 @@ extension FolderTableViewController {
         header?.sectionButton.addTarget(self,
                                         action: #selector(hideShowSection(sender:)),
                                         for: .touchUpInside)
+        header?.sectionButton.accessibilityIdentifier = AccessibilityIdentifier.showHideFoldersButton
         let arrow = UIImage(named:"chevron-icon-right-gray")
         header?.sectionButton.setImage(arrow, for: .normal)
         header?.sectionButton.contentHorizontalAlignment = .trailing

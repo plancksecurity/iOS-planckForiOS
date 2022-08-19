@@ -1,6 +1,6 @@
 #!/bin/bash
 
-languages="en de fr es ca tr nl sk"
+languages="en de"
 
 translationdir=../pEp-Translate/
 
@@ -13,7 +13,7 @@ mkdir $appdir
 
 for lang in $languages
 do
-  xcodebuild -exportLocalizations -project pEpForiOS.xcodeproj -exportLanguage $lang -localizationPath $appdir
+  xcodebuild -exportLocalizations -project pEpForiOS.xcodeproj -exportLanguage $lang -localizationPath $appdir | grep -v -E "^(--- WARNING: )?Key \".*\" used with multiple comments" | grep -v -E "^ +"
 
   cp "$appdir/$lang.xcloc/Localized Contents/$lang.xliff" $translationdir
 done

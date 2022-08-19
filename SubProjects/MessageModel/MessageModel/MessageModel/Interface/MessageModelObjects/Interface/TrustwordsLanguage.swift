@@ -14,6 +14,7 @@ import pEpIOSToolbox
 
 /// Wraps `PEPLanguage`, indicating a trustwords language.
 public struct TrustwordsLanguage {
+
     /// ISO 639-1 language code
     public let code: String
 

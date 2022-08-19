@@ -14,7 +14,7 @@ import MessageModel
 import pEpIOSToolbox
 #endif
 
-protocol ComposeViewModelStateDelegate: class {
+protocol ComposeViewModelStateDelegate: AnyObject {
     func composeViewModelState(_ composeViewModelState: ComposeViewModel.ComposeViewModelState,
                                didChangeValidationStateTo isValid: Bool)
 
@@ -36,7 +36,24 @@ extension ComposeViewModel {
                                                 didChangeValidationStateTo: isValidatedForSending)
             }
         }
-        public private(set) var edited = false
+
+        private let defaultSubject = " "
+        private let defaultBodyPlaintext = ""
+        private var defaultBodyText : NSAttributedString?
+
+        public var edited : Bool {
+            get {
+                return !toRecipients.isEmpty ||
+                !ccRecipients.isEmpty ||
+                !bccRecipients.isEmpty ||
+                !nonInlinedAttachments.isEmpty ||
+                !inlinedAttachments.isEmpty ||
+                subject != defaultSubject ||
+                bodyPlaintext != defaultBodyPlaintext ||
+                (!bodyText.string.isEmpty && bodyText.string.trimmed() != defaultBodyText?.string.trimmed())
+            }
+        }
+
         public private(set) var rating = Rating.undefined {
             didSet {
                 if rating != oldValue {
@@ -66,61 +83,46 @@ extension ComposeViewModel {
         //Recipients
         var toRecipients = [Identity]() {
             didSet {
-                edited = true
                 validate()
             }
         }
         var ccRecipients = [Identity]() {
             didSet {
-                edited = true
                 validate()
             }
         }
         var bccRecipients = [Identity]() {
             didSet {
-                edited = true
                 validate()
             }
         }
 
         var from: Identity? {
             didSet {
-                edited = true
                 validate()
             }
         }
 
-        var subject = " " {
-            didSet {
-                edited = true
-            }
-        }
+        var subject = " "
 
-        var bodyPlaintext = "" {
-            didSet {
-                edited = true
-            }
-        }
+        var bodyPlaintext = "" 
 
         var bodyText = NSAttributedString(string: "") {
             didSet {
-                edited = true
+                if defaultBodyText == nil {
+                    defaultBodyText = NSAttributedString(string: String.pepSignature) 
+                }
             }
         }
 
         var inlinedAttachments = [Attachment]()
 
-        var nonInlinedAttachments = [Attachment]() {
-            didSet {
-                edited = true
-            }
-        }
+        var nonInlinedAttachments = [Attachment]()
 
         init(initData: InitData? = nil, delegate: ComposeViewModelStateDelegate? = nil) {
             self.initData = initData
             self.delegate = delegate
             setup()
-            edited = false
         }
 
         public func makeSafe(forSession session: Session,
@@ -145,7 +147,6 @@ extension ComposeViewModel {
             newValue.bodyText = bodyText
             newValue.isValidatedForSending = isValidatedForSending
             newValue.rating = rating
-            newValue.edited = edited
             newValue.delegate = delegate
 
             return newValue

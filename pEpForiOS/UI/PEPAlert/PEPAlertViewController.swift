@@ -194,6 +194,7 @@ extension PEPAlertViewController {
             let button = UIButton(type: .system)
 
             button.setTitle(action.title, for: .normal)
+            button.accessibilityIdentifier = action.title
             button.setTitleColor(action.style, for: .normal)
             setUp(alertButton: button, style: viewModel.alertType)
 

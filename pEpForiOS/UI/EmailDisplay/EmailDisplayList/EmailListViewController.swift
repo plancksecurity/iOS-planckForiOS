@@ -52,10 +52,18 @@ final class EmailListViewController: UIViewController {
 
     private var lastSelectedIndexPath: IndexPath? {
         get {
-            viewModel?.lastSelectedIndexPath
+            guard let vm = viewModel else {
+                Log.shared.errorAndCrash("VM not found")
+                return nil
+            }
+            return vm.lastSelectedIndexPath
         }
         set {
-            viewModel?.lastSelectedIndexPath = newValue
+            guard let vm = viewModel else {
+                Log.shared.errorAndCrash("VM not found")
+                return
+            }
+            vm.lastSelectedIndexPath = newValue
         }
     }
 
@@ -76,10 +84,7 @@ final class EmailListViewController: UIViewController {
         subscribeForKeyboardNotifications()
         edgesForExtendedLayout = .all
         setSeparator()
-        NotificationCenter.default.addObserver(self,
-                                               selector: #selector(pEpSettingsChanged),
-                                               name: .pEpSettingsChanged,
-                                               object: nil)
+        registerNotifications()
         doOnce = { [weak self] in
             guard let me = self else {
                 Log.shared.lostMySelf()
@@ -103,6 +108,9 @@ final class EmailListViewController: UIViewController {
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         navigationController?.setToolbarHidden(false, animated: true)
+        navigationController?.navigationItem.leftBarButtonItem?.accessibilityIdentifier = AccessibilityIdentifier.mailboxesButton
+        navigationController?.navigationItem.rightBarButtonItem?.accessibilityIdentifier = AccessibilityIdentifier.editButton
+
         if MiscUtil.isUnitTest() {
             return
         }
@@ -121,6 +129,15 @@ final class EmailListViewController: UIViewController {
         updateEditButton()
         vm.updateLastLookAt()
         updateFilterButton()
+    }
+
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
+        guard let vm = viewModel else {
+            Log.shared.errorAndCrash("VM not found")
+            return
+        }
+        vm.handleBannerIfNeeded()
     }
 
     override func viewWillTransition(to size: CGSize, with coordinator: UIViewControllerTransitionCoordinator) {
@@ -208,6 +225,7 @@ final class EmailListViewController: UIViewController {
     }
 
     private func setupTextFilter() {
+        textFilterButton.accessibilityIdentifier = AccessibilityIdentifier.filterButton
         textFilterButton.isEnabled = false
         textFilterButton.action = #selector(showFilterOptions)
         textFilterButton.target = self
@@ -220,7 +238,11 @@ final class EmailListViewController: UIViewController {
     }
 
     private func setupNavigationBar() {
-        title = viewModel?.folderName
+        guard let vm = viewModel else {
+            Log.shared.errorAndCrash("VM not found")
+            return
+        }
+        title = vm.folderName
         navigationController?.title = title
 
         editButton = UIBarButtonItem(title: NSLocalizedString("Edit",
@@ -241,13 +263,14 @@ final class EmailListViewController: UIViewController {
     // MARK: - Search Bar
 
     private func setupSearchBar() {
-        searchController.isActive = false
+        searchController.isActive = true
+        searchController.searchBar.accessibilityIdentifier = AccessibilityIdentifier.searchBar
         searchController.searchResultsUpdater = self
         searchController.obscuresBackgroundDuringPresentation = false
         searchController.delegate = self
         definesPresentationContext = true
         navigationItem.searchController = searchController
-        navigationItem.hidesSearchBarWhenScrolling = true
+        navigationItem.hidesSearchBarWhenScrolling = false
     }
 
     /// Called on pull-to-refresh triggered
@@ -288,8 +311,11 @@ final class EmailListViewController: UIViewController {
     }
 
     private func showNoMessageSelected() {
+        // Note that this message can appear after the inital deployment
+        // (account creation) while there is still no message in the list,
+        // and it's not even known if there will be any.
         showEmptyDetailViewIfApplicable(message: NSLocalizedString(
-            "Please choose a message",
+            "Nothing selected",
             comment: "No messages has been selected for detail view"))
     }
 
@@ -576,7 +602,11 @@ final class EmailListViewController: UIViewController {
     // MARK: - Memory Warning
 
     override func didReceiveMemoryWarning() {
-        viewModel?.freeMemory()
+        guard let vm = viewModel else {
+            Log.shared.errorAndCrash("VM not found")
+            return
+        }
+        vm.freeMemory()
     }
 }
 
@@ -585,7 +615,12 @@ final class EmailListViewController: UIViewController {
 extension EmailListViewController: UITableViewDataSource, UITableViewDelegate {
 
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        let valueToReturn = viewModel?.rowCount ?? 0
+        guard let vm = viewModel else {
+            Log.shared.errorAndCrash("VM not found")
+            return 0
+        }
+
+        let valueToReturn = vm.rowCount
 //        if there is no message to show then there is no message selected and also
 //        no message selected screen is shown
         if valueToReturn == 0 {
@@ -602,8 +637,11 @@ extension EmailListViewController: UITableViewDataSource, UITableViewDelegate {
                                                  for: indexPath)
         if let theCell = cell as? EmailListViewCell {
             theCell.delegate = self
-
-            guard let viewModel = viewModel?.viewModel(for: indexPath.row) else {
+            guard let vm = viewModel else {
+                Log.shared.errorAndCrash("VM not found")
+                return UITableViewCell()
+            }
+            guard let viewModel = vm.viewModel(for: indexPath.row) else {
                 return cell
             }
             theCell.configure(for: viewModel)
@@ -1087,7 +1125,11 @@ extension EmailListViewController {
     }
 
     private func createReadOrUnReadAction(forRowAt indexPath: IndexPath) -> UIAlertAction {
-        let seenState = viewModel?.viewModel(for: indexPath.row)?.isSeen ?? false
+        guard let vm = viewModel else {
+            Log.shared.errorAndCrash("VM not found")
+            return UIAlertAction()
+        }
+        let seenState = vm.viewModel(for: indexPath.row)?.isSeen ?? false
 
         var title = ""
         if seenState {
@@ -1172,7 +1214,11 @@ extension EmailListViewController {
 extension EmailListViewController {
 
     private func readAction(forCellAt indexPath: IndexPath) {
-        guard let row = viewModel?.viewModel(for: indexPath.row) else {
+        guard let vm = viewModel else {
+            Log.shared.errorAndCrash("VM not found")
+            return
+        }
+        guard let row = vm.viewModel(for: indexPath.row) else {
             Log.shared.errorAndCrash("No data for indexPath!")
             return
         }
@@ -1190,12 +1236,12 @@ extension EmailListViewController {
     }
 
     private func flagAction(forCellAt indexPath: IndexPath) {
-        guard let row = viewModel?.viewModel(for: indexPath.row) else {
-            Log.shared.errorAndCrash("No data for indexPath!")
-            return
-        }
         guard let vm = viewModel else {
             Log.shared.errorAndCrash("VM not found")
+            return
+        }
+        guard let row = vm.viewModel(for: indexPath.row) else {
+            Log.shared.errorAndCrash("No data for indexPath!")
             return
         }
 
@@ -1225,7 +1271,11 @@ extension EmailListViewController {
     }
 
     private func deleteAction(forCellAt indexPath: IndexPath) {
-        viewModel?.delete(forIndexPath: indexPath)
+        guard let vm = viewModel else {
+            Log.shared.errorAndCrash("VM not found")
+            return
+        }
+        vm.delete(forIndexPath: indexPath)
         updateEditButton()
     }
 
@@ -1326,8 +1376,11 @@ extension EmailListViewController: SegueHandlerType {
                     Log.shared.errorAndCrash("No DVC?")
                     return
             }
-            destination.viewModel
-                = viewModel?.getMoveToFolderViewModel(forSelectedMessages: selectedRows)
+            guard let vm = viewModel else {
+                Log.shared.errorAndCrash("VM not found")
+                return
+            }
+            destination.viewModel = vm.getMoveToFolderViewModel(forSelectedMessages: selectedRows)
         default:
             Log.shared.errorAndCrash("Unhandled segue")
         }
@@ -1410,8 +1463,12 @@ extension EmailListViewController {
 
         if #available(iOS 13.0, *) {
             if thePreviousTraitCollection.hasDifferentColorAppearance(comparedTo: traitCollection) {
+                guard let vm = viewModel else {
+                    Log.shared.errorAndCrash("VM not found")
+                    return
+                }
                 /// Clear the cache and get the correct version of the avatar..
-                viewModel?.freeMemory()
+                vm.freeMemory()
                 setSeparator()
                 tableView.reloadData()
             }
@@ -1471,10 +1528,15 @@ extension EmailListViewController {
     }
 
     @objc private func deselectAllCells() {
+        guard let vm = viewModel else {
+            Log.shared.errorAndCrash("VM not found")
+            return
+        }
+
         for row in 0..<tableView.numberOfRows(inSection: 0) {
             tableView.deselectRow(at: IndexPath(item: row, section: 0), animated: true)
         }
-        viewModel?.handleEditModeSelectionChange(selectedIndexPaths: [])
+        vm.handleEditModeSelectionChange(selectedIndexPaths: [])
         navigationItem.leftBarButtonItems = [selectAllBarButton]
     }
 }
@@ -1501,6 +1563,13 @@ extension EmailListViewController {
 }
 
 extension EmailListViewController {
+
+    private func registerNotifications() {
+        NotificationCenter.default.addObserver(self,
+                                               selector: #selector(pEpSettingsChanged),
+                                               name: .pEpSettingsChanged,
+                                               object: nil)
+    }
 
     private func setSeparator() {
         if #available(iOS 13.0, *) {

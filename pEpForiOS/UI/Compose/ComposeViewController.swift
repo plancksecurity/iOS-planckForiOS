@@ -29,16 +29,23 @@ class ComposeViewController: UIViewController {
     @IBOutlet var tableView: UITableView!
 
     private var suggestionsChildViewController: SuggestTableViewController?
+
     lazy private var mediaAttachmentPickerProvider: MediaAttachmentPickerProvider? = {
-        guard let pickerVm = viewModel?.mediaAttachmentPickerProviderViewModel() else {
-            Log.shared.errorAndCrash("Invalid state")
+        guard let vm = viewModel else {
+            Log.shared.errorAndCrash("VM not found")
             return nil
         }
+        let pickerVm = vm.mediaAttachmentPickerProviderViewModel()
         return MediaAttachmentPickerProvider(with: pickerVm)
     }()
+
     lazy private var documentAttachmentPicker: DocumentAttachmentPickerViewController = {
+        guard let vm = viewModel else {
+            Log.shared.errorAndCrash("VM not found")
+            return DocumentAttachmentPickerViewController()
+        }
         return DocumentAttachmentPickerViewController(
-            viewModel: viewModel?.documentAttachmentPickerViewModel())
+            viewModel: vm.documentAttachmentPickerViewModel())
     }()
     
     private var isInitialFocusSet = false
@@ -61,6 +68,9 @@ class ComposeViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         setupView()
+#if EXT_SHARE
+        setupForSharingExtension()
+#endif
         if viewModel == nil {
             setupModel()
         }
@@ -94,7 +104,20 @@ class ComposeViewController: UIViewController {
         navigationController?.title = title
         tableView.hideSeperatorForEmptyCells()
         setupRecipientSuggestionsTableViewController()
-        viewModel?.handleDidReAppear()
+        guard let vm = viewModel else {
+            Log.shared.errorAndCrash("VM not found")
+            return
+        }
+        vm.handleDidReAppear()
+    }
+
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
+#if EXT_SHARE
+        if !NetworkMonitorUtil.shared.netOn {
+            UIUtils.showNoInternetConnectionBanner(viewController: self)
+        }
+#endif
     }
 
     deinit {
@@ -143,18 +166,30 @@ class ComposeViewController: UIViewController {
 
     @IBAction func cancel(_ sender: Any) {
         updateBodyState()
-        if viewModel?.showCancelActions ?? false {
+        guard let vm = viewModel else {
+            Log.shared.errorAndCrash("VM not found")
+            return
+        }
+        if vm.showCancelActions {
             showAlertControllerWithOptionsForCanceling(sender: sender)
         } else {
             dismiss()
         }
-        viewModel?.handleUserClickedCancelButton()
+        guard let vm = viewModel else {
+            Log.shared.errorAndCrash("VM not found")
+            return
+        }
+        vm.handleUserClickedCancelButton()
     }
 
     @IBAction func send() {
         view.endEditing(true)
         updateBodyState()
-        viewModel?.handleUserClickedSendButton()
+        guard let vm = viewModel else {
+            Log.shared.errorAndCrash("VM not found")
+            return
+        }
+        vm.handleUserClickedSendButton()
     }
 
     private func updateBodyState() {
@@ -667,7 +702,11 @@ extension ComposeViewController: UITableViewDataSource {
 
 extension ComposeViewController: UITableViewDelegate {
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        viewModel?.handleUserSelectedRow(at: indexPath)
+        guard let vm = viewModel else {
+            Log.shared.errorAndCrash("VM not found")
+            return
+        }
+        vm.handleUserSelectedRow(at: indexPath)
     }
 }
 
@@ -686,8 +725,12 @@ extension ComposeViewController {
     // MARK: - SwipeTableViewCell
 
     private func deleteAction(forCellAt indexPath: IndexPath) {
+        guard let vm = viewModel else {
+            Log.shared.errorAndCrash("VM not found")
+            return
+        }
         tableView.beginUpdates()
-        viewModel?.handleRemovedRow(at: indexPath)
+        vm.handleRemovedRow(at: indexPath)
         tableView.deleteRows(at: [indexPath], with: .automatic)
         tableView.endUpdates()
     }
@@ -985,7 +1028,12 @@ extension ComposeViewController {
         actionSheetController.addAction(cancelAction(forAlertController: actionSheetController))
         actionSheetController.addAction(deleteAction(forAlertController: actionSheetController))
         actionSheetController.addAction(saveAction(forAlertController: actionSheetController))
-        if viewModel?.showKeepInOutbox ?? false {
+        guard let vm = viewModel else {
+            Log.shared.errorAndCrash("VM not found")
+            return
+        }
+
+        if vm.showKeepInOutbox {
             actionSheetController.addAction(
                 keepInOutboxAction(forAlertController: actionSheetController))
         }
@@ -1056,6 +1104,7 @@ extension ComposeViewController {
 extension ComposeViewController {
 
     private func registerForNotifications() {
+
         NotificationCenter.default.addObserver(self,
                                                selector: #selector(handleKeyboardDidShow),
                                                name: UIResponder.keyboardDidShowNotification,
@@ -1109,3 +1158,30 @@ extension ComposeViewController {
         }
     }
 }
+
+#if EXT_SHARE
+
+// MARK: - Share Extension
+
+extension ComposeViewController {
+
+    func setupForSharingExtension() {
+        [Notifications.Reachability.connected.name,
+         Notifications.Reachability.notConnected.name].forEach { (notification) in
+            NotificationCenter.default.addObserver(self,
+                                                   selector: #selector(changeInternetConnection),
+                                                   name: notification, object: nil)
+        }
+    }
+
+    @objc
+    private func changeInternetConnection(notification: Notification) {
+        if notification.name == Notifications.Reachability.notConnected.name {
+            UIUtils.showNoInternetConnectionBanner(viewController: self)
+        } else {
+            UIUtils.hideBanner(viewController: self)
+        }
+    }
+}
+
+#endif

@@ -14,6 +14,8 @@ import XCTest
 
 class MockAppSettings: AppSettingsProtocol {
 
+    var acceptedLanguagesCodes: [String] = ["de", "en"]
+
     var removeFolderViewCollapsedStateOfAccountWithExpectation: XCTestExpectation?
     // getters
     var collapsedStateForAccountWithAddressExpectation: XCTestExpectation?
@@ -48,7 +50,7 @@ class MockAppSettings: AppSettingsProtocol {
 
     var threadedViewEnabled: Bool = true
 
-    var passiveMode: Bool = true
+    var passiveModeEnabled: Bool = true
 
     var defaultAccount: String? = "some@account.com"
 

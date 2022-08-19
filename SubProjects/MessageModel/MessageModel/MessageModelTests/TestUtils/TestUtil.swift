@@ -22,6 +22,9 @@ class TestUtil {
      */
     static let waitTime: TimeInterval = 30
 
+    /// The maximum time waiting for a local operation that is expected to go through very quickly.
+    static let waitTimeLocal: TimeInterval = 5
+
     // MARK: - Messages & Attachments
 
     static public func createMessage(stringData: String = "test",
@@ -113,7 +116,10 @@ extension TestUtil {
         newMessage.longMessageFormatted = text
         newMessage.sent = sentDate ?? (Date().addingTimeInterval(1.0))
         newMessage.parent = cdFolder
-        guard let me = cdFolder.account?.identity else {fatalError("Account must have an Identity")}
+        guard let me = cdFolder.account?.identity else {
+            Log.shared.errorAndCrash("Account must have an Identity")
+            return CdMessage(context: moc)
+        }
         let communicationPartner = createIdentity(idAddress: "someone@else.where",
                                                   idUserName: "someone@else.where",
                                                   userID: "someone@else.where",

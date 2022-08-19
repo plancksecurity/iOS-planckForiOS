@@ -10,7 +10,7 @@ import Foundation
 
 extension Array where Element == Attachment {
 
-    /// - Returns: The sum of the attachment sizes
+    /// - Returns: The sum of the attachment sizes in bytes.
     public func size() -> Double {
         return Double(compactMap { $0.data?.count }.reduce(0, +))
     }

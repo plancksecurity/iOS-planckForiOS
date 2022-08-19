@@ -72,3 +72,10 @@ playground.xcworkspace
 
 ### Xcode Patch ###
 **/xcshareddata/WorkspaceSettings.xcsettings
+
+## Test data that shall never be leaked
+**/SecretTestData.swift
+
+## Translation import/export logs
+export_log.txt
+import_log.txt

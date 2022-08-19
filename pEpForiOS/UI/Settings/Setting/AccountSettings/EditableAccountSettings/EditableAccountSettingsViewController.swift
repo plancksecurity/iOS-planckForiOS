@@ -41,6 +41,8 @@ class EditableAccountSettingsViewController: UIViewController {
         setKeyboardHandling()
         tableView.delegate = self
         tableView.dataSource = self
+        navigationController?.navigationItem.rightBarButtonItem?.accessibilityIdentifier = AccessibilityIdentifier.saveButton
+        navigationController?.navigationItem.leftBarButtonItem?.accessibilityIdentifier = AccessibilityIdentifier.cancelButton
     }
 
     override func viewWillTransition(to size: CGSize, with coordinator: UIViewControllerTransitionCoordinator) {
@@ -95,7 +97,7 @@ extension EditableAccountSettingsViewController: UITableViewDataSource {
         }
 
         let row = vm.sections[indexPath.section].rows[indexPath.row]
-
+        cell.accessibilityIdentifier = row.title
         switch row.type {
         case .certificate:
             guard let row = row as? AccountSettingsViewModel.ActionRow else {
@@ -173,8 +175,12 @@ extension EditableAccountSettingsViewController: EditableAccountSettingsDelegate
         guard let vc = UIStoryboard.init(name: "AccountCreation", bundle: nil).instantiateViewController(withIdentifier: ClientCertificateManagementViewController.storyboardIdentifier) as? ClientCertificateManagementViewController else {
             return
         }
-        let nextViewModel = viewModel?.clientCertificateManagementViewModel()
-        nextViewModel?.delegate = vc
+        guard let vm = viewModel else {
+            Log.shared.errorAndCrash("VM not found")
+            return
+        }
+        let nextViewModel = vm.clientCertificateManagementViewModel()
+        nextViewModel.delegate = vc
         vc.viewModel = nextViewModel
         navigationController?.modalPresentationStyle = .fullScreen
         vc.modalPresentationStyle = .overFullScreen

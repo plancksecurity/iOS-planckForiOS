@@ -7,7 +7,6 @@
 //
 
 import Foundation
-
 import MessageModel
 
 /// Error to display to the user.
@@ -82,7 +81,6 @@ struct DisplayUserError: LocalizedError {
 
     /// Contains the underlying `NSError`'s `localizedDescription`, if available.
     var errorString: String?
-
 
     /// Creates a user friendly error to present in an alert or such. I case the error type is not
     /// suitable to display to the user (should fail silently), nil is returned.
@@ -397,7 +395,7 @@ struct DisplayUserError: LocalizedError {
             }
         case .internalError:
             return NSLocalizedString(
-                "An internal error occured. Sorry, that should not happen.",
+                "An internal error occurred. Sorry, that should not happen.",
                 comment:
                 "Error message shown to the user in case an error in the app occured that is not caused or related to the server")
         case .loginValidationError:

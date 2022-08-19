@@ -17,7 +17,7 @@ class MessageHeaderCellViewModelTest: XCTestCase {
     private var delegateMock = EmailViewController()
     override func setUp() {
         super.setUp()
-        let identity = Identity(address: "mb@pep.security")
+        let identity = Identity(address: "some@example.com")
         vm = MessageHeaderCellViewModel(displayedImageIdentity: identity)
     }
 
@@ -29,10 +29,10 @@ class MessageHeaderCellViewModelTest: XCTestCase {
     }
 
     func testCollectionViewViewModelsAreNotNilAfterSetup() {
-        let fromIdentity = Identity(address: "mb@pep.security")
-        let toIdentity = Identity(address: "mb@pep.security")
-        let ccIdentity = Identity(address: "mb@pep.security")
-        let bccIdentity = Identity(address: "mb@pep.security")
+        let fromIdentity = Identity(address: "some@example.com")
+        let toIdentity = Identity(address: "some@example.com")
+        let ccIdentity = Identity(address: "some@example.com")
+        let bccIdentity = Identity(address: "some@example.com")
 
         let fromCollectionViewVM = EmailViewModel.CollectionViewCellViewModel(identity: fromIdentity, recipientType: .from)
         let tosCollectionViewVM = [EmailViewModel.CollectionViewCellViewModel(identity: toIdentity, recipientType: .to)]

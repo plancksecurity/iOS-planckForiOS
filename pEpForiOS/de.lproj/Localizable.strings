@@ -8,14 +8,29 @@
 /* Title for notification show on lock screen for new mails */
 "(numMails) new messages received" = "(numMails) neue Nachrichten erhalten";
 
+/* Indicate there are more recipients that will be shown when the user taps this button. */
+"& %1$@ more" = "& %1$@ weitere";
+
+/* and X more button title - this will only be used to compute a size. */
+"& 10 more" = "& 10 weitere";
+
 /* Reply to single contact, with date. Placeholders: Name, date. */
 "%1$@ wrote on %2$@:" = "%1$@ schrieb am %2$@:";
 
 /* Reply to single contact, without date. Placeholder: Name. */
 "%1$@ wrote:" = "%1$@ schrieb:";
 
+/* Calendar Event Banner title - plural */
+"%1d Events Found" = "%1d Ereignisse gefunden";
+
+/* Title for notification show on lock screen for *several* new mails */
+"%1d new messages received" = "%1d neue Nachrichten erhalten";
+
 /* Number of filters instead of filter name */
 "%d filters" = "%d Filter";
+
+/* Calendar Event Banner title - singular */
+"1 Event Found" = "1 Ereignis gefunden";
 
 /* error message for .missingPassword */
 "A non-empty password is required" = "Passwort ist erforderlich";
@@ -52,6 +67,12 @@
 /* Tableview section  header */
 "Accounts" = "Konten";
 
+/* MDM predeployment message, all ok */
+"Accounts Deployed" = "Konten eingerichtet";
+
+/* Actual size action title */
+"Actual (%1$@)" = "Original (%1$@)";
+
 /* Insert document in message text context menu */
 "Add Document" = "Dokument hinzufügen";
 
@@ -67,11 +88,14 @@
 /* Name of unified inbox (showing messages of all accoounts */
 "All" = "Alle";
 
-/* Error message shown to the user in case an error in the app occured that is not caused or related to the server */
-"An internal error occured. Sorry, that should not happen." = "Es ist ein interner Fehler aufgetreten. Entschuldigen Sie, das hätte nicht passieren dürfen.";
+/* Alert message: In case we could not encrypt a messge that was previously shown as yellow or green. */
+"An error occured while encrypting your message. Do you want to send the message unencrypted?" = "Fehler beim Verschlüsseln der Nachricht. Möchten Sie sie unverschlüsselt senden?";
 
 /* error message for .noConnectData */
 "An internal error occurred" = "Es ist ein interner Fehler aufgetreten";
+
+/* Error message shown to the user in case an error in the app occured that is not caused or related to the server */
+"An internal error occurred. Sorry, that should not happen." = "Interner Fehler";
 
 /* Tutorial Fourth text */
 "And in the top bar when you open or write an email:" = "Und in der oberen Leiste, wenn Sie eine E-Mail öffnen oder schreiben:";
@@ -97,9 +121,6 @@
 /* Alt text for image attachment in markdown. Placeholders: Attachment number, extension. */
 "Attached Image (%1$@)" = "Angehängtes Bild (%1$@)";
 
-/* Alt text for image attachment in markdown. Placeholders: Attachment number, extension. */
-"Attached Image %1$d (%2$@)" = "Angehängtes Bild %1$d (%2$@)";
-
 /* title attachments filter cell */
 "Attachments" = "Anhänge";
 
@@ -111,10 +132,13 @@
 "Back" = "Zurück";
 
 /* Compose field title */
-"BCC:" = "Bcc:";
+"BCC:" = "BCC:";
 
 /* Privacy status title */
-"Broken" = "Defekt";
+"Broken" = "Fehlerhaft";
+
+/* external content label text */
+"By showing external content, your privacy may be invaded.\nThis may affect the privacy status of the message." = "Das Anzeigen externer Inhalte kann Ihren Datenschutz gefährden,\nwas Auswirkungen auf den Datenschutzstatus der Nachricht haben kann.";
 
 /* alert action 3
    Cancel for an alert view
@@ -157,6 +181,9 @@
 /* Empty SMTP transport security method */
 "Choose SMTP username." = "Wählen Sie den SMTP-Benutzernamen.";
 
+/* client certificate provider key */
+"Client\nCertificate" = "Client-\nZertifikat";
+
 /* Header for client certificate password screen */
 "Client Certificate" = "Client-Zertifikat";
 
@@ -191,8 +218,11 @@
 /* Client certificate import: corrupted file error alert title */
 "Corrupted File" = "Beschädigte Datei";
 
+/* Alert title: In case we could not encrypt a messge that was previously shown as yellow or green. */
+"Could Not Encrypt" = "Verschlüsselung war nicht möglich";
+
 /* Error description detecting account settings */
-"Could not find servers. Please enter manually" = "Server konnten nicht gefunden werden. Bitte manuell eingeben.";
+"Could not find servers. Please enter manually." = "Keine Server gefunden. Bitte manuell eingeben.";
 
 /* Settings: Cell (button) title to view app credits */
 "Credits" = "Mitwirkung";
@@ -217,6 +247,9 @@
 /* ComposeTableView: button to decide to delete changes made on a drafted mail. */
 "Delete Changes" = "Änderungen löschen";
 
+/* MDM predeployment message */
+"Deploying Accounts" = "Konten werden eingerichtet";
+
 /* Deselect all emails */
 "Deselect all" = "Alle abwählen";
 
@@ -229,7 +262,8 @@
 /* Leave device group confirmation */
 "Disable p≡p Sync" = "p≡p Sync deaktivieren";
 
-/* possible private status action */
+/* Disable Protection
+   Disable Protection button title of pEp protection toggle action sheet */
 "Disable Protection" = "Schutz abschalten";
 
 /* ComposeTableView: button to decide to discharge changes made on a drafted mail. */
@@ -238,6 +272,9 @@
 /* Display Name placeholder for manual account setup
    Display Name TextField Placeholder in Login Screen */
 "Display Name" = "Anzeigename";
+
+/* Alert view message - warning */
+"Do you really want to export p≡p databases to Documents/pEp/db-export/ on your local file system?\nWarning: The databases contain confidential information like private keys." = "Wollen Sie wirklich p≡p Datenbanken nach Dokumente/pEp/db-export/ in Ihrem lokalen Dateisystem exportieren?\nWarnung: Die Datenbanken enthalten vertrauliche Informationen, wie z.B. private Schlüssel.";
 
 /* Name of Drafts folder (showing draft messages, of one account) */
 "Drafts" = "Entwürfe";
@@ -290,6 +327,16 @@
 /* separator string between name and date */
 "Exp. date:" = "Ablaufdatum:";
 
+/* Alert view title - warning
+   setting row title: Export DBs */
+"Export p≡p databases to file system" = "p≡p Datenbanken in das Dateisystem exportieren";
+
+/* Error message */
+"Exporting databases failed" = "Fehler beim Datenbank-Export";
+
+/* Error message */
+"Exporting databases OK" = "Datenbank-Export erfolgreich";
+
 /* Settings: Cell (button) title to view Extra Keys setting */
 "Extra Keys" = "Extra Schlüssel";
 
@@ -307,7 +354,7 @@
 "Finish" = "Abschließen";
 
 /* read button in slide-left menu */
-"Flag" = "Markieren";
+"Flag" = "Markierung";
 
 /* Title for Flagged filter
    title unread filter cell */
@@ -352,7 +399,7 @@
 "If the Trustwords are not correct, there could be an attack by a man‑in‑the‑middle." = "Wenn die Trustwords nicht korrekt sind, kann es sich um eine man-in-the-middle Attacke handeln.";
 
 /* Privacy status suggestion */
-"If this message was addressed to you, please inform the sender that you don't have the key." = "Falls diese Nachricht an Sie gerichtet war. Bitte teilen Sie dem Absender mit, dass Sie den Schlüssel nicht haben.";
+"If this message was addressed to you, please inform the sender that you don't have the key." = "Wenn diese Nachricht an Sie gerichtet war, informieren Sie bitte den Absender, dass Sie den Schlüssel nicht haben.";
 
 /* Alert: Leave device group confirmation comment */
 "If you disable p≡p Sync, your accounts on your devices will not be synchronised anymore. Are you sure you want to disable p≡p Sync?" = "Wenn Sie p≡p Sync deaktivieren, werden Ihre Konten auf Ihren Geräten nicht mehr synchronisiert. Möchten Sie p≡p Sync wirklich deaktivieren?";
@@ -439,6 +486,9 @@
 /* ComposeTableView: button to decide to Discharge changes made on a mail in outbox. */
 "Keep in Outbox" = "Im Postausgang behalten";
 
+/* Large size action title */
+"Large (%1$@)" = "Groß (%1$@)";
+
 /* keySyncWizard completion view leave button title
    Leave device group button title */
 "Leave" = "Verlassen";
@@ -461,9 +511,6 @@
 /* Privacy status suggestion */
 "Make sure the privacy status for each communication partner listed is at least secure" = "Stellen Sie sicher, dass der Datenschutzstatus für jeden Kommunikationspartner mindestens Sicher ist";
 
-/* privacyStatusDescription yellow */
-"Make this communication partner secure & trusted by comparing the trustwords below with your partner, for example by making a phone call" = "Machen Sie diesen Kontakt sicher und vertrauenswürdig, indem Sie die folgenden Trustwords mit dem Kontakt vergleichen, z. B. indem Sie einen Anruf tätigen";
-
 /* manual */
 "Manual configuration" = "Manuelle Konfiguration";
 
@@ -474,10 +521,19 @@
 "Mark as read" = "Als gelesen markieren";
 
 /* EmailList action title */
-"Mark as Read" = "Als gelesen markieren";
+"Mark as Read" = "Als „gelesen“ markieren";
 
 /* EmailList action title */
 "Mark as unread" = "Als ungelesen markieren";
+
+/* MDM predeployment error */
+"MDM Error: Could not connect to account" = "MDM Fehler: Keine Verbindung zum Konto möglich";
+
+/* MDM predeployment error */
+"MDM Error: Wrong Account Data" = "MDM Fehler: Fehlerhafte Kontendaten";
+
+/* Medium size action title */
+"Medium (%1$@)" = "Medium (%1$@)";
 
 /* TrustManagementView Back Button Title */
 "Message" = "Nachricht";
@@ -496,7 +552,7 @@
 "Move to Folder" = "Zu Ordner verschieben";
 
 /* File name used for videos the user attaches. */
-"Movie" = "Verschieben";
+"Movie" = "Video";
 
 /* username */
 "Name" = "Name";
@@ -533,6 +589,9 @@
 /* No client certificate exists alert message */
 "No client certificate exists. You have to import your client certificate before entering login data." = "Es ist kein Client-Zertifikat vorhanden. Sie müssen Ihr Client-Zertifikat importieren, bevor Sie Anmeldedaten eingeben können.";
 
+/* No extra keys were found */
+"No extra keys were found" = "Keine Generalschlüssel gefunden";
+
 /* Alert title shown if user wants to add a photo attachment, but has denied to give the app permissions. */
 "No Permissions" = "Keine Berechtigung";
 
@@ -552,6 +611,9 @@
 
 /* alert error title certificate delete */
 "Not possible to delete" = "Löschen nicht möglich";
+
+/* No messages has been selected for detail view */
+"Nothing selected" = "Nichts ausgewählt";
 
 /* Default message in detail view when nothing has been selected */
 "Nothing Selected" = "Nichts ausgewählt";
@@ -584,7 +646,7 @@
 "OUTDISTANCE   CORRINA   ETHIOPIA    OUTDRAW   FLEECER" = "GÄRTNER   KNURREN   WAHLHEIMAT   QUIRL   HEIZEN";
 
 /* Alert message shown if user wants to add a photo attachment, but has denied to give the app permissions. */
-"p≡p has no permissions to access \nthe Photo Gallery. You can grand permissions in Settings App." = "p≡p hat keine Berechtigung für den Zugriff auf die Fotogalerie. \nIn App Einstellungen können Sie eine Berechtigung erteilen.";
+"p≡p has no permissions to access \nthe Photo Gallery. You can grant permissions in the Settings app." = "p≡p hat keinen Zugriff auf Fotos.\nSie können den Zugriff in der App „Einstellungen“ erlauben.";
 
 /* Tableview section header */
 "p≡p sync" = "p≡p Synchronisierung";
@@ -669,9 +731,6 @@
 /* No folder has been selected yet in the folders VC */
 "Please choose a folder" = "Bitte wählen Sie einen Ordner aus";
 
-/* No messages has been selected for detail view */
-"Please choose a message" = "Bitte wählen Sie eine Nachricht aus";
-
 /* No setting has been selected yet in the settings VC */
 "Please choose a setting" = "Bitte wählen Sie eine Einstellung aus";
 
@@ -697,7 +756,7 @@
 "Please make sure you have the devices together so you can compare the Trustwords on the devices. Are the Trustwords below equal to the Trustwords on the other device?" = "Bitte stellen Sie sicher, dass Sie beide Geräte vor sich haben, um die Trustwords zu vergleichen. Stimmen die Trustwords unten mit denen auf dem anderen Gerät überein?";
 
 /* Validation error for set_own_key UI */
-"Please provide an email and a fingerprint. The email must match an existing account." = "Bitte geben Sie eine E-Mail-Adresse und einen Fingerabdruck an. Die E-Mail-Adresse muss mit einem vorhandenen Konto übereinstimmen.";
+"Please provide an email and a fingerprint. The email must match an existing account." = "Bitte geben Sie eine E-Mail-Adresse und einen Fingerprint an. Die E-Mail-Adresse muss mit einem vorhandenen Konto übereinstimmen.";
 
 /* Port label in account settings
    Port placeholder for manual account IMAP setup
@@ -758,9 +817,6 @@
 
 /* alert action 2 */
 "Reset Trust For All Identities" = "Vertrauen für alle Identitäten zurücksetzen";
-
-/* alert action 1 */
-"Reset Trust For This Identity" = "Vertrauen für diese Identität zurücksetzen";
 
 /* ComposeTableView: button to decide to save changes made on a drafted mail. */
 "Save changes" = "Änderungen speichern";
@@ -826,6 +882,9 @@
 /* Body for notifications show on lock screen for new mail(s) */
 "Slide for more" = "Wischen um mehr zu sehen";
 
+/* Small size action title */
+"Small (%1$@)" = "Klein (%1$@)";
+
 /* Manual account setup */
 "SMTP" = "SMTP";
 
@@ -841,8 +900,8 @@
 /* Title for address filter */
 "some address" = "irgendeine Adresse";
 
-/* Error description when failing to validate account fields */
-"Some fields seems not to be valid. Please check all input fields." = "Einige Felder sind nicht gültig. Bitte überprüfen Sie alle Eingabefelder.";
+/* Error description when failing to validate account fields (pEp4iOS) */
+"Some fields are not valid. Please check all input fields." = "Einige Felder sind nicht gültig. Bitte überprüfen Sie alle Eingabefelder.";
 
 /* Message of alert: a required field is empty */
 "Some mandatory fields are empty" = "Einige Pflichtfelder sind leer";
@@ -856,10 +915,10 @@
 /* keySyncWizard error view message */
 "Something went wrong with syncing the devices. Please try again." = "Etwas ist beim Synchronisieren der Geräte schief gelaufen. Bitte versuchen Sie es noch einmal.";
 
-/* AccountSettings viewModel no account error */
+/* AccountSettings viewModel: no account error */
 "Something went wrong, please try again later" = "Etwas ist schief gelaufen. Bitte versuchen Sie es später noch einmal";
 
-/* Error description when something went wrong
+/* Error description when something went wrong (pEp4iOS)
    Message of alert: something went wrong. */
 "Something went wrong." = "Etwas ist schiefgelaufen.";
 
@@ -885,6 +944,9 @@
 /* Compose field title */
 "Subject:" = "Betreff:";
 
+/* Tableview section header: Support */
+"Support" = "Unterstützung";
+
 /* Tableview section header: (p≡p) Sync */
 "Sync" = "Synchronisieren";
 
@@ -894,11 +956,29 @@
 /* Error when account found for set_own_key UI, but has no user name */
 "The account with the given email address has no user name." = "Das Konto mit der angegebenen E-Mail-Adresse hat keinen Benutzernamen.";
 
+/* Reduce attachment size title. The placeholder will be replaced by something like '5 KB'. */
+"The attachment of this message is %1$@. You can reduce message size by scaling the image to one of the sizes below." = "Der Anhang dieser Nachricht hat %1$@. Sie können die Größe reduzieren, indem Sie das Bild auf eine der unten angegebenen Größen skalieren lassen.";
+
+/* Reduce attachment size title. The placeholder will be replaced by something like '5 KB'. */
+"The attachments of this message are %1$@. You can reduce message size by scaling the images to one of the sizes below." = "Die Anhänge dieser Nachricht haben %1$@. Sie können die Größe reduzieren, indem Sie die Bilder auf eine der unten angegebenen Größen skalieren lassen.";
+
+/* Lack of permissions error message */
+"The calendar access was denied or restricted" = "Kein Zugang zum Kalendar";
+
 /* Error message shown to the user on problems with the client certificate */
 "The client certificate was rejected by the server" = "Das Client-Zertifikat wurde vom Server abgelehnt";
 
 /* KeySyncWizard complete message - more than two devices */
 "The device is now member of your device group. All your privacy is now synchronized." = "Das Gerät ist nun Teil Ihrer Gerätegruppe. Ihre gesamten Datenschutz-Einstellungen sind jetzt synchronisiert.";
+
+/* Event already exists error message */
+"The event already exists in the calendar" = "Das Ereignis existiert bereits in Ihrem Kalendar";
+
+/* Can't delete the event */
+"The event can't be deleted" = "Das Ereignis kann nicht entfernt werden";
+
+/* Missing event error message */
+"The event does not exist in the calendar" = "Das Ereignis existiert nicht in Ihrem Kalendar";
 
 /* Client certificate import: corrupted file error alert message */
 "The file could not be imported" = "Die Datei konnte nicht importiert werden";
@@ -908,6 +988,9 @@
 
 /* Message when asking user for confirmation about importing keys */
 "The fingerprint of the selected key is:\n%1$@\n%2$@\n\nImport and use this key?" = "Der Fingerabdruck des gewählten Schlüssels ist:\n%1$@\n%2$@\n\nSoll dieser Schlüssel importiert und verwendet werden?";
+
+/* Privacy Status Explanation */
+"The icon in the top bar reflects the Privacy Status of the message, which is the lowest common denominator of all communication partners of that message, for example:" = "Das Symbol am oberen Rand gibt den Datenschutz der Nachricht an, den kleinsten gemeinsamen Nenner aller Kommunikationspartner, z.B.:";
 
 /* Error message shown to the user in case a message could not be sent. */
 "The message could not be sent. Please try again later." = "Die Nachricht konnte nicht versandt werden. Bitte versuchen Sie es später noch einmal.";
@@ -958,13 +1041,13 @@
 "This message does not contain enough information to determine if it is secure." = "Über diese Nachricht liegen nicht genügend Informationen vor, um überprüfen zu können, ob sie sicher übertragen wurde.";
 
 /* Privacy status explanation */
-"This message has a communication partner that has previously been marked as mistrusted." = "Diese Nachricht enthält einen Kontakt, der zuvor als nicht vertrauenswürdig markiert wurde.";
+"This message has a communication partner that has previously been marked as mistrusted." = "Mindestens ein Kommunikationspartner dieser Nachricht ist als nicht vertrauenswürdig eingestuft.";
 
 /* Privacy status suggestion */
 "This message has no reliable encryption or no signature. Ask your communication partner to upgrade their encryption solution or install p≡p." = "Diese Nachricht besitzt keine zuverlässige Verschlüsselung oder keine digitale Signatur. Bitten Sie Ihren Kommunikationspartner, eine bessere Verschlüsselungslösung zu verwenden oder p≡p zu installieren.";
 
 /* Privacy status explanation */
-"This message has unreliable protection" = "Diese Nachricht wurde nicht zuverlässig geschützt.";
+"This message has unreliable protection" = "Diese Nachricht wurde nicht zuverlässig geschützt";
 
 /* Compose field title */
 "This message is from a mailing list." = "Diese E-Mail ist von einer Mailing-Liste.";
@@ -996,9 +1079,6 @@
 /* Compose field title */
 "To:" = "An:";
 
-/* Compose field title */
-"To: " = "An:";
-
 /* UI alert title for transport protocol */
 "Transport protocol" = "Transport-Protokoll";
 
@@ -1025,9 +1105,6 @@
 /* Privacy status title */
 "Under Attack" = "Manipuliert";
 
-/* Undo trust change verification button title */
-"Undo" = "Rückgängig machen";
-
 /* Action name to be suggested at the moment of revert */
 "Undo Trust Confirmation" = "Vertrauensbestätigung rückgängig machen";
 
@@ -1035,7 +1112,7 @@
 "Undo Trust Rejection" = "Vertrauensablehnung rückgängig machen";
 
 /* read button in slide-left menu */
-"Unflag" = "Markierung entfernen";
+"Unflag" = "Markierung";
 
 /* Displayed attachment filename if unknown */
 "unknown" = "unbekannt";
@@ -1089,6 +1166,9 @@
 /* AccountsView: Prefix for version. Shows up like this: \"Version: 2.0.1 build 234\" */
 "Version" = "Version";
 
+/* Can't add event to calendar error message */
+"Was not possible to add the event to the calendar" = "Es war nicht möglich, das Ereignis zum Kalendar hinzuzufügen";
+
 /* Error message shown to the user in case we can not connect to the IMAP server */
 "We could not connect to the IMAP server." = "Der IMAP-Server konnte nicht erreicht werden.";
 
@@ -1096,7 +1176,7 @@
 "We could not connect to the SMTP server: %1@" = "Wir konnten keine Verbindung mit dem SMTP-Server herstellen: %1@";
 
 /* Error message shown to the user in case we can not connect to the SMTP server */
-"We could not connect to the SMTP server." = "Der SMTP_Server konnte nicht erreicht werden.";
+"We could not connect to the SMTP server." = "Der SMTP-Server konnte nicht erreicht werden.";
 
 /* Client certificate import: wrong password alert message */
 "We could not import the certificate. The password is incorrect.\n\nTry again?" = "Wir konnten das Zertifikat nicht importieren. Das Passwort ist inkorrekt.\n\nNochmals versuchen?";
@@ -1162,4 +1242,7 @@
 
 /* iCloud instructions */
 "You need to create an app-specific password in your iCloud account." = "Sie müssen ein app-spezifisches Passwort in Ihrem iCloud-Konto erstellen.";
+
+/* You're offline error message */
+"You're offline" = "Keine Verbindung";
 

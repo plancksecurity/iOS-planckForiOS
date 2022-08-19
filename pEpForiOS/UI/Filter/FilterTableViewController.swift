@@ -34,6 +34,7 @@ class FilterTableViewController: UITableViewController {
         navigationController?.title = title
         tableView.hideSeperatorForEmptyCells()
         initViewModel()
+        UIUtils.hideBanner()
     }
 
     @objc func ok(sender: UIBarButtonItem) {

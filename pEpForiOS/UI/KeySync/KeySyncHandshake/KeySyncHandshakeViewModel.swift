@@ -11,7 +11,7 @@ import Foundation
 import MessageModel
 import pEpIOSToolbox
 
-protocol KeySyncHandshakeViewModelDelegate: class {
+protocol KeySyncHandshakeViewModelDelegate: AnyObject {
     func showPicker(withLanguages languages: [String], selectedLanguageIndex: Int?)
     func closePicker()
     func change(handshakeWordsTo: String)
@@ -56,8 +56,15 @@ final class KeySyncHandshakeViewModel {
                     Log.shared.errorAndCrash("There must be trustwords languages defined")
                 }
 
-                me._languages = langs
-                completion(langs)
+                let acceptedLanguages = AppSettings.shared.acceptedLanguagesCodes
+                if acceptedLanguages.isEmpty {
+                    me._languages = langs
+                    completion(langs)
+                } else {
+                    let filteredLangs = langs.filter({acceptedLanguages.contains($0.code)})
+                    me._languages = filteredLangs
+                    completion(filteredLangs)
+                }
             }
         }
     }

@@ -34,6 +34,7 @@ final class SettingsTableViewController: UITableViewController {
         navigationController?.setToolbarHidden(true, animated: false)
         showEmptyDetailViewIfApplicable(message: NSLocalizedString("Please choose a setting",
                                                                    comment: "No setting has been selected yet in the settings VC"))
+        UIUtils.hideBanner()
     }
 
     // MARK: - Extra Keys
@@ -108,6 +109,7 @@ extension SettingsTableViewController {
             Log.shared.errorAndCrash("Invalid state.")
             return SettingSwitchTableViewCell()
         }
+        cell.accessibilityIdentifier = row.title
         cell.switchDescription.text = row.title
         cell.switchDescription.font = UIFont.pepFont(style: .body, weight: .regular)
         cell.switchDescription.textColor = viewModel.titleColor(rowIdentifier: row.identifier)
@@ -126,6 +128,7 @@ extension SettingsTableViewController {
         let dequeuedCell = tableView.dequeueReusableCell(withIdentifier: cellId, for: indexPath)
         Appearance.configureSelectedBackgroundViewForPep(tableViewCell: dequeuedCell)
         let row : SettingsRowProtocol = viewModel.section(for: indexPath.section).rows[indexPath.row]
+        dequeuedCell.accessibilityIdentifier = row.title
         switch row.identifier {
         case .account:
             return prepareSwipeTableViewCell(dequeuedCell, for: row)
@@ -453,7 +456,8 @@ extension SettingsTableViewController {
 
     private func showExportDBsAlert() {
         let alertTitle = NSLocalizedString("Export p≡p databases to file system", comment: "Alert view title - warning")
-        let message = NSLocalizedString("Do you really want to export p≡p databases to Documents/pEp/db-export/ on your local file system?\nWarning: The databases contain confidential information like private keys", comment: "Alert view message - warning")
+        let message = NSLocalizedString("Do you really want to export p≡p databases to Documents/pEp/db-export/ on your local file system?\nWarning: The databases contain confidential information like private keys.",
+                                        comment: "Alert view message - warning")
         let cancelButtonText = NSLocalizedString("No", comment: "No button")
         let positiveButtonText = NSLocalizedString("Yes", comment: "Yes button")
         UIUtils.showTwoButtonAlert(withTitle: alertTitle,

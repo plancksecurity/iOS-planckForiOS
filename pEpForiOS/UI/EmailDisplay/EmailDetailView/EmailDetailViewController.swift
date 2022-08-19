@@ -196,7 +196,11 @@ class EmailDetailViewController: UIViewController {
 extension EmailDetailViewController {
 
     private func setup() {
-        viewModel?.delegate = self
+        guard let vm = viewModel else {
+            Log.shared.errorAndCrash("VM not found")
+            return
+        }
+        vm.delegate = self
         setupCollectionView()
         doOnce = { [weak self] in
             guard let me = self else {
@@ -429,7 +433,11 @@ extension EmailDetailViewController: UICollectionViewDelegate {
 extension EmailDetailViewController: UICollectionViewDataSource {
     func collectionView(_ collectionView: UICollectionView,
                         numberOfItemsInSection section: Int) -> Int {
-        return viewModel?.rowCount ?? 0
+        guard let vm = viewModel else {
+            Log.shared.errorAndCrash("VM not found")
+            return 0
+        }
+        return vm.rowCount
     }
 
     func collectionView(_ collectionView: UICollectionView,
@@ -538,11 +546,19 @@ extension EmailDetailViewController: SegueHandlerType {
                     Log.shared.errorAndCrash("No DVC?")
                     break
             }
-            destination.viewModel = viewModel?.getMoveToFolderViewModel(forMessageRepresentedByItemAt: indexPath)
+            guard let vm = viewModel else {
+                Log.shared.errorAndCrash("VM not found")
+                return
+            }
+            destination.viewModel = vm.getMoveToFolderViewModel(forMessageRepresentedByItemAt: indexPath)
         case .segueTrustManagement:
+            guard let vm = viewModel else {
+                Log.shared.errorAndCrash("VM not found")
+                return
+            }
             guard let nv = segue.destination as? UINavigationController,
                 let vc = nv.topViewController as? TrustManagementViewController ,
-                let trustManagementViewModel = viewModel?.trustManagementViewModel else {
+                let trustManagementViewModel = vm.trustManagementViewModel else {
                     Log.shared.errorAndCrash("No DVC, No trustManagementViewModel?")
                     break
             }
@@ -727,7 +743,8 @@ extension EmailDetailViewController: QLPreviewControllerDataSource {
     func previewController(_ controller: QLPreviewController,
                            previewItemAt index: Int) -> QLPreviewItem {
         guard let url = pdfPreviewUrl else {
-            fatalError("Could not load URL")
+            Log.shared.errorAndCrash(message: "Could not load URL")
+            return URL(fileURLWithPath: "") as QLPreviewItem
         }
         return url as QLPreviewItem
     }
@@ -864,7 +881,12 @@ extension EmailDetailViewController {
             folderButtonBarButtonItem.accessibilityIdentifier = AccessibilityIdentifier.moveToFolderButton
 
             //Flag
-            let flagImage = viewModel?.flagButtonIcon(forMessageAt: indexPathOfCurrentlyVisibleCell)
+            guard let vm = viewModel else {
+                Log.shared.errorAndCrash("VM not found")
+                return
+            }
+
+            let flagImage = vm.flagButtonIcon(forMessageAt: indexPathOfCurrentlyVisibleCell)
             let tintedimage = flagImage?.withRenderingMode(.alwaysTemplate)
             let flagFrame = CGRect(x: 0, y: 0, width: 14, height: 24)
             let flagButton = UIButton(frame: flagFrame)
@@ -875,7 +897,11 @@ extension EmailDetailViewController {
             flagBarButtonItem.accessibilityIdentifier = AccessibilityIdentifier.flagButton
 
             //Delete
-            let deleteImage = viewModel?.destructiveButtonIcon(forMessageAt: indexPathOfCurrentlyVisibleCell)
+            guard let vm = viewModel else {
+                Log.shared.errorAndCrash("VM not found")
+                return
+            }
+            let deleteImage = vm.destructiveButtonIcon(forMessageAt: indexPathOfCurrentlyVisibleCell)
             let deleteButtonBarButtonItem = UIBarButtonItem(image: deleteImage,
                                                             style: .plain,
                                                             target: self,

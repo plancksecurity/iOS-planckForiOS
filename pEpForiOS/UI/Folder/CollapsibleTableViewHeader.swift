@@ -8,6 +8,7 @@
 
 import Foundation
 import UIKit
+import pEpIOSToolbox
 
 class SectionButton : UIButton {
     var section: Int = -1 // Invalid default value
@@ -84,7 +85,8 @@ class CollapsibleTableViewHeader: UITableViewHeaderFooterView {
     }
 
     required init?(coder aDecoder: NSCoder) {
-        fatalError("init(coder:) has not been implemented")
+        super.init(coder: aDecoder)
+        Log.shared.errorAndCrash(message: "init(coder:) has not been implemented")
     }
 
     func configure(viewModel: FolderSectionViewModel, section: Int) {
