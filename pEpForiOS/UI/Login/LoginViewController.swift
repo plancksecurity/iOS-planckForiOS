@@ -449,20 +449,30 @@ extension LoginViewController {
         loginButton.convertToLoginButton(
             placeholder: NSLocalizedString("Log In",
                                            comment: "Log in button in Login View"))
+        loginButton.accessibilityIdentifier = AccessibilityIdentifier.loginButton
+
         loginButtonIPadLandscape.convertToLoginButton(
             placeholder: NSLocalizedString("Log In",
                                            comment: "Log in button in Login View"))
+        loginButtonIPadLandscape.accessibilityIdentifier = AccessibilityIdentifier.loginButton
+
         manualConfigButton.convertToLoginButton(
             placeholder: NSLocalizedString("Manual setup",
                                            comment: "Manual Setup button in Login View"))
+        manualConfigButton.accessibilityIdentifier = AccessibilityIdentifier.manualConfigButton
+
         dismissButtonLeft.convertToLoginButton(
             placeholder: NSLocalizedString("Cancel",
                                            comment: "Cancel in button in Login View"))
+        dismissButtonLeft.accessibilityIdentifier = AccessibilityIdentifier.cancelButton
+
         dismissButton.convertToLoginButton(
             placeholder: NSLocalizedString("Cancel",
                                            comment: "Cancel in button in Login View"))
+        dismissButton.accessibilityIdentifier = AccessibilityIdentifier.cancelButton
 
         pEpSyncSwitch.onTintColor = UIColor(hexString: "#58FF75")
+        pEpSyncSwitch.accessibilityIdentifier = AccessibilityIdentifier.pepSyncSwitch
 
         // hide extended login fields
         let tap: UITapGestureRecognizer = UITapGestureRecognizer(
@@ -495,14 +505,19 @@ extension LoginViewController {
         user.textColorWithText = .pEpGreen
         user.placeholder = NSLocalizedString("Display Name",
                                              comment: "Display Name TextField Placeholder in Login Screen")
+        user.accessibilityIdentifier = AccessibilityIdentifier.displayNameTextField
 
         password.textColorWithText = .pEpGreen
         password.placeholder = NSLocalizedString("Password",
                                                  comment: "Password TextField Placeholder in Login Screen")
+        password.accessibilityIdentifier = AccessibilityIdentifier.passwordTextField
+
 
         emailAddress.textColorWithText = .pEpGreen
         emailAddress.placeholder = NSLocalizedString("Email Address",
                                                      comment: "Email TextField Placeholder in Login Screen")
+        emailAddress.accessibilityIdentifier = AccessibilityIdentifier.emailAddressTextField
+
     }
 
     @objc private func hideSpecificDeviceButton() {

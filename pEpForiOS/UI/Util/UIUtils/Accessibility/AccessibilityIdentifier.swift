@@ -11,8 +11,19 @@ import Foundation
 /// Accessibility identifiers shared around the code base.
 class AccessibilityIdentifier {
 
-    // MARK: - Buttons
+    static let pepSyncSwitch = "pEp Sync Switch"
+    static let displayNameTextField = "Display Name TextField"
+    static let passwordTextField = "Password TextField"
+    static let emailAddressTextField = "Email Address TextField"
 
+    // MARK: - Buttons
+    static let deselectAllButton = "Deselect All"
+    static let selectAllButton = "Select All"
+    static let tutorialSkipButton = "Tutorial Skip"
+    static let tutorialfinishButton = "Tutorial Finish"
+    static let downButton = "Down button"
+    static let upButton = "Up button"
+    static let backButton = "Back button"
     static let replyButton = "Reply Button"
     static let nextButton = "Next Button"
     static let previousButton = "Previous Button"
@@ -21,6 +32,9 @@ class AccessibilityIdentifier {
     static let moveToFolderButton = "Move to Folder Button"
     static let pEpButton = "pEp Button"
     static let sendButton = "Send Button"
+    static let addAccountButton = "Add account button"
+    static let loginButton = "Login button"
+    static let manualConfigButton = "Manual Config button"
     static let cancelButton = "Cancel Button"
     static let composeButton = "Compose Button"
     static let filterButton = "Filter Button"
