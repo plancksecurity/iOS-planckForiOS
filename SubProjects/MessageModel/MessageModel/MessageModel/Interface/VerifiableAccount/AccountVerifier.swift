@@ -27,10 +27,6 @@ import PantomimeFramework
 /// * Saves the account after successful verification.
 public class AccountVerifier {
 
-    // MARK: - Public API
-
-    public typealias AccountVerifierCallback = (_ error: Error?) -> ()
-
     // MARK: - ServerData
 
     public struct ServerData {
@@ -59,16 +55,24 @@ public class AccountVerifier {
     public init() {
     }
 
-    /// Calls `VerifiableAccount` and reports the result to `verifiedCallback`.
-    /// - Parameters:
-    ///   - userName: The user name.
-    ///   - address: The email address to set up.
-    ///   - imapSever: The `ServerData` for the IMAP server.
-    ///   - smtpSever: The `ServerData` for the SMTP server.
-    ///   - usePEPFolder: Whether a special, designated folder should be used for key sync messages.
-    ///   - verifiedCallback: This closure will be called after the account has been verified successfully,
-    /// or in case of error. If there was an error, it will be indicated as the `Error` parameter.
-    /// In case of success, the `Error` parameter will be nil.
+    // MARK: - Private
+
+    private var verifiedCallback: AccountVerifierCallback?
+    private var verifiableAccount: VerifiableAccountProtocol?
+    private var shouldUsePEPFolder: Bool?
+
+    /// Set retained member vars to nil, in order to break retain cycles.
+    ///
+    /// Use after a succesful verification, or on error.
+    private func resetToNil() {
+        verifiedCallback = nil
+        verifiableAccount = nil
+    }
+}
+
+// MARK: - AccountVerifierProtocol
+
+extension AccountVerifier: AccountVerifierProtocol {
     public func verify(userName: String,
                        address: String,
                        password: String,
@@ -107,25 +111,6 @@ public class AccountVerifier {
             resetToNil()
         }
     }
-
-    // MARK: - Private
-
-    private var verifiedCallback: AccountVerifierCallback?
-    private var verifiableAccount: VerifiableAccountProtocol?
-    private var shouldUsePEPFolder: Bool?
-
-    /// Set retained member vars to nil, in order to break retain cycles.
-    ///
-    /// Use after a succesful verification, or on error.
-    private func resetToNil() {
-        verifiedCallback = nil
-        verifiableAccount = nil
-    }
-}
-
-// MARK: - AccountVerifierProtocol
-
-extension AccountVerifier: AccountVerifierProtocol {
 }
 
 // MARK: - VerifiableAccountDelegate

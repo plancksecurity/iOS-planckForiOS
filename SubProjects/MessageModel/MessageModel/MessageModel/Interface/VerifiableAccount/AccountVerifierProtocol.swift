@@ -8,6 +8,12 @@
 
 import Foundation
 
+#if EXT_SHARE
+import pEpIOSToolboxForExtensions
+#else
+import pEpIOSToolbox
+#endif
+
 /// Wrapper around `VerifiableAccount` with some additions and changes,
 /// suitable for use in an MDM context.
 ///
@@ -17,5 +23,13 @@ import Foundation
 /// * Uses a callback instead of a delegate.
 /// * Saves the account after successful verification.
 public protocol AccountVerifierProtocol {
-    
+    typealias AccountVerifierCallback = (_ error: Error?) -> ()
+
+    func verify(userName: String,
+                address: String,
+                password: String,
+                imapServer: AccountVerifier.ServerData,
+                smtpServer: AccountVerifier.ServerData,
+                usePEPFolder: Bool,
+                verifiedCallback: @escaping AccountVerifierCallback)
 }
