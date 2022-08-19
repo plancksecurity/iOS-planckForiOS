@@ -186,6 +186,10 @@ extension SettingsViewModel {
 
     /// This method generates all the sections for the settings view.
     private func generateSections() {
+        //MB:-
+        // if AppSettings.shared.hasBeenMDMDeployed {
+        // }
+
         SettingsViewModel.SectionType.allCases.forEach { (type) in
             items.append(sectionForType(sectionType: type))
         }
@@ -202,6 +206,9 @@ extension SettingsViewModel {
     /// - Parameter type: The type of the section to generate the rows.
     /// - Returns: An array with the settings rows. Every setting row must conform the SettingsRowProtocol.
     private func generateRows(type: SectionType) -> [SettingsRowProtocol] {
+        //MB:-
+        // if AppSettings.shared.hasBeenMDMDeployed {
+        // }
         var rows = [SettingsRowProtocol]()
         switch type {
         case .accounts:
