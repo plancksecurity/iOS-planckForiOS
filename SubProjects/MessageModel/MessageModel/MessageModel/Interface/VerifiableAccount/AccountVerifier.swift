@@ -123,6 +123,11 @@ public class AccountVerifier {
     }
 }
 
+// MARK: - AccountVerifierProtocol
+
+extension AccountVerifier: AccountVerifierProtocol {
+}
+
 // MARK: - VerifiableAccountDelegate
 
 extension AccountVerifier: VerifiableAccountDelegate {

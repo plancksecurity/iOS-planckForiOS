@@ -543,6 +543,7 @@
 		43C123EA223A7FCF00F6A9B2 /* QualifyServerIsLocalOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43C123DC223A7FCF00F6A9B2 /* QualifyServerIsLocalOperation.swift */; };
 		43C123EC223A7FCF00F6A9B2 /* AccountVerificationResult.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43C123DF223A7FCF00F6A9B2 /* AccountVerificationResult.swift */; };
 		43C12408223A9DEA00F6A9B2 /* CdAccount+pEp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43C12407223A9DEA00F6A9B2 /* CdAccount+pEp.swift */; };
+		43CA8AFE28AF7DCA00EC75BC /* AccountVerifierProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43CA8AFD28AF7DCA00EC75BC /* AccountVerifierProtocol.swift */; };
 		43CB60911DA4EB4E0015281E /* IdentityTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43CB60901DA4EB4E0015281E /* IdentityTest.swift */; };
 		43CB60931DA4EB4E0015281E /* MessageModel.h in Headers */ = {isa = PBXBuildFile; fileRef = 43CB60851DA4EB4E0015281E /* MessageModel.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		43CB60A51DA4EBB60015281E /* Folder.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43CB609E1DA4EBB60015281E /* Folder.swift */; };
@@ -1060,6 +1061,7 @@
 		43C123DC223A7FCF00F6A9B2 /* QualifyServerIsLocalOperation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = QualifyServerIsLocalOperation.swift; sourceTree = "<group>"; };
 		43C123DF223A7FCF00F6A9B2 /* AccountVerificationResult.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AccountVerificationResult.swift; sourceTree = "<group>"; };
 		43C12407223A9DEA00F6A9B2 /* CdAccount+pEp.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "CdAccount+pEp.swift"; sourceTree = "<group>"; };
+		43CA8AFD28AF7DCA00EC75BC /* AccountVerifierProtocol.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AccountVerifierProtocol.swift; sourceTree = "<group>"; };
 		43CB60821DA4EB4E0015281E /* MessageModel.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = MessageModel.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		43CB60851DA4EB4E0015281E /* MessageModel.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = MessageModel.h; sourceTree = "<group>"; };
 		43CB60861DA4EB4E0015281E /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
@@ -2258,6 +2260,7 @@
 				439B16A122802A8700201DE5 /* VerifiableAccountProtocol.swift */,
 				439B16A522802B6B00201DE5 /* VerifiableAccount.swift */,
 				43E5F7C528571D2000115686 /* AccountVerifier.swift */,
+				43CA8AFD28AF7DCA00EC75BC /* AccountVerifierProtocol.swift */,
 			);
 			path = VerifiableAccount;
 			sourceTree = "<group>";
@@ -3389,6 +3392,7 @@
 				B7F6F479234CD662003DF84A /* IdentityQueryResultsProtocol.swift in Sources */,
 				43753CDE222D2DA7002EE98B /* ContentDispositionType+Conversion.swift in Sources */,
 				15795B9F22C0F48F00010938 /* CdFolder+ImapFolder.swift in Sources */,
+				43CA8AFE28AF7DCA00EC75BC /* AccountVerifierProtocol.swift in Sources */,
 				15175ECE221DC39300C91DB8 /* QueryResultsControllerDelegate.swift in Sources */,
 				152701892294537900197378 /* CdMessage+FakeMessage.swift in Sources */,
 				158A6DFE2305BBFE006A9ECE /* CdExtraKeys+Convenience.swift in Sources */,
