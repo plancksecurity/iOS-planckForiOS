@@ -58,7 +58,6 @@ extension UIViewController {
         let titleView = navigationItemTitleView(pEpRating: pEpRating, pEpProtection: pEpProtection)
         titleView?.isUserInteractionEnabled = true
         navigationItem.titleView = titleView
-        navigationItem.titleView?.accessibilityIdentifier = "View title"
         adjustTitleViewPositionIfNeeded()
         return titleView
     }
