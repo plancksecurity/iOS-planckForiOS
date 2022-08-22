@@ -472,7 +472,7 @@ extension LoginViewController {
         dismissButton.accessibilityIdentifier = AccessibilityIdentifier.cancelButton
 
         pEpSyncSwitch.onTintColor = UIColor(hexString: "#58FF75")
-        pEpSyncSwitch.accessibilityIdentifier = AccessibilityIdentifier.pepSyncSwitch
+        pEpSyncSwitch.accessibilityIdentifier = AccessibilityIdentifier.pEpSyncSwitch
 
         // hide extended login fields
         let tap: UITapGestureRecognizer = UITapGestureRecognizer(
