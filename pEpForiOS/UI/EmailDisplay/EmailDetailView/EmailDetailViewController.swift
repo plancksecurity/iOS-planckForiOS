@@ -858,7 +858,6 @@ extension EmailDetailViewController {
 
             let downBarButtonItem = UIBarButtonItem(customView: downButton)
             downBarButtonItem.accessibilityIdentifier = AccessibilityIdentifier.downButton
-
             let upBarButtonItem = UIBarButtonItem(customView: upButton)
             downBarButtonItem.accessibilityIdentifier = AccessibilityIdentifier.upButton
             

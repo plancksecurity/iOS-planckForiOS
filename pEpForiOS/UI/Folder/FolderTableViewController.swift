@@ -109,7 +109,6 @@ class FolderTableViewController: UITableViewController {
         addAccountButton.titleLabel?.setPEPFont(style: .body, weight: .regular)
         addAccountButton.accessibilityTraits = .button
         addAccountButton.accessibilityIdentifier = AccessibilityIdentifier.addAccountButton
-
         if AppSettings.shared.hasBeenMDMDeployed {
             addAccountButton.isHidden = true
         }
