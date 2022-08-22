@@ -39,6 +39,8 @@ extension UIBarButtonItem {
         }
         let compose = UIBarButtonItem(customView: viewContainerForComposeButton)
         compose.accessibilityIdentifier = AccessibilityIdentifier.composeButton
+        compose.accessibilityTraits = .button
+        compose.isAccessibilityElement = true
         compose.tintColor = .white
         return compose
     }

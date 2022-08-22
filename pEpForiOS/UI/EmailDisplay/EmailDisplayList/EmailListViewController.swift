@@ -110,6 +110,9 @@ final class EmailListViewController: UIViewController {
         navigationController?.setToolbarHidden(false, animated: true)
         navigationController?.navigationItem.leftBarButtonItem?.accessibilityIdentifier = AccessibilityIdentifier.mailboxesButton
         navigationController?.navigationItem.rightBarButtonItem?.accessibilityIdentifier = AccessibilityIdentifier.editButton
+        navigationController?.navigationBar.backItem?.backBarButtonItem?.accessibilityIdentifier = AccessibilityIdentifier.backButton
+        navigationController?.navigationBar.items?.first?.isAccessibilityElement = true
+        navigationController?.navigationBar.items?.first?.accessibilityLabel = AccessibilityIdentifier.backButton
 
         if MiscUtil.isUnitTest() {
             return
@@ -250,12 +253,14 @@ final class EmailListViewController: UIViewController {
                                           style: .plain,
                                           target: self,
                                           action: #selector(editButtonPressed))
+        editButton?.accessibilityIdentifier = AccessibilityIdentifier.editButton
 
         dismissButton = UIBarButtonItem(title: NSLocalizedString("Cancel",
                                                                       comment: "Cancel - right bar button item in Email List to dismiss a view for Drafts Preview mode"),
                                              style: .plain,
                                              target: self,
                                              action: #selector(dismissButtonPressed(_:)))
+        dismissButton?.accessibilityIdentifier = AccessibilityIdentifier.cancelButton
 
         showStandardToolbar()
     }
@@ -372,7 +377,7 @@ final class EmailListViewController: UIViewController {
                                      style: .plain,
                                      target: self,
                                      action: #selector(cancelToolbar))
-        cancel.accessibilityIdentifier = "Cancel button"
+        cancel.accessibilityIdentifier = AccessibilityIdentifier.cancelButton
         navigationItem.rightBarButtonItem = cancel
     }
 
@@ -1484,7 +1489,7 @@ extension EmailListViewController {
         let selectAllTitle = NSLocalizedString("Select all", comment: "Select all emails")
         let selectAllCellsSelector = #selector(selectAllCells)
         let button = UIBarButtonItem(title: selectAllTitle, style: .plain, target: self, action: selectAllCellsSelector)
-        button.accessibilityIdentifier = "Select All button"
+        button.accessibilityIdentifier = AccessibilityIdentifier.selectAllButton
         return button
     }
 
@@ -1492,7 +1497,7 @@ extension EmailListViewController {
         let deselectAllTitle = NSLocalizedString("Deselect all", comment: "Deselect all emails")
         let deselectAllCellsSelector = #selector(deselectAllCells)
         let button = UIBarButtonItem(title: deselectAllTitle, style: .plain, target: self, action: deselectAllCellsSelector)
-        button.accessibilityIdentifier = "Deselect All button"
+        button.accessibilityIdentifier = AccessibilityIdentifier.deselectAllButton
         return button
     }
 
