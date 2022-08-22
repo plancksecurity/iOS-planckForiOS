@@ -26,16 +26,17 @@ class SettingsViewModelTest: AccountDrivenTestBase {
     func testNumberOfSections() {
         let delegate = SettingsViewModeldelegate()
         setupViewModel(delegate: delegate)
-        // MB:-
-        // if AppSettings.shared.hasBeenMDMDeployed {
-        // }
         XCTAssertEqual(settingsVM.count, sections)
     }
 
+    func testNumberOfSectionsOfMDM() {
+        let delegate = SettingsViewModeldelegate()
+        let mock = MDMMockAppSettings()
+        setupViewModel(delegate: delegate, appSettings: mock)
+        XCTAssertEqual(settingsVM.count, 1)
+    }
+
     func testNumberOfRowsForSectionInFirstPositionWith1Account() {
-        // MB:-
-        // if AppSettings.shared.hasBeenMDMDeployed {
-        // }
         let delegate = SettingsViewModeldelegate()
         setupViewModel(delegate: delegate)
         let numberOfStaticCellInAccountsSection = 1
@@ -50,9 +51,6 @@ class SettingsViewModelTest: AccountDrivenTestBase {
     }
 
     func testNumberOfRowsForSectionInFirstPositionWithMoreThan1Account() {
-        // MB:-
-        // if AppSettings.shared.hasBeenMDMDeployed {
-        // }
         givenThereAreTwoAccounts()
         let delegate = SettingsViewModeldelegate()
         setupViewModel(delegate: delegate)
