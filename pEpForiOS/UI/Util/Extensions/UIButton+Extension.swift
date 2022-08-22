@@ -47,6 +47,7 @@ extension UIButton {
         buttonLeft.setTitle(text, for: .normal)
         buttonLeft.tintColor = UIColor.pEpGreen
         buttonLeft.setTitleColor(UIColor.pEpGreen, for: .normal)
+        buttonLeft.accessibilityIdentifier = AccessibilityIdentifier.backButton
         return buttonLeft
     }
 

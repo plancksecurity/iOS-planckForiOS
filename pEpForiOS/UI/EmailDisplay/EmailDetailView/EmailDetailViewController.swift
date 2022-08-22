@@ -857,7 +857,9 @@ extension EmailDetailViewController {
             upButton.isEnabled = thereIsAPreviousMessageToShow
 
             let downBarButtonItem = UIBarButtonItem(customView: downButton)
+            downBarButtonItem.accessibilityIdentifier = AccessibilityIdentifier.downButton
             let upBarButtonItem = UIBarButtonItem(customView: upButton)
+            downBarButtonItem.accessibilityIdentifier = AccessibilityIdentifier.upButton
             
             downBarButtonItem.isEnabled = thereIsANextMessageToShow
             upBarButtonItem.isEnabled = thereIsAPreviousMessageToShow

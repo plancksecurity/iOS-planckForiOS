@@ -244,6 +244,7 @@ extension TrustManagementViewController {
         let action = #selector(backButtonPressed)
         button.addTarget(self, action:action, for: .touchUpInside)
         let leftItem = UIBarButtonItem(customView: button)
+        leftItem.accessibilityIdentifier = AccessibilityIdentifier.backButton
         navigationItem.leftBarButtonItem = leftItem
         navigationController?.navigationBar.isTranslucent = false
     }
