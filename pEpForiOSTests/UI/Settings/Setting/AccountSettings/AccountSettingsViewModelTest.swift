@@ -34,34 +34,22 @@ class AccountSettingsViewModelTest: AccountDrivenTestBase {
     }
 
     func testNumberOfSections() throws {
-        // MB:-
-        // if AppSettings.shared.hasBeenMDMDeployed {
-        // }
         XCTAssertEqual(viewModel.sections.count, dummySections.count)
     }
 
     func testRowsInFirstSections() {
-        // MB:-
-        // if AppSettings.shared.hasBeenMDMDeployed {
-        // }
         let expectedFirstSectionTypes : [AccountSettingsViewModel.RowType] = [.name, .email, .signature, .includeInUnified, .pepSync, .reset]
         let actualFirstSectionTypes = viewModel.sections[0].rows.map { $0.type }
         XCTAssertEqual(actualFirstSectionTypes, expectedFirstSectionTypes)
     }
 
     func testRowsInSecondSections() {
-        // MB:-
-        // if AppSettings.shared.hasBeenMDMDeployed {
-        // }
         let expectedSecondSectionTypes : [AccountSettingsViewModel.RowType] = [.server, .port, .tranportSecurity, .username, .password]
         let actualSecondSectionTypes = viewModel.sections[1].rows.map { $0.type }
         XCTAssertEqual(actualSecondSectionTypes, expectedSecondSectionTypes)
     }
 
     func testRowsInThirdSections() {
-        // MB:-
-        // if AppSettings.shared.hasBeenMDMDeployed {
-        // }
         let expectedThridSectionTypes : [AccountSettingsViewModel.RowType] = [.server, .port, .tranportSecurity, .username, .password]
         let actualThridSectionTypes = viewModel.sections[2].rows.map { $0.type }
         XCTAssertEqual(actualThridSectionTypes, expectedThridSectionTypes)
