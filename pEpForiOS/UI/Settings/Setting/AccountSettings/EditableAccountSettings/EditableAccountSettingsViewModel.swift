@@ -47,9 +47,7 @@ class EditableAccountSettingsViewModel {
     /// The sections of Editable Account Settings view.
     /// Delegate to inform the account settings had changed
     public weak var changeDelegate: SettingChangeDelegate?
-
     public private(set) var sections = [AccountSettingsViewModel.Section]()
-
     public private(set) var hiddenSections = [AccountSettingsViewModel.Section]()
 
     /// Indicates the number ot transport security options.
