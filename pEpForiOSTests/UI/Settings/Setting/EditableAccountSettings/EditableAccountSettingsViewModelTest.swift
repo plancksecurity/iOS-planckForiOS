@@ -40,6 +40,21 @@ class EditableAccountSettingsViewModelTest: AccountDrivenTestBase {
         }
     }
 
+
+    func testThereAreOneSectionInMDM() {
+        let mockAppSettings = MDMMockAppSettings()
+        let mockViewController = MockEditableViewController()
+
+        let viewModel = EditableAccountSettingsViewModel(account: account,
+                                                         delegate: mockViewController,
+                                                         appSettings: mockAppSettings)
+
+        let types1 = viewModel.sections.map({$0.type})
+        let types2 = [AccountSettingsViewModel.SectionType.account]
+        XCTAssertEqual(types1, types2)
+    }
+
+
     func testRowsInAccountSecction() {
         evaluateRowsInAccountSection(isOauth: false)
     }
