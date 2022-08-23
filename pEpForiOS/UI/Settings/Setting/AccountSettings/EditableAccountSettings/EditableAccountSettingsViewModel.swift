@@ -49,6 +49,9 @@ class EditableAccountSettingsViewModel {
     public weak var changeDelegate: SettingChangeDelegate?
 
     public private(set) var sections = [AccountSettingsViewModel.Section]()
+
+    public private(set) var hiddenSections = [AccountSettingsViewModel.Section]()
+
     /// Indicates the number ot transport security options.
     public var numberOfTransportSecurityOptions : Int {
         return transportSecurityViewModel.numberOfOptions
@@ -57,6 +60,7 @@ class EditableAccountSettingsViewModel {
     private var passwordChanged: Bool = false
     private var originalImapPassword: String?
     private var originalSmtpPassword: String?
+    private var appSettings: AppSettingsProtocol
 
     /// Retrieves the name of an transport security option.
     /// - Parameter index: The index of the option.
@@ -96,8 +100,12 @@ class EditableAccountSettingsViewModel {
     /// - Parameters:
     ///   - account: The account to configure the editable account settings view model.
     ///   - delegate: The delegate to communicate to the View Controller.
-    public init(account: Account, delegate: EditableAccountSettingsDelegate? = nil) {
+    ///   - appSettings: The default app settings.
+    public init(account: Account,
+                delegate: EditableAccountSettingsDelegate? = nil,
+                appSettings: AppSettingsProtocol = AppSettings.shared) {
          accountSettingsHelper = AccountSettingsHelper(account: account)
+        self.appSettings = appSettings
         self.account = account
         self.delegate = delegate
         isOAuth2 = account.imapServer?.authMethod == AuthMethod.saslXoauth2.rawValue
@@ -146,6 +154,9 @@ class EditableAccountSettingsViewModel {
                                                                text: value,
                                                                cellIdentifier: row.cellIdentifier)
         sections[indexPath.section].rows[indexPath.row] = rowToReplace
+        if let appSetting = appSettings as? MDMAppSettingsProtocol, appSetting.hasBeenMDMDeployed {
+            hiddenSections[indexPath.section].rows[indexPath.row] = rowToReplace
+        }
         if row.type == .password {
             passwordChanged = true
         }
@@ -225,9 +236,22 @@ extension EditableAccountSettingsViewModel {
     }
 
     private func generateSections() {
-        AccountSettingsViewModel.SectionType.allCases.forEach { (type) in
-            sections.append(generateSection(type: type))
+        if let appSetting = appSettings as? MDMAppSettingsProtocol, appSetting.hasBeenMDMDeployed {
+            generateSectionsForMDM()
+        } else {
+            AccountSettingsViewModel.SectionType.allCases.forEach { (type) in
+                sections.append(generateSection(type: type))
+            }
         }
+    }
+
+    private func generateSectionsForMDM() {
+        sections.append(generateSection(type: .account))
+
+        AccountSettingsViewModel.SectionType.allCases.forEach { (type) in
+            hiddenSections.append(generateSection(type: type))
+        }
+
     }
 
     // MARK: -  Rows
@@ -426,6 +450,20 @@ extension EditableAccountSettingsViewModel {
             Log.shared.errorAndCrash("Section not found")
             return nil
         }
+
+        // If MDM has been deployed, use the hidden sections.
+        // Hidden sections are a copy of regular sections, but they are not displayed.
+        if let appSetting = appSettings as? MDMAppSettingsProtocol,
+            appSetting.hasBeenMDMDeployed, sectionIndex != 0 {
+
+            guard let displayRow = hiddenSections[sectionIndex].rows.filter({$0.type == rowType}).first as? AccountSettingsViewModel.DisplayRow,
+                  !displayRow.text.isEmpty else {
+                return nil
+            }
+
+            return displayRow.text
+        }
+
         guard let displayRow = sections[sectionIndex].rows.filter({$0.type == rowType}).first as? AccountSettingsViewModel.DisplayRow,
               !displayRow.text.isEmpty else {
             return nil
