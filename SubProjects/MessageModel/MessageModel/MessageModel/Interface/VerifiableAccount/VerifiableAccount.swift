@@ -29,7 +29,7 @@ extension VerifiableAccount {
             return self == .gmail
         }
 
-        public var identifier: String {
+        public var accessibilityIdentifier: String {
             switch self {
             case .gmail: return "gmail"
             case .other: return "other"

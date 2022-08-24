@@ -114,7 +114,7 @@ extension AccountTypeSelectorViewController: UICollectionViewDataSource {
                                                                 for: indexPath) as? AccountTypeSelectorImageCollectionViewCell else {
                                                                     return UICollectionViewCell()
             }
-            cell.imageToFill.accessibilityIdentifier = cellProvider.identifier
+            cell.imageToFill.accessibilityIdentifier = cellProvider.accessibilityIdentifier
             cell.imageToFill.isAccessibilityElement = true
             cell.configure(withFileName: viewModel.fileNameOrText(provider: cellProvider))
             return cell
