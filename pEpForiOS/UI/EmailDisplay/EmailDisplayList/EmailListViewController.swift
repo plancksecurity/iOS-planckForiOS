@@ -81,6 +81,7 @@ final class EmailListViewController: UIViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
+        title?.isAccessibilityElement = true
         subscribeForKeyboardNotifications()
         edgesForExtendedLayout = .all
         setSeparator()
@@ -110,10 +111,7 @@ final class EmailListViewController: UIViewController {
         navigationController?.setToolbarHidden(false, animated: true)
         navigationController?.navigationItem.leftBarButtonItem?.accessibilityIdentifier = AccessibilityIdentifier.mailboxesButton
         navigationController?.navigationItem.rightBarButtonItem?.accessibilityIdentifier = AccessibilityIdentifier.editButton
-        navigationController?.navigationBar.backItem?.backBarButtonItem?.accessibilityIdentifier = AccessibilityIdentifier.backButton
-        navigationController?.navigationBar.items?.first?.isAccessibilityElement = true
-        navigationController?.navigationBar.items?.first?.accessibilityLabel = AccessibilityIdentifier.backButton
-
+        setBackButtonAccessibilityLabel()
         if MiscUtil.isUnitTest() {
             return
         }
@@ -270,6 +268,7 @@ final class EmailListViewController: UIViewController {
     private func setupSearchBar() {
         searchController.isActive = true
         searchController.searchBar.accessibilityIdentifier = AccessibilityIdentifier.searchBar
+        searchController.searchBar.isAccessibilityElement = true
         searchController.searchResultsUpdater = self
         searchController.obscuresBackgroundDuringPresentation = false
         searchController.delegate = self
