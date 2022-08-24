@@ -28,6 +28,17 @@ extension VerifiableAccount {
         public var isOauth: Bool {
             return [.gmail, .o365].contains(self)
         }
+
+        public var accessibilityIdentifier: String {
+            switch self {
+            case .gmail: return "gmail"
+            case .other: return "other"
+            case .clientCertificate: return "clientCertificate"
+            case .o365: return "o365"
+            case .icloud: return "icloud"
+            case .outlook: return "outlook"
+            }
+        }
     }
 }
 
