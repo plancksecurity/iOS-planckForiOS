@@ -25,6 +25,16 @@ extension UIViewController {
         return traitCollection.preferredContentSizeCategory.isAccessibilityCategory
     }
 
+    func setBackButtonAccessibilityLabel() {
+        navigationController?.navigationBar.items?.forEach({ item in
+            item.accessibilityLabel = AccessibilityIdentifier.backButton
+        })
+        navigationController?.navigationBar.backItem?.backBarButtonItem?.accessibilityIdentifier = AccessibilityIdentifier.backButton
+        navigationController?.navigationBar.backItem?.accessibilityLabel = AccessibilityIdentifier.backButton
+        navigationController?.navigationBar.items?.first?.isAccessibilityElement = true
+        navigationController?.navigationBar.items?.first?.accessibilityLabel = AccessibilityIdentifier.backButton
+    }
+
     /// As this screen might be rendered in a split view, the title view is not centered to the device
     /// width but the view controller's width. That's why we need to adjust the title view position
     /// in that case.
@@ -82,7 +92,7 @@ extension UIViewController {
                 accessibilityIdentifier = AccessibilityIdentifier.mistrusted
             }
             imageView.accessibilityIdentifier = accessibilityIdentifier
-
+            imageView.isAccessibilityElement = true
             imageView.translatesAutoresizingMaskIntoConstraints = false
             let aspectRatio = imageView.aspectRatio()
             imageView.heightAnchor.constraint(equalTo: imageView.widthAnchor, multiplier: 1.0/aspectRatio).isActive = true
