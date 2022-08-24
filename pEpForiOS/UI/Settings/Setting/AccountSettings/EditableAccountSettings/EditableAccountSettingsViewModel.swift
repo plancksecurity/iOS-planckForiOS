@@ -162,6 +162,7 @@ class EditableAccountSettingsViewModel {
         }
     }
 
+    /// - Returns: The Client Certificate Management View Model.
     public func clientCertificateManagementViewModel() -> ClientCertificateManagementViewModel {
         let verifiableAccount = VerifiableAccount.verifiableAccount(for: .clientCertificate, usePEPFolderProvider: AppSettings.shared)
         let clientCertificateManagementViewModel = ClientCertificateManagementViewModel(verifiableAccount: verifiableAccount, shouldHideCancelButton: false)
@@ -210,16 +211,16 @@ extension EditableAccountSettingsViewModel: VerifiableAccountDelegate {
             }
         }
     }
-
-    private func postSettingsDidChanged() {
-        let name = Notification.Name.pEpSettingsChanged
-        NotificationCenter.default.post(name:name, object: self, userInfo: nil)
-    }
 }
 
 // MARK: -  Private
 
 extension EditableAccountSettingsViewModel {
+
+    private func postSettingsDidChanged() {
+        let name = Notification.Name.pEpSettingsChanged
+        NotificationCenter.default.post(name:name, object: self, userInfo: nil)
+    }
 
     /// Indicate if MDM has been deployed.
     private var hasBeenMDMDeployed: Bool {
