@@ -111,7 +111,7 @@ extension TutorialWizardViewController {
 
         if lastScreen {
             navBarButtonTitle = NSLocalizedString("Finish", comment: "Start up tutorial finish button")
-            accessibilityIdentifier = AccessibilityIdentifier.tutorialfinishButton
+            accessibilityIdentifier = AccessibilityIdentifier.tutorialFinishButton
         } else {
             navBarButtonTitle = NSLocalizedString("Skip", comment: "Start up tutorial skip button")
             accessibilityIdentifier = AccessibilityIdentifier.tutorialSkipButton
@@ -120,6 +120,7 @@ extension TutorialWizardViewController {
         let endButton = UIBarButtonItem(title: navBarButtonTitle, style: .done, target: self, action: #selector(closeScreen))
 
         endButton.accessibilityIdentifier = accessibilityIdentifier
+        endButton.isAccessibilityElement = true
 
         navigationItem.rightBarButtonItem = endButton
     }
