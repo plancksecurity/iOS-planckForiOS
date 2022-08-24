@@ -20,7 +20,7 @@ class AccessibilityIdentifier {
     static let deselectAllButton = "Deselect All"
     static let selectAllButton = "Select All"
     static let tutorialSkipButton = "Tutorial Skip"
-    static let tutorialfinishButton = "Tutorial Finish"
+    static let tutorialFinishButton = "Tutorial Finish"
     static let downButton = "Down button"
     static let upButton = "Up button"
     static let backButton = "Back button"
