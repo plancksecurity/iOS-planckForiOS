@@ -63,15 +63,25 @@ class EmailDetailViewController: UIViewController {
         edgesForExtendedLayout = .all
 
         nextButton?.accessibilityIdentifier = AccessibilityIdentifier.nextButton
+        nextButton?.isAccessibilityElement = true
         previousButton?.accessibilityIdentifier = AccessibilityIdentifier.previousButton
+        previousButton?.isAccessibilityElement = true
         nextButtonForSplitView?.accessibilityIdentifier = AccessibilityIdentifier.nextButton
+        nextButtonForSplitView?.isAccessibilityElement = true
         prevButtonForSplitView?.accessibilityIdentifier = AccessibilityIdentifier.previousButton
+        prevButtonForSplitView?.isAccessibilityElement = true
         flagButton?.accessibilityIdentifier = AccessibilityIdentifier.flagButton
+        flagButton?.isAccessibilityElement = true
         destructiveButton?.accessibilityIdentifier = AccessibilityIdentifier.deleteButton
+        destructiveButton?.isAccessibilityElement = true
         replyButton?.accessibilityIdentifier = AccessibilityIdentifier.replyButton
+        replyButton?.isAccessibilityElement = true
         pEpIconSettingsButton?.accessibilityIdentifier = AccessibilityIdentifier.pEpButton
+        pEpIconSettingsButton?.isAccessibilityElement = true
         moveToFolderButton?.accessibilityIdentifier = AccessibilityIdentifier.moveToFolderButton
+        moveToFolderButton?.isAccessibilityElement = true
 
+        setBackButtonAccessibilityLabel()
         setup()
     }
 

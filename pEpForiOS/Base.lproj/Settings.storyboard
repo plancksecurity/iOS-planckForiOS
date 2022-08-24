@@ -965,6 +965,7 @@
                     <simulatedToolbarMetrics key="simulatedBottomBarMetrics"/>
                     <splitViewDetailSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
                     <connections>
+                        <outlet property="editButton" destination="3we-9c-6Uj" id="BAr-9u-rt8"/>
                         <outlet property="tableView" destination="8RY-1m-iPg" id="6j5-my-u0h"/>
                         <segue destination="9xa-gb-As9" kind="show" identifier="EditSignatureSegue" id="zu9-rf-a0j"/>
                     </connections>

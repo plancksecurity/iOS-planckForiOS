@@ -25,6 +25,7 @@ final class SettingsTableViewController: UITableViewController {
         UIHelper.variableCellHeightsTableView(tableView)
         UIHelper.variableSectionHeadersHeightTableView(tableView)
         addExtraKeysEditabilityToggleGesture()
+        setBackButtonAccessibilityLabel()
     }
 
     override func viewWillAppear(_ animated: Bool) {

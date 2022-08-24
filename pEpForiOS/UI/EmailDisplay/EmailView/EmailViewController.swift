@@ -79,6 +79,7 @@ class EmailViewController: UIViewController {
         showExternalContentLabel.text = Localized.showExternalContentText
         tableView.rowHeight = UITableView.automaticDimension
         tableView.estimatedRowHeight = 100
+        setBackButtonAccessibilityLabel()
     }
 
     override func preferredContentSizeDidChange(forChildContentContainer container: UIContentContainer) {
