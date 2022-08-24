@@ -72,8 +72,6 @@ struct ReplyAlertCreator {
         toggleMarkSeenOption.isAccessibilityElement = true
         toggleMarkSeenOption.accessibilityIdentifier = message.imapFlags.seen ? AccessibilityIdentifier.markAsUnread : AccessibilityIdentifier.markAsRead
         alert.addAction(toggleMarkSeenOption)
-
-
         return self
     }
 
@@ -81,10 +79,8 @@ struct ReplyAlertCreator {
         let cancelAction = UIAlertAction(title: NSLocalizedString("Cancel",
                                                                   comment: "Message actions"),
                                          style: .cancel) { (action) in }
-
         cancelAction.accessibilityIdentifier = AccessibilityIdentifier.cancel
         cancelAction.isAccessibilityElement = true
-
         alert.addAction(cancelAction)
         return self
     }
