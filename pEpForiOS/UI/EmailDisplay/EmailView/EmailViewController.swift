@@ -437,6 +437,8 @@ extension EmailViewController {
             return
         }
         if let htmlBody = row.htmlBody {
+            htmlViewerViewController.view.accessibilityIdentifier = AccessibilityIdentifier.emailTextView
+            htmlViewerViewController.view.isAccessibilityElement = true
             cell.contentView.addSubview(htmlViewerViewController.view)
             htmlViewerViewController.view.fullSizeInSuperView()
             showExternalContentView.isHidden = !vm.shouldShowExternalContentView
