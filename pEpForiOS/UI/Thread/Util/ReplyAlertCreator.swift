@@ -27,6 +27,8 @@ struct ReplyAlertCreator {
                                                                       comment: "Message actions"),
                                              style: .default,
                                              handler: handler)
+        alertActionReply.accessibilityIdentifier = AccessibilityIdentifier.reply
+        alertActionReply.isAccessibilityElement = true
         alert.addAction(alertActionReply)
         return self
     }
@@ -47,6 +49,8 @@ struct ReplyAlertCreator {
                                                                         comment: "Message actions"),
                                                style: .default,
                                                handler: handler)
+        alertActionForward.isAccessibilityElement = true
+        alertActionForward.accessibilityIdentifier = AccessibilityIdentifier.forward
         alert.addAction(alertActionForward)
         return self
     }
@@ -65,6 +69,8 @@ struct ReplyAlertCreator {
             Message.setSeenValue(to: [message],
                                  newValue: !message.imapFlags.seen)
         }
+        toggleMarkSeenOption.isAccessibilityElement = true
+        toggleMarkSeenOption.accessibilityIdentifier = message.imapFlags.seen ? AccessibilityIdentifier.markAsUnread : AccessibilityIdentifier.markAsRead
         alert.addAction(toggleMarkSeenOption)
         return self
     }
@@ -73,6 +79,8 @@ struct ReplyAlertCreator {
         let cancelAction = UIAlertAction(title: NSLocalizedString("Cancel",
                                                                   comment: "Message actions"),
                                          style: .cancel) { (action) in }
+        cancelAction.accessibilityIdentifier = AccessibilityIdentifier.cancel
+        cancelAction.isAccessibilityElement = true
         alert.addAction(cancelAction)
         return self
     }
