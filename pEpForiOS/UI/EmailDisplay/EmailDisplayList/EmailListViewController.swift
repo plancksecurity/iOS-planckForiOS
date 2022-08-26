@@ -81,6 +81,7 @@ final class EmailListViewController: UIViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
+        title?.isAccessibilityElement = true
         subscribeForKeyboardNotifications()
         edgesForExtendedLayout = .all
         setSeparator()
@@ -108,12 +109,12 @@ final class EmailListViewController: UIViewController {
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         navigationController?.setToolbarHidden(false, animated: true)
-        navigationController?.navigationItem.leftBarButtonItem?.accessibilityIdentifier = AccessibilityIdentifier.mailboxesButton
+        navigationController?.navigationItem.leftBarButtonItem?.accessibilityIdentifier = AccessibilityIdentifier.backButton
+        navigationController?.navigationItem.leftBarButtonItem?.isAccessibilityElement = true
         navigationController?.navigationItem.rightBarButtonItem?.accessibilityIdentifier = AccessibilityIdentifier.editButton
-        navigationController?.navigationBar.backItem?.backBarButtonItem?.accessibilityIdentifier = AccessibilityIdentifier.backButton
-        navigationController?.navigationBar.items?.first?.isAccessibilityElement = true
-        navigationController?.navigationBar.items?.first?.accessibilityLabel = AccessibilityIdentifier.backButton
+        navigationController?.navigationItem.rightBarButtonItem?.isAccessibilityElement = true
 
+        setBackButtonAccessibilityLabel()
         if MiscUtil.isUnitTest() {
             return
         }
@@ -270,6 +271,7 @@ final class EmailListViewController: UIViewController {
     private func setupSearchBar() {
         searchController.isActive = true
         searchController.searchBar.accessibilityIdentifier = AccessibilityIdentifier.searchBar
+        searchController.searchBar.isAccessibilityElement = true
         searchController.searchResultsUpdater = self
         searchController.obscuresBackgroundDuringPresentation = false
         searchController.delegate = self
@@ -1490,6 +1492,7 @@ extension EmailListViewController {
         let selectAllCellsSelector = #selector(selectAllCells)
         let button = UIBarButtonItem(title: selectAllTitle, style: .plain, target: self, action: selectAllCellsSelector)
         button.accessibilityIdentifier = AccessibilityIdentifier.selectAllButton
+        button.isAccessibilityElement = true
         return button
     }
 
@@ -1498,6 +1501,7 @@ extension EmailListViewController {
         let deselectAllCellsSelector = #selector(deselectAllCells)
         let button = UIBarButtonItem(title: deselectAllTitle, style: .plain, target: self, action: deselectAllCellsSelector)
         button.accessibilityIdentifier = AccessibilityIdentifier.deselectAllButton
+        button.isAccessibilityElement = true
         return button
     }
 

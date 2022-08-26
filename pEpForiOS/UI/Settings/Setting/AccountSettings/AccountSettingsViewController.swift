@@ -14,6 +14,7 @@ import pEpIOSToolbox
 final class AccountSettingsViewController: UIViewController {
     @IBOutlet private var tableView: UITableView!
     @IBOutlet private weak var keySyncSwitch: UISwitch!
+    @IBOutlet weak var editButton: UIBarButtonItem!
 
     // MARK: - Variables
     private let oauthViewModel = OAuthAuthorizer()
@@ -50,7 +51,10 @@ final class AccountSettingsViewController: UIViewController {
         title = NSLocalizedString("Account", comment: "Account view title")
         navigationController?.navigationController?.setToolbarHidden(true, animated: false)
         navigationController?.navigationItem.rightBarButtonItem?.accessibilityIdentifier = AccessibilityIdentifier.editButton
-        navigationController?.navigationItem.leftBarButtonItem?.accessibilityIdentifier = AccessibilityIdentifier.settingsButton
+        setBackButtonAccessibilityLabel()
+        editButton.accessibilityIdentifier = AccessibilityIdentifier.editButton
+        editButton.accessibilityLabel = AccessibilityIdentifier.editButton
+        editButton.isAccessibilityElement = true
     }
     
     enum SegueIdentifier: String {

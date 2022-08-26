@@ -31,6 +31,7 @@ class BodyCell: TextViewContainingTableViewCell {
         super.awakeFromNib()
         textView.font = UIFont.systemFont(ofSize: defaultFontSize)
         textView.accessibilityIdentifier = AccessibilityIdentifier.emailTextView
+        textView.isAccessibilityElement = true
     }
 
     public func setup(with viewModel: BodyCellViewModel) {

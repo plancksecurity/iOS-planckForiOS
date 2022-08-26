@@ -42,7 +42,9 @@ class EditableAccountSettingsViewController: UIViewController {
         tableView.delegate = self
         tableView.dataSource = self
         navigationController?.navigationItem.rightBarButtonItem?.accessibilityIdentifier = AccessibilityIdentifier.saveButton
-        navigationController?.navigationItem.leftBarButtonItem?.accessibilityIdentifier = AccessibilityIdentifier.cancelButton
+        setBackButtonAccessibilityLabel()
+        editButtonItem.isAccessibilityElement = true
+        editButtonItem.accessibilityIdentifier = AccessibilityIdentifier.editButton
     }
 
     override func viewWillTransition(to size: CGSize, with coordinator: UIViewControllerTransitionCoordinator) {
