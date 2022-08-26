@@ -4016,7 +4016,11 @@
 				DEVELOPMENT_TEAM = NQLYU6MGPN;
 				GCC_C_LANGUAGE_STANDARD = gnu11;
 				GCC_PREPROCESSOR_DEFINITIONS = "$(inherited)";
-				HEADER_SEARCH_PATHS = "";
+				HEADER_SEARCH_PATHS = (
+					"$(SRCROOT)/../pEpObjCAdapter/build/include",
+					"$(SRCROOT)/../pEpObjCAdapter/Subprojects/PEPObjCAdapterProtocols/build/include",
+					"$(SRCROOT)/../pEpObjCAdapter/Subprojects/PEPObjCTypes/build/include",
+				);
 				INFOPLIST_FILE = "pEp-share/Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 13.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @executable_path/../../Frameworks";
@@ -4050,7 +4054,11 @@
 				DEVELOPMENT_TEAM = NQLYU6MGPN;
 				GCC_C_LANGUAGE_STANDARD = gnu11;
 				GCC_PREPROCESSOR_DEFINITIONS = "$(inherited)";
-				HEADER_SEARCH_PATHS = "";
+				HEADER_SEARCH_PATHS = (
+					"$(SRCROOT)/../pEpObjCAdapter/build/include",
+					"$(SRCROOT)/../pEpObjCAdapter/Subprojects/PEPObjCAdapterProtocols/build/include",
+					"$(SRCROOT)/../pEpObjCAdapter/Subprojects/PEPObjCTypes/build/include",
+				);
 				INFOPLIST_FILE = "pEp-share/Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 13.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @executable_path/../../Frameworks";
