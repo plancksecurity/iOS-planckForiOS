@@ -20,4 +20,12 @@ extension UIUtils {
         let presenterVc = UIApplication.currentlyVisibleViewController()
         presenterVc.navigationController?.pushViewController(vc, animated: true)
     }
+
+    /// Indicate if MDM has been deployed.
+    static public func hasBeenMDMDeployed(appSettings: AppSettingsProtocol) -> Bool {
+        guard let appSetting = appSettings as? MDMAppSettingsProtocol, appSetting.hasBeenMDMDeployed else {
+            return false
+        }
+        return true
+    }
 }

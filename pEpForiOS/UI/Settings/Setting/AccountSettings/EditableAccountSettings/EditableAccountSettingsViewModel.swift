@@ -49,7 +49,6 @@ class EditableAccountSettingsViewModel {
     public weak var changeDelegate: SettingChangeDelegate?
 
     public private(set) var sections = [AccountSettingsViewModel.Section]()
-    public private(set) var hiddenSections = [AccountSettingsViewModel.Section]()
 
     /// Indicates the number ot transport security options.
     public var numberOfTransportSecurityOptions : Int {
@@ -60,6 +59,10 @@ class EditableAccountSettingsViewModel {
     private var originalImapPassword: String?
     private var originalSmtpPassword: String?
     private var appSettings: AppSettingsProtocol
+
+    /// In MDM we keep a copy of the sections, hidden. This is not used to layout.
+    /// It just holds the state of the settings and it's used only for MDM, to get data for verification.
+    private var hiddenSections = [AccountSettingsViewModel.Section]()
 
     /// Retrieves the name of an transport security option.
     /// - Parameter index: The index of the option.
@@ -154,7 +157,8 @@ class EditableAccountSettingsViewModel {
                                                                text: value,
                                                                cellIdentifier: row.cellIdentifier)
         sections[indexPath.section].rows[indexPath.row] = rowToReplace
-        if hasBeenMDMDeployed {
+
+        if UIUtils.hasBeenMDMDeployed(appSettings: appSettings) {
             hiddenSections[indexPath.section].rows[indexPath.row] = rowToReplace
         }
         if row.type == .password {
@@ -222,14 +226,6 @@ extension EditableAccountSettingsViewModel {
         NotificationCenter.default.post(name:name, object: self, userInfo: nil)
     }
 
-    /// Indicate if MDM has been deployed.
-    private var hasBeenMDMDeployed: Bool {
-        guard let appSetting = appSettings as? MDMAppSettingsProtocol, appSetting.hasBeenMDMDeployed else {
-            return false
-        }
-        return true
-    }
-
     // MARK: -  Sections
 
     /// Generates and retrieves a section
@@ -242,7 +238,7 @@ extension EditableAccountSettingsViewModel {
     }
 
     private func generateSections() {
-        if hasBeenMDMDeployed {
+        if UIUtils.hasBeenMDMDeployed(appSettings: appSettings) {
             generateSectionsForMDM()
         } else {
             AccountSettingsViewModel.SectionType.allCases.forEach { (type) in
@@ -254,7 +250,7 @@ extension EditableAccountSettingsViewModel {
     /// In MDM, we show less data to the user.
     private func generateSectionsForMDM() {
         sections.append(generateSection(type: .account))
-        // As written in a comment above, we keep a copy of the sections to use it when we validate the input.
+        // As written in a documentation above, we keep a copy of the sections to use it when we validate the input.
         AccountSettingsViewModel.SectionType.allCases.forEach { (type) in
             hiddenSections.append(generateSection(type: type))
         }
@@ -449,8 +445,7 @@ extension EditableAccountSettingsViewModel {
         // Our current implementation is improvable: right now we use data from the sections to validate.
         // When MDM is deployed, there are sections that are not shown, that are ´hidden´.
         // If it's the case, we get the data to validate from the hidden sections.
-        // Hidden sections are a copy of regular sections, but they are not displayed.
-        if hasBeenMDMDeployed, sectionIndex != 0 {
+        if UIUtils.hasBeenMDMDeployed(appSettings: appSettings), sectionIndex != 0 {
             guard let displayRow = hiddenSections[sectionIndex].rows.filter({$0.type == rowType}).first as? AccountSettingsViewModel.DisplayRow,
                   !displayRow.text.isEmpty else {
                 return nil

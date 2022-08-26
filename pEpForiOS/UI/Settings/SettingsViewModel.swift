@@ -186,7 +186,7 @@ extension SettingsViewModel {
 
     /// This method generates all the sections for the settings view.
     private func generateSections() {
-        if let appSetting = appSettings as? MDMAppSettingsProtocol, appSetting.hasBeenMDMDeployed {
+        if UIUtils.hasBeenMDMDeployed(appSettings: appSettings) {
             generateSectionsForMDM()
         } else {
             SettingsViewModel.SectionType.allCases.forEach { (type) in
