@@ -8,6 +8,8 @@
 
 import Foundation
 
+import MessageModel
+
 /// All error cases thrown by `MDMDeploymentProtocol.deployAccount`.
 enum MDMDeploymentError: Error {
     /// There are already local accounts, will not deploy.
@@ -54,8 +56,11 @@ protocol MDMDeploymentProtocol {
     ///
     /// - Parameters:
     ///   - password: The password (coming from the user) for this account.
+    ///   - accountVerifier: The object used to verify the account.
     ///   - callback: Called after account verification has either succeeded or failed.
-    func deployAccount(password: String, callback: @escaping (_ error: MDMDeploymentError?) -> ())
+    func deployAccount(password: String,
+                       accountVerifier: AccountVerifierProtocol,
+                       callback: @escaping (_ error: MDMDeploymentError?) -> ())
 
     /// Returns `true` if there is an account to be deployed, `false` otherwise.
     var haveAccountToDeploy: Bool { get }
