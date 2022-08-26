@@ -244,7 +244,7 @@ extension MDMDeployment: MDMDeploymentProtocol {
 
         let allAccounts = Account.all()
         if !allAccounts.isEmpty {
-            // Don't overwrite any already existing accounts, are add to them.
+            // Finding existing accounts is an error
             callback(MDMDeploymentError.localAccountsFound)
             return
         }
