@@ -282,16 +282,12 @@ extension AccountSettingsViewModel {
     /// Must be called once, at the initialization.
     private func generateSections() {
         if appSettings.hasBeenMDMDeployed {
-            generateSectionsForMDM()
+            sections.append(generateSection(type: .account))
         } else {
             SectionType.allCases.forEach { (type) in
                 sections.append(generateSection(type: type))
             }
         }
-    }
-
-    private func generateSectionsForMDM() {
-        sections.append(generateSection(type: .account))
     }
 
     /// Generates and retrieves a section
