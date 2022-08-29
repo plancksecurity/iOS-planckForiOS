@@ -9,6 +9,7 @@
 import XCTest
 
 @testable import pEpForiOS
+import MessageModel
 
 class MDMAccountDeploymentViewModelTest: XCTestCase {
 
@@ -64,7 +65,9 @@ class DummyDeployer: MDMDeploymentProtocol {
         return nil
     }
 
-    func deployAccount(password: String, callback: @escaping (MDMDeploymentError?) -> ()) {
+    func deployAccount(password: String,
+                       accountVerifier: AccountVerifierProtocol,
+                       callback: @escaping (_ error: MDMDeploymentError?) -> ()) {
         callback(resultingError)
     }
 
