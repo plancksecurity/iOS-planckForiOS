@@ -64,7 +64,7 @@ class MDMDeploymentTest: XCTestCase {
 
         do {
             try deployAccount(password: "surely wrong!",
-                              accountVerifier: TestVerifier(errorToDeliver: MDMDeploymentError.authenticationError))
+                              accountVerifier: TestVerifier(errorToDeliver: ImapSyncOperationError.authenticationFailed("", "")))
             XCTFail()
         } catch MDMDeploymentError.authenticationError {
             // expected
