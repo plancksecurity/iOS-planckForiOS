@@ -9,6 +9,7 @@
 import Foundation
 
 import pEpIOSToolbox
+import MessageModel
 
 class MDMAccountDeploymentViewModel {
     enum Result: Equatable {
@@ -23,7 +24,8 @@ class MDMAccountDeploymentViewModel {
     func deployAccount(deployer: MDMDeploymentProtocol = MDMDeployment(),
                        callback: @escaping (_ result: Result) -> ()) {
         // TODO: Use a real password from the user
-        deployer.deployAccount(password: "") { maybeError in
+        deployer.deployAccount(password: "",
+                               accountVerifier: AccountVerifier()) { maybeError in
             if let error = maybeError {
                 var message: String
                 switch error {
