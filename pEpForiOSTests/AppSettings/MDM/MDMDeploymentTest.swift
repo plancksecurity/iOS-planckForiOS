@@ -130,5 +130,11 @@ extension TestVerifier: AccountVerifierProtocol {
                 smtpServer: AccountVerifier.ServerData,
                 usePEPFolder: Bool,
                 verifiedCallback: @escaping AccountVerifierCallback) {
+        DispatchQueue.global().async {
+            // Note the strong self in a block.
+            // It is assumed that in the tests, the block is always executed
+            // and then discarded.
+            verifiedCallback(self.errorToDeliver)
+        }
     }
 }
