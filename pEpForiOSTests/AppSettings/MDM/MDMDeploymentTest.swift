@@ -54,9 +54,6 @@ class MDMDeploymentTest: XCTestCase {
         } catch {
             XCTFail()
         }
-
-        let accounts = Account.all()
-        XCTAssertEqual(accounts.count, 1)
     }
 
     func testWrongPassword() throws {
