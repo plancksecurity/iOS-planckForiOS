@@ -60,8 +60,9 @@ class EditableAccountSettingsViewModel {
     private var originalSmtpPassword: String?
     private var appSettings: AppSettingsProtocol
 
-    /// In MDM we keep a copy of the sections, hidden. This is not used to layout.
-    /// It just holds the state of the settings and it's used only for MDM, to get data for verification.
+    /// For MDM we have to hide certain settings.
+    /// Unfortunately we still need to track their values in this kind of format because validation/verification code depends on it, in exactly this format.
+    /// This just holds the state of the settings and it's used only for MDM, to get data for verification.
     private var hiddenSections = [AccountSettingsViewModel.Section]()
 
     /// Retrieves the name of an transport security option.
@@ -158,7 +159,7 @@ class EditableAccountSettingsViewModel {
                                                                cellIdentifier: row.cellIdentifier)
         sections[indexPath.section].rows[indexPath.row] = rowToReplace
 
-        if UIUtils.hasBeenMDMDeployed(appSettings: appSettings) {
+        if appSettings.hasBeenMDMDeployed {
             hiddenSections[indexPath.section].rows[indexPath.row] = rowToReplace
         }
         if row.type == .password {
@@ -238,7 +239,7 @@ extension EditableAccountSettingsViewModel {
     }
 
     private func generateSections() {
-        if UIUtils.hasBeenMDMDeployed(appSettings: appSettings) {
+        if appSettings.hasBeenMDMDeployed {
             generateSectionsForMDM()
         } else {
             AccountSettingsViewModel.SectionType.allCases.forEach { (type) in
@@ -445,7 +446,7 @@ extension EditableAccountSettingsViewModel {
         // Our current implementation is improvable: right now we use data from the sections to validate.
         // When MDM is deployed, there are sections that are not shown, that are ´hidden´.
         // If it's the case, we get the data to validate from the hidden sections.
-        if UIUtils.hasBeenMDMDeployed(appSettings: appSettings), sectionIndex != 0 {
+        if appSettings.hasBeenMDMDeployed, sectionIndex != 0 {
             guard let displayRow = hiddenSections[sectionIndex].rows.filter({$0.type == rowType}).first as? AccountSettingsViewModel.DisplayRow,
                   !displayRow.text.isEmpty else {
                 return nil

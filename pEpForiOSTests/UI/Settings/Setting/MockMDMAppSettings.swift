@@ -37,28 +37,6 @@ class MDMMockAppSettings : AppSettingsProtocol {
 
     var acceptedLanguagesCodes: [String] = ["de", "en"]
 
-    func removeFolderViewCollapsedStateOfAccountWith(address: String) {
-
-    }
-
-    func folderViewCollapsedState(forAccountWith address: String) -> Bool {
-        return true
-    }
-
-    func folderViewCollapsedState(forFolderNamed folderName: String, ofAccountWith address: String) -> Bool {
-        return true
-    }
-
-    func setFolderViewCollapsedState(forFolderNamed folderName: String, ofAccountWith address: String, to value: Bool) {
-
-    }
-
-    func setFolderViewCollapsedState(forAccountWith address: String, to value: Bool) {
-
-    }
-}
-
-extension MDMMockAppSettings : MDMAppSettingsProtocol {
     var hasBeenMDMDeployed: Bool {
         return true
     }
@@ -138,4 +116,26 @@ extension MDMMockAppSettings : MDMAppSettingsProtocol {
     var mdmPEPSyncNewDevicesEnabled: Bool {
         return true
     }
+
+
+    func removeFolderViewCollapsedStateOfAccountWith(address: String) {
+
+    }
+
+    func folderViewCollapsedState(forAccountWith address: String) -> Bool {
+        return true
+    }
+
+    func folderViewCollapsedState(forFolderNamed folderName: String, ofAccountWith address: String) -> Bool {
+        return true
+    }
+
+    func setFolderViewCollapsedState(forFolderNamed folderName: String, ofAccountWith address: String, to value: Bool) {
+
+    }
+
+    func setFolderViewCollapsedState(forAccountWith address: String, to value: Bool) {
+
+    }
 }
+
