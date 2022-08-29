@@ -382,6 +382,7 @@
 		438052891FE3E24400ACF729 /* OAuth2AuthorizationProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = 438052881FE3E24400ACF729 /* OAuth2AuthorizationProtocol.swift */; };
 		4380528B1FE3E2E800ACF729 /* OAuth2AuthorizationURLHandlerProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4380528A1FE3E2E800ACF729 /* OAuth2AuthorizationURLHandlerProtocol.swift */; };
 		4388A0E22008F813008CB98D /* (null) in Sources */ = {isa = PBXBuildFile; };
+		4395129E28BCC3CE001CABCF /* MDMAccountDeployment.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 43C88FA228BCBD8D00670977 /* MDMAccountDeployment.storyboard */; };
 		43959CFE261C85CA00410108 /* UILayout+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5B3B019024B46CFC00FBB4B5 /* UILayout+Extension.swift */; };
 		4395CDEE20AAC909003FC5F1 /* UIImageExtensionsTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4395CDED20AAC909003FC5F1 /* UIImageExtensionsTests.swift */; };
 		4395CDF020AAD0D7003FC5F1 /* icon_001.gif in Resources */ = {isa = PBXBuildFile; fileRef = 4395CDEF20AAD0D6003FC5F1 /* icon_001.gif */; };
@@ -3138,6 +3139,7 @@
 				434A6C1325D2A08F00179335 /* AccountCreation.storyboard in Resources */,
 				439C62432611BFD9001893BD /* SharedAssets.xcassets in Resources */,
 				4313A55925E7C209001E6767 /* Tutorial_iPhone.storyboard in Resources */,
+				4395129E28BCC3CE001CABCF /* MDMAccountDeployment.storyboard in Resources */,
 				4313A54F25E7C1E1001E6767 /* Settings.storyboard in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
