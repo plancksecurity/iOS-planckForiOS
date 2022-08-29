@@ -421,7 +421,7 @@
 		43C4156225EE5BD80071C608 /* Attachment+InlinedImage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43C4156125EE5BD80071C608 /* Attachment+InlinedImage.swift */; };
 		43C4156525EE5CA50071C608 /* Attachment+InlinedImage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43C4156125EE5BD80071C608 /* Attachment+InlinedImage.swift */; };
 		43C415C725EE687A0071C608 /* NSItemProvider+MimeType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43C415C625EE687A0071C608 /* NSItemProvider+MimeType.swift */; };
-		43C88F9F28BCBD2F00670977 /* MDMAccountDeployment.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 43C88F9E28BCBD2F00670977 /* MDMAccountDeployment.storyboard */; };
+		43C88FA028BCBD8D00670977 /* MDMAccountDeployment.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 43C88FA228BCBD8D00670977 /* MDMAccountDeployment.storyboard */; };
 		43C9112726454538005B9CDE /* AppAuthForExtensions.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 43C9112526454538005B9CDE /* AppAuthForExtensions.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		43C98AC3219C275E006418B0 /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = 43C98AC1219C275E006418B0 /* Localizable.strings */; };
 		43D070312133DB920013B120 /* AppSettingsProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43D070302133DB920013B120 /* AppSettingsProtocol.swift */; };
@@ -1009,7 +1009,9 @@
 		43B10C7F1EC2EE7F003E849F /* CppDummy.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = CppDummy.cpp; sourceTree = "<group>"; };
 		43C4156125EE5BD80071C608 /* Attachment+InlinedImage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Attachment+InlinedImage.swift"; sourceTree = "<group>"; };
 		43C415C625EE687A0071C608 /* NSItemProvider+MimeType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "NSItemProvider+MimeType.swift"; sourceTree = "<group>"; };
-		43C88F9E28BCBD2F00670977 /* MDMAccountDeployment.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; name = MDMAccountDeployment.storyboard; path = pEpForiOS/MDMAccountDeployment.storyboard; sourceTree = SOURCE_ROOT; };
+		43C88FA128BCBD8D00670977 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/MDMAccountDeployment.storyboard; sourceTree = "<group>"; };
+		43C88FA428BCBD9C00670977 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/MDMAccountDeployment.strings; sourceTree = "<group>"; };
+		43C88FA628BCBD9C00670977 /* de */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = de; path = de.lproj/MDMAccountDeployment.strings; sourceTree = "<group>"; };
 		43C9112526454538005B9CDE /* AppAuthForExtensions.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = AppAuthForExtensions.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		43C98ABF219C22E8006418B0 /* de */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = de; path = de.lproj/AccountCreation.strings; sourceTree = "<group>"; };
 		43C98AC0219C22E8006418B0 /* de */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = de; path = de.lproj/Settings.strings; sourceTree = "<group>"; };
@@ -2773,7 +2775,7 @@
 				491B656020CFE0FD00C2ADDA /* Thread.storyboard */,
 				3A2119E624125AC60030C3E4 /* Certificates.storyboard */,
 				5B885DB425E7B0350027DD24 /* Tutorial_iPad.storyboard */,
-				43C88F9E28BCBD2F00670977 /* MDMAccountDeployment.storyboard */,
+				43C88FA228BCBD8D00670977 /* MDMAccountDeployment.storyboard */,
 			);
 			name = StoryboardFiles;
 			path = ..;
@@ -3170,7 +3172,7 @@
 				432E80FD2191AF5100359879 /* UniversLTStd.otf in Resources */,
 				15D3D48C239FC14700F2EBFB /* EmailDetailCollectionViewCell.xib in Resources */,
 				151DE7DE1FC5D3E200CDC273 /* Settings.storyboard in Resources */,
-				43C88F9F28BCBD2F00670977 /* MDMAccountDeployment.storyboard in Resources */,
+				43C88FA028BCBD8D00670977 /* MDMAccountDeployment.storyboard in Resources */,
 				151C68012418158B00481F75 /* SFUIText-Medium.ttf in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -3940,6 +3942,17 @@
 			);
 			name = Tutorial_iPhone.storyboard;
 			sourceTree = "<group>";
+		};
+		43C88FA228BCBD8D00670977 /* MDMAccountDeployment.storyboard */ = {
+			isa = PBXVariantGroup;
+			children = (
+				43C88FA128BCBD8D00670977 /* Base */,
+				43C88FA428BCBD9C00670977 /* en */,
+				43C88FA628BCBD9C00670977 /* de */,
+			);
+			name = MDMAccountDeployment.storyboard;
+			path = pEpForiOS;
+			sourceTree = SOURCE_ROOT;
 		};
 		43C98AC1219C275E006418B0 /* Localizable.strings */ = {
 			isa = PBXVariantGroup;
