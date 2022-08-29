@@ -606,7 +606,8 @@ extension AppSettings: MDMAppSettingsProtocol {
     // MARK: - Private
 
     private var mdmDictionary: [String: Any] {
-        guard let dictionary = AppSettings.userDefaults.dictionary(forKey: MDMDeployment.keyMDM) else {
+        // TODO: Use MDMDeployment.keyMDM
+        guard let dictionary = AppSettings.userDefaults.dictionary(forKey: "com.apple.configuration.managed") else {
             return [String:Any]()
         }
         return dictionary
