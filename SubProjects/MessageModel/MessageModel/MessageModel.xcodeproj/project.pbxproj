@@ -543,8 +543,6 @@
 		43C123EA223A7FCF00F6A9B2 /* QualifyServerIsLocalOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43C123DC223A7FCF00F6A9B2 /* QualifyServerIsLocalOperation.swift */; };
 		43C123EC223A7FCF00F6A9B2 /* AccountVerificationResult.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43C123DF223A7FCF00F6A9B2 /* AccountVerificationResult.swift */; };
 		43C12408223A9DEA00F6A9B2 /* CdAccount+pEp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43C12407223A9DEA00F6A9B2 /* CdAccount+pEp.swift */; };
-		43CA8AFE28AF7DCA00EC75BC /* AccountVerifierProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43CA8AFD28AF7DCA00EC75BC /* AccountVerifierProtocol.swift */; };
-		43CA8AFF28AF7E6D00EC75BC /* AccountVerifierProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43CA8AFD28AF7DCA00EC75BC /* AccountVerifierProtocol.swift */; };
 		43CB60911DA4EB4E0015281E /* IdentityTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43CB60901DA4EB4E0015281E /* IdentityTest.swift */; };
 		43CB60931DA4EB4E0015281E /* MessageModel.h in Headers */ = {isa = PBXBuildFile; fileRef = 43CB60851DA4EB4E0015281E /* MessageModel.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		43CB60A51DA4EBB60015281E /* Folder.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43CB609E1DA4EBB60015281E /* Folder.swift */; };
@@ -556,6 +554,8 @@
 		43D576442535B02C00968745 /* NSManagedObjectContext+Reset.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43D576432535B02C00968745 /* NSManagedObjectContext+Reset.swift */; };
 		43D7565123AB9F2F000F915F /* BaseImapFolderOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43D7565023AB9F2F000F915F /* BaseImapFolderOperation.swift */; };
 		43D7565323ABA48B000F915F /* ExpungeInImapFolderOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43D7565223ABA48B000F915F /* ExpungeInImapFolderOperation.swift */; };
+		43E34BED28BCB6820035D051 /* AccountVerifierProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43E34BEC28BCB6820035D051 /* AccountVerifierProtocol.swift */; };
+		43E34BEE28BCB6820035D051 /* AccountVerifierProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43E34BEC28BCB6820035D051 /* AccountVerifierProtocol.swift */; };
 		43E3A244224E2BED004CAC84 /* CdMessage+Clone.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43E3A243224E2BED004CAC84 /* CdMessage+Clone.swift */; };
 		43E3A246224E2DBA004CAC84 /* CdImapFlags+Clone.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43E3A245224E2DBA004CAC84 /* CdImapFlags+Clone.swift */; };
 		43E3A248224E2F02004CAC84 /* CdImapFields+Clone.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43E3A247224E2F02004CAC84 /* CdImapFields+Clone.swift */; };
@@ -1062,7 +1062,6 @@
 		43C123DC223A7FCF00F6A9B2 /* QualifyServerIsLocalOperation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = QualifyServerIsLocalOperation.swift; sourceTree = "<group>"; };
 		43C123DF223A7FCF00F6A9B2 /* AccountVerificationResult.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AccountVerificationResult.swift; sourceTree = "<group>"; };
 		43C12407223A9DEA00F6A9B2 /* CdAccount+pEp.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "CdAccount+pEp.swift"; sourceTree = "<group>"; };
-		43CA8AFD28AF7DCA00EC75BC /* AccountVerifierProtocol.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AccountVerifierProtocol.swift; sourceTree = "<group>"; };
 		43CB60821DA4EB4E0015281E /* MessageModel.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = MessageModel.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		43CB60851DA4EB4E0015281E /* MessageModel.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = MessageModel.h; sourceTree = "<group>"; };
 		43CB60861DA4EB4E0015281E /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
@@ -1078,6 +1077,7 @@
 		43D576432535B02C00968745 /* NSManagedObjectContext+Reset.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "NSManagedObjectContext+Reset.swift"; sourceTree = "<group>"; };
 		43D7565023AB9F2F000F915F /* BaseImapFolderOperation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BaseImapFolderOperation.swift; sourceTree = "<group>"; };
 		43D7565223ABA48B000F915F /* ExpungeInImapFolderOperation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExpungeInImapFolderOperation.swift; sourceTree = "<group>"; };
+		43E34BEC28BCB6820035D051 /* AccountVerifierProtocol.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AccountVerifierProtocol.swift; sourceTree = "<group>"; };
 		43E3A243224E2BED004CAC84 /* CdMessage+Clone.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "CdMessage+Clone.swift"; sourceTree = "<group>"; };
 		43E3A245224E2DBA004CAC84 /* CdImapFlags+Clone.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "CdImapFlags+Clone.swift"; sourceTree = "<group>"; };
 		43E3A247224E2F02004CAC84 /* CdImapFields+Clone.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "CdImapFields+Clone.swift"; sourceTree = "<group>"; };
@@ -2260,8 +2260,8 @@
 				43C123DF223A7FCF00F6A9B2 /* AccountVerificationResult.swift */,
 				439B16A122802A8700201DE5 /* VerifiableAccountProtocol.swift */,
 				439B16A522802B6B00201DE5 /* VerifiableAccount.swift */,
+				43E34BEC28BCB6820035D051 /* AccountVerifierProtocol.swift */,
 				43E5F7C528571D2000115686 /* AccountVerifier.swift */,
-				43CA8AFD28AF7DCA00EC75BC /* AccountVerifierProtocol.swift */,
 			);
 			path = VerifiableAccount;
 			sourceTree = "<group>";
@@ -3255,7 +3255,7 @@
 				436FD24C25DA825100D929B3 /* Color.swift in Sources */,
 				434C234A25D6AC5D00F622DB /* BaseOperation.swift in Sources */,
 				434C22FF25D6A16100F622DB /* CdFolder+PredicateFactory.swift in Sources */,
-				43CA8AFF28AF7E6D00EC75BC /* AccountVerifierProtocol.swift in Sources */,
+				43E34BEE28BCB6820035D051 /* AccountVerifierProtocol.swift in Sources */,
 				434C24A725D6CF1B00F622DB /* ImapFlags.swift in Sources */,
 				434C219025D6972000F622DB /* Folder.swift in Sources */,
 				436FD23125DA814E00D929B3 /* ExtraKey+SessionAware.swift in Sources */,
@@ -3394,7 +3394,7 @@
 				B7F6F479234CD662003DF84A /* IdentityQueryResultsProtocol.swift in Sources */,
 				43753CDE222D2DA7002EE98B /* ContentDispositionType+Conversion.swift in Sources */,
 				15795B9F22C0F48F00010938 /* CdFolder+ImapFolder.swift in Sources */,
-				43CA8AFE28AF7DCA00EC75BC /* AccountVerifierProtocol.swift in Sources */,
+				43E34BED28BCB6820035D051 /* AccountVerifierProtocol.swift in Sources */,
 				15175ECE221DC39300C91DB8 /* QueryResultsControllerDelegate.swift in Sources */,
 				152701892294537900197378 /* CdMessage+FakeMessage.swift in Sources */,
 				158A6DFE2305BBFE006A9ECE /* CdExtraKeys+Convenience.swift in Sources */,
