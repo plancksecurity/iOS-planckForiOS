@@ -209,16 +209,14 @@ extension MDMDeployment: MDMDeploymentProtocol {
             return
         }
 
-        let verifier = AccountVerifier()
-
         let usePEPFolder = AppSettings.shared.mdmPEPSyncFolderEnabled
 
-        verifier.verify(userName: accountData.accountName,
-                        address: accountData.email,
-                        password: password,
-                        imapServer: accountData.imapServer,
-                        smtpServer: accountData.smtpServer,
-                        usePEPFolder: usePEPFolder) { error in
+        accountVerifier.verify(userName: accountData.accountName,
+                               address: accountData.email,
+                               password: password,
+                               imapServer: accountData.imapServer,
+                               smtpServer: accountData.smtpServer,
+                               usePEPFolder: usePEPFolder) { error in
             if let generalError = error {
                 var isAuthError = false
 
