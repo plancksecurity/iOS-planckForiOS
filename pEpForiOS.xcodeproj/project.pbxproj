@@ -242,6 +242,7 @@
 		4334CF302020CFFE00B3193E /* OAuth2Type+LibAccountSettings.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4334CF2F2020CFFE00B3193E /* OAuth2Type+LibAccountSettings.swift */; };
 		433BCD951D5388C100DD98EF /* ReplyUtil.swift in Sources */ = {isa = PBXBuildFile; fileRef = 433BCD941D5388C100DD98EF /* ReplyUtil.swift */; };
 		433E7438225B564400B84CD9 /* Account+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 433E7437225B564400B84CD9 /* Account+Extension.swift */; };
+		43418E4228BCB97E005CD5E3 /* MDMAppSettingsProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5B7A261B28A2597B0041F4A3 /* MDMAppSettingsProtocol.swift */; };
 		43425EDB1FE3DE6E004A2728 /* OAuth2ProviderProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43425EDA1FE3DE6E004A2728 /* OAuth2ProviderProtocol.swift */; };
 		43425EDD1FE3DF3B004A2728 /* OAuth2Provider.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43425EDC1FE3DF3B004A2728 /* OAuth2Provider.swift */; };
 		43425EDF1FE3E052004A2728 /* OAuth2ProviderFactory.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43425EDE1FE3E052004A2728 /* OAuth2ProviderFactory.swift */; };
@@ -432,13 +433,9 @@
 		43E15D1C2833CA4D00EDEAB7 /* AccessibilityIdentifier.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43285973282D4E9D00493791 /* AccessibilityIdentifier.swift */; };
 		43E1619120D7B2D6003F1514 /* UpdateThreadListDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43E1619020D7B2D6003F1514 /* UpdateThreadListDelegate.swift */; };
 		43E34BDE28BCB5230035D051 /* MDMDeployment.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43E34BDC28BCB5230035D051 /* MDMDeployment.swift */; };
-		43E34BDF28BCB5230035D051 /* MDMDeployment.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43E34BDC28BCB5230035D051 /* MDMDeployment.swift */; };
 		43E34BE028BCB5230035D051 /* MDMDeploymentProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43E34BDD28BCB5230035D051 /* MDMDeploymentProtocol.swift */; };
-		43E34BE128BCB5230035D051 /* MDMDeploymentProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43E34BDD28BCB5230035D051 /* MDMDeploymentProtocol.swift */; };
 		43E34BE628BCB5640035D051 /* MDMAccountDeploymentViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43E34BE328BCB5640035D051 /* MDMAccountDeploymentViewController.swift */; };
-		43E34BE728BCB5640035D051 /* MDMAccountDeploymentViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43E34BE328BCB5640035D051 /* MDMAccountDeploymentViewController.swift */; };
 		43E34BEA28BCB5640035D051 /* MDMAccountDeploymentViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43E34BE528BCB5640035D051 /* MDMAccountDeploymentViewModel.swift */; };
-		43E34BEB28BCB5640035D051 /* MDMAccountDeploymentViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43E34BE528BCB5640035D051 /* MDMAccountDeploymentViewModel.swift */; };
 		43E34BF028BCB6BD0035D051 /* MDMDeploymentTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43E34BEF28BCB6BD0035D051 /* MDMDeploymentTest.swift */; };
 		43E34BF228BCB6DF0035D051 /* MDMAccountDeploymentViewModelTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43E34BF128BCB6DF0035D051 /* MDMAccountDeploymentViewModelTest.swift */; };
 		43E60263262F0E8100232FE6 /* MessageModelForAppExtensions.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 43E60261262F0E8100232FE6 /* MessageModelForAppExtensions.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
@@ -501,7 +498,6 @@
 		5B7235D125E0013100033F88 /* TutorialStep0iPadViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5B7235D025E0013100033F88 /* TutorialStep0iPadViewController.swift */; };
 		5B74C00D249B7EA300802704 /* FolderTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5B74C00C249B7EA300802704 /* FolderTableViewCell.swift */; };
 		5B7A261C28A2597B0041F4A3 /* MDMAppSettingsProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5B7A261B28A2597B0041F4A3 /* MDMAppSettingsProtocol.swift */; };
-		5B7A262128A3A9AF0041F4A3 /* MDMAppSettingsProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5B7A261B28A2597B0041F4A3 /* MDMAppSettingsProtocol.swift */; };
 		5B818DC325E3FEC2004D04F0 /* TutorialStep1iPadViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5B818DC225E3FEC2004D04F0 /* TutorialStep1iPadViewController.swift */; };
 		5B884B44257A90FE006B2022 /* EditableAccountSettingsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5B884B43257A90FE006B2022 /* EditableAccountSettingsViewController.swift */; };
 		5B885DB225E7B0350027DD24 /* Tutorial_iPad.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 5B885DB425E7B0350027DD24 /* Tutorial_iPad.storyboard */; };
@@ -3277,7 +3273,7 @@
 				434A6C4B25D2A39C00179335 /* ComposeViewModelState.swift in Sources */,
 				434C1A8325D40B4000F622DB /* PEPSplitViewController.swift in Sources */,
 				434C1A9925D40DB700F622DB /* Mailto.swift in Sources */,
-				5B7A262128A3A9AF0041F4A3 /* MDMAppSettingsProtocol.swift in Sources */,
+				43418E4228BCB97E005CD5E3 /* MDMAppSettingsProtocol.swift in Sources */,
 				434A6C5E25D2A3C200179335 /* BodyCell.swift in Sources */,
 				43BDE05125DE818C00FC0C68 /* references.c in Sources */,
 				434C1ACF25D412B600F622DB /* TrustManagementViewController.swift in Sources */,
@@ -3302,7 +3298,6 @@
 				434C19F425D3E61B00F622DB /* NSAttributedString+Html.swift in Sources */,
 				434C1A9C25D40DEE00F622DB /* URL+MailTo.swift in Sources */,
 				434A6C6E25D2A3DC00179335 /* RecipientTextViewModel+TextAttachment.swift in Sources */,
-				43E34BEB28BCB5640035D051 /* MDMAccountDeploymentViewModel.swift in Sources */,
 				5BD3C101282BEDE100701B94 /* NSNotificationName+Reachability.swift in Sources */,
 				5BD93BEF2673AB7D000F2A8C /* ComposeViewModel+AttachmentSizeUtil.swift in Sources */,
 				434C1A0325D3EFF500F622DB /* BasicSaxParser.swift in Sources */,
@@ -3371,9 +3366,6 @@
 				43BDE03625DE7C8A00FC0C68 /* cmark.c in Sources */,
 				434C1AFC25D4266900F622DB /* String+NSAttributedString.swift in Sources */,
 				434C1AF025D416AF00F622DB /* Capability.swift in Sources */,
-				43E34BDF28BCB5230035D051 /* MDMDeployment.swift in Sources */,
-				43E34BE728BCB5640035D051 /* MDMAccountDeploymentViewController.swift in Sources */,
-				43E34BE128BCB5230035D051 /* MDMDeploymentProtocol.swift in Sources */,
 				434A6C6225D2A3C800179335 /* BodyCellViewModel.swift in Sources */,
 				434A6C7C25D2A3F100179335 /* WrappedBccViewModel.swift in Sources */,
 				434C1A0625D3F0AD00F622DB /* AXHTMLParser.m in Sources */,
