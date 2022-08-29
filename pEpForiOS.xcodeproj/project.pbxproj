@@ -432,9 +432,11 @@
 		43DC6308262DCC8A0017D1BD /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = 43DC6306262DCC8A0017D1BD /* Localizable.strings */; };
 		43DD9ECE28BCCA640082C65D /* MDMDeployment+Constants.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43DD9ECD28BCCA640082C65D /* MDMDeployment+Constants.swift */; };
 		43DD9ECF28BCCAA00082C65D /* MDMDeployment+Constants.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43DD9ECD28BCCA640082C65D /* MDMDeployment+Constants.swift */; };
+		43DD9ED128BCCCC90082C65D /* MDMDeployment.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43DD9ED028BCCCC90082C65D /* MDMDeployment.swift */; };
+		43DD9ED228BCCCC90082C65D /* MDMDeployment.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43DD9ED028BCCCC90082C65D /* MDMDeployment.swift */; };
 		43E15D1C2833CA4D00EDEAB7 /* AccessibilityIdentifier.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43285973282D4E9D00493791 /* AccessibilityIdentifier.swift */; };
 		43E1619120D7B2D6003F1514 /* UpdateThreadListDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43E1619020D7B2D6003F1514 /* UpdateThreadListDelegate.swift */; };
-		43E34BDE28BCB5230035D051 /* MDMDeployment.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43E34BDC28BCB5230035D051 /* MDMDeployment.swift */; };
+		43E34BDE28BCB5230035D051 /* MDMDeployment+Implementation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43E34BDC28BCB5230035D051 /* MDMDeployment+Implementation.swift */; };
 		43E34BE028BCB5230035D051 /* MDMDeploymentProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43E34BDD28BCB5230035D051 /* MDMDeploymentProtocol.swift */; };
 		43E34BE628BCB5640035D051 /* MDMAccountDeploymentViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43E34BE328BCB5640035D051 /* MDMAccountDeploymentViewController.swift */; };
 		43E34BEA28BCB5640035D051 /* MDMAccountDeploymentViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43E34BE528BCB5640035D051 /* MDMAccountDeploymentViewModel.swift */; };
@@ -1026,8 +1028,9 @@
 		43D213332237C8CA00C060A1 /* libAccountSettingsAdapter.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; path = libAccountSettingsAdapter.a; sourceTree = BUILT_PRODUCTS_DIR; };
 		43DC6307262DCC8A0017D1BD /* de */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = de; path = de.lproj/Localizable.strings; sourceTree = "<group>"; };
 		43DD9ECD28BCCA640082C65D /* MDMDeployment+Constants.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "MDMDeployment+Constants.swift"; sourceTree = "<group>"; };
+		43DD9ED028BCCCC90082C65D /* MDMDeployment.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MDMDeployment.swift; sourceTree = "<group>"; };
 		43E1619020D7B2D6003F1514 /* UpdateThreadListDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UpdateThreadListDelegate.swift; sourceTree = "<group>"; };
-		43E34BDC28BCB5230035D051 /* MDMDeployment.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MDMDeployment.swift; sourceTree = "<group>"; };
+		43E34BDC28BCB5230035D051 /* MDMDeployment+Implementation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "MDMDeployment+Implementation.swift"; sourceTree = "<group>"; };
 		43E34BDD28BCB5230035D051 /* MDMDeploymentProtocol.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MDMDeploymentProtocol.swift; sourceTree = "<group>"; };
 		43E34BE328BCB5640035D051 /* MDMAccountDeploymentViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MDMAccountDeploymentViewController.swift; sourceTree = "<group>"; };
 		43E34BE528BCB5640035D051 /* MDMAccountDeploymentViewModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MDMAccountDeploymentViewModel.swift; sourceTree = "<group>"; };
@@ -2419,7 +2422,8 @@
 		43E366882836254300C4A4CB /* MDM */ = {
 			isa = PBXGroup;
 			children = (
-				43E34BDC28BCB5230035D051 /* MDMDeployment.swift */,
+				43DD9ED028BCCCC90082C65D /* MDMDeployment.swift */,
+				43E34BDC28BCB5230035D051 /* MDMDeployment+Implementation.swift */,
 				43DD9ECD28BCCA640082C65D /* MDMDeployment+Constants.swift */,
 				43E34BDD28BCB5230035D051 /* MDMDeploymentProtocol.swift */,
 				5B7A261B28A2597B0041F4A3 /* MDMAppSettingsProtocol.swift */,
@@ -3307,6 +3311,7 @@
 				434A6C6E25D2A3DC00179335 /* RecipientTextViewModel+TextAttachment.swift in Sources */,
 				5BD3C101282BEDE100701B94 /* NSNotificationName+Reachability.swift in Sources */,
 				5BD93BEF2673AB7D000F2A8C /* ComposeViewModel+AttachmentSizeUtil.swift in Sources */,
+				43DD9ED228BCCCC90082C65D /* MDMDeployment.swift in Sources */,
 				434C1A0325D3EFF500F622DB /* BasicSaxParser.swift in Sources */,
 				43BDE05425DE81D300FC0C68 /* utf8.c in Sources */,
 				434C19C725D3E11100F622DB /* SuggestTableViewController.swift in Sources */,
@@ -3517,6 +3522,7 @@
 				43E657D11F3C33C30014CBEC /* String+HTML.swift in Sources */,
 				5B4A718A252CC4A500436FCF /* Mailto.swift in Sources */,
 				15146C8C237F006F00D69495 /* KeySyncWizardViewController.swift in Sources */,
+				43DD9ED128BCCCC90082C65D /* MDMDeployment.swift in Sources */,
 				5BFAE3812821889E00B003D4 /* NotificationBannerUtil.swift in Sources */,
 				431E68B3246C267A00B3A977 /* KeyImportViewModel.swift in Sources */,
 				B70A3A63220065F600EDCE61 /* String+pEp.swift in Sources */,
@@ -3626,7 +3632,7 @@
 				4388A0E22008F813008CB98D /* (null) in Sources */,
 				5BCD37D2269F236D0052A030 /* CornerRadiusView.swift in Sources */,
 				152A39D021905C3E00D9F8E4 /* AttachmentCell.swift in Sources */,
-				43E34BDE28BCB5230035D051 /* MDMDeployment.swift in Sources */,
+				43E34BDE28BCB5230035D051 /* MDMDeployment+Implementation.swift in Sources */,
 				5B5234AF2873266E00FE8D8B /* SMTPSettingsViewModel.swift in Sources */,
 				0033C08120D7F3C600224E61 /* ThreadViewController+ViewModelDelegate.swift in Sources */,
 				4351C2DB1F4441190053381F /* utf8.c in Sources */,
