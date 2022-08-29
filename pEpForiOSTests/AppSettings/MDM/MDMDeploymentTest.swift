@@ -111,30 +111,3 @@ class MDMDeploymentTest: XCTestCase {
         UserDefaults.standard.set(mdmDict, forKey: MDMDeploymentTest.keyMDM)
     }
 }
-
-// MARK: - AccountVerifierProtocol
-
-class TestVerifier {
-    let errorToDeliver: Error?
-
-    init(errorToDeliver: Error?) {
-        self.errorToDeliver = errorToDeliver
-    }
-}
-
-extension TestVerifier: AccountVerifierProtocol {
-    func verify(userName: String,
-                address: String,
-                password: String,
-                imapServer: AccountVerifier.ServerData,
-                smtpServer: AccountVerifier.ServerData,
-                usePEPFolder: Bool,
-                verifiedCallback: @escaping AccountVerifierCallback) {
-        DispatchQueue.global().async {
-            // Note the strong self in a block.
-            // It is assumed that in the tests, the block is _always_ executed
-            // and then discarded.
-            verifiedCallback(self.errorToDeliver)
-        }
-    }
-}
