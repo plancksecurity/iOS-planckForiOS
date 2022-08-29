@@ -430,6 +430,8 @@
 		43D1900E2513734400A36973 /* SettingsViewModelTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43D1900D2513734400A36973 /* SettingsViewModelTest.swift */; };
 		43D2133B2237CABD00C060A1 /* libxml2.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = 43800D981D112A2A00821E34 /* libxml2.tbd */; };
 		43DC6308262DCC8A0017D1BD /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = 43DC6306262DCC8A0017D1BD /* Localizable.strings */; };
+		43DD9ECE28BCCA640082C65D /* MDMDeployment+Constants.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43DD9ECD28BCCA640082C65D /* MDMDeployment+Constants.swift */; };
+		43DD9ECF28BCCAA00082C65D /* MDMDeployment+Constants.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43DD9ECD28BCCA640082C65D /* MDMDeployment+Constants.swift */; };
 		43E15D1C2833CA4D00EDEAB7 /* AccessibilityIdentifier.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43285973282D4E9D00493791 /* AccessibilityIdentifier.swift */; };
 		43E1619120D7B2D6003F1514 /* UpdateThreadListDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43E1619020D7B2D6003F1514 /* UpdateThreadListDelegate.swift */; };
 		43E34BDE28BCB5230035D051 /* MDMDeployment.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43E34BDC28BCB5230035D051 /* MDMDeployment.swift */; };
@@ -1023,6 +1025,7 @@
 		43D1900D2513734400A36973 /* SettingsViewModelTest.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SettingsViewModelTest.swift; sourceTree = "<group>"; };
 		43D213332237C8CA00C060A1 /* libAccountSettingsAdapter.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; path = libAccountSettingsAdapter.a; sourceTree = BUILT_PRODUCTS_DIR; };
 		43DC6307262DCC8A0017D1BD /* de */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = de; path = de.lproj/Localizable.strings; sourceTree = "<group>"; };
+		43DD9ECD28BCCA640082C65D /* MDMDeployment+Constants.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "MDMDeployment+Constants.swift"; sourceTree = "<group>"; };
 		43E1619020D7B2D6003F1514 /* UpdateThreadListDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UpdateThreadListDelegate.swift; sourceTree = "<group>"; };
 		43E34BDC28BCB5230035D051 /* MDMDeployment.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MDMDeployment.swift; sourceTree = "<group>"; };
 		43E34BDD28BCB5230035D051 /* MDMDeploymentProtocol.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MDMDeploymentProtocol.swift; sourceTree = "<group>"; };
@@ -2417,6 +2420,7 @@
 			isa = PBXGroup;
 			children = (
 				43E34BDC28BCB5230035D051 /* MDMDeployment.swift */,
+				43DD9ECD28BCCA640082C65D /* MDMDeployment+Constants.swift */,
 				43E34BDD28BCB5230035D051 /* MDMDeploymentProtocol.swift */,
 				5B7A261B28A2597B0041F4A3 /* MDMAppSettingsProtocol.swift */,
 			);
@@ -3278,6 +3282,7 @@
 				43418E4228BCB97E005CD5E3 /* MDMAppSettingsProtocol.swift in Sources */,
 				434A6C5E25D2A3C200179335 /* BodyCell.swift in Sources */,
 				43BDE05125DE818C00FC0C68 /* references.c in Sources */,
+				43DD9ECF28BCCAA00082C65D /* MDMDeployment+Constants.swift in Sources */,
 				434C1ACF25D412B600F622DB /* TrustManagementViewController.swift in Sources */,
 				434C1B0B25D4295900F622DB /* HtmlToMarkdownSaxParser.swift in Sources */,
 				434C19AE25D3D98E00F622DB /* AccountPickerViewModel.swift in Sources */,
@@ -3706,6 +3711,7 @@
 				152A39CE21905C3E00D9F8E4 /* ComposeHelpers.swift in Sources */,
 				43985D0A2044296D0080FA9A /* OAuthAuthorizer.swift in Sources */,
 				5BBD1D1026270319009D9D8A /* RecipientButton.swift in Sources */,
+				43DD9ECE28BCCA640082C65D /* MDMDeployment+Constants.swift in Sources */,
 				49691B1520D7FD0200CA9367 /* MessageViewModelConfigurable.swift in Sources */,
 				5BE35A9A249139DD00AC605C /* AccountSettingsViewController.swift in Sources */,
 				3705096822CF6AD100CB73D6 /* KeySyncHandshakeViewController.swift in Sources */,
