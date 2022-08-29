@@ -132,7 +132,7 @@ extension TestVerifier: AccountVerifierProtocol {
                 verifiedCallback: @escaping AccountVerifierCallback) {
         DispatchQueue.global().async {
             // Note the strong self in a block.
-            // It is assumed that in the tests, the block is always executed
+            // It is assumed that in the tests, the block is _always_ executed
             // and then discarded.
             verifiedCallback(self.errorToDeliver)
         }
