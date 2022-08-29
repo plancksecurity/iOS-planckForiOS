@@ -2761,7 +2761,6 @@
 		B706C0EF1EA8C378006B2F6C /* StoryboardFiles */ = {
 			isa = PBXGroup;
 			children = (
-				43C88F9E28BCBD2F00670977 /* MDMAccountDeployment.storyboard */,
 				43980E2A1CBD0BC900A7FC3C /* Main.storyboard */,
 				433404CD2379789600E785F1 /* NothingSelected.storyboard */,
 				151DE7E01FC5D3E200CDC273 /* Settings.storyboard */,
@@ -2774,6 +2773,7 @@
 				491B656020CFE0FD00C2ADDA /* Thread.storyboard */,
 				3A2119E624125AC60030C3E4 /* Certificates.storyboard */,
 				5B885DB425E7B0350027DD24 /* Tutorial_iPad.storyboard */,
+				43C88F9E28BCBD2F00670977 /* MDMAccountDeployment.storyboard */,
 			);
 			name = StoryboardFiles;
 			path = ..;
