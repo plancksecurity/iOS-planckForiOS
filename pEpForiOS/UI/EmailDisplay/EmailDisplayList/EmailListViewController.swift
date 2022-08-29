@@ -109,8 +109,11 @@ final class EmailListViewController: UIViewController {
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         navigationController?.setToolbarHidden(false, animated: true)
-        navigationController?.navigationItem.leftBarButtonItem?.accessibilityIdentifier = AccessibilityIdentifier.mailboxesButton
+        navigationController?.navigationItem.leftBarButtonItem?.accessibilityIdentifier = AccessibilityIdentifier.backButton
+        navigationController?.navigationItem.leftBarButtonItem?.isAccessibilityElement = true
         navigationController?.navigationItem.rightBarButtonItem?.accessibilityIdentifier = AccessibilityIdentifier.editButton
+        navigationController?.navigationItem.rightBarButtonItem?.isAccessibilityElement = true
+
         setBackButtonAccessibilityLabel()
         if MiscUtil.isUnitTest() {
             return
@@ -1489,6 +1492,7 @@ extension EmailListViewController {
         let selectAllCellsSelector = #selector(selectAllCells)
         let button = UIBarButtonItem(title: selectAllTitle, style: .plain, target: self, action: selectAllCellsSelector)
         button.accessibilityIdentifier = AccessibilityIdentifier.selectAllButton
+        button.isAccessibilityElement = true
         return button
     }
 
@@ -1497,6 +1501,7 @@ extension EmailListViewController {
         let deselectAllCellsSelector = #selector(deselectAllCells)
         let button = UIBarButtonItem(title: deselectAllTitle, style: .plain, target: self, action: deselectAllCellsSelector)
         button.accessibilityIdentifier = AccessibilityIdentifier.deselectAllButton
+        button.isAccessibilityElement = true
         return button
     }
 

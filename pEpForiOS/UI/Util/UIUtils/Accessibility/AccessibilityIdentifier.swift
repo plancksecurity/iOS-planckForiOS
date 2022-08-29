@@ -11,6 +11,12 @@ import Foundation
 /// Accessibility identifiers shared around the code base.
 class AccessibilityIdentifier {
 
+    static let reply = "Reply"
+    static let forward = "Forward"
+    static let markAsRead = "Mark As Read"
+    static let markAsUnread = "Mark As Unread"
+    static let cancel = "Cancel"
+
     static let pEpSyncSwitch = "pEp Sync Switch"
     static let displayNameTextField = "Display Name TextField"
     static let passwordTextField = "Password TextField"
