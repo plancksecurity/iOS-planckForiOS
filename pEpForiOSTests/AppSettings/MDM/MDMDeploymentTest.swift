@@ -111,3 +111,24 @@ class MDMDeploymentTest: XCTestCase {
         UserDefaults.standard.set(mdmDict, forKey: MDMDeploymentTest.keyMDM)
     }
 }
+
+// MARK: - AccountVerifierProtocol
+
+class TestVerifier {
+    let errorToDeliver: Error?
+
+    init(errorToDeliver: Error?) {
+        self.errorToDeliver = errorToDeliver
+    }
+}
+
+extension TestVerifier: AccountVerifierProtocol {
+    func verify(userName: String,
+                address: String,
+                password: String,
+                imapServer: AccountVerifier.ServerData,
+                smtpServer: AccountVerifier.ServerData,
+                usePEPFolder: Bool,
+                verifiedCallback: @escaping AccountVerifierCallback) {
+    }
+}
