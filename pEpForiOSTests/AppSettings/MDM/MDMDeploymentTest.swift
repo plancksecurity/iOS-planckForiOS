@@ -45,14 +45,12 @@ class MDMDeploymentTest: XCTestCase {
     func testOk() throws {
         XCTAssertFalse(AppSettings.shared.hasBeenMDMDeployed)
         XCTAssertFalse(MDMDeployment().haveAccountToDeploy)
-
-        let (password, mdmDict) = SecretTestDataMDMDeployment.settingsDictDeployable()
-        UserDefaults.standard.set(mdmDict, forKey: MDMDeploymentTest.keyMDM)
-
+        setupDeployableAccountData()
         XCTAssertTrue(MDMDeployment().haveAccountToDeploy)
 
         do {
-            try deployAccount(password: password)
+            try deployAccount(password: "",
+                              accountVerifier: TestVerifier(errorToDeliver: nil))
         } catch {
             XCTFail()
         }
@@ -64,14 +62,12 @@ class MDMDeploymentTest: XCTestCase {
     func testWrongPassword() throws {
         XCTAssertFalse(AppSettings.shared.hasBeenMDMDeployed)
         XCTAssertFalse(MDMDeployment().haveAccountToDeploy)
-
-        let (_, mdmDict) = SecretTestDataMDMDeployment.settingsDictDeployable()
-        UserDefaults.standard.set(mdmDict, forKey: MDMDeploymentTest.keyMDM)
-
+        setupDeployableAccountData()
         XCTAssertTrue(MDMDeployment().haveAccountToDeploy)
 
         do {
-            try deployAccount(password: "surely wrong!")
+            try deployAccount(password: "surely wrong!",
+                              accountVerifier: TestVerifier(errorToDeliver: MDMDeploymentError.authenticationError))
             XCTFail()
         } catch MDMDeploymentError.authenticationError {
             // expected
@@ -103,11 +99,13 @@ class MDMDeploymentTest: XCTestCase {
 
     /// Wrapper around `MDMDeployment.deployAccount` that makes it
     /// a sync method throwing exceptions, easier for tests to use.
-    func deployAccount(password: String) throws {
+    func deployAccount(password: String,
+                       accountVerifier: AccountVerifierProtocol = AccountVerifier()) throws {
         var potentialError: Error?
 
         let expDeployed = expectation(description: "expDeployed")
-        MDMDeployment().deployAccount(password: password) { maybeError in
+        MDMDeployment().deployAccount(password: password,
+                                      accountVerifier: accountVerifier) { maybeError in
             expDeployed.fulfill()
             if let error = maybeError {
                 potentialError = error
