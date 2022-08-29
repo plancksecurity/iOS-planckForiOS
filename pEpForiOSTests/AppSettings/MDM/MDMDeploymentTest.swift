@@ -42,6 +42,47 @@ class MDMDeploymentTest: XCTestCase {
         XCTAssertEqual(accounts.count, 0)
     }
 
+    func testOk() throws {
+        XCTAssertFalse(AppSettings.shared.hasBeenMDMDeployed)
+        XCTAssertFalse(MDMDeployment().haveAccountToDeploy)
+
+        let (password, mdmDict) = SecretTestDataMDMDeployment.settingsDictDeployable()
+        UserDefaults.standard.set(mdmDict, forKey: MDMDeploymentTest.keyMDM)
+
+        XCTAssertTrue(MDMDeployment().haveAccountToDeploy)
+
+        do {
+            try deployAccount(password: password)
+        } catch {
+            XCTFail()
+        }
+
+        let accounts = Account.all()
+        XCTAssertEqual(accounts.count, 1)
+    }
+
+    func testWrongPassword() throws {
+        XCTAssertFalse(AppSettings.shared.hasBeenMDMDeployed)
+        XCTAssertFalse(MDMDeployment().haveAccountToDeploy)
+
+        let (_, mdmDict) = SecretTestDataMDMDeployment.settingsDictDeployable()
+        UserDefaults.standard.set(mdmDict, forKey: MDMDeploymentTest.keyMDM)
+
+        XCTAssertTrue(MDMDeployment().haveAccountToDeploy)
+
+        do {
+            try deployAccount(password: "surely wrong!")
+            XCTFail()
+        } catch MDMDeploymentError.authenticationError {
+            // expected
+        } catch {
+            XCTFail()
+        }
+
+        let accounts = Account.all()
+        XCTAssertEqual(accounts.count, 0)
+    }
+
     // MARK: - Internal Constants
 
     /// - Note: The use of using this hard-coded string as dictionary key is intentional.
