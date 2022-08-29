@@ -437,8 +437,6 @@
 		43E34BE128BCB5230035D051 /* MDMDeploymentProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43E34BDD28BCB5230035D051 /* MDMDeploymentProtocol.swift */; };
 		43E34BE628BCB5640035D051 /* MDMAccountDeploymentViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43E34BE328BCB5640035D051 /* MDMAccountDeploymentViewController.swift */; };
 		43E34BE728BCB5640035D051 /* MDMAccountDeploymentViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43E34BE328BCB5640035D051 /* MDMAccountDeploymentViewController.swift */; };
-		43E34BE828BCB5640035D051 /* MDMAccountDeploymentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43E34BE428BCB5640035D051 /* MDMAccountDeploymentView.swift */; };
-		43E34BE928BCB5640035D051 /* MDMAccountDeploymentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43E34BE428BCB5640035D051 /* MDMAccountDeploymentView.swift */; };
 		43E34BEA28BCB5640035D051 /* MDMAccountDeploymentViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43E34BE528BCB5640035D051 /* MDMAccountDeploymentViewModel.swift */; };
 		43E34BEB28BCB5640035D051 /* MDMAccountDeploymentViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43E34BE528BCB5640035D051 /* MDMAccountDeploymentViewModel.swift */; };
 		43E34BF028BCB6BD0035D051 /* MDMDeploymentTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43E34BEF28BCB6BD0035D051 /* MDMDeploymentTest.swift */; };
@@ -1031,7 +1029,6 @@
 		43E34BDC28BCB5230035D051 /* MDMDeployment.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MDMDeployment.swift; sourceTree = "<group>"; };
 		43E34BDD28BCB5230035D051 /* MDMDeploymentProtocol.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MDMDeploymentProtocol.swift; sourceTree = "<group>"; };
 		43E34BE328BCB5640035D051 /* MDMAccountDeploymentViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MDMAccountDeploymentViewController.swift; sourceTree = "<group>"; };
-		43E34BE428BCB5640035D051 /* MDMAccountDeploymentView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MDMAccountDeploymentView.swift; sourceTree = "<group>"; };
 		43E34BE528BCB5640035D051 /* MDMAccountDeploymentViewModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MDMAccountDeploymentViewModel.swift; sourceTree = "<group>"; };
 		43E34BEF28BCB6BD0035D051 /* MDMDeploymentTest.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MDMDeploymentTest.swift; sourceTree = "<group>"; };
 		43E34BF128BCB6DF0035D051 /* MDMAccountDeploymentViewModelTest.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MDMAccountDeploymentViewModelTest.swift; sourceTree = "<group>"; };
@@ -2413,7 +2410,6 @@
 			isa = PBXGroup;
 			children = (
 				43E34BE328BCB5640035D051 /* MDMAccountDeploymentViewController.swift */,
-				43E34BE428BCB5640035D051 /* MDMAccountDeploymentView.swift */,
 				43E34BE528BCB5640035D051 /* MDMAccountDeploymentViewModel.swift */,
 			);
 			path = MDMAccountDeployment;
@@ -3291,7 +3287,6 @@
 				434C1A9F25D40E4F00F622DB /* UIUtils+Compose.swift in Sources */,
 				434A6C4C25D2A39F00179335 /* ComposeViewModel.swift in Sources */,
 				434C1AA225D40EC200F622DB /* UINavigationController+Extensions.swift in Sources */,
-				43E34BE928BCB5640035D051 /* MDMAccountDeploymentView.swift in Sources */,
 				43BDE04825DE7F6100FC0C68 /* buffer.c in Sources */,
 				434C1AF325D419C100F622DB /* SwipeActionDescriptor.swift in Sources */,
 				434A6C5125D2A3A700179335 /* CellViewModel.swift in Sources */,
@@ -3635,7 +3630,6 @@
 				43E34BDE28BCB5230035D051 /* MDMDeployment.swift in Sources */,
 				5B5234AF2873266E00FE8D8B /* SMTPSettingsViewModel.swift in Sources */,
 				0033C08120D7F3C600224E61 /* ThreadViewController+ViewModelDelegate.swift in Sources */,
-				43E34BE828BCB5640035D051 /* MDMAccountDeploymentView.swift in Sources */,
 				4351C2DB1F4441190053381F /* utf8.c in Sources */,
 				152A39CA21905C3E00D9F8E4 /* DocumentAttachmentPickerViewController.swift in Sources */,
 				152A39CD21905C3E00D9F8E4 /* MediaAttachmentPickerProviderViewModel.swift in Sources */,
