@@ -19,6 +19,7 @@ class MDMAccountDeploymentViewController: UIViewController {
 
     var textFieldPassword: UITextField?
     var buttonVerify: UIButton?
+    var activityIndicator: UIActivityIndicatorView?
 
     // MARK: - Lifecycle
 
@@ -125,6 +126,22 @@ class MDMAccountDeploymentViewController: UIViewController {
     // MARK: - Deploy
 
     func deploy(password: String) {
+        func createActivityIndicator() -> UIActivityIndicatorView {
+            if #available(iOS 13.0, *) {
+                return UIActivityIndicatorView(style: .large)
+            } else {
+                return UIActivityIndicatorView(style: .whiteLarge)
+            }
+        }
+
+        let activityIndicator = createActivityIndicator()
+        activityIndicator.startAnimating()
+        stackView.addArrangedSubview(activityIndicator)
+        self.activityIndicator = activityIndicator
+
+        buttonVerify?.isEnabled = false
+        textFieldPassword?.isEnabled = false
+
         viewModel.deployAccount(password: password) { [weak self] result in
             guard let theSelf = self else {
                 Log.shared.lostMySelf()
