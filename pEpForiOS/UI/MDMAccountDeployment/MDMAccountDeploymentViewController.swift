@@ -80,6 +80,7 @@ class MDMAccountDeploymentViewController: UIViewController {
             let button = UIButton(type: .system)
             button.setTitle(viewModel.verifyButtonTitleText(), for: .normal)
             button.addTarget(self, action: #selector(deployButtonTapped), for: .touchUpInside)
+            button.isEnabled = false
             buttonVerify = button
 
             stackView.addArrangedSubview(accountLabel)
@@ -97,7 +98,17 @@ class MDMAccountDeploymentViewController: UIViewController {
     }
 
     @objc func textFieldDidChange(textField: UITextField) {
-        // TODO
+        guard let verifyButton = buttonVerify else {
+            // No button, nothing to do
+            return
+        }
+
+        let charCount = textField.text?.count ?? 0
+        if charCount > 0 {
+            verifyButton.isEnabled = true
+        } else {
+            verifyButton.isEnabled = false
+        }
     }
 
     // MARK: - Deploy
