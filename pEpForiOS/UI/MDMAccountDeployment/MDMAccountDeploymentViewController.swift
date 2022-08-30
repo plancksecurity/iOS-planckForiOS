@@ -14,9 +14,6 @@ class MDMAccountDeploymentViewController: UIViewController {
     // MARK: - Storyboard
 
     // TODO: Does not exist anymore, at the moment.
-    @IBOutlet weak var messageLabel: UILabel!
-
-    // TODO: Does not exist anymore, at the moment.
     @IBOutlet weak var activityIndicator: UIActivityIndicatorView!
 
     @IBOutlet weak var stackView: UIStackView!
@@ -28,8 +25,9 @@ class MDMAccountDeploymentViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
 
-        // Here we use the font extension.
-        messageLabel.setPEPFont(style: .largeTitle, weight: .regular)
+        // TODO: Here we use the font extension.
+        // messageLabel.setPEPFont(style: .largeTitle, weight: .regular)
+
         configureView()
 
         if #available(iOS 13.0, *) {
@@ -74,10 +72,10 @@ class MDMAccountDeploymentViewController: UIViewController {
 
             switch result {
             case .error(let message):
-                theSelf.messageLabel.text = message
-                // let this view hang there forever
+                // TODO
+                break
             case .success(let message):
-                theSelf.messageLabel.text = message
+                // TODO
                 theSelf.navigationController?.dismiss(animated: true)
             }
         }
