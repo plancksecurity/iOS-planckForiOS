@@ -13,7 +13,10 @@ import pEpIOSToolbox
 class MDMAccountDeploymentViewController: UIViewController {
     // MARK: - Storyboard
 
+    // TODO: Does not exist anymore, at the moment.
     @IBOutlet weak var messageLabel: UILabel!
+
+    // TODO: Does not exist anymore, at the moment.
     @IBOutlet weak var activityIndicator: UIActivityIndicatorView!
 
     let viewModel = MDMAccountDeploymentViewModel()

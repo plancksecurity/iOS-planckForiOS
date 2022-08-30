@@ -16,31 +16,10 @@
                     <view key="view" contentMode="scaleToFill" id="5EZ-qb-Rvc">
                         <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
-                        <subviews>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontForContentSizeCategory="YES" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="7eN-FQ-fcU">
-                                <rect key="frame" x="170.5" y="429.5" width="73.5" height="37"/>
-                                <fontDescription key="fontDescription" style="UICTFontTextStyleTitle0"/>
-                                <nil key="textColor"/>
-                                <nil key="highlightedColor"/>
-                            </label>
-                            <activityIndicatorView opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" style="large" translatesAutoresizingMaskIntoConstraints="NO" id="d7S-Nk-zxj">
-                                <rect key="frame" x="188.5" y="476.5" width="37" height="37"/>
-                            </activityIndicatorView>
-                        </subviews>
                         <viewLayoutGuide key="safeArea" id="vDu-zF-Fre"/>
                         <color key="backgroundColor" systemColor="systemBackgroundColor"/>
-                        <constraints>
-                            <constraint firstItem="7eN-FQ-fcU" firstAttribute="centerX" secondItem="5EZ-qb-Rvc" secondAttribute="centerX" id="1EQ-eG-61F"/>
-                            <constraint firstItem="d7S-Nk-zxj" firstAttribute="centerX" secondItem="5EZ-qb-Rvc" secondAttribute="centerX" id="BgG-9y-xeL"/>
-                            <constraint firstItem="7eN-FQ-fcU" firstAttribute="centerY" secondItem="5EZ-qb-Rvc" secondAttribute="centerY" id="CIz-Gk-2Wt"/>
-                            <constraint firstItem="d7S-Nk-zxj" firstAttribute="top" secondItem="7eN-FQ-fcU" secondAttribute="bottom" constant="10" id="kvM-L0-AUN"/>
-                        </constraints>
                     </view>
                     <navigationItem key="navigationItem" id="IQI-8n-fg2"/>
-                    <connections>
-                        <outlet property="activityIndicator" destination="d7S-Nk-zxj" id="WDw-2C-Tpj"/>
-                        <outlet property="messageLabel" destination="7eN-FQ-fcU" id="pgg-S9-VUo"/>
-                    </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="Ief-a0-LHa" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
