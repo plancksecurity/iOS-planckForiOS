@@ -72,6 +72,9 @@ class MDMAccountDeploymentViewController: UIViewController {
             let passwordInput = UITextField()
             passwordInput.placeholder = viewModel.passwordTextFieldPlaceholderText()
             passwordInput.isSecureTextEntry = true
+            passwordInput.addTarget(self,
+                                    action: #selector(textFieldDidChange),
+                                    for: .editingChanged)
             textFieldPassword = passwordInput
 
             let button = UIButton(type: .system)
@@ -91,6 +94,10 @@ class MDMAccountDeploymentViewController: UIViewController {
     // MARK: - Actions
 
     @IBAction func deployButtonTapped() {
+    }
+
+    @objc func textFieldDidChange(textField: UITextField) {
+        // TODO
     }
 
     // MARK: - Deploy
