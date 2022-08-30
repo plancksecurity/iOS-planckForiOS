@@ -12,6 +12,10 @@ import pEpIOSToolbox
 import MessageModel
 
 class MDMAccountDeploymentViewModel {
+    enum UIState {
+        case initial
+    }
+
     enum Result: Equatable {
         /// An error ocurred during the pre-deployment
         case error(message: String)
@@ -19,6 +23,8 @@ class MDMAccountDeploymentViewModel {
         /// The pre-deployment succeeded
         case success(message: String)
     }
+
+    private(set) var uiState: UIState = .initial
 
     /// Checks for accounts to deploy, and acts on them.
     func deployAccount(password: String,
