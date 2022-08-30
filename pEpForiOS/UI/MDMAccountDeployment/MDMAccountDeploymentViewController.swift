@@ -51,6 +51,11 @@ class MDMAccountDeploymentViewController: UIViewController {
         super.viewWillAppear(animated)
     }
 
+    // MARK: - Actions
+
+    @IBAction func deployButtonTapped() {
+    }
+
     // MARK: - Deploy
 
     func deploy() {
