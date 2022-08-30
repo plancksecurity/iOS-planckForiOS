@@ -18,6 +18,7 @@ class MDMAccountDeploymentViewController: UIViewController {
     let viewModel = MDMAccountDeploymentViewModel()
 
     var textFieldPassword: UITextField?
+    var buttonVerify: UIButton?
 
     // MARK: - Lifecycle
 
@@ -76,6 +77,7 @@ class MDMAccountDeploymentViewController: UIViewController {
             let button = UIButton(type: .system)
             button.setTitle(viewModel.verifyButtonTitleText(), for: .normal)
             button.addTarget(self, action: #selector(deployButtonTapped), for: .touchUpInside)
+            buttonVerify = button
 
             stackView.addArrangedSubview(accountLabel)
             stackView.addArrangedSubview(emailLabel)
