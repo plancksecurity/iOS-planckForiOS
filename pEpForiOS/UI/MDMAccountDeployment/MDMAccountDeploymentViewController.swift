@@ -49,7 +49,8 @@ class MDMAccountDeploymentViewController: UIViewController {
         messageLabel.text = NSLocalizedString("Deploying Accounts",
                                               comment: "MDM deployment message")
 
-        viewModel.deployAccount { [weak self] result in
+        // TODO: Get the password from the user
+        viewModel.deployAccount(password: "") { [weak self] result in
             guard let theSelf = self else {
                 Log.shared.lostMySelf()
                 return

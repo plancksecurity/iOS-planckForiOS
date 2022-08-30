@@ -21,10 +21,10 @@ class MDMAccountDeploymentViewModel {
     }
 
     /// Checks for accounts to deploy, and acts on them.
-    func deployAccount(deployer: MDMDeploymentProtocol = MDMDeployment(),
+    func deployAccount(password: String,
+                       deployer: MDMDeploymentProtocol = MDMDeployment(),
                        callback: @escaping (_ result: Result) -> ()) {
-        // TODO: Use a real password from the user
-        deployer.deployAccount(password: "",
+        deployer.deployAccount(password: password,
                                accountVerifier: AccountVerifier()) { maybeError in
             if let error = maybeError {
                 var message: String
