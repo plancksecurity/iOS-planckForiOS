@@ -95,6 +95,13 @@ class MDMAccountDeploymentViewController: UIViewController {
     // MARK: - Actions
 
     @objc func deployButtonTapped() {
+        guard let textField = textFieldPassword else {
+            Log.shared.errorAndCrash(message: "Deploy button tapped, but no password text field")
+            return
+        }
+
+        let password = textField.text
+        deploy(password: password)
     }
 
     @objc func textFieldDidChange(textField: UITextField) {
@@ -113,9 +120,8 @@ class MDMAccountDeploymentViewController: UIViewController {
 
     // MARK: - Deploy
 
-    func deploy() {
-        // TODO: Get the password from the user
-        viewModel.deployAccount(password: "") { [weak self] result in
+    func deploy(password: String) {
+        viewModel.deployAccount(password: password) { [weak self] result in
             guard let theSelf = self else {
                 Log.shared.lostMySelf()
                 return
