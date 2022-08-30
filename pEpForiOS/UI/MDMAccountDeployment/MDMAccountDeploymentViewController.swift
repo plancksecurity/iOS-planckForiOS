@@ -19,6 +19,8 @@ class MDMAccountDeploymentViewController: UIViewController {
     // TODO: Does not exist anymore, at the moment.
     @IBOutlet weak var activityIndicator: UIActivityIndicatorView!
 
+    @IBOutlet weak var stackView: UIStackView!
+
     let viewModel = MDMAccountDeploymentViewModel()
 
     // MARK: - Lifecycle
@@ -47,9 +49,12 @@ class MDMAccountDeploymentViewController: UIViewController {
 
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        activityIndicator.startAnimating()
-        activityIndicator.isHidden = false
-        messageLabel.text = NSLocalizedString("Deploying Accounts",
+    }
+
+    // MARK: - Deploy
+
+    func deploy() {
+        let _ = NSLocalizedString("Deploying Accounts",
                                               comment: "MDM deployment message")
 
         // TODO: Get the password from the user

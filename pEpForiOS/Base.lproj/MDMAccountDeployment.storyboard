@@ -16,10 +16,22 @@
                     <view key="view" contentMode="scaleToFill" id="5EZ-qb-Rvc">
                         <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <stackView opaque="NO" contentMode="scaleToFill" ambiguous="YES" axis="vertical" translatesAutoresizingMaskIntoConstraints="NO" id="TIa-mM-fH7">
+                                <rect key="frame" x="152" y="348" width="110" height="200"/>
+                            </stackView>
+                        </subviews>
                         <viewLayoutGuide key="safeArea" id="vDu-zF-Fre"/>
                         <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+                        <constraints>
+                            <constraint firstItem="TIa-mM-fH7" firstAttribute="centerX" secondItem="5EZ-qb-Rvc" secondAttribute="centerX" id="Hgo-ax-cvW"/>
+                            <constraint firstItem="TIa-mM-fH7" firstAttribute="centerY" secondItem="5EZ-qb-Rvc" secondAttribute="centerY" id="dUt-MC-I2b"/>
+                        </constraints>
                     </view>
                     <navigationItem key="navigationItem" id="IQI-8n-fg2"/>
+                    <connections>
+                        <outlet property="stackView" destination="TIa-mM-fH7" id="JgD-0v-nmO"/>
+                    </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="Ief-a0-LHa" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
