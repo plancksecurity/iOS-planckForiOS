@@ -49,6 +49,7 @@ class EditableAccountSettingsViewModel {
     public weak var changeDelegate: SettingChangeDelegate?
 
     public private(set) var sections = [AccountSettingsViewModel.Section]()
+
     /// Indicates the number ot transport security options.
     public var numberOfTransportSecurityOptions : Int {
         return transportSecurityViewModel.numberOfOptions
@@ -57,6 +58,12 @@ class EditableAccountSettingsViewModel {
     private var passwordChanged: Bool = false
     private var originalImapPassword: String?
     private var originalSmtpPassword: String?
+    private var appSettings: AppSettingsProtocol
+
+    /// For MDM we have to hide certain settings.
+    /// Unfortunately we still need to track their values in this kind of format because validation/verification code depends on it, in exactly this format.
+    /// This just holds the state of the settings and it's used only for MDM, to get data for verification.
+    private var hiddenSections = [AccountSettingsViewModel.Section]()
 
     /// Retrieves the name of an transport security option.
     /// - Parameter index: The index of the option.
@@ -91,15 +98,20 @@ class EditableAccountSettingsViewModel {
 
     private let transportSecurityViewModel = TransportSecurityViewModel()
 
-    private var accountSettingsHelper: AccountSettingsHelper?
+    private var accountSettingsHelper: AccountSettingsHelper
+
     /// Constructor
     /// - Parameters:
     ///   - account: The account to configure the editable account settings view model.
     ///   - delegate: The delegate to communicate to the View Controller.
-    public init(account: Account, delegate: EditableAccountSettingsDelegate? = nil) {
-         accountSettingsHelper = AccountSettingsHelper(account: account)
+    ///   - appSettings: The default app settings.
+    public init(account: Account,
+                delegate: EditableAccountSettingsDelegate? = nil,
+                appSettings: AppSettingsProtocol = AppSettings.shared) {
         self.account = account
         self.delegate = delegate
+        self.appSettings = appSettings
+        accountSettingsHelper = AccountSettingsHelper(account: account)
         isOAuth2 = account.imapServer?.authMethod == AuthMethod.saslXoauth2.rawValue
         if isOAuth2 {
             if let payload = account.imapServer?.credentials.password ??
@@ -146,11 +158,16 @@ class EditableAccountSettingsViewModel {
                                                                text: value,
                                                                cellIdentifier: row.cellIdentifier)
         sections[indexPath.section].rows[indexPath.row] = rowToReplace
+
+        if appSettings.hasBeenMDMDeployed {
+            hiddenSections[indexPath.section].rows[indexPath.row] = rowToReplace
+        }
         if row.type == .password {
             passwordChanged = true
         }
     }
 
+    /// - Returns: The Client Certificate Management View Model.
     public func clientCertificateManagementViewModel() -> ClientCertificateManagementViewModel {
         let verifiableAccount = VerifiableAccount.verifiableAccount(for: .clientCertificate, usePEPFolderProvider: AppSettings.shared)
         let clientCertificateManagementViewModel = ClientCertificateManagementViewModel(verifiableAccount: verifiableAccount, shouldHideCancelButton: false)
@@ -199,50 +216,57 @@ extension EditableAccountSettingsViewModel: VerifiableAccountDelegate {
             }
         }
     }
-
-    private func postSettingsDidChanged() {
-        let name = Notification.Name.pEpSettingsChanged
-        NotificationCenter.default.post(name:name, object: self, userInfo: nil)
-    }
 }
 
 // MARK: -  Private
 
 extension EditableAccountSettingsViewModel {
+
+    private func postSettingsDidChanged() {
+        let name = Notification.Name.pEpSettingsChanged
+        NotificationCenter.default.post(name:name, object: self, userInfo: nil)
+    }
+
     // MARK: -  Sections
 
     /// Generates and retrieves a section
     /// - Parameter type: The type of the section to generate.
     /// - Returns: The generated section.
     private func generateSection(type: AccountSettingsViewModel.SectionType) -> AccountSettingsViewModel.Section {
-        guard let accountSettingsHelper = accountSettingsHelper else {
-            Log.shared.errorAndCrash("AccountSettingsHelper not found")
-            return AccountSettingsViewModel.Section.init(title: "", rows: [], type: .account)
-        }
         let rows = generateRows(type: type)
         let title = accountSettingsHelper.sectionTitle(type: type)
         return AccountSettingsViewModel.Section(title: title, rows: rows, type: type)
     }
 
     private func generateSections() {
+        if appSettings.hasBeenMDMDeployed {
+            generateSectionsForMDM()
+        } else {
+            AccountSettingsViewModel.SectionType.allCases.forEach { (type) in
+                sections.append(generateSection(type: type))
+            }
+        }
+    }
+
+    /// In MDM, we show less data to the user.
+    private func generateSectionsForMDM() {
+        sections.append(generateSection(type: .account))
+        // As written in a documentation above, we keep a copy of the sections to use it when we validate the input.
         AccountSettingsViewModel.SectionType.allCases.forEach { (type) in
-            sections.append(generateSection(type: type))
+            hiddenSections.append(generateSection(type: type))
         }
     }
 
     // MARK: -  Rows
 
     /// Generate and return the display row.
+    ///
     /// - Parameters:
     ///   - type: The type of row.
     ///   - value: The value of the row.
     /// - Returns: The configured row.
     private func getDisplayRow(type: AccountSettingsViewModel.RowType, value: String) -> AccountSettingsViewModel.DisplayRow {
         let cellIdentifier = AccountSettingsHelper.CellsIdentifiers.settingsDisplayCell
-        guard let accountSettingsHelper = accountSettingsHelper else {
-            Log.shared.errorAndCrash("AccountSettingsHelper not found")
-            return AccountSettingsViewModel.DisplayRow(type: .email, title: "", text: "", cellIdentifier: cellIdentifier)
-        }
         let title = accountSettingsHelper.rowTitle(for: type)
         let shouldShowCaretOrSelect = type != .tranportSecurity
         return AccountSettingsViewModel.DisplayRow(type: type,
@@ -257,10 +281,6 @@ extension EditableAccountSettingsViewModel {
         switch type {
         case .certificate:
             let cellIdentifier = AccountSettingsHelper.CellsIdentifiers.settingsDisplayCell
-            guard let accountSettingsHelper = accountSettingsHelper else {
-                Log.shared.errorAndCrash("AccountSettingsHelper not found")
-                return AccountSettingsViewModel.ActionRow(type: type, title: "", cellIdentifier: cellIdentifier)
-            }
             let title = accountSettingsHelper.rowTitle(for: type)
             return AccountSettingsViewModel.ActionRow(type: type,
                                                       title: title,
@@ -323,10 +343,6 @@ extension EditableAccountSettingsViewModel {
             let emailRow = getDisplayRow(type: .email, value: account.user.address)
             rows.append(emailRow)
 
-            guard let accountSettingsHelper = accountSettingsHelper else {
-                Log.shared.errorAndCrash("AccountSettingsHelper not found")
-                return []
-            }
             if accountSettingsHelper.hasClientCertificate {
                 rows.append(getActionRow(type : .certificate, value: accountSettingsHelper.certificateDescription, action: { [weak self] in
                     guard let me = self else {
@@ -426,6 +442,18 @@ extension EditableAccountSettingsViewModel {
             Log.shared.errorAndCrash("Section not found")
             return nil
         }
+
+        // Our current implementation is improvable: right now we use data from the sections to validate.
+        // When MDM is deployed, there are sections that are not shown, that are ´hidden´.
+        // If it's the case, we get the data to validate from the hidden sections.
+        if appSettings.hasBeenMDMDeployed, sectionIndex != 0 {
+            guard let displayRow = hiddenSections[sectionIndex].rows.filter({$0.type == rowType}).first as? AccountSettingsViewModel.DisplayRow,
+                  !displayRow.text.isEmpty else {
+                return nil
+            }
+            return displayRow.text
+        }
+
         guard let displayRow = sections[sectionIndex].rows.filter({$0.type == rowType}).first as? AccountSettingsViewModel.DisplayRow,
               !displayRow.text.isEmpty else {
             return nil

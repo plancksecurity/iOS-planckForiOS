@@ -1,14 +1,15 @@
 //
-//  MDMAppSettingsProtocol.swift
+//  MDMSettingsProtocol.swift
 //  pEp
 //
-//  Created by Martín Brude on 9/8/22.
+//  Created by Martín Brude on 30/8/22.
 //  Copyright © 2022 p≡p Security S.A. All rights reserved.
 //
 
 /// Here we have a list of settings needed for the initial setup when using MDM.
-/// https://confluence.pep.security/pages/viewpage.action?pageId=10223902 (see Settings meaning and structure)
-public protocol MDMAppSettingsProtocol {
+/// https://confluence.pep.security/pages/viewpage.action?pageId=10223902
+/// (see Settings meaning and structure)
+public protocol MDMSettingsProtocol {
 
     /// Indicate if the app has been deployed via MDM
     var hasBeenMDMDeployed: Bool { get }
@@ -18,7 +19,7 @@ public protocol MDMAppSettingsProtocol {
 
     /// Provide Extra Keys.
     ///
-    /// To remove them just set an empty array. 
+    /// To remove them just set an empty array.
     var mdmPEPExtraKeys: [String] { get }
 
     /// Enable or disable the use of trustwords.
@@ -118,4 +119,6 @@ public protocol MDMAppSettingsProtocol {
     /// After the sync is done it should be set to false again.
     /// Default is false.
     var mdmPEPSyncNewDevicesEnabled: Bool { get }
+
 }
+
