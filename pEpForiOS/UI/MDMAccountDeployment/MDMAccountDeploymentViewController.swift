@@ -94,7 +94,7 @@ class MDMAccountDeploymentViewController: UIViewController {
 
     // MARK: - Actions
 
-    @IBAction func deployButtonTapped() {
+    @objc func deployButtonTapped() {
     }
 
     @objc func textFieldDidChange(textField: UITextField) {
