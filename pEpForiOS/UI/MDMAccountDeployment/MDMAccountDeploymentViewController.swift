@@ -126,6 +126,9 @@ class MDMAccountDeploymentViewController: UIViewController {
     // MARK: - Deploy
 
     func deploy(password: String) {
+        buttonVerify?.isEnabled = false
+        textFieldPassword?.isEnabled = false
+
         func createActivityIndicator() -> UIActivityIndicatorView {
             if #available(iOS 13.0, *) {
                 return UIActivityIndicatorView(style: .large)
@@ -138,9 +141,6 @@ class MDMAccountDeploymentViewController: UIViewController {
         activityIndicator.startAnimating()
         stackView.addArrangedSubview(activityIndicator)
         self.activityIndicator = activityIndicator
-
-        buttonVerify?.isEnabled = false
-        textFieldPassword?.isEnabled = false
 
         viewModel.deployAccount(password: password) { [weak self] result in
             guard let theSelf = self else {
