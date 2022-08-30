@@ -66,7 +66,7 @@ class MDMAccountDeploymentViewController: UIViewController {
             passwordInput.placeholder = viewModel.passwordTextFieldPlaceholderText()
             passwordInput.isSecureTextEntry = true
 
-            let button = UIButton()
+            let button = UIButton(type: .system)
             button.setTitle(viewModel.verifyButtonTitleText(), for: .normal)
             button.addTarget(self, action: #selector(deployButtonTapped), for: .touchUpInside)
 
