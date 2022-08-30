@@ -22,10 +22,7 @@ class MDMAccountDeploymentViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
 
-        // TODO: Here we use the font extension.
-        // messageLabel.setPEPFont(style: .largeTitle, weight: .regular)
-
-        configureView()
+        setupUI()
 
         if #available(iOS 13.0, *) {
             // Prevent the user to be able to "swipe down" this VC
@@ -44,6 +41,15 @@ class MDMAccountDeploymentViewController: UIViewController {
 
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
+    }
+
+    // MARK: - Build the UI
+
+    func setupUI() {
+        // TODO: Here we use the font extension.
+        // messageLabel.setPEPFont(style: .largeTitle, weight: .regular)
+
+        configureView()
     }
 
     // MARK: - Actions
