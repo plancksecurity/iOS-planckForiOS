@@ -41,6 +41,10 @@ public class FolderViewModel {
         return Account.countAllForUnified() > 1
     }
 
+    public var shouldShowAddAccountButton: Bool {
+        return !appSettings.hasBeenMDMDeployed
+    }
+
     public var folderForEmailListView: DisplayableFolderProtocol? {
         guard let folderSectionViewModel = items.first, folderSectionViewModel.count > 0 else {
             // No folders to show
