@@ -46,14 +46,28 @@ class MDMAccountDeploymentViewController: UIViewController {
     // MARK: - Build the UI
 
     func setupUI() {
-        // TODO: Here we use the font extension.
-        // messageLabel.setPEPFont(style: .largeTitle, weight: .regular)
-
         stackView.removeArrangedSubviews()
 
         switch viewModel.uiState {
         case .initial:
-            break
+            guard let accountData = viewModel.accountData() else {
+                break
+            }
+            let accountLabel = UILabel()
+            accountLabel.text = "\(accountData.accountName) (\(accountData.email))"
+            accountLabel.setPEPFont(style: .largeTitle, weight: .regular)
+
+            let passwordInput = UITextField()
+            passwordInput.placeholder = viewModel.passwordTextFieldPlaceholderText()
+            passwordInput.isSecureTextEntry = true
+
+            let button = UIButton()
+            button.setTitle(viewModel.verifyButtonTitleText(), for: .normal)
+            button.addTarget(self, action: #selector(deployButtonTapped), for: .touchUpInside)
+
+            stackView.addArrangedSubview(accountLabel)
+            stackView.addArrangedSubview(passwordInput)
+            stackView.addArrangedSubview(button)
         }
 
         configureView()

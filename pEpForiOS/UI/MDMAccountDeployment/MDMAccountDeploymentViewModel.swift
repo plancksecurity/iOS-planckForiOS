@@ -16,6 +16,11 @@ class MDMAccountDeploymentViewModel {
         case initial
     }
 
+    struct AccountData {
+        let accountName: String
+        let email: String
+    }
+
     enum Result: Equatable {
         /// An error ocurred during the pre-deployment
         case error(message: String)
@@ -25,6 +30,19 @@ class MDMAccountDeploymentViewModel {
     }
 
     private(set) var uiState: UIState = .initial
+
+    /// - Returns: `AccountData` for the UI to display.
+    func accountData() -> AccountData? {
+        do {
+            if let accountData = try MDMDeployment().accountToDeploy() {
+                return AccountData(accountName: accountData.accountName, email: accountData.email)
+            } else {
+                return nil
+            }
+        } catch {
+            return nil
+        }
+    }
 
     /// Checks for accounts to deploy, and acts on them.
     func deployAccount(password: String,
@@ -60,5 +78,17 @@ class MDMAccountDeploymentViewModel {
                 callback(.success(message: message))
             }
         }
+    }
+
+    // MARK: - Localized Strings
+
+    func passwordTextFieldPlaceholderText() -> String {
+        return NSLocalizedString("Password",
+                                 comment: "Placeholder for the password for MDM deployment")
+    }
+
+    func verifyButtonTitleText() -> String {
+        return NSLocalizedString("Verify",
+                                 comment: "Title text for MDM deployment button")
     }
 }
