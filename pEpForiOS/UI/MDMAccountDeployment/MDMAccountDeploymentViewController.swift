@@ -100,7 +100,11 @@ class MDMAccountDeploymentViewController: UIViewController {
             return
         }
 
-        let password = textField.text
+        guard let password = textField.text else {
+            Log.shared.errorAndCrash(message: "Deploy button tapped, but empty password text field")
+            return
+        }
+
         deploy(password: password)
     }
 
