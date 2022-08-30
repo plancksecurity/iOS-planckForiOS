@@ -6,4 +6,4 @@
 //  Copyright © 2018 p≡p Security S.A. All rights reserved.
 //
 
-public protocol AppSettingsProtocol: UserAppSettingsProtocol, MDMAppSettingsProtocol { }
+public protocol AppSettingsProtocol: UserSettingsProtocol, MDMSettingsProtocol { }

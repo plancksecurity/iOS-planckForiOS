@@ -12,7 +12,7 @@ import MessageModelForAppExtensions
 import MessageModel
 #endif
 
-public protocol UserAppSettingsProtocol {
+public protocol UserSettingsProtocol {
 
     /// Indicates if keySync is enabled
     var keySyncEnabled: Bool { get set }

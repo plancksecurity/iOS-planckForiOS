@@ -11,7 +11,6 @@ import XCTest
 @testable import pEpForiOS
 @testable import MessageModel
 
-
 class MockAppSettings: AppSettingsProtocol {
 
     var acceptedLanguagesCodes: [String] = ["de", "en"]

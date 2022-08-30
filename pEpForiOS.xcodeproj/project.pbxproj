@@ -473,10 +473,14 @@
 		5B102FB92658008200A758D2 /* MessageHeaderCellViewModelTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5B102FB82658008200A758D2 /* MessageHeaderCellViewModelTest.swift */; };
 		5B1C0E1823FC26FB00F977C1 /* TrustManagementTableViewCellProtocols.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5B1C0E1723FC26FB00F977C1 /* TrustManagementTableViewCellProtocols.swift */; };
 		5B1C1432259A25B2006DB2A1 /* UILabel+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5B1C1431259A25B2006DB2A1 /* UILabel+Extension.swift */; };
-		5B21989728BDFAB200668445 /* UserAppSettingsProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5B21989628BDFAB200668445 /* UserAppSettingsProtocol.swift */; };
-		5B21989828BDFAC700668445 /* UserAppSettingsProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5B21989628BDFAB200668445 /* UserAppSettingsProtocol.swift */; };
-		5B21989A28BDFAE600668445 /* MDMAppSettingsProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5B21989928BDFAE600668445 /* MDMAppSettingsProtocol.swift */; };
-		5B21989B28BDFBA200668445 /* MDMAppSettingsProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5B21989928BDFAE600668445 /* MDMAppSettingsProtocol.swift */; };
+		5B21989728BDFAB200668445 /* UserSettingsProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5B21989628BDFAB200668445 /* UserSettingsProtocol.swift */; };
+		5B21989828BDFAC700668445 /* UserSettingsProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5B21989628BDFAB200668445 /* UserSettingsProtocol.swift */; };
+		5B21989A28BDFAE600668445 /* MDMSettingsProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5B21989928BDFAE600668445 /* MDMSettingsProtocol.swift */; };
+		5B21989B28BDFBA200668445 /* MDMSettingsProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5B21989928BDFAE600668445 /* MDMSettingsProtocol.swift */; };
+		5B2198A028BE360000668445 /* AppSettings+MDMSettingsProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5B21989F28BE360000668445 /* AppSettings+MDMSettingsProtocol.swift */; };
+		5B2198A128BE39F000668445 /* AppSettings+MDMSettingsProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5B21989F28BE360000668445 /* AppSettings+MDMSettingsProtocol.swift */; };
+		5B2198A328BE3A6500668445 /* AppSettings+UserSettingsProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5B2198A228BE3A6500668445 /* AppSettings+UserSettingsProtocol.swift */; };
+		5B2198A428BE3A7400668445 /* AppSettings+UserSettingsProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5B2198A228BE3A6500668445 /* AppSettings+UserSettingsProtocol.swift */; };
 		5B2F7E63240D25CF004DDFA2 /* TutorialStepViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5B2F7E62240D25CF004DDFA2 /* TutorialStepViewController.swift */; };
 		5B394E1323ED5673006A1FC0 /* TrustManagementTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5B394E1223ED5673006A1FC0 /* TrustManagementTableViewCell.swift */; };
 		5B3B019124B46CFC00FBB4B5 /* UILayout+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5B3B019024B46CFC00FBB4B5 /* UILayout+Extension.swift */; };
@@ -1071,8 +1075,10 @@
 		5B102FB82658008200A758D2 /* MessageHeaderCellViewModelTest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MessageHeaderCellViewModelTest.swift; sourceTree = "<group>"; };
 		5B1C0E1723FC26FB00F977C1 /* TrustManagementTableViewCellProtocols.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TrustManagementTableViewCellProtocols.swift; sourceTree = "<group>"; };
 		5B1C1431259A25B2006DB2A1 /* UILabel+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UILabel+Extension.swift"; sourceTree = "<group>"; };
-		5B21989628BDFAB200668445 /* UserAppSettingsProtocol.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserAppSettingsProtocol.swift; sourceTree = "<group>"; };
-		5B21989928BDFAE600668445 /* MDMAppSettingsProtocol.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MDMAppSettingsProtocol.swift; sourceTree = "<group>"; };
+		5B21989628BDFAB200668445 /* UserSettingsProtocol.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserSettingsProtocol.swift; sourceTree = "<group>"; };
+		5B21989928BDFAE600668445 /* MDMSettingsProtocol.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MDMSettingsProtocol.swift; sourceTree = "<group>"; };
+		5B21989F28BE360000668445 /* AppSettings+MDMSettingsProtocol.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "AppSettings+MDMSettingsProtocol.swift"; sourceTree = "<group>"; };
+		5B2198A228BE3A6500668445 /* AppSettings+UserSettingsProtocol.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "AppSettings+UserSettingsProtocol.swift"; sourceTree = "<group>"; };
 		5B2F7E62240D25CF004DDFA2 /* TutorialStepViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TutorialStepViewController.swift; sourceTree = "<group>"; };
 		5B394E1223ED5673006A1FC0 /* TrustManagementTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TrustManagementTableViewCell.swift; sourceTree = "<group>"; };
 		5B3B019024B46CFC00FBB4B5 /* UILayout+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UILayout+Extension.swift"; sourceTree = "<group>"; };
@@ -2401,7 +2407,7 @@
 		43D0702D2133DB3F0013B120 /* AppSettings */ = {
 			isa = PBXGroup;
 			children = (
-				5B21989C28BDFD8F00668445 /* UserAppSettingsProtocol */,
+				5B21989C28BDFD8F00668445 /* UserSettingsProtocol */,
 				43E366882836254300C4A4CB /* MDM */,
 				43D070302133DB920013B120 /* AppSettingsProtocol.swift */,
 				43D070322133DC500013B120 /* AppSettings.swift */,
@@ -2423,9 +2429,10 @@
 		43E366882836254300C4A4CB /* MDM */ = {
 			isa = PBXGroup;
 			children = (
+				5B21989F28BE360000668445 /* AppSettings+MDMSettingsProtocol.swift */,
 				43E366892836254A00C4A4CB /* MDMPredeployedProtocol.swift */,
 				43E3668B28362D4F00C4A4CB /* MDMPredeployed.swift */,
-				5B21989928BDFAE600668445 /* MDMAppSettingsProtocol.swift */,
+				5B21989928BDFAE600668445 /* MDMSettingsProtocol.swift */,
 			);
 			path = MDM;
 			sourceTree = "<group>";
@@ -2637,12 +2644,13 @@
 			path = Notifications;
 			sourceTree = "<group>";
 		};
-		5B21989C28BDFD8F00668445 /* UserAppSettingsProtocol */ = {
+		5B21989C28BDFD8F00668445 /* UserSettingsProtocol */ = {
 			isa = PBXGroup;
 			children = (
-				5B21989628BDFAB200668445 /* UserAppSettingsProtocol.swift */,
+				5B2198A228BE3A6500668445 /* AppSettings+UserSettingsProtocol.swift */,
+				5B21989628BDFAB200668445 /* UserSettingsProtocol.swift */,
 			);
-			path = UserAppSettingsProtocol;
+			path = UserSettingsProtocol;
 			sourceTree = "<group>";
 		};
 		5B56E35D25E7C39D00B0AB42 /* iPhone */ = {
@@ -3305,6 +3313,7 @@
 				434A6C5125D2A3A700179335 /* CellViewModel.swift in Sources */,
 				434C19D125D3E1BF00F622DB /* DocumentAttachmentPickerViewModel.swift in Sources */,
 				439C633D2611E55C001893BD /* NavigationControllerWithAppearance.swift in Sources */,
+				5B2198A428BE3A7400668445 /* AppSettings+UserSettingsProtocol.swift in Sources */,
 				434A6C5225D2A3AA00179335 /* TextViewContainingTableViewCell.swift in Sources */,
 				5BD3C107282C13CA00701B94 /* UIUtils.swift in Sources */,
 				434A6C6625D2A3CF00179335 /* RecipientCell.swift in Sources */,
@@ -3321,6 +3330,7 @@
 				43BDE05425DE81D300FC0C68 /* utf8.c in Sources */,
 				434C19C725D3E11100F622DB /* SuggestTableViewController.swift in Sources */,
 				439C62D82611D41F001893BD /* Appearance.swift in Sources */,
+				5B2198A128BE39F000668445 /* AppSettings+MDMSettingsProtocol.swift in Sources */,
 				434C1ADB25D413AE00F622DB /* IdentityImageTool.swift in Sources */,
 				434C19EA25D3E52F00F622DB /* Account+Extension.swift in Sources */,
 				5B3C0DFB28368BAA001B7A82 /* ErrorBannerView.swift in Sources */,
@@ -3336,7 +3346,7 @@
 				434C1B4025D433D600F622DB /* HtmlTagParser.swift in Sources */,
 				434A6C7125D2A3DF00179335 /* RecipientTextViewModel.swift in Sources */,
 				434C19AB25D3D92D00F622DB /* AccountPickerView.swift in Sources */,
-				5B21989828BDFAC700668445 /* UserAppSettingsProtocol.swift in Sources */,
+				5B21989828BDFAC700668445 /* UserSettingsProtocol.swift in Sources */,
 				434C1AE125D4141800F622DB /* TrustManagementTableViewCellProtocols.swift in Sources */,
 				5BCD37DD269F3CBF0052A030 /* UIImageView+ContactImage.swift in Sources */,
 				439C659426135008001893BD /* UIView+ActivityIndicator.swift in Sources */,
@@ -3387,7 +3397,7 @@
 				434C1AF025D416AF00F622DB /* Capability.swift in Sources */,
 				434A6C6225D2A3C800179335 /* BodyCellViewModel.swift in Sources */,
 				434A6C7C25D2A3F100179335 /* WrappedBccViewModel.swift in Sources */,
-				5B21989B28BDFBA200668445 /* MDMAppSettingsProtocol.swift in Sources */,
+				5B21989B28BDFBA200668445 /* MDMSettingsProtocol.swift in Sources */,
 				434C1A0625D3F0AD00F622DB /* AXHTMLParser.m in Sources */,
 				434C1A7A25D40A9800F622DB /* UIViewController+Extension.swift in Sources */,
 				434C19FD25D3E6BA00F622DB /* String+HTML.swift in Sources */,
@@ -3549,6 +3559,7 @@
 				49228A5320D3D29900A51E9D /* ThreadViewController+SegueHandlerType.swift in Sources */,
 				43269D3E2552B2BA001E18C6 /* Attachment+DefaultFilename.swift in Sources */,
 				152A39C921905C3E00D9F8E4 /* Message+ComposeUtils.swift in Sources */,
+				5B2198A328BE3A6500668445 /* AppSettings+UserSettingsProtocol.swift in Sources */,
 				1521B797241BE026000EAE57 /* UIUtils+ActivityIndicator.swift in Sources */,
 				438052891FE3E24400ACF729 /* OAuth2AuthorizationProtocol.swift in Sources */,
 				B71052732417D0B7007148E8 /* AccountTypeSelectorTextCollectionViewCell.swift in Sources */,
@@ -3573,6 +3584,7 @@
 				00AEB2F620DBA7DA00DA185A /* NeedsRefreshDelegate.swift in Sources */,
 				1526597821623637006A78DF /* SuggestTableViewController.swift in Sources */,
 				1554755F2137F6F8005A52D0 /* SwipeActionDescriptor.swift in Sources */,
+				5B2198A028BE360000668445 /* AppSettings+MDMSettingsProtocol.swift in Sources */,
 				15B220521FC2DAE200CA52BA /* InfoPlist+pEpStrings.swift in Sources */,
 				496355B120ECEA2900AA4387 /* ThreadedEmailViewModel+EmailDisplayDelegate.swift in Sources */,
 				43D070332133DC500013B120 /* AppSettings.swift in Sources */,
@@ -3610,7 +3622,7 @@
 				5B102FAB2652A1F400A758D2 /* MessageHeaderCell.swift in Sources */,
 				5BBE80CF24B733C0008DE0E5 /* AccountSettingsTableViewCell.swift in Sources */,
 				A1B50A841CD26FF100B1A997 /* Constants.swift in Sources */,
-				5B21989A28BDFAE600668445 /* MDMAppSettingsProtocol.swift in Sources */,
+				5B21989A28BDFAE600668445 /* MDMSettingsProtocol.swift in Sources */,
 				5BF90036262F2517005B08D4 /* NSNotificationName+Settings.swift in Sources */,
 				37F615CF238BE584001AAE48 /* ManualAccountSetupView.swift in Sources */,
 				5B3B019124B46CFC00FBB4B5 /* UILayout+Extension.swift in Sources */,
@@ -3637,7 +3649,7 @@
 				15874BC72127493E00A3A4A6 /* SettingDefaultAccountTableViewController.swift in Sources */,
 				4388A0E22008F813008CB98D /* (null) in Sources */,
 				5BCD37D2269F236D0052A030 /* CornerRadiusView.swift in Sources */,
-				5B21989728BDFAB200668445 /* UserAppSettingsProtocol.swift in Sources */,
+				5B21989728BDFAB200668445 /* UserSettingsProtocol.swift in Sources */,
 				152A39D021905C3E00D9F8E4 /* AttachmentCell.swift in Sources */,
 				5B5234AF2873266E00FE8D8B /* SMTPSettingsViewModel.swift in Sources */,
 				0033C08120D7F3C600224E61 /* ThreadViewController+ViewModelDelegate.swift in Sources */,
