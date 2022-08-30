@@ -91,4 +91,10 @@ class MDMAccountDeploymentViewModel {
         return NSLocalizedString("Verify",
                                  comment: "Title text for MDM deployment button")
     }
+
+    // TODO: Is this used?
+    func deployingAccountsTitleText() -> String {
+        return NSLocalizedString("Deploying Accounts",
+                                 comment: "MDM deployment message")
+    }
 }

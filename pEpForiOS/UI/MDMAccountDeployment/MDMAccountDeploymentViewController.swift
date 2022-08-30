@@ -81,9 +81,6 @@ class MDMAccountDeploymentViewController: UIViewController {
     // MARK: - Deploy
 
     func deploy() {
-        let _ = NSLocalizedString("Deploying Accounts",
-                                              comment: "MDM deployment message")
-
         // TODO: Get the password from the user
         viewModel.deployAccount(password: "") { [weak self] result in
             guard let theSelf = self else {
