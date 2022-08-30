@@ -13,9 +13,6 @@ import pEpIOSToolbox
 class MDMAccountDeploymentViewController: UIViewController {
     // MARK: - Storyboard
 
-    // TODO: Does not exist anymore, at the moment.
-    @IBOutlet weak var activityIndicator: UIActivityIndicatorView!
-
     @IBOutlet weak var stackView: UIStackView!
 
     let viewModel = MDMAccountDeploymentViewModel()
@@ -66,9 +63,6 @@ class MDMAccountDeploymentViewController: UIViewController {
                 Log.shared.lostMySelf()
                 return
             }
-
-            theSelf.activityIndicator.stopAnimating()
-            theSelf.activityIndicator.isHidden = true
 
             switch result {
             case .error(let message):
