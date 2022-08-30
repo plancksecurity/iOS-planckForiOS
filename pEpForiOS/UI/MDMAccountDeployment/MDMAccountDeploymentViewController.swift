@@ -17,7 +17,7 @@ class MDMAccountDeploymentViewController: UIViewController {
 
     let viewModel = MDMAccountDeploymentViewModel()
 
-    var passwordTextField: UITextField?
+    var textFieldPassword: UITextField?
 
     // MARK: - Lifecycle
 
@@ -44,7 +44,7 @@ class MDMAccountDeploymentViewController: UIViewController {
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
 
-        if let passwordTF = passwordTextField {
+        if let passwordTF = textFieldPassword {
             passwordTF.becomeFirstResponder()
         }
     }
@@ -71,7 +71,7 @@ class MDMAccountDeploymentViewController: UIViewController {
             let passwordInput = UITextField()
             passwordInput.placeholder = viewModel.passwordTextFieldPlaceholderText()
             passwordInput.isSecureTextEntry = true
-            passwordTextField = passwordInput
+            textFieldPassword = passwordInput
 
             let button = UIButton(type: .system)
             button.setTitle(viewModel.verifyButtonTitleText(), for: .normal)
