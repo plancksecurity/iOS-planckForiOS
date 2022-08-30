@@ -53,9 +53,14 @@ class MDMAccountDeploymentViewController: UIViewController {
             guard let accountData = viewModel.accountData() else {
                 break
             }
+
             let accountLabel = UILabel()
-            accountLabel.text = "\(accountData.accountName) (\(accountData.email))"
-            accountLabel.setPEPFont(style: .largeTitle, weight: .regular)
+            accountLabel.text = accountData.accountName
+            accountLabel.setPEPFont(style: .title1, weight: .regular)
+
+            let emailLabel = UILabel()
+            emailLabel.text = accountData.email
+            emailLabel.setPEPFont(style: .title1, weight: .regular)
 
             let passwordInput = UITextField()
             passwordInput.placeholder = viewModel.passwordTextFieldPlaceholderText()
@@ -66,6 +71,7 @@ class MDMAccountDeploymentViewController: UIViewController {
             button.addTarget(self, action: #selector(deployButtonTapped), for: .touchUpInside)
 
             stackView.addArrangedSubview(accountLabel)
+            stackView.addArrangedSubview(emailLabel)
             stackView.addArrangedSubview(passwordInput)
             stackView.addArrangedSubview(button)
         }
