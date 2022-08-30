@@ -29,6 +29,9 @@ class FolderTableViewController: UITableViewController {
                                                selector: #selector(pEpSettingsChanged),
                                                name: .pEpSettingsChanged,
                                                object: nil)
+
+        // TODO: Remove this fake
+        FakeAccountData().setupDeployableAccountData()
     }
 
     override func viewWillAppear(_ animated: Bool) {
