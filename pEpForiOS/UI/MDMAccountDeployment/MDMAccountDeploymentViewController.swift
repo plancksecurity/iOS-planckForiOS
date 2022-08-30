@@ -49,6 +49,11 @@ class MDMAccountDeploymentViewController: UIViewController {
         // TODO: Here we use the font extension.
         // messageLabel.setPEPFont(style: .largeTitle, weight: .regular)
 
+        switch viewModel.uiState {
+        case .initial:
+            break
+        }
+
         configureView()
     }
 
