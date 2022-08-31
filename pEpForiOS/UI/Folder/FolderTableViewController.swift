@@ -72,8 +72,6 @@ class FolderTableViewController: UITableViewController {
 
     private func setup() {
         navigationController?.setToolbarHidden(false, animated: false)
-        folderVM = FolderViewModel()
-        folderVM?.delegate = self
         tableView.reloadData()
     }
 
@@ -83,6 +81,11 @@ class FolderTableViewController: UITableViewController {
     }
 
     private func initialConfig() {
+        folderVM = FolderViewModel()
+        folderVM?.delegate = self
+        if let vm = folderVM {
+            addAccountButton.isHidden = !vm.shouldShowAddAccountButton
+        }
         title = NSLocalizedString("Mailboxes", comment: "FoldersView navigationbar title")
         tableView.estimatedRowHeight = 44.0
         tableView.rowHeight = UITableView.automaticDimension
@@ -109,9 +112,6 @@ class FolderTableViewController: UITableViewController {
         addAccountButton.titleLabel?.setPEPFont(style: .body, weight: .regular)
         addAccountButton.accessibilityTraits = .button
         addAccountButton.accessibilityIdentifier = AccessibilityIdentifier.addAccountButton
-        if AppSettings.shared.hasBeenMDMDeployed {
-            addAccountButton.isHidden = true
-        }
     }
 
     // MARK: - Action
