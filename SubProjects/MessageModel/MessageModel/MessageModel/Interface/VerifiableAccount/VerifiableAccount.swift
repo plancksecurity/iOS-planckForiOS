@@ -43,6 +43,7 @@ extension VerifiableAccount {
 }
 
 public class VerifiableAccount: VerifiableAccountProtocol {
+    private var timeoutVerificationQueue = OperationQueue()
     private var imapVerifier = VerifiableAccountIMAP()
     private var smtpVerifier = VerifiableAccountSMTP()
     private let prepareAccountForSavingService = PrepareAccountForSavingService()
@@ -503,27 +504,30 @@ extension VerifiableAccount {
         if MiscUtil.isUnitTest() {
             return
         }
-        let group = DispatchGroup()
-        group.enter()
-        let queueLabel = "security.pep.accountVerification"
-        DispatchQueue(label: queueLabel, qos: .default).asyncAfter(deadline: .now() + seconds) { [weak self] in
-            defer { group.leave() }
+
+        DispatchQueue(label: "VerificationTimeoutQueue", qos: .default)
+            .asyncAfter(deadline: .now() + seconds) { [weak self] in
             guard let me = self else {
-                //The account has been verified.
+                // Self might be gone, nothing to do
                 return
             }
-            me.imapVerifier.stop()
-            me.smtpVerifier.stop()
+            me.timeoutVerificationQueue.addOperation {
+                guard let me = self else {
+                    //The account has been verified.
+                    return
+                }
+                me.imapVerifier.stop()
+                me.smtpVerifier.stop()
 
-            let smtpError = SmtpSendError.connectionTimedOut(#function, "Timeout")
-            me.smtpResult = .failure(smtpError)
-            let imapError = ImapSyncOperationError.connectionTimedOut(#function)
-            me.imapResult = .failure(imapError)
-            me.checkSuccess()
-            me.imapResult = nil
-            me.smtpResult = nil
+                let smtpError = SmtpSendError.connectionTimedOut(#function, "Timeout")
+                me.smtpResult = .failure(smtpError)
+                let imapError = ImapSyncOperationError.connectionTimedOut(#function)
+                me.imapResult = .failure(imapError)
+                me.checkSuccess()
+                me.imapResult = nil
+                me.smtpResult = nil
+            }
         }
-        group.wait()
     }
 }
 
@@ -532,6 +536,7 @@ extension VerifiableAccount {
 extension VerifiableAccount: VerifiableAccountIMAPDelegate {
     func verified(verifier: VerifiableAccountIMAP,
                   result: Result<Void, Error>) {
+        timeoutVerificationQueue.cancelAllOperations()
         syncQueue.async { [weak self] in
             self?.imapResult = result
             self?.checkSuccess()

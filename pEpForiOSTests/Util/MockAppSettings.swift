@@ -11,10 +11,76 @@ import XCTest
 @testable import pEpForiOS
 @testable import MessageModel
 
-
 class MockAppSettings: AppSettingsProtocol {
 
     var acceptedLanguagesCodes: [String] = ["de", "en"]
+
+    var keySyncEnabled: Bool = true
+
+    var usePEPFolderEnabled: Bool = true
+
+    var extraKeysEditable: Bool = true
+
+    var unencryptedSubjectEnabled: Bool = true
+
+    var threadedViewEnabled: Bool = true
+
+    var passiveModeEnabled: Bool = true
+
+    var defaultAccount: String? = "some@account.com"
+
+    var lastKnownDeviceGroupState: DeviceGroupState = .grouped
+
+    var shouldShowTutorialWizard: Bool = false
+
+    var userHasBeenAskedForContactAccessPermissions: Bool = false
+
+    var unsecureReplyWarningEnabled: Bool = false
+
+    var verboseLogginEnabled: Bool = false
+
+    //MARK: - MDM
+
+    var hasBeenMDMDeployed: Bool = false
+
+    var mdmPEPPrivacyProtectionEnabled: Bool = false
+
+    var mdmPEPExtraKeys: [String] = []
+
+    var mdmPEPTrustwordsEnabled: Bool = false
+
+    var mdmUnsecureDeliveryWarningEnabled: Bool = false
+
+    var mdmPEPSyncFolderEnabled: Bool = false
+
+    var mdmDebugLoggingEnabled: Bool = false
+
+    var mdmAccountDisplayCount: Int = 1
+
+    var mdmMaxPushFolders: Int = 1
+
+    var mdmCompositionSenderName: String? = ""
+
+    var mdmCompositionSignatureEnabled: Bool = false
+
+    var mdmCompositionSignature: String? = ""
+
+    var mdmCompositionSignatureBeforeQuotedMessage: String? = ""
+
+    var mdmDefaultQuotedTextShown: Bool = false
+
+    var mdmAccountDefaultFolders: [String : String] = ["":""]
+
+    var mdmRemoteSearchEnabled: Bool = false
+
+    var mdmAccountRemoteSearchNumResults: Int = 0
+
+    var mdmPEPSaveEncryptedOnServerEnabled: Bool = false
+
+    var mdmPEPSyncAccountEnabled: Bool = false
+
+    var mdmPEPSyncNewDevicesEnabled: Bool = false
+
 
     var removeFolderViewCollapsedStateOfAccountWithExpectation: XCTestExpectation?
     // getters
@@ -40,29 +106,6 @@ class MockAppSettings: AppSettingsProtocol {
         self.setAccountCollapsedStateExpectation = setAccountCollapsedStateExpectation
     }
 
-    var keySyncEnabled: Bool = true
-
-    var usePEPFolderEnabled: Bool = true
-
-    var extraKeysEditable: Bool = true
-
-    var unencryptedSubjectEnabled: Bool = true
-
-    var threadedViewEnabled: Bool = true
-
-    var passiveModeEnabled: Bool = true
-
-    var defaultAccount: String? = "some@account.com"
-
-    var lastKnownDeviceGroupState: DeviceGroupState = .grouped
-
-    var shouldShowTutorialWizard: Bool = false
-
-    var userHasBeenAskedForContactAccessPermissions: Bool = false
-
-    var unsecureReplyWarningEnabled: Bool = false
-
-    var verboseLogginEnabled: Bool = false
 
     // MARK: - Collapsing State
 

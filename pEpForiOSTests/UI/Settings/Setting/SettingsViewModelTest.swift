@@ -29,6 +29,13 @@ class SettingsViewModelTest: AccountDrivenTestBase {
         XCTAssertEqual(settingsVM.count, sections)
     }
 
+    func testNumberOfSectionsOfMDM() {
+        let delegate = SettingsViewModeldelegate()
+        let mock = MDMMockAppSettings()
+        setupViewModel(delegate: delegate, appSettings: mock)
+        XCTAssertEqual(settingsVM.count, 1)
+    }
+
     func testNumberOfRowsForSectionInFirstPositionWith1Account() {
         let delegate = SettingsViewModeldelegate()
         setupViewModel(delegate: delegate)
