@@ -186,8 +186,12 @@ extension SettingsViewModel {
 
     /// This method generates all the sections for the settings view.
     private func generateSections() {
-        SettingsViewModel.SectionType.allCases.forEach { (type) in
-            items.append(sectionForType(sectionType: type))
+        if appSettings.hasBeenMDMDeployed {
+            items.append(sectionForType(sectionType: .accounts))
+        } else {
+            SettingsViewModel.SectionType.allCases.forEach { (type) in
+                items.append(sectionForType(sectionType: type))
+            }
         }
     }
 
@@ -264,7 +268,7 @@ extension SettingsViewModel {
             rows.append(generateSwitchRow(type: .passiveMode,
                                           isDangerous: false,
                                           isOn: AppSettings.shared.passiveModeEnabled) { [weak self] (value) in
-                                            AppSettings.shared.passiveModeEnabled = value
+                AppSettings.shared.passiveModeEnabled = value
                 guard let me = self else {
                     Log.shared.errorAndCrash("Lost myself")
                     return

@@ -53,6 +53,7 @@ final class AccountSettingsViewModel {
     private let oauthViewModel = OAuthAuthorizer()
     private lazy var folderSyncService = FetchImapFoldersService()
     private var accountSettingsHelper: AccountSettingsHelper?
+    private var appSettings: AppSettingsProtocol
 
     /// If the pEp Sync is enabled for the account.
     public var isPEPSyncEnabled: Bool {
@@ -63,9 +64,12 @@ final class AccountSettingsViewModel {
     /// - Parameters:
     ///   - account: The account to configure the account settings view model.
     ///   - delegate: The delegate to communicate to the View Controller.
-    init(account: Account, delegate: AccountSettingsViewModelDelegate? = nil) {
+    ///   - appSettings: The default app settings
+    init(account: Account,
+         delegate: AccountSettingsViewModelDelegate? = nil,
+         appSettings: AppSettingsProtocol = AppSettings.shared) {
         accountSettingsHelper = AccountSettingsHelper(account: account)
-
+        self.appSettings = appSettings
         self.account = account
         self.delegate = delegate
         includeInUnifiedFolders = account.isIncludedInUnifiedFolders
@@ -277,8 +281,12 @@ extension AccountSettingsViewModel {
     /// This method generates the sections of the account settings view.
     /// Must be called once, at the initialization.
     private func generateSections() {
-        SectionType.allCases.forEach { (type) in
-            sections.append(generateSection(type: type))
+        if appSettings.hasBeenMDMDeployed {
+            sections.append(generateSection(type: .account))
+        } else {
+            SectionType.allCases.forEach { (type) in
+                sections.append(generateSection(type: type))
+            }
         }
     }
 

@@ -244,7 +244,8 @@ extension MDMDeployment: MDMDeploymentProtocol {
                     callback(.networkError)
                 }
             } else {
-                AppSettings.shared.hasBeenMDMDeployed = true
+                // TODO
+                // AppSettings.shared.hasBeenMDMDeployed = true
                 callback(nil)
             }
         }
