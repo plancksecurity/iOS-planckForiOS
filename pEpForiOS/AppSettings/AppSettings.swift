@@ -48,6 +48,8 @@ public final class AppSettings: KeySyncStateProvider {
     }
 }
 
+// MARK: - AppSettingsProtocol
+
 extension AppSettings: AppSettingsProtocol {
 }
 
