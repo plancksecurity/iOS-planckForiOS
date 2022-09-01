@@ -36,11 +36,15 @@ extension AppSettings: MDMSettingsProtocol {
     // MARK: - Settings
 
     public var hasBeenMDMDeployed: Bool {
+        // Note the "special" implementation here:
+        // This is a setting "about" MDM that is tracked by the app,
+        // and doesn not come from the MDM itself.
         get {
-            guard let hasBeenMDMDeployed = mdmDictionary[AppSettings.keyhasBeenMDMDeployed] as? Bool else {
-                return false
-            }
-            return hasBeenMDMDeployed
+            return AppSettings.userDefaults.bool(forKey: AppSettings.keyhasBeenMDMDeployed)
+        }
+        set {
+            AppSettings.userDefaults.set(newValue,
+                                         forKey: AppSettings.keyhasBeenMDMDeployed)
         }
     }
 

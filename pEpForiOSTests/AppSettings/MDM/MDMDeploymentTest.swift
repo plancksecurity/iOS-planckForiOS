@@ -87,8 +87,7 @@ class MDMDeploymentTest: XCTestCase {
     ///
     /// May get called by both setup and tearDown to deal with interruptions during development.
     func reset() {
-        // TODO
-        //AppSettings.shared.hasBeenMDMDeployed = false
+        AppSettings.shared.hasBeenMDMDeployed = false
         Stack.shared.reset()
         XCTAssertTrue(PEPUtils.pEpClean())
         // Note: The use of hard-coded strings as settings keys is intentional.
