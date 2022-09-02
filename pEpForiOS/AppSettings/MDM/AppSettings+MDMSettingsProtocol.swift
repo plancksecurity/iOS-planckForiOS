@@ -228,9 +228,9 @@ extension AppSettings: MDMSettingsProtocol {
 
     // MARK: - Private
 
-    private var mdmDictionary: [String: Any] {
+    private var mdmDictionary: [String: Any?] {
         guard let dictionary = AppSettings.userDefaults.dictionary(forKey: MDMPredeployed.keyMDM) else {
-            return [String:Any]()
+            return [String: Any?]()
         }
         return dictionary
     }
