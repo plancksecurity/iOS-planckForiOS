@@ -13,4 +13,7 @@ extension Notification.Name {
     /// Notification name to inform settings have changed.
     static public let pEpSettingsChanged = Notification.Name("security.pEp.pEpSettingsChanged")
 
+    /// Notification name to inform settings have changed.
+    static public let pEpMDMSettingsChanged = Notification.Name("security.pEp.pEpMDMSettingsChanged")
+
 }
