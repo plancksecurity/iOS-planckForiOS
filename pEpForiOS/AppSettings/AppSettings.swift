@@ -18,12 +18,6 @@ import pEpIOSToolbox
 
 import pEp4iosIntern
 
-extension UserDefaults {
-    @objc dynamic var mdmSettings: Dictionary<String, Any> {
-        return dictionary(forKey: MDMPredeployed.keyMDM)
-    }
-}
-
 // MARK: - AppSettings
 
 /// Singleton representing and managing the App's settings.

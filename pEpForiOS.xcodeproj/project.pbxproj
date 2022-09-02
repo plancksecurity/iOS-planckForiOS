@@ -514,6 +514,8 @@
 		5BA6180025F1475900973829 /* MessageImageAttachmentCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5BA617FF25F1475900973829 /* MessageImageAttachmentCell.swift */; };
 		5BA946232542E63300F5D1AD /* PEPAlertViewController+KeySyncError.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5BA946222542E63300F5D1AD /* PEPAlertViewController+KeySyncError.swift */; };
 		5BAAC2DF28C100CA00E128BD /* NSNotificationName+Settings.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5BF90035262F2517005B08D4 /* NSNotificationName+Settings.swift */; };
+		5BAAC2E128C211E800E128BD /* UserDefaults+MDM.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5BAAC2E028C211E800E128BD /* UserDefaults+MDM.swift */; };
+		5BAAC2E228C211E800E128BD /* UserDefaults+MDM.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5BAAC2E028C211E800E128BD /* UserDefaults+MDM.swift */; };
 		5BAAD350257E2658002CACAA /* EditableAccountSettingsViewModelTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5BAAD34F257E2658002CACAA /* EditableAccountSettingsViewModelTest.swift */; };
 		5BB7C73524D2EB3700D5F328 /* UnifiedTrash.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5BB7C73424D2EB3700D5F328 /* UnifiedTrash.swift */; };
 		5BB7C73724D2EC0800D5F328 /* UnifiedDraft.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5BB7C73624D2EC0800D5F328 /* UnifiedDraft.swift */; };
@@ -1111,6 +1113,7 @@
 		5B94E19928B3D5B8001B6CB2 /* MockMDMAppSettings.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MockMDMAppSettings.swift; sourceTree = "<group>"; };
 		5BA617FF25F1475900973829 /* MessageImageAttachmentCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MessageImageAttachmentCell.swift; sourceTree = "<group>"; };
 		5BA946222542E63300F5D1AD /* PEPAlertViewController+KeySyncError.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "PEPAlertViewController+KeySyncError.swift"; sourceTree = "<group>"; };
+		5BAAC2E028C211E800E128BD /* UserDefaults+MDM.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UserDefaults+MDM.swift"; sourceTree = "<group>"; };
 		5BAAD34F257E2658002CACAA /* EditableAccountSettingsViewModelTest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditableAccountSettingsViewModelTest.swift; sourceTree = "<group>"; };
 		5BAD436B28195BA9000BA5FF /* SwiftMessages.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = SwiftMessages.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		5BAD436E281961EB000BA5FF /* SwiftMessages.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = SwiftMessages.framework; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -2434,6 +2437,7 @@
 				43E366892836254A00C4A4CB /* MDMPredeployedProtocol.swift */,
 				43E3668B28362D4F00C4A4CB /* MDMPredeployed.swift */,
 				5B21989928BDFAE600668445 /* MDMSettingsProtocol.swift */,
+				5BAAC2E028C211E800E128BD /* UserDefaults+MDM.swift */,
 			);
 			path = MDM;
 			sourceTree = "<group>";
@@ -3372,6 +3376,7 @@
 				434A6C6525D2A3CB00179335 /* NSAttributedString+BodyTextUtils.swift in Sources */,
 				434C1ACC25D4123900F622DB /* PEPUIAlertAction.swift in Sources */,
 				43959CFE261C85CA00410108 /* UILayout+Extension.swift in Sources */,
+				5BAAC2E228C211E800E128BD /* UserDefaults+MDM.swift in Sources */,
 				5BD68E642837AD8000C423CF /* UIUtils+Banner.swift in Sources */,
 				434C1AC925D4121900F622DB /* PEPAlertViewModel.swift in Sources */,
 				434A6C5A25D2A3B800179335 /* AttachmentViewModel.swift in Sources */,
@@ -3702,6 +3707,7 @@
 				49D3BECC20F8F7330043E05D /* LoginViewController.swift in Sources */,
 				43425EDB1FE3DE6E004A2728 /* OAuth2ProviderProtocol.swift in Sources */,
 				43E3668A2836254A00C4A4CB /* MDMPredeployedProtocol.swift in Sources */,
+				5BAAC2E128C211E800E128BD /* UserDefaults+MDM.swift in Sources */,
 				150B8E991FCDACBB00374438 /* AccountSettingsUserInputError.swift in Sources */,
 				4351C2DE1F4457620053381F /* NSString+Markdown.m in Sources */,
 				43306EBE1FE125B50045DD00 /* OAuth2Authorization.swift in Sources */,
