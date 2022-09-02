@@ -19,7 +19,7 @@ import pEpIOSToolbox
 import pEp4iosIntern
 
 extension UserDefaults {
-    @objc dynamic var mdmSettings: Dictionary {
+    @objc dynamic var mdmSettings: Dictionary<String, Any> {
         return dictionary(forKey: MDMPredeployed.keyMDM)
     }
 }
