@@ -16,6 +16,9 @@ extension InfoPlist {
         let appVersionPrefix = NSLocalizedString("Version",
                                                  comment:
             "AccountsView: Prefix for version. Shows up like this: \"Version: 2.0.1 build 234\"")
-        return appVersionPrefix + ": " + version + " " + buildString + " " + AppSettings.shared.getAllUserDefaultValues()
+
+        let managedDictionary = UserDefaults.standard.object(forKey: "com.apple.configuration.managed") as? [String: Any?]
+
+        return appVersionPrefix + ": " + version + " " + buildString + " \n " + managedDictionary?.description + " \n " + AppSettings.shared.getAllUserDefaultValues()
     }
 }
