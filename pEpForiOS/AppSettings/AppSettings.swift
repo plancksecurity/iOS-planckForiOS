@@ -26,27 +26,31 @@ public final class AppSettings: KeySyncStateProvider, AppSettingsProtocol {
     // MARK: - Singleton
     
     static public let shared = AppSettings()
-    private var mdmSettingsObserver: NSKeyValueObservation?
+//    private var mdmSettingsObserver: NSKeyValueObservation?
+
+    public func getAllUserDefaultValues() -> String {
+        return AppSettings.userDefaults.dictionaryRepresentation().description
+    }
 
     private init() {
         setup()
         registerForKeySyncDeviceGroupStateChangeNotification()
         registerForKeySyncDisabledByEngineNotification()
-        startObserver()
+//        startObserver()
     }
 
-    private func startObserver() {
-        mdmSettingsObserver = AppSettings.userDefaults.observe(\.mdmSettings, options: [.old, .new], changeHandler: { (defaults, change) in
-            guard let newValue = change.newValue,
-                  let oldValue = change.oldValue else {
-                // Values not found
-                return
-            }
-            let name = Notification.Name.pEpMDMSettingsChanged
-            let info = [ "OldValue": oldValue, "NewValue": newValue ]
-            NotificationCenter.default.post(name:name, object: self, userInfo: info)
-        })
-    }
+//    private func startObserver() {
+//        mdmSettingsObserver = AppSettings.userDefaults.observe(\.mdmSettings, options: [.old, .new], changeHandler: { (defaults, change) in
+//            guard let newValue = change.newValue,
+//                  let oldValue = change.oldValue else {
+//                // Values not found
+//                return
+//            }
+//            let name = Notification.Name.pEpMDMSettingsChanged
+//            let info = [ "OldValue": oldValue, "NewValue": newValue ]
+//            NotificationCenter.default.post(name:name, object: self, userInfo: info)
+//        })
+//    }
 
     // MARK: - KeySyncStateProvider
 
@@ -60,7 +64,7 @@ public final class AppSettings: KeySyncStateProvider, AppSettingsProtocol {
 
     deinit {
         NotificationCenter.default.removeObserver(self)
-        mdmSettingsObserver?.invalidate()
+//        mdmSettingsObserver?.invalidate()
     }
 }
 
