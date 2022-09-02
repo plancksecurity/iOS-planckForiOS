@@ -66,7 +66,7 @@ public final class AppSettings: KeySyncStateProvider, AppSettingsProtocol {
 
     deinit {
         NotificationCenter.default.removeObserver(self)
-        mdmSettingsObserver.invalidate()
+        mdmSettingsObserver?.invalidate()
     }
 }
 
