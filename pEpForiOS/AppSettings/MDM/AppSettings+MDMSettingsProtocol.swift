@@ -235,5 +235,3 @@ extension AppSettings: MDMSettingsProtocol {
         return dictionary
     }
 }
-
-
