@@ -26,7 +26,7 @@ public final class AppSettings: KeySyncStateProvider, AppSettingsProtocol {
     // MARK: - Singleton
     
     static public let shared = AppSettings()
-//    private var mdmSettingsObserver: NSKeyValueObservation?
+    private var mdmSettingsObserver: NSKeyValueObservation?
 
     public func getAllUserDefaultValues() -> String {
         return AppSettings.userDefaults.dictionaryRepresentation().description
@@ -36,21 +36,24 @@ public final class AppSettings: KeySyncStateProvider, AppSettingsProtocol {
         setup()
         registerForKeySyncDeviceGroupStateChangeNotification()
         registerForKeySyncDisabledByEngineNotification()
-//        startObserver()
+        startObserver()
     }
 
-//    private func startObserver() {
-//        mdmSettingsObserver = AppSettings.userDefaults.observe(\.mdmSettings, options: [.old, .new], changeHandler: { (defaults, change) in
-//            guard let newValue = change.newValue,
-//                  let oldValue = change.oldValue else {
-//                // Values not found
-//                return
-//            }
+    private func startObserver() {
+        mdmSettingsObserver = AppSettings.userDefaults.observe(\.mdmSettings, options: [.old, .new], changeHandler: { (defaults, change) in
+            guard let newValue = change.newValue,
+                  let oldValue = change.oldValue else {
+                // Values not found
+                return
+            }
+
 //            let name = Notification.Name.pEpMDMSettingsChanged
-//            let info = [ "OldValue": oldValue, "NewValue": newValue ]
+//            let info: [AnyHashable : Any] = [ "OldValue": oldValue, "NewValue": newValue ]
 //            NotificationCenter.default.post(name:name, object: self, userInfo: info)
-//        })
-//    }
+            let desc = "Old Value: \(String(describing: oldValue) ?? "-")\nNew Value: \(String(describing: newValue) ?? "-")"
+            UIUtils.showAlertWithOnlyPositiveButton(title: "Llegó", message: desc)
+        })
+    }
 
     // MARK: - KeySyncStateProvider
 
@@ -64,7 +67,7 @@ public final class AppSettings: KeySyncStateProvider, AppSettingsProtocol {
 
     deinit {
         NotificationCenter.default.removeObserver(self)
-//        mdmSettingsObserver?.invalidate()
+        mdmSettingsObserver?.invalidate()
     }
 }
 
