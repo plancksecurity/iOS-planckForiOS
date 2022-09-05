@@ -10,14 +10,23 @@ import Foundation
 
 // This extension is used to observe MDM settings via KVO.
 //
-// To do it, we add the property with @objc dynamic modifiers,
-// then we use the variable name as keypath.
+// To do it, add an @objc dynamic var that has the same name as the UserDefaults key to observe.
+// This allows to define the key path for observing.
+// Observe the UserDefaults instance where the setting is stored.
 //
 // Usage example:
-//    userDefaults.observe(\.mdmSettings, options: [.old, .new],
+//    observer = userDefaults.observe(\.yourSetting, options: [.old, .new],
 //      changeHandler: { (defaults, change) in
+//      ...
 //    })
+//
+// And don't forget to clean up:
+//
+//    deinit {
+//        observer?.invalidate()
+//    }
 extension UserDefaults {
+
     @objc dynamic var mdmSettings: Dictionary<String, Any>? {
         return dictionary(forKey: MDMPredeployed.keyMDM)
     }
