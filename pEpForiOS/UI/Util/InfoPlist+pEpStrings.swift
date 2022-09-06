@@ -17,10 +17,9 @@ extension InfoPlist {
                                                  comment:
             "AccountsView: Prefix for version. Shows up like this: \"Version: 2.0.1 build 234\"")
 
-        let managedDictionary = UserDefaults.standard.object(forKey: "com.apple.configuration.managed") as? [String: Any?]
+        let managedDictionary = UserDefaults.standard.dictionary(forKey: "com.apple.configuration.managed")
         let mdmSettings = managedDictionary?.description ?? "- NO MDM SETTINGS -"
-        let otherSettings = AppSettings.shared.getAllUserDefaultValues()
 
-        return appVersionPrefix + ": " + version + " " + buildString + " \n " + mdmSettings + " \n " + otherSettings
+        return appVersionPrefix + ": " + version + " " + buildString + " \n " + mdmSettings
     }
 }

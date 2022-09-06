@@ -14,6 +14,7 @@ final class SettingsTableViewController: UITableViewController {
 
     static let storyboardId = "SettingsTableViewController"
     private weak var activityIndicatorView: UIActivityIndicatorView?
+//    private var observation: DefaultsObservation?
 
     private lazy var viewModel = SettingsViewModel(delegate: self)
 

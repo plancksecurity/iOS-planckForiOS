@@ -297,5 +297,4 @@ extension AppSettings {
                 return
         }
     }
-
 }
