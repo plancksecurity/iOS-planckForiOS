@@ -578,6 +578,10 @@ extension FolderTableViewController {
     }
 
     @objc func pEpMDMSettingsChanged() {
+        guard let vm = viewModel else {
+            Log.shared.errorAndCrash("VM not found")
+            return
+        }
         addAccountButton.isHidden = !vm.shouldShowAddAccountButton
     }
 }
