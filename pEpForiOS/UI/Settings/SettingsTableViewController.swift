@@ -57,6 +57,7 @@ final class SettingsTableViewController: UITableViewController {
     }
 
     @objc func pEpMDMSettingsChanged() {
+        viewModel = SettingsViewModel(delegate: self)
         tableView.reloadData()
     }
 

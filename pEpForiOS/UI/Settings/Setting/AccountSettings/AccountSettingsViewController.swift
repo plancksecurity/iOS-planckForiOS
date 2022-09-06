@@ -87,7 +87,10 @@ final class AccountSettingsViewController: UIViewController {
     }
 
     @objc func pEpMDMSettingsChanged() {
-        tableView.reloadData()
+        if let vm = viewModel {
+            viewModel = AccountSettingsViewModel(account: vm.account)
+            tableView.reloadData()
+        }
     }
 
     deinit {
