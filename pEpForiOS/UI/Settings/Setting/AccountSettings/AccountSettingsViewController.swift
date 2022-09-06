@@ -86,7 +86,7 @@ final class AccountSettingsViewController: UIViewController {
         }
     }
 
-    @objc func pEpMDMSettingsChanged() {
+    @objc private func pEpMDMSettingsChanged() {
         if let vm = viewModel {
             viewModel = AccountSettingsViewModel(account: vm.account)
             tableView.reloadData()

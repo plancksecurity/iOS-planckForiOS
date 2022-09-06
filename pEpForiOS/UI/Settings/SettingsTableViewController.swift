@@ -56,7 +56,7 @@ final class SettingsTableViewController: UITableViewController {
         viewModel.handleExtraKeysEditabilityGestureTriggered()
     }
 
-    @objc func pEpMDMSettingsChanged() {
+    @objc private func pEpMDMSettingsChanged() {
         viewModel = SettingsViewModel(delegate: self)
         tableView.reloadData()
     }

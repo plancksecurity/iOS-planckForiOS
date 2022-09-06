@@ -573,11 +573,11 @@ extension FolderTableViewController : FolderViewModelDelegate {
 
 extension FolderTableViewController {
 
-    @objc func pEpSettingsChanged() {
+    @objc private func pEpSettingsChanged() {
         tableView.reloadData()
     }
 
-    @objc func pEpMDMSettingsChanged() {
+    @objc private func pEpMDMSettingsChanged() {
         guard let vm = folderVM else {
             Log.shared.errorAndCrash("VM not found")
             return
