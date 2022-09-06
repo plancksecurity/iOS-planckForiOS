@@ -73,7 +73,8 @@ class KeySyncService: NSObject, KeySyncServiceProtocol {
     /// * call myself() for all accounts
     /// * in case Sync is enabled while startup the application must call start_sync(), otherwise it must not (default: enabled)
     ///
-    /// - seeAlso: https://dev.pep.foundation/Engine/Sync%20from%20an%20application%20developer's%20perspective#application-startup
+    /// - seeAlso:
+    /// https://dev.pep.foundation/Engine/Sync%20from%20an%20application%20developer’s%20perspective
     func start() {
         eventQueue.addOperation { [weak self] in
             guard let me = self else {
