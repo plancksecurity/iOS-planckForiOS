@@ -26,11 +26,7 @@ public final class AppSettings: KeySyncStateProvider, AppSettingsProtocol {
     // MARK: - Singleton
     
     static public let shared = AppSettings()
-    private var mdmSettingsObserver: NSKeyValueObservation?
-
-    public func getAllUserDefaultValues() -> String {
-        return AppSettings.userDefaults.dictionaryRepresentation().description
-    }
+    private var mdmDictionary: [String: AnyHashable?] = [:]
 
     private init() {
         setup()
@@ -39,20 +35,25 @@ public final class AppSettings: KeySyncStateProvider, AppSettingsProtocol {
         startObserver()
     }
 
-    private func startObserver() {
-        mdmSettingsObserver = AppSettings.userDefaults.observe(\.mdmSettings, options: [.old, .new], changeHandler: { (defaults, change) in
-            guard let newValue = change.newValue,
-                  let oldValue = change.oldValue else {
-                // Values not found
-                return
-            }
+    public func startObserver() {
+        if let values = UserDefaults.standard.dictionary(forKey: MDMPredeployed.keyMDM) as? [String: AnyHashable?] {
+            mdmDictionary = values
+        }
+        NotificationCenter.default.addObserver(self,
+                                               selector: #selector(userDefaultsDidChange),
+                                               name: UserDefaults.didChangeNotification,
+                                               object: nil)
+    }
 
-//            let name = Notification.Name.pEpMDMSettingsChanged
-//            let info: [AnyHashable : Any] = [ "OldValue": oldValue, "NewValue": newValue ]
-//            NotificationCenter.default.post(name:name, object: self, userInfo: info)
-            let desc = "Old Value: \(String(describing: oldValue) ?? "-")\nNew Value: \(String(describing: newValue) ?? "-")"
-            UIUtils.showAlertWithOnlyPositiveButton(title: "Llegó", message: desc)
-        })
+    @objc func userDefaultsDidChange(notification: NSNotification) {
+        if let defaults = notification.object as? UserDefaults,
+           let mdm = defaults.dictionary(forKey: MDMPredeployed.keyMDM) as? [String: AnyHashable] {
+            if mdm != mdmDictionary {
+                mdmDictionary = mdm
+                let name = Notification.Name.pEpMDMSettingsChanged
+                NotificationCenter.default.post(name:name, object: mdm, userInfo: nil)
+            }
+        }
     }
 
     // MARK: - KeySyncStateProvider
@@ -67,7 +68,6 @@ public final class AppSettings: KeySyncStateProvider, AppSettingsProtocol {
 
     deinit {
         NotificationCenter.default.removeObserver(self)
-        mdmSettingsObserver?.invalidate()
     }
 }
 
