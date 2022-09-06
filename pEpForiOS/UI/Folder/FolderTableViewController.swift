@@ -578,7 +578,7 @@ extension FolderTableViewController {
     }
 
     @objc func pEpMDMSettingsChanged() {
-        guard let vm = viewModel else {
+        guard let vm = folderVM else {
             Log.shared.errorAndCrash("VM not found")
             return
         }
