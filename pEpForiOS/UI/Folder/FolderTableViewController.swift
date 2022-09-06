@@ -29,6 +29,12 @@ class FolderTableViewController: UITableViewController {
                                                selector: #selector(pEpSettingsChanged),
                                                name: .pEpSettingsChanged,
                                                object: nil)
+
+        NotificationCenter.default.addObserver(self,
+                                               selector: #selector(pEpMDMSettingsChanged),
+                                               name: .pEpMDMSettingsChanged,
+                                               object: nil)
+
     }
 
     override func viewWillAppear(_ animated: Bool) {
@@ -569,5 +575,9 @@ extension FolderTableViewController {
 
     @objc func pEpSettingsChanged() {
         tableView.reloadData()
+    }
+
+    @objc func pEpMDMSettingsChanged() {
+        UIUtils.showAlertWithOnlyPositiveButton(title: "Llegó!", message: "----")
     }
 }

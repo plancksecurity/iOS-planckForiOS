@@ -26,7 +26,7 @@ public final class AppSettings: KeySyncStateProvider, AppSettingsProtocol {
     // MARK: - Singleton
     
     static public let shared = AppSettings()
-    private var mdmDictionary: [String: AnyHashable?] = [:]
+    private var mdmDictionary: [String: Any] = [:]
 
     private init() {
         setup()
@@ -36,7 +36,7 @@ public final class AppSettings: KeySyncStateProvider, AppSettingsProtocol {
     }
 
     public func startObserver() {
-        if let values = UserDefaults.standard.dictionary(forKey: MDMPredeployed.keyMDM) as? [String: AnyHashable?] {
+        if let values = UserDefaults.standard.dictionary(forKey: MDMPredeployed.keyMDM) {
             mdmDictionary = values
         }
         NotificationCenter.default.addObserver(self,
@@ -46,13 +46,20 @@ public final class AppSettings: KeySyncStateProvider, AppSettingsProtocol {
     }
 
     @objc func userDefaultsDidChange(notification: NSNotification) {
-        if let defaults = notification.object as? UserDefaults,
-           let mdm = defaults.dictionary(forKey: MDMPredeployed.keyMDM) as? [String: AnyHashable] {
-            if mdm != mdmDictionary {
-                mdmDictionary = mdm
-                let name = Notification.Name.pEpMDMSettingsChanged
-                NotificationCenter.default.post(name:name, object: mdm, userInfo: nil)
-            }
+        // We only care about standard user default settings, and specifically mdm settings
+        guard let defaults = notification.object as? UserDefaults,
+              defaults == UserDefaults.standard,
+              let mdm = defaults.dictionary(forKey: MDMPredeployed.keyMDM) else {
+            //Nothing to do
+            return
+        }
+
+        // As ´Any´ does not conform to Equatable
+        // we use NSDictionary to easily compare these dictionaries.
+        let mdmSettingsHasChanged = !NSDictionary(dictionary: mdm).isEqual(to: mdmDictionary)
+        if  mdmSettingsHasChanged {
+            mdmDictionary = mdm
+            NotificationCenter.default.post(name:.pEpMDMSettingsChanged, object: mdm, userInfo: nil)
         }
     }
 
