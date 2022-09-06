@@ -229,7 +229,6 @@ extension AppSettings: MDMSettingsProtocol {
     // MARK: - Private
 
     private var mdmDictionary: [String: Any?] {
-        // Remeber to use the correct UserDefault instance.
         guard let dictionary = UserDefaults.standard.dictionary(forKey: MDMPredeployed.keyMDM) else {
             return [String: Any?]()
         }
