@@ -578,6 +578,6 @@ extension FolderTableViewController {
     }
 
     @objc func pEpMDMSettingsChanged() {
-        UIUtils.showAlertWithOnlyPositiveButton(title: "Llegó!", message: "----")
+
     }
 }
