@@ -578,6 +578,6 @@ extension FolderTableViewController {
     }
 
     @objc func pEpMDMSettingsChanged() {
-
+        addAccountButton.isHidden = !vm.shouldShowAddAccountButton
     }
 }
