@@ -45,7 +45,7 @@ public final class AppSettings: KeySyncStateProvider, AppSettingsProtocol {
                                                object: nil)
     }
 
-    @objc func userDefaultsDidChange(notification: NSNotification) {
+    @objc private func userDefaultsDidChange(notification: NSNotification) {
         // We only care about standard user default settings, and specifically mdm settings
         guard let defaults = notification.object as? UserDefaults,
               defaults == UserDefaults.standard,
