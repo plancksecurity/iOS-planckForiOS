@@ -33,6 +33,13 @@ extension UIUtils {
         showCompose(composeViewModel: viewModel)
     }
 
+    static public func getPresentedComposeViewController() -> ComposeViewController? {
+        if let currentlyShownComposeViewController = UIApplication.currentlyVisibleViewController() as? ComposeViewController {
+            return currentlyShownComposeViewController
+        }
+        return nil
+    }
+
     static private func showCompose(composeViewModel: ComposeViewModel) {
         DispatchQueue.main.async {
             let storyboard = UIStoryboard(name: Constants.mainStoryboard, bundle: nil)
