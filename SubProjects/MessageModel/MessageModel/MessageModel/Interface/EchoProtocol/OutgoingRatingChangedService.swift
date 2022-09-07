@@ -14,6 +14,7 @@ import Foundation
 class OutgoingRatingChangedService {
     /// Sets/unsets a delegate that gets informed about changes in outgoing message ratings.
     public func set(outgoingRatingChangedDelegate: OutgoingRatingChangedDelegate?) {
+        // TODO: Interface with KeySyncService
     }
 
     deinit {
