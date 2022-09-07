@@ -18,22 +18,22 @@ import pEpIOSToolbox
 
 extension AppSettings: UserSettingsProtocol {
 
-    static internal let keyKeySyncEnabled = "keyStartpEpSync"
-    static internal let keyUsePEPFolderEnabled = "keyUsePEPFolderEnabled"
-    static internal let keyUnencryptedSubjectEnabled = "keyUnencryptedSubjectEnabled"
-    static internal let keyDefaultAccountAddress = "keyDefaultAccountAddress"
-    static internal let keyThreadedViewEnabled = "keyThreadedViewEnabled"
-    static internal let keyPassiveMode = "keyPassiveMode"
-    static internal let keyLastKnowDeviceGroupStateRawValue = "keyLastKnowDeviceGroupStateRawValue"
-    static internal let keyExtraKeysEditable = "keyExtraKeysEditable"
-    static internal let keyShouldShowTutorialWizard = "keyShouldShowTutorialWizard"
-    static internal let keyUserHasBeenAskedForContactAccessPermissions = "keyUserHasBeenAskedForContactAccessPermissions"
-    static internal let keyUnsecureReplyWarningEnabled = "keyUnsecureReplyWarningEnabled"
-    static internal let keyAccountSignature = "keyAccountSignature"
-    static internal let keyVerboseLogginEnabled = "keyVerboseLogginEnabled"
-    static internal let keyCollapsingState = "keyCollapsingState"
-    static internal let keyFolderViewAccountCollapsedState = "keyFolderViewAccountCollapsedState-162844EB-1F32-4F66-8F92-9B77664523F1"
-    static internal let keyAcceptedLanguagesCodes = "acceptedLanguagesCodes"
+    static let keyKeySyncEnabled = "keyStartpEpSync"
+    static let keyUsePEPFolderEnabled = "keyUsePEPFolderEnabled"
+    static let keyUnencryptedSubjectEnabled = "keyUnencryptedSubjectEnabled"
+    static let keyDefaultAccountAddress = "keyDefaultAccountAddress"
+    static let keyThreadedViewEnabled = "keyThreadedViewEnabled"
+    static let keyPassiveMode = "keyPassiveMode"
+    static let keyLastKnowDeviceGroupStateRawValue = "keyLastKnowDeviceGroupStateRawValue"
+    static let keyExtraKeysEditable = "keyExtraKeysEditable"
+    static let keyShouldShowTutorialWizard = "keyShouldShowTutorialWizard"
+    static let keyUserHasBeenAskedForContactAccessPermissions = "keyUserHasBeenAskedForContactAccessPermissions"
+    static let keyUnsecureReplyWarningEnabled = "keyUnsecureReplyWarningEnabled"
+    static let keyAccountSignature = "keyAccountSignature"
+    static let keyVerboseLogginEnabled = "keyVerboseLogginEnabled"
+    static let keyCollapsingState = "keyCollapsingState"
+    static let keyFolderViewAccountCollapsedState = "keyFolderViewAccountCollapsedState-162844EB-1F32-4F66-8F92-9B77664523F1"
+    static let keyAcceptedLanguagesCodes = "acceptedLanguagesCodes"
 
     /// This structure keeps the collapsing state of folders and accounts.
     /// [AccountAddress: [ key: isCollapsedStatus ] ]
