@@ -24,7 +24,10 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     private let errorSubscriber = ErrorSubscriber()
 
     private let encryptionErrorHandler = EncryptionErrorHandler()
-    
+
+
+    private var appSettingsObserver: AppSettingsObserverProtocol?
+
     /// Error Handler bubble errors up to the UI
     private lazy var errorPropagator: ErrorPropagator = {
         let createe = ErrorPropagator(subscriber: errorSubscriber)
@@ -59,6 +62,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
                                                   usePEPFolderProvider: AppSettings.shared,
                                                   passphraseProvider: userInputProvider,
                                                   encryptionErrorDelegate: encryptionErrorHandler)
+        appSettingsObserver = AppSettingsObserver.shared
     }
 
     private func askUserForNotificationPermissions() {

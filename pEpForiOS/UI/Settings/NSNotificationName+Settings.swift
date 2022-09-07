@@ -15,5 +15,4 @@ extension Notification.Name {
 
     /// Notification name to inform MDM settings have changed.
     static public let pEpMDMSettingsChanged = Notification.Name("security.pEp.pEpMDMSettingsChanged")
-
 }
