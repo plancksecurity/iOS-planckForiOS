@@ -87,7 +87,7 @@ extension KeySyncService: PEPNotifyHandshakeDelegate {
             Log.shared.errorAndCrash("undefined case")
 
         case .outgoingRatingChange:
-            // TODO: Inform any existing compose view
+            // TODO: Inform any existing compose view or other interested component
             break
         }
 
