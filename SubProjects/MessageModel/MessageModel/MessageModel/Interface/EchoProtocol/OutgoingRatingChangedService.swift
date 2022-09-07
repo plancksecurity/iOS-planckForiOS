@@ -12,5 +12,11 @@ import Foundation
 ///
 /// Usage: Instantiate an instance of this class, and set the (weak) delegate.
 class OutgoingRatingChangedService {
-    public weak var delegate: OutgoingRatingChangedDelegate?
+    /// Sets/unsets a delegate that gets informed about changes in outgoing message ratings.
+    public func set(outgoingRatingChangedDelegate: OutgoingRatingChangedDelegate?) {
+    }
+
+    deinit {
+        // TODO: Unset the delegate in any case
+    }
 }
