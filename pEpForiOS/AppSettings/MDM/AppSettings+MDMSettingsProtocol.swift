@@ -32,7 +32,6 @@ extension AppSettings: MDMSettingsProtocol {
     static internal var keyPEPSaveEncryptedOnServerEnabled = "pep_save_encrypted_on_server"
     static internal var keyPEPEnableSyncAccountEnabled = "pep_enable_sync_account"
     static internal var keyPEPSyncNewDevicesEnabled = "allow_pep_sync_new_devices"
-    static internal var keyEchoProtocolEnabled = "pep_enable_echo_protocol"
 
     // MARK: - Settings
 
