@@ -9,7 +9,7 @@
 import Foundation
 
 protocol OutgoingRatingChangedDelegate: NSObject {
-    /// The echo protocol determined in the background that some partner identities changed their rating,
-    /// so outgoing ratings have to be re-computed.
+    /// This gets called when the echo protocol determined in the background
+    /// that some partner identities changed their rating, so outgoing ratings have to be re-computed.
     func outgoingRatingChanged()
 }
