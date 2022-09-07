@@ -9,8 +9,6 @@
 import Foundation
 
 /// Service for listening to outgoing rating changes, caused by the echo protocol.
-///
-/// Usage: Instantiate an instance of this class, and set the (weak) delegate.
 class OutgoingRatingChangedService {
     /// Sets/unsets a delegate that gets informed about changes in outgoing message ratings.
     public func set(outgoingRatingChangedDelegate: OutgoingRatingChangedDelegate?) {
