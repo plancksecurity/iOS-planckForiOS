@@ -565,6 +565,7 @@
 		5BEB569225E69BEE00304A38 /* TutorialStep2iPadViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5BEB569125E69BEE00304A38 /* TutorialStep2iPadViewController.swift */; };
 		5BEB56CA25E7977500304A38 /* TutorialStep3iPadViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5BEB56C925E7977500304A38 /* TutorialStep3iPadViewController.swift */; };
 		5BED35F3275F768D000DDF07 /* CalendarEventEditDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5BED35F2275F768D000DDF07 /* CalendarEventEditDelegate.swift */; };
+		5BEF9A8728C889CA0073A3B4 /* AppSettingsObserver.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5BEF9A8628C889CA0073A3B4 /* AppSettingsObserver.swift */; };
 		5BF39DA4257A71AC00A00A96 /* EditableAccountSettingsViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5BF39DA2257A71AC00A00A96 /* EditableAccountSettingsViewModel.swift */; };
 		5BF39DA8257A737A00A00A96 /* AccountSettingsHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5BF39DA7257A737A00A00A96 /* AccountSettingsHelper.swift */; };
 		5BF449F4240827F500B23E50 /* TutorialStep0iPhoneViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5BF449F3240827F500B23E50 /* TutorialStep0iPhoneViewController.swift */; };
@@ -1157,6 +1158,7 @@
 		5BEB569125E69BEE00304A38 /* TutorialStep2iPadViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TutorialStep2iPadViewController.swift; sourceTree = "<group>"; };
 		5BEB56C925E7977500304A38 /* TutorialStep3iPadViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TutorialStep3iPadViewController.swift; sourceTree = "<group>"; };
 		5BED35F2275F768D000DDF07 /* CalendarEventEditDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CalendarEventEditDelegate.swift; sourceTree = "<group>"; };
+		5BEF9A8628C889CA0073A3B4 /* AppSettingsObserver.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppSettingsObserver.swift; sourceTree = "<group>"; };
 		5BF39DA2257A71AC00A00A96 /* EditableAccountSettingsViewModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EditableAccountSettingsViewModel.swift; sourceTree = "<group>"; };
 		5BF39DA7257A737A00A00A96 /* AccountSettingsHelper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AccountSettingsHelper.swift; sourceTree = "<group>"; };
 		5BF449F3240827F500B23E50 /* TutorialStep0iPhoneViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TutorialStep0iPhoneViewController.swift; sourceTree = "<group>"; };
@@ -2412,6 +2414,7 @@
 				43E366882836254300C4A4CB /* MDM */,
 				43D070302133DB920013B120 /* AppSettingsProtocol.swift */,
 				43D070322133DC500013B120 /* AppSettings.swift */,
+				5BEF9A8628C889CA0073A3B4 /* AppSettingsObserver.swift */,
 				159AB56C23539D67008AB1F3 /* AppSettings+CNContactsAccessPermissionProvider.swift */,
 				15326E2C24A4BD1C00EA8C9B /* AppSettings+UsePEPFolderProvider.swift */,
 			);
@@ -3555,6 +3558,7 @@
 				43ED53711CC77F95006AB156 /* IMAPSettingsViewController.swift in Sources */,
 				43EC75AE2164D03500048CFE /* SetOwnKeyViewModel.swift in Sources */,
 				43257C891F50683600DDC7F0 /* NSAttributedString+pEp.swift in Sources */,
+				5BEF9A8728C889CA0073A3B4 /* AppSettingsObserver.swift in Sources */,
 				5B0B339F24ACA5DA00CABD0B /* PGPKeyImportSettingSwitchTableViewCell.swift in Sources */,
 				15FB60532437410600398391 /* HtmlOptimizerUtil.swift in Sources */,
 				43A9818C24E53BFF00830603 /* Color+PrivacyStatusDescription.swift in Sources */,
