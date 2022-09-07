@@ -10,8 +10,7 @@ import Foundation
 
 /// Service for listening to outgoing rating changes, caused by the echo protocol.
 ///
-/// Usage: Instantiate an instance of this class, and set the (weak) delegate. Keep the instance alive
-/// as long as you want to receive updates to the delegate.
+/// Usage: Instantiate an instance of this class, and set the (weak) delegate.
 class OutgoingRatingChangedService {
     public weak var delegate: OutgoingRatingChangedDelegate?
 }
