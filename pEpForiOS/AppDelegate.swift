@@ -25,7 +25,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
     private let encryptionErrorHandler = EncryptionErrorHandler()
 
-    private var appSettingsObserver: AppSettingsObserverProtocol?
+    private var appSettingsObserver: AppSettingsObserver?
 
     /// Error Handler bubble errors up to the UI
     private lazy var errorPropagator: ErrorPropagator = {

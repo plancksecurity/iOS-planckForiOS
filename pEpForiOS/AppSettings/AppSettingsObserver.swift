@@ -6,16 +6,11 @@
 //  Copyright © 2022 p≡p Security S.A. All rights reserved.
 //
 
-protocol AppSettingsObserverProtocol {
-
-    static var shared: AppSettingsObserverProtocol { get }
-}
-
-class AppSettingsObserver: AppSettingsObserverProtocol {
+class AppSettingsObserver {
 
     private var mdmDictionary: [String: Any] = [:]
 
-    static public let shared: AppSettingsObserverProtocol = AppSettingsObserver()
+    static public let shared = AppSettingsObserver()
 
     // MARK: - Private
 
