@@ -34,7 +34,7 @@ extension OutgoingRatingChangeService {
 
     @objc
     private func handleOutgoingRatingChangeNotification(_ notification: Notification) {
-        guard let composeViewController = UIUtils.getPresentedComposeViewController(),
+        guard let composeViewController = UIUtils.getPresentedComposeViewControllerIfExists(),
         let vm = composeViewController.viewModel else {
             // This is a valid case.
             return

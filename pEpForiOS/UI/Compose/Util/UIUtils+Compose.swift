@@ -20,6 +20,8 @@ import pEpIOSToolbox
 
 extension UIUtils {
 
+    /// Shows the Compose View prefilled with data from Mailto.
+    /// - Parameter mailto: The Mailto to populate the view.
     static public func showComposeView(from mailto: Mailto?) {
         let viewModel = ComposeViewModel.from(mailTo: mailto)
         showCompose(composeViewModel: viewModel)
@@ -33,12 +35,18 @@ extension UIUtils {
         showCompose(composeViewModel: viewModel)
     }
 
-    static public func getPresentedComposeViewController() -> ComposeViewController? {
-        if let currentlyShownComposeViewController = UIApplication.currentlyVisibleViewController() as? ComposeViewController {
-            return currentlyShownComposeViewController
+    /// - Returns: The ComposeViewController that is presented, if exists. Nil if not.
+    static public func getPresentedComposeViewControllerIfExists() -> ComposeViewController? {
+        guard let currentlyShownComposeViewController = UIApplication.currentlyVisibleViewController() as? ComposeViewController else {
+            return nil
         }
-        return nil
+        return currentlyShownComposeViewController
     }
+}
+
+// MARK: - Private
+
+extension UIUtils {
 
     static private func showCompose(composeViewModel: ComposeViewModel) {
         DispatchQueue.main.async {
@@ -57,4 +65,3 @@ extension UIUtils {
         }
     }
 }
-
