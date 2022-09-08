@@ -25,7 +25,6 @@ class OutgoingRatingChangeService {
 extension OutgoingRatingChangeService {
 
     private func registerForOutgoingMessageRatingChanges() {
-        
         NotificationCenter.default.addObserver(self,
                                                selector: #selector(handleOutgoingRatingChangeNotification(_:)),
                                                name: Notification.Name.pEpOutgoingRatingChange,
