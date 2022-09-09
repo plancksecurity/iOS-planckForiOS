@@ -53,7 +53,7 @@ public final class AppSettings: KeySyncStateProvider, AppSettingsProtocol {
 extension AppSettings {
 
     static var userDefaults: UserDefaults = {
-        guard let appGroupDefaults = UserDefaults.init(suiteName: kAppGroupIdentifier) else {
+        guard let appGroupDefaults = UserDefaults(suiteName: kAppGroupIdentifier) else {
             Log.shared.errorAndCrash("Could not find app group defaults")
             return UserDefaults.standard
         }

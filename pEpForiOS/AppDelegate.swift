@@ -25,6 +25,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
     private let encryptionErrorHandler = EncryptionErrorHandler()
 
+    /// AppSettingsObserver must be always alive to observe changes. 
     private var appSettingsObserver: AppSettingsObserver?
 
     /// Error Handler bubble errors up to the UI
@@ -61,6 +62,10 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
                                                   usePEPFolderProvider: AppSettings.shared,
                                                   passphraseProvider: userInputProvider,
                                                   encryptionErrorDelegate: encryptionErrorHandler)
+    }
+
+    /// To start observing the appSettings we need to instanciate the observer and keep a reference to it alive.
+    private func startAppSettingsObserver() {
         appSettingsObserver = AppSettingsObserver.shared
     }
 
@@ -108,6 +113,7 @@ extension AppDelegate {
 
         Appearance.setup()
         setupServices()
+        startAppSettingsObserver()
         askUserForNotificationPermissions()
         var result = setupInitialViewController()
         if let openedToOpenFile = launchOptions?[UIApplication.LaunchOptionsKey.url] as? URL {
