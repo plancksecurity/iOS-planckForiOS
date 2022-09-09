@@ -8,11 +8,11 @@
 
 class AppSettingsObserver {
 
-    private var mdmDictionary: [String: Any] = [:]
-
     static public let shared = AppSettingsObserver()
 
     // MARK: - Private
+
+    private var mdmDictionary: [String: Any] = [:]
 
     private init() {
         startObserver()
