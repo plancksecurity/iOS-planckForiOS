@@ -25,7 +25,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
     private let encryptionErrorHandler = EncryptionErrorHandler()
 
-    /// AppSettingsObserver must be always alive to observe changes. 
+    /// AppSettingsObserver must be always alive to observe changes.
     private var appSettingsObserver: AppSettingsObserver?
 
     /// Error Handler bubble errors up to the UI
@@ -296,7 +296,7 @@ extension AppDelegate {
     }
 }
 
-// MARK: - User Notifiation
+// MARK: - User Notification
 
 extension AppDelegate {
     private func informUser(numNewMails:Int, completion: @escaping ()->()) {
