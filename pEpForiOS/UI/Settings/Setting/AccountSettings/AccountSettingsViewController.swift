@@ -33,6 +33,11 @@ final class AccountSettingsViewController: UIViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
+        NotificationCenter.default.addObserver(self,
+                                               selector: #selector(pEpMDMSettingsChanged),
+                                               name: .pEpMDMSettingsChanged,
+                                               object: nil)
+
         guard let vm = viewModel else {
             Log.shared.errorAndCrash("VM not found")
             return
@@ -80,6 +85,18 @@ final class AccountSettingsViewController: UIViewController {
             break
         }
     }
+
+    @objc private func pEpMDMSettingsChanged() {
+        if let vm = viewModel {
+            viewModel = AccountSettingsViewModel(account: vm.account)
+            tableView.reloadData()
+        }
+    }
+
+    deinit {
+        NotificationCenter.default.removeObserver(self)
+    }
+
 }
 
 // MARK: - UITableViewDelegate
