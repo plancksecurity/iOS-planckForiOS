@@ -14,7 +14,8 @@ import pEpIOSToolbox
 
 class KeySyncService: NSObject, KeySyncServiceProtocol {
     /// The Adapter's pEp Sync service.
-    private let pEpSync: PEPSync
+    private var pEpSync: PEPSync? = nil
+
     /// Monitors query for CdAccounts and handles pEp Sync accordingly (starts pEp Sync for new
     /// account if required).
     private let qrc: QueryResultsController<CdAccount>
@@ -42,8 +43,6 @@ class KeySyncService: NSObject, KeySyncServiceProtocol {
         self.fastPollingDelegate = fastPollingDelegate
         self.passphraseProvider = passphraseProvider
         self.usePEPFolderProvider = usePEPFolderProvider
-        pEpSync = PEPSync(sendMessageDelegate: nil,
-                          notifyHandshakeDelegate: nil)
         let moc: NSManagedObjectContext = Stack.shared.changePropagatorContext
         self.moc = moc
         self.qrc = QueryResultsController<CdAccount>(predicate: nil,
@@ -67,8 +66,6 @@ class KeySyncService: NSObject, KeySyncServiceProtocol {
                 me.stop()
             }
         }
-        pEpSync.sendMessageDelegate = self
-        pEpSync.notifyHandshakeDelegate = self
     }
 
     /// Spex:
@@ -76,7 +73,8 @@ class KeySyncService: NSObject, KeySyncServiceProtocol {
     /// * call myself() for all accounts
     /// * in case Sync is enabled while startup the application must call start_sync(), otherwise it must not (default: enabled)
     ///
-    /// - seeAlso: https://dev.pep.foundation/Engine/Sync%20from%20an%20application%20developer's%20perspective#application-startup
+    /// - seeAlso:
+    /// https://dev.pep.foundation/Engine/Sync%20from%20an%20application%20developer’s%20perspective
     func start() {
         eventQueue.addOperation { [weak self] in
             guard let me = self else {
@@ -143,7 +141,9 @@ class KeySyncService: NSObject, KeySyncServiceProtocol {
                         // Do not start KeySync if the user disabled it.
                         return
                     }
-                    me.pEpSync.startup()
+                    let pEpSync = PEPSync(sendMessageDelegate: self, notifyHandshakeDelegate: self)
+                    me.pEpSync = pEpSync
+                    pEpSync.startup()
                 }
             }
         }
@@ -155,7 +155,8 @@ class KeySyncService: NSObject, KeySyncServiceProtocol {
                 Log.shared.errorAndCrash("Lost myself")
                 return
             }
-            me.pEpSync.shutdown()
+            me.pEpSync?.shutdown()
+            me.pEpSync = nil
         }
     }
 
@@ -166,7 +167,8 @@ class KeySyncService: NSObject, KeySyncServiceProtocol {
                 Log.shared.errorAndCrash("Lost myself")
                 return
             }
-            me.pEpSync.shutdown()
+            me.pEpSync?.shutdown()
+            me.pEpSync = nil
         }
     }
 }
