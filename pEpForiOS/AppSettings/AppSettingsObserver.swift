@@ -8,17 +8,12 @@
 
 class AppSettingsObserver {
 
+    /// Singleton instance of the observer.
+    /// To start observing, you MUST call `start`, only once.
     static public let shared = AppSettingsObserver()
 
-    // MARK: - Private
-
-    private var mdmDictionary: [String: Any] = [:]
-
-    private init() {
-        startObserver()
-    }
-
-    private func startObserver() {
+    /// Start observing MDM settings.
+    public func start() {
         if let values = UserDefaults.standard.dictionary(forKey: MDMPredeployed.keyMDM) {
             mdmDictionary = values
         }
@@ -27,6 +22,10 @@ class AppSettingsObserver {
                                                name: UserDefaults.didChangeNotification,
                                                object: nil)
     }
+
+    // MARK: - Private
+
+    private var mdmDictionary: [String: Any] = [:]
 
     @objc private func userDefaultsDidChange(notification: NSNotification) {
         // We only care about standard user default settings, and specifically mdm settings
