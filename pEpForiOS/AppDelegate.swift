@@ -26,7 +26,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     private let encryptionErrorHandler = EncryptionErrorHandler()
 
     /// AppSettingsObserver must be always alive to observe changes.
-    private var appSettingsObserver: AppSettingsObserver?
+    /// The observer must be started by calling `start`
+    private var appSettingsObserver: AppSettingsObserver = AppSettingsObserver.shared
 
     /// Error Handler bubble errors up to the UI
     private lazy var errorPropagator: ErrorPropagator = {
@@ -64,9 +65,9 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
                                                   encryptionErrorDelegate: encryptionErrorHandler)
     }
 
-    /// To start observing the appSettings we need to instanciate the observer and keep a reference to it alive.
+    /// Start observing the appSettings
     private func startAppSettingsObserver() {
-        appSettingsObserver = AppSettingsObserver.shared
+        appSettingsObserver.start()
     }
 
     private func askUserForNotificationPermissions() {
