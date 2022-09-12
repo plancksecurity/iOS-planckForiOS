@@ -50,14 +50,6 @@ class AppSettingsObserver {
             }
         }
 
-        if let oldValue = NSDictionary(dictionary: mdmDictionary)
-            .value(forKey: AppSettings.keyEchoProtocolInOutgoingMessageRatingPreview) as? Bool {
-            let newValue = AppSettings.shared.mdmEchoProtocolEnabled
-            if oldValue != newValue {
-                EchoProtocolUtil().configureEchoInOutgoingMessageRatingPreviewEnabled(enabled: newValue)
-            }
-        }
-
         // As ´Any´ does not conform to Equatable
         // we use NSDictionary to easily compare these dictionaries.
         let mdmSettingsHasChanged = !NSDictionary(dictionary: mdm).isEqual(to: mdmDictionary)

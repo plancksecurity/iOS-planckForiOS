@@ -16,11 +16,6 @@ public protocol EchoProtocolUtilProtocol: AnyObject {
     ///
     /// The protocol is enabled by default.
     func enableEchoProtocol(enabled: Bool)
-
-    /// Enables or disables pings for the engine's `outgoing_message_rating_preview`.
-    ///
-    /// Ping messages from outgoing_message_rating_preview are enabled by default.
-    func configureEchoInOutgoingMessageRatingPreviewEnabled(enabled: Bool)
 }
 
 public class EchoProtocolUtil: EchoProtocolUtilProtocol {
@@ -30,10 +25,6 @@ public class EchoProtocolUtil: EchoProtocolUtilProtocol {
 
     public func enableEchoProtocol(enabled: Bool) {
         PEPObjCAdapter.setEchoEnabled(enabled)
-    }
-
-    public func configureEchoInOutgoingMessageRatingPreviewEnabled(enabled: Bool) {
-        PEPObjCAdapter.setEchoInOutgoingMessageRatingPreviewEnabled(enabled)
     }
 }
 

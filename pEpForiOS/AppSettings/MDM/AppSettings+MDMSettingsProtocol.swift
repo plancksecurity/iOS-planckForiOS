@@ -34,7 +34,6 @@ extension AppSettings: MDMSettingsProtocol {
     static let keyPEPSyncNewDevicesEnabled = "allow_pep_sync_new_devices"
 
     static let keyEchoProtocolEnabled = "pep_enable_echo_protocol"
-    static let keyEchoProtocolInOutgoingMessageRatingPreview = "pep_enable_echo_protocol_outgoing_message_rating_preview_enabled"
 
     // MARK: - Settings
 
