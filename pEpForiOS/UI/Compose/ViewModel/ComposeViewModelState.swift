@@ -157,12 +157,12 @@ extension ComposeViewModel {
         }
 
         public func validate() {
-            updatePepRating()
+            updatepEpRating()
             validateForSending()
         }
 
         public func reevaluatePepRating() {
-            updatePepRating()
+            updatepEpRating()
         }
 
         private func setup() {
@@ -216,7 +216,7 @@ extension ComposeViewModel.ComposeViewModelState {
         return bccRecipients.count > 0
     }
 
-    private func updatePepRating() {
+    private func updatepEpRating() {
         guard !isForceUnprotectedDueToBccSet else {
             rating = .unencrypted
             return
