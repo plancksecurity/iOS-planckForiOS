@@ -15,18 +15,13 @@ import pEpIOSToolbox
 #endif
 
 /// https://dev.pep.foundation/Engine/Media%20keys
-public protocol MediaKeysUtilProtocol: AnyObject {
-
-    /// Configure MediaKeys.
-    /// The media keys must follow the format: [pattern:fingerpint]
-    func configureMediaKeys(keys: [String:String])
-}
-
-public class MediaKeysUtil: MediaKeysUtilProtocol {
+public class MediaKeysUtil {
 
     /// Expose the init outside MM.
     public init() {}
 
+    /// Configure MediaKeys.
+    /// The media keys must follow the format: [pattern:fingerpint]
     public func configureMediaKeys(keys: [String:String]) {
         let pEpSession = PEPSession()
         let objKeys = keys.map( {PEPMediaKeyPair(pattern: $0, fingerprint: $1) } )
