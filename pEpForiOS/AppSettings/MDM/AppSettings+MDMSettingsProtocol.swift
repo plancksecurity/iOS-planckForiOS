@@ -32,6 +32,7 @@ extension AppSettings: MDMSettingsProtocol {
     static let keyPEPSaveEncryptedOnServerEnabled = "pep_save_encrypted_on_server"
     static let keyPEPEnableSyncAccountEnabled = "pep_enable_sync_account"
     static let keyPEPSyncNewDevicesEnabled = "allow_pep_sync_new_devices"
+    static var keyMediaKeys = "pep_media_keys"
 
     // MARK: - Settings
 
@@ -223,6 +224,15 @@ extension AppSettings: MDMSettingsProtocol {
                 return false
             }
             return isSyncNewDevicesEnabled
+        }
+    }
+
+    public var mdmMediaKeys: [String: String] {
+        get {
+            guard let mediaKeys = mdmDictionary[AppSettings.keyMediaKeys] as? [String: String] else {
+                return [String: String]()
+            }
+            return mediaKeys
         }
     }
 

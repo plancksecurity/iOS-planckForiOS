@@ -120,5 +120,9 @@ public protocol MDMSettingsProtocol {
     /// Default is false.
     var mdmPEPSyncNewDevicesEnabled: Bool { get }
 
+    /// The list of media keys.
+    /// The format is [Pattern:Fingerprint]
+    var mdmMediaKeys: [String: String] { get }
+
 }
 

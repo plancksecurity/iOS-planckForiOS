@@ -6,6 +6,8 @@
 //  Copyright © 2022 p≡p Security S.A. All rights reserved.
 //
 
+import MessageModel
+
 class AppSettingsObserver {
 
     /// Singleton instance of the observer.
@@ -34,6 +36,14 @@ class AppSettingsObserver {
               let mdm = defaults.dictionary(forKey: MDMPredeployed.keyMDM) else {
             //Nothing to do
             return
+        }
+
+
+        if let oldValues = NSDictionary(dictionary: mdmDictionary).value(forKey: AppSettings.keyMediaKeys) as? [String: String] {
+            let newValues = AppSettings.shared.mdmMediaKeys
+            if oldValues != newValues {
+                MediaKeysUtil().configureMediaKeys(keys: newValues)
+            }
         }
 
         // As ´Any´ does not conform to Equatable
