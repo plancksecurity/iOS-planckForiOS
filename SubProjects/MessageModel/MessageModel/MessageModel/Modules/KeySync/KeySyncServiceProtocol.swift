@@ -16,9 +16,11 @@ protocol KeySyncServiceProtocol: ServiceProtocol {
     ///   - keySyncStateProvider: provides keysync en|disabled
     ///   - fastPollingDelegate: gets asked to poll as fast as possible when key sync protocol is running
     ///   - passphraseProvider: someone that can be asked for a passphrase (for a key)
+    ///   - outgoingRatingService: Service to handle changes in the outgoing rating.
     init(keySyncServiceHandshakeHandler: KeySyncServiceHandshakeHandlerProtocol?,
          keySyncStateProvider: KeySyncStateProvider,
          fastPollingDelegate: PollingDelegate?,
          passphraseProvider: PassphraseProviderProtocol,
-         usePEPFolderProvider: UsePEPFolderProviderProtocol)
+         usePEPFolderProvider: UsePEPFolderProviderProtocol,
+         outgoingRatingService: OutgoingRatingServiceProtocol)
 }

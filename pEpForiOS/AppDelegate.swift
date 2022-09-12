@@ -62,7 +62,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
                                                   keySyncStateProvider: AppSettings.shared,
                                                   usePEPFolderProvider: AppSettings.shared,
                                                   passphraseProvider: userInputProvider,
-                                                  encryptionErrorDelegate: encryptionErrorHandler)
+                                                  encryptionErrorDelegate: encryptionErrorHandler,
+                                                  outgoingRatingService: OutgoingRatingChangeService())
     }
 
     /// Start observing the appSettings
