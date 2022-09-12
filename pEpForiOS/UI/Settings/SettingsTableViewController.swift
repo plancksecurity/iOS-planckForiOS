@@ -26,6 +26,10 @@ final class SettingsTableViewController: UITableViewController {
         UIHelper.variableSectionHeadersHeightTableView(tableView)
         addExtraKeysEditabilityToggleGesture()
         setBackButtonAccessibilityLabel()
+        NotificationCenter.default.addObserver(self,
+                                               selector: #selector(pEpMDMSettingsChanged),
+                                               name: .pEpMDMSettingsChanged,
+                                               object: nil)
     }
 
     override func viewWillAppear(_ animated: Bool) {
@@ -50,6 +54,15 @@ final class SettingsTableViewController: UITableViewController {
     /// [en|dis]able the editability of extra keys
     @objc private func extraKeysEditabilityToggleGestureTriggered() {
         viewModel.handleExtraKeysEditabilityGestureTriggered()
+    }
+
+    @objc private func pEpMDMSettingsChanged() {
+        viewModel = SettingsViewModel(delegate: self)
+        tableView.reloadData()
+    }
+
+    deinit {
+        NotificationCenter.default.removeObserver(self)
     }
 }
 

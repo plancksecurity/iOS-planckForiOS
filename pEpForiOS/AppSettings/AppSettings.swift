@@ -20,7 +20,7 @@ import pEp4iosIntern
 
 // MARK: - AppSettings
 
-/// Signleton representing and managing the App's settings.
+/// Singleton representing and managing the App's settings.
 public final class AppSettings: KeySyncStateProvider, AppSettingsProtocol {
 
     // MARK: - Singleton
@@ -52,8 +52,8 @@ public final class AppSettings: KeySyncStateProvider, AppSettingsProtocol {
 
 extension AppSettings {
 
-    static internal var userDefaults: UserDefaults = {
-        guard let appGroupDefaults = UserDefaults.init(suiteName: kAppGroupIdentifier) else {
+    static var userDefaults: UserDefaults = {
+        guard let appGroupDefaults = UserDefaults(suiteName: kAppGroupIdentifier) else {
             Log.shared.errorAndCrash("Could not find app group defaults")
             return UserDefaults.standard
         }
