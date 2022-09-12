@@ -14,8 +14,11 @@ import pEpIOSToolboxForExtensions
 import pEpIOSToolbox
 #endif
 
+/// https://dev.pep.foundation/Engine/Media%20keys
 public protocol MediaKeysUtilProtocol: AnyObject {
 
+    /// Configure MediaKeys.
+    /// The media keys must follow the format: [pattern:fingerpint]
     func configureMediaKeys(keys: [String:String])
 }
 
