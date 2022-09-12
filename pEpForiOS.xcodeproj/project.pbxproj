@@ -497,7 +497,6 @@
 		5B5C2A9225D2902C00F9C18A /* MessageAttachmentCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5B5C2A9125D2902C00F9C18A /* MessageAttachmentCell.swift */; };
 		5B5C2A9C25D2918800F9C18A /* AttachmentCellBackgroundView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5B5C2A9B25D2918800F9C18A /* AttachmentCellBackgroundView.swift */; };
 		5B5C2A9F25D293F300F9C18A /* EmailViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5B5C2A9E25D293F300F9C18A /* EmailViewModel.swift */; };
-		5B63579B282BE9F900DF4B18 /* NSNotificationName+Reachability.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5B63579A282BE9F900DF4B18 /* NSNotificationName+Reachability.swift */; };
 		5B6496D325C853670028B9ED /* AppSettingsTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5B6496D225C853670028B9ED /* AppSettingsTest.swift */; };
 		5B649AEE25CC80290028B9ED /* SignatureTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5B649AED25CC80290028B9ED /* SignatureTableViewCell.swift */; };
 		5B70B1F724507B8A0010AED7 /* pEpFooterView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5B70B1F624507B8A0010AED7 /* pEpFooterView.swift */; };
@@ -546,7 +545,6 @@
 		5BCD37DC269F3CBF0052A030 /* UIImageView+ContactImage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5BCD37DB269F3CBF0052A030 /* UIImageView+ContactImage.swift */; };
 		5BCD37DD269F3CBF0052A030 /* UIImageView+ContactImage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5BCD37DB269F3CBF0052A030 /* UIImageView+ContactImage.swift */; };
 		5BCFE663252470F4001323C3 /* ComposeViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5BCFE662252470F4001323C3 /* ComposeViewController.swift */; };
-		5BD3C101282BEDE100701B94 /* NSNotificationName+Reachability.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5B63579A282BE9F900DF4B18 /* NSNotificationName+Reachability.swift */; };
 		5BD3C104282C08A000701B94 /* ReachabilityManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5BD3C103282BFEB000701B94 /* ReachabilityManager.swift */; };
 		5BD3C107282C13CA00701B94 /* UIUtils.swift in Sources */ = {isa = PBXBuildFile; fileRef = 150B8EB21FCEB93D00374438 /* UIUtils.swift */; };
 		5BD4466024F65DE300422594 /* EmailListViewController+Keyboard.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5BD4465F24F65DE300422594 /* EmailListViewController+Keyboard.swift */; };
@@ -1094,7 +1092,6 @@
 		5B5C2A9125D2902C00F9C18A /* MessageAttachmentCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MessageAttachmentCell.swift; sourceTree = "<group>"; };
 		5B5C2A9B25D2918800F9C18A /* AttachmentCellBackgroundView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AttachmentCellBackgroundView.swift; sourceTree = "<group>"; };
 		5B5C2A9E25D293F300F9C18A /* EmailViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EmailViewModel.swift; sourceTree = "<group>"; };
-		5B63579A282BE9F900DF4B18 /* NSNotificationName+Reachability.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "NSNotificationName+Reachability.swift"; sourceTree = "<group>"; };
 		5B6496D225C853670028B9ED /* AppSettingsTest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppSettingsTest.swift; sourceTree = "<group>"; };
 		5B649AED25CC80290028B9ED /* SignatureTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SignatureTableViewCell.swift; sourceTree = "<group>"; };
 		5B70B1F624507B8A0010AED7 /* pEpFooterView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = pEpFooterView.swift; sourceTree = "<group>"; };
@@ -2639,7 +2636,6 @@
 		5B125F1028328DCC00B0815B /* Notifications */ = {
 			isa = PBXGroup;
 			children = (
-				5B63579A282BE9F900DF4B18 /* NSNotificationName+Reachability.swift */,
 			);
 			path = Notifications;
 			sourceTree = "<group>";
@@ -3324,7 +3320,6 @@
 				434C19F425D3E61B00F622DB /* NSAttributedString+Html.swift in Sources */,
 				434C1A9C25D40DEE00F622DB /* URL+MailTo.swift in Sources */,
 				434A6C6E25D2A3DC00179335 /* RecipientTextViewModel+TextAttachment.swift in Sources */,
-				5BD3C101282BEDE100701B94 /* NSNotificationName+Reachability.swift in Sources */,
 				5BD93BEF2673AB7D000F2A8C /* ComposeViewModel+AttachmentSizeUtil.swift in Sources */,
 				434C1A0325D3EFF500F622DB /* BasicSaxParser.swift in Sources */,
 				43BDE05425DE81D300FC0C68 /* utf8.c in Sources */,
@@ -3667,7 +3662,6 @@
 				15944A3223980C99006B133B /* EmailDetailViewModel.swift in Sources */,
 				B7DB7FC82215C57F003968DA /* UIView+ActivityIndicator.swift in Sources */,
 				152A39CC21905C3E00D9F8E4 /* MediaAttachmentPickerProvider.swift in Sources */,
-				5B63579B282BE9F900DF4B18 /* NSNotificationName+Reachability.swift in Sources */,
 				5BC8C72325ADDAF1000AAC7A /* TwoLinesButton.swift in Sources */,
 				5BC4E60724113659008C01ED /* TutorialStep2iPhoneViewController.swift in Sources */,
 				4351C2CD1F4441190053381F /* commonmark.c in Sources */,
