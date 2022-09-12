@@ -68,6 +68,7 @@ public final class MessageModelService {
         let _ = Stack.shared
 
         configureAdapter(withClientsPassphraseProvider: passphraseProvider)
+
         setupServices(errorPropagator: errorPropagator,
                       cnContactsAccessPermissionProvider: cnContactsAccessPermissionProvider,
                       keySyncServiceHandshakeHandler: keySyncServiceHandshakeHandler,

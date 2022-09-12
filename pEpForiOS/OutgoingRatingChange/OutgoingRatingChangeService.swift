@@ -14,6 +14,7 @@ import MessageModelForAppExtensions
 import MessageModel
 #endif
 
+/// This service will handle changes in the outgoing rating
 class OutgoingRatingChangeService: OutgoingRatingServiceProtocol {
 
     public func handleOutgoingRatingChange() {

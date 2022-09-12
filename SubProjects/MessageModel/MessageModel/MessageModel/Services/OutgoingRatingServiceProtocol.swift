@@ -10,5 +10,6 @@ import Foundation
 
 public protocol OutgoingRatingServiceProtocol: AnyObject {
 
+    /// Handle changes in outgoing messages ratings
     func handleOutgoingRatingChange()
 }
