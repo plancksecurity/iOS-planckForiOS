@@ -376,6 +376,7 @@
 		43517244229FD8EF00D92026 /* IOS-1432_message_from_outlook.txt in Resources */ = {isa = PBXBuildFile; fileRef = 43517242229FD8EF00D92026 /* IOS-1432_message_from_outlook.txt */; };
 		43517245229FD8EF00D92026 /* IOS-1432_keypair.asc in Resources */ = {isa = PBXBuildFile; fileRef = 43517243229FD8EF00D92026 /* IOS-1432_keypair.asc */; };
 		4352FA271DC7A1C20081161A /* KeyChain.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4352FA261DC7A1C20081161A /* KeyChain.swift */; };
+		435409A128CF189C000C1AE1 /* NSNotificationName+OutgoingRatingChange.swift in Sources */ = {isa = PBXBuildFile; fileRef = 435409A028CF189C000C1AE1 /* NSNotificationName+OutgoingRatingChange.swift */; };
 		4355E4CF233C98C0005772D5 /* CWIMAPMessage+pEp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4355E4CE233C98C0005772D5 /* CWIMAPMessage+pEp.swift */; };
 		4355E4D1233C9B63005772D5 /* CdMessageFromPantomimeTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4355E4D0233C9B63005772D5 /* CdMessageFromPantomimeTest.swift */; };
 		4355E4D3233C9C4E005772D5 /* CdMessageIsAutoConsumeableTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4355E4D2233C9C4E005772D5 /* CdMessageIsAutoConsumeableTest.swift */; };
@@ -964,6 +965,7 @@
 		43517242229FD8EF00D92026 /* IOS-1432_message_from_outlook.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = "IOS-1432_message_from_outlook.txt"; sourceTree = "<group>"; };
 		43517243229FD8EF00D92026 /* IOS-1432_keypair.asc */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = "IOS-1432_keypair.asc"; sourceTree = "<group>"; };
 		4352FA261DC7A1C20081161A /* KeyChain.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = KeyChain.swift; sourceTree = "<group>"; };
+		435409A028CF189C000C1AE1 /* NSNotificationName+OutgoingRatingChange.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "NSNotificationName+OutgoingRatingChange.swift"; sourceTree = "<group>"; };
 		4355E4CE233C98C0005772D5 /* CWIMAPMessage+pEp.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "CWIMAPMessage+pEp.swift"; sourceTree = "<group>"; };
 		4355E4D0233C9B63005772D5 /* CdMessageFromPantomimeTest.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CdMessageFromPantomimeTest.swift; sourceTree = "<group>"; };
 		4355E4D2233C9C4E005772D5 /* CdMessageIsAutoConsumeableTest.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CdMessageIsAutoConsumeableTest.swift; sourceTree = "<group>"; };
@@ -2179,6 +2181,7 @@
 		4354099F28CF1827000C1AE1 /* OutgoingRatingChange */ = {
 			isa = PBXGroup;
 			children = (
+				435409A028CF189C000C1AE1 /* NSNotificationName+OutgoingRatingChange.swift */,
 			);
 			path = OutgoingRatingChange;
 			sourceTree = "<group>";
@@ -3417,6 +3420,7 @@
 				43EA4884221E9518006E8F83 /* SyncFoldersFromServerOperation.swift in Sources */,
 				B7BED3152254FAA700CCF638 /* Folder+DisplaybleFolder.swift in Sources */,
 				5BAD433F28183F1D000BA5FF /* ImapUIFlags+SessionAware.swift in Sources */,
+				435409A128CF189C000C1AE1 /* NSNotificationName+OutgoingRatingChange.swift in Sources */,
 				43EA4883221E9518006E8F83 /* LoginImapOperation.swift in Sources */,
 				153DDF3525ADD426008F645F /* ConnectionTransport+Transport.swift in Sources */,
 				37E61A602271B513000DF876 /* Account+Fetching.swift in Sources */,
