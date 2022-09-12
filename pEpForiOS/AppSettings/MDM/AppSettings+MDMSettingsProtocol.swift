@@ -238,16 +238,6 @@ extension AppSettings: MDMSettingsProtocol {
         }
     }
 
-    public var mdmEchoProtocolInOutgoingMessageRatingPreviewEnabled: Bool {
-        get {
-            guard let isEchoProtocolInOutgoingMessageRatingPreviewEnabled = mdmDictionary[AppSettings.keyEchoProtocolInOutgoingMessageRatingPreview] as? Bool else {
-                // Default value from documentation
-                return true
-            }
-            return isEchoProtocolInOutgoingMessageRatingPreviewEnabled
-        }
-    }
-
     // MARK: - Private
 
     private var mdmDictionary: [String: Any] {
