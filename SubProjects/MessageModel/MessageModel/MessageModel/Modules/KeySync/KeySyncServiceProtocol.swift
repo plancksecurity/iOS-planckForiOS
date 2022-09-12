@@ -22,5 +22,5 @@ protocol KeySyncServiceProtocol: ServiceProtocol {
          fastPollingDelegate: PollingDelegate?,
          passphraseProvider: PassphraseProviderProtocol,
          usePEPFolderProvider: UsePEPFolderProviderProtocol,
-         outgoingRatingService: OutgoingRatingServiceProtocol?)
+         outgoingRatingService: OutgoingRatingServiceProtocol)
 }

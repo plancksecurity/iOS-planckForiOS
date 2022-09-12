@@ -30,7 +30,7 @@ class KeySyncService: NSObject, KeySyncServiceProtocol {
     let passphraseProvider: PassphraseProviderProtocol
     let usePEPFolderProvider: UsePEPFolderProviderProtocol
     weak private(set) var fastPollingDelegate: PollingDelegate?
-    private(set) var outgoingRatingService: OutgoingRatingServiceProtocol?
+    private let outgoingRatingService: OutgoingRatingServiceProtocol
 
     // MARK: - KeySyncServiceProtocol
 
@@ -39,7 +39,7 @@ class KeySyncService: NSObject, KeySyncServiceProtocol {
                   fastPollingDelegate: PollingDelegate? = nil,
                   passphraseProvider: PassphraseProviderProtocol,
                   usePEPFolderProvider: UsePEPFolderProviderProtocol,
-                  outgoingRatingService: OutgoingRatingServiceProtocol? = nil) {
+                  outgoingRatingService: OutgoingRatingServiceProtocol) {
         self.handshakeHandler = keySyncServiceHandshakeHandler
         self.keySyncStateProvider = keySyncStateProvider
         self.fastPollingDelegate = fastPollingDelegate

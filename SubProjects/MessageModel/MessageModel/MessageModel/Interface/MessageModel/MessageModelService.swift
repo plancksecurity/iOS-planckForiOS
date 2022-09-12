@@ -35,7 +35,7 @@ public final class MessageModelService {
 
     // Service
 
-    private var outgoingRatingService: OutgoingRatingServiceProtocol?
+    private let outgoingRatingService: OutgoingRatingServiceProtocol
 
     private let backgroundTaskManager = BackgroundTaskManager()
 
