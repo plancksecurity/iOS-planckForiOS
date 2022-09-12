@@ -35,6 +35,8 @@ public final class MessageModelService {
 
     // Service
 
+    private var outgoingRatingService: OutgoingRatingServiceProtocol?
+
     private let backgroundTaskManager = BackgroundTaskManager()
 
     private var migrateKeychainService: MigrateKeychainService?
@@ -59,7 +61,8 @@ public final class MessageModelService {
                 keySyncStateProvider: KeySyncStateProvider,
                 usePEPFolderProvider: UsePEPFolderProviderProtocol,
                 passphraseProvider: PassphraseProviderProtocol,
-                encryptionErrorDelegate: EncryptionErrorDelegate) {
+                encryptionErrorDelegate: EncryptionErrorDelegate,
+                outgoingRatingService: OutgoingRatingServiceProtocol) {
         // Mega ugly, MUST go away. Fix with Stack update.
         // Touch Stack once to assure it sets up the mainContext on the main queue
         let _ = Stack.shared
@@ -72,7 +75,8 @@ public final class MessageModelService {
                       keySyncStateProvider: keySyncStateProvider,
                       usePEPFolderProvider: usePEPFolderProvider,
                       passphraseProvider: passphraseProvider,
-                      encryptionErrorDelegate: encryptionErrorDelegate)
+                      encryptionErrorDelegate: encryptionErrorDelegate,
+                      outgoingRatingService: outgoingRatingService)
     }
 }
 
@@ -105,7 +109,8 @@ extension MessageModelService {
                                keySyncStateProvider: KeySyncStateProvider,
                                usePEPFolderProvider: UsePEPFolderProviderProtocol,
                                passphraseProvider: PassphraseProviderProtocol,
-                               encryptionErrorDelegate: EncryptionErrorDelegate) {
+                               encryptionErrorDelegate: EncryptionErrorDelegate,
+                               outgoingRatingService: OutgoingRatingServiceProtocol) {
         //###
         // Servcies that run only once when the app starts
         if let bundleIdentifier = Bundle.main.bundleIdentifier {
@@ -128,7 +133,8 @@ extension MessageModelService {
                                             keySyncStateProvider: keySyncStateProvider,
                                             fastPollingDelegate: replicationService,
                                             passphraseProvider: passphraseProvider,
-                                            usePEPFolderProvider: usePEPFolderProvider)
+                                            usePEPFolderProvider: usePEPFolderProvider,
+                                            outgoingRatingService: outgoingRatingService)
         let createPEPFolderService = CreatePepIMAPFolderService(backgroundTaskManager: backgroundTaskManager,
                                                                 usePEPFolderProviderProtocol: usePEPFolderProvider)
         runtimeServices = [decryptService,
