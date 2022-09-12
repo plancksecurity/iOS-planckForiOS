@@ -10,19 +10,14 @@ import PEPObjCAdapter_iOS
 import PEPObjCTypes_iOS
 
 /// https://dev.pep.foundation/Engine/Media%20keys
-public protocol EchoProtocolUtilProtocol: AnyObject {
-
-    /// Enables or disable the use of the echo protocol.
-    ///
-    /// The protocol is enabled by default.
-    func enableEchoProtocol(enabled: Bool)
-}
-
-public class EchoProtocolUtil: EchoProtocolUtilProtocol {
+public class EchoProtocolUtil {
 
     /// Expose the init outside MM.
     public init() {}
 
+    /// Enables or disable the use of the echo protocol.
+    ///
+    /// The protocol is enabled by default.
     public func enableEchoProtocol(enabled: Bool) {
         PEPObjCAdapter.setEchoEnabled(enabled)
     }
