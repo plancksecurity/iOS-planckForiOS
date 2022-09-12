@@ -38,7 +38,6 @@ class AppSettingsObserver {
             return
         }
 
-
         if let oldValues = NSDictionary(dictionary: mdmDictionary).value(forKey: AppSettings.keyMediaKeys) as? [String: String] {
             let newValues = AppSettings.shared.mdmMediaKeys
             if oldValues != newValues {
