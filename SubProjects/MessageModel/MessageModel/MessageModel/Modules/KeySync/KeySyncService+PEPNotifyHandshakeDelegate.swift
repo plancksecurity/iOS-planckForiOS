@@ -80,15 +80,14 @@ extension KeySyncService: PEPNotifyHandshakeDelegate {
             handshakeHandler?.cancelHandshake()
             postKeySyncDisabledByEngineNotification()
 
+        case .outgoingRatingChange:
+            outgoingRatingService?.handleOutgoingRatingChange()
+
         // Other
         case .undefined:
             handshakeHandler?.cancelHandshake()
             fastPollingDelegate?.disableFastPolling()
             Log.shared.errorAndCrash("undefined case")
-
-        case .outgoingRatingChange:
-            // TODO: Inform any existing compose view or other interested component
-            break
         }
 
         return .OK

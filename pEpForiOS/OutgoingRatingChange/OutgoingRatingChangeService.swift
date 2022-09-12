@@ -7,32 +7,16 @@
 //
 
 import Foundation
-import UIKit
 
-class OutgoingRatingChangeService {
+#if EXT_SHARE
+import MessageModelForAppExtensions
+#else
+import MessageModel
+#endif
 
-    init() {
-        registerForOutgoingMessageRatingChanges()
-    }
+class OutgoingRatingChangeService: OutgoingRatingServiceProtocol {
 
-    deinit {
-        NotificationCenter.default.removeObserver(self)
-    }
-}
-
-// MARK: - Outgoing Messages pEpRating Changes
-
-extension OutgoingRatingChangeService {
-
-    private func registerForOutgoingMessageRatingChanges() {
-        NotificationCenter.default.addObserver(self,
-                                               selector: #selector(handleOutgoingRatingChangeNotification(_:)),
-                                               name: Notification.Name.pEpOutgoingRatingChange,
-                                               object: nil)
-    }
-
-    @objc
-    private func handleOutgoingRatingChangeNotification(_ notification: Notification) {
+    public func handleOutgoingRatingChange() {
         guard let composeViewController = UIUtils.getPresentedComposeViewControllerIfExists(),
         let vm = composeViewController.viewModel else {
             // This is a valid case.
