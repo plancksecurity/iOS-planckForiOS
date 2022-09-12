@@ -1271,6 +1271,7 @@
 				439CACD42562C95C0043077E /* Pantomime */,
 				153DDF3925ADD43D008F645F /* FetchImap */,
 				153DDF4825ADD455008F645F /* OAuth2 */,
+				4354099F28CF1827000C1AE1 /* OutgoingRatingChange */,
 			);
 			path = Interface;
 			sourceTree = "<group>";
@@ -2173,6 +2174,13 @@
 				434A6CE525D2BF1B00179335 /* Info.plist */,
 			);
 			path = MessageModelForAppExtensions;
+			sourceTree = "<group>";
+		};
+		4354099F28CF1827000C1AE1 /* OutgoingRatingChange */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = OutgoingRatingChange;
 			sourceTree = "<group>";
 		};
 		43598DF51DA7F74F00EAD0B7 /* CoreData */ = {
