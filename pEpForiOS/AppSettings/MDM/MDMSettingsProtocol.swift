@@ -120,5 +120,15 @@ public protocol MDMSettingsProtocol {
     /// Default is false.
     var mdmPEPSyncNewDevicesEnabled: Bool { get }
 
+    /// Indicate if Echo Protocol is enabled.
+    ///
+    /// Echo allows the first message with content in an exchange to be protected.
+    /// Default is true
+    var mdmEchoProtocolEnabled: Bool { get }
+
+    /// Indicate if Echo Protocol in outgoing message rating preview is enabled
+    ///
+    /// Default is true
+    var mdmEchoProtocolInOutgoingMessageRatingPreviewEnabled: Bool { get }
 }
 

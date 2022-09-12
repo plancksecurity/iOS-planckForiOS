@@ -33,6 +33,9 @@ extension AppSettings: MDMSettingsProtocol {
     static let keyPEPEnableSyncAccountEnabled = "pep_enable_sync_account"
     static let keyPEPSyncNewDevicesEnabled = "allow_pep_sync_new_devices"
 
+    static let keyEchoProtocolEnabled = "pep_enable_echo_protocol"
+    static let keyEchoProtocolInOutgoingMessageRatingPreview = "pep_enable_echo_protocol_outgoing_message_rating_preview_enabled"
+
     // MARK: - Settings
 
     public var hasBeenMDMDeployed: Bool {
@@ -223,6 +226,26 @@ extension AppSettings: MDMSettingsProtocol {
                 return false
             }
             return isSyncNewDevicesEnabled
+        }
+    }
+
+    public var mdmEchoProtocolEnabled: Bool {
+        get {
+            guard let isEchoProtocolEnabled = mdmDictionary[AppSettings.keyEchoProtocolEnabled] as? Bool else {
+                // Default value from documentation
+                return true
+            }
+            return isEchoProtocolEnabled
+        }
+    }
+
+    public var mdmEchoProtocolInOutgoingMessageRatingPreviewEnabled: Bool {
+        get {
+            guard let isEchoProtocolInOutgoingMessageRatingPreviewEnabled = mdmDictionary[AppSettings.keyEchoProtocolInOutgoingMessageRatingPreview] as? Bool else {
+                // Default value from documentation
+                return true
+            }
+            return isEchoProtocolInOutgoingMessageRatingPreviewEnabled
         }
     }
 
