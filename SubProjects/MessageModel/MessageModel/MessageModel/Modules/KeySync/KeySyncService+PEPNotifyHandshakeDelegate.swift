@@ -81,7 +81,7 @@ extension KeySyncService: PEPNotifyHandshakeDelegate {
             postKeySyncDisabledByEngineNotification()
 
         case .outgoingRatingChange:
-            outgoingRatingService?.handleOutgoingRatingChange()
+            outgoingRatingService.handleOutgoingRatingChange()
 
         // Other
         case .undefined:
