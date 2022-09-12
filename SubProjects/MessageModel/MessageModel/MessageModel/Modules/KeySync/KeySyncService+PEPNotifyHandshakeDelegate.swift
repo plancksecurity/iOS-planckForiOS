@@ -87,7 +87,7 @@ extension KeySyncService: PEPNotifyHandshakeDelegate {
             Log.shared.errorAndCrash("undefined case")
 
         case .outgoingRatingChange:
-            // TODO: Inform any existing compose view or other interested component
+            postOutgoingRatingChange()
             break
         }
 
@@ -176,5 +176,12 @@ extension KeySyncService {
                 moc.saveAndLogErrors()
             }
         }
+    }
+
+    /// Posts a notification about outgoing rating changes.
+    private func postOutgoingRatingChange() {
+        NotificationCenter.default.post(name: Notification.Name.outgoingRatingChanged,
+                                        object: self,
+                                        userInfo: nil)
     }
 }
