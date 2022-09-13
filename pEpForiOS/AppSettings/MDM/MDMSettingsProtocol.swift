@@ -124,5 +124,10 @@ public protocol MDMSettingsProtocol {
     /// The format is [Pattern:Fingerprint]
     var mdmMediaKeys: [String: String] { get }
 
+    /// Indicate if Echo Protocol is enabled.
+    ///
+    /// Echo allows the first message with content in an exchange to be protected.
+    /// Default is true
+    var mdmEchoProtocolEnabled: Bool { get }
 }
 

@@ -565,9 +565,9 @@
 		5BEB569225E69BEE00304A38 /* TutorialStep2iPadViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5BEB569125E69BEE00304A38 /* TutorialStep2iPadViewController.swift */; };
 		5BEB56CA25E7977500304A38 /* TutorialStep3iPadViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5BEB56C925E7977500304A38 /* TutorialStep3iPadViewController.swift */; };
 		5BED35F3275F768D000DDF07 /* CalendarEventEditDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5BED35F2275F768D000DDF07 /* CalendarEventEditDelegate.swift */; };
+		5BEF9A8728C889CA0073A3B4 /* AppSettingsObserver.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5BEF9A8628C889CA0073A3B4 /* AppSettingsObserver.swift */; };
 		5BEF9A8D28C8D21B0073A3B4 /* OutgoingRatingChangeService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5BEF9A8C28C8D21B0073A3B4 /* OutgoingRatingChangeService.swift */; };
 		5BEF9A9028C8D5920073A3B4 /* OutgoingRatingChangeService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5BEF9A8C28C8D21B0073A3B4 /* OutgoingRatingChangeService.swift */; };
-		5BEF9A8728C889CA0073A3B4 /* AppSettingsObserver.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5BEF9A8628C889CA0073A3B4 /* AppSettingsObserver.swift */; };
 		5BF39DA4257A71AC00A00A96 /* EditableAccountSettingsViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5BF39DA2257A71AC00A00A96 /* EditableAccountSettingsViewModel.swift */; };
 		5BF39DA8257A737A00A00A96 /* AccountSettingsHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5BF39DA7257A737A00A00A96 /* AccountSettingsHelper.swift */; };
 		5BF449F4240827F500B23E50 /* TutorialStep0iPhoneViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5BF449F3240827F500B23E50 /* TutorialStep0iPhoneViewController.swift */; };
@@ -1160,8 +1160,8 @@
 		5BEB569125E69BEE00304A38 /* TutorialStep2iPadViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TutorialStep2iPadViewController.swift; sourceTree = "<group>"; };
 		5BEB56C925E7977500304A38 /* TutorialStep3iPadViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TutorialStep3iPadViewController.swift; sourceTree = "<group>"; };
 		5BED35F2275F768D000DDF07 /* CalendarEventEditDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CalendarEventEditDelegate.swift; sourceTree = "<group>"; };
-		5BEF9A8C28C8D21B0073A3B4 /* OutgoingRatingChangeService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OutgoingRatingChangeService.swift; sourceTree = "<group>"; };
 		5BEF9A8628C889CA0073A3B4 /* AppSettingsObserver.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppSettingsObserver.swift; sourceTree = "<group>"; };
+		5BEF9A8C28C8D21B0073A3B4 /* OutgoingRatingChangeService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OutgoingRatingChangeService.swift; sourceTree = "<group>"; };
 		5BF39DA2257A71AC00A00A96 /* EditableAccountSettingsViewModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EditableAccountSettingsViewModel.swift; sourceTree = "<group>"; };
 		5BF39DA7257A737A00A00A96 /* AccountSettingsHelper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AccountSettingsHelper.swift; sourceTree = "<group>"; };
 		5BF449F3240827F500B23E50 /* TutorialStep0iPhoneViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TutorialStep0iPhoneViewController.swift; sourceTree = "<group>"; };
