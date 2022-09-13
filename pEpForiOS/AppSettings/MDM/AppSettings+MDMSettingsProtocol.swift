@@ -32,6 +32,7 @@ extension AppSettings: MDMSettingsProtocol {
     static let keyPEPSaveEncryptedOnServerEnabled = "pep_save_encrypted_on_server"
     static let keyPEPEnableSyncAccountEnabled = "pep_enable_sync_account"
     static let keyPEPSyncNewDevicesEnabled = "allow_pep_sync_new_devices"
+    static let keyEchoProtocolEnabled = "pep_enable_echo_protocol"
 
     // MARK: - Settings
 
@@ -223,6 +224,16 @@ extension AppSettings: MDMSettingsProtocol {
                 return false
             }
             return isSyncNewDevicesEnabled
+        }
+    }
+
+    public var mdmEchoProtocolEnabled: Bool {
+        get {
+            guard let isEchoProtocolEnabled = mdmDictionary[AppSettings.keyEchoProtocolEnabled] as? Bool else {
+                // Default value from documentation
+                return true
+            }
+            return isEchoProtocolEnabled
         }
     }
 
