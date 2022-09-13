@@ -22,5 +22,3 @@ public class EchoProtocolUtil {
         PEPObjCAdapter.setEchoEnabled(enabled)
     }
 }
-
-

@@ -5,11 +5,8 @@
 //  Created by Martín Brude on 7/9/22.
 //  Copyright © 2022 p≡p Security S.A. All rights reserved.
 //
-#if EXT_SHARE
-import MessageModelForAppExtensions
-#else
+
 import MessageModel
-#endif
 
 class AppSettingsObserver {
 
@@ -39,6 +36,13 @@ class AppSettingsObserver {
               let mdm = defaults.dictionary(forKey: MDMPredeployed.keyMDM) else {
             //Nothing to do
             return
+        }
+
+        if let oldValues = NSDictionary(dictionary: mdmDictionary).value(forKey: AppSettings.keyMediaKeys) as? [String: String] {
+            let newValues = AppSettings.shared.mdmMediaKeys
+            if oldValues != newValues {
+                MediaKeysUtil().configureMediaKeys(keys: newValues)
+            }
         }
 
         // Detect if there is a change re: Echo Protocol
