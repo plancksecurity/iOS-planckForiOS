@@ -500,6 +500,7 @@
 		5B63579B282BE9F900DF4B18 /* NSNotificationName+Reachability.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5B63579A282BE9F900DF4B18 /* NSNotificationName+Reachability.swift */; };
 		5B6496D325C853670028B9ED /* AppSettingsTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5B6496D225C853670028B9ED /* AppSettingsTest.swift */; };
 		5B649AEE25CC80290028B9ED /* SignatureTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5B649AED25CC80290028B9ED /* SignatureTableViewCell.swift */; };
+		5B65440B28CF6C930064E1C7 /* AppSettingsObserver.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5BEF9A8628C889CA0073A3B4 /* AppSettingsObserver.swift */; };
 		5B70B1F724507B8A0010AED7 /* pEpFooterView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5B70B1F624507B8A0010AED7 /* pEpFooterView.swift */; };
 		5B71016E243619CF00BAE405 /* TrustedServerSettingsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5B71016D243619CF00BAE405 /* TrustedServerSettingsViewController.swift */; };
 		5B7235D125E0013100033F88 /* TutorialStep0iPadViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5B7235D025E0013100033F88 /* TutorialStep0iPadViewController.swift */; };
@@ -3333,6 +3334,7 @@
 				5B2198A428BE3A7400668445 /* AppSettings+UserSettingsProtocol.swift in Sources */,
 				434A6C5225D2A3AA00179335 /* TextViewContainingTableViewCell.swift in Sources */,
 				5BD3C107282C13CA00701B94 /* UIUtils.swift in Sources */,
+				5B65440B28CF6C930064E1C7 /* AppSettingsObserver.swift in Sources */,
 				434A6C6625D2A3CF00179335 /* RecipientCell.swift in Sources */,
 				434C19FA25D3E68E00F622DB /* ComposeHelpers.swift in Sources */,
 				434C19B125D3DA2000F622DB /* Attachment+DefaultFilename.swift in Sources */,

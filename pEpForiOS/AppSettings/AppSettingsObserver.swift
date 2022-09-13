@@ -5,6 +5,11 @@
 //  Created by Martín Brude on 7/9/22.
 //  Copyright © 2022 p≡p Security S.A. All rights reserved.
 //
+#if EXT_SHARE
+import MessageModelForAppExtensions
+#else
+import MessageModel
+#endif
 
 class AppSettingsObserver {
 
@@ -34,6 +39,15 @@ class AppSettingsObserver {
               let mdm = defaults.dictionary(forKey: MDMPredeployed.keyMDM) else {
             //Nothing to do
             return
+        }
+
+        // Detect if there is a change re: Echo Protocol
+        if let oldValue = NSDictionary(dictionary: mdmDictionary)
+            .value(forKey: AppSettings.keyEchoProtocolEnabled) as? Bool {
+            let newValue = AppSettings.shared.mdmEchoProtocolEnabled
+            if oldValue != newValue {
+                EchoProtocolUtil().enableEchoProtocol(enabled: newValue)
+            }
         }
 
         // As ´Any´ does not conform to Equatable
