@@ -71,11 +71,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         appSettingsObserver.start()
     }
 
-    /// Start observing the appSettings
-    private func startAppSettingsObserver() {
-        appSettingsObserver.start()
-    }
-
     private func askUserForNotificationPermissions() {
         UserNotificationTool.resetApplicationIconBadgeNumber()
         UserNotificationTool.askForPermissions()
