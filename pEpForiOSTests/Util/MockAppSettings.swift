@@ -90,6 +90,11 @@ class MockAppSettings: AppSettingsProtocol {
     var setFolderCollapsedStateExpectation: XCTestExpectation?
     var setAccountCollapsedStateExpectation: XCTestExpectation?
 
+    let mdmEchoProtocolEnabled = false
+    let mdmEchoProtocolInOutgoingMessageRatingPreviewEnabled = false
+
+    let mdmMediaKeys = [String:String]()
+
     init(verboseLogginEnabled: Bool) {
         self.verboseLogginEnabled = verboseLogginEnabled
     }
