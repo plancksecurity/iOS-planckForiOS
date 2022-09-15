@@ -23,13 +23,8 @@ public class MediaKeysUtil {
     /// Configure MediaKeys.
     /// The media keys must follow the format: [pattern:fingerpint]
     public func configureMediaKeys(keys: [String:String]) {
-        let pEpSession = PEPSession()
         let objKeys = keys.map( {PEPMediaKeyPair(pattern: $0, fingerprint: $1) } )
-        do {
-            try pEpSession.configureMediaKeys(objKeys)
-        } catch {
-            Log.shared.errorAndCrash(error: error)
-        }
+        PEPObjCAdapter.configureMediaKeys(objKeys)
     }
 }
 
