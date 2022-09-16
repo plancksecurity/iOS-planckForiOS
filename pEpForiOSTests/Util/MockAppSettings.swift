@@ -92,7 +92,7 @@ class MockAppSettings: AppSettingsProtocol {
     let mdmEchoProtocolEnabled = false
     let mdmEchoProtocolInOutgoingMessageRatingPreviewEnabled = false
 
-    let mdmMediaKeys = [(String, String)]()
+    let mdmMediaKeys = [[String:String]]()
 
     init(verboseLogginEnabled: Bool) {
         self.verboseLogginEnabled = verboseLogginEnabled
