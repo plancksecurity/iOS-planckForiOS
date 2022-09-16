@@ -240,8 +240,7 @@ extension AppSettings: MDMSettingsProtocol {
                 return []
             }
 
-            //return MediaKeysUtil.toTuples(arrayOfArrayOfString: mediaKeys)
-            return []
+            return MediaKeysUtil.toTuples(arrayOfArrayOfString: mediaKeys)
         }
     }
 
