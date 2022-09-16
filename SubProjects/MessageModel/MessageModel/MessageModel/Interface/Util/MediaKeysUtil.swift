@@ -17,26 +17,30 @@ import pEpIOSToolbox
 /// https://dev.pep.foundation/Engine/Media%20keys
 public class MediaKeysUtil {
 
+    static let kPattern = "pattern"
+    static let kFingerprint = "fingerprint"
+    static let kKey = "key"
+
     /// Expose the init outside MM.
     public init() {}
 
     /// Configure media keys.
     /// The media keys must follow the format: [pattern:fingerpint]
-    public func configure(patternsWithFingerprints: [[String]]) {
-        let tuples = MediaKeysUtil.toTuples(arrayOfArrayOfString: patternsWithFingerprints)
-        let pairs = tuples.map { PEPMediaKeyPair(pattern: $0, fingerprint: $1) }
-        PEPObjCAdapter.configureMediaKeys(pairs)
-    }
-
-    /// Transforms an `Array` of `Array` of something to an `Array` of tuples, ignoring any element
-    /// that doesn't have exactly two elements.
-    static public func toTuples(arrayOfArrayOfString: [[String]]) -> [(String, String)] {
-        return arrayOfArrayOfString.compactMap { array in
-            if array.count != 2 {
+    public func configure(mediaKeyDictionaries: [[String:String]]) {
+        let pairs: [PEPMediaKeyPair] = mediaKeyDictionaries.compactMap { dict in
+            guard let pattern = dict[MediaKeysUtil.kPattern] else {
                 return nil
             }
-            return (array[0], array[1])
+            guard let fingerprint = dict[MediaKeysUtil.kFingerprint] else {
+                return nil
+            }
+
+            return PEPMediaKeyPair(pattern: pattern, fingerprint: fingerprint)
         }
+
+        // TODO: Import all keys
+
+        PEPObjCAdapter.configureMediaKeys(pairs)
     }
 }
 
