@@ -8,6 +8,12 @@
 
 import Foundation
 
+#if EXT_SHARE
+import MessageModelForAppExtensions
+#else
+import MessageModel
+#endif
+
 extension AppSettings: MDMSettingsProtocol {
 
     // MARK: - Keys
@@ -228,11 +234,12 @@ extension AppSettings: MDMSettingsProtocol {
         }
     }
 
-    public var mdmMediaKeys: [String: String] {
+    public var mdmMediaKeys: [[String:String]] {
         get {
-            guard let mediaKeys = mdmDictionary[AppSettings.keyMediaKeys] as? [String: String] else {
-                return [String: String]()
+            guard let mediaKeys = mdmDictionary[AppSettings.keyMediaKeys] as? [[String:String]] else {
+                return []
             }
+
             return mediaKeys
         }
     }
