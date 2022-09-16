@@ -234,13 +234,13 @@ extension AppSettings: MDMSettingsProtocol {
         }
     }
 
-    public var mdmMediaKeys: [(String, String)] {
+    public var mdmMediaKeys: [[String:String]] {
         get {
-            guard let mediaKeys = mdmDictionary[AppSettings.keyMediaKeys] as? [[String]] else {
+            guard let mediaKeys = mdmDictionary[AppSettings.keyMediaKeys] as? [[String:String]] else {
                 return []
             }
 
-            return MediaKeysUtil.toTuples(arrayOfArrayOfString: mediaKeys)
+            return mediaKeys
         }
     }
 

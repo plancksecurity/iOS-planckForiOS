@@ -39,10 +39,10 @@ class AppSettingsObserver {
         }
 
         // Detect changes to the media keys
-        if let oldValues = NSDictionary(dictionary: mdmDictionary).value(forKey: AppSettings.keyMediaKeys) as? [[String]] {
-            let newValuesArrayOfArray = AppSettings.shared.mdmMediaKeys.map { return [$0, $1] }
-            if oldValues != newValuesArrayOfArray {
-                MediaKeysUtil().configure(patternsWithFingerprints: newValuesArrayOfArray)
+        if let oldValues = NSDictionary(dictionary: mdmDictionary).value(forKey: AppSettings.keyMediaKeys) as? [[String:String]] {
+            let newValues = AppSettings.shared.mdmMediaKeys
+            if oldValues != newValues {
+                MediaKeysUtil().configure(mediaKeyDictionaries: newValues)
             }
         }
 
