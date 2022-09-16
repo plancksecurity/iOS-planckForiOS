@@ -7,6 +7,7 @@
 //
 
 import Foundation
+import MessageModel
 
 extension AppSettings: MDMSettingsProtocol {
 
@@ -234,13 +235,7 @@ extension AppSettings: MDMSettingsProtocol {
                 return []
             }
 
-            var result = [(String, String)]()
-            for tupleArray in mediaKeys {
-                if tupleArray.count == 2 { // ignore malformed entries
-                    result.append((tupleArray[0], tupleArray[1]))
-                }
-            }
-            return result
+            return MediaKeysUtil.toTuples(arrayOfArrayOfString: mediaKeys)
         }
     }
 
