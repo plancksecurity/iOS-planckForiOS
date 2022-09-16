@@ -39,7 +39,7 @@ public class MediaKeysUtil {
             return PEPMediaKeyPair(pattern: pattern, fingerprint: fingerprint)
         }
 
-        // TODO: Import all keys
+        // TODO: Import all keys ("key material") as well
 
         PEPObjCAdapter.configureMediaKeys(pairs)
     }
