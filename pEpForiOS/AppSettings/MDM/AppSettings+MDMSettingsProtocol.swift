@@ -8,7 +8,11 @@
 
 import Foundation
 
+#if EXT_SHARE
+import MessageModelForAppExtensions
+#else
 import MessageModel
+#endif
 
 extension AppSettings: MDMSettingsProtocol {
 
@@ -236,7 +240,8 @@ extension AppSettings: MDMSettingsProtocol {
                 return []
             }
 
-            return MediaKeysUtil.toTuples(arrayOfArrayOfString: mediaKeys)
+            //return MediaKeysUtil.toTuples(arrayOfArrayOfString: mediaKeys)
+            return []
         }
     }
 
