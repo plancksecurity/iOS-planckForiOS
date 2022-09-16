@@ -120,7 +120,7 @@ class MDMMockAppSettings : AppSettingsProtocol {
     let mdmEchoProtocolEnabled = false
     let mdmEchoProtocolInOutgoingMessageRatingPreviewEnabled = false
 
-    let mdmMediaKeys = [String:String]()
+    let mdmMediaKeys = [(String, String)]()
 
     func removeFolderViewCollapsedStateOfAccountWith(address: String) {
     }
