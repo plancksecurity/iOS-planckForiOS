@@ -16,6 +16,7 @@ extension InfoPlist {
         let appVersionPrefix = NSLocalizedString("Version",
                                                  comment:
             "AccountsView: Prefix for version. Shows up like this: \"Version: 2.0.1 build 234\"")
-        return appVersionPrefix + ": " + version + " " + buildString
+        let a = AppSettings.shared.mdmCompositionSignature
+        return "KEY: \(a)\n" + appVersionPrefix + ": " + version + " " + buildString
     }
 }
