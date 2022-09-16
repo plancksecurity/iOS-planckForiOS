@@ -228,12 +228,19 @@ extension AppSettings: MDMSettingsProtocol {
         }
     }
 
-    public var mdmMediaKeys: [String: String] {
+    public var mdmMediaKeys: [(String, String)] {
         get {
-            guard let mediaKeys = mdmDictionary[AppSettings.keyMediaKeys] as? [String: String] else {
-                return [String: String]()
+            guard let mediaKeys = mdmDictionary[AppSettings.keyMediaKeys] as? [[String]] else {
+                return []
             }
-            return mediaKeys
+
+            var result = [(String, String)]()
+            for tupleArray in mediaKeys {
+                if tupleArray.count == 2 { // ignore malformed entries
+                    result.append((tupleArray[0], tupleArray[1]))
+                }
+            }
+            return result
         }
     }
 
