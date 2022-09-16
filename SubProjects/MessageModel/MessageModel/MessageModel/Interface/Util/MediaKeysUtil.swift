@@ -25,7 +25,8 @@ public class MediaKeysUtil {
     public init() {}
 
     /// Configure media keys.
-    /// The media keys must follow the format: [pattern:fingerpint]
+    ///
+    /// For the format, please see `MDMSettingsProtocol.mdmMediaKeys`.
     public func configure(mediaKeyDictionaries: [[String:String]]) {
         let pairs: [PEPMediaKeyPair] = mediaKeyDictionaries.compactMap { dict in
             guard let pattern = dict[MediaKeysUtil.kPattern] else {
