@@ -27,21 +27,22 @@ class AppSettingsObserver {
 
     // MARK: - Private
 
-    private var mdmDictionary: [String: Any] = [:]
+    private var mdmDictionary: [String:Any] = [:]
 
     @objc private func userDefaultsDidChange(notification: NSNotification) {
         // We only care about standard user default settings, and specifically mdm settings
         guard let defaults = notification.object as? UserDefaults,
               defaults == UserDefaults.standard,
               let mdm = defaults.dictionary(forKey: MDMPredeployed.keyMDM) else {
-            //Nothing to do
+            // Nothing to do
             return
         }
 
-        if let oldValues = NSDictionary(dictionary: mdmDictionary).value(forKey: AppSettings.keyMediaKeys) as? [String: String] {
+        // Detect changes to the media keys
+        if let oldValues = NSDictionary(dictionary: mdmDictionary).value(forKey: AppSettings.keyMediaKeys) as? [[String:String]] {
             let newValues = AppSettings.shared.mdmMediaKeys
             if oldValues != newValues {
-                MediaKeysUtil().configureMediaKeys(keys: newValues)
+                MediaKeysUtil().configure(mediaKeyDictionaries: newValues)
             }
         }
 
