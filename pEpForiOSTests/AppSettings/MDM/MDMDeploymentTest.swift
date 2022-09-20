@@ -90,7 +90,6 @@ class MDMDeploymentTest: XCTestCase {
         AppSettings.shared.hasBeenMDMDeployed = false
         Stack.shared.reset()
         XCTAssertTrue(PEPUtils.pEpClean())
-        // Note: The use of hard-coded strings as settings keys is intentional.
         UserDefaults.standard.set([], forKey: MDMDeploymentTest.keyMDM)
     }
 
