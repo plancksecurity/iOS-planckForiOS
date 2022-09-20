@@ -12,7 +12,6 @@ import XCTest
 @testable import MessageModel
 
 class MockAppSettings: AppSettingsProtocol {
-
     var acceptedLanguagesCodes: [String] = ["de", "en"]
 
     var keySyncEnabled: Bool = true
@@ -89,6 +88,11 @@ class MockAppSettings: AppSettingsProtocol {
     // setters
     var setFolderCollapsedStateExpectation: XCTestExpectation?
     var setAccountCollapsedStateExpectation: XCTestExpectation?
+
+    let mdmEchoProtocolEnabled = false
+    let mdmEchoProtocolInOutgoingMessageRatingPreviewEnabled = false
+
+    let mdmMediaKeys = [[String:String]]()
 
     init(verboseLogginEnabled: Bool) {
         self.verboseLogginEnabled = verboseLogginEnabled

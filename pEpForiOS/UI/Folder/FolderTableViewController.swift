@@ -30,8 +30,11 @@ class FolderTableViewController: UITableViewController {
                                                name: .pEpSettingsChanged,
                                                object: nil)
 
-        // TODO: Remove this fake
-        FakeAccountData().setupDeployableAccountData()
+        NotificationCenter.default.addObserver(self,
+                                               selector: #selector(pEpMDMSettingsChanged),
+                                               name: .pEpMDMSettingsChanged,
+                                               object: nil)
+
     }
 
     override func viewWillAppear(_ animated: Bool) {
@@ -572,7 +575,15 @@ extension FolderTableViewController : FolderViewModelDelegate {
 
 extension FolderTableViewController {
 
-    @objc func pEpSettingsChanged() {
+    @objc private func pEpSettingsChanged() {
         tableView.reloadData()
+    }
+
+    @objc private func pEpMDMSettingsChanged() {
+        guard let vm = folderVM else {
+            Log.shared.errorAndCrash("VM not found")
+            return
+        }
+        addAccountButton.isHidden = !vm.shouldShowAddAccountButton
     }
 }

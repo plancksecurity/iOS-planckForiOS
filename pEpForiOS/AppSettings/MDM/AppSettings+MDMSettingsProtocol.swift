@@ -8,30 +8,38 @@
 
 import Foundation
 
+#if EXT_SHARE
+import MessageModelForAppExtensions
+#else
+import MessageModel
+#endif
+
 extension AppSettings: MDMSettingsProtocol {
 
     // MARK: - Keys
 
-    static private let keyhasBeenMDMDeployed = "keyhasBeenMDMDeployed"
-    static private var keyPEPEnablePrivacyProtectionEnabled = "pep_enable_privacy_protection"
-    static private var keyPEPExtraKeys = "pep_extra_keys"
-    static private var keyPEPTrustwordsEnabled = "pep_use_trustwords"
-    static private var keyUnsecureDeliveryWarningEnabled = "unsecure_delivery_warning"
-    static private var keyPEPSyncFolderEnabled = "pep_sync_folder"
-    static private var keyDebugLoggingEnabled = "debug_logging"
-    static private var keyAccountDisplayCount = "account_display_count"
-    static private var keyMaxPushFolders = "max_push_folders"
-    static private var keyCompositionSenderName = "composition_sender_name"
-    static private var keyCompositionSignatureEnabled = "composition_use_signature"
-    static private var keyCompositionSignature = "composition_signature"
-    static private var keyCompositionSignatureBeforeQuotedMessageEnabled = "composition_signature_before_quoted_message"
-    static private var keyDefaultQuotedTextShownEnabled = "default_quoted_text_shown"
-    static private var keyAccountDefaultFolders = "account_default_folders"
-    static private var keyRemoteSearchEnabled = "remote_search_enabled"
-    static private var keyAccountRemoteSearchNumResults = "account_remote_search_num_results"
-    static private var keyPEPSaveEncryptedOnServerEnabled = "pep_save_encrypted_on_server"
-    static private var keyPEPEnableSyncAccountEnabled = "pep_enable_sync_account"
-    static private var keyPEPSyncNewDevicesEnabled = "allow_pep_sync_new_devices"
+    static let keyhasBeenMDMDeployed = "keyhasBeenMDMDeployed"
+    static let keyPEPEnablePrivacyProtectionEnabled = "pep_enable_privacy_protection"
+    static let keyPEPExtraKeys = "pep_extra_keys"
+    static let keyPEPTrustwordsEnabled = "pep_use_trustwords"
+    static let keyUnsecureDeliveryWarningEnabled = "unsecure_delivery_warning"
+    static let keyPEPSyncFolderEnabled = "pep_sync_folder"
+    static let keyDebugLoggingEnabled = "debug_logging"
+    static let keyAccountDisplayCount = "account_display_count"
+    static let keyMaxPushFolders = "max_push_folders"
+    static let keyCompositionSenderName = "composition_sender_name"
+    static let keyCompositionSignatureEnabled = "composition_use_signature"
+    static let keyCompositionSignature = "composition_signature"
+    static let keyCompositionSignatureBeforeQuotedMessageEnabled = "composition_signature_before_quoted_message"
+    static let keyDefaultQuotedTextShownEnabled = "default_quoted_text_shown"
+    static let keyAccountDefaultFolders = "account_default_folders"
+    static let keyRemoteSearchEnabled = "remote_search_enabled"
+    static let keyAccountRemoteSearchNumResults = "account_remote_search_num_results"
+    static let keyPEPSaveEncryptedOnServerEnabled = "pep_save_encrypted_on_server"
+    static let keyPEPEnableSyncAccountEnabled = "pep_enable_sync_account"
+    static let keyPEPSyncNewDevicesEnabled = "allow_pep_sync_new_devices"
+    static let keyMediaKeys = "pep_media_keys"
+    static let keyEchoProtocolEnabled = "pep_enable_echo_protocol"
 
     // MARK: - Settings
 
@@ -230,11 +238,32 @@ extension AppSettings: MDMSettingsProtocol {
         }
     }
 
+    public var mdmMediaKeys: [[String:String]] {
+        get {
+            guard let mediaKeys = mdmDictionary[AppSettings.keyMediaKeys] as? [[String:String]] else {
+                return []
+            }
+
+            return mediaKeys
+        }
+    }
+
+    public var mdmEchoProtocolEnabled: Bool {
+        get {
+            guard let isEchoProtocolEnabled = mdmDictionary[AppSettings.keyEchoProtocolEnabled] as? Bool else {
+                // Default value from documentation
+                return true
+            }
+            return isEchoProtocolEnabled
+        }
+    }
+
     // MARK: - Private
 
     private var mdmDictionary: [String: Any] {
-        guard let dictionary = AppSettings.userDefaults.dictionary(forKey: MDMDeployment.keyMDM) else {
-            return [String:Any]()
+        // MDM dictionary goes to the standard UserDefaults, not our instance.
+        guard let dictionary = UserDefaults.standard.dictionary(forKey: MDMDeployment.keyMDM) else {
+            return [String: Any]()
         }
         return dictionary
     }

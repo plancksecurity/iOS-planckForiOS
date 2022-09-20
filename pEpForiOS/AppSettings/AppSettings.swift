@@ -57,8 +57,8 @@ extension AppSettings: AppSettingsProtocol {
 
 extension AppSettings {
 
-    static internal var userDefaults: UserDefaults = {
-        guard let appGroupDefaults = UserDefaults.init(suiteName: kAppGroupIdentifier) else {
+    static var userDefaults: UserDefaults = {
+        guard let appGroupDefaults = UserDefaults(suiteName: kAppGroupIdentifier) else {
             Log.shared.errorAndCrash("Could not find app group defaults")
             return UserDefaults.standard
         }

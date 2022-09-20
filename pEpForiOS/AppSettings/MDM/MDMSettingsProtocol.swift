@@ -124,5 +124,16 @@ public protocol MDMSettingsProtocol {
     /// Default is false.
     var mdmPEPSyncNewDevicesEnabled: Bool { get }
 
+    /// The list of media keys, which are dictionaries with three entries:
+    ///  "pattern": The media key pattern
+    ///  "fingerprint": The fingerprint of this media key
+    ///  "key": The complete key material, in armored or comparable form.
+    var mdmMediaKeys: [[String:String]] { get }
+
+    /// Indicate if Echo Protocol is enabled.
+    ///
+    /// Echo allows the first message with content in an exchange to be protected.
+    /// Default is true
+    var mdmEchoProtocolEnabled: Bool { get }
 }
 

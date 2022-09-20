@@ -24,7 +24,11 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     private let errorSubscriber = ErrorSubscriber()
 
     private let encryptionErrorHandler = EncryptionErrorHandler()
-    
+
+    /// AppSettingsObserver must be always alive to observe changes.
+    /// The observer must be started by calling `start`
+    private var appSettingsObserver: AppSettingsObserver = AppSettingsObserver.shared
+
     /// Error Handler bubble errors up to the UI
     private lazy var errorPropagator: ErrorPropagator = {
         let createe = ErrorPropagator(subscriber: errorSubscriber)
@@ -58,7 +62,13 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
                                                   keySyncStateProvider: AppSettings.shared,
                                                   usePEPFolderProvider: AppSettings.shared,
                                                   passphraseProvider: userInputProvider,
-                                                  encryptionErrorDelegate: encryptionErrorHandler)
+                                                  encryptionErrorDelegate: encryptionErrorHandler,
+                                                  outgoingRatingService: OutgoingRatingChangeService())
+    }
+
+    /// Start observing the appSettings
+    private func startAppSettingsObserver() {
+        appSettingsObserver.start()
     }
 
     private func askUserForNotificationPermissions() {
@@ -105,6 +115,7 @@ extension AppDelegate {
 
         Appearance.setup()
         setupServices()
+        startAppSettingsObserver()
         askUserForNotificationPermissions()
         var result = setupInitialViewController()
         if let openedToOpenFile = launchOptions?[UIApplication.LaunchOptionsKey.url] as? URL {
@@ -287,7 +298,7 @@ extension AppDelegate {
     }
 }
 
-// MARK: - User Notifiation
+// MARK: - User Notification
 
 extension AppDelegate {
     private func informUser(numNewMails:Int, completion: @escaping ()->()) {

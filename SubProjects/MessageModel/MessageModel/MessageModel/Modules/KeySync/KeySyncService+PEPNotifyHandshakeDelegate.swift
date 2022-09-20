@@ -72,9 +72,16 @@ extension KeySyncService: PEPNotifyHandshakeDelegate {
                 try? PassphraseUtil().newPassphrase(pp)
             }
 
+        case .start:
+            // Corresponds to SYNC_NOTIFY_START in the engine, only needed for desktop
+            break
+
         case .stop:
             handshakeHandler?.cancelHandshake()
             postKeySyncDisabledByEngineNotification()
+
+        case .outgoingRatingChange:
+            outgoingRatingService.handleOutgoingRatingChange()
 
         // Other
         case .undefined:
