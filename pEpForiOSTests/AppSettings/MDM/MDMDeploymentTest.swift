@@ -136,7 +136,7 @@ class MDMDeploymentTest: XCTestCase {
                                               MDMDeployment.keyOutgoingMailSettings: smtpSettingsDict]
 
         let mdmDict = [MDMDeployment.keyCompositionSettings: compositionSettingsDict,
-                       "pep_mail_settings": mailSettingsDict]
+                       MDMDeployment.keyAccountDeploymentMailSettings: mailSettingsDict]
 
         UserDefaults.standard.set(mdmDict, forKey: MDMDeployment.keyMDM)
     }
