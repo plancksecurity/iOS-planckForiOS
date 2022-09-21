@@ -78,9 +78,6 @@ class MDMDeploymentTest: XCTestCase {
 
     // MARK: - Internal Constants
 
-    /// - Note: The use of using this hard-coded string as dictionary key is intentional.
-    private static let keyMDM = "com.apple.configuration.managed"
-
     // MARK: - Util
 
     /// Resets everything.
@@ -90,7 +87,7 @@ class MDMDeploymentTest: XCTestCase {
         AppSettings.shared.hasBeenMDMDeployed = false
         Stack.shared.reset()
         XCTAssertTrue(PEPUtils.pEpClean())
-        UserDefaults.standard.set([], forKey: MDMDeploymentTest.keyMDM)
+        UserDefaults.standard.set([], forKey: MDMDeployment.keyMDM)
     }
 
     /// Wrapper around `MDMDeployment.deployAccount` that makes it
@@ -143,7 +140,7 @@ class MDMDeploymentTest: XCTestCase {
         let mdmDict = ["composition_settings": compositionSettingsDict,
                        "pep_mail_settings": mailSettingsDict]
 
-        UserDefaults.standard.set(mdmDict, forKey: MDMDeploymentTest.keyMDM)
+        UserDefaults.standard.set(mdmDict, forKey: MDMDeployment.keyMDM)
     }
 }
 
