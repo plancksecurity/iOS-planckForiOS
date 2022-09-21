@@ -273,7 +273,7 @@ extension MDMDeployment {
     /// This is recommended, but not mandatory, so the result could be nil.
     private func mdmExtractUsername(mdmDictionary: SettingsDict) -> String? {
         if let compositionSettings = mdmDictionary[MDMDeployment.keyCompositionSettings] as? SettingsDict,
-           let compositionSenderName = compositionSettings[MDMDeployment.keyCompositionSenderName] as? String {
+           let compositionSenderName = compositionSettings[AppSettings.keyCompositionSenderName] as? String {
             return compositionSenderName
         } else {
             return mdmDictionary[MDMDeployment.keyAccountDescription] as? String

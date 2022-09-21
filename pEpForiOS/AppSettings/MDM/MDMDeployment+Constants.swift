@@ -16,9 +16,6 @@ extension MDMDeployment {
     /// The key for entry into composition settings.
     static let keyCompositionSettings = "composition_settings"
 
-    /// The key for the sender's name, which may get used as the user's name.
-    static let keyCompositionSenderName = "composition_sender_name"
-
     /// The key for the account description, which an absence of a better name,
     /// may get used as the user's name.
     static let keyAccountDescription = "account_description"

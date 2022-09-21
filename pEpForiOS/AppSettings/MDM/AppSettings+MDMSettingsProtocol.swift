@@ -27,7 +27,10 @@ extension AppSettings: MDMSettingsProtocol {
     static let keyDebugLoggingEnabled = "debug_logging"
     static let keyAccountDisplayCount = "account_display_count"
     static let keyMaxPushFolders = "max_push_folders"
+
+    /// The key for the sender's name, which may get used as the user's name.
     static let keyCompositionSenderName = "composition_sender_name"
+
     static let keyCompositionSignatureEnabled = "composition_use_signature"
     static let keyCompositionSignature = "composition_signature"
     static let keyCompositionSignatureBeforeQuotedMessageEnabled = "composition_signature_before_quoted_message"

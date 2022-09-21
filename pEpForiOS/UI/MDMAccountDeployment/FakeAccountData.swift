@@ -16,7 +16,7 @@ class FakeAccountData {
 
         // Note: The use of hard-coded strings as settings keys is intentional.
 
-        let compositionSettingsDict = ["composition_sender_name": "sender_name"]
+        let compositionSettingsDict = [AppSettings.keyCompositionSenderName: "sender_name"]
 
         let imapSettingsDict: SettingsDict = ["incoming_mail_settings_server": "imap_server",
                                               "incoming_mail_settings_security_type": "SSL/TLS",
