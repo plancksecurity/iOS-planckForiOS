@@ -129,7 +129,7 @@ class MDMDeploymentTest: XCTestCase {
         let smtpSettingsDict: SettingsDict = [MDMDeployment.keyOutgoingMailSettingsServer: "smtp_server",
                                               MDMDeployment.keyOutgoingMailSettingsSecurityType: "STARTTLS",
                                               MDMDeployment.keyOutgoingMailSettingsPort: NSNumber(value: 1465),
-                                              "outgoing_mail_settings_user_name": loginname]
+                                              MDMDeployment.keyOutgoingMailSettingsUsername: loginname]
 
         let mailSettingsDict: SettingsDict = ["account_email_address": "email@example.com",
                                               "incoming_mail_settings": imapSettingsDict,
