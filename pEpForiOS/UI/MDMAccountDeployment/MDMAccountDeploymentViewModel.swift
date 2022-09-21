@@ -31,6 +31,9 @@ class MDMAccountDeploymentViewModel {
 
     private(set) var uiState: UIState = .initial
 
+    /// Have to hold on to this, so it doesn't go out of scope and the weak delegate chain goes away.
+    private accountVerifier: AccountVerifier?
+
     /// - Returns: `AccountData` for the UI to display.
     func accountData() -> AccountData? {
         do {
@@ -48,8 +51,16 @@ class MDMAccountDeploymentViewModel {
     func deployAccount(password: String,
                        deployer: MDMDeploymentProtocol = MDMDeployment(),
                        callback: @escaping (_ result: Result) -> ()) {
+        let theAccountVerifier = AccountVerifier()
+
+        // Strongly reference it
+        self.accountVerifier = theAccountVerifier
+
         deployer.deployAccount(password: password,
-                               accountVerifier: AccountVerifier()) { maybeError in
+                               accountVerifier: theAccountVerifier) { maybeError in
+            // No longer needed
+            self.accountVerifier = nil
+
             if let error = maybeError {
                 var message: String
                 switch error {
