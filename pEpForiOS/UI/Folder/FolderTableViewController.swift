@@ -320,8 +320,6 @@ extension FolderTableViewController: SegueHandlerType {
             if vm.shouldShowFolders {
                 showEmailList(folder:vm.folderToShow)
             } else {
-                // TODO: Also check for existing MDM deployment,
-                // and refuse to deploy if this already happened.
                 if MDMDeployment().haveAccountToDeploy {
                     performSegue(withIdentifier:.mdmDeployAccount, sender: self)
                 } else {
