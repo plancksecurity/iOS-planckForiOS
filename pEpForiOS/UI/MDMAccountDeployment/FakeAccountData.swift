@@ -28,7 +28,7 @@ class FakeAccountData {
 
         let mailSettingsDict: SettingsDict = [MDMDeployment.keyUserAddress: "email@example.com",
                                               MDMDeployment.keyIncomingMailSettings: imapSettingsDict,
-                                              "outgoing_mail_settings": smtpSettingsDict]
+                                              MDMDeployment.keyOutgoingMailSettings: smtpSettingsDict]
 
         let mdmDict = ["composition_settings": compositionSettingsDict,
                        "pep_mail_settings": mailSettingsDict]
