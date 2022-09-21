@@ -19,7 +19,7 @@ class FakeAccountData {
         let compositionSettingsDict = [AppSettings.keyCompositionSenderName: "sender_name"]
 
         let imapSettingsDict: SettingsDict = [MDMDeployment.keyIncomingMailSettingsServer: "imap_server",
-                                              "incoming_mail_settings_security_type": "SSL/TLS",
+                                              MDMDeployment.keyIncomingMailSettingsSecurityType: "SSL/TLS",
                                               "incoming_mail_settings_port": NSNumber(value: 1993),
                                               "incoming_mail_settings_user_name": loginname]
 
