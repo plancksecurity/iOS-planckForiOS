@@ -14,8 +14,6 @@ class FakeAccountData {
     func setupDeployableAccountData() {
         let loginname = "login_name"
 
-        // Note: The use of hard-coded strings as settings keys is intentional.
-
         let compositionSettingsDict = [AppSettings.keyCompositionSenderName: "sender_name"]
 
         let imapSettingsDict: SettingsDict = [MDMDeployment.keyIncomingMailSettingsServer: "imap_server",
