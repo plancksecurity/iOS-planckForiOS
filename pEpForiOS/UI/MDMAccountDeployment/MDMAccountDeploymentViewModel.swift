@@ -31,8 +31,8 @@ class MDMAccountDeploymentViewModel {
 
     private(set) var uiState: UIState = .initial
 
-    /// Have to hold on to this, so it doesn't go out of scope and the weak delegate chain goes away.
-    private accountVerifier: AccountVerifier?
+    /// Strong reference in order to keep it alive
+    private var accountVerifier: AccountVerifier?
 
     /// - Returns: `AccountData` for the UI to display.
     func accountData() -> AccountData? {
@@ -53,7 +53,7 @@ class MDMAccountDeploymentViewModel {
                        callback: @escaping (_ result: Result) -> ()) {
         let theAccountVerifier = AccountVerifier()
 
-        // Strongly reference it
+        // Keep a strong reference
         self.accountVerifier = theAccountVerifier
 
         deployer.deployAccount(password: password,
