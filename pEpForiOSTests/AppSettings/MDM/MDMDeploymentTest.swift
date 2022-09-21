@@ -123,7 +123,7 @@ class MDMDeploymentTest: XCTestCase {
 
         let compositionSettingsDict = [AppSettings.keyCompositionSenderName: "sender_name"]
 
-        let imapSettingsDict: SettingsDict = ["incoming_mail_settings_server": "imap_server",
+        let imapSettingsDict: SettingsDict = [MDMDeployment.keyIncomingMailSettingsServer: "imap_server",
                                               "incoming_mail_settings_security_type": "SSL/TLS",
                                               "incoming_mail_settings_port": NSNumber(value: 1993),
                                               "incoming_mail_settings_user_name": loginname]
