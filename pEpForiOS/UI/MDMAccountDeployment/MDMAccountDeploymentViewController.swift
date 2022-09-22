@@ -19,7 +19,6 @@ class MDMAccountDeploymentViewController: UIViewController {
 
     var textFieldPassword: UITextField?
     var buttonVerify: UIButton?
-    var activityIndicator: UIActivityIndicatorView?
 
     // MARK: - Lifecycle
 
@@ -142,7 +141,6 @@ class MDMAccountDeploymentViewController: UIViewController {
         let activityIndicator = createActivityIndicator()
         activityIndicator.startAnimating()
         stackView.addArrangedSubview(activityIndicator)
-        self.activityIndicator = activityIndicator
 
         viewModel.deployAccount(password: password) { [weak self] result in
             DispatchQueue.main.async {
