@@ -145,18 +145,20 @@ class MDMAccountDeploymentViewController: UIViewController {
         self.activityIndicator = activityIndicator
 
         viewModel.deployAccount(password: password) { [weak self] result in
-            guard let theSelf = self else {
-                Log.shared.lostMySelf()
-                return
-            }
+            DispatchQueue.main.async {
+                guard let theSelf = self else {
+                    Log.shared.lostMySelf()
+                    return
+                }
 
-            switch result {
-            case .error(let message):
-                // TODO
-                break
-            case .success(let message):
-                // TODO
-                theSelf.navigationController?.dismiss(animated: true)
+                switch result {
+                case .error(let message):
+                    // TODO
+                    break
+                case .success(let message):
+                    // TODO
+                    theSelf.navigationController?.dismiss(animated: true)
+                }
             }
         }
     }
