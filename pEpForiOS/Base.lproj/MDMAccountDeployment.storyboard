@@ -17,7 +17,7 @@
                         <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" translatesAutoresizingMaskIntoConstraints="NO" id="TIa-mM-fH7">
+                            <stackView opaque="NO" contentMode="scaleToFill" ambiguous="YES" axis="vertical" translatesAutoresizingMaskIntoConstraints="NO" id="TIa-mM-fH7">
                                 <rect key="frame" x="0.0" y="92" width="414" height="770"/>
                             </stackView>
                         </subviews>
@@ -28,8 +28,6 @@
                             <constraint firstItem="TIa-mM-fH7" firstAttribute="centerX" secondItem="5EZ-qb-Rvc" secondAttribute="centerX" id="Hgo-ax-cvW"/>
                             <constraint firstItem="TIa-mM-fH7" firstAttribute="trailing" secondItem="vDu-zF-Fre" secondAttribute="trailing" id="Kdl-hV-a2r"/>
                             <constraint firstItem="TIa-mM-fH7" firstAttribute="leading" secondItem="vDu-zF-Fre" secondAttribute="leading" id="Pkc-C5-6hp"/>
-                            <constraint firstItem="vDu-zF-Fre" firstAttribute="bottom" secondItem="TIa-mM-fH7" secondAttribute="bottom" id="iFI-HG-Agd"/>
-                            <constraint firstItem="TIa-mM-fH7" firstAttribute="centerX" secondItem="5EZ-qb-Rvc" secondAttribute="centerX" id="lM1-Nc-zDb"/>
                         </constraints>
                     </view>
                     <navigationItem key="navigationItem" id="IQI-8n-fg2"/>
