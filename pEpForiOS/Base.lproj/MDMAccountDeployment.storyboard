@@ -18,16 +18,15 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <stackView opaque="NO" contentMode="scaleToFill" ambiguous="YES" axis="vertical" translatesAutoresizingMaskIntoConstraints="NO" id="TIa-mM-fH7">
-                                <rect key="frame" x="0.0" y="92" width="414" height="770"/>
+                                <rect key="frame" x="10" y="92" width="414" height="460"/>
                             </stackView>
                         </subviews>
                         <viewLayoutGuide key="safeArea" id="vDu-zF-Fre"/>
                         <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                         <constraints>
-                            <constraint firstItem="TIa-mM-fH7" firstAttribute="top" secondItem="vDu-zF-Fre" secondAttribute="top" id="5n9-oF-b8J"/>
-                            <constraint firstItem="TIa-mM-fH7" firstAttribute="centerX" secondItem="5EZ-qb-Rvc" secondAttribute="centerX" id="Hgo-ax-cvW"/>
-                            <constraint firstItem="TIa-mM-fH7" firstAttribute="trailing" secondItem="vDu-zF-Fre" secondAttribute="trailing" id="Kdl-hV-a2r"/>
-                            <constraint firstItem="TIa-mM-fH7" firstAttribute="leading" secondItem="vDu-zF-Fre" secondAttribute="leading" id="Pkc-C5-6hp"/>
+                            <constraint firstItem="TIa-mM-fH7" firstAttribute="top" secondItem="vDu-zF-Fre" secondAttribute="top" constant="10" id="5n9-oF-b8J"/>
+                            <constraint firstItem="TIa-mM-fH7" firstAttribute="trailing" secondItem="vDu-zF-Fre" secondAttribute="trailing" constant="10" id="Kdl-hV-a2r"/>
+                            <constraint firstItem="TIa-mM-fH7" firstAttribute="leading" secondItem="vDu-zF-Fre" secondAttribute="leading" constant="10" id="Pkc-C5-6hp"/>
                         </constraints>
                     </view>
                     <navigationItem key="navigationItem" id="IQI-8n-fg2"/>
