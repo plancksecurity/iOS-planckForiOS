@@ -155,8 +155,7 @@ class MDMAccountDeploymentViewController: UIViewController {
                 case .error(let message):
                     // TODO
                     break
-                case .success(let message):
-                    // TODO
+                case .success(let _):
                     theSelf.navigationController?.dismiss(animated: true)
                 }
             }
