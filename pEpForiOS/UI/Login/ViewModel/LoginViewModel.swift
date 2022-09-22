@@ -130,7 +130,7 @@ final class LoginViewModel {
                                          flags: AS_FLAG_USE_ANY,
                                          credentials: nil)
         acSettings.lookupCompletion() { settings in
-            GCD.onMain() {
+            DispatchQueue.main.async {
                 libAccoutSettingsStatusOK()
             }
         }
@@ -263,7 +263,7 @@ extension LoginViewModel: OAuthAuthorizerDelegate {
 
 extension LoginViewModel: QualifyServerIsLocalServiceDelegate {
     func didQualify(serverName: String, isLocal: Bool?, error: Error?) {
-        GCD.onMain { [weak self] in
+        DispatchQueue.main.async { [weak self] in
             guard let me = self else {
                 Log.shared.lostMySelf()
                 return

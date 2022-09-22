@@ -302,7 +302,7 @@ extension AppDelegate {
 
 extension AppDelegate {
     private func informUser(numNewMails:Int, completion: @escaping ()->()) {
-        GCD.onMain {
+        DispatchQueue.main.async {
             UserNotificationTool.postUserNotification(forNumNewMails: numNewMails)
             completion()
         }
