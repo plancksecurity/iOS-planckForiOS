@@ -55,6 +55,7 @@ class MDMAccountDeploymentViewController: UIViewController {
 
     func setupUI() {
         stackView.removeArrangedSubviews()
+        stackView.alignment = .center
 
         switch viewModel.uiState {
         case .initial:
