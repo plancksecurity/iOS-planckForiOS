@@ -56,9 +56,14 @@ class MDMAccountDeploymentViewController: UIViewController {
     // MARK: - Build the UI
 
     func setupUI() {
+        let existingArrangedViews = stackView.arrangedSubviews
         stackView.removeArrangedSubviews()
         stackView.alignment = .center
         stackView.spacing = 10
+
+        for view in existingArrangedViews {
+            view.removeFromSuperview()
+        }
 
         switch viewModel.uiState {
         case .initial:
@@ -153,6 +158,7 @@ class MDMAccountDeploymentViewController: UIViewController {
                 }
 
                 theSelf.stackView.removeArrangedSubview(activityIndicator)
+                activityIndicator.removeFromSuperview()
 
                 switch result {
                 case .error(let message):
