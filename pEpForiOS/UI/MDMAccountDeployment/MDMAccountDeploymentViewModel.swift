@@ -102,4 +102,10 @@ class MDMAccountDeploymentViewModel {
         return NSLocalizedString("Verify",
                                  comment: "Title text for MDM deployment button")
     }
+
+    func errorMessage(message: String) -> String {
+        return String.localizedStringWithFormat(NSLocalizedString("Error: %1$@",
+                                                                  comment: "MDM Deployment Error Format"),
+                                                message)
+    }
 }
