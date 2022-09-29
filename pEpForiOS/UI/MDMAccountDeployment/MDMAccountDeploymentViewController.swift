@@ -20,6 +20,9 @@ class MDMAccountDeploymentViewController: UIViewController {
     var textFieldPassword: UITextField?
     var buttonVerify: UIButton?
 
+    /// An optional label containing the last error message.
+    var errorLabel: UILabel?
+
     // MARK: - Lifecycle
 
     override func viewDidLoad() {
@@ -166,9 +169,14 @@ class MDMAccountDeploymentViewController: UIViewController {
     // MARK: - Error Message
 
     func setError(message: String) {
-        let errorLabel = UILabel()
-        errorLabel.text = message
-        // TODO
+        if let existing = errorLabel {
+            existing.text = message
+        } else {
+            let newErrorLabel = UILabel()
+            newErrorLabel.text = message
+            stackView.insertArrangedSubview(newErrorLabel, at: 0)
+            errorLabel = newErrorLabel
+        }
     }
 
     // MARK: - Font Size
