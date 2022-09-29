@@ -153,13 +153,22 @@ class MDMAccountDeploymentViewController: UIViewController {
 
                 switch result {
                 case .error(let message):
-                    // TODO
+                    let errorMessage = theSelf.viewModel.errorMessage(message: message)
+                    theSelf.setError(message: errorMessage)
                     break
                 case .success:
                     theSelf.navigationController?.dismiss(animated: true)
                 }
             }
         }
+    }
+
+    // MARK: - Error Message
+
+    func setError(message: String) {
+        let errorLabel = UILabel()
+        errorLabel.text = message
+        // TODO
     }
 
     // MARK: - Font Size
