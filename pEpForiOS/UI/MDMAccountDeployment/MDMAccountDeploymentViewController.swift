@@ -149,6 +149,8 @@ class MDMAccountDeploymentViewController: UIViewController {
                     return
                 }
 
+                theSelf.stackView.removeArrangedSubview(activityIndicator)
+
                 switch result {
                 case .error(let message):
                     // TODO
