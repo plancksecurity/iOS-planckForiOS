@@ -179,6 +179,7 @@ class MDMAccountDeploymentViewController: UIViewController {
             existing.text = message
         } else {
             let newErrorLabel = UILabel()
+            newErrorLabel.lineBreakMode = .byWordWrapping
             newErrorLabel.numberOfLines = 0
             newErrorLabel.text = message
             stackView.insertArrangedSubview(newErrorLabel, at: 0)
