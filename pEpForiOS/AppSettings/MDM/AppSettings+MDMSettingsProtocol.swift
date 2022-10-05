@@ -18,7 +18,7 @@ extension AppSettings: MDMSettingsProtocol {
 
     // MARK: - Keys
 
-    static let keyhasBeenMDMDeployed = "keyhasBeenMDMDeployed"
+    static let keyhasBeenMDMDeployed = "hasBeenMDMDeployed"
     static let keyPEPEnablePrivacyProtectionEnabled = "pep_enable_privacy_protection"
     static let keyPEPExtraKeys = "pep_extra_keys"
     static let keyPEPTrustwordsEnabled = "pep_use_trustwords"
