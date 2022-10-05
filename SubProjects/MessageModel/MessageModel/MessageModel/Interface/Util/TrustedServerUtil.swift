@@ -13,9 +13,7 @@ public class TrustedServerUtil {
     /// Expose the init outside MM.
     public init() {}
 
-    /// Enables or disable the use of the echo protocol.
-    ///
-    /// The protocol is enabled by default.
+    /// If disabled, an uncrypted copy of each message is sotred on the server. 
     public func setStoreSecurely(newValue: Bool) {
         //In MDM we have only one account.
         if let account = Account.all().first {
