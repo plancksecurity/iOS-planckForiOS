@@ -188,6 +188,8 @@ extension SettingsViewModel {
     private func generateSections() {
         if appSettings.hasBeenMDMDeployed {
             items.append(sectionForType(sectionType: .accounts))
+            items.append(sectionForType(sectionType: .globalSettings))
+
         } else {
             SettingsViewModel.SectionType.allCases.forEach { (type) in
                 items.append(sectionForType(sectionType: type))
@@ -239,43 +241,47 @@ extension SettingsViewModel {
                 me.handleResetAllIdentities()
             })
         case .globalSettings:
-            rows.append(generateNavigationRow(type: .defaultAccount, isDangerous: false))
-            rows.append(generateNavigationRow(type: .credits, isDangerous: false))
-            rows.append(generateNavigationRow(type: .trustedServer, isDangerous: false))
-            rows.append(generateNavigationRow(type: .pgpKeyImport, isDangerous: false))
-            rows.append(generateSwitchRow(type: .unsecureReplyWarningEnabled,
-                                          isDangerous: false,
-                                          isOn: AppSettings.shared.unsecureReplyWarningEnabled) {  [weak self]
-                (value) in
-                AppSettings.shared.unsecureReplyWarningEnabled = value
-                guard let me = self else {
-                    Log.shared.errorAndCrash("Lost myself")
-                    return
-                }
-                me.setSwtichRow(ofType: .globalSettings, withIdentifier: .unsecureReplyWarningEnabled, newValue: value)
-            })
-            rows.append(generateSwitchRow(type: .protectMessageSubject,
-                                          isDangerous: false,
-                                          isOn: !AppSettings.shared.unencryptedSubjectEnabled) { [weak self]
-                (value) in
-                AppSettings.shared.unencryptedSubjectEnabled = !value
-                guard let me = self else {
-                    Log.shared.errorAndCrash("Lost myself")
-                    return
-                }
-                me.setSwtichRow(ofType: .globalSettings, withIdentifier: .protectMessageSubject, newValue: value)
-            })
-            rows.append(generateSwitchRow(type: .passiveMode,
-                                          isDangerous: false,
-                                          isOn: AppSettings.shared.passiveModeEnabled) { [weak self] (value) in
-                AppSettings.shared.passiveModeEnabled = value
-                guard let me = self else {
-                    Log.shared.errorAndCrash("Lost myself")
-                    return
-                }
-                me.setSwtichRow(ofType: .globalSettings, withIdentifier: .passiveMode, newValue: value)
+            if appSettings.hasBeenMDMDeployed {
+                rows.append(generateNavigationRow(type: .credits, isDangerous: false))
+            } else {
+                rows.append(generateNavigationRow(type: .defaultAccount, isDangerous: false))
+                rows.append(generateNavigationRow(type: .credits, isDangerous: false))
+                rows.append(generateNavigationRow(type: .trustedServer, isDangerous: false))
+                rows.append(generateNavigationRow(type: .pgpKeyImport, isDangerous: false))
+                rows.append(generateSwitchRow(type: .unsecureReplyWarningEnabled,
+                                              isDangerous: false,
+                                              isOn: AppSettings.shared.unsecureReplyWarningEnabled) {  [weak self]
+                    (value) in
+                    AppSettings.shared.unsecureReplyWarningEnabled = value
+                    guard let me = self else {
+                        Log.shared.errorAndCrash("Lost myself")
+                        return
+                    }
+                    me.setSwtichRow(ofType: .globalSettings, withIdentifier: .unsecureReplyWarningEnabled, newValue: value)
+                })
+                rows.append(generateSwitchRow(type: .protectMessageSubject,
+                                              isDangerous: false,
+                                              isOn: !AppSettings.shared.unencryptedSubjectEnabled) { [weak self]
+                    (value) in
+                    AppSettings.shared.unencryptedSubjectEnabled = !value
+                    guard let me = self else {
+                        Log.shared.errorAndCrash("Lost myself")
+                        return
+                    }
+                    me.setSwtichRow(ofType: .globalSettings, withIdentifier: .protectMessageSubject, newValue: value)
+                })
+                rows.append(generateSwitchRow(type: .passiveMode,
+                                              isDangerous: false,
+                                              isOn: AppSettings.shared.passiveModeEnabled) { [weak self] (value) in
+                    AppSettings.shared.passiveModeEnabled = value
+                    guard let me = self else {
+                        Log.shared.errorAndCrash("Lost myself")
+                        return
+                    }
+                    me.setSwtichRow(ofType: .globalSettings, withIdentifier: .passiveMode, newValue: value)
 
-            })
+                })
+            }
         case .pEpSync:
             rows.append(generateSwitchRow(type: .pEpSync,
                                           isDangerous: false,
