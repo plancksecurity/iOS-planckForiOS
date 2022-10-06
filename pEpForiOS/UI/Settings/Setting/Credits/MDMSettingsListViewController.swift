@@ -66,10 +66,8 @@ extension MDMSettingsListViewController {
         let activityViewController = UIActivityViewController(activityItems: [dictionary], applicationActivities: nil)
         activityViewController.title = NSLocalizedString("Share MDM settings", comment: "Share MDM settings title")
 
-        // This lines is for the popover you need to show in iPad
+        //Ipad config
         activityViewController.popoverPresentationController?.sourceView = view
-
-        // This line remove the arrow of the popover to show in iPad
         activityViewController.popoverPresentationController?.permittedArrowDirections = UIPopoverArrowDirection.down
         activityViewController.popoverPresentationController?.sourceRect = CGRect(x: 150, y: 150, width: 0, height: 0)
 
