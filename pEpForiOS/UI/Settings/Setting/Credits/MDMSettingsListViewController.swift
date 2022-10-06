@@ -20,17 +20,9 @@ class MDMSettingsListViewController: PEPWebViewController {
         } else {
             webView.backgroundColor = .white
         }
-        webView.loadHTMLString(html(), baseURL: nil)
         title = NSLocalizedString("Current Settings from MDM", comment: "Current Settings from MDM view title")
-
-        let title = NSLocalizedString("Share", comment: "Share button title")
-        let shareButton = UIBarButtonItem(title: title, style: .done, target: self, action: #selector(shareButtonPressed))
-
-        shareButton.accessibilityIdentifier = AccessibilityIdentifier.shareButton
-        shareButton.isAccessibilityElement = true
-
-        navigationItem.rightBarButtonItem = shareButton
-
+        webView.loadHTMLString(html(), baseURL: nil)
+        setupShareButton()
     }
 
     override func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
@@ -51,9 +43,25 @@ class MDMSettingsListViewController: PEPWebViewController {
 
 extension MDMSettingsListViewController {
 
+    private func setupShareButton() {
+        //Share button
+        let buttonTitle = NSLocalizedString("Share", comment: "Share button title")
+        let shareButton = UIBarButtonItem(title: buttonTitle,
+                                          style: .done,
+                                          target: self,
+                                          action: #selector(shareButtonPressed))
+        shareButton.accessibilityIdentifier = AccessibilityIdentifier.shareButton
+        shareButton.isAccessibilityElement = true
+        navigationItem.rightBarButtonItem = shareButton
+    }
+
     /// Share the settings list.
     @objc private func shareButtonPressed(sender: UIBarButtonItem) {
+        let vc = getActivityViewController()
+        present(vc, animated: true, completion: nil)
+    }
 
+    private func getActivityViewController() -> UIActivityViewController {
         let dictionary : String = MDMPredeployed().mdmPrettyPrintedDictionary()
         let activityViewController = UIActivityViewController(activityItems: [dictionary], applicationActivities: nil)
         activityViewController.title = NSLocalizedString("Share MDM settings", comment: "Share MDM settings title")
@@ -93,7 +101,7 @@ extension MDMSettingsListViewController {
         } else {
             // Fallback on earlier versions
         }
-        present(activityViewController, animated: true, completion: nil)
+        return activityViewController
     }
 
     private func html() -> String {
