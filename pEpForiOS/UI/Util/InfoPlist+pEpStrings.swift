@@ -15,7 +15,7 @@ extension InfoPlist {
         let buildString =  build != nil ? ("build " + (build ?? "")) : ""
         let appVersionPrefix = NSLocalizedString("Version",
                                                  comment:
-            "AccountsView: Prefix for version. Shows up like this: \"Version: 2.0.1 build 234\"")
+                                                    "AccountsView: Prefix for version. Shows up like this: \"Version: 2.0.1 build 234\"")
         return appVersionPrefix + ": " + version + " " + buildString
     }
 }
