@@ -46,7 +46,6 @@ class MDMSettingsListViewController: PEPWebViewController {
 extension MDMSettingsListViewController {
 
     private func setupShareButton() {
-        //Share button
         let buttonTitle = NSLocalizedString("Share", comment: "Share button title")
         let shareButton = UIBarButtonItem(title: buttonTitle,
                                           style: .done,
