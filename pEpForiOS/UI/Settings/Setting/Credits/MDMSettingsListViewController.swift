@@ -41,6 +41,8 @@ class MDMSettingsListViewController: PEPWebViewController {
     }
 }
 
+// MARK: - Private
+
 extension MDMSettingsListViewController {
 
     private func setupShareButton() {
