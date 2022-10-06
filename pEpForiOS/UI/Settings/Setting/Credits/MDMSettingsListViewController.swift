@@ -57,19 +57,19 @@ extension MDMSettingsListViewController {
 
     /// Share the settings list.
     @objc private func shareButtonPressed(sender: UIBarButtonItem) {
-        let vc = getActivityViewController()
+        let vc = getActivityViewController(sender: sender)
         present(vc, animated: true, completion: nil)
     }
 
-    private func getActivityViewController() -> UIActivityViewController {
+    private func getActivityViewController(sender: UIBarButtonItem) -> UIActivityViewController {
         let dictionary : String = MDMPredeployed().mdmPrettyPrintedDictionary()
         let activityViewController = UIActivityViewController(activityItems: [dictionary], applicationActivities: nil)
         activityViewController.title = NSLocalizedString("Share MDM settings", comment: "Share MDM settings title")
 
         //Ipad config
-        activityViewController.popoverPresentationController?.sourceView = view
-        activityViewController.popoverPresentationController?.permittedArrowDirections = UIPopoverArrowDirection.down
-        activityViewController.popoverPresentationController?.sourceRect = CGRect(x: 150, y: 150, width: 0, height: 0)
+        let sourceView = sender.value(forKey: "view") as? UIView
+        activityViewController.popoverPresentationController?.sourceView = sourceView ?? view
+        activityViewController.popoverPresentationController?.permittedArrowDirections = .up
 
         // Pre-configuring activity items
         if #available(iOS 13.0, *) {
@@ -80,7 +80,6 @@ extension MDMSettingsListViewController {
             // Fallback on earlier versions
         }
 
-        // Anything you want to exclude
         activityViewController.excludedActivityTypes = [
             UIActivity.ActivityType.postToWeibo,
             UIActivity.ActivityType.print,
