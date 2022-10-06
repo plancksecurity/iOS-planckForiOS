@@ -54,6 +54,13 @@ class AppSettingsObserver {
                 EchoProtocolUtil().enableEchoProtocol(enabled: newValue)
             }
         }
+        if let oldValue = NSDictionary(dictionary: mdmDictionary)
+            .value(forKey: AppSettings.keyPEPSaveEncryptedOnServerEnabled) as? Bool {
+            let newValue = AppSettings.shared.mdmPEPSaveEncryptedOnServerEnabled
+            if oldValue != newValue {
+                TrustedServerUtil().setStoreSecurely(newValue: newValue)
+            }
+        }
 
         // As ´Any´ does not conform to Equatable
         // we use NSDictionary to easily compare these dictionaries.

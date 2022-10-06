@@ -121,9 +121,9 @@ public protocol MDMSettingsProtocol {
     var mdmPEPSyncNewDevicesEnabled: Bool { get }
 
     /// The list of media keys, which are dictionaries with three entries:
-    ///  "pattern": The media key pattern
-    ///  "fingerprint": The fingerprint of this media key
-    ///  "key": The complete key material, in armored or comparable form.
+    ///  "media_key_address_pattern": The media key pattern
+    ///  "media_key_fingerprint": The fingerprint of this media key
+    ///  "media_key_material": The complete key material, in armored or comparable form.
     var mdmMediaKeys: [[String:String]] { get }
 
     /// Indicate if Echo Protocol is enabled.
