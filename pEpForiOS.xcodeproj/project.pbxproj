@@ -562,6 +562,7 @@
 		5BEB568F25E6997300304A38 /* TrustwordsButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5BEB568E25E6997300304A38 /* TrustwordsButton.swift */; };
 		5BEB569225E69BEE00304A38 /* TutorialStep2iPadViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5BEB569125E69BEE00304A38 /* TutorialStep2iPadViewController.swift */; };
 		5BEB56CA25E7977500304A38 /* TutorialStep3iPadViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5BEB56C925E7977500304A38 /* TutorialStep3iPadViewController.swift */; };
+		5BEBA90628EEE8A000967DC2 /* MDMSettingsListViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5BEBA90528EEE8A000967DC2 /* MDMSettingsListViewController.swift */; };
 		5BED35F3275F768D000DDF07 /* CalendarEventEditDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5BED35F2275F768D000DDF07 /* CalendarEventEditDelegate.swift */; };
 		5BEF9A8728C889CA0073A3B4 /* AppSettingsObserver.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5BEF9A8628C889CA0073A3B4 /* AppSettingsObserver.swift */; };
 		5BEF9A8D28C8D21B0073A3B4 /* OutgoingRatingChangeService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5BEF9A8C28C8D21B0073A3B4 /* OutgoingRatingChangeService.swift */; };
@@ -1156,6 +1157,7 @@
 		5BEB568E25E6997300304A38 /* TrustwordsButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TrustwordsButton.swift; sourceTree = "<group>"; };
 		5BEB569125E69BEE00304A38 /* TutorialStep2iPadViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TutorialStep2iPadViewController.swift; sourceTree = "<group>"; };
 		5BEB56C925E7977500304A38 /* TutorialStep3iPadViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TutorialStep3iPadViewController.swift; sourceTree = "<group>"; };
+		5BEBA90528EEE8A000967DC2 /* MDMSettingsListViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MDMSettingsListViewController.swift; sourceTree = "<group>"; };
 		5BED35F2275F768D000DDF07 /* CalendarEventEditDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CalendarEventEditDelegate.swift; sourceTree = "<group>"; };
 		5BEF9A8628C889CA0073A3B4 /* AppSettingsObserver.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppSettingsObserver.swift; sourceTree = "<group>"; };
 		5BEF9A8C28C8D21B0073A3B4 /* OutgoingRatingChangeService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OutgoingRatingChangeService.swift; sourceTree = "<group>"; };
@@ -1893,6 +1895,7 @@
 			children = (
 				15FE1F751FE122D900CC2D97 /* CreditsViewController.swift */,
 				1546CBF5252B53CC00A7AA7D /* CreditsWebViewController.swift */,
+				5BEBA90528EEE8A000967DC2 /* MDMSettingsListViewController.swift */,
 				1546CBF9252B5B9F00A7AA7D /* CreditsViewModel.swift */,
 			);
 			path = Credits;
@@ -3689,6 +3692,7 @@
 				152295572302F7E200204FD3 /* ExtraKeysSettingViewModel.swift in Sources */,
 				5BA946232542E63300F5D1AD /* PEPAlertViewController+KeySyncError.swift in Sources */,
 				5BB7C74724D85A3B00D5F328 /* PEPWebviewController.swift in Sources */,
+				5BEBA90628EEE8A000967DC2 /* MDMSettingsListViewController.swift in Sources */,
 				43306EC21FE129840045DD00 /* OAuth2Type.swift in Sources */,
 				438052871FE3E1B100ACF729 /* OAuth2AuthorizationFactoryProtocol.swift in Sources */,
 				4356FFE52135448600804089 /* ReplyAllPossibleChecker.swift in Sources */,

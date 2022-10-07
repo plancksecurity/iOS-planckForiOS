@@ -57,7 +57,10 @@ extension PEPWebViewController: WKNavigationDelegate {
             guard let newURL = navigationAction.request.url else {
                 break
             }
-            if newURL.scheme == "mailto" {
+            if newURL.scheme == "pepmdm" {
+                let vc = MDMSettingsListViewController()
+                navigationController?.pushViewController(vc, animated: true)
+            } else if newURL.scheme == "mailto" {
                 // The user clicked on an email URL.
                 urlClickHandler?.didClickOn(mailToUrlLink: newURL)
             } else if UIApplication.shared.canOpenURL(newURL) {
