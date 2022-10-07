@@ -24,9 +24,6 @@ extension AppSettings: MDMSettingsProtocol {
     static let keyPEPTrustwordsEnabled = "pep_use_trustwords"
     static let keyUnsecureDeliveryWarningEnabled = "unsecure_delivery_warning"
     static let keyPEPSyncFolderEnabled = "pep_sync_folder"
-    static let keyDebugLoggingEnabled = "debug_logging"
-    static let keyAccountDisplayCount = "account_display_count"
-    static let keyMaxPushFolders = "max_push_folders"
     static let keyCompositionSenderName = "composition_sender_name"
     static let keyCompositionSignatureEnabled = "composition_use_signature"
     static let keyCompositionSignature = "composition_signature"
@@ -40,6 +37,11 @@ extension AppSettings: MDMSettingsProtocol {
     static let keyPEPSyncNewDevicesEnabled = "allow_pep_sync_new_devices"
     static let keyMediaKeys = "pep_media_keys"
     static let keyEchoProtocolEnabled = "pep_enable_echo_protocol"
+
+    //Not used
+    static let keyDebugLoggingEnabled = "debug_logging"
+    static let keyAccountDisplayCount = "account_display_count"
+    static let keyMaxPushFolders = "max_push_folders"
 
     // MARK: - Settings
 

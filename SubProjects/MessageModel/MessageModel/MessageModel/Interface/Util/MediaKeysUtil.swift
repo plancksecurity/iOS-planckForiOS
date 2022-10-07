@@ -17,9 +17,9 @@ import pEpIOSToolbox
 /// https://dev.pep.foundation/Engine/Media%20keys
 public class MediaKeysUtil {
 
-    static let kPattern = "pattern"
-    static let kFingerprint = "fingerprint"
-    static let kKey = "key"
+    static let kPattern = "media_key_address_pattern"
+    static let kFingerprint = "media_key_fingerprint"
+    static let kKey = "media_key_material"
 
     /// Expose the init outside MM.
     public init() {}
