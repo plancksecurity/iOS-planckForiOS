@@ -35,13 +35,34 @@ public class MediaKeysUtil {
             guard let fingerprint = dict[MediaKeysUtil.kFingerprint] else {
                 return nil
             }
-
             return PEPMediaKeyPair(pattern: pattern, fingerprint: fingerprint)
         }
-
-        // TODO: Import all keys ("key material") as well
-
         PEPObjCAdapter.configureMediaKeys(pairs)
+
+        // MARK: - Import all keys
+
+        let keys: [String] = mediaKeyDictionaries.compactMap { dict in
+            guard let key = dict[MediaKeysUtil.kKey] else {
+                return nil
+            }
+            return key
+        }
+
+        keys.forEach { key in
+            PEPSession().importKey(key) { error in
+                Log.shared.error(error: error)
+            } successCallback: { identities in
+                Log.shared.info("importKey successful", identities)
+                // Make sure that there is at least one identity with a matching fingerprint
+                let allFingerprints = pairs.map({$0.fingerprint})
+                let matchingIdentity = identities.contains { identity in
+                    return allFingerprints.contains(identity.fingerPrint ?? "")
+                }
+                if matchingIdentity {
+                    Log.shared.info("There is at least one identity with a matching fingerprint")
+                }
+            }
+        }
     }
 }
 
