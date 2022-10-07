@@ -28,6 +28,9 @@ public class MediaKeysUtil {
     ///
     /// For the format, please see `MDMSettingsProtocol.mdmMediaKeys`.
     public func configure(mediaKeyDictionaries: [[String:String]]) {
+
+        // MARK: - Configure Media Keys
+
         let pairs: [PEPMediaKeyPair] = mediaKeyDictionaries.compactMap { dict in
             guard let pattern = dict[MediaKeysUtil.kPattern] else {
                 return nil
@@ -55,14 +58,13 @@ public class MediaKeysUtil {
                 Log.shared.info("importKey successful", identities)
                 // Make sure that there is at least one identity with a matching fingerprint
                 let allFingerprints = pairs.map({$0.fingerprint})
-                let matchingIdentity = identities.contains { identity in
+                let thereIsAMatchingIdentity = identities.contains { identity in
                     return allFingerprints.contains(identity.fingerPrint ?? "")
                 }
-                if matchingIdentity {
+                if thereIsAMatchingIdentity {
                     Log.shared.info("There is at least one identity with a matching fingerprint")
                 }
             }
         }
     }
 }
-
