@@ -972,6 +972,7 @@ extension ComposeViewModel: RecipientCellViewModelResultDelegate {
                                        addressBookID: addressBookID,
                                        userName: userName,
                                        session: Session.main)
+        Session.main.commit()
         recipientVM.add(recipient: contactIdentity)
     }
 }
