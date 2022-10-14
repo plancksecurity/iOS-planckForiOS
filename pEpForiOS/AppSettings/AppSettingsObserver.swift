@@ -65,7 +65,7 @@ class AppSettingsObserver {
         if let oldValues = NSDictionary(dictionary: mdmDictionary).value(forKey: AppSettings.keyPEPExtraKeys) as? [[String:String]] {
             let newValues = AppSettings.shared.mdmPEPExtraKeys
             if oldValues != newValues {
-                MediaKeysUtil().configure(extraKeyDictionaries: newValues)
+                ExtraKeysUtil().configure(extraKeyDictionaries: newValues)
             }
         }
 
@@ -84,4 +84,3 @@ class AppSettingsObserver {
         NotificationCenter.default.removeObserver(self)
     }
 }
-

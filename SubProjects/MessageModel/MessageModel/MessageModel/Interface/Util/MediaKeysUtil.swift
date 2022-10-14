@@ -20,32 +20,9 @@ public class MediaKeysUtil {
     static let kPattern = "media_key_address_pattern"
     static let kFingerprint = "media_key_fingerprint"
     static let kKey = "media_key_material"
-    static let kExtraKeyFingerprint = "extra_key_fingerprint"
-    static let kExtraKeyKey = "extra_key_material"
 
     /// Expose the init outside MM.
     public init() {}
-
-    /// Configure extra keys.
-    ///
-    /// For the format, please see `MDMSettingsProtocol.mdmPEPExtraKeys`.
-    public func configure(extraKeyDictionaries: [[String:String]]) {
-        //TODO: handle extra_key_material
-        let keys: [String] = extraKeyDictionaries.compactMap { dict in
-            guard let key = dict[MediaKeysUtil.kExtraKeyKey] else {
-                return nil
-            }
-            return key
-        }
-
-        keys.forEach { key in
-            PEPSession().importKey(key) { error in
-                Log.shared.error(error: error)
-            } successCallback: { identities in
-                Log.shared.info("importKey successful", identities)
-            }
-        }
-    }
 
     /// Configure media keys.
     ///
