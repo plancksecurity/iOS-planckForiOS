@@ -62,6 +62,13 @@ class AppSettingsObserver {
             }
         }
 
+        if let oldValues = NSDictionary(dictionary: mdmDictionary).value(forKey: AppSettings.keyPEPExtraKeys) as? [[String:String]] {
+            let newValues = AppSettings.shared.mdmPEPExtraKeys
+            if oldValues != newValues {
+                MediaKeysUtil().configure(mediaKeyDictionaries: newValues)
+            }
+        }
+
         // As ´Any´ does not conform to Equatable
         // we use NSDictionary to easily compare these dictionaries.
         let mdmSettingsHasChanged = !NSDictionary(dictionary: mdm).isEqual(to: mdmDictionary)
