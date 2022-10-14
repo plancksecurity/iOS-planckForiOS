@@ -17,7 +17,7 @@ import pEpIOSToolbox
 public class ExtraKeysUtil {
 
     static let kExtraKeyFingerprint = "extra_key_fingerprint"
-    static let kExtraKeyKey = "extra_key_material"
+    static let kExtraKeyMaterial = "extra_key_material"
 
     /// Expose the init outside MM.
     public init() {}
@@ -26,9 +26,8 @@ public class ExtraKeysUtil {
     ///
     /// For the format, please see `MDMSettingsProtocol.mdmPEPExtraKeys`.
     public func configure(extraKeyDictionaries: [[String:String]]) {
-        //TODO: handle extra_key_material
         let keys: [String] = extraKeyDictionaries.compactMap { dict in
-            guard let key = dict[ExtraKeysUtil.kExtraKeyKey] else {
+            guard let key = dict[ExtraKeysUtil.kExtraKeyMaterial] else {
                 return nil
             }
             return key
