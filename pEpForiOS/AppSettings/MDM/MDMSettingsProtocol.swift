@@ -6,9 +6,12 @@
 //  Copyright © 2022 p≡p Security S.A. All rights reserved.
 //
 
-/// Here we have a list of settings needed for the initial setup when using MDM.
+/// Here we have a list of settings needed for the initial setup when using MDM:
 /// https://confluence.pep.security/pages/viewpage.action?pageId=10223902
 /// (see Settings meaning and structure)
+///
+/// Here we have the detail of the plist / json that is sent to the device:
+/// https://confluence.pep.security/pages/viewpage.action?pageId=15008984
 public protocol MDMSettingsProtocol {
 
     /// Indicate if the app has been deployed via MDM
@@ -20,7 +23,7 @@ public protocol MDMSettingsProtocol {
     /// Provide Extra Keys.
     ///
     /// To remove them just set an empty array.
-    var mdmPEPExtraKeys: [String] { get }
+    var mdmPEPExtraKeys: [[String:String]] { get }
 
     /// Enable or disable the use of trustwords.
     ///

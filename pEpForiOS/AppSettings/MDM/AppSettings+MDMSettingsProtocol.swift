@@ -59,11 +59,12 @@ extension AppSettings: MDMSettingsProtocol {
         }
     }
 
-    public var mdmPEPExtraKeys: [String] {
+    public var mdmPEPExtraKeys: [[String:String]] {
         get {
-            guard let extraKeys = mdmDictionary[AppSettings.keyPEPExtraKeys] as? [String] else {
+            guard let extraKeys = mdmDictionary[AppSettings.keyPEPExtraKeys] as? [[String:String]] else {
                 return []
             }
+
             return extraKeys
         }
     }
