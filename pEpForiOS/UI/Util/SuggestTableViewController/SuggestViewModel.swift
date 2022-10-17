@@ -200,6 +200,14 @@ extension SuggestViewModel {
             let safeTo = Identity.makeSafe(to, forSession: me.session)
             me.session.perform {
                 let toAddress = safeTo.address
+                let recipients = [safeTo]
+                let outgoingMessageRatingMustBeTrusted = PEPRatingUtil().outgoingMessageRatingMustBeTrusted(identities: recipients,
+                                                                                                            mediaKeys: AppSettings.shared.mdmMediaKeys)
+                if outgoingMessageRatingMustBeTrusted {
+                    completion(Rating.reliable.pEpColor().statusIconInContactPicture(), toAddress)
+                    return
+                }
+
                 Rating.outgoingMessageRating(from: safeFrom, to: [safeTo], cc: [], bcc: []) { (rating) in
                     completion(rating.pEpColor().statusIconInContactPicture(), toAddress)
                 }

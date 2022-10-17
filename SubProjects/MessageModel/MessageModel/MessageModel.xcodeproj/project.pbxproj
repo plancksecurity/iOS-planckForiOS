@@ -646,6 +646,8 @@
 		5B7A262628A3B1270041F4A3 /* AccountVerifier.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43E5F7C528571D2000115686 /* AccountVerifier.swift */; };
 		5B87D79A23F3117D009DACAA /* String+Fingerprint.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5B87D79923F3117D009DACAA /* String+Fingerprint.swift */; };
 		5B88A19D2406C1A2003240B8 /* TrustManagementUtil.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5B88A19C2406C1A2003240B8 /* TrustManagementUtil.swift */; };
+		5B95895E28FD8FC90086834B /* PEPRatingUtil.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5B95895D28FD8FC90086834B /* PEPRatingUtil.swift */; };
+		5B95895F28FD8FCE0086834B /* PEPRatingUtil.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5B95895D28FD8FC90086834B /* PEPRatingUtil.swift */; };
 		5BAD433F28183F1D000BA5FF /* ImapUIFlags+SessionAware.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5BAD433E28183F1D000BA5FF /* ImapUIFlags+SessionAware.swift */; };
 		5BAD434028184202000BA5FF /* ImapUIFlags+SessionAware.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5BAD433E28183F1D000BA5FF /* ImapUIFlags+SessionAware.swift */; };
 		5BC6A24E267791CD00769972 /* Array+Attachments.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5BC6A24D267791CD00769972 /* Array+Attachments.swift */; };
@@ -1163,6 +1165,7 @@
 		5B65440728CF4D450064E1C7 /* EchoProtocolUtil.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EchoProtocolUtil.swift; sourceTree = "<group>"; };
 		5B87D79923F3117D009DACAA /* String+Fingerprint.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "String+Fingerprint.swift"; sourceTree = "<group>"; };
 		5B88A19C2406C1A2003240B8 /* TrustManagementUtil.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TrustManagementUtil.swift; sourceTree = "<group>"; };
+		5B95895D28FD8FC90086834B /* PEPRatingUtil.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PEPRatingUtil.swift; sourceTree = "<group>"; };
 		5BAD433E28183F1D000BA5FF /* ImapUIFlags+SessionAware.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "ImapUIFlags+SessionAware.swift"; sourceTree = "<group>"; };
 		5BC6A24D267791CD00769972 /* Array+Attachments.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Array+Attachments.swift"; sourceTree = "<group>"; };
 		5BD3DDA92808232000E41E0C /* 1.1.273.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = 1.1.273.xcdatamodel; sourceTree = "<group>"; };
@@ -2628,6 +2631,7 @@
 				439CADC02563B9B50043077E /* AuthMethod.swift */,
 				5BD6B5D625C0570000EC95C8 /* OSStatus+Error.swift */,
 				5B65440428CF378F0064E1C7 /* MediaKeysUtil.swift */,
+				5B95895D28FD8FC90086834B /* PEPRatingUtil.swift */,
 				5B65440728CF4D450064E1C7 /* EchoProtocolUtil.swift */,
 				5BEBA8F828EDD4BB00967DC2 /* TrustedServerUtil.swift */,
 			);
@@ -3136,6 +3140,7 @@
 				43BDDF6325DE5EF400FC0C68 /* Identity+AddessBook.swift in Sources */,
 				43BDDD7A25DD42C600FC0C68 /* Folder+VirtualMailbox+Internal.swift in Sources */,
 				43BDDDDE25DD64FA00FC0C68 /* AddressBook.swift in Sources */,
+				5B95895F28FD8FCE0086834B /* PEPRatingUtil.swift in Sources */,
 				434C21A325D6977200F622DB /* CdAccount+FetchedResultsController.swift in Sources */,
 				434C219425D6972500F622DB /* CdFolder.swift in Sources */,
 				434C247C25D6C9C900F622DB /* PantomimeStore.swift in Sources */,
@@ -3358,6 +3363,7 @@
 				43EA4873221E9518006E8F83 /* EncryptAndSMTPSendMessageOperation.swift in Sources */,
 				1574D15A268C8374003A5161 /* ReceivedByUtil.swift in Sources */,
 				43F484441E8130180028BC1A /* CdImapFlags+Extension.swift in Sources */,
+				5B95895E28FD8FC90086834B /* PEPRatingUtil.swift in Sources */,
 				4304FB7F22B76F9800DE20C9 /* DeleteOldSyncMailsOperation.swift in Sources */,
 				156FF8CA22994A47002A2566 /* RealFolderProtocol.swift in Sources */,
 				154660CA2333CCD4008D2137 /* DecryptService.swift in Sources */,

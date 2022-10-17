@@ -233,15 +233,19 @@ extension ComposeViewModel.ComposeViewModelState {
         let safeCc = Identity.makeSafe(ccRecipients, forSession: session)
         let safeBcc = Identity.makeSafe(bccRecipients, forSession: session)
 
-        let allIdentities = safeTo + safeCc + safeBcc
-        if outgoingMessageRatingMustBeTrusted(identities: allIdentities) {
-            DispatchQueue.main.async { [weak self] in
-                guard let me = self else {
-                    Log.shared.errorAndCrash("Lost myself")
+        if MDMUtil.isEnabled() {
+            let recipients = safeTo + safeCc
+            let outgoingMessageRatingMustBeTrusted = PEPRatingUtil().outgoingMessageRatingMustBeTrusted(identities: recipients,
+                                                                                                        mediaKeys: AppSettings.shared.mdmMediaKeys)
+            if outgoingMessageRatingMustBeTrusted {
+                DispatchQueue.main.async { [weak self] in
+                    guard let me = self else {
+                        Log.shared.errorAndCrash("Lost myself")
+                        return
+                    }
+                    me.rating = .reliable
                     return
                 }
-                me.rating = .trusted
-                return
             }
         }
 
@@ -265,7 +269,7 @@ extension ComposeViewModel.ComposeViewModelState {
     /// - Returns: True if it must be trusted. False otherwise. False only means that there is no match with media key address pattern.
     private func outgoingMessageRatingMustBeTrusted(identities: [Identity.MMO]) -> Bool {
         guard MDMUtil.isEnabled() else {
-            // MDM is not enabled, therefore no MediaKeys are stored. 
+            // MDM is not enabled, therefore no MediaKeys are stored.
             return false
         }
         var mustBeGreen = false
