@@ -18,7 +18,6 @@ extension AppSettings: MDMSettingsProtocol {
 
     // MARK: - Keys
 
-    static let keyhasBeenMDMDeployed = "hasBeenMDMDeployed"
     static let keyPEPEnablePrivacyProtectionEnabled = "pep_enable_privacy_protection"
     static let keyPEPExtraKeys = "pep_extra_keys"
     static let keyPEPTrustwordsEnabled = "pep_use_trustwords"
@@ -47,10 +46,7 @@ extension AppSettings: MDMSettingsProtocol {
 
     public var hasBeenMDMDeployed: Bool {
         get {
-            guard let hasBeenMDMDeployed = mdmDictionary[AppSettings.keyhasBeenMDMDeployed] as? Bool else {
-                return false
-            }
-            return hasBeenMDMDeployed
+            return MDMUtil.isEnabled()
         }
     }
 
