@@ -24,6 +24,16 @@ public class MediaKeysUtil {
     /// Expose the init outside MM.
     public init() {}
 
+
+    public func getPatterns(mediaKeyDictionaries: [[String:String]]) -> [String]? {
+        return mediaKeyDictionaries.compactMap { dictionary in
+            guard let pattern = dictionary[MediaKeysUtil.kPattern] else {
+                return nil
+            }
+            return pattern
+        }
+    }
+
     /// Configure media keys.
     ///
     /// For the format, please see `MDMSettingsProtocol.mdmMediaKeys`.

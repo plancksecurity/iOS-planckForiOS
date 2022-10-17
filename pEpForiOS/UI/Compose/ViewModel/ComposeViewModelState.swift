@@ -233,6 +233,18 @@ extension ComposeViewModel.ComposeViewModelState {
         let safeCc = Identity.makeSafe(ccRecipients, forSession: session)
         let safeBcc = Identity.makeSafe(bccRecipients, forSession: session)
 
+        let allIdentities = safeTo + safeCc + safeBcc
+        if outgoingMessageRatingMustBeTrusted(identities: allIdentities) {
+            DispatchQueue.main.async { [weak self] in
+                guard let me = self else {
+                    Log.shared.errorAndCrash("Lost myself")
+                    return
+                }
+                me.rating = .trusted
+                return
+            }
+        }
+
         Rating.outgoingMessageRating(from: safeFrom, to: safeTo, cc: safeCc, bcc: safeBcc) {
             [weak self] outgoingRating in
 
@@ -240,13 +252,37 @@ extension ComposeViewModel.ComposeViewModelState {
                 // Valid case. Compose might have been dismissed.
                 return
             }
+
             DispatchQueue.main.async {
                 me.rating = outgoingRating
             }
         }
     }
 
-
+    /// Indicate if the rating must be trusted because the recipient patterns matches the media key patterns
+    ///
+    /// - Parameter identities: The identities to check the email address domain
+    /// - Returns: True if it must be trusted. False otherwise. False only means that there is no match with media key address pattern.
+    private func outgoingMessageRatingMustBeTrusted(identities: [Identity.MMO]) -> Bool {
+        var mustBeGreen = false
+        guard let patterns = MediaKeysUtil().getPatterns(mediaKeyDictionaries: AppSettings.shared.mdmMediaKeys) else {
+            // No patterns to check.
+            return false
+        }
+        patterns.forEach { pattern in
+            let trimmedPattern = pattern
+                .replacingOccurrences(of: "*", with: "")
+                .replacingOccurrences(of: "?", with: "")
+            let expectedPattern = "[A-Z0-9a-z._%+-]+\(trimmedPattern)+\\.[A-Za-z]{2,64}"
+            let emailRegex = try! NSRegularExpression(pattern: expectedPattern, options: [])
+            identities.forEach { identity in
+                if emailRegex.matchesWhole(string: identity.address) {
+                    mustBeGreen = true
+                }
+            }
+        }
+        return mustBeGreen
+    }
 }
 
 // MARK: - Handshake
