@@ -44,7 +44,7 @@ class MockAppSettings: AppSettingsProtocol {
 
     var mdmPEPPrivacyProtectionEnabled: Bool = false
 
-    var mdmPEPExtraKeys: [String] = []
+    var mdmPEPExtraKeys: [[String:String]] = []
 
     var mdmPEPTrustwordsEnabled: Bool = false
 
