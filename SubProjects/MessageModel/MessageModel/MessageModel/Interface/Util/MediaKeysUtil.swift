@@ -25,6 +25,13 @@ public class MediaKeysUtil {
     public init() {}
 
 
+    /// Get the email patterns provided via MDM on the Media Keys.
+    /// For the format, please see `MDMSettingsProtocol.mdmMediaKeys`.
+    /// For an example, please see `https://dev.pep.foundation/Engine/Media%20keys#an-example`
+    ///
+    /// - Parameter mediaKeyDictionaries: The MDM media keys.
+    /// - Returns: The list of email patterns. For example ["*@pep.security", "?.pep.foundation"].
+    /// If there are no email address patterns, nil will be returned.
     public func getPatterns(mediaKeyDictionaries: [[String:String]]) -> [String]? {
         return mediaKeyDictionaries.compactMap { dictionary in
             guard let pattern = dictionary[MediaKeysUtil.kPattern] else {
