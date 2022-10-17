@@ -45,8 +45,8 @@ class MDMMockAppSettings : AppSettingsProtocol {
         return true
     }
 
-    var mdmPEPExtraKeys: [String] {
-        return ["key"]
+    var mdmPEPExtraKeys: [[String:String]] {
+        return [["key":"value"]]
     }
 
     var mdmPEPTrustwordsEnabled: Bool {
