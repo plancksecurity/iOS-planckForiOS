@@ -11,6 +11,9 @@
 /// (see Settings meaning and structure)
 public protocol MDMSettingsProtocol {
 
+    /// Indicate if the app has been deployed via MDM
+    var hasBeenMDMDeployed: Bool { get }
+
     /// Enable or disable pEp privacy protection for the user or device's account.
     var mdmPEPPrivacyProtectionEnabled: Bool { get }
 
