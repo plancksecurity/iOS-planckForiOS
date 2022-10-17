@@ -234,10 +234,7 @@ extension ComposeViewModel.ComposeViewModelState {
         let safeBcc = Identity.makeSafe(bccRecipients, forSession: session)
 
         if MDMUtil.isEnabled() {
-            let recipients = safeTo + safeCc
-            let outgoingMessageRatingMustBeTrusted = PEPRatingUtil().outgoingMessageRatingMustBeTrusted(identities: recipients,
-                                                                                                        mediaKeys: AppSettings.shared.mdmMediaKeys)
-            if outgoingMessageRatingMustBeTrusted {
+            if outgoingMessageRatingMustBeTrusted(identities: safeTo + safeCc) {
                 DispatchQueue.main.async { [weak self] in
                     guard let me = self else {
                         Log.shared.errorAndCrash("Lost myself")
@@ -272,24 +269,8 @@ extension ComposeViewModel.ComposeViewModelState {
             // MDM is not enabled, therefore no MediaKeys are stored.
             return false
         }
-        var mustBeGreen = false
-        guard let patterns = MediaKeysUtil().getPatterns(mediaKeyDictionaries: AppSettings.shared.mdmMediaKeys) else {
-            // No patterns to check.
-            return false
-        }
-        patterns.forEach { pattern in
-            let trimmedPattern = pattern
-                .replacingOccurrences(of: "*", with: "")
-                .replacingOccurrences(of: "?", with: "")
-            let expectedPattern = "[A-Z0-9a-z._%+-]+\(trimmedPattern)+\\.[A-Za-z]{2,64}"
-            let emailRegex = try! NSRegularExpression(pattern: expectedPattern, options: [])
-            identities.forEach { identity in
-                if emailRegex.matchesWhole(string: identity.address) {
-                    mustBeGreen = true
-                }
-            }
-        }
-        return mustBeGreen
+
+        return PEPRatingUtil().outgoingMessageRatingMustBeTrusted(identities: identities, mediaKeys: AppSettings.shared.mdmMediaKeys)
     }
 }
 
