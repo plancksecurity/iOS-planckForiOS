@@ -264,6 +264,10 @@ extension ComposeViewModel.ComposeViewModelState {
     /// - Parameter identities: The identities to check the email address domain
     /// - Returns: True if it must be trusted. False otherwise. False only means that there is no match with media key address pattern.
     private func outgoingMessageRatingMustBeTrusted(identities: [Identity.MMO]) -> Bool {
+        guard MDMUtil.isEnabled() else {
+            // MDM is not enabled, therefore no MediaKeys are stored. 
+            return false
+        }
         var mustBeGreen = false
         guard let patterns = MediaKeysUtil().getPatterns(mediaKeyDictionaries: AppSettings.shared.mdmMediaKeys) else {
             // No patterns to check.
