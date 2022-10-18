@@ -51,14 +51,12 @@ extension Rating {
         if rating.pEpColor() == .green &&
             self.pEpColor() != .green {
             return true
-        } else if rating.pEpColor() == .yellow &&
-            (self.pEpColor() != .green && self.pEpColor() != .yellow) {
-            return true
         }
         else if rating.pEpColor() == .noColor &&
-            (self.pEpColor() != .green && self.pEpColor() != .yellow && self.pEpColor() != .noColor) {
+            (self.pEpColor() != .green && self.pEpColor() != .noColor) {
             return true
         }
+
         return false
     }
 

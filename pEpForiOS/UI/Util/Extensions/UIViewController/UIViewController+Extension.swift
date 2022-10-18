@@ -84,8 +84,6 @@ extension UIViewController {
             switch color {
             case .noColor:
                 accessibilityIdentifier = AccessibilityIdentifier.unknownTrust
-            case .yellow:
-                accessibilityIdentifier = AccessibilityIdentifier.secure
             case .green:
                 accessibilityIdentifier = AccessibilityIdentifier.secureAndTrusted
             case .red:

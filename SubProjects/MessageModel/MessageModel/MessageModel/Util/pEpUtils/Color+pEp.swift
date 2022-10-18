@@ -16,8 +16,6 @@ extension Color {
         switch pEpColor {
         case .noColor:
             self = .noColor
-        case .yellow:
-            self = .yellow
         case .green:
             self = .green
         case .red:
@@ -29,8 +27,6 @@ extension Color {
         switch self {
         case .noColor:
             return .noColor
-        case .yellow:
-            return .yellow
         case .green:
             return .green
         case .red:
