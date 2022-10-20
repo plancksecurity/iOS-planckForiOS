@@ -3,16 +3,6 @@
     {
       "filename" : "pEp-status-red_white-border.pdf",
       "idiom" : "universal"
-    },
-    {
-      "appearances" : [
-        {
-          "appearance" : "luminosity",
-          "value" : "dark"
-        }
-      ],
-      "filename" : "pep-status-red-avatar-darkmode.pdf",
-      "idiom" : "universal"
     }
   ],
   "info" : {

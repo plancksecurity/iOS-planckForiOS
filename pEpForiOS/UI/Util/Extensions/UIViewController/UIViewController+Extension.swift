@@ -73,8 +73,9 @@ extension UIViewController {
     }
 
     private func navigationItemTitleView(pEpRating: Rating?, pEpProtection: Bool = true) -> UIView? {
+        let isUndefined = pEpRating == .undefined
         if let color = pEpRating?.pEpColor(),
-            let image = color.statusIconForMessage(enabled: pEpProtection) {
+           let image = color.statusIconForMessage(enabled: pEpProtection, withText: !isUndefined) {
             // according to apple's design guidelines ('Hit Targets'):
             // https://developer.apple.com/design/tips/
             let minimumHitTestDimension: CGFloat = 44
