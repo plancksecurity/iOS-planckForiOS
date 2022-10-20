@@ -18,6 +18,7 @@ public enum Rating {
     case cannotDecrypt
     case haveNoKey
     case unencrypted
+    case mediaKeyEncryption
     case unreliable
     case b0rken
     case reliable
@@ -70,6 +71,7 @@ extension Rating {
              .unreliable,
              .reliable,
              .trusted,
+             .mediaKeyEncryption,
              .trustedAndAnonymized,
              .fullyAnonymous,
              .mistrust,
@@ -96,7 +98,7 @@ extension Rating {
                                            to: to,
                                            cc: cc,
                                            bcc: bcc) { pEpRating in
-                                            completion(Rating(pEpRating: pEpRating))
+            completion(Rating(pEpRating: pEpRating))
         }
     }
 }
