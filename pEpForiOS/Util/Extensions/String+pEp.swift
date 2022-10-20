@@ -23,6 +23,7 @@ public struct PEPStatusText {
 
 extension String {
     /// Struct that provides the texts to the trust management view according to the colors.
+    //MB:- texts 
     private struct TrustManagementText {
         static let red = PEPStatusText(rating: .mistrust,
                                        title: NSLocalizedString("Mistrusted", comment: "Privacy status title"),
@@ -49,11 +50,11 @@ extension String {
         [.underAttack: TrustManagementText.red,
          .b0rken: TrustManagementText.red,
          .mistrust: TrustManagementText.red,
-         .reliable: TrustManagementText.yellow,
-         .unencrypted: TrustManagementText.noColor,
-         .haveNoKey: TrustManagementText.noColor,
+         .reliable: TrustManagementText.green,
+         .unencrypted: TrustManagementText.red,
+         .haveNoKey: TrustManagementText.red,
          .cannotDecrypt: TrustManagementText.noColor,
-         .unreliable: TrustManagementText.noColor,
+         .unreliable: TrustManagementText.green,
          .fullyAnonymous: TrustManagementText.green,
          .trustedAndAnonymized: TrustManagementText.green,
          .trusted: TrustManagementText.green,
@@ -62,6 +63,7 @@ extension String {
     /**
      All privacy status strings, i18n ready.
      */
+    //MB:- texts
     private static let pEpRatingTranslations: [Rating: PEPStatusText] =
         [.underAttack:
             PEPStatusText(
