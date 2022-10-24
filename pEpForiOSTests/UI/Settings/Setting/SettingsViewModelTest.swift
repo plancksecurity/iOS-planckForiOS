@@ -19,21 +19,20 @@ class SettingsViewModelTest: AccountDrivenTestBase {
         account.session.commit()
     }
 
-    //Number of sections corresponding to SettingsViewModel.SectionType count
-
+    // Number of sections corresponding to SettingsViewModel.SectionType count
     let sections = SettingsViewModel.SectionType.allCases.count
 
     func testNumberOfSections() {
         let delegate = SettingsViewModeldelegate()
-        setupViewModel(delegate: delegate)
+        setupViewModel(delegate: delegate, appSettings: MockRegularUsersAppSettings())
         XCTAssertEqual(settingsVM.count, sections)
     }
 
     func testNumberOfSectionsOfMDM() {
         let delegate = SettingsViewModeldelegate()
-        let mock = MDMMockAppSettings()
+        let mock = MockRegularUsersAppSettings()
         setupViewModel(delegate: delegate, appSettings: mock)
-        XCTAssertEqual(settingsVM.count, 2)
+        XCTAssertEqual(settingsVM.count, 7)
     }
 
     func testNumberOfRowsForSectionInFirstPositionWith1Account() {
@@ -67,7 +66,7 @@ class SettingsViewModelTest: AccountDrivenTestBase {
 
     func testSwitchBehaviorOnProtectMessageSubject() {
         let delegate = SettingsViewModeldelegate()
-        setupViewModel(delegate: delegate)
+        setupViewModel(delegate: delegate, appSettings: MockRegularUsersAppSettings())
         let globalSettingsSectionIndex = 1
         let protectRowIndex = 5
         let indexPath = IndexPath(row: 0, section: globalSettingsSectionIndex)
