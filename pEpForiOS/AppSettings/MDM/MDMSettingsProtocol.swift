@@ -16,7 +16,7 @@ public protocol MDMSettingsProtocol {
 
     /// Indicate if the app is under MDM control.
     /// - Note: Even though this setting is part of MDM, it is handled differently than other
-    /// MDM settings: It is _not_ actuallly coming from the MDM server, but part of the compile-time
+    /// MDM settings: It is _not_ actually coming from the MDM server, but part of the compile-time
     /// configuration.
     var mdmIsActive: Bool { get }
 
