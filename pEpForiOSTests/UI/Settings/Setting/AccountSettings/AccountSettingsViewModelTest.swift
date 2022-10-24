@@ -21,7 +21,10 @@ class AccountSettingsViewModelTest: AccountDrivenTestBase {
 
     override func setUp() {
         super.setUp()
+        setupForRegularUsers()
+    }
 
+    private func setupForRegularUsers() {
         let dummyAccountSection = AccountSettingsViewModel.Section(title: "My account", rows:[] , type: .account)
         let dummyImapSection = AccountSettingsViewModel.Section(title: "Imap", rows:[] , type: .imap)
         let dummySmtpSection = AccountSettingsViewModel.Section(title: "Smtp", rows:[] , type: .smtp)
@@ -30,7 +33,7 @@ class AccountSettingsViewModelTest: AccountDrivenTestBase {
         dummySections.append(dummyImapSection)
         dummySections.append(dummySmtpSection)
 
-        viewModel = AccountSettingsViewModel(account: account)
+        viewModel = AccountSettingsViewModel(account: account, appSettings: MockRegularUsersAppSettings())
     }
 
     func testNumberOfSections() throws {
