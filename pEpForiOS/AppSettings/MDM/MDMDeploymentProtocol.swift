@@ -15,9 +15,6 @@ enum MDMDeploymentError: Error {
     /// There are already local accounts, will not deploy.
     case localAccountsFound
 
-    /// MDM account has already been deployed, will not repeat.
-    case alreadyDeployed
-
     /// Account settings were found, but the format could not be read/parsed.
     case malformedAccountData
 
@@ -40,17 +37,12 @@ protocol MDMDeploymentProtocol {
     /// - Throws:`MDMDeploymentError`
     func accountToDeploy() throws -> MDMDeployment.AccountData?
 
-    /// Finds out about the one and only MDM-deployable account,
-    /// and if there is one configured, tries to set it up,
-    /// setting a flag after that that the local account has been MDM deployed.
+    /// Deploys the one and only MDM-deployable account,
     ///
     /// Calls the given callback when finished, indicating an optional error (`MDMDeploymentError`),
     /// or success (in that case the error is `nil`).
     ///
-    /// - Note: Some known error conditions: Calling `deployAccount` with `accountToDeploy`
-    /// being `false`, with undefined behavior. Calling `deployAccount`
-    /// after the initial deployment has already been done. Calling `deployAccount` while having
-    /// account(s) already set up.
+    /// - Note: Don't call this in a non-MDM environment.
     ///
     /// The format of the required settings is described here: https://confluence.pep.security/x/HgGc
     /// (see "Settings meaning and structure")

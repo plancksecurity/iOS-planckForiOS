@@ -67,9 +67,6 @@ class MDMAccountDeploymentViewModel {
                 case .localAccountsFound:
                     message = NSLocalizedString("MDM Error: Account(s) already set up",
                                                 comment: "MDM deployment error")
-                case .alreadyDeployed:
-                    message = NSLocalizedString("MDM Error: Already deployed",
-                                                comment: "MDM deployment error")
                 case .authenticationError:
                     message = NSLocalizedString("MDM Error: Could not log into account",
                                                 comment: "MDM deployment error")

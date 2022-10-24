@@ -179,12 +179,6 @@ extension MDMDeployment: MDMDeploymentProtocol {
     func deployAccount(password: String,
                        accountVerifier: AccountVerifierProtocol = AccountVerifier(),
                        callback: @escaping (_ error: MDMDeploymentError?) -> ()) {
-        if AppSettings.shared.mdmIsActive {
-            // Deploy only once.
-            callback(MDMDeploymentError.alreadyDeployed)
-            return
-        }
-
         let allAccounts = Account.all()
         if !allAccounts.isEmpty {
             // Finding existing accounts is an error
