@@ -45,7 +45,7 @@ extension AppSettings: MDMSettingsProtocol {
 
     // MARK: - Settings
 
-    public var hasBeenMDMDeployed: Bool {
+    public var mdmIsActive: Bool {
         // Note the "special" implementation here:
         // This is a setting "about" MDM that is tracked by the app,
         // and doesn not come from the MDM itself.

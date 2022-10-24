@@ -24,7 +24,7 @@ class MDMDeploymentTest: XCTestCase {
     }
 
     func testNetworkError() throws {
-        XCTAssertFalse(AppSettings.shared.hasBeenMDMDeployed)
+        XCTAssertFalse(AppSettings.shared.mdmIsActive)
         XCTAssertFalse(MDMDeployment().haveAccountToDeploy)
         setupDeployableAccountData()
         XCTAssertTrue(MDMDeployment().haveAccountToDeploy)
@@ -43,7 +43,7 @@ class MDMDeploymentTest: XCTestCase {
     }
 
     func testOk() throws {
-        XCTAssertFalse(AppSettings.shared.hasBeenMDMDeployed)
+        XCTAssertFalse(AppSettings.shared.mdmIsActive)
         XCTAssertFalse(MDMDeployment().haveAccountToDeploy)
         setupDeployableAccountData()
         XCTAssertTrue(MDMDeployment().haveAccountToDeploy)
@@ -57,7 +57,7 @@ class MDMDeploymentTest: XCTestCase {
     }
 
     func testWrongPassword() throws {
-        XCTAssertFalse(AppSettings.shared.hasBeenMDMDeployed)
+        XCTAssertFalse(AppSettings.shared.mdmIsActive)
         XCTAssertFalse(MDMDeployment().haveAccountToDeploy)
         setupDeployableAccountData()
         XCTAssertTrue(MDMDeployment().haveAccountToDeploy)
@@ -103,7 +103,7 @@ class MDMDeploymentTest: XCTestCase {
                 potentialError = error
             } else {
                 // A successful deploy should be marked in the settings
-                XCTAssertTrue(AppSettings.shared.hasBeenMDMDeployed)
+                XCTAssertTrue(AppSettings.shared.mdmIsActive)
             }
         }
         wait(for: [expDeployed], timeout: TestUtil.waitTime)

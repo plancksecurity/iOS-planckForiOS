@@ -42,7 +42,7 @@ public class FolderViewModel {
     }
 
     public var shouldShowAddAccountButton: Bool {
-        return !appSettings.hasBeenMDMDeployed
+        return !appSettings.mdmIsActive
     }
 
     public var folderForEmailListView: DisplayableFolderProtocol? {

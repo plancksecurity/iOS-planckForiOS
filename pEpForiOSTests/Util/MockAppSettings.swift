@@ -40,7 +40,7 @@ class MockAppSettings: AppSettingsProtocol {
 
     //MARK: - MDM
 
-    var hasBeenMDMDeployed: Bool = false
+    var mdmIsActive: Bool = false
 
     var mdmPEPPrivacyProtectionEnabled: Bool = false
 

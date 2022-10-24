@@ -116,7 +116,7 @@ extension AccountVerifier.ServerData {
 
 extension MDMDeployment: MDMDeploymentProtocol {
     func accountToDeploy() throws -> MDMDeployment.AccountData? {
-        if !AppSettings.shared.hasBeenMDMDeployed {
+        if !AppSettings.shared.mdmIsActive {
             // No MDM deployment if MDM is not supposed to be used
             return nil
         }
@@ -179,7 +179,7 @@ extension MDMDeployment: MDMDeploymentProtocol {
     func deployAccount(password: String,
                        accountVerifier: AccountVerifierProtocol = AccountVerifier(),
                        callback: @escaping (_ error: MDMDeploymentError?) -> ()) {
-        if AppSettings.shared.hasBeenMDMDeployed {
+        if AppSettings.shared.mdmIsActive {
             // Deploy only once.
             callback(MDMDeploymentError.alreadyDeployed)
             return

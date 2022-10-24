@@ -186,7 +186,7 @@ extension SettingsViewModel {
 
     /// This method generates all the sections for the settings view.
     private func generateSections() {
-        if appSettings.hasBeenMDMDeployed {
+        if appSettings.mdmIsActive {
             items.append(sectionForType(sectionType: .accounts))
             items.append(sectionForType(sectionType: .globalSettings))
 
@@ -241,7 +241,7 @@ extension SettingsViewModel {
                 me.handleResetAllIdentities()
             })
         case .globalSettings:
-            if appSettings.hasBeenMDMDeployed {
+            if appSettings.mdmIsActive {
                 rows.append(generateNavigationRow(type: .credits, isDangerous: false))
             } else {
                 rows.append(generateNavigationRow(type: .defaultAccount, isDangerous: false))
