@@ -24,7 +24,7 @@ class MDMDeploymentTest: XCTestCase {
     }
 
     func testNetworkError() throws {
-        XCTAssertFalse(AppSettings.shared.mdmIsActive)
+        XCTAssertTrue(AppSettings.shared.mdmIsActive)
         XCTAssertFalse(MDMDeployment().haveAccountToDeploy)
         setupDeployableAccountData()
         XCTAssertTrue(MDMDeployment().haveAccountToDeploy)
@@ -43,7 +43,7 @@ class MDMDeploymentTest: XCTestCase {
     }
 
     func testOk() throws {
-        XCTAssertFalse(AppSettings.shared.mdmIsActive)
+        XCTAssertTrue(AppSettings.shared.mdmIsActive)
         XCTAssertFalse(MDMDeployment().haveAccountToDeploy)
         setupDeployableAccountData()
         XCTAssertTrue(MDMDeployment().haveAccountToDeploy)
@@ -57,7 +57,7 @@ class MDMDeploymentTest: XCTestCase {
     }
 
     func testWrongPassword() throws {
-        XCTAssertFalse(AppSettings.shared.mdmIsActive)
+        XCTAssertTrue(AppSettings.shared.mdmIsActive)
         XCTAssertFalse(MDMDeployment().haveAccountToDeploy)
         setupDeployableAccountData()
         XCTAssertTrue(MDMDeployment().haveAccountToDeploy)
