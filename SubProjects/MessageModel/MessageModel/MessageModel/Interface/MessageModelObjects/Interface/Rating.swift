@@ -49,15 +49,12 @@ extension Rating {
     /// - returns:  true if the pEp color represents a less secure communication channel than the given one.
     ///             false otherwize.
     public func hasLessSecurePepColor(than rating: Rating) -> Bool {
-        if rating.pEpColor() == .green &&
-            self.pEpColor() != .green {
+        if rating.pEpColor() == .green && pEpColor() != .green {
             return true
         }
-        else if rating.pEpColor() == .noColor &&
-            (self.pEpColor() != .green && self.pEpColor() != .noColor) {
+        else if rating.pEpColor() == .noColor && ![.noColor, .green].contains(pEpColor()) {
             return true
         }
-
         return false
     }
 
