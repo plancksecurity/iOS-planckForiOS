@@ -73,15 +73,24 @@ extension PEPUtils {
                          context: NSManagedObjectContext = Stack.shared.mainContext,
                          completion: @escaping (PEPColor) -> Void) {
         pEpRating(cdIdentity: cdIdentity, context: context) { (rating) in
-            completion(rating.pEpRating().pEpColor())
+
+            let pEpColor = PEPUtils.pEpColor(pEpRating: rating.pEpRating())
+            completion(pEpColor)
         }
     }
 
     static func pEpColor(pEpRating: PEPRating?) -> PEPColor {
         if let rating = pEpRating {
-            return PEPSession().color(from: rating)
+            switch (rating) {
+            case .undefined, .haveNoKey, .unencrypted, .b0rken, .underAttack, .mistrust:
+                return .red
+            case .unreliable, .reliable, .trusted, .trustedAndAnonymized, .fullyAnonymous:
+                return .green
+            case .cannotDecrypt:
+                return .noColor
+            }
         } else {
-            return PEPColor.noColor
+            return .noColor
         }
     }
 }

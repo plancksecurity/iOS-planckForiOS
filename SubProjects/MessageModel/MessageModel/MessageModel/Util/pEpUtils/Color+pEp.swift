@@ -20,6 +20,9 @@ extension Color {
             self = .green
         case .red:
             self = .red
+        case .yellow:
+            // This is not an error: please see PEMA-89.
+            self = .green
         }
     }
 
