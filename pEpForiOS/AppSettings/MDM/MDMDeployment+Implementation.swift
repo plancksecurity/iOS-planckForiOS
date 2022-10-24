@@ -244,7 +244,6 @@ extension MDMDeployment: MDMDeploymentProtocol {
                     callback(.networkError)
                 }
             } else {
-                AppSettings.shared.hasBeenMDMDeployed = true
                 callback(nil)
             }
         }
@@ -260,7 +259,29 @@ extension MDMDeployment: MDMDeploymentProtocol {
     }
 }
 
-// MARK: - Utility
+// MARK: - JSON
+
+extension MDMDeployment {
+    
+    /// - returns: The MDM dictionary as json,  pretty printed.
+    /// If there is no dictionary yet, "No dictionary" is return.
+    /// If serialization fails, returns "No data".
+    /// if there is an error converting data to string, "No pretty dictionary" is returned.
+    public func mdmPrettyPrintedDictionary() -> String {
+        guard let dict = UserDefaults.standard.dictionary(forKey: MDMDeployment.keyMDM) else {
+            return NSLocalizedString("No dictionary", comment: "No dictionary error")
+        }
+        guard let data = try? JSONSerialization.data(withJSONObject: dict, options: .prettyPrinted) else {
+            return NSLocalizedString("No data", comment: "No data error")
+        }
+        guard let prettyMDMDictionary = String(data: data, encoding: .utf8) else {
+            return NSLocalizedString("No pretty dictionary", comment: "No pretty dictionary error")
+        }
+        return prettyMDMDictionary
+    }
+}
+
+// MARK: - Internal Utility
 
 extension MDMDeployment {
     private func mdmDeploymentDictionary() -> SettingsDict? {

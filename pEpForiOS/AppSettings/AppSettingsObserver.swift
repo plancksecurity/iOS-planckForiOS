@@ -54,6 +54,20 @@ class AppSettingsObserver {
                 EchoProtocolUtil().enableEchoProtocol(enabled: newValue)
             }
         }
+        if let oldValue = NSDictionary(dictionary: mdmDictionary)
+            .value(forKey: AppSettings.keyPEPSaveEncryptedOnServerEnabled) as? Bool {
+            let newValue = AppSettings.shared.mdmPEPSaveEncryptedOnServerEnabled
+            if oldValue != newValue {
+                TrustedServerUtil().setStoreSecurely(newValue: newValue)
+            }
+        }
+
+        if let oldValues = NSDictionary(dictionary: mdmDictionary).value(forKey: AppSettings.keyPEPExtraKeys) as? [[String:String]] {
+            let newValues = AppSettings.shared.mdmPEPExtraKeys
+            if oldValues != newValues {
+                ExtraKeysUtil().configure(extraKeyDictionaries: newValues)
+            }
+        }
 
         // As ´Any´ does not conform to Equatable
         // we use NSDictionary to easily compare these dictionaries.
@@ -70,4 +84,3 @@ class AppSettingsObserver {
         NotificationCenter.default.removeObserver(self)
     }
 }
-

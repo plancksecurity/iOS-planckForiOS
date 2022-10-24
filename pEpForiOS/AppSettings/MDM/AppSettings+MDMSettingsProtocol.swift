@@ -18,17 +18,11 @@ extension AppSettings: MDMSettingsProtocol {
 
     // MARK: - Keys
 
-    static let keyhasBeenMDMDeployed = "keyhasBeenMDMDeployed"
     static let keyPEPEnablePrivacyProtectionEnabled = "pep_enable_privacy_protection"
     static let keyPEPExtraKeys = "pep_extra_keys"
     static let keyPEPTrustwordsEnabled = "pep_use_trustwords"
     static let keyUnsecureDeliveryWarningEnabled = "unsecure_delivery_warning"
     static let keyPEPSyncFolderEnabled = "pep_sync_folder"
-    static let keyDebugLoggingEnabled = "debug_logging"
-    static let keyAccountDisplayCount = "account_display_count"
-    static let keyMaxPushFolders = "max_push_folders"
-
-    /// The key for the sender's name, which may get used as the user's name.
     static let keyCompositionSenderName = "composition_sender_name"
 
     static let keyCompositionSignatureEnabled = "composition_use_signature"
@@ -44,6 +38,11 @@ extension AppSettings: MDMSettingsProtocol {
     static let keyMediaKeys = "pep_media_keys"
     static let keyEchoProtocolEnabled = "pep_enable_echo_protocol"
 
+    //Not used
+    static let keyDebugLoggingEnabled = "debug_logging"
+    static let keyAccountDisplayCount = "account_display_count"
+    static let keyMaxPushFolders = "max_push_folders"
+
     // MARK: - Settings
 
     public var hasBeenMDMDeployed: Bool {
@@ -51,11 +50,7 @@ extension AppSettings: MDMSettingsProtocol {
         // This is a setting "about" MDM that is tracked by the app,
         // and doesn not come from the MDM itself.
         get {
-            return AppSettings.userDefaults.bool(forKey: AppSettings.keyhasBeenMDMDeployed)
-        }
-        set {
-            AppSettings.userDefaults.set(newValue,
-                                         forKey: AppSettings.keyhasBeenMDMDeployed)
+            return MDMUtil.isEnabled()
         }
     }
 
@@ -68,11 +63,12 @@ extension AppSettings: MDMSettingsProtocol {
         }
     }
 
-    public var mdmPEPExtraKeys: [String] {
+    public var mdmPEPExtraKeys: [[String:String]] {
         get {
-            guard let extraKeys = mdmDictionary[AppSettings.keyPEPExtraKeys] as? [String] else {
+            guard let extraKeys = mdmDictionary[AppSettings.keyPEPExtraKeys] as? [[String:String]] else {
                 return []
             }
+
             return extraKeys
         }
     }

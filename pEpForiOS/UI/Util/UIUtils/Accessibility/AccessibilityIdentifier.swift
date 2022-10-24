@@ -38,6 +38,7 @@ class AccessibilityIdentifier {
     static let moveToFolderButton = "Move to Folder Button"
     static let pEpButton = "pEp Button"
     static let sendButton = "Send Button"
+    static let shareButton = "Share Button"
     static let addAccountButton = "Add account button"
     static let loginButton = "Login button"
     static let manualConfigButton = "Manual Config button"

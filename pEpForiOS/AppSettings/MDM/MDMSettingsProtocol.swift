@@ -6,17 +6,19 @@
 //  Copyright © 2022 p≡p Security S.A. All rights reserved.
 //
 
-/// Here we have a list of settings needed for the initial setup when using MDM.
+/// Here we have a list of settings needed for the initial setup when using MDM:
 /// https://confluence.pep.security/pages/viewpage.action?pageId=10223902
 /// (see Settings meaning and structure)
+///
+/// Here we have the detail of the plist / json that is sent to the device:
+/// https://confluence.pep.security/pages/viewpage.action?pageId=15008984
 public protocol MDMSettingsProtocol {
 
     /// Indicate if the app has been deployed via MDM.
     /// - Note: Even though this setting is part of MDM, it is handled differently than other
-    /// MDM settings: It is _not_ actuallly coming from the MDM server, but part of the book-keeping
-    /// in the app about MDM. In other words, it is MDM-related, but handled by the app similar to other
-    /// settings.
-    var hasBeenMDMDeployed: Bool { get set }
+    /// MDM settings: It is _not_ actuallly coming from the MDM server, but part of the compile-time
+    /// configuration.
+    var hasBeenMDMDeployed: Bool { get }
 
     /// Enable or disable pEp privacy protection for the user or device's account.
     var mdmPEPPrivacyProtectionEnabled: Bool { get }
@@ -24,7 +26,7 @@ public protocol MDMSettingsProtocol {
     /// Provide Extra Keys.
     ///
     /// To remove them just set an empty array.
-    var mdmPEPExtraKeys: [String] { get }
+    var mdmPEPExtraKeys: [[String:String]] { get }
 
     /// Enable or disable the use of trustwords.
     ///
@@ -125,9 +127,9 @@ public protocol MDMSettingsProtocol {
     var mdmPEPSyncNewDevicesEnabled: Bool { get }
 
     /// The list of media keys, which are dictionaries with three entries:
-    ///  "pattern": The media key pattern
-    ///  "fingerprint": The fingerprint of this media key
-    ///  "key": The complete key material, in armored or comparable form.
+    ///  "media_key_address_pattern": The media key pattern
+    ///  "media_key_fingerprint": The fingerprint of this media key
+    ///  "media_key_material": The complete key material, in armored or comparable form.
     var mdmMediaKeys: [[String:String]] { get }
 
     /// Indicate if Echo Protocol is enabled.
