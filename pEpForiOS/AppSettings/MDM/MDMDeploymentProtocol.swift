@@ -35,7 +35,8 @@ protocol MDMDeploymentProtocol {
     /// and if it exists, can ask the user for the password and try to deploy it.
     ///
     /// - Returns: A complete account, ready to be deployed once a password
-    /// is supplied, or nil, if no account exists that can be deployed.
+    /// is supplied, or nil, if no account exists that can be deployed, or MDM is not supposed to be used,
+    /// or an account exists already.
     /// - Throws:`MDMDeploymentError`
     func accountToDeploy() throws -> MDMDeployment.AccountData?
 
