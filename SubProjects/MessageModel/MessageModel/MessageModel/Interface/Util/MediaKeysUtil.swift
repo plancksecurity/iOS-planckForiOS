@@ -55,14 +55,13 @@ public class MediaKeysUtil {
             PEPSession().importKey(key) { error in
                 Log.shared.error(error: error)
             } successCallback: { identities in
-                Log.shared.info("importKey successful", identities)
                 // Make sure that there is at least one identity with a matching fingerprint
                 let allFingerprints = pairs.map({$0.fingerprint})
                 let thereIsAMatchingIdentity = identities.contains { identity in
                     return allFingerprints.contains(identity.fingerPrint ?? "")
                 }
-                if thereIsAMatchingIdentity {
-                    Log.shared.info("There is at least one identity with a matching fingerprint")
+                if !thereIsAMatchingIdentity {
+                    Log.shared.logError(message: "Media key import: No identity with matching fingerprint")
                 }
             }
         }
