@@ -20,9 +20,6 @@ public class MDMUtil {
     ///
     /// - Returns: True, if MDM is enabled. False otherwise.
     static func isEnabled() -> Bool {
-        if MiscUtil.isUnitTest() {
-            return false
-        }
         guard let mdmEnabled = Bundle.main.infoDictionary?["MDM_ENABLED"] as? String else {
             return false
         }
