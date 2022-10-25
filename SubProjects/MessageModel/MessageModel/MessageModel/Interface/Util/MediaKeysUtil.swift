@@ -51,9 +51,13 @@ public class MediaKeysUtil {
             return key
         }
 
+        let importKeysGroup = DispatchGroup()
+
         keys.forEach { key in
+            importKeysGroup.enter()
             PEPSession().importKey(key) { error in
                 Log.shared.error(error: error)
+                importKeysGroup.leave()
             } successCallback: { identities in
                 // Make sure that there is at least one identity with a matching fingerprint
                 let allFingerprints = (pairs.map {$0.fingerprint}).filter { !$0.isEmpty }
@@ -67,7 +71,9 @@ public class MediaKeysUtil {
                 if !thereIsAMatchingIdentity {
                     Log.shared.logError(message: "Media key import: No identity with matching fingerprint")
                 }
+                importKeysGroup.leave()
             }
         }
+        importKeysGroup.wait()
     }
 }
