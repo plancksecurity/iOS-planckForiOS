@@ -150,7 +150,7 @@ class MDMAccountDeploymentViewController: UIViewController {
 
         enableUI(enabled: false)
 
-        // Remove error display (if any) from previous attempts
+        // Remove any error from previous attempts
         unsetError()
 
         let activityIndicator = createActivityIndicator()
