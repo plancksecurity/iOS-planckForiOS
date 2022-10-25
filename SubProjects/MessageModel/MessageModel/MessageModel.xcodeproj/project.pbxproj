@@ -2625,10 +2625,10 @@
 		5B88A19E2406C1A4003240B8 /* Util */ = {
 			isa = PBXGroup;
 			children = (
+				15A064912522262A002F15D0 /* MimeTypeUtils */,
 				5BC6A24D267791CD00769972 /* Array+Attachments.swift */,
 				5B4A715A252B5B6F00436FCF /* NSError+Passphrase.swift */,
 				5B4A715B252B5B6F00436FCF /* Error+Passphrase.swift */,
-				15A064912522262A002F15D0 /* MimeTypeUtils */,
 				5B88A19C2406C1A2003240B8 /* TrustManagementUtil.swift */,
 				15E01F9E24AB420B00DFADA3 /* PassphraseUtil.swift */,
 				439CAD8A2562D5BF0043077E /* String+Attachment.swift */,
