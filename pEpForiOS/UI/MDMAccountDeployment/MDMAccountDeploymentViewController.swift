@@ -164,6 +164,10 @@ class MDMAccountDeploymentViewController: UIViewController {
                 case .error(let message):
                     let errorMessage = theSelf.viewModel.errorMessage(message: message)
                     theSelf.setError(message: errorMessage)
+
+                    theSelf.buttonVerify?.isEnabled = true
+                    theSelf.textFieldPassword?.isEnabled = true
+
                     break
                 case .success:
                     theSelf.navigationController?.dismiss(animated: true)
