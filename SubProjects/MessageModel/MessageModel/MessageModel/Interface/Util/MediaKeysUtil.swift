@@ -78,7 +78,8 @@ public class MediaKeysUtil {
     }
 
     func importKey(allFingerprints: Set<String>,
-                   key: String, completion: @escaping (Result<[PEPIdentity], Error>) -> Void) {
+                   key: String,
+                   completion: @escaping (Result<[PEPIdentity], Error>) -> Void) {
         PEPSession().importKey(key) { error in
             completion(.failure(error))
         } successCallback: { identities in
