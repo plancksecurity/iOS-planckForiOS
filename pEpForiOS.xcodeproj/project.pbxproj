@@ -477,6 +477,9 @@
 		5B102FAB2652A1F400A758D2 /* MessageHeaderCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5B102FAA2652A1F400A758D2 /* MessageHeaderCell.swift */; };
 		5B102FAD2652AF3400A758D2 /* MessageHeaderCellViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5B102FAC2652AF3400A758D2 /* MessageHeaderCellViewModel.swift */; };
 		5B102FB92658008200A758D2 /* MessageHeaderCellViewModelTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5B102FB82658008200A758D2 /* MessageHeaderCellViewModelTest.swift */; };
+		5B160AB42906A28700B79CED /* AccountSettingsViewModelForMDMUsersTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5B160AB32906A28700B79CED /* AccountSettingsViewModelForMDMUsersTest.swift */; };
+		5B160AB62906A3CD00B79CED /* MockRegularUsersAppSettings.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5B160AB52906A3CD00B79CED /* MockRegularUsersAppSettings.swift */; };
+		5B160ABA2906B00B00B79CED /* SettingsViewModelForMDMUsersTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5B160AB92906B00B00B79CED /* SettingsViewModelForMDMUsersTest.swift */; };
 		5B1C0E1823FC26FB00F977C1 /* TrustManagementTableViewCellProtocols.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5B1C0E1723FC26FB00F977C1 /* TrustManagementTableViewCellProtocols.swift */; };
 		5B1C1432259A25B2006DB2A1 /* UILabel+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5B1C1431259A25B2006DB2A1 /* UILabel+Extension.swift */; };
 		5B21989728BDFAB200668445 /* UserSettingsProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5B21989628BDFAB200668445 /* UserSettingsProtocol.swift */; };
@@ -1094,6 +1097,9 @@
 		5B102FAA2652A1F400A758D2 /* MessageHeaderCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MessageHeaderCell.swift; sourceTree = "<group>"; };
 		5B102FAC2652AF3400A758D2 /* MessageHeaderCellViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MessageHeaderCellViewModel.swift; sourceTree = "<group>"; };
 		5B102FB82658008200A758D2 /* MessageHeaderCellViewModelTest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MessageHeaderCellViewModelTest.swift; sourceTree = "<group>"; };
+		5B160AB32906A28700B79CED /* AccountSettingsViewModelForMDMUsersTest.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AccountSettingsViewModelForMDMUsersTest.swift; sourceTree = "<group>"; };
+		5B160AB52906A3CD00B79CED /* MockRegularUsersAppSettings.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MockRegularUsersAppSettings.swift; sourceTree = "<group>"; };
+		5B160AB92906B00B00B79CED /* SettingsViewModelForMDMUsersTest.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SettingsViewModelForMDMUsersTest.swift; sourceTree = "<group>"; };
 		5B1C0E1723FC26FB00F977C1 /* TrustManagementTableViewCellProtocols.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TrustManagementTableViewCellProtocols.swift; sourceTree = "<group>"; };
 		5B1C1431259A25B2006DB2A1 /* UILabel+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UILabel+Extension.swift"; sourceTree = "<group>"; };
 		5B21989628BDFAB200668445 /* UserSettingsProtocol.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserSettingsProtocol.swift; sourceTree = "<group>"; };
@@ -1796,7 +1802,9 @@
 			isa = PBXGroup;
 			children = (
 				43D1900D2513734400A36973 /* SettingsViewModelTest.swift */,
+				5B160AB92906B00B00B79CED /* SettingsViewModelForMDMUsersTest.swift */,
 				5B94E19928B3D5B8001B6CB2 /* MockMDMAppSettings.swift */,
+				5B160AB52906A3CD00B79CED /* MockRegularUsersAppSettings.swift */,
 				1546CBFD252B5D3A00A7AA7D /* Credits */,
 				439EA15224727966005D6C9A /* KeyImport */,
 				37A710E2233B7A96001FEAF0 /* AccountSettings */,
@@ -2024,6 +2032,7 @@
 			isa = PBXGroup;
 			children = (
 				5B3B019424B49DD700FBB4B5 /* AccountSettingsViewModelTest.swift */,
+				5B160AB32906A28700B79CED /* AccountSettingsViewModelForMDMUsersTest.swift */,
 			);
 			path = AccountSettings;
 			sourceTree = "<group>";
@@ -3866,11 +3875,13 @@
 				15D7D990219AD38B00A1A2B9 /* MediaAttachmentPickerProviderViewModelTest.swift in Sources */,
 				15410D222199D83200BBF65F /* AccountCellViewModelTest.swift in Sources */,
 				15BBBC6B1FD0527200B9DCC8 /* DisplayUserErrorTest.swift in Sources */,
+				5B160AB62906A3CD00B79CED /* MockRegularUsersAppSettings.swift in Sources */,
 				15D7D997219C374600A1A2B9 /* ComposeViewModelStateTest.swift in Sources */,
 				F73E4F7A2180744700CCFFED /* FolderCellViewModelTests.swift in Sources */,
 				B7F4A793212DDFC500507B76 /* EmailListViewModelTest.swift in Sources */,
 				157743B8217885EA0007222C /* RecipientTextViewModelTest.swift in Sources */,
 				49A6114E2179F3A1006BA3C5 /* UnitTestUtils.swift in Sources */,
+				5B160ABA2906B00B00B79CED /* SettingsViewModelForMDMUsersTest.swift in Sources */,
 				5B3B019524B49DD700FBB4B5 /* AccountSettingsViewModelTest.swift in Sources */,
 				15410D1D2199C2E500BBF65F /* SubjectCellViewModelTest.swift in Sources */,
 				15410D1F2199CA1100BBF65F /* XCTTestCase+Utils.swift in Sources */,
@@ -3885,6 +3896,7 @@
 				3A7F89C1252B4FDA00A38460 /* EmailListViewModel+DraftsPreviewTests.swift in Sources */,
 				154D173D2373327C001FDF78 /* AccountDrivenTestBase.swift in Sources */,
 				00DF2C3B2164C53F004EBA6C /* FolderViewModelTest.swift in Sources */,
+				5B160AB42906A28700B79CED /* AccountSettingsViewModelForMDMUsersTest.swift in Sources */,
 				5BF505FE253EFBA50051FBD3 /* MailtoTest.swift in Sources */,
 				5BFBB20825D2A87700F269C4 /* EmailViewModelTest.swift in Sources */,
 				43E34BF028BCB6BD0035D051 /* MDMDeploymentTest.swift in Sources */,
