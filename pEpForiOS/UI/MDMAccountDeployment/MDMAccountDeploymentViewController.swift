@@ -135,8 +135,10 @@ class MDMAccountDeploymentViewController: UIViewController {
     // MARK: - Deploy
 
     func deploy(password: String) {
-        buttonVerify?.isEnabled = false
-        textFieldPassword?.isEnabled = false
+        func enableUI(enabled: Bool) {
+            buttonVerify?.isEnabled = enabled
+            textFieldPassword?.isEnabled = enabled
+        }
 
         func createActivityIndicator() -> UIActivityIndicatorView {
             if #available(iOS 13.0, *) {
@@ -145,6 +147,8 @@ class MDMAccountDeploymentViewController: UIViewController {
                 return UIActivityIndicatorView(style: .whiteLarge)
             }
         }
+
+        enableUI(enabled: false)
 
         // Remove error display (if any) from previous attempts
         unsetError()
@@ -168,8 +172,7 @@ class MDMAccountDeploymentViewController: UIViewController {
                     let errorMessage = theSelf.viewModel.errorMessage(message: message)
                     theSelf.setError(message: errorMessage)
 
-                    theSelf.buttonVerify?.isEnabled = true
-                    theSelf.textFieldPassword?.isEnabled = true
+                    enableUI(enabled: true)
 
                     break
                 case .success:
