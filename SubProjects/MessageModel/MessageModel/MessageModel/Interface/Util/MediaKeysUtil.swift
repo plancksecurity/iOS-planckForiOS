@@ -56,9 +56,13 @@ public class MediaKeysUtil {
                 Log.shared.error(error: error)
             } successCallback: { identities in
                 // Make sure that there is at least one identity with a matching fingerprint
-                let allFingerprints = pairs.map({$0.fingerprint})
+                let allFingerprints = (pairs.map {$0.fingerprint}).filter { !$0.isEmpty }
                 let thereIsAMatchingIdentity = identities.contains { identity in
-                    return allFingerprints.contains(identity.fingerPrint ?? "")
+                    if let fingerprint = identity.fingerPrint {
+                        return allFingerprints.contains(fingerprint)
+                    } else {
+                        return false
+                    }
                 }
                 if !thereIsAMatchingIdentity {
                     Log.shared.logError(message: "Media key import: No identity with matching fingerprint")
