@@ -84,9 +84,9 @@ class MDMAccountDeploymentViewModel {
                                                 comment: "MDM deployment message, all ok")
 
                 // Configure all systems.
-                MDMSettingsUtil().configure()
-
-                callback(.success(message: message))
+                MDMSettingsUtil().configure { _ in
+                    callback(.success(message: message))
+                }
             }
         }
     }

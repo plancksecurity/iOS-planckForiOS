@@ -31,7 +31,8 @@ public class MediaKeysUtil {
     /// Configure media keys.
     ///
     /// For the format, please see `MDMSettingsProtocol.mdmMediaKeys`.
-    public func configure(mediaKeyDictionaries: [[String:String]]) {
+    public func configure(mediaKeyDictionaries: [[String:String]],
+                          completion: @escaping (Result<Void, Error>) -> Void) {
 
         // MARK: - Configure Media Keys
 

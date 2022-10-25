@@ -16,10 +16,14 @@ public class MDMSettingsUtil {
     /// Expose the init to outsiders.
     public init() {}
 
-    public func configure() {
-        MediaKeysUtil().configure(mediaKeyDictionaries: AppSettings.shared.mdmMediaKeys)
-        EchoProtocolUtil().enableEchoProtocol(enabled: AppSettings.shared.mdmEchoProtocolEnabled)
-        TrustedServerUtil().setStoreSecurely(newValue: AppSettings.shared.mdmPEPSaveEncryptedOnServerEnabled)
-        ExtraKeysUtil().configure(extraKeyDictionaries: AppSettings.shared.mdmPEPExtraKeys)
+    public func configure(completion: @escaping (Result<Void, Error>) -> Void) {
+        MediaKeysUtil().configure(mediaKeyDictionaries: AppSettings.shared.mdmMediaKeys) { result in
+            // ignore any errors from the media key import, but deliver to the caller
+            EchoProtocolUtil().enableEchoProtocol(enabled: AppSettings.shared.mdmEchoProtocolEnabled)
+            TrustedServerUtil().setStoreSecurely(newValue: AppSettings.shared.mdmPEPSaveEncryptedOnServerEnabled)
+            ExtraKeysUtil().configure(extraKeyDictionaries: AppSettings.shared.mdmPEPExtraKeys)
+
+            completion(result)
+        }
     }
 }

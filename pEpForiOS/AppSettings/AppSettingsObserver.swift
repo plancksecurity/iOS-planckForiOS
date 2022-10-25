@@ -44,14 +44,16 @@ class AppSettingsObserver {
             return
         }
 
-        // Carry the configuration into all subsystems, like adapter/engine etc.
-        MDMSettingsUtil().configure()
-
         // save the current MDM settings for later comparison
         mdmDictionary = mdm
 
-        // inform views that display settings related data
-        NotificationCenter.default.post(name:.pEpMDMSettingsChanged, object: mdm, userInfo: nil)
+        // Carry the configuration into all subsystems, like adapter/engine etc.
+        MDMSettingsUtil().configure { _ in
+            DispatchQueue.main.async {
+                // inform views that display settings related data
+                NotificationCenter.default.post(name:.pEpMDMSettingsChanged, object: mdm, userInfo: nil)
+            }
+        }
     }
 
     // MARK: - Deinit
