@@ -201,6 +201,7 @@ class MDMAccountDeploymentViewController: UIViewController {
     func unsetError() {
         if let existing = errorLabel {
             stackView.removeArrangedSubview(existing)
+            errorLabel = nil
         }
     }
 
