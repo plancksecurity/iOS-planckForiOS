@@ -49,7 +49,10 @@ class AppSettingsObserver {
         TrustedServerUtil().setStoreSecurely(newValue: AppSettings.shared.mdmPEPSaveEncryptedOnServerEnabled)
         ExtraKeysUtil().configure(extraKeyDictionaries: AppSettings.shared.mdmPEPExtraKeys)
 
+        // save the current MDM settings for later comparison
         mdmDictionary = mdm
+
+        // inform views that display settings related data
         NotificationCenter.default.post(name:.pEpMDMSettingsChanged, object: mdm, userInfo: nil)
     }
 
