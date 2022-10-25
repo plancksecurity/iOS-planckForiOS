@@ -51,6 +51,8 @@ public class MediaKeysUtil {
             return key
         }
 
+        let allFingerprints = Set((pairs.map {$0.fingerprint}).filter { !$0.isEmpty })
+
         let importKeysGroup = DispatchGroup()
 
         keys.forEach { key in
@@ -59,8 +61,6 @@ public class MediaKeysUtil {
                 Log.shared.error(error: error)
                 importKeysGroup.leave()
             } successCallback: { identities in
-                // Make sure that there is at least one identity with a matching fingerprint
-                let allFingerprints = (pairs.map {$0.fingerprint}).filter { !$0.isEmpty }
                 let thereIsAMatchingIdentity = identities.contains { identity in
                     if let fingerprint = identity.fingerPrint {
                         return allFingerprints.contains(fingerprint)
