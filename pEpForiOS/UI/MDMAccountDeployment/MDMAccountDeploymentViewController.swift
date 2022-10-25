@@ -146,6 +146,9 @@ class MDMAccountDeploymentViewController: UIViewController {
             }
         }
 
+        // Remove error display (if any) from previous attempts
+        unsetError()
+
         let activityIndicator = createActivityIndicator()
         activityIndicator.startAnimating()
         stackView.addArrangedSubview(activityIndicator)
@@ -189,6 +192,12 @@ class MDMAccountDeploymentViewController: UIViewController {
             newErrorLabel.textAlignment = .center
             stackView.insertArrangedSubview(newErrorLabel, at: 0)
             errorLabel = newErrorLabel
+        }
+    }
+
+    func unsetError() {
+        if let existing = errorLabel {
+            stackView.removeArrangedSubview(existing)
         }
     }
 
