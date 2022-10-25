@@ -16,6 +16,10 @@ import pEpIOSToolbox
 
 /// https://dev.pep.foundation/Engine/Media%20keys
 public class MediaKeysUtil {
+    enum MediaKeyImportError: Error {
+        /// The key material did not match the fingerprint.
+        case noMatchingFingerprint
+    }
 
     static let kPattern = "media_key_address_pattern"
     static let kFingerprint = "media_key_fingerprint"
@@ -53,13 +57,9 @@ public class MediaKeysUtil {
 
         let allFingerprints = Set((pairs.map {$0.fingerprint}).filter { !$0.isEmpty })
 
-        let importKeysGroup = DispatchGroup()
-
         keys.forEach { key in
-            importKeysGroup.enter()
             PEPSession().importKey(key) { error in
                 Log.shared.error(error: error)
-                importKeysGroup.leave()
             } successCallback: { identities in
                 let thereIsAMatchingIdentity = identities.contains { identity in
                     if let fingerprint = identity.fingerPrint {
@@ -71,15 +71,44 @@ public class MediaKeysUtil {
                 if !thereIsAMatchingIdentity {
                     Log.shared.logError(message: "Media key import: No identity with matching fingerprint")
                 }
-                importKeysGroup.leave()
             }
         }
-        importKeysGroup.wait()
+    }
+
+    func importKeys(allFingerprints: Set<String>,
+                    keys: [String],
+                    completion: @escaping (Result<Void, Error>) -> Void) {
+        var finalError: Error?
+        DispatchQueue.global().async {
+            let group = DispatchGroup()
+            for key in keys {
+                group.enter()
+                self.importKey(allFingerprints: allFingerprints,
+                          key: key) { result in
+                    switch(result) {
+                    case .failure(let error):
+                        if finalError == nil {
+                            finalError = error
+                        }
+                    case .success():
+                        break
+                    }
+                    group.leave()
+                }
+            }
+
+            group.wait()
+            if let error = finalError {
+                completion(.failure(error))
+            } else {
+                completion(.success(()))
+            }
+        }
     }
 
     func importKey(allFingerprints: Set<String>,
                    key: String,
-                   completion: @escaping (Result<[PEPIdentity], Error>) -> Void) {
+                   completion: @escaping (Result<Void, Error>) -> Void) {
         PEPSession().importKey(key) { error in
             completion(.failure(error))
         } successCallback: { identities in
@@ -91,9 +120,9 @@ public class MediaKeysUtil {
                 }
             }
             if !thereIsAMatchingIdentity {
-                Log.shared.logError(message: "Media key import: No identity with matching fingerprint")
+                completion(.failure(MediaKeyImportError.noMatchingFingerprint))
             }
-            completion(.success(identities))
+            completion(.success(()))
         }
     }
 }
