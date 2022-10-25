@@ -44,10 +44,8 @@ class AppSettingsObserver {
             return
         }
 
-        MediaKeysUtil().configure(mediaKeyDictionaries: AppSettings.shared.mdmMediaKeys)
-        EchoProtocolUtil().enableEchoProtocol(enabled: AppSettings.shared.mdmEchoProtocolEnabled)
-        TrustedServerUtil().setStoreSecurely(newValue: AppSettings.shared.mdmPEPSaveEncryptedOnServerEnabled)
-        ExtraKeysUtil().configure(extraKeyDictionaries: AppSettings.shared.mdmPEPExtraKeys)
+        // Carry the configuration into all subsystems, like adapter/engine etc.
+        MDMSettingsUtil().configure()
 
         // save the current MDM settings for later comparison
         mdmDictionary = mdm

@@ -83,6 +83,9 @@ class MDMAccountDeploymentViewModel {
                 let message = NSLocalizedString("Accounts Deployed",
                                                 comment: "MDM deployment message, all ok")
 
+                // Configure all systems.
+                MDMSettingsUtil().configure()
+
                 callback(.success(message: message))
             }
         }
