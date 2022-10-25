@@ -57,23 +57,7 @@ public class MediaKeysUtil {
         }
 
         let allFingerprints = Set((pairs.map {$0.fingerprint}).filter { !$0.isEmpty })
-
-        keys.forEach { key in
-            PEPSession().importKey(key) { error in
-                Log.shared.error(error: error)
-            } successCallback: { identities in
-                let thereIsAMatchingIdentity = identities.contains { identity in
-                    if let fingerprint = identity.fingerPrint {
-                        return allFingerprints.contains(fingerprint)
-                    } else {
-                        return false
-                    }
-                }
-                if !thereIsAMatchingIdentity {
-                    Log.shared.logError(message: "Media key import: No identity with matching fingerprint")
-                }
-            }
-        }
+        importKeys(allFingerprints: allFingerprints, keys: keys, completion: completion)
     }
 
     func importKeys(allFingerprints: Set<String>,
