@@ -25,7 +25,7 @@ class SettingsViewModelForMDMUsersTest: AccountDrivenTestBase {
     func testNumberOfSections() {
         let delegate = SettingsViewModeldelegate()
 
-        setupViewModel(delegate: delegate, appSettings: MDMMockAppSettings())
+        setupViewModel(delegate: delegate, appSettings: MockAppSettings())
         XCTAssertEqual(settingsVM.count, sections)
     }
 
