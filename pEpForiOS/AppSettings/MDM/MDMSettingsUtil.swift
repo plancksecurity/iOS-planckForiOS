@@ -8,6 +8,8 @@
 
 import Foundation
 
+import MessageModel
+
 /// Bundles account/engine setup together, so the code can be shared by both MDM-account setup logic
 /// and the MDM-setting changes.
 public class MDMSettingsUtil {

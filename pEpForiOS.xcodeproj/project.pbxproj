@@ -454,6 +454,7 @@
 		43ED53781CC77F95006AB156 /* SMTPSettingsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43ED536D1CC77F95006AB156 /* SMTPSettingsViewController.swift */; };
 		43ED53791CC77F95006AB156 /* UserInfoViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43ED536E1CC77F95006AB156 /* UserInfoViewController.swift */; };
 		43EEE4052907D5DE00D30254 /* MDM.plist in Resources */ = {isa = PBXBuildFile; fileRef = 43EEE4042907D5DE00D30254 /* MDM.plist */; };
+		43EEE4092908049500D30254 /* MDMSettingsUtil.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43EEE4082908049500D30254 /* MDMSettingsUtil.swift */; };
 		43FC02121F4D913D00273304 /* NSHTML_2017-08-09 15_40_53 +0000.html in Resources */ = {isa = PBXBuildFile; fileRef = 43FC02111F4D913D00273304 /* NSHTML_2017-08-09 15_40_53 +0000.html */; };
 		4902244F20E50488000E8D7C /* ThreadNavigationDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4902244E20E50488000E8D7C /* ThreadNavigationDelegate.swift */; };
 		490CEBA72100EAD500E8579C /* SelfDismissable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 490CEBA62100EAD500E8579C /* SelfDismissable.swift */; };
@@ -1075,6 +1076,7 @@
 		43ED536D1CC77F95006AB156 /* SMTPSettingsViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SMTPSettingsViewController.swift; sourceTree = "<group>"; };
 		43ED536E1CC77F95006AB156 /* UserInfoViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UserInfoViewController.swift; sourceTree = "<group>"; };
 		43EEE4042907D5DE00D30254 /* MDM.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = MDM.plist; sourceTree = "<group>"; };
+		43EEE4082908049500D30254 /* MDMSettingsUtil.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MDMSettingsUtil.swift; sourceTree = "<group>"; };
 		43FC02111F4D913D00273304 /* NSHTML_2017-08-09 15_40_53 +0000.html */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.html; path = "NSHTML_2017-08-09 15_40_53 +0000.html"; sourceTree = "<group>"; };
 		4902244E20E50488000E8D7C /* ThreadNavigationDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ThreadNavigationDelegate.swift; sourceTree = "<group>"; };
 		490CEBA62100EAD500E8579C /* SelfDismissable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SelfDismissable.swift; sourceTree = "<group>"; };
@@ -2477,6 +2479,7 @@
 				43E34BDD28BCB5230035D051 /* MDMDeploymentProtocol.swift */,
 				5B21989F28BE360000668445 /* AppSettings+MDMSettingsProtocol.swift */,
 				5B21989928BDFAE600668445 /* MDMSettingsProtocol.swift */,
+				43EEE4082908049500D30254 /* MDMSettingsUtil.swift */,
 			);
 			path = MDM;
 			sourceTree = "<group>";
@@ -3629,6 +3632,7 @@
 				5B2198A328BE3A6500668445 /* AppSettings+UserSettingsProtocol.swift in Sources */,
 				1521B797241BE026000EAE57 /* UIUtils+ActivityIndicator.swift in Sources */,
 				438052891FE3E24400ACF729 /* OAuth2AuthorizationProtocol.swift in Sources */,
+				43EEE4092908049500D30254 /* MDMSettingsUtil.swift in Sources */,
 				B71052732417D0B7007148E8 /* AccountTypeSelectorTextCollectionViewCell.swift in Sources */,
 				43236E652459891B00D8318D /* OAuth2Type+VerifiableAccountType.swift in Sources */,
 				43B0444C20077323007BCE3F /* OAuth2Configuration.swift in Sources */,
