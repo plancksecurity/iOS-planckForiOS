@@ -231,7 +231,7 @@ extension ComposeViewController {
 
         // Toggle privacy status on long press for trusted and reliable
         let pEpColor = pEpRating.pEpColor()
-        if pEpColor == .green || pEpColor == .yellow {
+        if pEpColor == .green {
             let tapGestureRecognizerToggleProtection = UILongPressGestureRecognizer(
                 target: self,
                 action: #selector(showPepActions))

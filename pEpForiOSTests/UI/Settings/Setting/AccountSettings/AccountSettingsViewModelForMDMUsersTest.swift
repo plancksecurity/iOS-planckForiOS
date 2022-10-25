@@ -30,7 +30,6 @@ class AccountSettingsViewModelForMDMUsersTest: AccountDrivenTestBase {
     }
 
     func testNumberOfSectionsForMDMUsers() throws {
-        setupForMDMUsers()
         XCTAssertEqual(viewModel.sections.count, dummySections.count)
     }
 

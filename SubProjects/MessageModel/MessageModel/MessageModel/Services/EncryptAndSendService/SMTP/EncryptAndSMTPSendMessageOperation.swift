@@ -238,7 +238,7 @@ extension EncryptAndSMTPSendMessageOperation {
             return
         }
         let outgoingColor = PEPSession().color(from: outgoingMsgRating)
-        guard outgoingColor == .green || outgoingColor == .yellow else {
+        guard outgoingColor == .green else {
             // Is unprotected mail. Send out unencrypted without bothering.
             sendUnencrypted()
             return
