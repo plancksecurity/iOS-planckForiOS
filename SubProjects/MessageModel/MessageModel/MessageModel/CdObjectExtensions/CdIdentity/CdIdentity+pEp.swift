@@ -46,7 +46,7 @@ extension CdIdentity {
                 return
             }
             me.pEpColor { (color) in
-                completion(color == .yellow || color == .green)
+                completion(color == .green)
             }
         }
     }
@@ -76,7 +76,7 @@ extension CdIdentity {
             return nil
         }
         var identity: CdIdentity
-        if let existing = CdIdentity.search(address: pEpC.address, context: context){
+        if let existing = CdIdentity.search(address: pEpC.address, context: context) {
             identity = existing
             if !identity.isMySelf {
                 identity.userName = pEpC.userName
