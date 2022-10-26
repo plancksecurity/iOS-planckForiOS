@@ -18,13 +18,9 @@ public class MDMSettingsUtil {
 
     public func configure(completion: @escaping (Result<Void, Error>) -> Void) {
         MediaKeysUtil().configure(mediaKeyDictionaries: AppSettings.shared.mdmMediaKeys) { result in
-            // ignore any errors from the media key import for now, but deliver to the caller,
-            // just in case
-
             EchoProtocolUtil().enableEchoProtocol(enabled: AppSettings.shared.mdmEchoProtocolEnabled)
             TrustedServerUtil().setStoreSecurely(newValue: AppSettings.shared.mdmPEPSaveEncryptedOnServerEnabled)
             ExtraKeysUtil().configure(extraKeyDictionaries: AppSettings.shared.mdmPEPExtraKeys)
-
             completion(result)
         }
     }
