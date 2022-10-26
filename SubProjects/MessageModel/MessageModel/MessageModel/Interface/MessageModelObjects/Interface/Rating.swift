@@ -51,8 +51,7 @@ extension Rating {
     public func hasLessSecurePepColor(than rating: Rating) -> Bool {
         if rating.pEpColor() == .green && pEpColor() != .green {
             return true
-        }
-        else if rating.pEpColor() == .noColor && ![.noColor, .green].contains(pEpColor()) {
+        } else if rating.pEpColor() == .noColor && ![.noColor, .green].contains(pEpColor()) {
             return true
         }
         return false

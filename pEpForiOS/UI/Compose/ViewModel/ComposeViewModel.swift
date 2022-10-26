@@ -333,8 +333,9 @@ class ComposeViewModel {
             let msg = sendClosure()
             // As the util has state we ensure it's not reused.
             me.attachmentSizeUtil = nil
-            me.delegate?.dismiss()
-
+            DispatchQueue.main.async {
+                me.delegate?.dismiss()
+            }
             if let theMsg = msg {
                 me.composeViewModelEndActionDelegate?.userWantsToSend(message: theMsg)
             } else {

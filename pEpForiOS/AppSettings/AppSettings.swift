@@ -83,7 +83,7 @@ extension AppSettings {
         defaults[AppSettings.keyExtraKeysEditable] = false
         defaults[AppSettings.keyShouldShowTutorialWizard] = true
         defaults[AppSettings.keyUserHasBeenAskedForContactAccessPermissions] = false
-        defaults[AppSettings.keyUnsecureReplyWarningEnabled] = false
+        defaults[AppSettings.keyUnsecureReplyWarningEnabled] = true
         defaults[AppSettings.keyAccountSignature] = [String:String]()
         defaults[AppSettings.keyVerboseLogginEnabled] = false
         // TODO:
