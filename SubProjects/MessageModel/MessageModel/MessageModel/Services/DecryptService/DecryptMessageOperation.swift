@@ -92,7 +92,7 @@ extension DecryptMessageOperation {
                     Log.shared.error("Passphrase error trying to decrypt a message")
                     return
                 }
-                Log.shared.errorAndCrash("Error decrypting: %@", "\(error)")
+                //Log.shared.errorAndCrash("Error decrypting: %@", "\(error)")
                 addError(BackgroundError.GeneralError.illegalState(info:
                     "##\nError: \(error)\ndecrypting message: \(cdMessageToDecrypt)\n##"))
             } else if error.domain == PEPObjCAdapterErrorDomain {

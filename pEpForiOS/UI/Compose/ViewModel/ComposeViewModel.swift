@@ -305,6 +305,10 @@ class ComposeViewModel {
                 return nil
             }
 
+            me.showAlertSendingUnencryptedMessageIfRequied(forMessage: me.state, message: msg) { accepted in
+
+            }
+
             msg.sent = Date()
             msg.session.commit()
 
@@ -321,6 +325,7 @@ class ComposeViewModel {
 
             return msg
         }
+
 
         showAlertFordwardingLessSecureIfRequired(forState: safeState) { [weak self] (accepted) in
             guard let me = self else {
@@ -397,6 +402,51 @@ extension ComposeViewModel {
     }
 
     typealias Accepted = Bool
+
+    private func showAlertSendingUnencryptedMessageIfRequied(forMessage state: ComposeViewModelState,
+                                                             message: Message,
+                                                             completion: @escaping (Accepted)->()) {
+        guard let composeMode = state.initData?.composeMode,
+            composeMode == .normal
+        else {
+            // Not our use case, nothing to do
+            completion(true)
+            return
+        }
+        guard let msg = state.initData?.originalMessage else {
+            completion(true)
+            return
+        }
+        // When the user composes an email that will be sent unencrypted then he gets a warning
+        let group = DispatchGroup()
+        group.enter()
+        msg.pEpRating { (rating) in
+            if rating == .unencrypted {
+                group.notify(queue: DispatchQueue.main) { [weak self] in
+                    guard let me = self else {
+                        // Valid case. The we might have been dismissed already.
+                        // Do nothing ...
+                        return
+                    }
+
+                    let warningTitle = NSLocalizedString("Warning", comment: "Warning title")
+                    let warningMessage = NSLocalizedString("This message will be sent unencrypted", comment: "Warning message")
+                    UIUtils.showAlertWithOnlyPositiveButton(title:warningTitle , message: warningMessage) {
+                        me.delegate?.showTwoButtonAlert(withTitle: warningTitle,
+                                                        message: warningMessage,
+                                                        cancelButtonText: NSLocalizedString("NO", comment: "'No' button to confirm less secure email sent"),
+                                                        positiveButtonText: NSLocalizedString("YES", comment: "'Yes' button to confirm less secure email sent"),
+                                                        cancelButtonAction: { completion(false) },
+                                                        positiveButtonAction: { completion(true) })
+
+                    }
+                }
+
+            }
+            group.leave()
+        }
+    }
+
     /// When forwarding/answering a previously decrypted message and the pEpRating is considered as
     /// less secure as the original message's pEp rating, warn the user.
     private func showAlertFordwardingLessSecureIfRequired(forState state: ComposeViewModelState,
@@ -428,7 +478,7 @@ extension ComposeViewModel {
             originalRating = rating
             group.leave()
         }
-        group.notify(queue: DispatchQueue.main) {[weak self] in
+        group.notify(queue: DispatchQueue.main) { [weak self] in
             guard let me = self else {
                 // Valid case. The we might have been dismissed already.
                 // Do nothing ...
