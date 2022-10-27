@@ -38,7 +38,7 @@ class FolderTableViewController: UITableViewController {
     }
 
     let setupOnceFakeAccounts = {
-        FakeAccountData().setupDeployableAccountData()
+        //FakeAccountData().setupDeployableAccountData()
     }
 
     override func viewWillAppear(_ animated: Bool) {
