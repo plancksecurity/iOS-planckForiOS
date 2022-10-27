@@ -10,7 +10,7 @@ import UIKit
 
 import pEpIOSToolbox
 
-class MDMAccountDeploymentViewController: UIViewController {
+class MDMAccountDeploymentViewController: UIViewController, UITextFieldDelegate {
     // MARK: - Storyboard
 
     @IBOutlet weak var stackView: UIStackView!
@@ -80,6 +80,7 @@ class MDMAccountDeploymentViewController: UIViewController {
             let passwordInput = UITextField()
             passwordInput.placeholder = viewModel.passwordTextFieldPlaceholderText()
             passwordInput.isSecureTextEntry = true
+            passwordInput.delegate = self
             passwordInput.addTarget(self,
                                     action: #selector(textFieldDidChange),
                                     for: .editingChanged)
@@ -128,6 +129,12 @@ class MDMAccountDeploymentViewController: UIViewController {
         } else {
             verifyButton.isEnabled = false
         }
+    }
+
+    // MARK: - UITextFieldDelegate
+
+    func textFieldShouldReturn(_ textField: UITextField) -> Bool {
+        return true
     }
 
     // MARK: - Deploy
