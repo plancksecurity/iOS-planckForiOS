@@ -93,6 +93,11 @@ class MDMAccountDeploymentViewModel {
 
     // MARK: - Localized Strings
 
+    func noAccountConfiguration() -> String {
+        return NSLocalizedString("No account configuration found",
+                                 comment: "No MDM configuration found for account setup")
+    }
+
     func passwordTextFieldPlaceholderText() -> String {
         return NSLocalizedString("Password",
                                  comment: "Placeholder for the password for MDM deployment")
