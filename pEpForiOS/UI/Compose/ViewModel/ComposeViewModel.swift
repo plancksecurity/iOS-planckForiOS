@@ -323,7 +323,7 @@ class ComposeViewModel {
         }
 
         // The user might be prompt to decide if he wants to send the email or not.
-        // This handles that decision. 
+        // This handles that decision.
         func handleUserDecision(accepted: Bool) {
             guard accepted else {
                 DispatchQueue.main.async { [weak self] in
@@ -351,6 +351,7 @@ class ComposeViewModel {
         }
 
         guard let composeMode = safeState.initData?.composeMode else {
+            Log.shared.errorAndCrash("Compose mode not found")
             return
         }
 
