@@ -326,11 +326,16 @@ class ComposeViewModel {
         // This handles that decision. 
         func handleUserDecision(accepted: Bool) {
             guard accepted else {
+                DispatchQueue.main.async { [weak self] in
+                    guard let me = self else {
+                        Log.shared.lostMySelf()
+                        return
+                    }
+                    me.delegate?.dismiss()
+                }
                 return
             }
             let msg = sendClosure()
-            // As the util has state we ensure it's not reused.
-            attachmentSizeUtil = nil
             DispatchQueue.main.async { [weak self] in
                 guard let me = self else {
                     Log.shared.lostMySelf()
@@ -345,13 +350,22 @@ class ComposeViewModel {
             }
         }
 
-        showAlertSendingUnencryptedMessageIfRequied(forMessage: safeState) { accepted in
-            handleUserDecision(accepted: accepted)
+        guard let composeMode = safeState.initData?.composeMode else {
+            return
         }
 
-        showAlertFordwardingLessSecureIfRequired(forState: safeState) { (accepted) in
-            handleUserDecision(accepted: accepted)
+        if composeMode == .normal {
+            showAlertSendingUnencryptedMessageIfRequied(forMessage: safeState) { accepted in
+                handleUserDecision(accepted: accepted)
+            }
+        } else {
+            showAlertFordwardingLessSecureIfRequired(forState: safeState) { (accepted) in
+                handleUserDecision(accepted: accepted)
+            }
         }
+
+        // As the util has state we ensure it's not reused
+        //attachmentSizeUtil = nil
     }
 
     public func isAttachmentSection(indexPath: IndexPath) -> Bool {
@@ -1001,17 +1015,11 @@ extension ComposeViewModel: TrustmanagementRatingChangedDelegate {
 extension ComposeViewModel {
 
     /// When the user composes an email that will be sent unencrypted gets a warning
-    private func showAlertSendingUnencryptedMessageIfRequied(forMessage state: ComposeViewModelState,
+    private func showAlertSendingUnencryptedMessageIfRequied(forMessage safeState: ComposeViewModelState,
                                                              completion: @escaping (Accepted)->()) {
-        guard let composeMode = state.initData?.composeMode,
-            composeMode == .normal
-        else {
-            // Not our use case, nothing to do
-            completion(true)
-            return
-        }
-        guard let msg = state.initData?.originalMessage else {
-            completion(true)
+        guard let msg = ComposeUtil.messageToSend(withDataFrom: safeState) else {
+            Log.shared.warn("No message for sending")
+            completion(false)
             return
         }
 
@@ -1033,7 +1041,6 @@ extension ComposeViewModel {
                 let cancelButtonText = NSLocalizedString("NO", comment: "'No' button to confirm less secure email sent")
                 let positiveButtonText =  NSLocalizedString("YES", comment: "'Yes' button to confirm less secure email sent")
 
-                print(me.delegate ?? "No delegate")
                 me.delegate?.showTwoButtonAlert(withTitle: warningTitle,
                                                 message: warningMessage,
                                                 cancelButtonText: cancelButtonText,
@@ -1054,20 +1061,12 @@ extension ComposeViewModel {
             completion(true)
             return
         }
-        guard
-            let composeMode = state.initData?.composeMode,
-            composeMode != .normal
-        else {
-            // The message is not forwarded or answered, not our use case ...
-            // ... nothing to do
-            completion(true)
-            return
-        }
-        guard let originalMessage = state.initData?.originalMessage else {
+        guard let data = state.initData, let originalMessage = data.originalMessage else {
             Log.shared.errorAndCrash("Invalid state: Forward && not having an original message")
             completion(true)
             return
         }
+
         var originalRating: Rating? = nil //!!!: BUFF: AFAIU originalRating MUST NOT taken be taken into account any more since IOS-2414
         let group = DispatchGroup()
         group.enter()
@@ -1089,7 +1088,7 @@ extension ComposeViewModel {
             let pEpRating = state.rating
             let title: String
             let message: String
-            if composeMode == .forward {
+            if data.composeMode == .forward {
                 title = NSLocalizedString("Confirm Forward",
                                           comment: "Confirm less secure forwarding message alert title")
                 message = NSLocalizedString("You are about to forward a secure message as unsecure. If you choose to proceed, confidential information might be leaked putting you and your communication partners at risk. Are you sure you want to continue?",
