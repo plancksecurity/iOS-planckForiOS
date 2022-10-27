@@ -13,7 +13,8 @@ import MessageModel
 
 class MDMAccountDeploymentViewModel {
     enum UIState {
-        case initial
+        case accountData(AccountData)
+        case noAccountConfiguration(String)
     }
 
     struct AccountData {
@@ -29,10 +30,16 @@ class MDMAccountDeploymentViewModel {
         case success(message: String)
     }
 
-    private(set) var uiState: UIState = .initial
-
     /// Strong reference in order to keep it alive
     private var accountVerifier: AccountVerifier?
+
+    func uiState() -> UIState {
+        if let someAccountData = accountData() {
+            return .accountData(someAccountData)
+        } else {
+            return .noAccountConfiguration(errorNoAccountConfiguration())
+        }
+    }
 
     /// - Returns: `AccountData` for the UI to display.
     func accountData() -> AccountData? {
@@ -93,8 +100,8 @@ class MDMAccountDeploymentViewModel {
 
     // MARK: - Localized Strings
 
-    func noAccountConfiguration() -> String {
-        return NSLocalizedString("No account configuration found",
+    func errorNoAccountConfiguration() -> String {
+        return NSLocalizedString("No account configuration found.",
                                  comment: "No MDM configuration found for account setup")
     }
 

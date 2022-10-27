@@ -65,12 +65,10 @@ class MDMAccountDeploymentViewController: UIViewController {
             view.removeFromSuperview()
         }
 
-        switch viewModel.uiState {
-        case .initial:
-            guard let accountData = viewModel.accountData() else {
-                break
-            }
-
+        switch viewModel.uiState() {
+        case .noAccountConfiguration(let errorMessage):
+            setError(message: errorMessage)
+        case .accountData(let accountData):
             let accountLabel = UILabel()
             accountLabel.text = accountData.accountName
             accountLabel.setPEPFont(style: .title1, weight: .regular)
