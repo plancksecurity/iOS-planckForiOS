@@ -104,17 +104,7 @@ class MDMAccountDeploymentViewController: UIViewController, UITextFieldDelegate 
     // MARK: - Actions
 
     @objc func deployButtonTapped() {
-        guard let textField = textFieldPassword else {
-            Log.shared.errorAndCrash(message: "Deploy button tapped, but no password text field")
-            return
-        }
-
-        guard let password = textField.text else {
-            Log.shared.errorAndCrash(message: "Deploy button tapped, but empty password text field")
-            return
-        }
-
-        deploy(password: password)
+        deploy()
     }
 
     @objc func textFieldDidChange(textField: UITextField) {
@@ -134,10 +124,26 @@ class MDMAccountDeploymentViewController: UIViewController, UITextFieldDelegate 
     // MARK: - UITextFieldDelegate
 
     func textFieldShouldReturn(_ textField: UITextField) -> Bool {
+        deploy()
         return true
     }
 
     // MARK: - Deploy
+
+    /// The version that gets called from the UI.
+    func deploy() {
+        guard let textField = textFieldPassword else {
+            Log.shared.errorAndCrash(message: "Deploy button tapped, but no password text field")
+            return
+        }
+
+        guard let password = textField.text else {
+            Log.shared.errorAndCrash(message: "Deploy button tapped, but empty password text field")
+            return
+        }
+
+        deploy(password: password)
+    }
 
     func deploy(password: String) {
         func enableUI(enabled: Bool) {
