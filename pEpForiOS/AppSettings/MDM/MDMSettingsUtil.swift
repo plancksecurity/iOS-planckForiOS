@@ -22,6 +22,7 @@ public class MDMSettingsUtil {
         EchoProtocolUtil().enableEchoProtocol(enabled: AppSettings.shared.mdmEchoProtocolEnabled)
         TrustedServerUtil().setStoreSecurely(newValue: AppSettings.shared.mdmPEPSaveEncryptedOnServerEnabled)
         ExtraKeysUtil().configure(extraKeyDictionaries: AppSettings.shared.mdmPEPExtraKeys)
+        KeySyncSettingsUtil().configureKeySync(enabled: AppSettings.shared.mdmPEPSyncAccountEnabled)
 
         MediaKeysUtil().configure(mediaKeyDictionaries: AppSettings.shared.mdmMediaKeys) { result in
             completion(result)
