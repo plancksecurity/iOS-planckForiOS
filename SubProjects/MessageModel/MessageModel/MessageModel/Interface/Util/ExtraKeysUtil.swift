@@ -37,7 +37,6 @@ public class ExtraKeysUtil {
             PEPSession().importKey(key) { error in
                 Log.shared.error(error: error)
             } successCallback: { identities in
-                Log.shared.info("importKey successful", identities)
                 let allFingerprints: [String] = extraKeyDictionaries.compactMap { dict in
                     guard let key = dict[ExtraKeysUtil.kExtraKeyFingerprint] else {
                         return nil
@@ -46,9 +45,6 @@ public class ExtraKeysUtil {
                 }
                 let thereIsAMatchingIdentity = identities.contains { identity in
                     return allFingerprints.contains(identity.fingerPrint ?? "")
-                }
-                if thereIsAMatchingIdentity {
-                    Log.shared.info("There is at least one identity with a matching fingerprint")
                 }
             }
         }
