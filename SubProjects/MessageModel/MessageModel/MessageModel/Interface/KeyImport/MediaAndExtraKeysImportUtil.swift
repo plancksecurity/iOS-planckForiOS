@@ -20,6 +20,13 @@ class MediaAndExtraKeysImportUtil {
     static func importKeys(allFingerprints: Set<String>,
                            keys: [String],
                            completion: @escaping (Result<Void, Error>) -> Void) {
+        // The actual key import can only ever add keys, not remove them,
+        // so we're done here if there are no keys.
+        if keys.isEmpty {
+            completion(.success(()))
+            return
+        }
+
         var finalError: Error?
         DispatchQueue.global().async {
             let group = DispatchGroup()

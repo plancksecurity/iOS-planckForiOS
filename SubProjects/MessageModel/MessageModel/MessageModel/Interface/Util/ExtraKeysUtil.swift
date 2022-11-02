@@ -43,13 +43,6 @@ public class ExtraKeysUtil {
             return key
         }
 
-        // Extra key material can't get removed, so if there are no keys to import,
-        // there's nothing to be done.
-        if keys.isEmpty {
-            completion(.success(()))
-            return
-        }
-
         let allFingerprintsList: [String] = extraKeyDictionaries.compactMap { dict in
             guard let key = dict[ExtraKeysUtil.kExtraKeyFingerprint] else {
                 return nil
