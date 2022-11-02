@@ -190,6 +190,8 @@
 		43062B9224ED3F0100489258 /* TrustwordsLanguage+pEp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43062B9124ED3F0100489258 /* TrustwordsLanguage+pEp.swift */; };
 		43062B9A24ED6EB400489258 /* LeaveDeviceGroupService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43062B9924ED6EB400489258 /* LeaveDeviceGroupService.swift */; };
 		43062BA424EE9CD400489258 /* MessageModelConfig.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43062BA324EE9CD400489258 /* MessageModelConfig.swift */; };
+		43071FF32912B290002BB8F9 /* ExtraKeys+Utils.swift in Sources */ = {isa = PBXBuildFile; fileRef = 152295592302F8E700204FD3 /* ExtraKeys+Utils.swift */; };
+		43071FF42912B2E4002BB8F9 /* CdExtraKey+PredicateFactory.swift in Sources */ = {isa = PBXBuildFile; fileRef = 158A6DF72305A1D3006A9ECE /* CdExtraKey+PredicateFactory.swift */; };
 		430A2EF01E82758100878837 /* CdImapFields+TestHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 430A2EEF1E82758100878837 /* CdImapFields+TestHelper.swift */; };
 		430A2EF21E829C4600878837 /* AddressBook.swift in Sources */ = {isa = PBXBuildFile; fileRef = 430A2EF11E829C4600878837 /* AddressBook.swift */; };
 		430CDA4D2293FBB300AAC37F /* Attachment+ContentDispositionType+PEPContentDisposition.swift in Sources */ = {isa = PBXBuildFile; fileRef = 430CDA4C2293FBB300AAC37F /* Attachment+ContentDispositionType+PEPContentDisposition.swift */; };
@@ -3176,6 +3178,7 @@
 				43BDDCCB25DD2B7500FC0C68 /* Attachment+clone.swift in Sources */,
 				434C235625D6B1AB00F622DB /* CdAccount+Extension.swift in Sources */,
 				434C249325D6CE6D00F622DB /* CdImapFlags+Extension.swift in Sources */,
+				43071FF32912B290002BB8F9 /* ExtraKeys+Utils.swift in Sources */,
 				434C231B25D6A1EF00F622DB /* Folder+Imap.swift in Sources */,
 				434C237E25D6C03E00F622DB /* CdAccount+Trusted.swift in Sources */,
 				5BAD434028184202000BA5FF /* ImapUIFlags+SessionAware.swift in Sources */,
@@ -3235,6 +3238,7 @@
 				1574D15B268C8689003A5161 /* ReceivedByUtil.swift in Sources */,
 				434C229B25D69CAC00F622DB /* CdAttachment+Extension.swift in Sources */,
 				43BDDD7625DD427600FC0C68 /* CdMessage+FakeMessage.swift in Sources */,
+				43071FF42912B2E4002BB8F9 /* CdExtraKey+PredicateFactory.swift in Sources */,
 				43BDEC6025E3FC4200FC0C68 /* Notification+KeySyncState.swift in Sources */,
 				434C227B25D69BCC00F622DB /* CdMessageReference+PredicateFactory.swift in Sources */,
 				434C22DF25D6A0B000F622DB /* CdImapFields+Clone.swift in Sources */,
