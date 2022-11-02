@@ -17,12 +17,16 @@ public class MDMSettingsUtil {
     /// service starts up the first time, e.g. `KeySyncService`.
     public func configure(completion: @escaping (Result<Void, Error>) -> Void) {
         TrustedServerUtil().setStoreSecurely(newValue: AppSettings.shared.mdmPEPSaveEncryptedOnServerEnabled)
-        ExtraKeysUtil().configure(extraKeyDictionaries: AppSettings.shared.mdmPEPExtraKeys)
         KeySyncSettingsUtil().configureKeySync(enabled: AppSettings.shared.mdmPEPSyncAccountEnabled)
-
         EchoProtocolUtil().enableEchoProtocol(enabled: AppSettings.shared.mdmEchoProtocolEnabled)
-        MediaKeysUtil().configure(mediaKeyDictionaries: AppSettings.shared.mdmMediaKeys) { result in
-            completion(result)
+
+        ExtraKeysUtil().configure(extraKeyDictionaries: AppSettings.shared.mdmPEPExtraKeys) { result1 in
+            MediaKeysUtil().configure(mediaKeyDictionaries: AppSettings.shared.mdmMediaKeys) { result2 in
+                switch result1 {
+                case .success(_): completion(result2)
+                case .failure(_): completion(result1)
+                }
+            }
         }
     }
 }
