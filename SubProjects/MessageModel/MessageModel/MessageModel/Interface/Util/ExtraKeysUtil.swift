@@ -8,6 +8,7 @@
 
 import PEPObjCAdapter_iOS
 import PEPObjCTypes_iOS
+
 #if EXT_SHARE
 import pEpIOSToolboxForExtensions
 #else
@@ -58,7 +59,7 @@ public class ExtraKeysUtil {
 
         let allFingerprints = Set(allFingerprintsList)
 
-        MediaKeysUtil.importKeys(allFingerprints: allFingerprints,
+        KeyImportUtil.importKeys(allFingerprints: allFingerprints,
                                  keys: keys,
                                  completion: completion)
     }
