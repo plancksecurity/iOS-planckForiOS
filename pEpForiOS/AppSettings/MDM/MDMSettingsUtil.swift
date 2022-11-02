@@ -21,6 +21,8 @@ public class MDMSettingsUtil {
         EchoProtocolUtil().enableEchoProtocol(enabled: AppSettings.shared.mdmEchoProtocolEnabled)
 
         ExtraKeysUtil().configure(extraKeyDictionaries: AppSettings.shared.mdmPEPExtraKeys) { result1 in
+            // Note that an error in result1 will influence the final result,
+            // but does not impede the following code.
             MediaKeysUtil().configure(mediaKeyDictionaries: AppSettings.shared.mdmMediaKeys) { result2 in
                 switch result1 {
                 case .success(_): completion(result2)
