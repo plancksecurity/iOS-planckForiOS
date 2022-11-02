@@ -55,8 +55,11 @@ public class ExtraKeysUtil {
             }
             return key
         }.filter { $0 != "" }
+
         let allFingerprints = Set(allFingerprintsList)
 
-        MediaKeysUtil.importKeys(allFingerprints: allFingerprints, keys: keys, completion: completion)
+        MediaKeysUtil.importKeys(allFingerprints: allFingerprints,
+                                 keys: keys,
+                                 completion: completion)
     }
 }
