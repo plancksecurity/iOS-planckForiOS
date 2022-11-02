@@ -70,8 +70,9 @@ class MediaAndExtraKeysImportUtil {
             }
             if !thereIsAMatchingIdentity {
                 completion(.failure(KeyImportError.noMatchingFingerprint))
+            } else {
+                completion(.success(()))
             }
-            completion(.success(()))
         }
     }
 }
