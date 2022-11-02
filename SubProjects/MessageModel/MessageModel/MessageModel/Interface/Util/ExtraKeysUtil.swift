@@ -46,6 +46,7 @@ public class ExtraKeysUtil {
         // there's nothing to be done.
         if keys.isEmpty {
             completion(.success(()))
+            return
         }
 
         let allFingerprintsList: [String] = extraKeyDictionaries.compactMap { dict in
