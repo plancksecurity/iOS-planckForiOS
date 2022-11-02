@@ -61,8 +61,8 @@ public class MediaKeysUtil {
 
         let allFingerprints = Set((pairs.map {$0.fingerprint}).filter { !$0.isEmpty })
 
-        KeyImportUtil.importKeys(allFingerprints: allFingerprints,
-                                 keys: keys,
-                                 completion: completion)
+        MediaAndExtraKeysImportUtil.importKeys(allFingerprints: allFingerprints,
+                                               keys: keys,
+                                               completion: completion)
     }
 }

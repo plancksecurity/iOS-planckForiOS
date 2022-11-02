@@ -11,7 +11,7 @@ import Foundation
 import PEPObjCTypes_iOS
 import PEPObjCAdapter_iOS
 
-extension KeyImportUtil {
+class MediaAndExtraKeysImportUtil {
     enum KeyImportError: Error {
         /// The key material did not match the fingerprint.
         case noMatchingFingerprint

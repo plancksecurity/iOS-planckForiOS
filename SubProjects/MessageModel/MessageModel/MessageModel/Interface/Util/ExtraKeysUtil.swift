@@ -59,8 +59,8 @@ public class ExtraKeysUtil {
 
         let allFingerprints = Set(allFingerprintsList)
 
-        KeyImportUtil.importKeys(allFingerprints: allFingerprints,
-                                 keys: keys,
-                                 completion: completion)
+        MediaAndExtraKeysImportUtil.importKeys(allFingerprints: allFingerprints,
+                                               keys: keys,
+                                               completion: completion)
     }
 }

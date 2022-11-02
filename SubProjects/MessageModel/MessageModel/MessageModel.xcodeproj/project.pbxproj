@@ -553,8 +553,8 @@
 		43D47A50225C751500E97C5B /* ServerInfoCache.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43D47A4F225C751500E97C5B /* ServerInfoCache.swift */; };
 		43D47A52225C767B00E97C5B /* ServerCredentialsInfoCache.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43D47A51225C767B00E97C5B /* ServerCredentialsInfoCache.swift */; };
 		43D576442535B02C00968745 /* NSManagedObjectContext+Reset.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43D576432535B02C00968745 /* NSManagedObjectContext+Reset.swift */; };
-		43D6D6812912802500FEAC8E /* KeyImportUtil+MediaExtraKeys.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43D6D6802912802500FEAC8E /* KeyImportUtil+MediaExtraKeys.swift */; };
-		43D6D6822912803E00FEAC8E /* KeyImportUtil+MediaExtraKeys.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43D6D6802912802500FEAC8E /* KeyImportUtil+MediaExtraKeys.swift */; };
+		43D6D6812912802500FEAC8E /* MediaAndExtraKeysImportUtil.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43D6D6802912802500FEAC8E /* MediaAndExtraKeysImportUtil.swift */; };
+		43D6D6822912803E00FEAC8E /* MediaAndExtraKeysImportUtil.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43D6D6802912802500FEAC8E /* MediaAndExtraKeysImportUtil.swift */; };
 		43D7565123AB9F2F000F915F /* BaseImapFolderOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43D7565023AB9F2F000F915F /* BaseImapFolderOperation.swift */; };
 		43D7565323ABA48B000F915F /* ExpungeInImapFolderOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43D7565223ABA48B000F915F /* ExpungeInImapFolderOperation.swift */; };
 		43E34BED28BCB6820035D051 /* AccountVerifierProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43E34BEC28BCB6820035D051 /* AccountVerifierProtocol.swift */; };
@@ -1088,7 +1088,7 @@
 		43D47A4F225C751500E97C5B /* ServerInfoCache.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ServerInfoCache.swift; sourceTree = "<group>"; };
 		43D47A51225C767B00E97C5B /* ServerCredentialsInfoCache.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ServerCredentialsInfoCache.swift; sourceTree = "<group>"; };
 		43D576432535B02C00968745 /* NSManagedObjectContext+Reset.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "NSManagedObjectContext+Reset.swift"; sourceTree = "<group>"; };
-		43D6D6802912802500FEAC8E /* KeyImportUtil+MediaExtraKeys.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "KeyImportUtil+MediaExtraKeys.swift"; sourceTree = "<group>"; };
+		43D6D6802912802500FEAC8E /* MediaAndExtraKeysImportUtil.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MediaAndExtraKeysImportUtil.swift; sourceTree = "<group>"; };
 		43D7565023AB9F2F000F915F /* BaseImapFolderOperation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BaseImapFolderOperation.swift; sourceTree = "<group>"; };
 		43D7565223ABA48B000F915F /* ExpungeInImapFolderOperation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExpungeInImapFolderOperation.swift; sourceTree = "<group>"; };
 		43E34BEC28BCB6820035D051 /* AccountVerifierProtocol.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AccountVerifierProtocol.swift; sourceTree = "<group>"; };
@@ -2332,7 +2332,7 @@
 			children = (
 				43A676A1246D3A81004639FE /* KeyImportUtilProtocol.swift */,
 				431BAE33246D4F330043490F /* KeyImportUtil.swift */,
-				43D6D6802912802500FEAC8E /* KeyImportUtil+MediaExtraKeys.swift */,
+				43D6D6802912802500FEAC8E /* MediaAndExtraKeysImportUtil.swift */,
 			);
 			path = KeyImport;
 			sourceTree = "<group>";
@@ -3127,7 +3127,7 @@
 				434C228725D69C2800F622DB /* Attachment+ContentDispositionType.swift in Sources */,
 				434C231F25D6A21300F622DB /* CdFolder+IMAP.swift in Sources */,
 				436FD29525DA8B2200D929B3 /* CdServerCredentials+KeyChain.swift in Sources */,
-				43D6D6822912803E00FEAC8E /* KeyImportUtil+MediaExtraKeys.swift in Sources */,
+				43D6D6822912803E00FEAC8E /* MediaAndExtraKeysImportUtil.swift in Sources */,
 				434C248025D6C9DA00F622DB /* CoreDataPantomimeAdapter.swift in Sources */,
 				434C222A25D69A0900F622DB /* PEPRating+Extension.swift in Sources */,
 				434C249B25D6CEAC00F622DB /* CdMessage+Factory.swift in Sources */,
@@ -3611,7 +3611,7 @@
 				43AABD4120EF5D2E00FBD5D0 /* CdMessage+Util.swift in Sources */,
 				15795C0722C60E9B00010938 /* SessionAware.swift in Sources */,
 				15795C2522CB6DFA00010938 /* PollingDelegate.swift in Sources */,
-				43D6D6812912802500FEAC8E /* KeyImportUtil+MediaExtraKeys.swift in Sources */,
+				43D6D6812912802500FEAC8E /* MediaAndExtraKeysImportUtil.swift in Sources */,
 				150C5EF024A38825005BA3C9 /* CreateIMAPPepFolderOperation.swift in Sources */,
 				1535D092223C26BF008F0ACC /* CdMessageReference+Extensions.swift in Sources */,
 				8BE4607B1DB7B283008D63C6 /* CdFolder.swift in Sources */,
