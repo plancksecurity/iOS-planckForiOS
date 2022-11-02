@@ -64,12 +64,12 @@ public class MediaKeysUtil {
         }
 
         let allFingerprints = Set((pairs.map {$0.fingerprint}).filter { !$0.isEmpty })
-        importKeys(allFingerprints: allFingerprints, keys: keys, completion: completion)
+        MediaKeysUtil.importKeys(allFingerprints: allFingerprints, keys: keys, completion: completion)
     }
 
-    func importKeys(allFingerprints: Set<String>,
-                    keys: [String],
-                    completion: @escaping (Result<Void, Error>) -> Void) {
+    static func importKeys(allFingerprints: Set<String>,
+                           keys: [String],
+                           completion: @escaping (Result<Void, Error>) -> Void) {
         var finalError: Error?
         DispatchQueue.global().async {
             let group = DispatchGroup()
@@ -98,9 +98,9 @@ public class MediaKeysUtil {
         }
     }
 
-    func importKey(allFingerprints: Set<String>,
-                   key: String,
-                   completion: @escaping (Result<Void, Error>) -> Void) {
+    static func importKey(allFingerprints: Set<String>,
+                          key: String,
+                          completion: @escaping (Result<Void, Error>) -> Void) {
         PEPSession().importKey(key) { error in
             completion(.failure(error))
         } successCallback: { identities in

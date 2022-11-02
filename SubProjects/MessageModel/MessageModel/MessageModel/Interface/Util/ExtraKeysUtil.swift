@@ -57,22 +57,6 @@ public class ExtraKeysUtil {
         }.filter { $0 != "" }
         let allFingerprints = Set(allFingerprintsList)
 
-        keys.forEach { key in
-            PEPSession().importKey(key) { error in
-                completion(.failure(error))
-            } successCallback: { identities in
-                let thereIsAMatchingIdentity = identities.contains { identity in
-                    guard let fingerprint = identity.fingerPrint else {
-                        return false
-                    }
-                    return allFingerprints.contains(fingerprint)
-                }
-                if thereIsAMatchingIdentity {
-                    completion(.success(()))
-                } else {
-                    completion(.failure(ExtraKeysImportError.noMatchingFingerprint))
-                }
-            }
-        }
+        MediaKeysUtil.importKeys(allFingerprints: allFingerprints, keys: keys, completion: completion)
     }
 }
