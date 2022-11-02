@@ -1,51 +1,26 @@
 {
   "images" : [
     {
-      "idiom" : "universal",
-      "filename" : "pep-status-mistrusted-english-1.pdf"
+      "filename" : "pep-status-mistrusted-english-1.pdf",
+      "idiom" : "universal"
     },
     {
-      "idiom" : "universal",
-      "filename" : "pep-status-mistrusted-catalan.pdf",
-      "locale" : "ca"
-    },
-    {
-      "idiom" : "universal",
       "filename" : "pep-status-mistrusted-german.pdf",
+      "idiom" : "universal",
       "locale" : "de"
     },
     {
-      "idiom" : "universal",
       "filename" : "pep-status-mistrusted-english.pdf",
+      "idiom" : "universal",
       "locale" : "en"
-    },
-    {
-      "idiom" : "universal",
-      "filename" : "pep-status-mistrusted-spanish.pdf",
-      "locale" : "es"
-    },
-    {
-      "idiom" : "universal",
-      "filename" : "pep-status-mistrusted-french.pdf",
-      "locale" : "fr"
-    },
-    {
-      "idiom" : "universal",
-      "filename" : "pep-status-mistrusted-dutch.pdf",
-      "locale" : "nl"
-    },
-    {
-      "idiom" : "universal",
-      "filename" : "pep-status-mistrusted-turkish.pdf",
-      "locale" : "tr"
     }
   ],
   "info" : {
-    "version" : 1,
-    "author" : "xcode"
+    "author" : "xcode",
+    "version" : 1
   },
   "properties" : {
-    "preserves-vector-representation" : true,
-    "localizable" : true
+    "localizable" : true,
+    "preserves-vector-representation" : true
   }
 }

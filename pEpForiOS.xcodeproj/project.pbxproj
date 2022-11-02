@@ -179,7 +179,6 @@
 		37816544230EC73900B967E3 /* PEPAlertViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 37816543230EC73900B967E3 /* PEPAlertViewModel.swift */; };
 		37816546230EE5F700B967E3 /* PEPUIAlertAction.swift in Sources */ = {isa = PBXBuildFile; fileRef = 37816545230EE5F700B967E3 /* PEPUIAlertAction.swift */; };
 		37816549231035F000B967E3 /* PEPAlertViewModelTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 37816548231035F000B967E3 /* PEPAlertViewModelTest.swift */; };
-		37A710E0233B5AA5001FEAF0 /* UIHelper+PEP.swift in Sources */ = {isa = PBXBuildFile; fileRef = 37A710DF233B5AA5001FEAF0 /* UIHelper+PEP.swift */; };
 		37F615CC238BE51F001AAE48 /* ManualAccountSetupView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 37F615CB238BE51F001AAE48 /* ManualAccountSetupView.xib */; };
 		37F615CF238BE584001AAE48 /* ManualAccountSetupView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 37F615CE238BE584001AAE48 /* ManualAccountSetupView.swift */; };
 		37FFA7FA234B3C27004229BE /* AnimatedPlaceholderTextfield.swift in Sources */ = {isa = PBXBuildFile; fileRef = 37FFA7F9234B3C27004229BE /* AnimatedPlaceholderTextfield.swift */; };
@@ -305,7 +304,6 @@
 		434C1A0625D3F0AD00F622DB /* AXHTMLParser.m in Sources */ = {isa = PBXBuildFile; fileRef = 43E657DD1F3C72360014CBEC /* AXHTMLParser.m */; };
 		434C1A3D25D400D500F622DB /* Constants.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1B50A811CD26FF100B1A997 /* Constants.swift */; };
 		434C1A7125D409B100F622DB /* UIHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 436C5A8D1CFEDF59006A195F /* UIHelper.swift */; };
-		434C1A7425D409ED00F622DB /* UIHelper+PEP.swift in Sources */ = {isa = PBXBuildFile; fileRef = 37A710DF233B5AA5001FEAF0 /* UIHelper+PEP.swift */; };
 		434C1A7725D40A2F00F622DB /* ContactCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 15265949216230B0006A78DF /* ContactCell.swift */; };
 		434C1A7A25D40A9800F622DB /* UIViewController+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43293EFA1EB9DD6700EEE010 /* UIViewController+Extension.swift */; };
 		434C1A8025D40B0400F622DB /* SplitViewHandlingProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7B0E8F224094BB1003A34DC /* SplitViewHandlingProtocol.swift */; };
@@ -879,7 +877,6 @@
 		37816543230EC73900B967E3 /* PEPAlertViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PEPAlertViewModel.swift; sourceTree = "<group>"; };
 		37816545230EE5F700B967E3 /* PEPUIAlertAction.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PEPUIAlertAction.swift; sourceTree = "<group>"; };
 		37816548231035F000B967E3 /* PEPAlertViewModelTest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PEPAlertViewModelTest.swift; sourceTree = "<group>"; };
-		37A710DF233B5AA5001FEAF0 /* UIHelper+PEP.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIHelper+PEP.swift"; sourceTree = "<group>"; };
 		37F615CB238BE51F001AAE48 /* ManualAccountSetupView.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = ManualAccountSetupView.xib; sourceTree = "<group>"; };
 		37F615CE238BE584001AAE48 /* ManualAccountSetupView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ManualAccountSetupView.swift; sourceTree = "<group>"; };
 		37FFA7F9234B3C27004229BE /* AnimatedPlaceholderTextfield.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AnimatedPlaceholderTextfield.swift; sourceTree = "<group>"; };
@@ -2366,7 +2363,6 @@
 				433BCD941D5388C100DD98EF /* ReplyUtil.swift */,
 				228038671DC9DE6D00F1CB45 /* TextfieldResponder.swift */,
 				436C5A8D1CFEDF59006A195F /* UIHelper.swift */,
-				37A710DF233B5AA5001FEAF0 /* UIHelper+PEP.swift */,
 				222B35571DF96389007A1F82 /* Capability.swift */,
 				8B69E3981E30F80E0022959E /* Appearance.swift */,
 				15255B021F825CD100A2CFC9 /* IdentityImageTool.swift */,
@@ -3477,7 +3473,6 @@
 				434C1AA925D40FB600F622DB /* UIUtils+Contacts.swift in Sources */,
 				43BDE04225DE7D6800FC0C68 /* scanners.c in Sources */,
 				434A6C4825D2A39800179335 /* ComposeViewController.swift in Sources */,
-				434C1A7425D409ED00F622DB /* UIHelper+PEP.swift in Sources */,
 				434C19E025D3E3A900F622DB /* Color+UI.swift in Sources */,
 				43BDE05A25DE821C00FC0C68 /* inlines.c in Sources */,
 				4300CF6325ECEF98003DBEB4 /* SharedData.swift in Sources */,
@@ -3564,7 +3559,6 @@
 				5BEB56CA25E7977500304A38 /* TutorialStep3iPadViewController.swift in Sources */,
 				15D4399A216E697700EB3933 /* AccountPickerView.swift in Sources */,
 				B756E57523ED99FA0007D535 /* AccountTypeSelectorCollectionViewCell.swift in Sources */,
-				37A710E0233B5AA5001FEAF0 /* UIHelper+PEP.swift in Sources */,
 				5BD4466024F65DE300422594 /* EmailListViewController+Keyboard.swift in Sources */,
 				15265962216230B1006A78DF /* ContactCell.swift in Sources */,
 				43425EDF1FE3E052004A2728 /* OAuth2ProviderFactory.swift in Sources */,
