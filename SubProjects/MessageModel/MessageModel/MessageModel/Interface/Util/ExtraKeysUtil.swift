@@ -52,8 +52,20 @@ public class ExtraKeysUtil {
 
         let allFingerprints = Set(allFingerprintsList)
 
-        MediaAndExtraKeysImportUtil.importKeys(allFingerprints: allFingerprints,
-                                               keys: keys,
-                                               completion: completion)
+        let ses = Session()
+        ses.perform {
+            for fingprint in allFingerprints {
+                do {
+                    try ExtraKey.store(fpr: fingprint, in: ses)
+                } catch {
+                    // For some reason, the implementation may throw ExtraKeysError.invalidFPR.
+                    // Unless we have a feedback mechanism to the (MDM) admin, ignore.
+                    Log.shared.error(error: error)
+                }
+            }
+            MediaAndExtraKeysImportUtil.importKeys(allFingerprints: allFingerprints,
+                                                   keys: keys,
+                                                   completion: completion)
+        }
     }
 }
