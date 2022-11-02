@@ -56,6 +56,13 @@ public class MediaKeysUtil {
             return key
         }
 
+        // The actual key import can only ever add keys, not remove them,
+        // so we're done here if there are no keys.
+        if keys.isEmpty {
+            completion(.success(()))
+            return
+        }
+
         let allFingerprints = Set((pairs.map {$0.fingerprint}).filter { !$0.isEmpty })
         importKeys(allFingerprints: allFingerprints, keys: keys, completion: completion)
     }
