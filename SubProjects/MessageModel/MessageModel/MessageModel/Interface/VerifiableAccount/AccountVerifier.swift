@@ -8,14 +8,14 @@
 
 import Foundation
 
+// TODO: For ConnectionTransport. Eliminate?
+import PantomimeFramework
+
 #if EXT_SHARE
 import pEpIOSToolboxForExtensions
 #else
 import pEpIOSToolbox
 #endif
-
-// TODO: For ConnectionTransport. Eliminate?
-import PantomimeFramework
 
 /// Wrapper around `VerifiableAccount` with some additions and changes,
 /// suitable for use in an MDM context.
