@@ -29,10 +29,6 @@ public class ExtraKeysUtil {
 
     /// Configure extra keys.
     ///
-    /// Only the key material gets imported here, the information about which keys to use as extra keys
-    /// is read from the settings every time it's needed (e.g., on encrypting messages,
-    /// and also on decrypting them in order to decide about a potential re-upload).
-    ///
     /// For the format, please see `MDMSettingsProtocol.mdmPEPExtraKeys`.
     public func configure(extraKeyDictionaries: [[String:String]],
                           completion: @escaping (Result<Void, Error>) -> Void) {
