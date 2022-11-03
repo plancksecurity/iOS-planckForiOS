@@ -15,7 +15,7 @@ public class TrustedServerUtil {
 
     /// If disabled, an uncrypted copy of each message is sotred on the server. 
     public func setStoreSecurely(newValue: Bool) {
-        // only ever one account under MDM
+        // Note that this is only correct for MDM with only one account.
         if let account = Account.all().first {
             account.imapServer?.manuallyTrusted = !newValue
             account.session.commit()
