@@ -48,6 +48,7 @@ class AppSettingsObserver {
         mdmDictionary = mdm
 
         // Carry the configuration into all subsystems, like adapter/engine etc.
+        // Note that any error is currently ignored.
         MDMSettingsUtil().configure { _ in
             DispatchQueue.main.async {
                 // inform views that display settings related data
