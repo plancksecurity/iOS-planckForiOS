@@ -50,6 +50,8 @@ public final class AppSettings: KeySyncStateProvider {
 
 // MARK: - AppSettingsProtocol
 
+/// - Note: `AppSettingsProtocol` is comprised of other protocols, without own content,
+/// and those parts are implemented in separate files. Hence the empty implementation here.
 extension AppSettings: AppSettingsProtocol {
 }
 
