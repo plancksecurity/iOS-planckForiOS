@@ -11,7 +11,7 @@ import Foundation
 @testable import MessageModel
 
 class MockRegularUsersAppSettings : AppSettingsProtocol {
-    var mdmIsActive: Bool = false
+    var mdmIsEnabled: Bool = false
 
     var keySyncEnabled: Bool = true
 

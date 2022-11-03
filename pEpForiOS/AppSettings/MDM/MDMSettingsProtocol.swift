@@ -18,7 +18,7 @@ public protocol MDMSettingsProtocol {
     /// - Note: Even though this setting is part of MDM, it is handled differently than other
     /// MDM settings: It is _not_ actually coming from the MDM server, but part of the compile-time
     /// configuration.
-    var mdmIsActive: Bool { get }
+    var mdmIsEnabled: Bool { get }
 
     /// Enable or disable pEp privacy protection for the user or device's account.
     var mdmPEPPrivacyProtectionEnabled: Bool { get }

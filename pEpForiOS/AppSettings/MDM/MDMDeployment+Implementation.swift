@@ -116,7 +116,7 @@ extension AccountVerifier.ServerData {
 
 extension MDMDeployment: MDMDeploymentProtocol {
     func accountToDeploy() throws -> MDMDeployment.AccountData? {
-        if !AppSettings.shared.mdmIsActive {
+        if !AppSettings.shared.mdmIsEnabled {
             // No MDM deployment if MDM is not supposed to be used
             return nil
         }

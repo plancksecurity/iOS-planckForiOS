@@ -37,7 +37,7 @@ class MDMMockAppSettings : AppSettingsProtocol {
 
     var acceptedLanguagesCodes: [String] = ["de", "en"]
 
-    let mdmIsActive = true
+    let mdmIsEnabled = true
 
     var mdmPEPPrivacyProtectionEnabled: Bool {
         return true
