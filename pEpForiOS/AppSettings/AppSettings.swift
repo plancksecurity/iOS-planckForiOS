@@ -20,7 +20,7 @@ import pEp4iosIntern
 
 // MARK: - AppSettings
 
-/// Signleton representing and managing the App's settings.
+/// Singleton representing and managing the App's settings.
 public final class AppSettings: KeySyncStateProvider {
 
     // MARK: - Singleton
