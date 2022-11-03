@@ -15,6 +15,7 @@ import pEpIOSToolbox
 public class MDMUtil {
 
     /// Indicates if MDM is enabled.
+    ///
     /// This configuration can be found in the Configuration folder.
     /// It may vary from release to debug builds.
     ///
