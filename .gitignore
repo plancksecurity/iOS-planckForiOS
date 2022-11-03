@@ -80,4 +80,4 @@ playground.xcworkspace
 export_log.txt
 import_log.txt
 
-pEpForiOS/Resources/MDM.plist
+pEpForiOS/Resources/test_MDM_*.plist

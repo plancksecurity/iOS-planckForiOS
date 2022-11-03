@@ -451,7 +451,7 @@
 		43ED53711CC77F95006AB156 /* IMAPSettingsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43ED53661CC77F95006AB156 /* IMAPSettingsViewController.swift */; };
 		43ED53781CC77F95006AB156 /* SMTPSettingsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43ED536D1CC77F95006AB156 /* SMTPSettingsViewController.swift */; };
 		43ED53791CC77F95006AB156 /* UserInfoViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43ED536E1CC77F95006AB156 /* UserInfoViewController.swift */; };
-		43EEE4052907D5DE00D30254 /* MDM.plist in Resources */ = {isa = PBXBuildFile; fileRef = 43EEE4042907D5DE00D30254 /* MDM.plist */; };
+		43EEE4052907D5DE00D30254 /* test_MDM_1.plist in Resources */ = {isa = PBXBuildFile; fileRef = 43EEE4042907D5DE00D30254 /* test_MDM_1.plist */; };
 		43EEE4092908049500D30254 /* MDMSettingsUtil.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43EEE4082908049500D30254 /* MDMSettingsUtil.swift */; };
 		43FC02121F4D913D00273304 /* NSHTML_2017-08-09 15_40_53 +0000.html in Resources */ = {isa = PBXBuildFile; fileRef = 43FC02111F4D913D00273304 /* NSHTML_2017-08-09 15_40_53 +0000.html */; };
 		4902244F20E50488000E8D7C /* ThreadNavigationDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4902244E20E50488000E8D7C /* ThreadNavigationDelegate.swift */; };
@@ -1072,7 +1072,7 @@
 		43ED53661CC77F95006AB156 /* IMAPSettingsViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = IMAPSettingsViewController.swift; sourceTree = "<group>"; };
 		43ED536D1CC77F95006AB156 /* SMTPSettingsViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SMTPSettingsViewController.swift; sourceTree = "<group>"; };
 		43ED536E1CC77F95006AB156 /* UserInfoViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UserInfoViewController.swift; sourceTree = "<group>"; };
-		43EEE4042907D5DE00D30254 /* MDM.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = MDM.plist; sourceTree = "<group>"; };
+		43EEE4042907D5DE00D30254 /* test_MDM_1.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = test_MDM_1.plist; sourceTree = "<group>"; };
 		43EEE4082908049500D30254 /* MDMSettingsUtil.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MDMSettingsUtil.swift; sourceTree = "<group>"; };
 		43FC02111F4D913D00273304 /* NSHTML_2017-08-09 15_40_53 +0000.html */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.html; path = "NSHTML_2017-08-09 15_40_53 +0000.html"; sourceTree = "<group>"; };
 		4902244E20E50488000E8D7C /* ThreadNavigationDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ThreadNavigationDelegate.swift; sourceTree = "<group>"; };
@@ -1611,7 +1611,7 @@
 		1543B69F22AAC882002B59AB /* Resources */ = {
 			isa = PBXGroup;
 			children = (
-				43EEE4042907D5DE00D30254 /* MDM.plist */,
+				43EEE4042907D5DE00D30254 /* test_MDM_1.plist */,
 				15D3F53824DC0DEE007942C2 /* pEp.entitlements */,
 				432E80FA2191AF5100359879 /* Fonts */,
 				1517DABA23FD7F88005BAE97 /* pEpForiOS-icon.pdf */,
@@ -3252,7 +3252,7 @@
 				432E80FD2191AF5100359879 /* UniversLTStd.otf in Resources */,
 				15D3D48C239FC14700F2EBFB /* EmailDetailCollectionViewCell.xib in Resources */,
 				151DE7DE1FC5D3E200CDC273 /* Settings.storyboard in Resources */,
-				43EEE4052907D5DE00D30254 /* MDM.plist in Resources */,
+				43EEE4052907D5DE00D30254 /* test_MDM_1.plist in Resources */,
 				43C88FA028BCBD8D00670977 /* MDMAccountDeployment.storyboard in Resources */,
 				151C68012418158B00481F75 /* SFUIText-Medium.ttf in Resources */,
 			);
