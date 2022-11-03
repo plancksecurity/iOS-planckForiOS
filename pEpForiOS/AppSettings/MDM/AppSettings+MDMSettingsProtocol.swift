@@ -46,8 +46,6 @@ extension AppSettings: MDMSettingsProtocol {
     // MARK: - Settings
 
     public var mdmIsEnabled: Bool {
-        // Note that this is a setting about MDM that is _tracked by the app_,
-        // and does _not_ come from the MDM itself.
         get {
             return MDMUtil.isEnabled()
         }
