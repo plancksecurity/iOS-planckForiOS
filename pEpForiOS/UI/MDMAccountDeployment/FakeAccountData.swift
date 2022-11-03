@@ -12,7 +12,7 @@ private typealias SettingsDict = [String:Any]
 
 class FakeAccountData {
     func setupDeployableAccountData() {
-        let url = Bundle.main.url(forResource: "MDM", withExtension: "plist")!
+        let url = Bundle.main.url(forResource: "test_MDM_1", withExtension: "plist")!
         let plistDict = NSDictionary.init(contentsOf: url)!
         UserDefaults.standard.set(plistDict, forKey: MDMDeployment.keyMDM)
     }
