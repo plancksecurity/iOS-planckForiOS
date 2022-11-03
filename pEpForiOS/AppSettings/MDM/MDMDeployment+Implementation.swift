@@ -255,7 +255,7 @@ extension MDMDeployment: MDMDeploymentProtocol {
 
 // MARK: - JSON
 
-extension MDMDeployment {    
+extension MDMDeployment {
     /// - returns: The MDM dictionary as json,  pretty printed.
     /// If there is no dictionary yet, "No dictionary" is return.
     /// If serialization fails, returns "No data".
