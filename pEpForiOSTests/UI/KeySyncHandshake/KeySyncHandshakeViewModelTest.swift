@@ -93,15 +93,9 @@ final class KeySyncHandshakeViewModelTest: XCTestCase {
 
 extension KeySyncHandshakeViewModelTest: KeySyncHandshakeViewModelDelegate {
     func closePicker() {
-        // TODO: At the time of writing this comment, this is dead code.
-        actual?.didCallClosePicker = true
     }
 
     func showPicker(withLanguages languages: [String], selectedLanguageIndex: Int?) {
-        // TODO: At the time of writing this comment, this is dead code.
-        actual?.didCallShowPicker = true
-        actual?.languagesToShow = languages
-        actual?.selectedLanguageIndex = selectedLanguageIndex
     }
 
     /// - Note: This is currently the only delegate method that gets called, and only during test setup.
