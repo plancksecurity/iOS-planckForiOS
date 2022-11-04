@@ -79,5 +79,3 @@ playground.xcworkspace
 ## Translation import/export logs
 export_log.txt
 import_log.txt
-
-pEpForiOS/Resources/test_MDM_*.plist
