@@ -133,7 +133,7 @@ extension ComposeViewModel {
             // longMessageFormatted updated with the CID:s of the cloned attachments.
             // We use it for settingus up and delete afterwards.
             let cloneMessage = originalMessage?.cloneWithZeroUID(session: Session.main)
-            self.composeMode = composeMode ?? ComposeUtil.ComposeMode.normal
+            self.composeMode = composeMode ?? .normal
             if let prefilledTo = prefilledTo {
                 self.prefilledTos = cloneMessage == nil ? [prefilledTo] : nil
             }
