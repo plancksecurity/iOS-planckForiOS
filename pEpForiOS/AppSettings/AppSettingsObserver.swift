@@ -14,6 +14,10 @@ class AppSettingsObserver {
     /// To start observing, you MUST call `start`, only once.
     static public let shared = AppSettingsObserver()
 
+    /// Singleton instance of the remover.
+    /// It holds the keys that has just been removed in order to prevent updates.
+    static private let remover = AppSettingsRemover()
+
     /// Start observing MDM settings.
     public func start() {
         if let values = UserDefaults.standard.dictionary(forKey: MDMPredeployed.keyMDM) {
@@ -30,6 +34,7 @@ class AppSettingsObserver {
     private var mdmDictionary: [String:Any] = [:]
 
     @objc private func userDefaultsDidChange(notification: NSNotification) {
+
         // We only care about standard user default settings, and specifically mdm settings
         guard let defaults = notification.object as? UserDefaults,
               defaults == UserDefaults.standard,
@@ -42,6 +47,12 @@ class AppSettingsObserver {
         if let oldValues = NSDictionary(dictionary: mdmDictionary).value(forKey: AppSettings.keyMediaKeys) as? [[String:String]] {
             let newValues = AppSettings.shared.mdmMediaKeys
             if oldValues != newValues {
+                let key = AppSettings.keyMediaKeys
+                guard !AppSettingsObserver.remover.removedKeys.contains(key) else {
+                    AppSettingsObserver.remover.removedKeys.removeAll { $0 == key }
+                    // Do not propagate updates due a key removal from UserDefaults
+                    return
+                }
                 MediaKeysUtil().configure(mediaKeyDictionaries: newValues)
             }
         }
@@ -54,6 +65,7 @@ class AppSettingsObserver {
                 EchoProtocolUtil().enableEchoProtocol(enabled: newValue)
             }
         }
+
         if let oldValue = NSDictionary(dictionary: mdmDictionary)
             .value(forKey: AppSettings.keyPEPSaveEncryptedOnServerEnabled) as? Bool {
             let newValue = AppSettings.shared.mdmPEPSaveEncryptedOnServerEnabled
@@ -65,6 +77,12 @@ class AppSettingsObserver {
         if let oldValues = NSDictionary(dictionary: mdmDictionary).value(forKey: AppSettings.keyPEPExtraKeys) as? [[String:String]] {
             let newValues = AppSettings.shared.mdmPEPExtraKeys
             if oldValues != newValues {
+                let key = AppSettings.keyPEPExtraKeys
+                guard !AppSettingsObserver.remover.removedKeys.contains(key) else {
+                    AppSettingsObserver.remover.removedKeys.removeAll { $0 == key }
+                    // Do not propagate updates due a key removal from UserDefaults
+                    return
+                }
                 ExtraKeysUtil().configure(extraKeyDictionaries: newValues)
             }
         }
