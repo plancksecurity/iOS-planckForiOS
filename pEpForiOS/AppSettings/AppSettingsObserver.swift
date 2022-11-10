@@ -49,11 +49,12 @@ class AppSettingsObserver {
             if oldValues != newValues {
                 let key = AppSettings.keyMediaKeys
                 guard !AppSettingsObserver.remover.removedKeys.contains(key) else {
-                    AppSettingsObserver.remover.removedKeys.removeAll { $0 == key }
                     // Do not propagate updates due a key removal from UserDefaults
+                    AppSettingsObserver.remover.removedKeys.removeAll { $0 == key }
                     return
                 }
                 MediaKeysUtil().configure(mediaKeyDictionaries: newValues)
+                AppSettingsObserver.remover.removeFromUserDefaults(key: key)
             }
         }
 
@@ -79,11 +80,12 @@ class AppSettingsObserver {
             if oldValues != newValues {
                 let key = AppSettings.keyPEPExtraKeys
                 guard !AppSettingsObserver.remover.removedKeys.contains(key) else {
-                    AppSettingsObserver.remover.removedKeys.removeAll { $0 == key }
                     // Do not propagate updates due a key removal from UserDefaults
+                    AppSettingsObserver.remover.removedKeys.removeAll { $0 == key }
                     return
                 }
                 ExtraKeysUtil().configure(extraKeyDictionaries: newValues)
+                AppSettingsObserver.remover.removeFromUserDefaults(key: key)
             }
         }
 
