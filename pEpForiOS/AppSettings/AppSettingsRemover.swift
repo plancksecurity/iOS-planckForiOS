@@ -11,7 +11,12 @@ import Foundation
 class AppSettingsRemover {
 
     // The keys that has been removed.
-    public var removedKeys: [String] = []
+    private var removedKeys: [String] = []
+
+    /// Indicates if the given key has been removed from user defaults.
+    public func hasBeenRemoved(key: String) -> Bool {
+        return removedKeys.contains(key)
+    }
 
     func removeFromUserDefaults(key: String) {
         // Get the MDM dictionary, remove the key, prevent the updates through the app, update the dictionary.

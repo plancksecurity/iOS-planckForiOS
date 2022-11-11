@@ -14,9 +14,8 @@ class AppSettingsObserver {
     /// To start observing, you MUST call `start`, only once.
     static public let shared = AppSettingsObserver()
 
-    /// Singleton instance of the remover.
     /// It holds the keys that has just been removed in order to prevent updates.
-    static private let remover = AppSettingsRemover()
+    private let remover = AppSettingsRemover()
 
     /// Start observing MDM settings.
     public func start() {
@@ -48,13 +47,13 @@ class AppSettingsObserver {
             let newValues = AppSettings.shared.mdmMediaKeys
             if oldValues != newValues {
                 let key = AppSettings.keyMediaKeys
-                guard !AppSettingsObserver.remover.removedKeys.contains(key) else {
+                // If the key has not been removed the change must be propagated.
+                guard !remover.hasBeenRemoved(key: key) else {
                     // Do not propagate updates due a key removal from UserDefaults
-                    AppSettingsObserver.remover.removedKeys.removeAll { $0 == key }
                     return
                 }
                 MediaKeysUtil().configure(mediaKeyDictionaries: newValues)
-                AppSettingsObserver.remover.removeFromUserDefaults(key: key)
+                remover.removeFromUserDefaults(key: key)
             }
         }
 
@@ -79,13 +78,13 @@ class AppSettingsObserver {
             let newValues = AppSettings.shared.mdmPEPExtraKeys
             if oldValues != newValues {
                 let key = AppSettings.keyPEPExtraKeys
-                guard !AppSettingsObserver.remover.removedKeys.contains(key) else {
+                // If the key has not been removed the change must be propagated.
+                guard !remover.hasBeenRemoved(key: key) else {
                     // Do not propagate updates due a key removal from UserDefaults
-                    AppSettingsObserver.remover.removedKeys.removeAll { $0 == key }
                     return
                 }
                 ExtraKeysUtil().configure(extraKeyDictionaries: newValues)
-                AppSettingsObserver.remover.removeFromUserDefaults(key: key)
+                remover.removeFromUserDefaults(key: key)
             }
         }
 
