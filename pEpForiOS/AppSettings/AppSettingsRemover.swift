@@ -8,10 +8,10 @@
 
 import Foundation
 
-// Helper class to aim removing sensitve data from UserDefaults.
+/// Helper class to aim removing sensitve data from UserDefaults.
 class AppSettingsRemover {
 
-    // The keys that has been removed.
+    /// The keys that has been removed.
     private var removedKeys: [String] = []
 
     /// Indicates if the given key has been removed from user defaults.
