@@ -16,7 +16,11 @@ class AppSettingsRemover {
 
     /// Indicates if the given key has been removed from user defaults.
     public func hasBeenRemoved(key: String) -> Bool {
-        return removedKeys.contains(key)
+        if removedKeys.contains(key) {
+            removedKeys = removedKeys.filter { $0 != key }
+            return true
+        }
+        return false
     }
 
     /// Removes the key from standard UserDefaults (not pEp's instance of UserDefaults)
