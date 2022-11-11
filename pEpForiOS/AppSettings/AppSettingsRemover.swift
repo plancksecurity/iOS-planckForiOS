@@ -8,6 +8,7 @@
 
 import Foundation
 
+// Helper class to aim removing sensitve data from UserDefaults.
 class AppSettingsRemover {
 
     // The keys that has been removed.
@@ -18,11 +19,15 @@ class AppSettingsRemover {
         return removedKeys.contains(key)
     }
 
-    func removeFromUserDefaults(key: String) {
-        // Get the MDM dictionary, remove the key, prevent the updates through the app, update the dictionary.
+    /// Removes the key from standard UserDefaults (not pEp's instance of UserDefaults)
+    public func removeFromUserDefaults(key: String) {
+        // Get a copy of the MDM dictionary
         if var mdm = UserDefaults.standard.dictionary(forKey: MDMPredeployed.keyMDM) {
+            // Remove the value for the given key from the copied dictionary
             mdm.removeValue(forKey: key)
+            // Prevent the updates through the app by adding the key to the removedKeys array
             removedKeys.append(key)
+            // Update the dictionary which will trigger updates trough the app.
             UserDefaults.standard.set(mdm, forKey: MDMPredeployed.keyMDM)
         }
     }
