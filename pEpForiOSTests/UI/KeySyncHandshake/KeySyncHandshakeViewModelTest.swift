@@ -15,13 +15,17 @@ final class KeySyncHandshakeViewModelTest: XCTestCase {
     var keySyncHandshakeVM: KeySyncHandshakeViewModel?
     var actual: State?
     var expected: State?
+    var expDelegateCalled: XCTestExpectation?
 
     override func setUp() {
         super.setUp()
 
         keySyncHandshakeVM = KeySyncHandshakeViewModel()
-        keySyncHandshakeVM?.setFingerPrints(meFPR: "", partnerFPR: "", isNewGroup: true)
         keySyncHandshakeVM?.delegate = self
+        expDelegateCalled = expectation(description: "expDelegateCalled")
+        keySyncHandshakeVM?.setFingerPrints(meFPR: "", partnerFPR: "", isNewGroup: true)
+
+        wait(for: [expDelegateCalled!], timeout: TestUtil.waitTimeLocal)
 
         setDefaultActualState()
         keySyncHandshakeVM?.completionHandler = { [weak self] action in
@@ -89,16 +93,14 @@ final class KeySyncHandshakeViewModelTest: XCTestCase {
 
 extension KeySyncHandshakeViewModelTest: KeySyncHandshakeViewModelDelegate {
     func closePicker() {
-        actual?.didCallClosePicker = true
     }
 
     func showPicker(withLanguages languages: [String], selectedLanguageIndex: Int?) {
-        actual?.didCallShowPicker = true
-        actual?.languagesToShow = languages
-        actual?.selectedLanguageIndex = selectedLanguageIndex
     }
 
+    /// - Note: This is currently the only delegate method that gets called, and only during test setup.
     func change(handshakeWordsTo: String) {
+        expDelegateCalled?.fulfill()
         actual?.didCallToUpdateTrustedWords = true
         actual?.fullWordsVersion = keySyncHandshakeVM?.fullTrustWords
     }

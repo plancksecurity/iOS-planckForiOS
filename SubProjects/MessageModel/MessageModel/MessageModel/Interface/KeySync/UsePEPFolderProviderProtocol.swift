@@ -11,5 +11,5 @@ import Foundation
 /// Someone who tells us whether or not to create a pEp folder for storing pEp sync messages (or
 /// to store it in INBOX otherwize).
 public protocol UsePEPFolderProviderProtocol {
-    var usePepFolder: Bool { get }
+    var usePEPFolder: Bool { get }
 }

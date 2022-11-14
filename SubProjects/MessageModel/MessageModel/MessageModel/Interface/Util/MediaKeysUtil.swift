@@ -8,6 +8,7 @@
 
 import PEPObjCAdapter_iOS
 import PEPObjCTypes_iOS
+
 #if EXT_SHARE
 import pEpIOSToolboxForExtensions
 #else
@@ -16,7 +17,6 @@ import pEpIOSToolbox
 
 /// https://dev.pep.foundation/Engine/Media%20keys
 public class MediaKeysUtil {
-
     static let kPattern = "media_key_address_pattern"
     static let kFingerprint = "media_key_fingerprint"
     static let kKey = "media_key_material"
@@ -27,7 +27,8 @@ public class MediaKeysUtil {
     /// Configure media keys.
     ///
     /// For the format, please see `MDMSettingsProtocol.mdmMediaKeys`.
-    public func configure(mediaKeyDictionaries: [[String:String]]) {
+    public func configure(mediaKeyDictionaries: [[String:String]],
+                          completion: @escaping (Result<Void, Error>) -> Void) {
 
         // MARK: - Configure Media Keys
 
@@ -51,20 +52,10 @@ public class MediaKeysUtil {
             return key
         }
 
-        keys.forEach { key in
-            PEPSession().importKey(key) { error in
-                Log.shared.error(error: error)
-            } successCallback: { identities in
-                Log.shared.info("importKey successful", identities)
-                // Make sure that there is at least one identity with a matching fingerprint
-                let allFingerprints = pairs.map({$0.fingerprint})
-                let thereIsAMatchingIdentity = identities.contains { identity in
-                    return allFingerprints.contains(identity.fingerPrint ?? "")
-                }
-                if thereIsAMatchingIdentity {
-                    Log.shared.info("There is at least one identity with a matching fingerprint")
-                }
-            }
-        }
+        let allFingerprints = Set((pairs.map {$0.fingerprint}).filter { !$0.isEmpty })
+
+        MediaAndExtraKeysImportUtil.importKeys(allFingerprints: allFingerprints,
+                                               keys: keys,
+                                               completion: completion)
     }
 }

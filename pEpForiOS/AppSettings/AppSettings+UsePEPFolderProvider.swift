@@ -9,7 +9,7 @@
 import MessageModel
 
 extension AppSettings: UsePEPFolderProviderProtocol {
-    public var usePepFolder: Bool {
+    public var usePEPFolder: Bool {
         return usePEPFolderEnabled
     }
 }

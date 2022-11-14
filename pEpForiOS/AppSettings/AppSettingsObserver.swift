@@ -16,7 +16,7 @@ class AppSettingsObserver {
 
     /// Start observing MDM settings.
     public func start() {
-        if let values = UserDefaults.standard.dictionary(forKey: MDMPredeployed.keyMDM) {
+        if let values = UserDefaults.standard.dictionary(forKey: MDMDeployment.keyMDM) {
             mdmDictionary = values
         }
         NotificationCenter.default.addObserver(self,
@@ -27,54 +27,33 @@ class AppSettingsObserver {
 
     // MARK: - Private
 
+    /// The contents of the last MDM update.
     private var mdmDictionary: [String:Any] = [:]
 
     @objc private func userDefaultsDidChange(notification: NSNotification) {
         // We only care about standard user default settings, and specifically mdm settings
         guard let defaults = notification.object as? UserDefaults,
               defaults == UserDefaults.standard,
-              let mdm = defaults.dictionary(forKey: MDMPredeployed.keyMDM) else {
+              let mdm = defaults.dictionary(forKey: MDMDeployment.keyMDM) else {
             // Nothing to do
             return
         }
 
-        // Detect changes to the media keys
-        if let oldValues = NSDictionary(dictionary: mdmDictionary).value(forKey: AppSettings.keyMediaKeys) as? [[String:String]] {
-            let newValues = AppSettings.shared.mdmMediaKeys
-            if oldValues != newValues {
-                MediaKeysUtil().configure(mediaKeyDictionaries: newValues)
-            }
+        guard !NSDictionary(dictionary: mdm).isEqual(to: mdmDictionary) else {
+            // No changes
+            return
         }
 
-        // Detect if there is a change re: Echo Protocol
-        if let oldValue = NSDictionary(dictionary: mdmDictionary)
-            .value(forKey: AppSettings.keyEchoProtocolEnabled) as? Bool {
-            let newValue = AppSettings.shared.mdmEchoProtocolEnabled
-            if oldValue != newValue {
-                EchoProtocolUtil().enableEchoProtocol(enabled: newValue)
-            }
-        }
-        if let oldValue = NSDictionary(dictionary: mdmDictionary)
-            .value(forKey: AppSettings.keyPEPSaveEncryptedOnServerEnabled) as? Bool {
-            let newValue = AppSettings.shared.mdmPEPSaveEncryptedOnServerEnabled
-            if oldValue != newValue {
-                TrustedServerUtil().setStoreSecurely(newValue: newValue)
-            }
-        }
+        // save the current MDM settings for later comparison
+        mdmDictionary = mdm
 
-        if let oldValues = NSDictionary(dictionary: mdmDictionary).value(forKey: AppSettings.keyPEPExtraKeys) as? [[String:String]] {
-            let newValues = AppSettings.shared.mdmPEPExtraKeys
-            if oldValues != newValues {
-                ExtraKeysUtil().configure(extraKeyDictionaries: newValues)
+        // Carry the configuration into all subsystems, like adapter/engine etc.
+        // Note that any error is currently ignored.
+        MDMSettingsUtil().configure { _ in
+            DispatchQueue.main.async {
+                // inform views that display settings related data
+                NotificationCenter.default.post(name:.pEpMDMSettingsChanged, object: mdm, userInfo: nil)
             }
-        }
-
-        // As ´Any´ does not conform to Equatable
-        // we use NSDictionary to easily compare these dictionaries.
-        let mdmSettingsHasChanged = !NSDictionary(dictionary: mdm).isEqual(to: mdmDictionary)
-        if  mdmSettingsHasChanged {
-            mdmDictionary = mdm
-            NotificationCenter.default.post(name:.pEpMDMSettingsChanged, object: mdm, userInfo: nil)
         }
     }
 
