@@ -8,12 +8,6 @@
 
 import UIKit
 
-#if EXT_SHARE
-import pEpIOSToolboxForExtensions
-#else
-import pEpIOSToolbox
-#endif
-
 extension UITableView {
     /**
      This magic code should trigger a height refresh for table cells,
@@ -25,7 +19,7 @@ extension UITableView {
             beginUpdates()
             endUpdates()
             if let theBlock = andExecuteBlock {
-                GCD.onMain {
+                DispatchQueue.main.async {
                     theBlock()
                 }
             }

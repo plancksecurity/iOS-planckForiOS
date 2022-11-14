@@ -49,11 +49,14 @@ public class VerifiableAccount: VerifiableAccountProtocol {
     private let prepareAccountForSavingService = PrepareAccountForSavingService()
     private var imapResult: Result<Void, Error>? = nil
     private var smtpResult: Result<Void, Error>? = nil
+
     /// Used for synchronizing the 2 asynchronous results (IMAP and SMTP verification).
     private let syncQueue = DispatchQueue(label: "VerifiableAccountSynchronization")
+
     /// Someone who tells us whether or not to create a pEp folder for storing sync messages for
     /// synced accounts.
     private let usePEPFolderProvider: UsePEPFolderProviderProtocol?
+
     public var originalImapPassword: String?
     public var originalSmtpPassword: String?
 
@@ -161,7 +164,7 @@ public class VerifiableAccount: VerifiableAccountProtocol {
                     Log.shared.lostMySelf()
                     return
                 }
-                let alsoCreatePEPFolder = me.keySyncEnable && (me.usePEPFolderProvider?.usePepFolder ?? false)
+                let alsoCreatePEPFolder = me.keySyncEnable && (me.usePEPFolderProvider?.usePEPFolder ?? false)
                 me.prepareAccountForSavingService.prepareAccount(cdAccount: cdAccount,
                                                           pEpSyncEnable: me.keySyncEnable,
                                                           alsoCreatePEPFolder: alsoCreatePEPFolder,

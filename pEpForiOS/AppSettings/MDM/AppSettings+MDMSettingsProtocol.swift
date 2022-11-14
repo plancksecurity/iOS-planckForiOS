@@ -24,6 +24,7 @@ extension AppSettings: MDMSettingsProtocol {
     static let keyUnsecureDeliveryWarningEnabled = "unsecure_delivery_warning"
     static let keyPEPSyncFolderEnabled = "pep_sync_folder"
     static let keyCompositionSenderName = "composition_sender_name"
+
     static let keyCompositionSignatureEnabled = "composition_use_signature"
     static let keyCompositionSignature = "composition_signature"
     static let keyCompositionSignatureBeforeQuotedMessageEnabled = "composition_signature_before_quoted_message"
@@ -44,7 +45,7 @@ extension AppSettings: MDMSettingsProtocol {
 
     // MARK: - Settings
 
-    public var hasBeenMDMDeployed: Bool {
+    public var mdmIsEnabled: Bool {
         get {
             return MDMUtil.isEnabled()
         }
@@ -257,7 +258,7 @@ extension AppSettings: MDMSettingsProtocol {
 
     private var mdmDictionary: [String: Any] {
         // MDM dictionary goes to the standard UserDefaults, not our instance.
-        guard let dictionary = UserDefaults.standard.dictionary(forKey: MDMPredeployed.keyMDM) else {
+        guard let dictionary = UserDefaults.standard.dictionary(forKey: MDMDeployment.keyMDM) else {
             return [String: Any]()
         }
         return dictionary

@@ -159,7 +159,7 @@ class EditableAccountSettingsViewModel {
                                                                cellIdentifier: row.cellIdentifier)
         sections[indexPath.section].rows[indexPath.row] = rowToReplace
 
-        if appSettings.hasBeenMDMDeployed {
+        if appSettings.mdmIsEnabled {
             hiddenSections[indexPath.section].rows[indexPath.row] = rowToReplace
         }
         if row.type == .password {
@@ -240,7 +240,7 @@ extension EditableAccountSettingsViewModel {
     }
 
     private func generateSections() {
-        if appSettings.hasBeenMDMDeployed {
+        if appSettings.mdmIsEnabled {
             generateSectionsForMDM()
         } else {
             AccountSettingsViewModel.SectionType.allCases.forEach { (type) in
@@ -447,7 +447,7 @@ extension EditableAccountSettingsViewModel {
         // Our current implementation is improvable: right now we use data from the sections to validate.
         // When MDM is deployed, there are sections that are not shown, that are ´hidden´.
         // If it's the case, we get the data to validate from the hidden sections.
-        if appSettings.hasBeenMDMDeployed, sectionIndex != 0 {
+        if appSettings.mdmIsEnabled, sectionIndex != 0 {
             guard let displayRow = hiddenSections[sectionIndex].rows.filter({$0.type == rowType}).first as? AccountSettingsViewModel.DisplayRow,
                   !displayRow.text.isEmpty else {
                 return nil

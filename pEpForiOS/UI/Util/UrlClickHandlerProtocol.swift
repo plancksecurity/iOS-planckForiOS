@@ -16,7 +16,7 @@ import MessageModel
 
 /// If pEp offers custom handling for a URL clicked by a user, here is the place for the custom
 /// implementation.
-/// Note: Conforming classes have to inherit from NSObject. Conforming to UITextViewDelegate
+/// - Note: Conforming classes have to inherit from NSObject. Conforming to UITextViewDelegate
 /// requires that for some reason.
 protocol UrlClickHandlerProtocol: SecureWebViewUrlClickHandlerProtocol, UITextViewDelegate {
 
