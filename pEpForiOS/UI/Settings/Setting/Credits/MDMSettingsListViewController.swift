@@ -20,9 +20,14 @@ class MDMSettingsListViewController: PEPWebViewController {
         } else {
             webView.backgroundColor = .white
         }
-        title = NSLocalizedString("Current Settings from MDM", comment: "Current Settings from MDM view title")
+        title = NSLocalizedString("Current MDM Settings", comment: "Current MDM Settings view title")
         webView.loadHTMLString(html(), baseURL: nil)
         setupShareButton()
+
+        NotificationCenter.default.addObserver(self,
+                                               selector: #selector(pEpMDMSettingsChanged),
+                                               name: .pEpMDMSettingsChanged,
+                                               object: nil)
     }
 
     override func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
@@ -38,6 +43,10 @@ class MDMSettingsListViewController: PEPWebViewController {
                 webView.loadHTMLString(html(), baseURL: nil)
             }
         }
+    }
+
+    deinit {
+        NotificationCenter.default.removeObserver(self)
     }
 }
 
@@ -135,4 +144,15 @@ extension MDMSettingsListViewController {
         """
         return result
     }
+
+    @objc private func pEpMDMSettingsChanged() {
+        DispatchQueue.main.async { [weak self] in
+            guard let me = self else {
+                Log.shared.errorAndCrash("Lost myself")
+                return
+            }
+            me.webView.loadHTMLString(me.html(), baseURL: nil)
+        }
+    }
+
 }
