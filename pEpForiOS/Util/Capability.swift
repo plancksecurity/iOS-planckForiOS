@@ -62,7 +62,7 @@ public struct Capability {
             @escaping (_ granted: Bool, _ error: AccessError?) -> (Void)) {
 
             request { (permissionsGranted: Bool, error: Capability.AccessError?) in
-                GCD.onMain {
+                DispatchQueue.main.async {
                     if permissionsGranted {
                         completion(permissionsGranted, error)
                         return

@@ -45,7 +45,7 @@ class DocumentAttachmentPickerViewModel {
                     Log.shared.errorAndCrash("No attachment")
                     return
                 }
-                GCD.onMain {
+                DispatchQueue.main.async {
                     me.resultDelegate?.documentAttachmentPickerViewModel(me,
                                                                          didPick: safeAttachment)
                 }

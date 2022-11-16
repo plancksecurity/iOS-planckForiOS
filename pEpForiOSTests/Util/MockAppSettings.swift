@@ -38,9 +38,9 @@ class MockAppSettings: AppSettingsProtocol {
 
     var verboseLogginEnabled: Bool = false
 
-    //MARK: - MDM
+    // MARK: - MDM
 
-    var hasBeenMDMDeployed: Bool = false
+    var mdmIsEnabled: Bool = false
 
     var mdmPEPPrivacyProtectionEnabled: Bool = false
 

@@ -74,7 +74,7 @@ playground.xcworkspace
 **/xcshareddata/WorkspaceSettings.xcsettings
 
 ## Test data that shall never be leaked
-**/SecretTestData.swift
+**/SecretTestData*
 
 ## Translation import/export logs
 export_log.txt

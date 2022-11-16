@@ -57,7 +57,7 @@ public class Message: MessageModelObjectProtocol, ManagedObjectWrapperProtocol {
     ///
     /// A deep copy of properties is used.
     ///
-    /// Note: UID defaults to 0.
+    /// - Note: UID defaults to 0.
     ///
     /// - Parameters:
     ///   - uid: uid to set to the created message. If nil UID will be 0

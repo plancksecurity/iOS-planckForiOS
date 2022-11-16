@@ -21,7 +21,7 @@ import pEp4iosIntern
 // MARK: - AppSettings
 
 /// Singleton representing and managing the App's settings.
-public final class AppSettings: KeySyncStateProvider, AppSettingsProtocol {
+public final class AppSettings: KeySyncStateProvider {
 
     // MARK: - Singleton
     
@@ -46,6 +46,13 @@ public final class AppSettings: KeySyncStateProvider, AppSettingsProtocol {
     deinit {
         NotificationCenter.default.removeObserver(self)
     }
+}
+
+// MARK: - AppSettingsProtocol
+
+/// - Note: `AppSettingsProtocol` is comprised of other protocols, without own content,
+/// and those parts are implemented in separate files. Hence the empty implementation here.
+extension AppSettings: AppSettingsProtocol {
 }
 
 // MARK: - Private & Internal

@@ -63,7 +63,7 @@ extension MDMSettingsListViewController {
     }
 
     private func getActivityViewController(sender: UIBarButtonItem) -> UIActivityViewController {
-        let dictionary : String = MDMPredeployed().mdmPrettyPrintedDictionary()
+        let dictionary : String = MDMDeployment().mdmPrettyPrintedDictionary()
         let activityViewController = UIActivityViewController(activityItems: [dictionary], applicationActivities: nil)
         activityViewController.title = NSLocalizedString("Share MDM settings", comment: "Share MDM settings title")
 
@@ -103,7 +103,7 @@ extension MDMSettingsListViewController {
     }
 
     private func html() -> String {
-        let json = MDMPredeployed().mdmPrettyPrintedDictionary()
+        let json = MDMDeployment().mdmPrettyPrintedDictionary()
         var backgroundColor = UIColor.white
         var fontColor = UIColor.pEpGray
 

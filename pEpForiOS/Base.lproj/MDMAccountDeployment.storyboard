@@ -1,45 +1,37 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="20037" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="PiP-KO-Wlt">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="21225" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="PiP-KO-Wlt">
     <device id="retina6_1" orientation="portrait" appearance="light"/>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="20020"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="21207"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
         <capability name="System colors in document resources" minToolsVersion="11.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <scenes>
-        <!--Account Predeployment View Controller-->
+        <!--Account Deployment View Controller-->
         <scene sceneID="s0d-6b-0kx">
             <objects>
-                <viewController storyboardIdentifier="mdmAccountPredeploymentViewController" id="Y6W-OH-hqX" customClass="MDMAccountPredeploymentViewController" customModule="pEpForiOS" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="mdmAccountDeploymentViewController" id="Y6W-OH-hqX" customClass="MDMAccountDeploymentViewController" customModule="pEpForiOS" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="5EZ-qb-Rvc">
                         <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontForContentSizeCategory="YES" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="7eN-FQ-fcU">
-                                <rect key="frame" x="170.5" y="429.5" width="73.5" height="37"/>
-                                <fontDescription key="fontDescription" style="UICTFontTextStyleTitle0"/>
-                                <nil key="textColor"/>
-                                <nil key="highlightedColor"/>
-                            </label>
-                            <activityIndicatorView opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" style="large" translatesAutoresizingMaskIntoConstraints="NO" id="d7S-Nk-zxj">
-                                <rect key="frame" x="188.5" y="476.5" width="37" height="37"/>
-                            </activityIndicatorView>
+                            <stackView opaque="NO" contentMode="scaleToFill" ambiguous="YES" axis="vertical" translatesAutoresizingMaskIntoConstraints="NO" id="TIa-mM-fH7">
+                                <rect key="frame" x="10" y="92" width="394" height="460"/>
+                            </stackView>
                         </subviews>
                         <viewLayoutGuide key="safeArea" id="vDu-zF-Fre"/>
                         <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                         <constraints>
-                            <constraint firstItem="7eN-FQ-fcU" firstAttribute="centerX" secondItem="5EZ-qb-Rvc" secondAttribute="centerX" id="1EQ-eG-61F"/>
-                            <constraint firstItem="d7S-Nk-zxj" firstAttribute="centerX" secondItem="5EZ-qb-Rvc" secondAttribute="centerX" id="BgG-9y-xeL"/>
-                            <constraint firstItem="7eN-FQ-fcU" firstAttribute="centerY" secondItem="5EZ-qb-Rvc" secondAttribute="centerY" id="CIz-Gk-2Wt"/>
-                            <constraint firstItem="d7S-Nk-zxj" firstAttribute="top" secondItem="7eN-FQ-fcU" secondAttribute="bottom" constant="10" id="kvM-L0-AUN"/>
+                            <constraint firstItem="TIa-mM-fH7" firstAttribute="top" secondItem="vDu-zF-Fre" secondAttribute="top" constant="10" id="5n9-oF-b8J"/>
+                            <constraint firstItem="TIa-mM-fH7" firstAttribute="trailing" secondItem="vDu-zF-Fre" secondAttribute="trailing" constant="-10" id="Kdl-hV-a2r"/>
+                            <constraint firstItem="TIa-mM-fH7" firstAttribute="leading" secondItem="vDu-zF-Fre" secondAttribute="leading" constant="10" id="Pkc-C5-6hp"/>
                         </constraints>
                     </view>
                     <navigationItem key="navigationItem" id="IQI-8n-fg2"/>
                     <connections>
-                        <outlet property="activityIndicator" destination="d7S-Nk-zxj" id="WDw-2C-Tpj"/>
-                        <outlet property="messageLabel" destination="7eN-FQ-fcU" id="pgg-S9-VUo"/>
+                        <outlet property="stackView" destination="TIa-mM-fH7" id="JgD-0v-nmO"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="Ief-a0-LHa" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
@@ -52,7 +44,7 @@
                 <navigationController automaticallyAdjustsScrollViewInsets="NO" id="PiP-KO-Wlt" sceneMemberID="viewController">
                     <toolbarItems/>
                     <navigationBar key="navigationBar" contentMode="scaleToFill" id="h0m-ew-xE5">
-                        <rect key="frame" x="0.0" y="44" width="414" height="44"/>
+                        <rect key="frame" x="0.0" y="48" width="414" height="44"/>
                         <autoresizingMask key="autoresizingMask"/>
                     </navigationBar>
                     <nil name="viewControllers"/>
