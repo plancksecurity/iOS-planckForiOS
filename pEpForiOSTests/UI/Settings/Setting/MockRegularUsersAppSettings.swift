@@ -11,6 +11,8 @@ import Foundation
 @testable import MessageModel
 
 class MockRegularUsersAppSettings : AppSettingsProtocol {
+    var mdmIsEnabled: Bool = false
+
     var keySyncEnabled: Bool = true
 
     var usePEPFolderEnabled: Bool = true
@@ -36,11 +38,6 @@ class MockRegularUsersAppSettings : AppSettingsProtocol {
     var verboseLogginEnabled: Bool = true
 
     var acceptedLanguagesCodes: [String] = ["de", "en"]
-
-    // This indicates MDM has not been deployed, so it's for regular users.
-    var hasBeenMDMDeployed: Bool {
-        return false
-    }
 
     var mdmPEPPrivacyProtectionEnabled: Bool {
         return true

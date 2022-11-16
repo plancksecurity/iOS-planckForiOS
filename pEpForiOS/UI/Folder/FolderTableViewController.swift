@@ -40,6 +40,7 @@ class FolderTableViewController: UITableViewController {
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         setup()
+
         showNextViewIfNeeded()
         showEmptyDetailViewIfNeeded()
         updateRefreshControl()
@@ -250,7 +251,7 @@ extension FolderTableViewController: SegueHandlerType {
     enum SegueIdentifier: String {
         case newAccount
         case settingsSegue
-        case mdmPredeployAccounts
+        case mdmDeployAccount
     }
 
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
@@ -275,10 +276,10 @@ extension FolderTableViewController: SegueHandlerType {
             }
             dvc.hidesBottomBarWhenPushed = true
 
-        case .mdmPredeployAccounts:
+        case .mdmDeployAccount:
             guard let navVC = segue.destination as? UINavigationController,
-                  let vc = navVC.rootViewController as? MDMAccountPredeploymentViewController else {
-                Log.shared.errorAndCrash("Error casting to MDMAccountPredeploymentViewController")
+                  let vc = navVC.rootViewController as? MDMAccountDeploymentViewController else {
+                Log.shared.errorAndCrash("Error casting to MDMAccountDeploymentViewController")
                 return
             }
             navVC.modalPresentationStyle = .fullScreen
@@ -325,8 +326,8 @@ extension FolderTableViewController: SegueHandlerType {
             if vm.shouldShowFolders {
                 showEmailList(folder:vm.folderToShow)
             } else {
-                if MDMPredeployed().haveAccountsToPredeploy {
-                    performSegue(withIdentifier:.mdmPredeployAccounts, sender: self)
+                if AppSettings.shared.mdmIsEnabled {
+                    performSegue(withIdentifier:.mdmDeployAccount, sender: self)
                 } else {
                     performSegue(withIdentifier:.newAccount, sender: self)
                 }

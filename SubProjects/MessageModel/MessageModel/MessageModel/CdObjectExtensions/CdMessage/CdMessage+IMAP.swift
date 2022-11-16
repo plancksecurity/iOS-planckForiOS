@@ -19,7 +19,7 @@ extension CdMessage {
 
     /// Use this method if you do not want the message to be moved to trash folder.
     /// Takes into account if parent folder is remote or local.
-    /// Note: Use only for messages synced with an IMAP server.
+    /// - Note: Use only for messages synced with an IMAP server.
     /// The caller is responsible for saving.
     func imapMarkDeleted() {
         if parentOrCrash.folderType.isSyncedWithServer {
@@ -31,7 +31,7 @@ extension CdMessage {
 
     /// Sets flag "deleted".
     /// Use this method if you do not want the message to be moved to trash folder.
-    /// Note: Use only for messages synced with an IMAP server.
+    /// - Note: Use only for messages synced with an IMAP server.
     /// The caller is responsible for saving.
     private func internalImapMarkDeleted() {
         guard self.parentOrCrash.folderType.isSyncedWithServer else {

@@ -167,7 +167,7 @@ extension AppDelegate {
 
     /// Restart any tasks that were paused (or not yet started) while the application was inactive.
     /// If the application was previously in the background, optionally refresh the user interface.
-    /// Note: this is also called when:
+    /// - Note: this is also called when:
     /// - swiping down the iOS system notification center
     /// - iOS auto lock takes place
     func applicationDidBecomeActive(_ application: UIApplication) {
@@ -302,7 +302,7 @@ extension AppDelegate {
 
 extension AppDelegate {
     private func informUser(numNewMails:Int, completion: @escaping ()->()) {
-        GCD.onMain {
+        DispatchQueue.main.async {
             UserNotificationTool.postUserNotification(forNumNewMails: numNewMails)
             completion()
         }
