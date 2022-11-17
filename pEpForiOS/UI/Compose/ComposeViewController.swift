@@ -303,6 +303,15 @@ extension ComposeViewController {
 // MARK: - ComposeViewModelDelegate
 
 extension ComposeViewController: ComposeViewModelDelegate {
+    func showRecipientsBanner() {
+        UIView.animate(withDuration: 0.5, delay: 0) { [weak self] in
+            guard let me = self else {
+                Log.shared.errorAndCrash("Lost myself")
+                return
+            }
+            me.tableView.transform = CGAffineTransform(translationX: 0, y: 100)
+        }
+    }
 
     func hideSuggestions() {
         suggestionsChildViewController?.view.isHidden = true

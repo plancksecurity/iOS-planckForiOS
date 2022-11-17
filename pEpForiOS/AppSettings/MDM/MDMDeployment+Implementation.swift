@@ -115,11 +115,30 @@ extension AccountVerifier.ServerData {
 // MARK: - MDMDeploymentProtocol
 
 extension MDMDeployment: MDMDeploymentProtocol {
+
+    //MB:- remove this.
+    private func testAcccount() -> MDMDeployment.AccountData {
+        let mailAccount = "iostest017@peptest.ch"
+        let hostName = "peptest.ch"
+        let imap = AccountVerifier.ServerData(loginName: mailAccount, hostName:hostName, port: 993, transport: .TLS)!
+        let smtp = AccountVerifier.ServerData(loginName: mailAccount, hostName:hostName, port: 587, transport: .startTLS)!
+
+        return MDMDeployment.AccountData(accountName: "001",
+                                         email: mailAccount,
+                                         imapServer: imap,
+                                         smtpServer: smtp)
+    }
+
     func accountToDeploy() throws -> MDMDeployment.AccountData? {
         if !AppSettings.shared.mdmIsEnabled {
             // No MDM deployment if MDM is not supposed to be used
             return nil
         }
+
+        //MB:- Remove this.
+#if targetEnvironment(simulator)
+        return testAcccount()
+#endif
 
         guard let mdmDict = mdmDeploymentDictionary() else {
             // Note, this is not considered an error. It just means there is no MDM

@@ -62,6 +62,8 @@ protocol ComposeViewModelDelegate: AnyObject {
 
     func showActionSheetWith(title: String, smallTitle: String, mediumTitle: String, largeTitle: String, actualTitle: String,
                              callback: @escaping (JPEGQuality) -> ()?)
+
+    func showRecipientsBanner()
 }
 
 /// Contains messages about cancelation and send.
@@ -170,6 +172,15 @@ class ComposeViewModel {
 #if !EXT_SHARE
         checkConnectivity()
 #endif
+        if state.rating.pEpColor() == .red {
+            DispatchQueue.main.async { [weak self] in
+                guard let me = self else {
+                    Log.shared.errorAndCrash("Lost myself")
+                    return
+                }
+                me.delegate?.showRecipientsBanner()
+            }
+        }
     }
 
 #if !EXT_SHARE
