@@ -14,11 +14,14 @@ import MessageModel
 
 class RecipientsListViewModel {
 
-    private var rows = [RedRecipientRowProtocol]()
+    private var rows = [RecipientRowProtocol]()
 
+    /// Constructor
+    /// - Parameters:
+    ///   - recipients: The recipients to show in the list.
     init(recipients: [Identity]) {
         self.rows = recipients.map {
-            RedRecipientRow(address: $0.address)
+            RecipientRow(address: $0.address)
         }
     }
 
@@ -28,7 +31,7 @@ class RecipientsListViewModel {
     }
 
     /// Retrieves the row
-    subscript(index: Int) -> RedRecipientRowProtocol {
+    subscript(index: Int) -> RecipientRowProtocol {
         get {
             return rows[index]
         }

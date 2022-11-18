@@ -32,6 +32,7 @@ class RecipientsBannerViewModel {
         self.recipients = recipients
     }
 
+    /// The button title
     public var buttonTitle: String {
         let format = NSLocalizedString("$1 unsecure recipients. Click here to review and remove", comment: "")
         let result = String.localizedStringWithFormat(format, recipients.count)
@@ -44,4 +45,3 @@ class RecipientsBannerViewModel {
         delegate?.presentRecipientsListView(recipientsListViewModel: recipientsListViewModel)
     }
 }
-

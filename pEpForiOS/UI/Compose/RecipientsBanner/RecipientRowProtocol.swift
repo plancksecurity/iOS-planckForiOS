@@ -9,21 +9,19 @@
 protocol RecipientRowProtocol {
     /// The cell identifier
     var cellIdentifier: String { get }
-}
-
-protocol RedRecipientRowProtocol: RecipientRowProtocol {
+    /// The email address
     var address: String { get }
+    /// Indicates if the row is selected
     var isSelected: Bool { get }
 }
 
-class RedRecipientRow: RedRecipientRowProtocol {
-    var cellIdentifier: String = "redRecipientCell"
+class RecipientRow: RecipientRowProtocol {
+    var cellIdentifier: String = "recipientCell"
     var address: String
     var isSelected: Bool
 
     init(address: String) {
         self.address = address
-        self.isSelected = false
+        self.isSelected = false // By default, the row is not selected
     }
 }
-
