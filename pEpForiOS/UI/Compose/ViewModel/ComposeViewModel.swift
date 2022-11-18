@@ -64,6 +64,8 @@ protocol ComposeViewModelDelegate: AnyObject {
                              callback: @escaping (JPEGQuality) -> ()?)
 
     func showRecipientsBanner()
+
+    func hideRecipientsBanner()
 }
 
 /// Contains messages about cancelation and send.
