@@ -17,9 +17,7 @@ import MessageModel
 protocol RecipientsBannerDelegate: AnyObject {
 
     /// Presents the recipients list view
-    /// - Parameters:
-    ///   - recipientsListViewModel: The View Model.
-    func presentRecipientsListView(recipientsListViewModel: RecipientsListViewModel)
+    func presentRecipientsListView(viewModel: RecipientsListViewModel)
 }
 
 class RecipientsBannerViewModel {
@@ -28,7 +26,10 @@ class RecipientsBannerViewModel {
 
     private var recipients: [Identity] = []
 
-    init(recipients: [Identity]) {
+    init?(recipients: [Identity], delegate: RecipientsBannerDelegate) {
+        if recipients.count == 0 {
+            return nil
+        }
         self.recipients = recipients
     }
 
@@ -42,6 +43,6 @@ class RecipientsBannerViewModel {
     /// Handle
     public func handleRecipientsButtonPressed() {
         let recipientsListViewModel = RecipientsListViewModel(recipients: recipients)
-        delegate?.presentRecipientsListView(recipientsListViewModel: recipientsListViewModel)
+        delegate?.presentRecipientsListView(viewModel: recipientsListViewModel)
     }
 }

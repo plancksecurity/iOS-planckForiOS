@@ -66,6 +66,8 @@ protocol ComposeViewModelDelegate: AnyObject {
     func showRecipientsBanner()
 
     func hideRecipientsBanner()
+
+    func showRecipientsList(viewModel: RecipientsListViewModel)
 }
 
 /// Contains messages about cancelation and send.
@@ -177,6 +179,7 @@ class ComposeViewModel {
         handleRecipientsBanner()
     }
 
+    /// Shows and Hides the warning banner if needed. 
     private func handleRecipientsBanner() {
         DispatchQueue.main.async { [weak self] in
             guard let me = self else {
@@ -184,6 +187,7 @@ class ComposeViewModel {
                 return
             }
             if me.shouldShowRecipientsBanner() {
+                let vm = me.getRecipientBannerViewModel(delegate: me)
                 me.delegate?.showRecipientsBanner()
             } else {
                 me.delegate?.hideRecipientsBanner()
@@ -191,9 +195,37 @@ class ComposeViewModel {
         }
     }
 
+    /// Evaluates if email rating is Red and if there is at least a red recipient.
     private func shouldShowRecipientsBanner() -> Bool {
-        let all = state.toRecipients + state.ccRecipients + state.bccRecipients
-        return state.rating.pEpColor() == .red && all.count > 0
+        return state.rating.pEpColor() == .red && getRedRecipients().count > 0
+    }
+
+
+    /// Get the Recipientslendar Banner ViewModel.
+    /// Or nil, if there is no recipients that should be managed (red).
+    /// - Returns: The Recipients Banner ViewModel
+    func getRecipientBannerViewModel(delegate: RecipientsBannerDelegate) -> RecipientsBannerViewModel? {
+        return RecipientsBannerViewModel(recipients: getRedRecipients(), delegate: delegate)
+    }
+
+    // Get the red recipients.
+    // This evaluates TO, CC and BCC and returns the identities.
+    private func getRedRecipients() -> [Identity] {
+        let allRecipients = state.toRecipients + state.ccRecipients + state.bccRecipients
+        var redRecipients = [Identity]()
+        let group = DispatchGroup()
+        for i in 0 ..< allRecipients.count {
+            group.enter()
+            let identity = allRecipients[i]
+            identity.pEpRating { rating in
+                let color = rating.pEpColor()
+                if color == .red {
+                    redRecipients.append(identity)
+                }
+                group.leave()
+            }
+        }
+        return redRecipients
     }
 
 #if !EXT_SHARE
@@ -1138,5 +1170,13 @@ extension ComposeViewModel {
                 completion(true)
             }
         }
+    }
+}
+
+
+extension ComposeViewModel: RecipientsBannerDelegate {
+
+    func presentRecipientsListView(viewModel: RecipientsListViewModel) {
+        delegate?.showRecipientsList(viewModel: viewModel)
     }
 }

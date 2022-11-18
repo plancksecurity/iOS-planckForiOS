@@ -325,6 +325,13 @@ extension ComposeViewController: ComposeViewModelDelegate {
         }
     }
 
+    // MARK: - Recipients List
+
+    func showRecipientsList(viewModel: RecipientsListViewModel) {
+
+    }
+
+
     // MARK: - Suggestions
 
     func hideSuggestions() {

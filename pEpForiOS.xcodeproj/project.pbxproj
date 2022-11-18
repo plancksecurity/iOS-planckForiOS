@@ -485,6 +485,8 @@
 		5B1EF6A32927A95000CE2355 /* RecipientsListViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5B1EF6A12927A95000CE2355 /* RecipientsListViewModel.swift */; };
 		5B1EF6A52927AAA000CE2355 /* RecipientRowProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5B1EF6A42927AAA000CE2355 /* RecipientRowProtocol.swift */; };
 		5B1EF6A62927AAA000CE2355 /* RecipientRowProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5B1EF6A42927AAA000CE2355 /* RecipientRowProtocol.swift */; };
+		5B1EF6A82927BE2700CE2355 /* RecipientsBannerViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5B1EF6A72927BE2700CE2355 /* RecipientsBannerViewController.swift */; };
+		5B1EF6A92927BE2700CE2355 /* RecipientsBannerViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5B1EF6A72927BE2700CE2355 /* RecipientsBannerViewController.swift */; };
 		5B21989728BDFAB200668445 /* UserSettingsProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5B21989628BDFAB200668445 /* UserSettingsProtocol.swift */; };
 		5B21989828BDFAC700668445 /* UserSettingsProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5B21989628BDFAB200668445 /* UserSettingsProtocol.swift */; };
 		5B21989A28BDFAE600668445 /* MDMSettingsProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5B21989928BDFAE600668445 /* MDMSettingsProtocol.swift */; };
@@ -1106,6 +1108,7 @@
 		5B1EF69E2926C49400CE2355 /* RecipientsBannerViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RecipientsBannerViewModel.swift; sourceTree = "<group>"; };
 		5B1EF6A12927A95000CE2355 /* RecipientsListViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RecipientsListViewModel.swift; sourceTree = "<group>"; };
 		5B1EF6A42927AAA000CE2355 /* RecipientRowProtocol.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RecipientRowProtocol.swift; sourceTree = "<group>"; };
+		5B1EF6A72927BE2700CE2355 /* RecipientsBannerViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RecipientsBannerViewController.swift; sourceTree = "<group>"; };
 		5B21989628BDFAB200668445 /* UserSettingsProtocol.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserSettingsProtocol.swift; sourceTree = "<group>"; };
 		5B21989928BDFAE600668445 /* MDMSettingsProtocol.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MDMSettingsProtocol.swift; sourceTree = "<group>"; };
 		5B21989F28BE360000668445 /* AppSettings+MDMSettingsProtocol.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "AppSettings+MDMSettingsProtocol.swift"; sourceTree = "<group>"; };
@@ -2686,6 +2689,7 @@
 			isa = PBXGroup;
 			children = (
 				5B1EF69E2926C49400CE2355 /* RecipientsBannerViewModel.swift */,
+				5B1EF6A72927BE2700CE2355 /* RecipientsBannerViewController.swift */,
 				5B1EF6A42927AAA000CE2355 /* RecipientRowProtocol.swift */,
 				5B1EF6A12927A95000CE2355 /* RecipientsListViewModel.swift */,
 			);
@@ -3367,6 +3371,7 @@
 				43BDE05D25DE826000FC0C68 /* houdini_html_e.c in Sources */,
 				434C1AC625D411F300F622DB /* PEPAlertViewController.swift in Sources */,
 				434A6C4B25D2A39C00179335 /* ComposeViewModelState.swift in Sources */,
+				5B1EF6A92927BE2700CE2355 /* RecipientsBannerViewController.swift in Sources */,
 				434C1A8325D40B4000F622DB /* PEPSplitViewController.swift in Sources */,
 				434C1A9925D40DB700F622DB /* Mailto.swift in Sources */,
 				434A6C5E25D2A3C200179335 /* BodyCell.swift in Sources */,
@@ -3568,6 +3573,7 @@
 				220DCE351E0AB5CC002FE716 /* MessageContentCell.swift in Sources */,
 				158A56522403F05B003C0D7E /* ClientCertificateManagementViewModel.swift in Sources */,
 				1526597A21623652006A78DF /* SuggestViewModel.swift in Sources */,
+				5B1EF6A82927BE2700CE2355 /* RecipientsBannerViewController.swift in Sources */,
 				5BBEA6A828F83EED00BDC78E /* MDMUtil.swift in Sources */,
 				4351C2D31F4441190053381F /* inlines.c in Sources */,
 				5B41C6082418F15100C268CE /* TutorialStep3iPhoneViewController.swift in Sources */,
