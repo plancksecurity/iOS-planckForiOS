@@ -174,15 +174,26 @@ class ComposeViewModel {
 #if !EXT_SHARE
         checkConnectivity()
 #endif
-        if state.rating.pEpColor() == .red {
-            DispatchQueue.main.async { [weak self] in
-                guard let me = self else {
-                    Log.shared.errorAndCrash("Lost myself")
-                    return
-                }
+        handleRecipientsBanner()
+    }
+
+    private func handleRecipientsBanner() {
+        DispatchQueue.main.async { [weak self] in
+            guard let me = self else {
+                Log.shared.errorAndCrash("Lost myself")
+                return
+            }
+            if me.shouldShowRecipientsBanner() {
                 me.delegate?.showRecipientsBanner()
+            } else {
+                me.delegate?.hideRecipientsBanner()
             }
         }
+    }
+
+    private func shouldShowRecipientsBanner() -> Bool {
+        let all = state.toRecipients + state.ccRecipients + state.bccRecipients
+        return state.rating.pEpColor() == .red && all.count > 0
     }
 
 #if !EXT_SHARE
@@ -450,6 +461,7 @@ extension ComposeViewModel: ComposeViewModelStateDelegate {
     func composeViewModelState(_ composeViewModelState: ComposeViewModelState,
                                didChangePEPRatingTo newRating: Rating) {
         delegate?.colorBatchNeedsUpdate(for: newRating, protectionEnabled: state.pEpProtection)
+        handleRecipientsBanner()
     }
 
     func composeViewModelState(_ composeViewModelState: ComposeViewModelState,

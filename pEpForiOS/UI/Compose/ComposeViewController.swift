@@ -309,7 +309,7 @@ extension ComposeViewController: ComposeViewModelDelegate {
     func showRecipientsBanner() {
         setRecipientsBanner(visible: true)
     }
-    
+
     func hideRecipientsBanner() {
         setRecipientsBanner(visible: false)
     }
