@@ -11,8 +11,17 @@ import UIKit
 
 class RecipientsBannerViewController: UIViewController {
 
-    var viewModel: RecipientsBannerViewModel?
+    public var viewModel: RecipientsBannerViewModel?
 
+    @IBOutlet private weak var unsecureRecipientsButton: UIButton!
 
-    
+    override func viewDidLoad() {
+        super.viewDidLoad()
+        guard let vm = viewModel else {
+            // Valid case: The storyboard intanciates the VC before we have the chance to set a VM.
+            return
+        }
+        unsecureRecipientsButton.setTitle(vm.buttonTitle, for: .normal)
+    }
+
 }

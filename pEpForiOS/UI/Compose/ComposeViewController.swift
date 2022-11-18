@@ -21,12 +21,14 @@ import MessageModel
 import pEpIOSToolbox
 #endif
 
-class ComposeViewController: UIViewController {
+class ComposeViewController: UIViewController, RecipientsBannerDelegate {
+
     public static let storyboardId = "ComposeViewController"
 
     @IBOutlet weak var sendButton: UIBarButtonItem!
     @IBOutlet weak var cancelButton: UIBarButtonItem!
     @IBOutlet var tableView: UITableView!
+    @IBOutlet weak var recipientsBannerContainerView: UIView!
 
     private var suggestionsChildViewController: SuggestTableViewController?
 
@@ -322,6 +324,7 @@ extension ComposeViewController: ComposeViewModelDelegate {
             }
             let transform = CGAffineTransform(translationX: 0, y: 100)
             me.tableView.transform = visible ? transform : .identity
+            me.recipientsBannerContainerView.isHidden = !visible
         }
     }
 
@@ -508,6 +511,7 @@ extension ComposeViewController: SegueHandlerType {
 
     enum SegueIdentifier: String {
         case segueTrustManagement
+        case segueRecipientsBanner
     }
 
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
@@ -528,7 +532,24 @@ extension ComposeViewController: SegueHandlerType {
                 return
             }
             destination.viewModel = trustManagementViewModel
+        case .segueRecipientsBanner:
+            guard
+                let destination = segue.destination as? RecipientsBannerViewController else {
+                    Log.shared.errorAndCrash("Missing VCs")
+                    return
+            }
+            guard let vm = viewModel else {
+                Log.shared.errorAndCrash("No vm")
+                return
+            }
+            guard let recipientsViewModel = vm.getRecipientBannerViewModel(delegate: self)  else {
+                Log.shared.error("Message not found")
+                return
+            }
+            destination.viewModel = recipientsViewModel
+
         }
+
     }
 }
 
@@ -1129,6 +1150,12 @@ extension ComposeViewController {
     }
 }
 
+extension ComposeViewController {
+    func presentRecipientsListView(viewModel: RecipientsListViewModel) {
+        print("RecipientsListViewController")
+    }
+}
+
 // MARK: - Keyboard Related Issues
 
 extension ComposeViewController {
@@ -1188,6 +1215,8 @@ extension ComposeViewController {
         }
     }
 }
+
+
 
 #if EXT_SHARE
 

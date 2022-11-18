@@ -1128,7 +1128,7 @@
                                             <constraint firstAttribute="height" constant="40" identifier="BannerPreferredHeight" id="KIF-rk-9Ee"/>
                                         </constraints>
                                         <connections>
-                                            <segue destination="hrq-S4-HtH" kind="embed" id="0xH-sQ-Obw"/>
+                                            <segue destination="hrq-S4-HtH" kind="embed" identifier="segueRecipientsBanner" id="0xH-sQ-Obw"/>
                                         </connections>
                                     </containerView>
                                     <tableView clipsSubviews="YES" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="44" sectionHeaderHeight="28" sectionFooterHeight="28" id="bP2-wr-f5G">
@@ -1401,6 +1401,7 @@
                     </navigationItem>
                     <connections>
                         <outlet property="cancelButton" destination="ijh-vj-Bee" id="hXo-wt-WOo"/>
+                        <outlet property="recipientsBannerContainerView" destination="SBO-iF-u5f" id="roH-kP-ZiP"/>
                         <outlet property="sendButton" destination="d2A-SO-1Ce" id="tjo-8d-QN5"/>
                         <outlet property="tableView" destination="bP2-wr-f5G" id="lLV-EJ-UUb"/>
                         <segue destination="Dbs-KG-RkX" kind="presentation" identifier="segueTrustManagement" modalPresentationStyle="fullScreen" id="vPE-SC-TBS"/>
@@ -1413,12 +1414,12 @@
         <!--Recipients Banner View Controller-->
         <scene sceneID="nKp-4D-EAL">
             <objects>
-                <viewController id="hrq-S4-HtH" customClass="RecipientsBannerViewController" customModule="pEpForiOS" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="RecipientsBannerViewController" useStoryboardIdentifierAsRestorationIdentifier="YES" id="hrq-S4-HtH" customClass="RecipientsBannerViewController" customModule="pEpForiOS" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="PwV-13-jSq">
                         <rect key="frame" x="0.0" y="0.0" width="414" height="40"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Pzw-KP-hgZ">
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Pzw-KP-hgZ" userLabel="Unsecure recipients button">
                                 <rect key="frame" x="27.333333333333343" y="0.0" width="359.33333333333326" height="40"/>
                                 <state key="normal" title="Button"/>
                                 <buttonConfiguration key="configuration" style="plain" title="3 unsecure recipients. Click here to review and remove.">
@@ -1439,10 +1440,13 @@
                         </constraints>
                     </view>
                     <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
+                    <connections>
+                        <outlet property="unsecureRecipientsButton" destination="Pzw-KP-hgZ" id="M1d-0B-xZy"/>
+                    </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="9HS-ef-Gje" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="5224.6376811594209" y="957.88043478260875"/>
+            <point key="canvasLocation" x="5209" y="1276"/>
         </scene>
         <!--Calendar Event Banner View Controller-->
         <scene sceneID="Asc-eh-7Rc">
