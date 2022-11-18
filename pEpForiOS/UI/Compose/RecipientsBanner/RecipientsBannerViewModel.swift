@@ -23,12 +23,13 @@ protocol RecipientsBannerDelegate: AnyObject {
 }
 
 class RecipientsBannerViewModel {
+
     public weak var delegate: RecipientsBannerDelegate?
 
     private var recipients: [Identity] = []
 
-    init(redRecipients: [Identity]) {
-        self.recipients = redRecipients
+    init(recipients: [Identity]) {
+        self.recipients = recipients
     }
 
     public var buttonTitle: String {
@@ -37,7 +38,8 @@ class RecipientsBannerViewModel {
         return result
     }
 
-    public func handleRedRecipientsButtonPressed() {
+    /// Handle
+    public func handleRecipientsButtonPressed() {
         let recipientsListViewModel = RecipientsListViewModel(recipients: recipients)
         delegate?.presentRecipientsListView(recipientsListViewModel: recipientsListViewModel)
     }
