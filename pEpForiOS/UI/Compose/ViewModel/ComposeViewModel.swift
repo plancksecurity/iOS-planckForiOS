@@ -179,7 +179,7 @@ class ComposeViewModel {
         handleRecipientsBanner()
     }
 
-    /// Shows and Hides the warning banner if needed. 
+    /// Shows and Hides the warning banner if needed.
     private func handleRecipientsBanner() {
         DispatchQueue.main.async { [weak self] in
             guard let me = self else {
@@ -187,7 +187,6 @@ class ComposeViewModel {
                 return
             }
             if me.shouldShowRecipientsBanner() {
-                let vm = me.getRecipientBannerViewModel(delegate: me)
                 me.delegate?.showRecipientsBanner()
             } else {
                 me.delegate?.hideRecipientsBanner()
@@ -199,7 +198,6 @@ class ComposeViewModel {
     private func shouldShowRecipientsBanner() -> Bool {
         return state.rating.pEpColor() == .red && getRedRecipients().count > 0
     }
-
 
     /// Get the Recipientslendar Banner ViewModel.
     /// Or nil, if there is no recipients that should be managed (red).
@@ -224,7 +222,9 @@ class ComposeViewModel {
                 }
                 group.leave()
             }
+            group.wait()
         }
+
         return redRecipients
     }
 

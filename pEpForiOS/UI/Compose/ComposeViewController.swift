@@ -547,9 +547,7 @@ extension ComposeViewController: SegueHandlerType {
                 return
             }
             destination.viewModel = recipientsViewModel
-
         }
-
     }
 }
 
