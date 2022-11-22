@@ -86,7 +86,7 @@ extension DecryptMessageOperation {
 
         if let error = nsError {
             // An error occured
-            if error.domain == PEPObjCAdapterEngineStatusErrorDomain {
+            if error.domain == PEPObjCEngineStatusErrorDomain {
                 if error.isPassphraseError {
                     // The adapter is responsible to handle this case.
                     Log.shared.error("Passphrase error trying to decrypt a message")
