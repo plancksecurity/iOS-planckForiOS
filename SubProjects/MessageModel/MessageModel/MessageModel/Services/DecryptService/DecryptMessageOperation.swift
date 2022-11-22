@@ -73,11 +73,11 @@ extension DecryptMessageOperation {
         PEPSession().decryptMessage(inOutMessage, flags: inOutFlags, extraKeys: fprsOfExtraKeys, errorCallback: { (error) in
             nsError = error as NSError
             group.leave()
-        }) { (pEpSourceMessage, pEpDecryptedMsg, keyList, pEpRating, decryptFlags, isFormerlyEncryptedReuploadedMessage) in
+        }) { (pEpSourceMessage, pEpDecryptedMsg, keyList, decryptFlags, isFormerlyEncryptedReuploadedMessage) in
             inOutMessage = pEpSourceMessage
             pEpDecryptedMessage = pEpDecryptedMsg
             fprsOfExtraKeys = keyList
-            rating = pEpRating
+            rating = pEpDecryptedMsg.rating
             inOutFlags = decryptFlags
             isAFormerlyEncryptedReuploadedMessage = isFormerlyEncryptedReuploadedMessage
             group.leave()
