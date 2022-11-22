@@ -83,7 +83,12 @@ extension PEPUtils {
             switch (rating) {
             case .undefined, .haveNoKey, .unencrypted, .b0rken, .underAttack, .mistrust:
                 return .red
-            case .unreliable, .reliable, .trusted, .trustedAndAnonymized, .fullyAnonymous:
+            case .unreliable,
+                    .reliable,
+                    .trusted,
+                    .trustedAndAnonymized,
+                    .fullyAnonymous,
+                    .mediaKeyProtected:
                 return .green
             case .cannotDecrypt:
                 return .noColor
