@@ -141,7 +141,7 @@ extension AppendMailsToFolderOperation {
                                  errorCallback: { (error) in
                                     defer { group.leave() }
                                     let error = error as NSError
-                                    if error.domain == PEPObjCAdapterEngineStatusErrorDomain {
+                                    if error.domain == PEPObjCEngineStatusErrorDomain {
                                         if error.isPassphraseError {
                                             // The adapter is responsible to ask for passphrase. We are not.
                                             me.handleNextMessage()
