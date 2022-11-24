@@ -8,7 +8,6 @@
 
 import Foundation
 
-import PEPObjCTypes
 import PEPObjCAdapter_iOS
 
 extension Rating {

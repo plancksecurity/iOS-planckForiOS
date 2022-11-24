@@ -9,7 +9,6 @@
 import Foundation
 
 import PantomimeFramework
-import PEPObjCTypes
 import PEPObjCAdapter_iOS
 
 extension PEPIdentity {

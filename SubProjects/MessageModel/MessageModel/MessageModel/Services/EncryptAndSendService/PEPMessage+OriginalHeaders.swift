@@ -6,9 +6,7 @@
 //  Copyright © 2019 pEp Security S.A. All rights reserved.
 //
 
-import PEPObjCTypes
 import PEPObjCAdapter_iOS
-
 
 extension PEPMessage {
 

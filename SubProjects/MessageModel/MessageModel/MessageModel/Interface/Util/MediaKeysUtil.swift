@@ -7,7 +7,6 @@
 //
 
 import PEPObjCAdapter_iOS
-import PEPObjCTypes
 
 #if EXT_SHARE
 import pEpIOSToolboxForExtensions

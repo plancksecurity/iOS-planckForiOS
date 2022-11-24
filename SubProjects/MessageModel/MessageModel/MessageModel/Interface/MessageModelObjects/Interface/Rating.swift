@@ -8,7 +8,6 @@
 
 import Foundation
 
-import PEPObjCTypes
 import PEPObjCAdapter_iOS
 
 /// Derived from the adapter's `PEPRating`, which in turn is derived from

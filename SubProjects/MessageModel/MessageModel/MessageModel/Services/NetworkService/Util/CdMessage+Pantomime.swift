@@ -15,7 +15,6 @@ import pEpIOSToolbox
 #endif
 
 import PantomimeFramework
-import PEPObjCTypes
 import PEPObjCAdapter_iOS
 
 typealias ImapStoreCommand = (command: String, pantomimeDict:[AnyHashable: Any])

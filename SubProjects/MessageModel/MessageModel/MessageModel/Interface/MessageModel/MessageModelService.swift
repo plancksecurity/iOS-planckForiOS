@@ -8,7 +8,6 @@
 
 import Foundation
 
-import PEPObjCTypes
 import PEPObjCAdapter_iOS
 import pEpIOSToolbox
 import pEp4iosIntern

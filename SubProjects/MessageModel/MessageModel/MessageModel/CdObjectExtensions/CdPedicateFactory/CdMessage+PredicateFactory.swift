@@ -7,7 +7,7 @@
 //
 
 import CoreData
-import PEPObjCTypes
+
 import PEPObjCAdapter_iOS
 
 extension CdMessage {

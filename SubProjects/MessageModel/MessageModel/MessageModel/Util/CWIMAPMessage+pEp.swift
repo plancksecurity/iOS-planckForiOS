@@ -7,7 +7,6 @@
 //
 
 import PantomimeFramework
-import PEPObjCTypes
 import PEPObjCAdapter_iOS
 
 #if EXT_SHARE

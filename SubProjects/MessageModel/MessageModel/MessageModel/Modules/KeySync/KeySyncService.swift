@@ -8,7 +8,6 @@
 
 import CoreData
 
-import PEPObjCTypes
 import PEPObjCAdapter_iOS
 import pEpIOSToolbox
 

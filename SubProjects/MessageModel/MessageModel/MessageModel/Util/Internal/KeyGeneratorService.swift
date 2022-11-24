@@ -9,7 +9,6 @@
 import Foundation
 import CoreData
 
-import PEPObjCTypes
 import PEPObjCAdapter_iOS
 
 #if EXT_SHARE

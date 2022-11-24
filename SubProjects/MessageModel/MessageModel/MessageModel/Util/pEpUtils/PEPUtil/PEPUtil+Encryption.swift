@@ -6,11 +6,9 @@
 //  Copyright © 2019 pEp Security S.A. All rights reserved.
 //
 
-/// Encryption related pEp utils collection
-
-import PEPObjCTypes
 import PEPObjCAdapter_iOS
 
+/// Encryption related pEp utils collection
 extension  PEPUtils {
     
     static func encrypt(pEpMessage: PEPMessage,

@@ -7,7 +7,7 @@
 //
 
 import Foundation
-import PEPObjCTypes
+
 import PEPObjCAdapter_iOS
 
 public extension NSError {
