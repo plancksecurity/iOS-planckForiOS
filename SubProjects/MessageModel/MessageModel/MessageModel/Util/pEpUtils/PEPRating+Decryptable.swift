@@ -6,7 +6,7 @@
 //  Copyright © 2019 pEp Security S.A. All rights reserved.
 //
 
-import PEPObjCTypes_iOS
+import PEPObjCTypes
 import PEPObjCAdapter_iOS
 
 // MARK: - PEPRating+Decryptable

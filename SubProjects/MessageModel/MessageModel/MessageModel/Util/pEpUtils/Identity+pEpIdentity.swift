@@ -8,7 +8,7 @@
 
 import Foundation
 
-import PEPObjCTypes_iOS
+import PEPObjCTypes
 import PEPObjCAdapter_iOS
 
 extension Identity {

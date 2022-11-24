@@ -11,7 +11,7 @@ import XCTest
 import CoreData
 
 import PantomimeFramework
-import PEPObjCTypes_iOS
+import PEPObjCTypes
 import PEPObjCAdapter_iOS
 @testable import MessageModel
 

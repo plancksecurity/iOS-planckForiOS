@@ -8,7 +8,7 @@
 
 import XCTest
 
-import PEPObjCTypes_iOS
+import PEPObjCTypes
 import PEPObjCAdapter_iOS
 @testable import MessageModel
 

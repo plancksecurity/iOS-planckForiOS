@@ -7,7 +7,7 @@
 //
 
 import PEPObjCAdapter_iOS
-import PEPObjCTypes_iOS
+import PEPObjCTypes
 
 /// https://dev.pep.foundation/Engine/Media%20keys
 public class EchoProtocolUtil {

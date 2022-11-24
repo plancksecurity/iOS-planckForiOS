@@ -6,7 +6,7 @@
 //  Copyright © 2018 p≡p Security S.A. All rights reserved.
 //
 
-import PEPObjCTypes_iOS
+import PEPObjCTypes
 import PEPObjCAdapter_iOS
 import PantomimeFramework
 

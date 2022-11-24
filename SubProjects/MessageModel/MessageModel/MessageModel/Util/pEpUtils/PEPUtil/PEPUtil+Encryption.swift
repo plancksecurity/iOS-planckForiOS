@@ -8,7 +8,7 @@
 
 /// Encryption related pEp utils collection
 
-import PEPObjCTypes_iOS
+import PEPObjCTypes
 import PEPObjCAdapter_iOS
 
 extension  PEPUtils {

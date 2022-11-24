@@ -14,7 +14,7 @@ import pEpIOSToolboxForExtensions
 import pEpIOSToolbox
 #endif
 
-import PEPObjCTypes_iOS
+import PEPObjCTypes
 import PEPObjCAdapter_iOS
 
 extension PEPRating {

@@ -10,7 +10,7 @@ import XCTest
 import CoreData
 
 @testable import MessageModel
-import PEPObjCTypes_iOS
+import PEPObjCTypes
 import PEPObjCAdapter_iOS
 
 class DeleteOldSyncMessagesTest: PersistentStoreDrivenTestBase {
