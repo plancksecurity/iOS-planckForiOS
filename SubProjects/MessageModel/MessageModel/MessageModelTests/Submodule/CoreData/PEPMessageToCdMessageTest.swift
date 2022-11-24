@@ -10,7 +10,7 @@ import XCTest
 import CoreData
 
 @testable import MessageModel
-import PEPObjCAdapter_iOS
+import PEPObjCAdapter
 
 class PEPMessageToCdMessageTest: PersistentStoreDrivenTestBase {
     /// Tests the conversion from `PEPMessage` to `CdMessage`.

@@ -8,7 +8,7 @@
 
 import XCTest
 
-import PEPObjCAdapter_iOS
+import PEPObjCAdapter
 
 // MARK: - XCTest+SyncAdapter
 

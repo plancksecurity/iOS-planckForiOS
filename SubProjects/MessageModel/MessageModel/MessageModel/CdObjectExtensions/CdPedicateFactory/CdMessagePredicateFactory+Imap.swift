@@ -6,7 +6,7 @@
 //  Copyright © 2018 p≡p Security S.A. All rights reserved.
 //
 
-import PEPObjCAdapter_iOS
+import PEPObjCAdapter
 
 /// IMAP specific predicates (MessageModel should not be aware of)
 extension CdMessage.PredicateFactory {

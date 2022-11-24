@@ -8,7 +8,7 @@
 
 import Foundation
 
-import PEPObjCAdapter_iOS
+import PEPObjCAdapter
 
 /// KeySync specific predicates (message-model internal).
 extension CdMessage.PredicateFactory {

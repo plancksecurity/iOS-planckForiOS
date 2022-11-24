@@ -8,7 +8,7 @@
 
 import Foundation
 
-import PEPObjCAdapter_iOS
+import PEPObjCAdapter
 
 /// Derived from the adapter's `PEPRating`, which in turn is derived from
 /// the engine's `PEP_rating`.

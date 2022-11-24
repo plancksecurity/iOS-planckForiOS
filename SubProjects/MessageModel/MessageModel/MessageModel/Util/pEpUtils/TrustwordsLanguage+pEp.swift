@@ -8,7 +8,7 @@
 
 import Foundation
 
-import PEPObjCAdapter_iOS
+import PEPObjCAdapter
 
 extension TrustwordsLanguage {
     init(pEpLanguage: PEPLanguage) {

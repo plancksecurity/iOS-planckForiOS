@@ -9,7 +9,7 @@
 import XCTest
 
 @testable import MessageModel
-import PEPObjCAdapter_iOS
+import PEPObjCAdapter
 
 class PrepareAccountForSavingServiceTest: PersistentStoreDrivenTestBase {
 

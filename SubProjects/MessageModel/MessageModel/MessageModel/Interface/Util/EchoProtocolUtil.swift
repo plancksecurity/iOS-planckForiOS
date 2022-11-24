@@ -6,7 +6,7 @@
 //  Copyright © 2022 pEp Security S.A. All rights reserved.
 //
 
-import PEPObjCAdapter_iOS
+import PEPObjCAdapter
 
 /// https://dev.pep.foundation/Engine/Media%20keys
 public class EchoProtocolUtil {

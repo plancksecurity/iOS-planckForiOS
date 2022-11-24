@@ -6,7 +6,7 @@
 //  Copyright © 2019 pEp Security S.A. All rights reserved.
 //
 
-import PEPObjCAdapter_iOS
+import PEPObjCAdapter
 
 // MARK: - PEPDecryptFlags+ReUpload.swift
 

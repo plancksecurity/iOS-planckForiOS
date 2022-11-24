@@ -9,7 +9,7 @@
 import Foundation
 
 import PantomimeFramework
-import PEPObjCAdapter_iOS
+import PEPObjCAdapter
 
 extension PEPIdentity {
     /// Converts a pEp identity dict to a pantomime address.

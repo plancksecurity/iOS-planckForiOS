@@ -9,7 +9,7 @@
 import Foundation
 import CoreData
 
-import PEPObjCAdapter_iOS
+import PEPObjCAdapter
 
 #if EXT_SHARE
 import pEpIOSToolboxForExtensions

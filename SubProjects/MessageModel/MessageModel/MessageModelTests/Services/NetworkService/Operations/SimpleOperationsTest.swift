@@ -3,7 +3,7 @@ import XCTest
 import CoreData
 
 @testable import MessageModel
-import PEPObjCAdapter_iOS
+import PEPObjCAdapter
 import PantomimeFramework
 
 class SimpleOperationsTest: PersistentStoreDrivenTestBase {

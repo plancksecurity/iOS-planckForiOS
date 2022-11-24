@@ -8,7 +8,7 @@
 
 import Foundation
 
-import PEPObjCAdapter_iOS
+import PEPObjCAdapter
 import pEpIOSToolbox
 
 /// Wraps `PEPLanguage`, indicating a trustwords language.

@@ -9,7 +9,7 @@
 import Foundation
 import CoreData
 
-import PEPObjCAdapter_iOS
+import PEPObjCAdapter
 
 extension CdMessage {
     /// The value of the "in-reply-to" header used by pEp to tunnel

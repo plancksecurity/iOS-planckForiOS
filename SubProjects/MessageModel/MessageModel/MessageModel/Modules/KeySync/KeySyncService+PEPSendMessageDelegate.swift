@@ -8,7 +8,7 @@
 
 import CoreData
 
-import PEPObjCAdapter_iOS
+import PEPObjCAdapter
 import pEpIOSToolbox
 
 extension KeySyncService: PEPSendMessageDelegate {

@@ -14,7 +14,7 @@ import pEpIOSToolboxForExtensions
 import pEpIOSToolbox
 #endif
 
-import PEPObjCAdapter_iOS
+import PEPObjCAdapter
 
 // MARK: - Internal
 extension Message {

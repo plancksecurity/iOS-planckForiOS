@@ -8,7 +8,7 @@
 
 import Foundation
 
-import PEPObjCAdapter_iOS
+import PEPObjCAdapter
 
 class PEPMessageUtil {
     /// Creates a basic PEPMessage.
