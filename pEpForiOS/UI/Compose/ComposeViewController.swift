@@ -322,8 +322,21 @@ extension ComposeViewController: ComposeViewModelDelegate {
                 Log.shared.errorAndCrash("Lost myself")
                 return
             }
-            let transform = CGAffineTransform(translationX: 0, y: 100)
-            me.tableView.transform = visible ? transform : .identity
+
+            guard let recipientsBannerViewController = me.children.first(where: {$0 is RecipientsBannerViewController }) as? RecipientsBannerViewController else {
+                Log.shared.errorAndCrash("No Banner. Unexpected")
+                return
+            }
+
+            if visible {
+                guard let recipientsBannerViewModel = me.viewModel?.getRecipientBannerViewModel(delegate: me) else {
+                    Log.shared.errorAndCrash("Visible but no recipients. Unexpected")
+                    return
+                }
+                recipientsBannerViewController.viewModel = recipientsBannerViewModel
+            } else {
+                recipientsBannerViewController.viewModel = nil
+            }
             me.recipientsBannerContainerView.isHidden = !visible
         }
     }
@@ -1150,7 +1163,7 @@ extension ComposeViewController {
 
 extension ComposeViewController {
     func presentRecipientsListView(viewModel: RecipientsListViewModel) {
-        print("RecipientsListViewController")
+        UIUtils.showAlertWithOnlyPositiveButton(title: "\(viewModel.numberOfRows)", message: ":D")
     }
 }
 

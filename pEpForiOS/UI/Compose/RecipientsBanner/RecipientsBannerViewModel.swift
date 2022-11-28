@@ -35,12 +35,18 @@ class RecipientsBannerViewModel {
 
     /// The button title
     public var buttonTitle: String {
-        let format = NSLocalizedString("$1 unsecure recipients. Click here to review and remove", comment: "")
-        let result = String.localizedStringWithFormat(format, recipients.count)
-        return result
+        let numberOfUnsecureRecipients = recipients.count
+        var format: String
+        // Prepare text considering if it's singular or plural
+        if numberOfUnsecureRecipients == 1 {
+            format = NSLocalizedString("%d unsecure recipient. Click here to review and remove", comment: "unsecure recipient button")
+        } else {
+            format = NSLocalizedString("%d unsecure recipients. Click here to review and remove", comment: "unsecure recipient button")
+        }
+        return String.localizedStringWithFormat(format, numberOfUnsecureRecipients)
     }
 
-    /// Handle
+    /// Handle recipients button was pressed.
     public func handleRecipientsButtonPressed() {
         let recipientsListViewModel = RecipientsListViewModel(recipients: recipients)
         delegate?.presentRecipientsListView(viewModel: recipientsListViewModel)

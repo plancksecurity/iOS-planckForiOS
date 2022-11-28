@@ -1419,24 +1419,28 @@
                         <rect key="frame" x="0.0" y="0.0" width="414" height="40"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Pzw-KP-hgZ" userLabel="Unsecure recipients button">
-                                <rect key="frame" x="27.333333333333343" y="0.0" width="359.33333333333326" height="40"/>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Pzw-KP-hgZ" userLabel="Unsecure recipients button">
+                                <rect key="frame" x="0.0" y="0.0" width="414" height="40"/>
                                 <state key="normal" title="Button"/>
                                 <buttonConfiguration key="configuration" style="plain" title="3 unsecure recipients. Click here to review and remove.">
+                                    <backgroundConfiguration key="background">
+                                        <color key="backgroundColor" systemColor="systemGray6Color"/>
+                                    </backgroundConfiguration>
                                     <fontDescription key="titleFontDescription" style="UICTFontTextStyleFootnote"/>
                                     <color key="baseForegroundColor" systemColor="systemRedColor"/>
                                 </buttonConfiguration>
+                                <connections>
+                                    <action selector="unsecureRecipientsButtonPressed" destination="hrq-S4-HtH" eventType="touchUpInside" id="c9R-kb-G33"/>
+                                </connections>
                             </button>
                         </subviews>
-                        <viewLayoutGuide key="safeArea" id="40A-h4-FFm"/>
-                        <color key="backgroundColor" systemColor="tertiarySystemFillColor"/>
+                        <color key="backgroundColor" systemColor="systemGray6Color"/>
                         <constraints>
-                            <constraint firstItem="40A-h4-FFm" firstAttribute="bottom" secondItem="Pzw-KP-hgZ" secondAttribute="bottom" id="44r-4g-kOm"/>
-                            <constraint firstItem="Pzw-KP-hgZ" firstAttribute="centerY" secondItem="40A-h4-FFm" secondAttribute="centerY" id="AN0-Hy-5eZ"/>
-                            <constraint firstItem="Pzw-KP-hgZ" firstAttribute="top" secondItem="40A-h4-FFm" secondAttribute="top" id="On8-yG-0fv"/>
-                            <constraint firstItem="Pzw-KP-hgZ" firstAttribute="leading" relation="greaterThanOrEqual" secondItem="40A-h4-FFm" secondAttribute="leading" id="pHw-qw-SS8"/>
-                            <constraint firstItem="40A-h4-FFm" firstAttribute="trailing" relation="greaterThanOrEqual" secondItem="Pzw-KP-hgZ" secondAttribute="trailing" id="pZT-DI-POl"/>
-                            <constraint firstItem="Pzw-KP-hgZ" firstAttribute="centerX" secondItem="40A-h4-FFm" secondAttribute="centerX" id="rL2-bG-fK9"/>
+                            <constraint firstAttribute="bottom" secondItem="Pzw-KP-hgZ" secondAttribute="bottom" id="44r-4g-kOm"/>
+                            <constraint firstItem="Pzw-KP-hgZ" firstAttribute="centerY" secondItem="PwV-13-jSq" secondAttribute="centerY" id="AN0-Hy-5eZ"/>
+                            <constraint firstItem="Pzw-KP-hgZ" firstAttribute="leading" secondItem="PwV-13-jSq" secondAttribute="leading" id="Nac-h7-zza"/>
+                            <constraint firstItem="Pzw-KP-hgZ" firstAttribute="top" secondItem="PwV-13-jSq" secondAttribute="top" id="On8-yG-0fv"/>
+                            <constraint firstAttribute="trailing" secondItem="Pzw-KP-hgZ" secondAttribute="trailing" id="pZT-DI-POl"/>
                         </constraints>
                     </view>
                     <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
@@ -1664,6 +1668,9 @@
         <systemColor name="systemBackgroundColor">
             <color white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
         </systemColor>
+        <systemColor name="systemGray6Color">
+            <color red="0.94901960784313721" green="0.94901960784313721" blue="0.96862745098039216" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+        </systemColor>
         <systemColor name="systemGrayColor">
             <color red="0.55686274509803924" green="0.55686274509803924" blue="0.57647058823529407" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
         </systemColor>
@@ -1672,9 +1679,6 @@
         </systemColor>
         <systemColor name="systemRedColor">
             <color red="1" green="0.23137254901960785" blue="0.18823529411764706" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-        </systemColor>
-        <systemColor name="tertiarySystemFillColor">
-            <color red="0.46274509803921571" green="0.46274509803921571" blue="0.50196078431372548" alpha="0.12" colorSpace="custom" customColorSpace="sRGB"/>
         </systemColor>
     </resources>
 </document>

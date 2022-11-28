@@ -488,6 +488,7 @@ extension ComposeViewModel: ComposeViewModelStateDelegate {
                                didChangeValidationStateTo isValid: Bool) {
         let userSeemsTyping = existsDirtyCell()
         delegate?.validatedStateChanged(to: isValid && !userSeemsTyping)
+        handleRecipientsBanner()
     }
 
     func composeViewModelState(_ composeViewModelState: ComposeViewModelState,

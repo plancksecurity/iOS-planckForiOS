@@ -6,19 +6,41 @@
 //  Copyright © 2022 p≡p Security S.A. All rights reserved.
 //
 
-import Foundation
 import UIKit
+#if EXT_SHARE
+import pEpIOSToolboxForExtensions
+#else
+import pEpIOSToolbox
+#endif
 
 class RecipientsBannerViewController: UIViewController {
 
-    public var viewModel: RecipientsBannerViewModel?
+    public var viewModel: RecipientsBannerViewModel? {
+        didSet {
+            setupUI()
+        }
+    }
 
-    @IBOutlet private weak var unsecureRecipientsButton: UIButton!
+    @IBOutlet public private(set) weak var unsecureRecipientsButton: UIButton!
 
-    override func viewDidLoad() {
-        super.viewDidLoad()
+    @IBAction private func unsecureRecipientsButtonPressed() {
         guard let vm = viewModel else {
-            // Valid case: The storyboard intanciates the VC before we have the chance to set a VM.
+            Log.shared.errorAndCrash("VM not found")
+            return
+        }
+        vm.handleRecipientsButtonPressed()
+    }
+}
+
+// MARK: - Private
+
+extension RecipientsBannerViewController {
+
+    private func setupUI() {
+        unsecureRecipientsButton.setPEPFont(style: .footnote, weight: .regular)
+        guard let vm = viewModel else {
+            // No view model.
+            unsecureRecipientsButton.setTitle("", for: .normal)
             return
         }
         unsecureRecipientsButton.setTitle(vm.buttonTitle, for: .normal)
