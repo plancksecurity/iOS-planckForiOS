@@ -10,8 +10,10 @@ import Foundation
 
 #if EXT_SHARE
 import MessageModelForAppExtensions
+import pEpIOSToolboxForExtensions
 #else
 import MessageModel
+import pEpIOSToolbox
 #endif
 
 protocol RecipientsBannerDelegate: AnyObject {
@@ -31,6 +33,7 @@ class RecipientsBannerViewModel {
             return nil
         }
         self.recipients = recipients
+        self.delegate = delegate
     }
 
     /// The button title
@@ -49,6 +52,16 @@ class RecipientsBannerViewModel {
     /// Handle recipients button was pressed.
     public func handleRecipientsButtonPressed() {
         let recipientsListViewModel = RecipientsListViewModel(recipients: recipients)
-        delegate?.presentRecipientsListView(viewModel: recipientsListViewModel)
+        DispatchQueue.main.async { [weak self] in
+            guard let me = self else {
+                Log.shared.errorAndCrash("Lost myself")
+                return
+            }
+            guard let delegate = me.delegate else {
+                Log.shared.errorAndCrash("No delegate. Unexpected")
+                return
+            }
+            delegate.presentRecipientsListView(viewModel: recipientsListViewModel)
+        }
     }
 }

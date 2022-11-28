@@ -495,6 +495,10 @@
 		5B2198A128BE39F000668445 /* AppSettings+MDMSettingsProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5B21989F28BE360000668445 /* AppSettings+MDMSettingsProtocol.swift */; };
 		5B2198A328BE3A6500668445 /* AppSettings+UserSettingsProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5B2198A228BE3A6500668445 /* AppSettings+UserSettingsProtocol.swift */; };
 		5B2198A428BE3A7400668445 /* AppSettings+UserSettingsProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5B2198A228BE3A6500668445 /* AppSettings+UserSettingsProtocol.swift */; };
+		5B2C2B2629350CAC000E8F20 /* RecipientsListViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5B2C2B2529350CAC000E8F20 /* RecipientsListViewController.swift */; };
+		5B2C2B2729350CAC000E8F20 /* RecipientsListViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5B2C2B2529350CAC000E8F20 /* RecipientsListViewController.swift */; };
+		5B2C2B292935173D000E8F20 /* RecipientListTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5B2C2B282935173D000E8F20 /* RecipientListTableViewCell.swift */; };
+		5B2C2B2A2935173D000E8F20 /* RecipientListTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5B2C2B282935173D000E8F20 /* RecipientListTableViewCell.swift */; };
 		5B2F7E63240D25CF004DDFA2 /* TutorialStepViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5B2F7E62240D25CF004DDFA2 /* TutorialStepViewController.swift */; };
 		5B394E1323ED5673006A1FC0 /* TrustManagementTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5B394E1223ED5673006A1FC0 /* TrustManagementTableViewCell.swift */; };
 		5B3B019124B46CFC00FBB4B5 /* UILayout+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5B3B019024B46CFC00FBB4B5 /* UILayout+Extension.swift */; };
@@ -1113,6 +1117,8 @@
 		5B21989928BDFAE600668445 /* MDMSettingsProtocol.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MDMSettingsProtocol.swift; sourceTree = "<group>"; };
 		5B21989F28BE360000668445 /* AppSettings+MDMSettingsProtocol.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "AppSettings+MDMSettingsProtocol.swift"; sourceTree = "<group>"; };
 		5B2198A228BE3A6500668445 /* AppSettings+UserSettingsProtocol.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "AppSettings+UserSettingsProtocol.swift"; sourceTree = "<group>"; };
+		5B2C2B2529350CAC000E8F20 /* RecipientsListViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RecipientsListViewController.swift; sourceTree = "<group>"; };
+		5B2C2B282935173D000E8F20 /* RecipientListTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RecipientListTableViewCell.swift; sourceTree = "<group>"; };
 		5B2F7E62240D25CF004DDFA2 /* TutorialStepViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TutorialStepViewController.swift; sourceTree = "<group>"; };
 		5B394E1223ED5673006A1FC0 /* TrustManagementTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TrustManagementTableViewCell.swift; sourceTree = "<group>"; };
 		5B3B019024B46CFC00FBB4B5 /* UILayout+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UILayout+Extension.swift"; sourceTree = "<group>"; };
@@ -2690,6 +2696,8 @@
 			children = (
 				5B1EF69E2926C49400CE2355 /* RecipientsBannerViewModel.swift */,
 				5B1EF6A72927BE2700CE2355 /* RecipientsBannerViewController.swift */,
+				5B2C2B2529350CAC000E8F20 /* RecipientsListViewController.swift */,
+				5B2C2B282935173D000E8F20 /* RecipientListTableViewCell.swift */,
 				5B1EF6A42927AAA000CE2355 /* RecipientRowProtocol.swift */,
 				5B1EF6A12927A95000CE2355 /* RecipientsListViewModel.swift */,
 			);
@@ -3475,6 +3483,7 @@
 				43BDE03625DE7C8A00FC0C68 /* cmark.c in Sources */,
 				434C1AFC25D4266900F622DB /* String+NSAttributedString.swift in Sources */,
 				434C1AF025D416AF00F622DB /* Capability.swift in Sources */,
+				5B2C2B2729350CAC000E8F20 /* RecipientsListViewController.swift in Sources */,
 				434A6C6225D2A3C800179335 /* BodyCellViewModel.swift in Sources */,
 				434A6C7C25D2A3F100179335 /* WrappedBccViewModel.swift in Sources */,
 				5B21989B28BDFBA200668445 /* MDMSettingsProtocol.swift in Sources */,
@@ -3487,6 +3496,7 @@
 				434C1AAF25D4103400F622DB /* UrlClickHandlerProtocol.swift in Sources */,
 				434A6C5325D2A3AF00179335 /* AccountCell.swift in Sources */,
 				43C4156525EE5CA50071C608 /* Attachment+InlinedImage.swift in Sources */,
+				5B2C2B2A2935173D000E8F20 /* RecipientListTableViewCell.swift in Sources */,
 				434C1B0525D4281800F622DB /* Attachment+Extensions.swift in Sources */,
 				434A6C7825D2A3EA00179335 /* SubjectCellViewModel.swift in Sources */,
 				434C1A7125D409B100F622DB /* UIHelper.swift in Sources */,
@@ -3575,6 +3585,7 @@
 				1526597A21623652006A78DF /* SuggestViewModel.swift in Sources */,
 				5B1EF6A82927BE2700CE2355 /* RecipientsBannerViewController.swift in Sources */,
 				5BBEA6A828F83EED00BDC78E /* MDMUtil.swift in Sources */,
+				5B2C2B292935173D000E8F20 /* RecipientListTableViewCell.swift in Sources */,
 				4351C2D31F4441190053381F /* inlines.c in Sources */,
 				5B41C6082418F15100C268CE /* TutorialStep3iPhoneViewController.swift in Sources */,
 				15874BCD2127493E00A3A4A6 /* AccountSettingsError.swift in Sources */,
@@ -3614,6 +3625,7 @@
 				43E657E71F3CAB310014CBEC /* HtmlToMarkdownSaxParser.swift in Sources */,
 				5BB7C74524D82B6300D5F328 /* Constants+Support.swift in Sources */,
 				5BEB212A2630955D00CB01C3 /* RecipientCollectionViewCell.swift in Sources */,
+				5B2C2B2629350CAC000E8F20 /* RecipientsListViewController.swift in Sources */,
 				5BC4E601240FF156008C01ED /* TutorialStep1iPhoneViewController.swift in Sources */,
 				43E1619120D7B2D6003F1514 /* UpdateThreadListDelegate.swift in Sources */,
 				155475642137FD96005A52D0 /* FolderType+Extensions.swift in Sources */,

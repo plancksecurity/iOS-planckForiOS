@@ -1173,11 +1173,3 @@ extension ComposeViewModel {
         }
     }
 }
-
-
-extension ComposeViewModel: RecipientsBannerDelegate {
-
-    func presentRecipientsListView(viewModel: RecipientsListViewModel) {
-        delegate?.showRecipientsList(viewModel: viewModel)
-    }
-}

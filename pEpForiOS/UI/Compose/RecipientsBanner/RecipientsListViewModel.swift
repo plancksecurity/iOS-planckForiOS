@@ -30,6 +30,11 @@ class RecipientsListViewModel {
         return rows.count
     }
 
+    /// Description that explains the current view. 
+    public var description: String {
+        return NSLocalizedString("Unable to send message securely. Please consider removing the following recipients for a secure transmission of this email:", comment: "Warning description")
+    }
+
     /// Retrieves the row
     subscript(index: Int) -> RecipientRowProtocol {
         get {

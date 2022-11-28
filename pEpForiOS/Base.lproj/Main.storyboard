@@ -1434,6 +1434,7 @@
                                 </connections>
                             </button>
                         </subviews>
+                        <viewLayoutGuide key="safeArea" id="qKm-Fp-FJW"/>
                         <color key="backgroundColor" systemColor="systemGray6Color"/>
                         <constraints>
                             <constraint firstAttribute="bottom" secondItem="Pzw-KP-hgZ" secondAttribute="bottom" id="44r-4g-kOm"/>
@@ -1618,6 +1619,107 @@
                 <placeholder placeholderIdentifier="IBFirstResponder" id="wIv-8k-7gQ" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="5381.1594202898559" y="-1243.2065217391305"/>
+        </scene>
+        <!--Recipients List View Controller-->
+        <scene sceneID="eFw-RP-A8h">
+            <objects>
+                <viewController storyboardIdentifier="unsecureRecipientsList" id="sFJ-1c-8b3" customClass="RecipientsListViewController" customModule="pEpForiOS" customModuleProvider="target" sceneMemberID="viewController">
+                    <view key="view" contentMode="scaleToFill" id="Opk-Xd-4IJ">
+                        <rect key="frame" x="0.0" y="0.0" width="414" height="736"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Unable to send message securely. Please consider removing the following recipients for a secure transmission of this email:" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="d5z-xp-yYc">
+                                <rect key="frame" x="16" y="84" width="382" height="61"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                <nil key="textColor"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="none" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="-1" estimatedSectionHeaderHeight="-1" sectionFooterHeight="-1" estimatedSectionFooterHeight="-1" translatesAutoresizingMaskIntoConstraints="NO" id="Us9-yG-gPz">
+                                <rect key="frame" x="0.0" y="161" width="414" height="516"/>
+                                <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+                                <prototypes>
+                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" reuseIdentifier="RecipientListTableViewCell" id="nU7-vU-axu" customClass="RecipientListTableViewCell" customModule="pEpForiOS" customModuleProvider="target">
+                                        <rect key="frame" x="0.0" y="50" width="414" height="44"/>
+                                        <autoresizingMask key="autoresizingMask"/>
+                                        <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="nU7-vU-axu" id="SgJ-fE-BxB">
+                                            <rect key="frame" x="0.0" y="0.0" width="414" height="44"/>
+                                            <autoresizingMask key="autoresizingMask"/>
+                                            <subviews>
+                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="rachel@pep.digital" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="RZm-8W-cX0" userLabel="Address label">
+                                                    <rect key="frame" x="8" y="11.666666666666664" width="141.33333333333334" height="21"/>
+                                                    <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                                    <nil key="textColor"/>
+                                                    <nil key="highlightedColor"/>
+                                                </label>
+                                            </subviews>
+                                            <constraints>
+                                                <constraint firstItem="RZm-8W-cX0" firstAttribute="centerY" secondItem="SgJ-fE-BxB" secondAttribute="centerY" id="7cJ-OQ-ZZK"/>
+                                                <constraint firstAttribute="trailing" relation="greaterThanOrEqual" secondItem="RZm-8W-cX0" secondAttribute="trailing" constant="8" id="Dg6-8v-aOG"/>
+                                                <constraint firstItem="RZm-8W-cX0" firstAttribute="leading" secondItem="SgJ-fE-BxB" secondAttribute="leading" constant="8" id="Xhm-6v-Ttp"/>
+                                            </constraints>
+                                        </tableViewCellContentView>
+                                        <connections>
+                                            <outlet property="addressLabel" destination="RZm-8W-cX0" id="Gub-un-wAd"/>
+                                        </connections>
+                                    </tableViewCell>
+                                </prototypes>
+                                <connections>
+                                    <outlet property="dataSource" destination="sFJ-1c-8b3" id="MB3-sW-clQ"/>
+                                    <outlet property="delegate" destination="sFJ-1c-8b3" id="Wbj-KW-QuW"/>
+                                </connections>
+                            </tableView>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="RKb-Zx-6g6" userLabel="Remove Selected">
+                                <rect key="frame" x="16" y="689" width="75" height="35"/>
+                                <state key="normal" title="Button"/>
+                                <buttonConfiguration key="configuration" style="plain" title="Button"/>
+                            </button>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="3KM-pU-HYj" userLabel="Remove all">
+                                <rect key="frame" x="323" y="689" width="75" height="35"/>
+                                <state key="normal" title="Button"/>
+                                <buttonConfiguration key="configuration" style="plain" title="Button"/>
+                            </button>
+                        </subviews>
+                        <viewLayoutGuide key="safeArea" id="HAg-LI-JR4"/>
+                        <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+                        <constraints>
+                            <constraint firstItem="3KM-pU-HYj" firstAttribute="leading" relation="greaterThanOrEqual" secondItem="RKb-Zx-6g6" secondAttribute="trailing" constant="8" id="1P9-jW-9ry"/>
+                            <constraint firstItem="Us9-yG-gPz" firstAttribute="leading" secondItem="HAg-LI-JR4" secondAttribute="leading" id="4eE-uy-yY9"/>
+                            <constraint firstItem="HAg-LI-JR4" firstAttribute="bottom" secondItem="RKb-Zx-6g6" secondAttribute="bottom" constant="12" id="C53-sa-hTL"/>
+                            <constraint firstItem="d5z-xp-yYc" firstAttribute="top" secondItem="HAg-LI-JR4" secondAttribute="top" constant="40" id="FI3-4B-4Y2"/>
+                            <constraint firstItem="3KM-pU-HYj" firstAttribute="centerY" secondItem="RKb-Zx-6g6" secondAttribute="centerY" id="GUD-Si-RLd"/>
+                            <constraint firstItem="d5z-xp-yYc" firstAttribute="centerX" secondItem="HAg-LI-JR4" secondAttribute="centerX" id="JUy-Tf-CGj"/>
+                            <constraint firstItem="RKb-Zx-6g6" firstAttribute="top" secondItem="Us9-yG-gPz" secondAttribute="bottom" constant="12" id="POe-9B-8xm"/>
+                            <constraint firstItem="RKb-Zx-6g6" firstAttribute="leading" secondItem="HAg-LI-JR4" secondAttribute="leading" constant="16" id="VWp-aO-HNW"/>
+                            <constraint firstItem="HAg-LI-JR4" firstAttribute="trailing" secondItem="Us9-yG-gPz" secondAttribute="trailing" id="oI8-uF-Pb0"/>
+                            <constraint firstItem="HAg-LI-JR4" firstAttribute="trailing" secondItem="3KM-pU-HYj" secondAttribute="trailing" constant="16" id="tYu-5v-zzT"/>
+                            <constraint firstItem="d5z-xp-yYc" firstAttribute="trailing" secondItem="HAg-LI-JR4" secondAttribute="trailing" constant="-16" id="uWx-Rb-Hex"/>
+                            <constraint firstItem="Us9-yG-gPz" firstAttribute="top" secondItem="d5z-xp-yYc" secondAttribute="bottom" constant="16" id="vPZ-4U-RAc"/>
+                        </constraints>
+                    </view>
+                    <navigationItem key="navigationItem" id="EcY-Ht-TCe"/>
+                    <connections>
+                        <outlet property="tableView" destination="Us9-yG-gPz" id="6Eb-WE-5jt"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="Lm4-ek-rcf" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="1333.3333333333335" y="1048.3695652173915"/>
+        </scene>
+        <!--Navigation Controller-->
+        <scene sceneID="zFY-ir-fHc">
+            <objects>
+                <navigationController storyboardIdentifier="unsecureRecipientsListNavigationController" useStoryboardIdentifierAsRestorationIdentifier="YES" id="Nsr-vQ-X75" sceneMemberID="viewController">
+                    <navigationBar key="navigationBar" contentMode="scaleToFill" id="wgJ-P8-JQz">
+                        <rect key="frame" x="0.0" y="0.0" width="414" height="44"/>
+                        <autoresizingMask key="autoresizingMask"/>
+                    </navigationBar>
+                    <connections>
+                        <segue destination="sFJ-1c-8b3" kind="relationship" relationship="rootViewController" id="8bY-eS-vja"/>
+                    </connections>
+                </navigationController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="h7d-jY-eNr" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="609" y="1048"/>
         </scene>
     </scenes>
     <designables>

@@ -1162,8 +1162,31 @@ extension ComposeViewController {
 }
 
 extension ComposeViewController {
+
+    @objc private func closeScreen() {
+        dismiss()
+    }
+
     func presentRecipientsListView(viewModel: RecipientsListViewModel) {
-        UIUtils.showAlertWithOnlyPositiveButton(title: "\(viewModel.numberOfRows)", message: ":D")
+        let storyboard = UIStoryboard(name: Constants.mainStoryboard, bundle: nil)
+        guard let unsecureRecipientsNavigationView = storyboard.instantiateViewController(withIdentifier:
+                Constants.unsecureRecipientsListNavigationStoryboardId) as? UINavigationController
+            else {
+                Log.shared.errorAndCrash("Missing required VCs")
+                return
+        }
+        guard let vc = unsecureRecipientsNavigationView.children.first as? RecipientsListViewController else {
+            Log.shared.errorAndCrash("No VC")
+            return
+        }
+        let navBarButtonTitle = NSLocalizedString("Done", comment: "Done")
+        let endButton = UIBarButtonItem(title: navBarButtonTitle, style: .done, target: self, action: #selector(closeScreen))
+
+        endButton.accessibilityIdentifier = AccessibilityIdentifier.doneButton
+        endButton.isAccessibilityElement = true
+        vc.navigationItem.rightBarButtonItem = endButton
+        vc.viewModel = viewModel
+        present(unsecureRecipientsNavigationView, animated: true, completion: nil)
     }
 }
 
