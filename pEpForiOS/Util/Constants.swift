@@ -40,8 +40,8 @@ extension Constants {
     /// Name of Storyboard that contains KeySyncWizardViewController.
     static let keySyncWizardStoryboard = "Reusable"
 
-    static let unsecureRecipientsListStoryboardId = "unsecureRecipientsList"
-    static let unsecureRecipientsListNavigationStoryboardId = "unsecureRecipientsListNavigationController"
+    /// Storyboard ID to instantiate the navigation controller that contains Unsecure recipients list view.
+    static let unsecureRecipientsListNavigation = "unsecureRecipientsListNavigationController"
 
     struct XibNames {
         static let loadingInterface = "LoadingInterface"
