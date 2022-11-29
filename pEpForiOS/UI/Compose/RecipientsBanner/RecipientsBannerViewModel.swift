@@ -22,12 +22,19 @@ protocol RecipientsBannerDelegate: AnyObject {
     func presentRecipientsListView(viewModel: RecipientsListViewModel)
 }
 
+/// This VM handles the banner that appears in the compose view when the user introduces an address of a red identity in a recipient field.
+/// Its main responsability is to provide data for the layout and handle the interaction with the single button it has. 
 class RecipientsBannerViewModel {
 
+    /// Delegate to communicate with the view.
     public weak var delegate: RecipientsBannerDelegate?
 
     private var recipients: [Identity] = []
 
+    /// Constructor
+    /// - parameters:
+    ///   - recipients: The list of red recipients
+    ///   - delegate: The delegate to communicate with the view.
     init?(recipients: [Identity], delegate: RecipientsBannerDelegate) {
         if recipients.count == 0 {
             return nil

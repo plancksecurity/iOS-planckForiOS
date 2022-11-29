@@ -66,8 +66,6 @@ protocol ComposeViewModelDelegate: AnyObject {
     func showRecipientsBanner()
 
     func hideRecipientsBanner()
-
-    func showRecipientsList(viewModel: RecipientsListViewModel)
 }
 
 /// Contains messages about cancelation and send.

@@ -317,7 +317,7 @@ extension ComposeViewController: ComposeViewModelDelegate {
     }
 
     private func setRecipientsBanner(visible: Bool) {
-        UIView.animate(withDuration: 0.5, delay: 0) { [weak self] in
+        UIView.animate(withDuration: 0.3, delay: 0) { [weak self] in
             guard let me = self else {
                 Log.shared.errorAndCrash("Lost myself")
                 return
@@ -340,13 +340,6 @@ extension ComposeViewController: ComposeViewModelDelegate {
             me.recipientsBannerContainerView.isHidden = !visible
         }
     }
-
-    // MARK: - Recipients List
-
-    func showRecipientsList(viewModel: RecipientsListViewModel) {
-
-    }
-
 
     // MARK: - Suggestions
 
@@ -1170,7 +1163,7 @@ extension ComposeViewController {
     func presentRecipientsListView(viewModel: RecipientsListViewModel) {
         let storyboard = UIStoryboard(name: Constants.mainStoryboard, bundle: nil)
         guard let unsecureRecipientsNavigationView = storyboard.instantiateViewController(withIdentifier:
-                Constants.unsecureRecipientsListNavigationStoryboardId) as? UINavigationController
+                Constants.unsecureRecipientsListNavigation) as? UINavigationController
             else {
                 Log.shared.errorAndCrash("Missing required VCs")
                 return
@@ -1181,10 +1174,10 @@ extension ComposeViewController {
         }
         let navBarButtonTitle = NSLocalizedString("Done", comment: "Done")
         let endButton = UIBarButtonItem(title: navBarButtonTitle, style: .done, target: self, action: #selector(closeScreen))
-
         endButton.accessibilityIdentifier = AccessibilityIdentifier.doneButton
         endButton.isAccessibilityElement = true
         vc.navigationItem.rightBarButtonItem = endButton
+        viewModel.delegate = vc
         vc.viewModel = viewModel
         present(unsecureRecipientsNavigationView, animated: true, completion: nil)
     }
@@ -1225,6 +1218,8 @@ extension ComposeViewController {
     }
 }
 
+// MARK: - Trait Collection
+
 extension ComposeViewController {
 
     override func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
@@ -1249,8 +1244,6 @@ extension ComposeViewController {
         }
     }
 }
-
-
 
 #if EXT_SHARE
 

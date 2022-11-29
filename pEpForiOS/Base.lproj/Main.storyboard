@@ -1669,14 +1669,20 @@
                                 </connections>
                             </tableView>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="RKb-Zx-6g6" userLabel="Remove Selected">
-                                <rect key="frame" x="16" y="689" width="75" height="35"/>
+                                <rect key="frame" x="16" y="689" width="156.66666666666666" height="35"/>
                                 <state key="normal" title="Button"/>
-                                <buttonConfiguration key="configuration" style="plain" title="Button"/>
+                                <buttonConfiguration key="configuration" style="plain" title="Remove Selected"/>
+                                <connections>
+                                    <action selector="removeSelectedButtonPressed" destination="sFJ-1c-8b3" eventType="touchUpInside" id="mrX-aw-sBE"/>
+                                </connections>
                             </button>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="3KM-pU-HYj" userLabel="Remove all">
-                                <rect key="frame" x="323" y="689" width="75" height="35"/>
+                                <rect key="frame" x="291.66666666666669" y="689" width="106.33333333333331" height="35"/>
                                 <state key="normal" title="Button"/>
-                                <buttonConfiguration key="configuration" style="plain" title="Button"/>
+                                <buttonConfiguration key="configuration" style="plain" title="Remove all"/>
+                                <connections>
+                                    <action selector="removeAllButtonPressed" destination="sFJ-1c-8b3" eventType="touchUpInside" id="AY1-VY-SFE"/>
+                                </connections>
                             </button>
                         </subviews>
                         <viewLayoutGuide key="safeArea" id="HAg-LI-JR4"/>
@@ -1698,6 +1704,8 @@
                     </view>
                     <navigationItem key="navigationItem" id="EcY-Ht-TCe"/>
                     <connections>
+                        <outlet property="removeAllButton" destination="3KM-pU-HYj" id="Lz8-iK-GMA"/>
+                        <outlet property="removeSelectedButton" destination="RKb-Zx-6g6" id="VW1-Ed-dMy"/>
                         <outlet property="tableView" destination="Us9-yG-gPz" id="6Eb-WE-5jt"/>
                     </connections>
                 </viewController>

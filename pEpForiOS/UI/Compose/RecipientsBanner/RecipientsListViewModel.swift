@@ -8,11 +8,22 @@
 
 #if EXT_SHARE
 import MessageModelForAppExtensions
+import pEpIOSToolboxForExtensions
 #else
 import MessageModel
+import pEpIOSToolbox
 #endif
 
+protocol RecipientsListViewDelegate: AnyObject {
+
+    func reload()
+
+    func reloadAndDismiss()
+}
+
 class RecipientsListViewModel {
+
+    weak var delegate: RecipientsListViewDelegate?
 
     private var rows = [RecipientRowProtocol]()
 
@@ -41,4 +52,37 @@ class RecipientsListViewModel {
             return rows[index]
         }
     }
+
+    public func removeRecipientsFrom(indexPaths: [IndexPath]) {
+        indexPaths.forEach { ip in
+            rows.remove(at: ip.row)
+        }
+        rows.count > 0 ? reload() : reloadAndDismiss()
+    }
+
+    public func removeAll() {
+        rows = []
+        reloadAndDismiss()
+    }
+
+    private func reload() {
+        DispatchQueue.main.async { [weak self] in
+            guard let me = self else {
+                Log.shared.errorAndCrash("Lost myself")
+                return
+            }
+            me.delegate?.reload()
+        }
+    }
+
+    private func reloadAndDismiss() {
+        DispatchQueue.main.async { [weak self] in
+            guard let me = self else {
+                Log.shared.errorAndCrash("Lost myself")
+                return
+            }
+            me.delegate?.reloadAndDismiss()
+        }
+    }
+
 }

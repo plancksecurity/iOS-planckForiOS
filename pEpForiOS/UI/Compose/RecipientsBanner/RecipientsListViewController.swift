@@ -16,21 +16,52 @@ import pEpIOSToolbox
 
 class RecipientsListViewController: UIViewController {
 
-    @IBOutlet weak var tableView: UITableView!
     var viewModel: RecipientsListViewModel?
+
+    @IBOutlet weak var removeAllButton: UIButton!
+    @IBOutlet weak var removeSelectedButton: UIButton!
+    @IBOutlet private weak var tableView: UITableView!
+
+    @IBAction func removeSelectedButtonPressed() {
+        guard let vm = viewModel else {
+            Log.shared.errorAndCrash("VM not found")
+            return
+        }
+        if let selectedItems = tableView.indexPathsForSelectedRows {
+            vm.removeRecipientsFrom(indexPaths: selectedItems)
+        }
+    }
+
+    @IBAction func removeAllButtonPressed() {
+        guard let vm = viewModel else {
+            Log.shared.errorAndCrash("VM not found")
+            return
+        }
+        vm.removeAll()
+    }
 
     override func viewDidLoad() {
         super.viewDidLoad()
         tableView.setEditing(true, animated: true)
         tableView.allowsMultipleSelectionDuringEditing = true
-    }
-
-    func tableView(_ tableView: UITableView, editingStyleForRowAt indexPath: IndexPath) -> UITableViewCell.EditingStyle {
-        return .insert
+        removeSelectedButton.isEnabled = false
+        removeAllButton.setTitleColor(.pEpRed, for: .normal)
+        removeSelectedButton.setTitleColor(.pEpRed, for: .normal)
+        removeSelectedButton.setTitleColor(.lightGray, for: .disabled)
     }
 }
 
+// MARK: - UITableViewDataSource
+
 extension RecipientsListViewController: UITableViewDataSource {
+
+    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        guard let vm = viewModel else {
+            Log.shared.errorAndCrash("VM not found")
+            return 0
+        }
+        return vm.numberOfRows
+    }
 
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         guard let vm = viewModel else {
@@ -43,16 +74,44 @@ extension RecipientsListViewController: UITableViewDataSource {
         cell.addressLabel.text = vm[indexPath.row].address
         return cell
     }
-
-    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        guard let vm = viewModel else {
-            Log.shared.errorAndCrash("VM not found")
-            return 0
-        }
-        return vm.numberOfRows
-    }
 }
+
+// MARK: - UITableViewDelegate
 
 extension RecipientsListViewController: UITableViewDelegate {
 
+    func tableView(_ tableView: UITableView, editingStyleForRowAt indexPath: IndexPath) -> UITableViewCell.EditingStyle {
+        return .insert
+    }
+
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        handleSelectionChangeOn(tableView: tableView)
+    }
+
+    func tableView(_ tableView: UITableView, didDeselectRowAt indexPath: IndexPath) {
+        handleSelectionChangeOn(tableView: tableView)
+    }
+}
+
+// MARK: - RecipientsListViewDelegate
+
+extension RecipientsListViewController: RecipientsListViewDelegate {
+
+    func reload() {
+        tableView.reloadData()
+    }
+
+    func reloadAndDismiss() {
+        tableView.reloadData()
+        dismiss(animated: true)
+    }
+}
+
+//MARK: - Private
+
+extension RecipientsListViewController {
+
+    private func handleSelectionChangeOn(tableView: UITableView) {
+        removeSelectedButton.isEnabled = tableView.indexPathsForSelectedRows != nil
+    }
 }
