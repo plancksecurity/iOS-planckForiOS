@@ -201,7 +201,7 @@ class ComposeViewModel {
     /// Or nil, if there is no recipients that should be managed (red).
     /// - Returns: The Recipients Banner ViewModel
     func getRecipientBannerViewModel(delegate: RecipientsBannerDelegate) -> RecipientsBannerViewModel? {
-        return RecipientsBannerViewModel(recipients: getRedRecipients(), delegate: delegate)
+        return RecipientsBannerViewModel(recipients: getRedRecipients(), delegate: delegate, composeViewModel: self)
     }
 
     // Get the red recipients.

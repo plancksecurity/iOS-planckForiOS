@@ -16,13 +16,16 @@ import pEpIOSToolbox
 
 protocol RecipientsListViewDelegate: AnyObject {
 
-    func reload()
-
+    /// Reload the list and dismiss the view.
     func reloadAndDismiss()
+
+    /// Reload the list
+    func reload()
 }
 
 class RecipientsListViewModel {
 
+    var composeViewModel: ComposeViewModel?
     weak var delegate: RecipientsListViewDelegate?
 
     private var rows = [RecipientRowProtocol]()
@@ -30,10 +33,11 @@ class RecipientsListViewModel {
     /// Constructor
     /// - Parameters:
     ///   - recipients: The recipients to show in the list.
-    init(recipients: [Identity]) {
+    init(recipients: [Identity], composeViewModel: ComposeViewModel) {
         self.rows = recipients.map {
             RecipientRow(address: $0.address)
         }
+        self.composeViewModel = composeViewModel
     }
 
     /// Number of rows
@@ -53,26 +57,33 @@ class RecipientsListViewModel {
         }
     }
 
-    public func removeRecipientsFrom(indexPaths: [IndexPath]) {
-        indexPaths.forEach { ip in
-            rows.remove(at: ip.row)
-        }
-        rows.count > 0 ? reload() : reloadAndDismiss()
-    }
-
     public func removeAll() {
         rows = []
         reloadAndDismiss()
     }
 
-    private func reload() {
-        DispatchQueue.main.async { [weak self] in
-            guard let me = self else {
-                Log.shared.errorAndCrash("Lost myself")
-                return
-            }
-            me.delegate?.reload()
+    public func removeRecipientsFrom(indexPaths: [IndexPath]) {
+        guard let composeViewModel = composeViewModel else {
+            Log.shared.errorAndCrash("VM not found")
+            return
         }
+
+        indexPaths.forEach { ip in
+            let index = ip.row
+            let row = rows[index]
+            // 1. Remove from this table view
+            rows.remove(at: index)
+            // 2. Remove from the state.
+            composeViewModel.state.toRecipients.removeAll(where: {$0.address == row.address})
+            composeViewModel.state.ccRecipients.removeAll(where: {$0.address == row.address})
+            composeViewModel.state.bccRecipients.removeAll(where: {$0.address == row.address})
+            // 3. Remove from the compose view
+
+        }
+
+        // 4. Reload.
+        rows.count > 0 ? reload() : reloadAndDismiss()
+
     }
 
     private func reloadAndDismiss() {
@@ -82,6 +93,16 @@ class RecipientsListViewModel {
                 return
             }
             me.delegate?.reloadAndDismiss()
+        }
+    }
+
+    private func reload() {
+        DispatchQueue.main.async { [weak self] in
+            guard let me = self else {
+                Log.shared.errorAndCrash("Lost myself")
+                return
+            }
+            me.delegate?.reload()
         }
     }
 

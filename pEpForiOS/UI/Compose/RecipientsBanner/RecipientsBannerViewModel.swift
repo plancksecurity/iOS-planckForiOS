@@ -23,8 +23,10 @@ protocol RecipientsBannerDelegate: AnyObject {
 }
 
 /// This VM handles the banner that appears in the compose view when the user introduces an address of a red identity in a recipient field.
-/// Its main responsability is to provide data for the layout and handle the interaction with the single button it has. 
+/// Its main responsability is to provide data for the layout and handle the interaction with the single button it has.
 class RecipientsBannerViewModel {
+
+    private var composeViewModel: ComposeViewModel
 
     /// Delegate to communicate with the view.
     public weak var delegate: RecipientsBannerDelegate?
@@ -35,12 +37,13 @@ class RecipientsBannerViewModel {
     /// - parameters:
     ///   - recipients: The list of red recipients
     ///   - delegate: The delegate to communicate with the view.
-    init?(recipients: [Identity], delegate: RecipientsBannerDelegate) {
+    init?(recipients: [Identity], delegate: RecipientsBannerDelegate, composeViewModel: ComposeViewModel) {
         if recipients.count == 0 {
             return nil
         }
         self.recipients = recipients
         self.delegate = delegate
+        self.composeViewModel = composeViewModel
     }
 
     /// The button title
@@ -58,7 +61,7 @@ class RecipientsBannerViewModel {
 
     /// Handle recipients button was pressed.
     public func handleRecipientsButtonPressed() {
-        let recipientsListViewModel = RecipientsListViewModel(recipients: recipients)
+        let recipientsListViewModel = RecipientsListViewModel(recipients: recipients, composeViewModel: composeViewModel)
         DispatchQueue.main.async { [weak self] in
             guard let me = self else {
                 Log.shared.errorAndCrash("Lost myself")

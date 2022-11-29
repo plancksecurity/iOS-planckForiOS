@@ -1154,6 +1154,8 @@ extension ComposeViewController {
     }
 }
 
+//MARK: - Recipients List
+
 extension ComposeViewController {
 
     @objc private func closeScreen() {
