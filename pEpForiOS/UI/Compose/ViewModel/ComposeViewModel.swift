@@ -66,6 +66,8 @@ protocol ComposeViewModelDelegate: AnyObject {
     func showRecipientsBanner()
 
     func hideRecipientsBanner()
+
+    func removeRecipientsFromTextfields(address: String)
 }
 
 /// Contains messages about cancelation and send.
@@ -190,6 +192,15 @@ class ComposeViewModel {
                 me.delegate?.hideRecipientsBanner()
             }
         }
+    }
+
+    public func removeFromState(address: String) {
+        state.toRecipients.removeAll(where: {$0.address == address})
+        state.ccRecipients.removeAll(where: {$0.address == address})
+        state.bccRecipients.removeAll(where: {$0.address == address})
+        handleRecipientsBanner()
+        delegate?.removeRecipientsFromTextfields(address: address)
+
     }
 
     /// Evaluates if email rating is Red and if there is at least a red recipient.

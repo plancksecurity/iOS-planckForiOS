@@ -316,6 +316,35 @@ extension ComposeViewController: ComposeViewModelDelegate {
         setRecipientsBanner(visible: false)
     }
 
+    func removeRecipientsFromTextfields(address: String) {
+        if let cells = tableView.visibleCells.filter({ cell in
+            return cell is RecipientCell
+        }) as? [RecipientCell] {
+            // Iterate the recipients cells
+            cells.forEach { cell in
+                // Grab the text view
+                if let textView = cell.textView as? RecipientTextView {
+                    let range = NSRange(location: 0, length: textView.attributedText.length)
+                    let attribute = NSAttributedString.Key.attachment
+                    // Look for NSTextAttachments
+                    textView.attributedText.enumerateAttribute(attribute, in: range, options: []) { (value, range, stop) in
+                        if (value is NSTextAttachment) {
+                            // Look for an image
+                            if let attach: NSTextAttachment = value as? NSTextAttachment, attach.image != nil {
+                                // One image attached
+                                if let mutableAttr = cell.textView.attributedText.mutableCopy() as? NSMutableAttributedString {
+                                    //Remove the attachment with the image
+                                    mutableAttr.replaceCharacters(in: range, with: "")
+                                    cell.textView.attributedText = mutableAttr
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+
     private func setRecipientsBanner(visible: Bool) {
         UIView.animate(withDuration: 0.3, delay: 0) { [weak self] in
             guard let me = self else {

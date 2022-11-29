@@ -74,11 +74,8 @@ class RecipientsListViewModel {
             // 1. Remove from this table view
             rows.remove(at: index)
             // 2. Remove from the state.
-            composeViewModel.state.toRecipients.removeAll(where: {$0.address == row.address})
-            composeViewModel.state.ccRecipients.removeAll(where: {$0.address == row.address})
-            composeViewModel.state.bccRecipients.removeAll(where: {$0.address == row.address})
+            composeViewModel.removeFromState(address: row.address)
             // 3. Remove from the compose view
-
         }
 
         // 4. Reload.
