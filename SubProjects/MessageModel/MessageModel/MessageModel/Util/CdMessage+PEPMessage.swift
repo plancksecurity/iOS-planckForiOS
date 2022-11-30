@@ -9,8 +9,7 @@
 import Foundation
 import CoreData
 
-import PEPObjCTypes_iOS
-import PEPObjCAdapter_iOS
+import PEPObjCAdapter
 
 extension CdMessage {
     enum MessageReferenceType {

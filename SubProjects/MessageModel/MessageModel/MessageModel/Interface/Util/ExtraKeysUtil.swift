@@ -6,8 +6,7 @@
 //  Copyright © 2022 pEp Security S.A. All rights reserved.
 //
 
-import PEPObjCAdapter_iOS
-import PEPObjCTypes_iOS
+import PEPObjCAdapter
 
 #if EXT_SHARE
 import pEpIOSToolboxForExtensions

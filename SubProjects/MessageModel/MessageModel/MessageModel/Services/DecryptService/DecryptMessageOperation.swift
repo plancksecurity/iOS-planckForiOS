@@ -9,8 +9,7 @@
 import CoreData
 
 import pEpIOSToolbox
-import PEPObjCTypes_iOS
-import PEPObjCAdapter_iOS
+import PEPObjCAdapter
 
 class DecryptMessageOperation: BaseOperation {
     private let moc: NSManagedObjectContext
@@ -73,11 +72,11 @@ extension DecryptMessageOperation {
         PEPSession().decryptMessage(inOutMessage, flags: inOutFlags, extraKeys: fprsOfExtraKeys, errorCallback: { (error) in
             nsError = error as NSError
             group.leave()
-        }) { (pEpSourceMessage, pEpDecryptedMsg, keyList, pEpRating, decryptFlags, isFormerlyEncryptedReuploadedMessage) in
+        }) { (pEpSourceMessage, pEpDecryptedMsg, keyList, decryptFlags, isFormerlyEncryptedReuploadedMessage) in
             inOutMessage = pEpSourceMessage
             pEpDecryptedMessage = pEpDecryptedMsg
             fprsOfExtraKeys = keyList
-            rating = pEpRating
+            rating = pEpDecryptedMsg.rating
             inOutFlags = decryptFlags
             isAFormerlyEncryptedReuploadedMessage = isFormerlyEncryptedReuploadedMessage
             group.leave()
@@ -86,7 +85,7 @@ extension DecryptMessageOperation {
 
         if let error = nsError {
             // An error occured
-            if error.domain == PEPObjCAdapterEngineStatusErrorDomain {
+            if error.domain == PEPObjCEngineStatusErrorDomain {
                 if error.isPassphraseError {
                     // The adapter is responsible to handle this case.
                     Log.shared.error("Passphrase error trying to decrypt a message")

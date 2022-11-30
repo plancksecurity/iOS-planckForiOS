@@ -10,8 +10,7 @@ import UIKit
 import CoreData
 
 @testable import MessageModel
-import PEPObjCTypes_iOS
-import PEPObjCAdapter_iOS
+import PEPObjCAdapter
 import PantomimeFramework
 import pEpIOSToolbox
 

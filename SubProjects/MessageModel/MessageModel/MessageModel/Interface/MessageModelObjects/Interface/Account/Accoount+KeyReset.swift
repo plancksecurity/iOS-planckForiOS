@@ -7,7 +7,7 @@
 //
 
 import Foundation
-import PEPObjCAdapter_iOS
+import PEPObjCAdapter
 
 extension Account {
 

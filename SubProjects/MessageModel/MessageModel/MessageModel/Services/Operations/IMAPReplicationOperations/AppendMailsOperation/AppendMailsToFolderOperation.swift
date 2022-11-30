@@ -9,8 +9,7 @@
 import CoreData
 
 import PantomimeFramework
-import PEPObjCTypes_iOS
-import PEPObjCAdapter_iOS
+import PEPObjCAdapter
 
 #if EXT_SHARE
 import pEpIOSToolboxForExtensions
@@ -141,7 +140,7 @@ extension AppendMailsToFolderOperation {
                                  errorCallback: { (error) in
                                     defer { group.leave() }
                                     let error = error as NSError
-                                    if error.domain == PEPObjCAdapterEngineStatusErrorDomain {
+                                    if error.domain == PEPObjCEngineStatusErrorDomain {
                                         if error.isPassphraseError {
                                             // The adapter is responsible to ask for passphrase. We are not.
                                             me.handleNextMessage()

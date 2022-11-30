@@ -9,8 +9,7 @@
 import XCTest
 import CoreData
 
-import PEPObjCTypes_iOS
-import PEPObjCAdapter_iOS
+import PEPObjCAdapter
 @testable import MessageModel
 
 class CdMessageIsAutoConsumeableTest: PersistentStoreDrivenTestBase {

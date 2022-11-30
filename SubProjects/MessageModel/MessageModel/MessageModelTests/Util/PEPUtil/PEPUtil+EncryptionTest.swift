@@ -8,8 +8,7 @@
 
 import XCTest
 
-import PEPObjCTypes_iOS
-import PEPObjCAdapter_iOS
+import PEPObjCAdapter
 @testable import MessageModel
 
 class EncryptionTests: XCTestCase {

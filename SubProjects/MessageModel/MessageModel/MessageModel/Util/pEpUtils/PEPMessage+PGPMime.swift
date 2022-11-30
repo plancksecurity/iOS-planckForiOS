@@ -8,8 +8,7 @@
 
 import Foundation
 
-import PEPObjCTypes_iOS
-import PEPObjCAdapter_iOS
+import PEPObjCAdapter
 
 extension PEPMessage {
     /// Checks whether this PEPMessage is probably PGP/MIME encrypted.

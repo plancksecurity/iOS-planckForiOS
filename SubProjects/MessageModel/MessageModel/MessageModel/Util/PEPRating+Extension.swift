@@ -14,8 +14,7 @@ import pEpIOSToolboxForExtensions
 import pEpIOSToolbox
 #endif
 
-import PEPObjCTypes_iOS
-import PEPObjCAdapter_iOS
+import PEPObjCAdapter
 
 extension PEPRating {
     func pEpColor() -> PEPColor {
@@ -64,6 +63,7 @@ extension PEPRating {
              .unencrypted,
              .unreliable,
              .reliable,
+             .mediaKeyProtected,
              .trusted,
              .trustedAndAnonymized,
              .fullyAnonymous,
@@ -88,6 +88,7 @@ extension PEPRating {
              .haveNoKey,
              .unencrypted,
              .unreliable,
+             .mediaKeyProtected,
              .reliable,
              .trusted,
              .trustedAndAnonymized,
