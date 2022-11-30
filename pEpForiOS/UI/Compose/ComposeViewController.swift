@@ -339,6 +339,11 @@ extension ComposeViewController: ComposeViewModelDelegate {
                                     // Remove the attachment with the image
                                     mutableAttr.replaceCharacters(in: range, with: "")
                                     cell.textView.attributedText = mutableAttr
+
+                                    // Re layout to fix minor glitch.
+                                    if let indexPath = tableView.indexPath(for: cell) {
+                                        contentChanged(inRowAt: indexPath)
+                                    }
                                 }
                             }
                         }
@@ -346,6 +351,7 @@ extension ComposeViewController: ComposeViewModelDelegate {
                 }
             }
         }
+
     }
 
     private func setRecipientsBanner(visible: Bool) {
