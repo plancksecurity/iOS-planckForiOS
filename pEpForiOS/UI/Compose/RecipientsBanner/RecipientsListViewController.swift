@@ -9,8 +9,10 @@
 import UIKit
 
 #if EXT_SHARE
+import MessageModelForAppExtensions
 import pEpIOSToolboxForExtensions
 #else
+import MessageModel
 import pEpIOSToolbox
 #endif
 
@@ -48,6 +50,8 @@ class RecipientsListViewController: UIViewController {
         removeAllButton.setTitleColor(.pEpRed, for: .normal)
         removeSelectedButton.setTitleColor(.pEpRed, for: .normal)
         removeSelectedButton.setTitleColor(.lightGray, for: .disabled)
+
+        showNavigationBarSecurityBadge(pEpRating: .mistrust)
     }
 }
 

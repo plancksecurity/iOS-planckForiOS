@@ -52,9 +52,9 @@ class RecipientsBannerViewModel {
         var format: String
         // Prepare text considering if it's singular or plural
         if numberOfUnsecureRecipients == 1 {
-            format = NSLocalizedString("%d unsecure recipient. Click here to review and remove", comment: "unsecure recipient button")
+            format = NSLocalizedString("%d unsecure recipient. Tap here to review and remove", comment: "unsecure recipient button")
         } else {
-            format = NSLocalizedString("%d unsecure recipients. Click here to review and remove", comment: "unsecure recipient button")
+            format = NSLocalizedString("%d unsecure recipients. Tap here to review and remove", comment: "unsecure recipient button")
         }
         return String.localizedStringWithFormat(format, numberOfUnsecureRecipients)
     }
