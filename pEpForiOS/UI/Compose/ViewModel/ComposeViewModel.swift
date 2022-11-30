@@ -195,12 +195,20 @@ class ComposeViewModel {
     }
 
     public func removeFromState(address: String) {
-        state.toRecipients.removeAll(where: {$0.address == address})
-        state.ccRecipients.removeAll(where: {$0.address == address})
-        state.bccRecipients.removeAll(where: {$0.address == address})
-        handleRecipientsBanner()
-        delegate?.removeRecipientsFromTextfields(address: address)
+        DispatchQueue.main.async { [weak self] in
+            guard let me = self else {
+                Log.shared.errorAndCrash("Lost myself")
+                return
+            }
+            let safeState = me.state.makeSafe(forSession: Session.main)
+            safeState.toRecipients.removeAll(where: {$0.address == address})
+            safeState.ccRecipients.removeAll(where: {$0.address == address})
+            safeState.bccRecipients.removeAll(where: {$0.address == address})
+            Session.main.commit()
 
+            me.handleRecipientsBanner()
+            me.delegate?.removeRecipientsFromTextfields(address: address)
+        }
     }
 
     /// Evaluates if email rating is Red and if there is at least a red recipient.
@@ -215,8 +223,8 @@ class ComposeViewModel {
         return RecipientsBannerViewModel(recipients: getRedRecipients(), delegate: delegate, composeViewModel: self)
     }
 
-    // Get the red recipients.
-    // This evaluates TO, CC and BCC and returns the identities.
+    /// Get the red recipients.
+    /// This evaluates TO, CC and BCC and returns the identities.
     private func getRedRecipients() -> [Identity] {
         let allRecipients = state.toRecipients + state.ccRecipients + state.bccRecipients
         var redRecipients = [Identity]()
