@@ -200,11 +200,9 @@ class ComposeViewModel {
                 Log.shared.errorAndCrash("Lost myself")
                 return
             }
-            let safeState = me.state.makeSafe(forSession: Session.main)
-            safeState.toRecipients.removeAll(where: {$0.address == address})
-            safeState.ccRecipients.removeAll(where: {$0.address == address})
-            safeState.bccRecipients.removeAll(where: {$0.address == address})
-            Session.main.commit()
+            me.state.toRecipients.removeAll(where: {$0.address == address})
+            me.state.ccRecipients.removeAll(where: {$0.address == address})
+            me.state.bccRecipients.removeAll(where: {$0.address == address})
 
             me.handleRecipientsBanner()
             me.delegate?.removeRecipientsFromTextfields(address: address)

@@ -58,8 +58,12 @@ class RecipientsListViewModel {
     }
 
     public func removeAll() {
-        rows = []
-        reloadAndDismiss()
+        var ips = [IndexPath]()
+        for i in 0...rows.count {
+            let ip = IndexPath(row: i, section: 0)
+            ips.append(ip)
+        }
+        removeRecipientsFrom(indexPaths: ips)
     }
 
     public func removeRecipientsFrom(indexPaths: [IndexPath]) {
@@ -68,17 +72,19 @@ class RecipientsListViewModel {
             return
         }
 
-        indexPaths.forEach { ip in
-            let index = ip.row
-            let row = rows[index]
-            // 1. Remove from this table view
-            rows.remove(at: index)
-            // 2. Remove from the state.
+        let rowEnumeration = rows.enumerated()
+        let rowsToDelete = rowEnumeration
+            .filter { indexPaths.map({$0.row}).contains($0.offset) }
+            .map { $0.element }
+        rowsToDelete.forEach { row in
             composeViewModel.removeFromState(address: row.address)
-            // 3. Remove from the compose view
         }
 
-        // 4. Reload.
+        rows = rowEnumeration
+            .filter { !indexPaths.map({$0.row}).contains($0.offset) }
+            .map { $0.element }
+
+        // 3. Reload.
         rows.count > 0 ? reload() : reloadAndDismiss()
 
     }

@@ -66,6 +66,10 @@ public class RecipientTextViewModel {
         delegate?.add(recipient: recipient.address)
     }
 
+    public func remove(recipient: String) {
+        initialRecipients = initialRecipients.filter({$0.address != recipient})
+    }
+
     public func shouldInteract(with textAttachment: NSTextAttachment) -> Bool {
         if let _ = textAttachment.image {
             // Suppress default image handling. Our recipient names are actually displayed as
@@ -109,7 +113,7 @@ public class RecipientTextViewModel {
         }
     }
 
-    private func removeRecipientAttachment(attachment: TextAttachment) {
+    public func removeRecipientAttachment(attachment: TextAttachment) {
         recipientAttachments = recipientAttachments.filter({$0 != attachment})
     }
 

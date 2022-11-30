@@ -317,6 +317,7 @@ extension ComposeViewController: ComposeViewModelDelegate {
     }
 
     func removeRecipientsFromTextfields(address: String) {
+        // Get all recipients cells.
         if let cells = tableView.visibleCells.filter({ cell in
             return cell is RecipientCell
         }) as? [RecipientCell] {
@@ -330,10 +331,12 @@ extension ComposeViewController: ComposeViewModelDelegate {
                     textView.attributedText.enumerateAttribute(attribute, in: range, options: []) { (value, range, stop) in
                         if (value is NSTextAttachment) {
                             // Look for an image
-                            if let attach: NSTextAttachment = value as? NSTextAttachment, attach.image != nil {
-                                // One image attached
+                            if let attach = value as? RecipientTextViewModel.TextAttachment,
+                               attach.image != nil, attach.recipient.address == address {
+                                textView.viewModel?.removeRecipientAttachment(attachment: attach)
+                                //There is one image attached
                                 if let mutableAttr = cell.textView.attributedText.mutableCopy() as? NSMutableAttributedString {
-                                    //Remove the attachment with the image
+                                    // Remove the attachment with the image
                                     mutableAttr.replaceCharacters(in: range, with: "")
                                     cell.textView.attributedText = mutableAttr
                                 }
