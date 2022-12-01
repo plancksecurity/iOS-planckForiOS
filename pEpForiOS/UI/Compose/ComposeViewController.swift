@@ -316,42 +316,43 @@ extension ComposeViewController: ComposeViewModelDelegate {
         setRecipientsBanner(visible: false)
     }
 
-    func removeRecipientsFromTextfields(address: String) {
+    func removeRecipientsFromTextfields(addresses: [String]) {
         // Get all recipients cells.
-        if let cells = tableView.visibleCells.filter({ cell in
-            return cell is RecipientCell
-        }) as? [RecipientCell] {
-            // Iterate the recipients cells
-            cells.forEach { cell in
-                // Grab the text view
-                if let textView = cell.textView as? RecipientTextView {
-                    let range = NSRange(location: 0, length: textView.attributedText.length)
-                    let attribute = NSAttributedString.Key.attachment
-                    // Look for NSTextAttachments
-                    textView.attributedText.enumerateAttribute(attribute, in: range, options: []) { (value, range, stop) in
-                        if (value is NSTextAttachment) {
-                            // Look for an image
-                            if let attach = value as? RecipientTextViewModel.TextAttachment,
-                               attach.image != nil, attach.recipient.address == address {
-                                textView.viewModel?.removeRecipientAttachment(attachment: attach)
-                                //There is one image attached
-                                if let mutableAttr = cell.textView.attributedText.mutableCopy() as? NSMutableAttributedString {
-                                    // Remove the attachment with the image
-                                    mutableAttr.replaceCharacters(in: range, with: "")
-                                    cell.textView.attributedText = mutableAttr
+        guard let recipientsCells = tableView.visibleCells.filter({ $0 is RecipientCell }) as? [RecipientCell] else {
+            //Nothing to do.
+            return
+        }
 
-                                    // Re layout to fix minor glitch.
-                                    if let indexPath = tableView.indexPath(for: cell) {
-                                        contentChanged(inRowAt: indexPath)
-                                    }
-                                }
-                            }
-                        }
+        // Iterate the recipients cells
+        for recipientCell in recipientsCells {
+            // Grab the text view
+            guard let textView = recipientCell.textView as? RecipientTextView else {
+                // Not a RecipientTextView, nothing to do.
+                continue
+            }
+            guard let attributedText = textView.attributedText, attributedText.length > 0 else {
+                // Empty textfield, nothing to do.
+                continue
+            }
+            let range = NSRange(location: 0, length: attributedText.length)
+            let mutableAttr = recipientCell.textView.attributedText.mutableCopy() as! NSMutableAttributedString
+            // Look for NSTextAttachments
+            recipientCell.textView.attributedText.enumerateAttribute(.attachment, in: range, options: []) {
+                value, range, stop in
+                if let attachment = value as? RecipientTextViewModel.TextAttachment {
+                    // Remove all attachments that matches the given addresses.
+                    if addresses.contains(attachment.recipient.address) {
+                        mutableAttr.removeAttribute(.attachment, range: range)
+                        textView.viewModel?.removeAllRecipientAttachmentOfTheSameRecipient(attachment: attachment)
                     }
                 }
             }
+            recipientCell.textView.attributedText = mutableAttr
+            // Re layout to fix minor glitch.
+            if let indexPath = tableView.indexPath(for: recipientCell) {
+                contentChanged(inRowAt: indexPath)
+            }
         }
-
     }
 
     private func setRecipientsBanner(visible: Bool) {

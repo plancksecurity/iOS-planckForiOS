@@ -67,7 +67,7 @@ protocol ComposeViewModelDelegate: AnyObject {
 
     func hideRecipientsBanner()
 
-    func removeRecipientsFromTextfields(address: String)
+    func removeRecipientsFromTextfields(addresses: [String])
 }
 
 /// Contains messages about cancelation and send.
@@ -194,18 +194,19 @@ class ComposeViewModel {
         }
     }
 
-    public func removeFromState(address: String) {
+    public func removeFromState(addresses: [String]) {
         DispatchQueue.main.async { [weak self] in
             guard let me = self else {
                 Log.shared.errorAndCrash("Lost myself")
                 return
             }
-            me.state.toRecipients.removeAll(where: {$0.address == address})
-            me.state.ccRecipients.removeAll(where: {$0.address == address})
-            me.state.bccRecipients.removeAll(where: {$0.address == address})
-
+            addresses.forEach { address in
+                me.state.toRecipients.removeAll(where: {$0.address == address})
+                me.state.ccRecipients.removeAll(where: {$0.address == address})
+                me.state.bccRecipients.removeAll(where: {$0.address == address})
+            }
             me.handleRecipientsBanner()
-            me.delegate?.removeRecipientsFromTextfields(address: address)
+            me.delegate?.removeRecipientsFromTextfields(addresses: addresses)
         }
     }
 

@@ -41,7 +41,7 @@ class RecipientsBannerViewModel {
         if recipients.count == 0 {
             return nil
         }
-        self.recipients = recipients
+        self.recipients = recipients.uniques
         self.delegate = delegate
         self.composeViewModel = composeViewModel
     }

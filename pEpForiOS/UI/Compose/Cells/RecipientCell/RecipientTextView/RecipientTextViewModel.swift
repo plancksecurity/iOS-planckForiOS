@@ -117,6 +117,10 @@ public class RecipientTextViewModel {
         recipientAttachments = recipientAttachments.filter({$0 != attachment})
     }
 
+    public func removeAllRecipientAttachmentOfTheSameRecipient(attachment: TextAttachment) {
+        recipientAttachments = recipientAttachments.filter({$0.recipient.address != attachment.recipient.address})
+    }
+
      @discardableResult private func tryGenerateValidAddressAndUpdateStatus(range: NSRange, of text: NSAttributedString) -> Bool {
         return parseAndHandleValidEmailAddresses(inRange: range, of: text)
     }

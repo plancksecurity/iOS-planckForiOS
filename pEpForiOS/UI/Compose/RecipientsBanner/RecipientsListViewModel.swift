@@ -34,7 +34,7 @@ class RecipientsListViewModel {
     /// - Parameters:
     ///   - recipients: The recipients to show in the list.
     init(recipients: [Identity], composeViewModel: ComposeViewModel) {
-        self.rows = recipients.map {
+        self.rows = recipients.uniques.map {
             RecipientRow(address: $0.address)
         }
         self.composeViewModel = composeViewModel
@@ -72,13 +72,13 @@ class RecipientsListViewModel {
             return
         }
 
+        //MB:- improve this.
         let rowEnumeration = rows.enumerated()
         let rowsToDelete = rowEnumeration
             .filter { indexPaths.map({$0.row}).contains($0.offset) }
             .map { $0.element }
-        rowsToDelete.forEach { row in
-            composeViewModel.removeFromState(address: row.address)
-        }
+
+        composeViewModel.removeFromState(addresses: rowsToDelete.map({$0.address}))
 
         rows = rowEnumeration
             .filter { !indexPaths.map({$0.row}).contains($0.offset) }
@@ -86,7 +86,6 @@ class RecipientsListViewModel {
 
         // 3. Reload.
         rows.count > 0 ? reload() : reloadAndDismiss()
-
     }
 
     private func reloadAndDismiss() {
