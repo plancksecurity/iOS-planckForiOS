@@ -75,7 +75,7 @@ extension RecipientsListViewController: UITableViewDataSource {
         guard let cell = tableView.dequeueReusableCell(withIdentifier: RecipientListTableViewCell.cellIdentifier, for: indexPath) as? RecipientListTableViewCell else {
             return UITableViewCell()
         }
-        cell.addressLabel.text = vm[indexPath.row].address
+        cell.titleLabel.text = vm[indexPath.row].title
         return cell
     }
 }

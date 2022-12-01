@@ -35,7 +35,7 @@ class RecipientsListViewModel {
     ///   - recipients: The recipients to show in the list.
     init(recipients: [Identity], composeViewModel: ComposeViewModel) {
         self.rows = recipients.uniques.map {
-            RecipientRow(address: $0.address)
+            RecipientRow(title: $0.userName ?? $0.address)
         }
         self.composeViewModel = composeViewModel
     }
@@ -71,21 +71,22 @@ class RecipientsListViewModel {
             Log.shared.errorAndCrash("VM not found")
             return
         }
-
-        //MB:- improve this.
-        let rowEnumeration = rows.enumerated()
-        let rowsToDelete = rowEnumeration
-            .filter { indexPaths.map({$0.row}).contains($0.offset) }
-            .map { $0.element }
-
-        composeViewModel.removeFromState(addresses: rowsToDelete.map({$0.address}))
-
-        rows = rowEnumeration
-            .filter { !indexPaths.map({$0.row}).contains($0.offset) }
-            .map { $0.element }
-
+        let rowsToDelete = getRows(from: indexPaths, toKeep: false)
+        composeViewModel.removeFromState(addressesOrUsernames: rowsToDelete.map({$0.title}))
+        rows = getRows(from: indexPaths, toKeep: true)
         // 3. Reload.
         rows.count > 0 ? reload() : reloadAndDismiss()
+    }
+
+    private func getRows(from indexPaths: [IndexPath], toKeep: Bool) -> [RecipientRowProtocol]  {
+        return rows.enumerated()
+            .filter {
+                if toKeep {
+                    return !indexPaths.map({$0.row}).contains($0.offset)
+                }
+                return indexPaths.map({$0.row}).contains($0.offset)
+            }
+            .map { $0.element }
     }
 
     private func reloadAndDismiss() {

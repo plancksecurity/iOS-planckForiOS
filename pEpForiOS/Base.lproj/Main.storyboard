@@ -1659,7 +1659,7 @@
                                             </constraints>
                                         </tableViewCellContentView>
                                         <connections>
-                                            <outlet property="addressLabel" destination="RZm-8W-cX0" id="Gub-un-wAd"/>
+                                            <outlet property="titleLabel" destination="RZm-8W-cX0" id="Gub-un-wAd"/>
                                         </connections>
                                     </tableViewCell>
                                 </prototypes>

@@ -10,7 +10,7 @@ import UIKit
 
 class RecipientListTableViewCell: UITableViewCell {
 
-    @IBOutlet weak var addressLabel: UILabel!
+    @IBOutlet weak var titleLabel: UILabel!
 
     static let cellIdentifier = "RecipientListTableViewCell"
 

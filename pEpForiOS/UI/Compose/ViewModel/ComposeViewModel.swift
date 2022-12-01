@@ -194,19 +194,19 @@ class ComposeViewModel {
         }
     }
 
-    public func removeFromState(addresses: [String]) {
+    public func removeFromState(addressesOrUsernames: [String]) {
         DispatchQueue.main.async { [weak self] in
             guard let me = self else {
                 Log.shared.errorAndCrash("Lost myself")
                 return
             }
-            addresses.forEach { address in
-                me.state.toRecipients.removeAll(where: {$0.address == address})
-                me.state.ccRecipients.removeAll(where: {$0.address == address})
-                me.state.bccRecipients.removeAll(where: {$0.address == address})
+            addressesOrUsernames.forEach { addressOrUsername in
+                me.state.toRecipients.removeAll(where: {$0.address == addressOrUsername || $0.userName == addressOrUsername})
+                me.state.ccRecipients.removeAll(where: {$0.address == addressOrUsername || $0.userName == addressOrUsername})
+                me.state.bccRecipients.removeAll(where: {$0.address == addressOrUsername || $0.userName == addressOrUsername})
             }
             me.handleRecipientsBanner()
-            me.delegate?.removeRecipientsFromTextfields(addresses: addresses)
+            me.delegate?.removeRecipientsFromTextfields(addresses: addressesOrUsernames)
         }
     }
 

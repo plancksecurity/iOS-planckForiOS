@@ -59,7 +59,7 @@ extension RecipientTextViewModel {
                                          font:  UIFont,
                                          textColor: UIColor = .pEpDarkText,
                                          maxWidth: CGFloat = 0.0) {
-            let text = recipient.address
+            let text = recipient.userName ?? recipient.address
             let attributes = [
                 NSAttributedString.Key.foregroundColor: textColor,
                 NSAttributedString.Key.font: font
