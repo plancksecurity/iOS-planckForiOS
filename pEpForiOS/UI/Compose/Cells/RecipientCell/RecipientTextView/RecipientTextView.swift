@@ -196,6 +196,14 @@ extension RecipientTextView: UITextViewDelegate {
 
 extension RecipientTextView: RecipientTextViewModelDelegate {
 
+    func isThereSpaceForANewTextAttachment(expectedWidth: CGFloat) -> Bool {
+        let textAttachments = attributedText.recipientTextAttachments()
+        let sum: CGFloat = textAttachments.compactMap { $0.image?.size.width }.reduce(0, +)
+        print(sum)
+        //MB:- continue here. 
+        return true
+    }
+
     func textChanged(newText: NSAttributedString) {
         attributedText = newText
     }

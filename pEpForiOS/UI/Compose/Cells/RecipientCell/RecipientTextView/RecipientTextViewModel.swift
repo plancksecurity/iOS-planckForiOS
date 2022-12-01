@@ -10,8 +10,10 @@ import UIKit
 
 #if EXT_SHARE
 import MessageModelForAppExtensions
+import pEpIOSToolboxForExtensions
 #else
 import MessageModel
+import pEpIOSToolbox
 #endif
 
 public protocol RecipientTextViewModelResultDelegate: AnyObject {
@@ -27,6 +29,8 @@ public protocol RecipientTextViewModelResultDelegate: AnyObject {
 }
 
 public protocol RecipientTextViewModelDelegate: AnyObject {
+
+    func isThereSpaceForANewTextAttachment(expectedWidth: CGFloat) -> Bool
     
     func textChanged(newText: NSAttributedString)
 
@@ -139,6 +143,14 @@ public class RecipientTextViewModel {
         return recipientAttachments.count
     }
 
+    func canAddTextAttachment() -> Bool {
+        guard let del = delegate else {
+            Log.shared.errorAndCrash("Delegate not found")
+            return false
+        }
+        return del.isThereSpaceForANewTextAttachment(expectedWidth: 30)
+    }
+
     /// Parses a text for one new valid email address (and handles it if found).
     ///
     /// - Parameter text: Text thet might alread contain contact-image-text-attachments.
@@ -161,6 +173,10 @@ public class RecipientTextViewModel {
             // Thus we must update the isDirty state before adding the attachment
             isDirty = !identityGenerated && !containsNothingButAttachments(text: text)
 
+            // Check if can add a new nstextattachment
+            guard canAddTextAttachment() else {
+                return identityGenerated
+            }
             var (newText, attachment) = text.imageInserted(withAddressOf: identity,
                                                            in: range,
                                                            maxWidth: maxTextattachmentWidth)
