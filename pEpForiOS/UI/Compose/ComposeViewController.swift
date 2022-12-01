@@ -335,7 +335,10 @@ extension ComposeViewController: ComposeViewModelDelegate {
                 continue
             }
             let range = NSRange(location: 0, length: attributedText.length)
-            let mutableAttr = recipientCell.textView.attributedText.mutableCopy() as! NSMutableAttributedString
+            guard let mutableAttr = recipientCell.textView.attributedText.mutableCopy() as? NSMutableAttributedString else {
+                Log.shared.errorAndCrash("This should not happen")
+                continue
+            }
             // Look for NSTextAttachments
             recipientCell.textView.attributedText.enumerateAttribute(.attachment, in: range, options: []) {
                 value, range, stop in
@@ -347,8 +350,9 @@ extension ComposeViewController: ComposeViewModelDelegate {
                     }
                 }
             }
+            // Update the textview
             recipientCell.textView.attributedText = mutableAttr
-            // Re layout to fix minor glitch.
+            // Re layout to fix minor glitch (caret in wrong position).
             if let indexPath = tableView.indexPath(for: recipientCell) {
                 contentChanged(inRowAt: indexPath)
             }
