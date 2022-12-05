@@ -18,12 +18,12 @@ import MessageModel
 class OutgoingRatingChangeService: OutgoingRatingServiceProtocol {
 
     public func handleOutgoingRatingChange() {
-        guard let composeViewController = UIUtils.getPresentedComposeViewControllerIfExists(),
-        let vm = composeViewController.viewModel else {
-            // This is a valid case.
-            return
-        }
         DispatchQueue.main.async {
+            guard let composeViewController = UIUtils.getPresentedComposeViewControllerIfExists(),
+            let vm = composeViewController.viewModel else {
+                // This is a valid case.
+                return
+            }
             vm.ratingMayHaveChanged()
         }
     }
