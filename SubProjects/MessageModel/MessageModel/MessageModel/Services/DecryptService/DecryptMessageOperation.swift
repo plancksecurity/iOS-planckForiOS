@@ -91,15 +91,9 @@ extension DecryptMessageOperation {
                     Log.shared.error("Passphrase error trying to decrypt a message")
                     return
                 }
-
-                // Note: Completely ignore PEP_CANNOT_SET_PGP_KEYPAIR,
-                // under the assumption that it's (currently) a consequence of SQLITE_BUSY.
-                // Just repeat the decryption later.
-                if error.code != PEPStatus.cannotSetPGPKeyPair.rawValue {
-                    Log.shared.errorAndCrash("Error decrypting: %@", "\(error)")
-                    addError(BackgroundError.GeneralError.illegalState(info:
-                                                                        "##\nError: \(error)\ndecrypting message: \(cdMessageToDecrypt)\n##"))
-                }
+                Log.shared.errorAndCrash("Error decrypting: %@", "\(error)")
+                addError(BackgroundError.GeneralError.illegalState(info:
+                    "##\nError: \(error)\ndecrypting message: \(cdMessageToDecrypt)\n##"))
             } else if error.domain == PEPObjCAdapterErrorDomain {
                 Log.shared.errorAndCrash("Unexpected ")
                 addError(BackgroundError.GeneralError.illegalState(info:
