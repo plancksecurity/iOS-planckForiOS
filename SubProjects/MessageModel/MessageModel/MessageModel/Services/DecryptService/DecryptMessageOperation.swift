@@ -92,10 +92,6 @@ extension DecryptMessageOperation {
                     return
                 }
 
-                if error.code == PEPStatus.cannotSetPGPKeyPair.rawValue {
-                    Log.shared.logError(message: "*** PEP_CANNOT_SET_PGP_KEYPAIR \(cdMessageToDecrypt.uid)")
-                }
-
                 // Note: Completely ignore PEP_CANNOT_SET_PGP_KEYPAIR,
                 // under the assumption that it's (currently) a consequence of SQLITE_BUSY.
                 // Just repeat the decryption later.
@@ -114,8 +110,6 @@ extension DecryptMessageOperation {
                     "Unhandled error domain: \(error.domain)"))
             }
         } else {
-            Log.shared.logError(message: "*** success \(cdMessageToDecrypt.uid)")
-
             let ratingBeforeMessage = cdMessageToDecrypt.pEpRating
             handleDecryptionSuccess(cdMessage: cdMessageToDecrypt,
                                     pEpDecryptedMessage: pEpDecryptedMessage,
