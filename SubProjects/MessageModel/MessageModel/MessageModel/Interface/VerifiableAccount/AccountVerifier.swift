@@ -118,7 +118,7 @@ extension AccountVerifier: AccountVerifierProtocol {
 extension AccountVerifier: VerifiableAccountDelegate {
     public func didEndVerification(result: Result<Void, Error>) {
         guard let cb = verifiedCallback else {
-            Log.shared.errorAndCrash(message: "No verifiedCallback")
+            // Most likely timeout
             return
         }
 
