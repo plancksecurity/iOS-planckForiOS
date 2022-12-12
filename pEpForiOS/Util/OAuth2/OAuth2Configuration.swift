@@ -26,8 +26,10 @@ struct OAuth2Configuration: OAuth2ConfigurationProtocol {
     }
 
     init?(
-        oauth2Type: OAuth2Type, scopes: [String], clientIDKey: String,
-        clientSecretKey: String? = nil, redirectURL: URL) {
+        oauth2Type: OAuth2Type, scopes: [String],
+        clientIDKey: String,
+        clientSecretKey: String? = nil,
+        redirectURL: URL) {
         guard let settings = Bundle.main.infoDictionary else {
             return nil
         }
@@ -46,8 +48,11 @@ struct OAuth2Configuration: OAuth2ConfigurationProtocol {
     }
 
     init?(
-        oauth2Type: OAuth2Type, scopes: [String], clientIDKey: String,
-        clientSecretKey: String? = nil, redirectURLSchemeKey: String) {
+        oauth2Type: OAuth2Type,
+        scopes: [String],
+        clientIDKey: String,
+        clientSecretKey: String? = nil,
+        redirectURLSchemeKey: String) {
         guard let settings = Bundle.main.infoDictionary else {
             return nil
         }
@@ -57,8 +62,10 @@ struct OAuth2Configuration: OAuth2ConfigurationProtocol {
         guard let redirectURLScheme = settings[redirectURLSchemeKey] as? String else {
             return nil
         }
-        guard let redirectURL = URL(
-            string: "\(redirectURLScheme):/oauth2\(OAuth2Configuration.createTokenURLParamString())") else {
+
+        let gmailRedirectStringUrl = "\(redirectURLScheme):/oauth2\(OAuth2Configuration.createTokenURLParamString())"
+        let redirectStringUrl = oauth2Type == .o365 ? "\(redirectURLScheme)://auth" : gmailRedirectStringUrl
+        guard let redirectURL = URL(string: redirectStringUrl) else {
             return nil
         }
 
@@ -73,8 +80,11 @@ struct OAuth2Configuration: OAuth2ConfigurationProtocol {
     }
 
     init?(
-        oauth2Type: OAuth2Type, scopes: [String], clientIDKey: String,
-        clientSecretKey: String? = nil, redirectURLKey: String) {
+        oauth2Type: OAuth2Type,
+        scopes: [String],
+        clientIDKey: String,
+        clientSecretKey: String? = nil,
+        redirectURLKey: String) {
         guard let settings = Bundle.main.infoDictionary else {
             return nil
         }

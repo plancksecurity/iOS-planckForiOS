@@ -13,11 +13,11 @@ import pEpIOSToolbox
 final class LoadingInterface {
     static weak var loadingInterface: UIView?
 
-    static func setLoadingView(visible: Bool) {
+    static func setLoadingView(visible: Bool, completion: ((Bool) -> ())? = nil) {
         if visible {
-            LoadingInterface.showLoadingInterface()
+            LoadingInterface.showLoadingInterface(completion: completion)
         } else {
-            LoadingInterface.removeLoadingInterface()
+            LoadingInterface.removeLoadingInterface(completion: completion)
         }
     }
 

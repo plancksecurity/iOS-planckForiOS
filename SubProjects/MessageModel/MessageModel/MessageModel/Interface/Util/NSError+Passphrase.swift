@@ -7,15 +7,15 @@
 //
 
 import Foundation
-import PEPObjCTypes_iOS
-import PEPObjCAdapter_iOS
+
+import PEPObjCAdapter
 
 public extension NSError {
 
     /// Indicates if the error is PASSPHRASE related.
     /// That means: if it is a passphraseRequired error or a wrong passphrase error.
     var isPassphraseError: Bool {
-        if domain == PEPObjCAdapterEngineStatusErrorDomain &&
+        if domain == PEPObjCEngineStatusErrorDomain &&
             code == Int(PEPStatus.passphraseRequired.rawValue) ||
             code == Int(PEPStatus.wrongPassphrase.rawValue) {
             return true

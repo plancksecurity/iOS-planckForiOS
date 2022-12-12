@@ -15,4 +15,5 @@ import Foundation
 enum OAuth2Type {
     case google
     case yahoo
+    case o365
 }

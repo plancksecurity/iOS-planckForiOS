@@ -8,8 +8,7 @@
 
 import Foundation
 
-import PEPObjCTypes_iOS
-import PEPObjCAdapter_iOS
+import PEPObjCAdapter
 
 extension Rating {
     init(pEpRating: PEPRating) {
@@ -22,7 +21,7 @@ extension Rating {
             self = .fullyAnonymous
         case .haveNoKey:
             self = .haveNoKey
-        case .mediaKeyMessage:
+        case .mediaKeyProtected:
             self = .mediaKeyEncryption
         case .mistrust:
             self = .mistrust
@@ -54,7 +53,7 @@ extension Rating {
         case .haveNoKey:
             return .haveNoKey
         case .mediaKeyEncryption:
-            return .mediaKeyMessage
+            return .mediaKeyProtected
         case .mistrust:
             return .mistrust
         case .reliable:

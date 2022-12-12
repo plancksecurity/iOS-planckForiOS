@@ -7,8 +7,8 @@
 //
 
 import CoreData
-import PEPObjCTypes_iOS
-import PEPObjCAdapter_iOS
+
+import PEPObjCAdapter
 
 // MARK: - CdMessage+ReDecrypt
 

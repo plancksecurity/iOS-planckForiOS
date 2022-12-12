@@ -26,7 +26,7 @@ extension VerifiableAccount {
         case outlook
 
         public var isOauth: Bool {
-            return self == .gmail
+            return [.gmail, .o365].contains(self)
         }
 
         public var accessibilityIdentifier: String {
@@ -120,7 +120,7 @@ public class VerifiableAccount: VerifiableAccountProtocol {
         self.accessToken = accessToken
         self.loginNameIMAP = loginNameIMAP
         self.serverIMAP = serverIMAP
-        self .portIMAP = portIMAP
+        self.portIMAP = portIMAP
         self.transportIMAP = transportIMAP
         self.loginNameSMTP = loginNameSMTP
         self.serverSMTP = serverSMTP
@@ -617,26 +617,26 @@ extension VerifiableAccount {
                                         containsCompleteServerInfo: true,
                                         usePEPFolderProvider: usePEPFolderProvider)
         case .o365:
-            account =  VerifiableAccount(verifiableAccountDelegate: nil,
-                                         address: nil,
-                                         userName: nil,
-                                         authMethod: .cramMD5,
-                                         imapPassword: nil,
-                                         smtpPassword: nil,
-                                         accessToken: nil,
-                                         loginNameIMAP: nil,
-                                         serverIMAP: "outlook.office365.com",
-                                         portIMAP: 993,
-                                         transportIMAP: .TLS,
-                                         loginNameSMTP: nil,
-                                         serverSMTP: "smtp.office365.com",
-                                         portSMTP: 587,
-                                         transportSMTP: .startTLS,
-                                         automaticallyTrustedImapServer: false,
-                                         manuallyTrustedImapServer: false,
-                                         keySyncEnable: true,
-                                         containsCompleteServerInfo: true,
-                                         usePEPFolderProvider: usePEPFolderProvider)
+            account = VerifiableAccount(verifiableAccountDelegate: nil,
+                                        address: nil,
+                                        userName: nil,
+                                        authMethod: .cramMD5,
+                                        imapPassword: nil,
+                                        smtpPassword: nil,
+                                        accessToken: nil,
+                                        loginNameIMAP: nil,
+                                        serverIMAP: "outlook.office365.com",
+                                        portIMAP: 993,
+                                        transportIMAP: .TLS,
+                                        loginNameSMTP: nil,
+                                        serverSMTP: "smtp.office365.com",
+                                        portSMTP: 587,
+                                        transportSMTP: .startTLS,
+                                        automaticallyTrustedImapServer: false,
+                                        manuallyTrustedImapServer: false,
+                                        keySyncEnable: true,
+                                        containsCompleteServerInfo: true,
+                                        usePEPFolderProvider: usePEPFolderProvider)
         case .icloud:
             account =  VerifiableAccount(verifiableAccountDelegate: nil,
                                          address: nil,

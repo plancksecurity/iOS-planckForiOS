@@ -8,8 +8,7 @@
 
 import CoreData
 
-import PEPObjCTypes_iOS
-import PEPObjCAdapter_iOS
+import PEPObjCAdapter
 
 #if EXT_SHARE
 import pEpIOSToolboxForExtensions
@@ -196,7 +195,7 @@ extension EncryptAndSMTPSendMessageOperation {
 extension EncryptAndSMTPSendMessageOperation {
 
     private func handleEncryptionError(error: NSError) {
-        if error.domain == PEPObjCAdapterEngineStatusErrorDomain ||
+        if error.domain == PEPObjCEngineStatusErrorDomain ||
             error.domain == PEPObjCAdapterErrorDomain
         {
             if error.isPassphraseError {

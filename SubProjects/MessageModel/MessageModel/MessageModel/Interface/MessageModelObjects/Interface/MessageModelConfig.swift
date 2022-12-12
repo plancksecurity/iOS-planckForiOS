@@ -8,8 +8,7 @@
 
 import Foundation
 
-import PEPObjCTypes_iOS
-import PEPObjCAdapter_iOS
+import PEPObjCAdapter
 
 public class MessageModelConfig {
     static public func setUnEncryptedSubjectEnabled(_ enabled: Bool) {

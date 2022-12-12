@@ -11,8 +11,7 @@ import CoreData
 
 @testable import MessageModel
 import PantomimeFramework
-import PEPObjCTypes_iOS
-import PEPObjCAdapter_iOS
+import PEPObjCAdapter
 
 class MessagePantomimeTests: PersistentStoreDrivenTestBase {
 

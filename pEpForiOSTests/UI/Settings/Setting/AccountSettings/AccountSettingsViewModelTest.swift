@@ -126,7 +126,6 @@ extension MockedAccountSettingsViewController: OAuthAuthorizerDelegate {
 }
 
 class MockedAccountSettingsViewModelDelegate : AccountSettingsViewModelDelegate, SettingChangeDelegate {
-
     var showErrorAlertExpectation: XCTestExpectation?
     var showLoadingViewExpectation: XCTestExpectation?
     var hideLoadingViewExpectation: XCTestExpectation?
@@ -146,7 +145,7 @@ class MockedAccountSettingsViewModelDelegate : AccountSettingsViewModelDelegate,
         self.didChangeExpectation = didChangeExpectation
     }
 
-    func setLoadingView(visible: Bool) {
+    func setLoadingView(visible: Bool, completion: ((Bool) -> ())?) {
         if visible {
             if showLoadingViewExpectation != nil {
                 showLoadingViewExpectation?.fulfill()
