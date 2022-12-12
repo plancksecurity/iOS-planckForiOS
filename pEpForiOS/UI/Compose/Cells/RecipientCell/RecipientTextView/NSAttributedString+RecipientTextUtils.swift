@@ -35,8 +35,7 @@ extension NSAttributedString {
             let attachString = NSAttributedString(attachment: textAttachment)
             attrText.replaceCharacters(in: selectedRange, with: attachString)
             let pepFont = UIFont.pepFont(style: .body, weight: .regular)
-            attrText.addAttribute(NSAttributedString.Key.font,
-                                  value: pepFont,
+            attrText.addAttribute(.font, value: pepFont,
                                   range: NSRange(location: 0, length: attrText.length))
             return (NSAttributedString(attributedString: attrText), textAttachment)
     }

@@ -30,7 +30,7 @@ public protocol RecipientTextViewModelResultDelegate: AnyObject {
 
 public protocol RecipientTextViewModelDelegate: AnyObject {
 
-    func isThereSpaceForANewTextAttachment(expectedWidth: CGFloat) -> Bool
+    func isThereSpaceForANewTextAttachment(fromWidth: CGFloat, expectedWidthOfTheNewTextAttachment: CGFloat) -> Bool
     
     func textChanged(newText: NSAttributedString)
 
@@ -92,6 +92,29 @@ public class RecipientTextViewModel {
         attributedText = text
         tryGenerateValidAddressAndUpdateStatus(range: range, of: text)
         resultDelegate?.recipientTextViewModelDidEndEditing(self)
+        collapseRecipients()
+    }
+
+    public func collapseRecipients() {
+        guard let allTextAttachments = attributedText?.recipientTextAttachments() else {
+            return
+        }
+        guard let del = delegate else {
+            Log.shared.errorAndCrash("Delegate not found")
+            return
+        }
+        var toShow = [RecipientTextViewModel.TextAttachment]()
+        var toHide = [RecipientTextViewModel.TextAttachment]()
+        allTextAttachments.forEach { element in
+            if let width = element.image?.size.width {
+                let accruedWidth = toShow.compactMap { $0.image?.size.width }.reduce(0, +)
+                if del.isThereSpaceForANewTextAttachment(fromWidth: accruedWidth, expectedWidthOfTheNewTextAttachment: width) {
+                    toShow.append(element)
+                } else {
+                    toHide.append(element)
+                }
+            }
+        }
     }
 
     public func handleTextChange(newText: String, newAttributedText: NSAttributedString) {
@@ -143,14 +166,6 @@ public class RecipientTextViewModel {
         return recipientAttachments.count
     }
 
-    func canAddTextAttachment() -> Bool {
-        guard let del = delegate else {
-            Log.shared.errorAndCrash("Delegate not found")
-            return false
-        }
-        return del.isThereSpaceForANewTextAttachment(expectedWidth: 30)
-    }
-
     /// Parses a text for one new valid email address (and handles it if found).
     ///
     /// - Parameter text: Text thet might alread contain contact-image-text-attachments.
@@ -173,10 +188,6 @@ public class RecipientTextViewModel {
             // Thus we must update the isDirty state before adding the attachment
             isDirty = !identityGenerated && !containsNothingButAttachments(text: text)
 
-            // Check if can add a new nstextattachment
-            guard canAddTextAttachment() else {
-                return identityGenerated
-            }
             var (newText, attachment) = text.imageInserted(withAddressOf: identity,
                                                            in: range,
                                                            maxWidth: maxTextattachmentWidth)
