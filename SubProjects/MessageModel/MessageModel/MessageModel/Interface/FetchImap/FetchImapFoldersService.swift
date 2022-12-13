@@ -84,6 +84,25 @@ public class FetchImapFoldersService {
             var connect : EmailConnectInfo?
             context?.performAndWait {
                 connect = cdAccount.imapConnectInfo
+
+                let servers = cdAccount.servers ?? []
+                for serverObj in servers {
+                    guard let server = serverObj as? CdServer else {
+                        continue
+                    }
+                    guard let creds = server.credentials else {
+                        continue
+                    }
+                    guard let theKey = creds.key else {
+                        continue
+                    }
+                    let success = KeyChain.updateCreateOrDelete(password: nil, forKey: theKey)
+                    if !success {
+                        Log.shared.logError(message: "*** could not remove \(theKey)")
+                    } else {
+                        Log.shared.logInfo(message: "*** removed \(theKey)")
+                    }
+                }
             }
             guard let connectInfo = connect else {
                 return
