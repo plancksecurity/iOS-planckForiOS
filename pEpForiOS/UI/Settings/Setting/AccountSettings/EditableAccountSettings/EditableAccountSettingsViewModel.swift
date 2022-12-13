@@ -297,12 +297,14 @@ extension EditableAccountSettingsViewModel {
         rows.append(usernameRow)
 
         if !isOAuth2 {
-            let password = server.credentials.password ?? ""
-            if password != server.credentials.password {
-                passwordChanged = true
+            if server.credentials.password == nil {
+                server.credentials.fixLostPassword()
             }
-            let passwordRow = getDisplayRow(type : .password, value: password)
-            rows.append(passwordRow)
+
+            if let password = server.credentials.password {
+                let passwordRow = getDisplayRow(type : .password, value: password)
+                rows.append(passwordRow)
+            }
         }
     }
 
