@@ -58,7 +58,7 @@ extension CdServerCredentials {
             // In case that is the real password, then we just guessed it
             // successfully by brute-force, even better.
             // But that is unlikely, and a wrong password is better than nil
-            // for the UI.
+            // for the UI, and not worse for networking.
             KeyChain.updateCreateOrDelete(password: "password", forKey: theKey)
         }
     }
