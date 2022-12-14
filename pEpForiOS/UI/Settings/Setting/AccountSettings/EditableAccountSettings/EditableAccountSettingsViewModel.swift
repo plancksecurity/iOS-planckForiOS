@@ -100,6 +100,9 @@ class EditableAccountSettingsViewModel {
          accountSettingsHelper = AccountSettingsHelper(account: account)
         self.account = account
         self.delegate = delegate
+
+        fixLostPasswords(account: account)
+
         isOAuth2 = account.imapServer?.authMethod == AuthMethod.saslXoauth2.rawValue
         if isOAuth2 {
             if let payload = account.imapServer?.credentials.password ??
@@ -209,6 +212,20 @@ extension EditableAccountSettingsViewModel: VerifiableAccountDelegate {
 // MARK: -  Private
 
 extension EditableAccountSettingsViewModel {
+    // MARK: -  General
+
+    /// Makes sure there are no nil passwords in the keychain for servers belonging to the given account,
+    /// which is known to happen after restoring a backup (please see IOS-2932/PEMA-134).
+    func fixLostPasswords(account: Account) {
+        if let allServers = account.servers {
+            for server in allServers {
+                if server.credentials.password == nil {
+                    server.credentials.fixLostPassword()
+                }
+            }
+        }
+    }
+
     // MARK: -  Sections
 
     /// Generates and retrieves a section
@@ -297,10 +314,6 @@ extension EditableAccountSettingsViewModel {
         rows.append(usernameRow)
 
         if !isOAuth2 {
-            if server.credentials.password == nil {
-                server.credentials.fixLostPassword()
-            }
-
             if let password = server.credentials.password {
                 let passwordRow = getDisplayRow(type : .password, value: password)
                 rows.append(passwordRow)
