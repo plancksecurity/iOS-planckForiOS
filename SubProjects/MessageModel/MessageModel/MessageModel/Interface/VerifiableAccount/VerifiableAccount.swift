@@ -122,7 +122,6 @@ public class VerifiableAccount: VerifiableAccountProtocol {
 
     // MARK: - VerifiableAccountProtocol (behaviour)
 
-
     public func verify() throws {
         imapResult = nil
         smtpResult = nil
