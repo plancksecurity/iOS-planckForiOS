@@ -192,6 +192,8 @@ public class RecipientTextViewModel {
             recipientAttachments.append(attachment)
             newText = newText.plainTextRemoved()
             newText = newText.baselineOffsetRemoved()
+            newText = newText.setLineSpace(8)
+
             attributedText = newText
 
             if informDelegate {
@@ -217,10 +219,12 @@ public class RecipientTextViewModel {
         var (newText, attachment) = text.imageInserted(withAddressOf: identity,
                                                        in: range,
                                                        maxWidth: maxTextattachmentWidth)
-
-        recipientAttachments.append(attachment)
+        attachment.isBadge = true
+        //recipientAttachments.append(attachment)
         newText = newText.plainTextRemoved()
         newText = newText.baselineOffsetRemoved()
+        newText = newText.setLineSpace(8)
+
         attributedText = newText
 
         if informDelegate {
@@ -239,7 +243,6 @@ public class RecipientTextViewModel {
                                 length: 0)
             textBuilder.append(NSAttributedString(string: .space))
             textBuilder.append(NSAttributedString(string: recipient.address))
-
             parseAndHandleValidEmailAddresses(inRange: range,
                                               of: textBuilder,
                                               informDelegate: false)

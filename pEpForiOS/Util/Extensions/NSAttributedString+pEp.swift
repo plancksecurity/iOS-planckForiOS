@@ -95,4 +95,17 @@ extension NSAttributedString {
         )
         return createe
     }
+
+    public func setLineSpace(_ lineSpace: CGFloat) -> NSAttributedString {
+        var style = NSMutableParagraphStyle()
+        style.lineSpacing = lineSpace
+        let createe = NSMutableAttributedString(attributedString: self)
+        createe.addAttribute(.paragraphStyle,
+                             value: style,
+                             range: NSRange(location: 0,
+                                            length: createe.length)
+        )
+        return createe
+    }
+
 }

@@ -21,6 +21,7 @@ extension RecipientTextViewModel {
     public class TextAttachment: NSTextAttachment {
         public private(set) var recipient: Identity
         private var font: UIFont
+        public var isBadge: Bool = false
 
         init(recipient: Identity,
              font: UIFont = UIFont.pepFont(style: .footnote, weight: .regular),
@@ -59,13 +60,43 @@ extension RecipientTextViewModel {
                                          font:  UIFont,
                                          textColor: UIColor = .pEpDarkText,
                                          maxWidth: CGFloat = 0.0) {
-            let text = recipient.userName ?? recipient.address
-            let attributes = [
+            let text = " \(recipient.userName ?? recipient.address) "
+            let badgeAttributes: [NSAttributedString.Key : NSObject]
+            if #available(iOS 13.0, *) {
+                badgeAttributes = [
+                    NSAttributedString.Key.foregroundColor: UIColor.label,
+                    NSAttributedString.Key.font: font,
+                ]
+            } else {
+                badgeAttributes = [
+                    NSAttributedString.Key.foregroundColor: UIColor.pEpDarkText,
+                    NSAttributedString.Key.font: font,
+                ]
+            }
+
+            let attributesForDarkMode = [
+                NSAttributedString.Key.foregroundColor: textColor,
+                NSAttributedString.Key.font: font,
+                NSAttributedString.Key.backgroundColor: UIColor.pEpLightBackground
+            ]
+
+            let attributesForLightMode = [
                 NSAttributedString.Key.foregroundColor: textColor,
                 NSAttributedString.Key.font: font
             ]
 
             let textMargin: CGFloat = 3.0
+            let attributes: [NSAttributedString.Key : NSObject]
+            if #available(iOS 13.0, *) {
+                if recipient.address.isProbablyValidEmail() {
+                    attributes = UITraitCollection.current.userInterfaceStyle == .dark ? attributesForDarkMode : attributesForLightMode
+                } else {
+                    attributes = badgeAttributes
+                }
+
+            } else {
+                attributes = attributesForLightMode
+            }
             let textSize = text.size(withAttributes: attributes)
             let width = textSize.width > maxWidth ? maxWidth : textSize.width
             var textFrame = CGRect(x: 0, y: 0, width: width, height: textSize.height)
@@ -97,7 +128,11 @@ extension RecipientTextViewModel {
             }
             UIGraphicsEndImageContext()
 
-            image = createe
+            guard let result = createe.withRoundedCorners(radius: 16) else {
+                image = createe
+                return
+            }
+            image = result
         }
     }
 }

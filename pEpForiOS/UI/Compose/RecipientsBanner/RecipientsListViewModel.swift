@@ -33,9 +33,14 @@ class RecipientsListViewModel {
     /// Constructor
     /// - Parameters:
     ///   - recipients: The recipients to show in the list.
-    init(recipients: [Identity], composeViewModel: ComposeViewModel) {
-        self.rows = recipients.uniques.map {
-            RecipientRow(title: $0.userName ?? $0.address)
+    init?(recipients: [Identity], composeViewModel: ComposeViewModel) {
+        self.rows = recipients.uniques.compactMap {
+            if let username = $0.userName {
+                return RecipientRow(title: username)
+            } else if $0.address.isProbablyValidEmail() {
+                return RecipientRow(title:  $0.address)
+            }
+            return nil
         }
         self.composeViewModel = composeViewModel
     }

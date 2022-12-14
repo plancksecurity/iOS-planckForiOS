@@ -225,7 +225,7 @@ class ComposeViewModel {
     /// Get the red recipients.
     /// This evaluates TO, CC and BCC and returns the identities.
     private func getRedRecipients() -> [Identity] {
-        let allRecipients = state.toRecipients + state.ccRecipients + state.bccRecipients
+        let allRecipients = state.toRecipients + state.ccRecipients + state.bccRecipients + state.toRecipientsHidden + state.ccRecipientsHidden + state.bccRecipientsHidden
         var redRecipients = [Identity]()
         let group = DispatchGroup()
         for i in 0 ..< allRecipients.count {
