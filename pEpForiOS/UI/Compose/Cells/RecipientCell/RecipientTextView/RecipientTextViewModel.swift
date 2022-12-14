@@ -204,6 +204,32 @@ public class RecipientTextViewModel {
         return identityGenerated
     }
 
+    @discardableResult public func addBadge(inRange range: NSRange, of text: NSAttributedString, informDelegate: Bool = true, number: Int) -> Bool {
+        var identityGenerated = false
+        let identity = Identity(address: "+\(number)")
+        identity.session.commit()
+
+        identityGenerated = true
+        // The resultDelegate is called as a side effect in the setter of `recipientAttachments` and may depend on the isDirty state.
+        // Thus we must update the isDirty state before adding the attachment
+        isDirty = !identityGenerated && !containsNothingButAttachments(text: text)
+
+        var (newText, attachment) = text.imageInserted(withAddressOf: identity,
+                                                       in: range,
+                                                       maxWidth: maxTextattachmentWidth)
+
+        recipientAttachments.append(attachment)
+        newText = newText.plainTextRemoved()
+        newText = newText.baselineOffsetRemoved()
+        attributedText = newText
+
+        if informDelegate {
+            delegate?.textChanged(newText: newText)
+        }
+
+        return identityGenerated
+    }
+
     private func setupInitialText() {
 
         for recipient in initialRecipients {
@@ -263,7 +289,7 @@ extension RecipientTextViewModel {
         }
 
         DispatchQueue.main.async { [weak self] in
-            guard let me = self else {
+            guard let me = self, let attr = me.attributedText else {
                 Log.shared.errorAndCrash("Lost myself")
                 return
             }
@@ -271,6 +297,11 @@ extension RecipientTextViewModel {
             // Hide attachments that exceed the first line.
             let newRecipients = toShow.map { $0.recipient }
             let recipientsToHide = toHide.map { $0.recipient }
+
+            if !recipientsToHide.isEmpty {
+                let range = NSRange(location: max(attr.length, 0), length: 0)
+                me.addBadge(inRange: range, of: attr, number: recipientsToHide.count)
+            }
             me.resultDelegate?.recipientTextViewModel(me, didChangeRecipients: newRecipients, hiddenRecipients: recipientsToHide)
             me.delegate?.removeRecipientsTextAttachments(recipients: toHide)
         }

@@ -228,7 +228,7 @@ extension RecipientTextView: RecipientTextViewModelDelegate {
     }
 
     func isThereSpaceForANewTextAttachment(recipientsTextAttachmentWidth: CGFloat, expectedWidthOfTheNewTextAttachment: CGFloat) -> Bool {
-        let margin: CGFloat = 20.0 // This is margin + 2 characters text attachment for the badge.
+        let margin: CGFloat = 25.0 // This is margin + 2 characters text attachment for the badge.
         let expectedFullWidth = recipientsTextAttachmentWidth + expectedWidthOfTheNewTextAttachment
         return expectedFullWidth < frame.width - margin
     }
