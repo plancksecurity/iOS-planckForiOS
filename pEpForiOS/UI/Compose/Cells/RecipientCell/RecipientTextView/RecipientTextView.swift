@@ -196,9 +196,42 @@ extension RecipientTextView: UITextViewDelegate {
 
 extension RecipientTextView: RecipientTextViewModelDelegate {
 
-    func isThereSpaceForANewTextAttachment(fromWidth: CGFloat, expectedWidthOfTheNewTextAttachment: CGFloat) -> Bool {
-        let margin: CGFloat = 8.0
-        return fromWidth + expectedWidthOfTheNewTextAttachment < frame.width - margin
+    //MB:-
+    func removeRecipientsTextAttachments(recipients: [RecipientTextViewModel.TextAttachment]) {
+        guard let attributedText = attributedText, attributedText.length > 0 else {
+            // Empty textfield, nothing to do.
+            return
+        }
+
+        guard let vm = viewModel else {
+            Log.shared.errorAndCrash("VM not found")
+            return
+        }
+
+        let attributedTextRange = NSRange(location: 0, length: attributedText.length)
+        guard let mutableAttr = attributedText.mutableCopy() as? NSMutableAttributedString else {
+            Log.shared.errorAndCrash("This should not happen")
+            return
+        }
+
+        // Look for NSTextAttachments
+        attributedText.enumerateAttribute(.attachment, in: attributedTextRange, options: []) {
+            value, attachmentRange, stop in
+            if let attachment = value as? RecipientTextViewModel.TextAttachment {
+                // Remove all attachments that matches the given attachments.
+                if recipients.contains(attachment) {
+                    mutableAttr.removeAttribute(.attachment, range: attachmentRange)
+                }
+            }
+        }
+        self.attributedText = mutableAttr
+        vm.handleReplaceSelectedAttachments(recipients)
+    }
+
+    func isThereSpaceForANewTextAttachment(recipientsTextAttachmentWidth: CGFloat, expectedWidthOfTheNewTextAttachment: CGFloat) -> Bool {
+        let margin: CGFloat = 10.0
+        let expectedFullWidth = recipientsTextAttachmentWidth + expectedWidthOfTheNewTextAttachment
+        return expectedFullWidth < frame.width - margin
     }
 
     func textChanged(newText: NSAttributedString) {

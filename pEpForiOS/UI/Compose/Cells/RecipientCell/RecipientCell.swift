@@ -61,11 +61,19 @@ final class RecipientCell: TextViewContainingTableViewCell {
 }
 
 extension RecipientCell: RecipientCellViewModelDelegate {
+
     func focusChanged() {
         if addButton.isEnabled != textView.isFirstResponder {
             let hasFocus = textView.isFirstResponder
             addButton.isEnabled = hasFocus
             addButton.alpha = hasFocus ? 1 : 0
+            if !hasFocus {
+                guard let vm = viewModel else {
+                    Log.shared.errorAndCrash("VM not found")
+                    return
+                }
+                vm.handleFocusChanged()
+            }
         }
     }
 }

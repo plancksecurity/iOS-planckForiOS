@@ -18,8 +18,15 @@ import pEpIOSToolbox
 
 public protocol RecipientTextViewModelResultDelegate: AnyObject {
 
+    /// Communicate the recipients have changed.
+    ///
+    /// - Parameters:
+    ///   - vm: The Recipient text view model.
+    ///   - newRecipients: The new recipients in the text view model.
+    ///   - hiddenRecipients: The hidden recipients. This is UI state only. They are the collapsed recipients.
     func recipientTextViewModel(_ vm: RecipientTextViewModel,
-                                didChangeRecipients newRecipients: [Identity])
+                                didChangeRecipients newRecipients: [Identity],
+                                hiddenRecipients: [Identity])
 
     func recipientTextViewModel(_ vm: RecipientTextViewModel, didBeginEditing text: String)
 
@@ -30,7 +37,18 @@ public protocol RecipientTextViewModelResultDelegate: AnyObject {
 
 public protocol RecipientTextViewModelDelegate: AnyObject {
 
-    func isThereSpaceForANewTextAttachment(fromWidth: CGFloat, expectedWidthOfTheNewTextAttachment: CGFloat) -> Bool
+    /// Remove the given recipients text attachments from the text view
+    ///
+    /// - Parameters:
+    ///   - recipients: The Recipients text attachments to remove
+    func removeRecipientsTextAttachments(recipients: [RecipientTextViewModel.TextAttachment])
+
+    ///  Verify if there is space for a new text attachment in the row.
+    ///
+    /// - Parameters:
+    ///   - recipientsTextAttachmentWidth: The accumulated width. This is the summatory of the width of all the recipients text attachments in the text view.
+    ///   - expectedWidthOfTheNewTextAttachment: The recipient text attachment expected width.
+    func isThereSpaceForANewTextAttachment(recipientsTextAttachmentWidth: CGFloat, expectedWidthOfTheNewTextAttachment: CGFloat) -> Bool
     
     func textChanged(newText: NSAttributedString)
 
@@ -46,7 +64,7 @@ public class RecipientTextViewModel {
         didSet {
             let recipients = recipientAttachments.map { $0.recipient }
             resultDelegate?.recipientTextViewModel(self,
-                                                   didChangeRecipients: recipients)
+                                                   didChangeRecipients: recipients, hiddenRecipients: [Identity]())
         }
     }
 
@@ -92,29 +110,6 @@ public class RecipientTextViewModel {
         attributedText = text
         tryGenerateValidAddressAndUpdateStatus(range: range, of: text)
         resultDelegate?.recipientTextViewModelDidEndEditing(self)
-        collapseRecipients()
-    }
-
-    public func collapseRecipients() {
-        guard let allTextAttachments = attributedText?.recipientTextAttachments() else {
-            return
-        }
-        guard let del = delegate else {
-            Log.shared.errorAndCrash("Delegate not found")
-            return
-        }
-        var toShow = [RecipientTextViewModel.TextAttachment]()
-        var toHide = [RecipientTextViewModel.TextAttachment]()
-        allTextAttachments.forEach { element in
-            if let width = element.image?.size.width {
-                let accruedWidth = toShow.compactMap { $0.image?.size.width }.reduce(0, +)
-                if del.isThereSpaceForANewTextAttachment(fromWidth: accruedWidth, expectedWidthOfTheNewTextAttachment: width) {
-                    toShow.append(element)
-                } else {
-                    toHide.append(element)
-                }
-            }
-        }
     }
 
     public func handleTextChange(newText: String, newAttributedText: NSAttributedString) {
@@ -144,11 +139,13 @@ public class RecipientTextViewModel {
         recipientAttachments = recipientAttachments.filter({$0 != attachment})
     }
 
+    /// Remove all recipients that matches the address of the givven TextAttachment.
+    /// If the user wants to remove certain recipient but enter his address more than once, all occurence must be removed. .
     public func removeAllRecipientAttachmentOfTheSameRecipient(attachment: TextAttachment) {
         recipientAttachments = recipientAttachments.filter({$0.recipient.address != attachment.recipient.address})
     }
 
-     @discardableResult private func tryGenerateValidAddressAndUpdateStatus(range: NSRange, of text: NSAttributedString) -> Bool {
+    @discardableResult private func tryGenerateValidAddressAndUpdateStatus(range: NSRange, of text: NSAttributedString) -> Bool {
         return parseAndHandleValidEmailAddresses(inRange: range, of: text)
     }
 
@@ -220,6 +217,62 @@ public class RecipientTextViewModel {
             parseAndHandleValidEmailAddresses(inRange: range,
                                               of: textBuilder,
                                               informDelegate: false)
+        }
+    }
+}
+
+// MARK: - Expand and collapse recipeints
+
+extension RecipientTextViewModel {
+
+    /// Shows only the recipients that fits on one line and add a new NSTextAttachment that indicates the amount of recipients that are not shown.
+    /// For example, this could be shown: "bob@pep.security  alice@pep.security  +3"
+    /// If there is nothing to hide, it does nothing.
+    /// The hidden recipients are NSTextAttachments removed and are stored into the hidden recipients of the ComposeViewModelState .
+    public func collapseRecipients() {
+        guard let recipientTextAttachments = attributedText?.recipientTextAttachments() else {
+            // No attachments. Nothing to do.
+            return
+        }
+        guard let del = delegate else {
+            Log.shared.errorAndCrash("Delegate not found")
+            return
+        }
+
+        //Separate Recipient text attachments in two groups: one to show, the other to hide.
+        var toShow = [RecipientTextViewModel.TextAttachment]()
+        var toHide = [RecipientTextViewModel.TextAttachment]()
+
+        recipientTextAttachments.forEach { textAttachment in
+            guard let expectedWidthOfTheNewTextAttachment = textAttachment.image?.size.width else {
+                Log.shared.errorAndCrash("RecipientTextViewModel.TextAttachment without image. It should not happen.")
+                return
+            }
+
+            // Sum the width of every attachment to show to calculate if there is space for one more.
+            let recipientsTextAttachmentWidth = toShow.compactMap { $0.image?.size.width }.reduce(0, +)
+
+            // Evaluate if there is space for the next attachment. Group the text attachments accordingly.
+            let shouldShow = del.isThereSpaceForANewTextAttachment(recipientsTextAttachmentWidth: recipientsTextAttachmentWidth, expectedWidthOfTheNewTextAttachment: expectedWidthOfTheNewTextAttachment)
+
+            if shouldShow {
+                toShow.append(textAttachment)
+            } else {
+                toHide.append(textAttachment)
+            }
+        }
+
+        DispatchQueue.main.async { [weak self] in
+            guard let me = self else {
+                Log.shared.errorAndCrash("Lost myself")
+                return
+            }
+
+            // Hide attachments that exceed the first line.
+            let newRecipients = toShow.map { $0.recipient }
+            let recipientsToHide = toHide.map { $0.recipient }
+            me.resultDelegate?.recipientTextViewModel(me, didChangeRecipients: newRecipients, hiddenRecipients: recipientsToHide)
+            me.delegate?.removeRecipientsTextAttachments(recipients: toHide)
         }
     }
 }

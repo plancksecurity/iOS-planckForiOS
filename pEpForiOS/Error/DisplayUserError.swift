@@ -90,6 +90,10 @@ struct DisplayUserError: LocalizedError {
     ///             user friendly error otherwize.
     init?(withError error: Error) {
         extraInfo = nil
+
+        //MB:- remove this.
+        return nil
+
         if let displayUserError = error as? DisplayUserError {
             self = displayUserError
         } else if let smtpError = error as? SmtpSendError {

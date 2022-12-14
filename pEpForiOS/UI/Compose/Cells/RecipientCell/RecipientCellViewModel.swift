@@ -8,13 +8,17 @@
 
 #if EXT_SHARE
 import MessageModelForAppExtensions
+import pEpIOSToolboxForExtensions
 #else
 import MessageModel
+import pEpIOSToolbox
 #endif
 
 protocol RecipientCellViewModelResultDelegate: AnyObject {
+
     func recipientCellViewModel(_ vm: RecipientCellViewModel,
-                                didChangeRecipients newRecipients: [Identity])
+                                didChangeRecipients newRecipients: [Identity],
+                                hiddenRecipients: [Identity])
 
     func recipientCellViewModel(_ vm: RecipientCellViewModel, didBeginEditing text: String)
 
@@ -68,16 +72,23 @@ class RecipientCellViewModel: CellViewModel {
         textViewModel = createe
         return createe
     }
+
+    func handleFocusChanged() {
+        guard let textViewModel = textViewModel else {
+            Log.shared.errorAndCrash("TextViewModel not found")
+            return
+        }
+        textViewModel.collapseRecipients()
+    }
 }
 
 // MARK: - RecipientTextViewModelResultDelegate
 
 extension RecipientCellViewModel: RecipientTextViewModelResultDelegate {
-
-    func recipientTextViewModel(_ vm: RecipientTextViewModel, didChangeRecipients newRecipients: [Identity]) {
+    func recipientTextViewModel(_ vm: RecipientTextViewModel, didChangeRecipients newRecipients: [Identity], hiddenRecipients: [Identity]) {
         focused = true
         recipientCellViewModelDelegate?.focusChanged()
-        resultDelegate?.recipientCellViewModel(self, didChangeRecipients: newRecipients)
+        resultDelegate?.recipientCellViewModel(self, didChangeRecipients: newRecipients, hiddenRecipients: hiddenRecipients)
     }
 
     func recipientTextViewModel(_ vm: RecipientTextViewModel, didBeginEditing text: String) {

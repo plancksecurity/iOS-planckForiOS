@@ -944,15 +944,19 @@ extension ComposeViewModel: TrustmanagementProtectionStateChangeDelegate {
 
 extension ComposeViewModel: RecipientCellViewModelResultDelegate {
 
+
     func recipientCellViewModel(_ vm: RecipientCellViewModel,
-                                didChangeRecipients newRecipients: [Identity]) {
+                                didChangeRecipients newRecipients: [Identity], hiddenRecipients: [Identity]) {
         switch vm.type {
         case .to:
             state.toRecipients = newRecipients
+            state.toRecipientsHidden = hiddenRecipients
         case .cc:
             state.ccRecipients = newRecipients
-        case .bcc:
+            state.ccRecipientsHidden = hiddenRecipients
+                case .bcc:
             state.bccRecipients = newRecipients
+            state.bccRecipientsHidden = hiddenRecipients
         }
     }
 
