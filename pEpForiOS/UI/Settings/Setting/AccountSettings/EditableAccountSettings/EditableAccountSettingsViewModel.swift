@@ -109,8 +109,6 @@ class EditableAccountSettingsViewModel {
                let token = OAuth2AccessToken.from(base64Encoded: payload)
                 as? OAuth2AccessTokenProtocol {
                 accessToken = token
-            } else {
-                Log.shared.errorAndCrash("Supposed to do OAUTH2, but no existing token")
             }
         } else {
             fixLostPasswords(account: account)
