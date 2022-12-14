@@ -958,6 +958,7 @@ extension ComposeViewModel: RecipientCellViewModelResultDelegate {
             state.bccRecipients = newRecipients
             state.bccRecipientsHidden = hiddenRecipients
         }
+        delegate?.focusSwitched()
     }
 
     func recipientCellViewModel(_ vm: RecipientCellViewModel, didBeginEditing text: String) {

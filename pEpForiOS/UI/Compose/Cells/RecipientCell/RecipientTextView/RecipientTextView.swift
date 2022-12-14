@@ -196,7 +196,6 @@ extension RecipientTextView: UITextViewDelegate {
 
 extension RecipientTextView: RecipientTextViewModelDelegate {
 
-    //MB:-
     func removeRecipientsTextAttachments(recipients: [RecipientTextViewModel.TextAttachment]) {
         guard let attributedText = attributedText, attributedText.length > 0 else {
             // Empty textfield, nothing to do.
@@ -229,7 +228,7 @@ extension RecipientTextView: RecipientTextViewModelDelegate {
     }
 
     func isThereSpaceForANewTextAttachment(recipientsTextAttachmentWidth: CGFloat, expectedWidthOfTheNewTextAttachment: CGFloat) -> Bool {
-        let margin: CGFloat = 10.0
+        let margin: CGFloat = 20.0 // This is margin + 2 characters text attachment for the badge.
         let expectedFullWidth = recipientsTextAttachmentWidth + expectedWidthOfTheNewTextAttachment
         return expectedFullWidth < frame.width - margin
     }
