@@ -461,9 +461,6 @@ extension EditableAccountSettingsViewModel {
         theVerifier.loginNameSMTP = input.smtpUsername
 
         if isOAuth2 {
-            if self.accessToken == nil {
-                Log.shared.errorAndCrash("Have to do OAUTH2, but lacking current token")
-            }
             theVerifier.authMethod = .saslXoauth2
             theVerifier.accessToken = accessToken
             // OAUTH2 trumps any password
