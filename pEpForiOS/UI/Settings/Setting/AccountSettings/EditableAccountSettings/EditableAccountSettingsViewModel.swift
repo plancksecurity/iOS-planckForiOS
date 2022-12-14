@@ -101,9 +101,8 @@ class EditableAccountSettingsViewModel {
         self.account = account
         self.delegate = delegate
 
-        fixLostPasswords(account: account)
-
         isOAuth2 = account.imapServer?.authMethod == AuthMethod.saslXoauth2.rawValue
+
         if isOAuth2 {
             if let payload = account.imapServer?.credentials.password ??
                 account.smtpServer?.credentials.password,
@@ -114,6 +113,8 @@ class EditableAccountSettingsViewModel {
                 Log.shared.errorAndCrash("Supposed to do OAUTH2, but no existing token")
             }
         } else {
+            fixLostPasswords(account: account)
+
             originalImapPassword = account.imapServer?.credentials.password
             originalSmtpPassword = account.smtpServer?.credentials.password
         }
