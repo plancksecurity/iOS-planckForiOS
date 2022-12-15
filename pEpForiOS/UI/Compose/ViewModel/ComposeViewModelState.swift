@@ -89,11 +89,7 @@ extension ComposeViewModel {
         }
 
         // UI state. Collapsed to recipients.
-        var toRecipientsHidden = [Identity]() {
-            didSet {
-                validate()
-            }
-        }
+        var toRecipientsHidden = [Identity]()
 
         var ccRecipients = [Identity]() {
             didSet {
@@ -102,11 +98,7 @@ extension ComposeViewModel {
         }
 
         // UI state. Collapsed cc recipients.
-        var ccRecipientsHidden = [Identity]() {
-            didSet {
-                validate()
-            }
-        }
+        var ccRecipientsHidden = [Identity]()
 
         var bccRecipients = [Identity]() {
             didSet {
@@ -115,11 +107,7 @@ extension ComposeViewModel {
         }
 
         // UI state. Collapsed bcc recipients.
-        var bccRecipientsHidden = [Identity]() {
-            didSet {
-                validate()
-            }
-        }
+        var bccRecipientsHidden = [Identity]()
 
         var from: Identity? {
             didSet {
