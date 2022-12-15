@@ -109,7 +109,10 @@ extension RecipientTextView: UITextViewDelegate {
             Log.shared.errorAndCrash("VM not found")
             return
         }
-        vm.handleDidEndEditing(range: textView.selectedRange, of: textView.attributedText)
+
+        if let del = vm.delegate, !del.isBeingDismissed() {
+            vm.handleDidEndEditing(range: textView.selectedRange, of: textView.attributedText)
+        }
     }
 
     func textView(_ textView: UITextView,
@@ -195,6 +198,13 @@ extension RecipientTextView: UITextViewDelegate {
 // MARK: - RecipientTextViewModelDelegate
 
 extension RecipientTextView: RecipientTextViewModelDelegate {
+    func isBeingDismissed() -> Bool {
+        guard let vm = viewModel, let del = vm.delegate else {
+            Log.shared.errorAndCrash("VM not found")
+            return false
+        }
+        return del.isBeingDismissed()
+    }
 
     func removeRecipientsTextAttachments(recipients: [RecipientTextViewModel.TextAttachment]) {
         guard let attributedText = attributedText, attributedText.length > 0 else {

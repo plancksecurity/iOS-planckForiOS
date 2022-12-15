@@ -305,6 +305,9 @@ extension ComposeViewController {
 // MARK: - ComposeViewModelDelegate
 
 extension ComposeViewController: ComposeViewModelDelegate {
+    func isBeingDismissed() -> Bool {
+        return self.isBeingDismissed
+    }
 
     // MARK: - Recipients Banner
 
@@ -476,6 +479,10 @@ extension ComposeViewController: ComposeViewModelDelegate {
 
     func showContactsPicker() {
         presentContactPicker()
+    }
+
+    func isBeingDissmised() -> Bool {
+        return self.isBeingDismissed
     }
 
     /// Restore focus to the previous focused cell after closing the picker action

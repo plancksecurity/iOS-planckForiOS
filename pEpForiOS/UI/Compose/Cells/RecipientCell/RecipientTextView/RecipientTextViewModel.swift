@@ -53,6 +53,8 @@ public protocol RecipientTextViewModelDelegate: AnyObject {
     func textChanged(newText: NSAttributedString)
 
     func add(recipient: String)
+
+    func isBeingDismissed() -> Bool
 }
 
 public class RecipientTextViewModel {

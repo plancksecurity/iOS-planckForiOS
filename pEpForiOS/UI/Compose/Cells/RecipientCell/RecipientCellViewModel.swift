@@ -27,6 +27,8 @@ protocol RecipientCellViewModelResultDelegate: AnyObject {
     func recipientCellViewModel(_ vm: RecipientCellViewModel, textChanged newText: String)
 
     func addContactTapped()
+
+    func isBeingDissmised() -> Bool
 }
 
 protocol RecipientCellViewModelDelegate: AnyObject {

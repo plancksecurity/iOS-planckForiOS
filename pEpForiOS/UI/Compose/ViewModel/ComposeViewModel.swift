@@ -68,6 +68,8 @@ protocol ComposeViewModelDelegate: AnyObject {
     func hideRecipientsBanner()
 
     func removeRecipientsFromTextfields(addresses: [String])
+
+    func isBeingDismissed() -> Bool
 }
 
 /// Contains messages about cancelation and send.
@@ -997,6 +999,10 @@ extension ComposeViewModel: RecipientCellViewModelResultDelegate {
 
     func addContactTapped() {
         delegate?.showContactsPicker()
+    }
+
+    func isBeingDissmised() -> Bool {
+        return delegate?.isBeingDismissed() ?? false
     }
 
     func handleContactSelected(address: String, addressBookID: String, userName: String) {

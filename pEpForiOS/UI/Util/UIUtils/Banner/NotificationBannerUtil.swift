@@ -78,7 +78,7 @@ class NotificationBannerUtil: NotificationBannerUtilProtocol {
             }
 
             let sizeToFit = CGSize(width: navigationBar.frame.size.width, height: .greatestFiniteMagnitude)
-            let sizeOfTitle = errorBannerView.addressLabel.sizeThatFits(sizeToFit)
+            let sizeOfTitle = errorBannerView.titleLabel.sizeThatFits(sizeToFit)
 
             let verticalMargins: CGFloat = 16.0
             let bannerHeight = sizeOfTitle.height + verticalMargins
@@ -125,7 +125,7 @@ class NotificationBannerUtil: NotificationBannerUtilProtocol {
             NSLayoutConstraint.activate([bannerWidthConstraint, bannerCenterXConstraint, bannerTopConstraint, bannerHeightConstraint])
 
             // Animate presentation
-            errorBannerView.addressLabel.isHidden = true
+            errorBannerView.titleLabel.isHidden = true
 
             errorBannerView.isHidden = false
             navigationBar.layoutIfNeeded()
@@ -143,7 +143,7 @@ class NotificationBannerUtil: NotificationBannerUtilProtocol {
                 navigationBar.layoutIfNeeded()
             } completion: { finished in
                 // Then, show the UI components.
-                errorBannerView.addressLabel.isHidden = false
+                errorBannerView.titleLabel.isHidden = false
             }
         }
 #endif
