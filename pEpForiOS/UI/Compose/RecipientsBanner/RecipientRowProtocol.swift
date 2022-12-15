@@ -9,19 +9,23 @@
 protocol RecipientRowProtocol {
     /// The cell identifier
     var cellIdentifier: String { get }
-    /// The text to show
-    var title: String { get }
+    /// The username to show
+    var username: String? { get }
+    /// The address to show
+    var address: String { get }
     /// Indicates if the row is selected
     var isSelected: Bool { get }
 }
 
 class RecipientRow: RecipientRowProtocol {
     var cellIdentifier: String = "recipientCell"
-    var title: String
+    var username: String?
+    var address: String
     var isSelected: Bool
 
-    init(title: String) {
-        self.title = title
+    init(username: String? = nil, address: String) {
+        self.username = username
+        self.address = address
         self.isSelected = false // By default, the row is not selected
     }
 }

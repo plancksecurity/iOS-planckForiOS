@@ -344,7 +344,7 @@ extension ComposeViewController: ComposeViewModelDelegate {
                 value, range, stop in
                 if let attachment = value as? RecipientTextViewModel.TextAttachment {
                     // Remove all attachments that matches the given addresses.
-                    if addresses.contains(attachment.recipient.address) || addresses.contains(attachment.recipient.userName ?? "") {
+                    if addresses.contains(attachment.recipient.address) || addresses.contains(attachment.recipient.userName ?? "") || attachment.isBadge {
                         mutableAttr.removeAttribute(.attachment, range: range)
                         textView.viewModel?.removeAllRecipientAttachmentOfTheSameRecipient(attachment: attachment)
                     }

@@ -204,7 +204,11 @@ class ComposeViewModel {
                 me.state.toRecipients.removeAll(where: {$0.address == addressOrUsername || $0.userName == addressOrUsername})
                 me.state.ccRecipients.removeAll(where: {$0.address == addressOrUsername || $0.userName == addressOrUsername})
                 me.state.bccRecipients.removeAll(where: {$0.address == addressOrUsername || $0.userName == addressOrUsername})
+                me.state.toRecipientsHidden.removeAll(where: {$0.address == addressOrUsername || $0.userName == addressOrUsername})
+                me.state.ccRecipientsHidden.removeAll(where: {$0.address == addressOrUsername || $0.userName == addressOrUsername})
+                me.state.bccRecipientsHidden.removeAll(where: {$0.address == addressOrUsername || $0.userName == addressOrUsername})
             }
+
             me.handleRecipientsBanner()
             me.delegate?.removeRecipientsFromTextfields(addresses: addressesOrUsernames)
         }

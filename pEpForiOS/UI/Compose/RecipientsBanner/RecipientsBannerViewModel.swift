@@ -61,10 +61,7 @@ class RecipientsBannerViewModel {
 
     /// Handle recipients button was pressed.
     public func handleRecipientsButtonPressed() {
-        guard let recipientsListViewModel = RecipientsListViewModel(recipients: recipients, composeViewModel: composeViewModel) else {
-            Log.shared.errorAndCrash("Lost VM")
-            return
-        }
+        let recipientsListViewModel = RecipientsListViewModel(recipients: recipients, composeViewModel: composeViewModel)
         DispatchQueue.main.async { [weak self] in
             guard let me = self else {
                 Log.shared.errorAndCrash("Lost myself")

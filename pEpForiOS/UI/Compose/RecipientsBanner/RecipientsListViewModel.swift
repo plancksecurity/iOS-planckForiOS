@@ -33,14 +33,9 @@ class RecipientsListViewModel {
     /// Constructor
     /// - Parameters:
     ///   - recipients: The recipients to show in the list.
-    init?(recipients: [Identity], composeViewModel: ComposeViewModel) {
-        self.rows = recipients.uniques.compactMap {
-            if let username = $0.userName {
-                return RecipientRow(title: username)
-            } else if $0.address.isProbablyValidEmail() {
-                return RecipientRow(title:  $0.address)
-            }
-            return nil
+    init(recipients: [Identity], composeViewModel: ComposeViewModel) {
+        self.rows = recipients.uniques.map {
+            RecipientRow(username: $0.userName, address: $0.address)
         }
         self.composeViewModel = composeViewModel
     }
@@ -77,7 +72,7 @@ class RecipientsListViewModel {
             return
         }
         let rowsToDelete = getRows(from: indexPaths, toKeep: false)
-        composeViewModel.removeFromState(addressesOrUsernames: rowsToDelete.map({$0.title}))
+        composeViewModel.removeFromState(addressesOrUsernames: rowsToDelete.map({$0.address}))
         rows = getRows(from: indexPaths, toKeep: true)
         // 3. Reload.
         rows.count > 0 ? reload() : reloadAndDismiss()
@@ -113,5 +108,4 @@ class RecipientsListViewModel {
             me.delegate?.reload()
         }
     }
-
 }

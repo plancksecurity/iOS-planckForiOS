@@ -135,27 +135,18 @@ public class RecipientTextViewModel {
         }
     }
 
+    /// Remove the recipient attachment given.
+    ///
+    /// - Parameter attachment: The recipient attachment to remove.
     public func removeRecipientAttachment(attachment: TextAttachment) {
-        recipientAttachments = recipientAttachments.filter({$0 != attachment})
+        recipientAttachments = recipientAttachments.filter { $0 != attachment }
     }
 
-    /// Remove all recipients that matches the address of the givven TextAttachment.
-    /// If the user wants to remove certain recipient but enter his address more than once, all occurence must be removed. .
+    /// Remove all recipients that matches the address of the given TextAttachment.
+    ///
+    /// If the user wants to remove certain recipient but enter his address more than once, all occurence will be removed.
     public func removeAllRecipientAttachmentOfTheSameRecipient(attachment: TextAttachment) {
-        recipientAttachments = recipientAttachments.filter({$0.recipient.address != attachment.recipient.address})
-    }
-
-    @discardableResult private func tryGenerateValidAddressAndUpdateStatus(range: NSRange, of text: NSAttributedString) -> Bool {
-        return parseAndHandleValidEmailAddresses(inRange: range, of: text)
-    }
-
-    private func containsNothingButAttachments(text : NSAttributedString) -> Bool {
-        return text.plainTextRemoved().length == text.length ||
-            text.plainTextRemoved().string.trimObjectReplacementCharacters().isEmpty
-    }
-
-    private var addressDeliminators: [String] {
-        return [String.returnKey, String.space]
+        recipientAttachments = recipientAttachments.filter { $0.recipient.address != attachment.recipient.address }
     }
 
     /// Returns the number of recipient attachments
@@ -163,50 +154,18 @@ public class RecipientTextViewModel {
         return recipientAttachments.count
     }
 
-    /// Parses a text for one new valid email address (and handles it if found).
+    /// Insert a badge with number of recipients that are not shown because they exceed one line in the recipient textview.
     ///
-    /// - Parameter text: Text thet might alread contain contact-image-text-attachments.
-    /// - Returns: true if a valid address has been found, false otherwize
-    @discardableResult private func parseAndHandleValidEmailAddresses(
-        inRange range: NSRange, of text: NSAttributedString, informDelegate: Bool = true) -> Bool {
-        var identityGenerated = false
-        let stringWithoutTextAttachments = text.string.cleanAttachments
-        if stringWithoutTextAttachments.isProbablyValidEmail() {
-            let address = stringWithoutTextAttachments.trimmed()
-            let identity: Identity
-            if let existing = Identity.by(address: address) {
-                identity = existing
-            } else {
-                identity = Identity(address: address)
-                identity.session.commit()
-            }
-            identityGenerated = true
-            // The resultDelegate is called as a side effect in the setter of `recipientAttachments` and may depend on the isDirty state.
-            // Thus we must update the isDirty state before adding the attachment
-            isDirty = !identityGenerated && !containsNothingButAttachments(text: text)
-
-            var (newText, attachment) = text.imageInserted(withAddressOf: identity,
-                                                           in: range,
-                                                           maxWidth: maxTextattachmentWidth)
-
-            recipientAttachments.append(attachment)
-            newText = newText.plainTextRemoved()
-            newText = newText.baselineOffsetRemoved()
-            newText = newText.setLineSpace(8)
-
-            attributedText = newText
-
-            if informDelegate {
-                delegate?.textChanged(newText: newText)
-            }
-        } else {
-            isDirty = !identityGenerated && !containsNothingButAttachments(text: text)
-        }
-
-        return identityGenerated
-    }
-
-    @discardableResult public func addBadge(inRange range: NSRange, of text: NSAttributedString, informDelegate: Bool = true, number: Int) -> Bool {
+    /// - Parameters:
+    ///   - range: The range
+    ///   - text: The text to add the badge.
+    ///   - informDelegate: indicate if the delegate may not be informed.
+    ///   - number: The number to show.
+    ///
+    /// - Returns: True if the badge was added. Otherwise false.
+    @discardableResult public func addBadge(inRange range: NSRange,
+                                            of text: NSAttributedString,
+                                            number: Int) -> Bool {
         var identityGenerated = false
         let identity = Identity(address: "+\(number)")
         identity.session.commit()
@@ -220,33 +179,12 @@ public class RecipientTextViewModel {
                                                        in: range,
                                                        maxWidth: maxTextattachmentWidth)
         attachment.isBadge = true
-        //recipientAttachments.append(attachment)
-        newText = newText.plainTextRemoved()
-        newText = newText.baselineOffsetRemoved()
-        newText = newText.setLineSpace(8)
-
+        newText = setupUI(attributedString: newText)
         attributedText = newText
 
-        if informDelegate {
-            delegate?.textChanged(newText: newText)
-        }
+        delegate?.textChanged(newText: newText)
 
         return identityGenerated
-    }
-
-    private func setupInitialText() {
-
-        for recipient in initialRecipients {
-             let textBuilder =
-                NSMutableAttributedString(attributedString: attributedText ?? NSAttributedString())
-            let range = NSRange(location: max(textBuilder.length, 0),
-                                length: 0)
-            textBuilder.append(NSAttributedString(string: .space))
-            textBuilder.append(NSAttributedString(string: recipient.address))
-            parseAndHandleValidEmailAddresses(inRange: range,
-                                              of: textBuilder,
-                                              informDelegate: false)
-        }
     }
 }
 
@@ -257,7 +195,11 @@ extension RecipientTextViewModel {
     /// Shows only the recipients that fits on one line and add a new NSTextAttachment that indicates the amount of recipients that are not shown.
     /// For example, this could be shown: "bob@pep.security  alice@pep.security  +3"
     /// If there is nothing to hide, it does nothing.
-    /// The hidden recipients are NSTextAttachments removed and are stored into the hidden recipients of the ComposeViewModelState .
+    ///
+    /// To collapse recipients means:
+    /// - The  NSTextAttachments are removed
+    /// - A badge with the number of recipients not shown is added.
+    /// - The identities stored as hidden recipients of the ComposeViewModelState, so they can be retrieved by calling 'expandRecipients'.
     public func collapseRecipients() {
         guard let recipientTextAttachments = attributedText?.recipientTextAttachments() else {
             // No attachments. Nothing to do.
@@ -268,7 +210,7 @@ extension RecipientTextViewModel {
             return
         }
 
-        //Separate Recipient text attachments in two groups: one to show, the other to hide.
+        // Separate Recipient text attachments in two groups: one to show, the other to hide.
         var toShow = [RecipientTextViewModel.TextAttachment]()
         var toHide = [RecipientTextViewModel.TextAttachment]()
 
@@ -307,6 +249,86 @@ extension RecipientTextViewModel {
             }
             me.resultDelegate?.recipientTextViewModel(me, didChangeRecipients: newRecipients, hiddenRecipients: recipientsToHide)
             me.delegate?.removeRecipientsTextAttachments(recipients: toHide)
+        }
+    }
+}
+
+// MARK: Private
+
+extension RecipientTextViewModel {
+
+    /// Parses a text for one new valid email address (and handles it if found).
+    ///
+    /// - Parameter text: Text thet might alread contain contact-image-text-attachments.
+    /// - Returns: true if a valid address has been found, false otherwize
+    @discardableResult private func parseAndHandleValidEmailAddresses(
+        inRange range: NSRange, of text: NSAttributedString, informDelegate: Bool = true) -> Bool {
+        var identityGenerated = false
+        let stringWithoutTextAttachments = text.string.cleanAttachments
+        if stringWithoutTextAttachments.isProbablyValidEmail() {
+            let address = stringWithoutTextAttachments.trimmed()
+            let identity: Identity
+            if let existing = Identity.by(address: address) {
+                identity = existing
+            } else {
+                identity = Identity(address: address)
+                identity.session.commit()
+            }
+            identityGenerated = true
+            // The resultDelegate is called as a side effect in the setter of `recipientAttachments` and may depend on the isDirty state.
+            // Thus we must update the isDirty state before adding the attachment
+            isDirty = !identityGenerated && !containsNothingButAttachments(text: text)
+
+            var (newText, attachment) = text.imageInserted(withAddressOf: identity,
+                                                           in: range,
+                                                           maxWidth: maxTextattachmentWidth)
+
+            recipientAttachments.append(attachment)
+            newText = setupUI(attributedString: newText)
+            attributedText = newText
+
+            if informDelegate {
+                delegate?.textChanged(newText: newText)
+            }
+        } else {
+            isDirty = !identityGenerated && !containsNothingButAttachments(text: text)
+        }
+
+        return identityGenerated
+    }
+
+    @discardableResult private func tryGenerateValidAddressAndUpdateStatus(range: NSRange, of text: NSAttributedString) -> Bool {
+        return parseAndHandleValidEmailAddresses(inRange: range, of: text)
+    }
+
+    private func containsNothingButAttachments(text : NSAttributedString) -> Bool {
+        return text.plainTextRemoved().length == text.length ||
+            text.plainTextRemoved().string.trimObjectReplacementCharacters().isEmpty
+    }
+
+    private var addressDeliminators: [String] {
+        return [String.returnKey, String.space]
+    }
+
+    private func setupUI(attributedString: NSAttributedString) -> NSAttributedString {
+        var copy = attributedString
+        copy = attributedString.plainTextRemoved()
+        copy = attributedString.baselineOffsetRemoved()
+        copy = attributedString.setLineSpace(8)
+        return copy
+    }
+
+    private func setupInitialText() {
+        for recipient in initialRecipients {
+             let textBuilder =
+                NSMutableAttributedString(attributedString: attributedText ?? NSAttributedString())
+            let range = NSRange(location: max(textBuilder.length, 0),
+                                length: 0)
+            textBuilder.append(NSAttributedString(string: .space))
+            textBuilder.append(NSAttributedString(string: recipient.address))
+            parseAndHandleValidEmailAddresses(inRange: range,
+                                              of: textBuilder,
+                                              informDelegate: false)
         }
     }
 }
