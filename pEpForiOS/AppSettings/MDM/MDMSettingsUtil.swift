@@ -37,6 +37,8 @@ public class MDMSettingsUtil {
     /// Transfer MDM configuration into the "user space configuration", that has existed before MDM support
     /// was introduced and is still needed in case there is no MDM.
     private func configureUserSpace() {
+        // Some logic for starting up key sync uses the "user space" setting,
+        // so make sure it is in sync in case the device is attached to an MDM.
         AppSettings.shared.keySyncEnabled = AppSettings.shared.mdmPEPSyncAccountEnabled
     }
 }
