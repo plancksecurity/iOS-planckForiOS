@@ -45,6 +45,24 @@ extension CdServerCredentials {
         try super.validateForDelete()
     }
 
+    /// Fixes the case where after a restore from a backup, key chain passwords are lost,
+    /// as seen in IOS-2932/PEMA-134.
+    public func fixLostPassword() {
+        guard let theKey = key else {
+            return
+        }
+
+        let password = KeyChain.serverPassword(forKey: theKey)
+
+        if password == nil {
+            // In case that is the real password, then we just guessed it
+            // successfully by brute-force, even better.
+            // But that is unlikely, and a wrong password is better than nil
+            // for the UI, and not worse for networking.
+            KeyChain.updateCreateOrDelete(password: "password", forKey: theKey)
+        }
+    }
+
     static func add(password: String?, forKey: String) {
         KeyChain.updateCreateOrDelete(password: password, forKey: forKey)
     }
@@ -53,4 +71,3 @@ extension CdServerCredentials {
         KeyChain.updateCreateOrDelete(password: nil, forKey: key)
     }
 }
-

@@ -100,17 +100,19 @@ class EditableAccountSettingsViewModel {
          accountSettingsHelper = AccountSettingsHelper(account: account)
         self.account = account
         self.delegate = delegate
+
         isOAuth2 = account.imapServer?.authMethod == AuthMethod.saslXoauth2.rawValue
+
         if isOAuth2 {
             if let payload = account.imapServer?.credentials.password ??
                 account.smtpServer?.credentials.password,
                let token = OAuth2AccessToken.from(base64Encoded: payload)
                 as? OAuth2AccessTokenProtocol {
                 accessToken = token
-            } else {
-                Log.shared.errorAndCrash("Supposed to do OAUTH2, but no existing token")
             }
         } else {
+            fixLostPasswords(account: account)
+
             originalImapPassword = account.imapServer?.credentials.password
             originalSmtpPassword = account.smtpServer?.credentials.password
         }
@@ -209,6 +211,20 @@ extension EditableAccountSettingsViewModel: VerifiableAccountDelegate {
 // MARK: -  Private
 
 extension EditableAccountSettingsViewModel {
+    // MARK: -  General
+
+    /// Makes sure there are no nil passwords in the keychain for servers belonging to the given account,
+    /// which is known to happen after restoring a backup (please see IOS-2932/PEMA-134).
+    func fixLostPasswords(account: Account) {
+        if let allServers = account.servers {
+            for server in allServers {
+                if server.credentials.password == nil {
+                    server.credentials.fixLostPassword()
+                }
+            }
+        }
+    }
+
     // MARK: -  Sections
 
     /// Generates and retrieves a section
@@ -296,7 +312,6 @@ extension EditableAccountSettingsViewModel {
         let usernameRow = getDisplayRow(type : .username, value: server.credentials.loginName)
         rows.append(usernameRow)
 
-        // OAuth
         if !isOAuth2 {
             if let password = server.credentials.password {
                 let passwordRow = getDisplayRow(type : .password, value: password)
@@ -446,9 +461,6 @@ extension EditableAccountSettingsViewModel {
         theVerifier.loginNameSMTP = input.smtpUsername
 
         if isOAuth2 {
-            if self.accessToken == nil {
-                Log.shared.errorAndCrash("Have to do OAUTH2, but lacking current token")
-            }
             theVerifier.authMethod = .saslXoauth2
             theVerifier.accessToken = accessToken
             // OAUTH2 trumps any password
