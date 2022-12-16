@@ -23,9 +23,29 @@ class AppSettingsObserver {
                                                selector: #selector(userDefaultsDidChange),
                                                name: UserDefaults.didChangeNotification,
                                                object: nil)
+
+        if #available(iOS 15, *) {
+            triggerTimer = Timer.scheduledTimer(timeInterval: 15.0,
+                                                target: self,
+                                                selector: #selector(triggerUserDefaultChange),
+                                                userInfo: nil,
+                                                repeats: true)
+        }
     }
 
     // MARK: - Private
+
+    var triggerTimer: Timer? = nil
+
+    @objc private func triggerUserDefaultChange() {
+        let settings = UserDefaults.standard
+        var newMdmSettings = mdmDictionary
+        guard let oldValue = newMdmSettings[AppSettings.keyPEPEnableSyncAccountEnabled] as? Bool else {
+            assert(false)
+        }
+        newMdmSettings[AppSettings.keyPEPEnableSyncAccountEnabled] = !oldValue
+        settings.set(newMdmSettings, forKey: MDMDeployment.keyMDM)
+    }
 
     /// The contents of the last MDM update.
     private var mdmDictionary: [String:Any] = [:]
