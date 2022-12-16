@@ -34,8 +34,8 @@ public class MDMSettingsUtil {
         }
     }
 
-    /// There is still pure "user-space" configuration that is not tied into MDM, both historically and from the need
-    /// to support organizations without MDM.
+    /// Transfer MDM configuration into the "user space configuration", that has existed before MDM support
+    /// was introduced and is still needed in case there is no MDM.
     private func configureUserSpace() {
         AppSettings.shared.keySyncEnabled = AppSettings.shared.mdmPEPSyncAccountEnabled
     }
