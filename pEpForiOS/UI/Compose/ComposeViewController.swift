@@ -481,8 +481,8 @@ extension ComposeViewController: ComposeViewModelDelegate {
         presentContactPicker()
     }
 
-    func isBeingDissmised() -> Bool {
-        return self.isBeingDismissed
+    func isPresentingContactPicker() -> Bool {
+        return UIApplication.currentlyVisibleViewController() is CNContactPickerViewController
     }
 
     /// Restore focus to the previous focused cell after closing the picker action
@@ -503,7 +503,7 @@ extension ComposeViewController: ComposeViewModelDelegate {
     }
 
     func documentAttachmentPickerDone() {
-        self.setPreviousFocusAfterPicker()
+        setPreviousFocusAfterPicker()
     }
 
     func showTwoButtonAlert(withTitle title: String,

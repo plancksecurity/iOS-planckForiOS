@@ -28,7 +28,7 @@ protocol RecipientCellViewModelResultDelegate: AnyObject {
 
     func addContactTapped()
 
-    func isBeingDissmised() -> Bool
+    func isPresentingConctactPicker() -> Bool
 }
 
 protocol RecipientCellViewModelDelegate: AnyObject {
@@ -80,7 +80,9 @@ class RecipientCellViewModel: CellViewModel {
             Log.shared.errorAndCrash("TextViewModel not found")
             return
         }
-        textViewModel.collapseRecipients()
+        if let del = resultDelegate, !del.isPresentingConctactPicker() {
+            textViewModel.collapseRecipients()
+        }
     }
 }
 

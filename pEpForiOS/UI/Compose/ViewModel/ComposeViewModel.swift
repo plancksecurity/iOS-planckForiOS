@@ -50,6 +50,8 @@ protocol ComposeViewModelDelegate: AnyObject {
 
     func showContactsPicker()
 
+    func isPresentingContactPicker() -> Bool
+
     func documentAttachmentPickerDone()
 
     func showTwoButtonAlert(withTitle title: String,
@@ -68,8 +70,6 @@ protocol ComposeViewModelDelegate: AnyObject {
     func hideRecipientsBanner()
 
     func removeRecipientsFromTextfields(addresses: [String])
-
-    func isBeingDismissed() -> Bool
 }
 
 /// Contains messages about cancelation and send.
@@ -1001,8 +1001,12 @@ extension ComposeViewModel: RecipientCellViewModelResultDelegate {
         delegate?.showContactsPicker()
     }
 
-    func isBeingDissmised() -> Bool {
-        return delegate?.isBeingDismissed() ?? false
+    func isPresentingConctactPicker() -> Bool {
+        guard let del = delegate else {
+            Log.shared.errorAndCrash("Delegate not found")
+            return false
+        }
+        return del.isPresentingContactPicker()
     }
 
     func handleContactSelected(address: String, addressBookID: String, userName: String) {
