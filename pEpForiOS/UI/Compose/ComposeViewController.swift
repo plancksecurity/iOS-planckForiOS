@@ -1323,12 +1323,3 @@ extension ComposeViewController {
 }
 
 #endif
-
-extension UIViewController
-{
-    var isAboutToClose: Bool {
-        return self.isBeingDismissed ||
-               self.isMovingFromParent ||
-               self.navigationController?.isBeingDismissed ?? false
-    }
-}
