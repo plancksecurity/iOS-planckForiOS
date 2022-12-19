@@ -521,8 +521,6 @@ extension VerifiableAccount {
                     return
                 }
 
-                Log.shared.logInfo(message: "*** timeout")
-
                 me.imapVerifier.stop()
                 me.smtpVerifier.stop()
 
