@@ -73,7 +73,6 @@ extension RecipientTextViewModel {
             return badgeAttributes
         }
 
-
         private func getRecipientsAttributes(textColor: UIColor) -> [NSAttributedString.Key : NSObject] {
             var recipientBackgroundColor: UIColor
             if #available(iOS 13.0, *) {
@@ -92,7 +91,12 @@ extension RecipientTextViewModel {
                                          font:  UIFont,
                                          textColor: UIColor = .pEpDarkText,
                                          maxWidth: CGFloat = 0.0) {
-            let text = " \(recipient.userName ?? recipient.address) "
+            var text: String
+            if let username = recipient.userName, username.isEmpty {
+                text = " \(recipient.address) "
+            } else {
+                text = " \(recipient.userName ?? recipient.address) "
+            }
             let badgeAttributes = getBadgeAttributes()
             var attributes = getRecipientsAttributes(textColor: textColor)
             let textMargin: CGFloat = 3.0
