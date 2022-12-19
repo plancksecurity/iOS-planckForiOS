@@ -50,7 +50,9 @@ protocol ComposeViewModelDelegate: AnyObject {
 
     func showContactsPicker()
 
-    func isPresentingContactPicker() -> Bool
+    func isPresentingContactsPicker() -> Bool
+
+    func isDismissing() -> Bool
 
     func documentAttachmentPickerDone()
 
@@ -950,7 +952,6 @@ extension ComposeViewModel: TrustmanagementProtectionStateChangeDelegate {
 
 extension ComposeViewModel: RecipientCellViewModelResultDelegate {
 
-
     func recipientCellViewModel(_ vm: RecipientCellViewModel,
                                 didChangeRecipients newRecipients: [Identity], hiddenRecipients: [Identity]) {
         switch vm.type {
@@ -975,6 +976,17 @@ extension ComposeViewModel: RecipientCellViewModelResultDelegate {
         lastRowWithSuggestions = idxPath
         delegate?.showSuggestions(forRowAt: idxPath)
         suggestionsVM?.updateSuggestion(searchString: text.cleanAttachments)
+
+        if !state.toRecipientsHidden.isEmpty {
+            state.toRecipients.append(contentsOf: state.toRecipientsHidden)
+            delegate?.focusSwitched()
+        } else if !state.ccRecipientsHidden.isEmpty {
+            state.ccRecipients.append(contentsOf: state.ccRecipientsHidden)
+            delegate?.focusSwitched()
+        } else if !state.bccRecipientsHidden.isEmpty {
+            state.bccRecipients.append(contentsOf: state.bccRecipientsHidden)
+            delegate?.focusSwitched()
+        }
     }
 
     func recipientCellViewModelDidEndEditing(_ vm: RecipientCellViewModel) {
@@ -1001,12 +1013,20 @@ extension ComposeViewModel: RecipientCellViewModelResultDelegate {
         delegate?.showContactsPicker()
     }
 
-    func isPresentingConctactPicker() -> Bool {
+    func isPresentingConctactsPicker() -> Bool {
         guard let del = delegate else {
             Log.shared.errorAndCrash("Delegate not found")
             return false
         }
-        return del.isPresentingContactPicker()
+        return del.isPresentingContactsPicker()
+    }
+
+    func isDismissing() -> Bool {
+        guard let del = delegate else {
+            Log.shared.errorAndCrash("Delegate not found")
+            return false
+        }
+        return del.isDismissing()
     }
 
     func handleContactSelected(address: String, addressBookID: String, userName: String) {

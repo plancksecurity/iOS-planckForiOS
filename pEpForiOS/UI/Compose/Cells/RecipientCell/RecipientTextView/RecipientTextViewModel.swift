@@ -18,6 +18,8 @@ import pEpIOSToolbox
 
 public protocol RecipientTextViewModelResultDelegate: AnyObject {
 
+//    func showHiddenRecipients(_ vm: RecipientTextViewModel)
+
     /// Communicate the recipients have changed.
     ///
     /// - Parameters:
@@ -36,6 +38,9 @@ public protocol RecipientTextViewModelResultDelegate: AnyObject {
 }
 
 public protocol RecipientTextViewModelDelegate: AnyObject {
+
+    /// Remove the badge text attachments from the text view, if exists. Otherwise it does nothing.
+    func removeBadgeTextAttachments()
 
     /// Remove the given recipients text attachments from the text view
     ///
@@ -254,6 +259,21 @@ public class RecipientTextViewModel {
 
 extension RecipientTextViewModel {
 
+    func removeBadgeTextAttachments() {
+        DispatchQueue.main.async { [weak self] in
+            guard let me = self else {
+                Log.shared.errorAndCrash("Lost myself")
+                return
+            }
+
+            guard let del = me.delegate else {
+                Log.shared.errorAndCrash("Delegate not found")
+                return
+            }
+            del.removeBadgeTextAttachments()
+        }
+    }
+
     /// Shows only the recipients that fits on one line and add a new NSTextAttachment that indicates the amount of recipients that are not shown.
     /// For example, this could be shown: "bob@pep.security  alice@pep.security  +3"
     /// If there is nothing to hide, it does nothing.
@@ -268,7 +288,7 @@ extension RecipientTextViewModel {
             return
         }
 
-        //Separate Recipient text attachments in two groups: one to show, the other to hide.
+        // Separate Recipient text attachments in two groups: one to show, the other to hide.
         var toShow = [RecipientTextViewModel.TextAttachment]()
         var toHide = [RecipientTextViewModel.TextAttachment]()
 

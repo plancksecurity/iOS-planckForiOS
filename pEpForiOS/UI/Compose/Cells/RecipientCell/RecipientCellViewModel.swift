@@ -28,7 +28,9 @@ protocol RecipientCellViewModelResultDelegate: AnyObject {
 
     func addContactTapped()
 
-    func isPresentingConctactPicker() -> Bool
+    func isPresentingConctactsPicker() -> Bool
+
+    func isDismissing() -> Bool
 }
 
 protocol RecipientCellViewModelDelegate: AnyObject {
@@ -80,7 +82,7 @@ class RecipientCellViewModel: CellViewModel {
             Log.shared.errorAndCrash("TextViewModel not found")
             return
         }
-        if let del = resultDelegate, !del.isPresentingConctactPicker() {
+        if let del = resultDelegate, !del.isPresentingConctactsPicker(), !del.isDismissing() {
             textViewModel.collapseRecipients()
         }
     }
@@ -89,6 +91,7 @@ class RecipientCellViewModel: CellViewModel {
 // MARK: - RecipientTextViewModelResultDelegate
 
 extension RecipientCellViewModel: RecipientTextViewModelResultDelegate {
+
     func recipientTextViewModel(_ vm: RecipientTextViewModel, didChangeRecipients newRecipients: [Identity], hiddenRecipients: [Identity]) {
         focused = true
         recipientCellViewModelDelegate?.focusChanged()
@@ -99,6 +102,7 @@ extension RecipientCellViewModel: RecipientTextViewModelResultDelegate {
         focused = true
         recipientCellViewModelDelegate?.focusChanged()
         resultDelegate?.recipientCellViewModel(self, didBeginEditing: text)
+        textViewModel?.removeBadgeTextAttachments()
     }
 
     func recipientTextViewModelDidEndEditing(_ vm: RecipientTextViewModel) {

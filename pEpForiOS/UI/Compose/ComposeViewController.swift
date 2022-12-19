@@ -305,8 +305,8 @@ extension ComposeViewController {
 // MARK: - ComposeViewModelDelegate
 
 extension ComposeViewController: ComposeViewModelDelegate {
-    func isBeingDismissed() -> Bool {
-        return self.isBeingDismissed
+    func isDismissing() -> Bool {
+        return isAboutToClose
     }
 
     // MARK: - Recipients Banner
@@ -481,7 +481,7 @@ extension ComposeViewController: ComposeViewModelDelegate {
         presentContactPicker()
     }
 
-    func isPresentingContactPicker() -> Bool {
+    func isPresentingContactsPicker() -> Bool {
         return UIApplication.currentlyVisibleViewController() is CNContactPickerViewController
     }
 
@@ -1323,3 +1323,12 @@ extension ComposeViewController {
 }
 
 #endif
+
+extension UIViewController
+{
+    var isAboutToClose: Bool {
+        return self.isBeingDismissed ||
+               self.isMovingFromParent ||
+               self.navigationController?.isBeingDismissed ?? false
+    }
+}

@@ -1,6 +1,6 @@
 //
 //  RecipientTextView.swift
-//  pEpForiOSTests
+//  pEpForiOS
 //
 //  Created by Andreas Buff on 12.10.18.
 //  Copyright © 2018 p≡p Security S.A. All rights reserved.
@@ -195,6 +195,30 @@ extension RecipientTextView: UITextViewDelegate {
 // MARK: - RecipientTextViewModelDelegate
 
 extension RecipientTextView: RecipientTextViewModelDelegate {
+
+    func removeBadgeTextAttachments() {
+        guard let attributedText = attributedText, attributedText.length > 0 else {
+            // Empty textfield, nothing to do.
+            return
+        }
+        let attributedTextRange = NSRange(location: 0, length: attributedText.length)
+        guard let mutableAttr = attributedText.mutableCopy() as? NSMutableAttributedString else {
+            Log.shared.errorAndCrash("This should not happen")
+            return
+        }
+
+        // Look for NSTextAttachments
+        attributedText.enumerateAttribute(.attachment, in: attributedTextRange, options: []) {
+            value, attachmentRange, stop in
+            if let attachment = value as? RecipientTextViewModel.TextAttachment {
+                // Remove the badge attachments. It should be only one.
+                if attachment.isBadge {
+                    mutableAttr.removeAttribute(.attachment, range: attachmentRange)
+                }
+            }
+        }
+        self.attributedText = mutableAttr
+    }
 
     func removeRecipientsTextAttachments(recipients: [RecipientTextViewModel.TextAttachment]) {
         guard let attributedText = attributedText, attributedText.length > 0 else {
