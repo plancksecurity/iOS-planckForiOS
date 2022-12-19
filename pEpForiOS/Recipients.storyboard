@@ -30,7 +30,7 @@
                             <stackView opaque="NO" contentMode="scaleToFill" placeholderIntrinsicWidth="414" placeholderIntrinsicHeight="196.33333333333334" axis="vertical" alignment="top" spacing="12" translatesAutoresizingMaskIntoConstraints="NO" id="Dsa-4H-3F0">
                                 <rect key="frame" x="-12" y="202" width="414" height="196.33333333333337"/>
                                 <subviews>
-                                    <tableView clipsSubviews="YES" contentMode="scaleToFill" verticalCompressionResistancePriority="1000" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="none" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="-1" estimatedSectionHeaderHeight="-1" sectionFooterHeight="-1" estimatedSectionFooterHeight="-1" translatesAutoresizingMaskIntoConstraints="NO" id="cKE-n2-8zR" customClass="SelfSizedTableView" customModule="pEpIOSToolbox">
+                                    <tableView clipsSubviews="YES" contentMode="scaleToFill" verticalCompressionResistancePriority="1000" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="none" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="-1" estimatedSectionHeaderHeight="-1" sectionFooterHeight="-1" estimatedSectionFooterHeight="-1" translatesAutoresizingMaskIntoConstraints="NO" id="cKE-n2-8zR" customClass="SelfSizingTableView" customModule="pEpIOSToolbox">
                                         <rect key="frame" x="0.0" y="0.0" width="390" height="196.33333333333334"/>
                                         <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                                         <prototypes>
@@ -87,7 +87,10 @@
                                 </subviews>
                             </stackView>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="G0B-Xs-2vm" userLabel="Remove all">
-                                <rect key="frame" x="15.999999999999993" y="406" width="106.33333333333331" height="34.333333333333314"/>
+                                <rect key="frame" x="15.999999999999993" y="406" width="106.33333333333331" height="50"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="50" id="8lt-I4-uk7"/>
+                                </constraints>
                                 <state key="normal" title="Button"/>
                                 <buttonConfiguration key="configuration" style="plain" title="Remove all"/>
                                 <connections>
@@ -100,6 +103,7 @@
                         <constraints>
                             <constraint firstItem="Dsa-4H-3F0" firstAttribute="top" secondItem="ie4-Qq-1ue" secondAttribute="bottom" constant="29.999999999999943" id="9kP-d3-vwF"/>
                             <constraint firstItem="ie4-Qq-1ue" firstAttribute="centerX" secondItem="JlA-J3-XUM" secondAttribute="centerX" id="GAt-m6-0Kj"/>
+                            <constraint firstItem="HCk-vq-wsO" firstAttribute="bottom" relation="greaterThanOrEqual" secondItem="G0B-Xs-2vm" secondAttribute="bottom" constant="8" id="HN5-LW-Gwk"/>
                             <constraint firstItem="ie4-Qq-1ue" firstAttribute="trailing" secondItem="JlA-J3-XUM" secondAttribute="trailing" constant="-16" id="U03-d7-5ga"/>
                             <constraint firstAttribute="trailing" relation="greaterThanOrEqual" secondItem="G0B-Xs-2vm" secondAttribute="trailing" constant="20" symbolic="YES" id="UUT-Lb-1OP"/>
                             <constraint firstItem="ie4-Qq-1ue" firstAttribute="top" secondItem="VuQ-wD-88j" secondAttribute="bottom" constant="20" id="b9o-hB-yAX"/>
