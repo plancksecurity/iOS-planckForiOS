@@ -149,7 +149,7 @@ public class VerifiableAccount: VerifiableAccountProtocol {
         try startImapVerification()
         try startSmtpVerification()
 
-        triggerTimoutIn(seconds: 5)
+        triggerTimoutIn(seconds: 15)
     }
 
     /// Saves the account if possible.
