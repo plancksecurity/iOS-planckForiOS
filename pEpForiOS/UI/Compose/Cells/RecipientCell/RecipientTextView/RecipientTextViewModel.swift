@@ -18,8 +18,6 @@ import pEpIOSToolbox
 
 public protocol RecipientTextViewModelResultDelegate: AnyObject {
 
-//    func showHiddenRecipients(_ vm: RecipientTextViewModel)
-
     /// Communicate the recipients have changed.
     ///
     /// - Parameters:
@@ -225,7 +223,6 @@ public class RecipientTextViewModel {
                                                        in: range,
                                                        maxWidth: maxTextattachmentWidth)
         attachment.isBadge = true
-        //recipientAttachments.append(attachment)
         newText = newText.plainTextRemoved()
         newText = newText.baselineOffsetRemoved()
         newText = newText.setLineSpace(8)
