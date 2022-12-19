@@ -34,11 +34,28 @@ class RecipientsListViewController: UIViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        tableView.setEditing(true, animated: true)
-        tableView.allowsMultipleSelectionDuringEditing = true
+        tableView.rowHeight = 60.0
         removeAllButton.setTitleColor(.pEpRed, for: .normal)
         showNavigationBarSecurityBadge(pEpRating: .mistrust)
     }
+
+//    override func viewDidLayoutSubviews() {
+//        super.viewDidLayoutSubviews()
+//        updateSize()
+//    }
+
+//    func updateSize() {
+//        DispatchQueue.main.async { [weak self] in
+//            guard let me = self else {
+//                Log.shared.errorAndCrash("Lost myself")
+//                return
+//            }
+//            var frame = me.tableView.frame;
+//            frame.size.height = me.tableView.contentSize.height + 10;
+//            me.tableView.frame = frame;
+//            me.tableView.layoutIfNeeded()
+//        }
+//    }
 }
 
 // MARK: - UITableViewDataSource

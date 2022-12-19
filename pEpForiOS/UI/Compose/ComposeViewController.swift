@@ -1213,7 +1213,7 @@ extension ComposeViewController {
     }
 
     func presentRecipientsListView(viewModel: RecipientsListViewModel) {
-        let storyboard = UIStoryboard(name: Constants.mainStoryboard, bundle: nil)
+        let storyboard = UIStoryboard(name: Constants.recipientsStoryboard, bundle: nil)
         guard let unsecureRecipientsNavigationView = storyboard.instantiateViewController(withIdentifier:
                 Constants.unsecureRecipientsListNavigation) as? UINavigationController
             else {

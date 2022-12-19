@@ -23,7 +23,8 @@ class RecipientListTableViewCell: UITableViewCell {
 
     override func awakeFromNib() {
         super.awakeFromNib()
-        accessoryType = .checkmark
+        accessoryType = .none
+        selectionStyle = .none
         usernameLabel.textColor = UIColor.pEpSecondaryColor()
         addressLabel.textColor = UIColor.pEpLabelColor()
         usernameLabel.setPEPFont(style: .body, weight: .regular)

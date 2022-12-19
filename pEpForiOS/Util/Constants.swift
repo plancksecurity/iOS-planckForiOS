@@ -43,6 +43,9 @@ extension Constants {
     /// Storyboard ID to instantiate the navigation controller that contains Unsecure recipients list view.
     static let unsecureRecipientsListNavigation = "unsecureRecipientsListNavigationController"
 
+    /// Name of the Recipients Storyboard
+    static let recipientsStoryboard = "Recipients"
+
     struct XibNames {
         static let loadingInterface = "LoadingInterface"
     }
