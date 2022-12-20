@@ -953,7 +953,7 @@ extension ComposeViewModel: RecipientCellViewModelResultDelegate {
         case .bcc:
             state.bccRecipients = newRecipients
             if let hiddenRecipients = hiddenRecipients {
-                state.bccRecipients = hiddenRecipients
+                state.ccRecipientsHidden = hiddenRecipients
             }
         }
         delegate?.focusSwitched()
@@ -968,16 +968,27 @@ extension ComposeViewModel: RecipientCellViewModelResultDelegate {
         delegate?.showSuggestions(forRowAt: idxPath)
         suggestionsVM?.updateSuggestion(searchString: text.cleanAttachments)
 
-        if !state.toRecipientsHidden.isEmpty {
-            state.toRecipients.append(contentsOf: state.toRecipientsHidden)
-            delegate?.focusSwitched()
-        } else if !state.ccRecipientsHidden.isEmpty {
-            state.ccRecipients.append(contentsOf: state.ccRecipientsHidden)
-            delegate?.focusSwitched()
-        } else if !state.bccRecipientsHidden.isEmpty {
-            state.bccRecipients.append(contentsOf: state.bccRecipientsHidden)
-            delegate?.focusSwitched()
+        if vm.type == .to && !state.toRecipientsHidden.isEmpty {
+            let hidden = state.toRecipientsHidden
+            state.toRecipients.append(contentsOf: hidden)
+            hidden.forEach { identity in
+                vm.add(recipient: identity)
+            }
+        } else if vm.type == .cc && !state.ccRecipientsHidden.isEmpty {
+            let hidden = state.ccRecipientsHidden
+            state.ccRecipients.append(contentsOf: hidden)
+            hidden.forEach { identity in
+                vm.add(recipient: identity)
+            }
+        } else if vm.type == .bcc && !state.bccRecipientsHidden.isEmpty {
+            let hidden = state.bccRecipientsHidden
+            state.bccRecipients.append(contentsOf: hidden)
+            hidden.forEach { identity in
+                vm.add(recipient: identity)
+            }
         }
+
+        delegate?.focusSwitched()
     }
 
     func recipientCellViewModelDidEndEditing(_ vm: RecipientCellViewModel) {
