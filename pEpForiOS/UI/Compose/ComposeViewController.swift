@@ -305,6 +305,7 @@ extension ComposeViewController {
 // MARK: - ComposeViewModelDelegate
 
 extension ComposeViewController: ComposeViewModelDelegate {
+
     func isDismissing() -> Bool {
         return isAboutToClose
     }

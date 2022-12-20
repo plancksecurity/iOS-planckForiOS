@@ -241,7 +241,7 @@ extension RecipientTextView: RecipientTextViewModelDelegate {
         attributedText.enumerateAttribute(.attachment, in: attributedTextRange, options: []) {
             value, attachmentRange, stop in
             if let attachment = value as? RecipientTextViewModel.TextAttachment {
-                // Remove all attachments that matches the given attachments.
+                // Remove from the attributedString the attachments of the given list of attachments.
                 if recipients.contains(attachment) {
                     mutableAttr.removeAttribute(.attachment, range: attachmentRange)
                 }

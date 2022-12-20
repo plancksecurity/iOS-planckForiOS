@@ -16,10 +16,17 @@ import pEpIOSToolbox
 
 class RecipientListTableViewCell: UITableViewCell {
 
-    @IBOutlet weak var addressLabel: UILabel!
-    @IBOutlet weak var usernameLabel: UILabel!
+    @IBOutlet private weak var addressLabel: UILabel!
+    @IBOutlet private weak var usernameLabel: UILabel!
 
-    static let cellIdentifier = "RecipientListTableViewCell"
+    public static let cellIdentifier = "RecipientListTableViewCell"
+
+    func configure(address: String, username: String?) {
+        if let username {
+            usernameLabel.text = username
+        }
+        addressLabel.text = address
+    }
 
     override func awakeFromNib() {
         super.awakeFromNib()

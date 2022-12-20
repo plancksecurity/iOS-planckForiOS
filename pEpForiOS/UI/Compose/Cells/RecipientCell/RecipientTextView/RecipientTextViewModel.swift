@@ -26,7 +26,7 @@ public protocol RecipientTextViewModelResultDelegate: AnyObject {
     ///   - hiddenRecipients: The hidden recipients. This is UI state only. They are the collapsed recipients.
     func recipientTextViewModel(_ vm: RecipientTextViewModel,
                                 didChangeRecipients newRecipients: [Identity],
-                                hiddenRecipients: [Identity])
+                                hiddenRecipients: [Identity]?)
 
     func recipientTextViewModel(_ vm: RecipientTextViewModel, didBeginEditing text: String)
 
@@ -67,7 +67,7 @@ public class RecipientTextViewModel {
         didSet {
             let recipients = recipientAttachments.map { $0.recipient }
             resultDelegate?.recipientTextViewModel(self,
-                                                   didChangeRecipients: recipients, hiddenRecipients: [Identity]())
+                                                   didChangeRecipients: recipients, hiddenRecipients: nil)
         }
     }
 

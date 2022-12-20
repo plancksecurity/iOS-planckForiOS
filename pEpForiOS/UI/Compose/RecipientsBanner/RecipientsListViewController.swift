@@ -18,19 +18,10 @@ import pEpIOSToolbox
 
 class RecipientsListViewController: UIViewController {
 
-    var viewModel: RecipientsListViewModel?
+    public var viewModel: RecipientsListViewModel?
 
-    @IBOutlet weak var removeAllButton: UIButton!
-
+    @IBOutlet private weak var removeAllButton: UIButton!
     @IBOutlet private weak var tableView: UITableView!
-
-    @IBAction func removeAllButtonPressed() {
-        guard let vm = viewModel else {
-            Log.shared.errorAndCrash("VM not found")
-            return
-        }
-        vm.removeAll()
-    }
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -39,23 +30,13 @@ class RecipientsListViewController: UIViewController {
         showNavigationBarSecurityBadge(pEpRating: .mistrust)
     }
 
-//    override func viewDidLayoutSubviews() {
-//        super.viewDidLayoutSubviews()
-//        updateSize()
-//    }
-
-//    func updateSize() {
-//        DispatchQueue.main.async { [weak self] in
-//            guard let me = self else {
-//                Log.shared.errorAndCrash("Lost myself")
-//                return
-//            }
-//            var frame = me.tableView.frame;
-//            frame.size.height = me.tableView.contentSize.height + 10;
-//            me.tableView.frame = frame;
-//            me.tableView.layoutIfNeeded()
-//        }
-//    }
+    @IBAction func removeAllButtonPressed() {
+        guard let vm = viewModel else {
+            Log.shared.errorAndCrash("VM not found")
+            return
+        }
+        vm.removeAll()
+    }
 }
 
 // MARK: - UITableViewDataSource
@@ -73,13 +54,15 @@ extension RecipientsListViewController: UITableViewDataSource {
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         guard let vm = viewModel else {
             Log.shared.errorAndCrash("VM not found")
-            return UITableViewCell()
+            return RecipientListTableViewCell()
         }
         guard let cell = tableView.dequeueReusableCell(withIdentifier: RecipientListTableViewCell.cellIdentifier, for: indexPath) as? RecipientListTableViewCell else {
-            return UITableViewCell()
+            Log.shared.errorAndCrash("Can't dequeue cell. Unexpected")
+            return RecipientListTableViewCell()
         }
-        cell.addressLabel.text = vm[indexPath.row].address
-        cell.usernameLabel.text = vm[indexPath.row].username
+        let address = vm[indexPath.row].address
+        let username = vm[indexPath.row].username
+        cell.configure(address: address, username: username)
         return cell
     }
 }
@@ -87,10 +70,6 @@ extension RecipientsListViewController: UITableViewDataSource {
 // MARK: - RecipientsListViewDelegate
 
 extension RecipientsListViewController: RecipientsListViewDelegate {
-
-    func reload() {
-        tableView.reloadData()
-    }
 
     func reloadAndDismiss() {
         tableView.reloadData()

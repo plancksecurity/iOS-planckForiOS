@@ -14,18 +14,22 @@ import MessageModel
 import pEpIOSToolbox
 #endif
 
+protocol RecipientListViewModelDelegate: AnyObject {
+
+    /// Remove the recipients with the given username or address from the state
+    /// - Parameter addresses: The addresses of the recipients.
+    func removeFromState(addresses: [String])
+}
+
 protocol RecipientsListViewDelegate: AnyObject {
 
     /// Reload the list and dismiss the view.
     func reloadAndDismiss()
-
-    /// Reload the list
-    func reload()
 }
 
 class RecipientsListViewModel {
 
-    var composeViewModel: ComposeViewModel?
+    weak var viewModelDelegate: RecipientListViewModelDelegate?
     weak var delegate: RecipientsListViewDelegate?
 
     private var rows = [RecipientRowProtocol]()
@@ -33,11 +37,12 @@ class RecipientsListViewModel {
     /// Constructor
     /// - Parameters:
     ///   - recipients: The recipients to show in the list.
-    init(recipients: [Identity], composeViewModel: ComposeViewModel) {
+    ///   - recipientListViewModelDelegate: The  view model delegate
+    init(recipients: [Identity], viewModelDelegate: RecipientListViewModelDelegate) {
         self.rows = recipients.uniques.map {
             RecipientRow(username: $0.userName, address: $0.address)
         }
-        self.composeViewModel = composeViewModel
+        self.viewModelDelegate = viewModelDelegate
     }
 
     /// Number of rows
@@ -57,38 +62,20 @@ class RecipientsListViewModel {
         }
     }
 
+    /// Remove all the recipients
     public func removeAll() {
-        var ips = [IndexPath]()
-        for i in 0...rows.count {
-            let ip = IndexPath(row: i, section: 0)
-            ips.append(ip)
-        }
-        removeRecipientsFrom(indexPaths: ips)
-    }
-
-    public func removeRecipientsFrom(indexPaths: [IndexPath]) {
-        guard let composeViewModel = composeViewModel else {
-            Log.shared.errorAndCrash("VM not found")
+        guard let viewModelDelegate = viewModelDelegate else {
+            Log.shared.errorAndCrash("composeViewModelDelegate not found")
             return
         }
-        let rowsToDelete = getRows(from: indexPaths, toKeep: false)
-        composeViewModel.removeFromState(addressesOrUsernames: rowsToDelete.map({$0.address}))
-        rows = getRows(from: indexPaths, toKeep: true)
-        // 3. Reload.
-        rows.count > 0 ? reload() : reloadAndDismiss()
+        viewModelDelegate.removeFromState(addresses: rows.map { $0.address} )
+        reloadAndDismiss()
     }
+}
 
-    private func getRows(from indexPaths: [IndexPath], toKeep: Bool) -> [RecipientRowProtocol]  {
-        return rows.enumerated()
-            .filter {
-                if toKeep {
-                    return !indexPaths.map({$0.row}).contains($0.offset)
-                }
-                return indexPaths.map({$0.row}).contains($0.offset)
-            }
-            .map { $0.element }
-    }
+// MARK: - Private
 
+extension RecipientsListViewModel {
     private func reloadAndDismiss() {
         DispatchQueue.main.async { [weak self] in
             guard let me = self else {
@@ -96,16 +83,6 @@ class RecipientsListViewModel {
                 return
             }
             me.delegate?.reloadAndDismiss()
-        }
-    }
-
-    private func reload() {
-        DispatchQueue.main.async { [weak self] in
-            guard let me = self else {
-                Log.shared.errorAndCrash("Lost myself")
-                return
-            }
-            me.delegate?.reload()
         }
     }
 }

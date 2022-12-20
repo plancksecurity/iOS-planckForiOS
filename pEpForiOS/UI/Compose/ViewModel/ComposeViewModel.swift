@@ -67,10 +67,14 @@ protocol ComposeViewModelDelegate: AnyObject {
     func showActionSheetWith(title: String, smallTitle: String, mediumTitle: String, largeTitle: String, actualTitle: String,
                              callback: @escaping (JPEGQuality) -> ()?)
 
+    /// Shows the unsecure recipients banner
     func showRecipientsBanner()
 
+    /// Hides the unsecure recipients banner
     func hideRecipientsBanner()
 
+    /// Removes from the views the recipients attachments that matches the given addreses.
+    /// - Parameter addresses: The email addresses to remove from the view. 
     func removeRecipientsFromTextfields(addresses: [String])
 }
 
@@ -195,26 +199,6 @@ class ComposeViewModel {
             } else {
                 me.delegate?.hideRecipientsBanner()
             }
-        }
-    }
-
-    public func removeFromState(addressesOrUsernames: [String]) {
-        DispatchQueue.main.async { [weak self] in
-            guard let me = self else {
-                Log.shared.errorAndCrash("Lost myself")
-                return
-            }
-            addressesOrUsernames.forEach { addressOrUsername in
-                me.state.toRecipients.removeAll(where: {$0.address == addressOrUsername || $0.userName == addressOrUsername})
-                me.state.ccRecipients.removeAll(where: {$0.address == addressOrUsername || $0.userName == addressOrUsername})
-                me.state.bccRecipients.removeAll(where: {$0.address == addressOrUsername || $0.userName == addressOrUsername})
-                me.state.toRecipientsHidden.removeAll(where: {$0.address == addressOrUsername || $0.userName == addressOrUsername})
-                me.state.ccRecipientsHidden.removeAll(where: {$0.address == addressOrUsername || $0.userName == addressOrUsername})
-                me.state.bccRecipientsHidden.removeAll(where: {$0.address == addressOrUsername || $0.userName == addressOrUsername})
-            }
-
-            me.handleRecipientsBanner()
-            me.delegate?.removeRecipientsFromTextfields(addresses: addressesOrUsernames)
         }
     }
 
@@ -953,17 +937,24 @@ extension ComposeViewModel: TrustmanagementProtectionStateChangeDelegate {
 extension ComposeViewModel: RecipientCellViewModelResultDelegate {
 
     func recipientCellViewModel(_ vm: RecipientCellViewModel,
-                                didChangeRecipients newRecipients: [Identity], hiddenRecipients: [Identity]) {
+                                didChangeRecipients newRecipients: [Identity],
+                                hiddenRecipients: [Identity]?) {
         switch vm.type {
         case .to:
             state.toRecipients = newRecipients
-            state.toRecipientsHidden = hiddenRecipients
+            if let hiddenRecipients = hiddenRecipients {
+                state.toRecipientsHidden = hiddenRecipients
+            }
         case .cc:
             state.ccRecipients = newRecipients
-            state.ccRecipientsHidden = hiddenRecipients
-                case .bcc:
+            if let hiddenRecipients = hiddenRecipients {
+                state.ccRecipientsHidden = hiddenRecipients
+            }
+        case .bcc:
             state.bccRecipients = newRecipients
-            state.bccRecipientsHidden = hiddenRecipients
+            if let hiddenRecipients = hiddenRecipients {
+                state.bccRecipients = hiddenRecipients
+            }
         }
         delegate?.focusSwitched()
     }
@@ -1225,6 +1216,31 @@ extension ComposeViewModel {
             } else {
                 completion(true)
             }
+        }
+    }
+}
+
+// MARK: - RecipientListViewModelDelegate
+
+extension ComposeViewModel: RecipientListViewModelDelegate {
+
+    public func removeFromState(addresses: [String]) {
+        DispatchQueue.main.async { [weak self] in
+            guard let me = self else {
+                Log.shared.errorAndCrash("Lost myself")
+                return
+            }
+            addresses.forEach { address in
+                me.state.toRecipients.removeAll(where: {$0.address == address })
+                me.state.ccRecipients.removeAll(where: {$0.address == address })
+                me.state.bccRecipients.removeAll(where: {$0.address == address })
+                me.state.toRecipientsHidden.removeAll(where: {$0.address == address })
+                me.state.ccRecipientsHidden.removeAll(where: {$0.address == address })
+                me.state.bccRecipientsHidden.removeAll(where: {$0.address == address })
+            }
+
+            me.handleRecipientsBanner()
+            me.delegate?.removeRecipientsFromTextfields(addresses: addresses)
         }
     }
 }

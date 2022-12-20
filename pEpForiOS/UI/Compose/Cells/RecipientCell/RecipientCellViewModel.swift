@@ -18,7 +18,7 @@ protocol RecipientCellViewModelResultDelegate: AnyObject {
 
     func recipientCellViewModel(_ vm: RecipientCellViewModel,
                                 didChangeRecipients newRecipients: [Identity],
-                                hiddenRecipients: [Identity])
+                                hiddenRecipients: [Identity]?)
 
     func recipientCellViewModel(_ vm: RecipientCellViewModel, didBeginEditing text: String)
 
@@ -92,7 +92,7 @@ class RecipientCellViewModel: CellViewModel {
 
 extension RecipientCellViewModel: RecipientTextViewModelResultDelegate {
 
-    func recipientTextViewModel(_ vm: RecipientTextViewModel, didChangeRecipients newRecipients: [Identity], hiddenRecipients: [Identity]) {
+    func recipientTextViewModel(_ vm: RecipientTextViewModel, didChangeRecipients newRecipients: [Identity], hiddenRecipients: [Identity]?) {
         focused = true
         recipientCellViewModelDelegate?.focusChanged()
         resultDelegate?.recipientCellViewModel(self, didChangeRecipients: newRecipients, hiddenRecipients: hiddenRecipients)

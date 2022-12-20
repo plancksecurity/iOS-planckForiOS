@@ -26,14 +26,15 @@ protocol RecipientsBannerDelegate: AnyObject {
 /// Its main responsability is to provide data for the layout and handle the interaction with the single button it has.
 class RecipientsBannerViewModel {
 
-    private var composeViewModel: ComposeViewModel
-
     /// Delegate to communicate with the view.
     public weak var delegate: RecipientsBannerDelegate?
 
     private var recipients: [Identity] = []
 
+    private var composeViewModel: ComposeViewModel
+
     /// Constructor
+    ///
     /// - parameters:
     ///   - recipients: The list of red recipients
     ///   - delegate: The delegate to communicate with the view.
@@ -61,7 +62,7 @@ class RecipientsBannerViewModel {
 
     /// Handle recipients button was pressed.
     public func handleRecipientsButtonPressed() {
-        let recipientsListViewModel = RecipientsListViewModel(recipients: recipients, composeViewModel: composeViewModel)
+        let recipientsListViewModel = RecipientsListViewModel(recipients: recipients, viewModelDelegate: composeViewModel)
         DispatchQueue.main.async { [weak self] in
             guard let me = self else {
                 Log.shared.errorAndCrash("Lost myself")
