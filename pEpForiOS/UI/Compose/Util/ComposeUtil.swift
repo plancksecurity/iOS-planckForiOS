@@ -58,6 +58,7 @@ struct ComposeUtil {
                         identitiesAndColors = [identity: rating.pEpColor()]
                         group.leave()
                     }
+                    group.wait()
                 }
 
                 group.notify(queue: .main) {

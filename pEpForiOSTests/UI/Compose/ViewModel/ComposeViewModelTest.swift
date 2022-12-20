@@ -302,6 +302,7 @@ class ComposeViewModelTest: AccountDrivenTestBase {
 
     private class TestDelegate: ComposeViewModelDelegate {
 
+
         func showTwoButtonAlert(withTitle title: String, message: String, cancelButtonText: String, positiveButtonText: String, cancelButtonAction: @escaping () -> Void, positiveButtonAction: @escaping () -> Void) {
         }
 
@@ -531,5 +532,19 @@ class ComposeViewModelTest: AccountDrivenTestBase {
             }
             exp.fulfill()
         }
+
+        func isPresentingContactsPicker() -> Bool {
+            return false
+        }
+
+        func isDismissing() -> Bool {
+            return false
+        }
+        func showRecipientsBanner() { }
+
+        func hideRecipientsBanner() { }
+
+        func removeRecipientsFromTextfields(addresses: [String]) { }
+
     }
 }
