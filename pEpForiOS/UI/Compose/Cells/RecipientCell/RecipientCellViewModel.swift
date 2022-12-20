@@ -101,8 +101,8 @@ extension RecipientCellViewModel: RecipientTextViewModelResultDelegate {
     func recipientTextViewModel(_ vm: RecipientTextViewModel, didBeginEditing text: String) {
         focused = true
         recipientCellViewModelDelegate?.focusChanged()
+        //vm.removeBadgeTextAttachments()
         resultDelegate?.recipientCellViewModel(self, didBeginEditing: text)
-        textViewModel?.removeBadgeTextAttachments()
     }
 
     func recipientTextViewModelDidEndEditing(_ vm: RecipientTextViewModel) {

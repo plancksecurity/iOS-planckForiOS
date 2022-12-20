@@ -215,7 +215,9 @@ class ComposeViewModel {
     }
 
     /// Get the red recipients.
-    /// This evaluates TO, CC and BCC and returns the identities.
+    /// This evaluates TO, CC and BCC (and the 'hidden' recipients).
+    ///
+    /// - Returns: The identities of the red recipients.
     private func getUnsecureRecipients() -> [Identity] {
         let allRecipients = state.toRecipients + state.ccRecipients + state.bccRecipients + state.toRecipientsHidden + state.ccRecipientsHidden + state.bccRecipientsHidden
         var redRecipients = [Identity]()

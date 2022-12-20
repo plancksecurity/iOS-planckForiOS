@@ -106,6 +106,7 @@ public class RecipientTextViewModel {
     }
 
     public func handleDidBeginEditing(text: String) {
+        removeBadgeTextAttachments()
         resultDelegate?.recipientTextViewModel(self, didBeginEditing: text)
     }
 
