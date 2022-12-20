@@ -36,10 +36,10 @@ class RecipientsBannerViewModel {
     /// Constructor
     ///
     /// - parameters:
-    ///   - recipients: The list of red recipients
+    ///   - recipients: The list of unsecure recipients
     ///   - delegate: The delegate to communicate with the view.
     init?(recipients: [Identity], delegate: RecipientsBannerDelegate, composeViewModel: ComposeViewModel) {
-        if recipients.count == 0 {
+        if recipients.isEmpty {
             return nil
         }
         self.recipients = recipients.uniques

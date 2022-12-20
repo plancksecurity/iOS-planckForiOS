@@ -1215,24 +1215,27 @@ extension ComposeViewController {
 
     func presentRecipientsListView(viewModel: RecipientsListViewModel) {
         let storyboard = UIStoryboard(name: Constants.recipientsStoryboard, bundle: nil)
-        guard let unsecureRecipientsNavigationView = storyboard.instantiateViewController(withIdentifier:
+        guard let navigationController = storyboard.instantiateViewController(withIdentifier:
                 Constants.unsecureRecipientsListNavigation) as? UINavigationController
             else {
                 Log.shared.errorAndCrash("Missing required VCs")
                 return
         }
-        guard let vc = unsecureRecipientsNavigationView.children.first as? RecipientsListViewController else {
+        guard let recipientsListViewController = navigationController.children.first as? RecipientsListViewController else {
             Log.shared.errorAndCrash("No VC")
             return
         }
         let navBarButtonTitle = NSLocalizedString("Done", comment: "Done")
-        let endButton = UIBarButtonItem(title: navBarButtonTitle, style: .done, target: self, action: #selector(closeScreen))
+        let endButton = UIBarButtonItem(title: navBarButtonTitle,
+                                        style: .done,
+                                        target: self,
+                                        action: #selector(closeScreen))
         endButton.accessibilityIdentifier = AccessibilityIdentifier.doneButton
         endButton.isAccessibilityElement = true
-        vc.navigationItem.rightBarButtonItem = endButton
-        viewModel.delegate = vc
-        vc.viewModel = viewModel
-        present(unsecureRecipientsNavigationView, animated: true, completion: nil)
+        recipientsListViewController.navigationItem.rightBarButtonItem = endButton
+        viewModel.delegate = recipientsListViewController
+        recipientsListViewController.viewModel = viewModel
+        present(navigationController, animated: true, completion: nil)
     }
 }
 

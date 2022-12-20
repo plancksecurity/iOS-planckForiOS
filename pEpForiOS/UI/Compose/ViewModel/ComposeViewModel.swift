@@ -204,19 +204,19 @@ class ComposeViewModel {
 
     /// Evaluates if email rating is Red and if there is at least a red recipient.
     private func shouldShowRecipientsBanner() -> Bool {
-        return state.rating.pEpColor() == .red && getRedRecipients().count > 0
+        return state.rating.pEpColor() == .red && getUnsecureRecipients().count > 0
     }
 
     /// Get the Recipientslendar Banner ViewModel.
     /// Or nil, if there is no recipients that should be managed (red).
     /// - Returns: The Recipients Banner ViewModel
     func getRecipientBannerViewModel(delegate: RecipientsBannerDelegate) -> RecipientsBannerViewModel? {
-        return RecipientsBannerViewModel(recipients: getRedRecipients(), delegate: delegate, composeViewModel: self)
+        return RecipientsBannerViewModel(recipients: getUnsecureRecipients(), delegate: delegate, composeViewModel: self)
     }
 
     /// Get the red recipients.
     /// This evaluates TO, CC and BCC and returns the identities.
-    private func getRedRecipients() -> [Identity] {
+    private func getUnsecureRecipients() -> [Identity] {
         let allRecipients = state.toRecipients + state.ccRecipients + state.bccRecipients + state.toRecipientsHidden + state.ccRecipientsHidden + state.bccRecipientsHidden
         var redRecipients = [Identity]()
         let group = DispatchGroup()
