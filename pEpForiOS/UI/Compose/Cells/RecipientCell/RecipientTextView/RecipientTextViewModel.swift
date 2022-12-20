@@ -210,15 +210,9 @@ public class RecipientTextViewModel {
         return identityGenerated
     }
 
-    @discardableResult public func addBadge(inRange range: NSRange, of text: NSAttributedString, informDelegate: Bool = true, number: Int) -> Bool {
-        var identityGenerated = false
+    public func addBadge(inRange range: NSRange, of text: NSAttributedString, informDelegate: Bool = true, number: Int) {
         let identity = Identity(address: "+\(number)")
         identity.session.commit()
-
-        identityGenerated = true
-        // The resultDelegate is called as a side effect in the setter of `recipientAttachments` and may depend on the isDirty state.
-        // Thus we must update the isDirty state before adding the attachment
-        isDirty = !identityGenerated && !containsNothingButAttachments(text: text)
 
         var (newText, attachment) = text.imageInserted(withAddressOf: identity,
                                                        in: range,
@@ -233,8 +227,7 @@ public class RecipientTextViewModel {
         if informDelegate {
             delegate?.textChanged(newText: newText)
         }
-
-        return identityGenerated
+        identity.delete()
     }
 
     private func setupInitialText() {
