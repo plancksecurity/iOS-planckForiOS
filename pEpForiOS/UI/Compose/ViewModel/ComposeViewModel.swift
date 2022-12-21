@@ -80,9 +80,6 @@ protocol ComposeViewModelFinalActionDelegate: AnyObject {
 class ComposeViewModel {
     private var attachmentSizeUtil: ComposeViewModel.AttachmentSizeUtil?
 
-    var allRecipients : [Identity] {
-        return state.toRecipients + state.bccRecipients + state.bccRecipients
-    }
     weak var delegate: ComposeViewModelDelegate? {
         didSet {
             delegate?.colorBatchNeedsUpdate(for: state.rating, protectionEnabled: state.pEpProtection, hasRecipients: hasRecipients)
@@ -108,6 +105,7 @@ class ComposeViewModel {
     }
 
     private var hasRecipients: Bool {
+        let allRecipients = state.toRecipients + state.ccRecipients + state.bccRecipients
         return !allRecipients.isEmpty
     }
 
