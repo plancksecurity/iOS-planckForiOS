@@ -50,6 +50,10 @@ protocol ComposeViewModelDelegate: AnyObject {
 
     func showContactsPicker()
 
+    func isPresentingContactsPicker() -> Bool
+
+    func isDismissing() -> Bool
+
     func documentAttachmentPickerDone()
 
     func showTwoButtonAlert(withTitle title: String,
@@ -62,6 +66,16 @@ protocol ComposeViewModelDelegate: AnyObject {
 
     func showActionSheetWith(title: String, smallTitle: String, mediumTitle: String, largeTitle: String, actualTitle: String,
                              callback: @escaping (JPEGQuality) -> ()?)
+
+    /// Shows the unsecure recipients banner
+    func showRecipientsBanner()
+
+    /// Hides the unsecure recipients banner
+    func hideRecipientsBanner()
+
+    /// Removes from the views the recipients attachments that matches the given addreses.
+    /// - Parameter addresses: The email addresses to remove from the view. 
+    func removeRecipientsFromTextfields(addresses: [String])
 }
 
 /// Contains messages about cancelation and send.
@@ -170,6 +184,58 @@ class ComposeViewModel {
 #if !EXT_SHARE
         checkConnectivity()
 #endif
+        handleRecipientsBanner()
+    }
+
+    /// Shows and Hides the warning banner if needed.
+    private func handleRecipientsBanner() {
+        DispatchQueue.main.async { [weak self] in
+            guard let me = self else {
+                Log.shared.errorAndCrash("Lost myself")
+                return
+            }
+            if me.shouldShowRecipientsBanner() {
+                me.delegate?.showRecipientsBanner()
+            } else {
+                me.delegate?.hideRecipientsBanner()
+            }
+        }
+    }
+
+    /// Evaluates if email rating is Red and if there is at least a red recipient.
+    private func shouldShowRecipientsBanner() -> Bool {
+        return state.rating.pEpColor() == .red && getUnsecureRecipients().count > 0
+    }
+
+    /// Get the Recipientslendar Banner ViewModel.
+    /// Or nil, if there is no recipients that should be managed (red).
+    /// - Returns: The Recipients Banner ViewModel
+    func getRecipientBannerViewModel(delegate: RecipientsBannerDelegate) -> RecipientsBannerViewModel? {
+        return RecipientsBannerViewModel(recipients: getUnsecureRecipients(), delegate: delegate, composeViewModel: self)
+    }
+
+    /// Get the red recipients.
+    /// This evaluates TO, CC and BCC (and the 'hidden' recipients).
+    ///
+    /// - Returns: The identities of the red recipients.
+    private func getUnsecureRecipients() -> [Identity] {
+        let allRecipients = state.toRecipients + state.ccRecipients + state.bccRecipients + state.toRecipientsHidden + state.ccRecipientsHidden + state.bccRecipientsHidden
+        var redRecipients = [Identity]()
+        let group = DispatchGroup()
+        for i in 0 ..< allRecipients.count {
+            group.enter()
+            let identity = allRecipients[i]
+            identity.pEpRating { rating in
+                let color = rating.pEpColor()
+                if color == .red {
+                    redRecipients.append(identity)
+                }
+                group.leave()
+            }
+            group.wait()
+        }
+
+        return redRecipients
     }
 
 #if !EXT_SHARE
@@ -322,23 +388,46 @@ class ComposeViewModel {
             return msg
         }
 
-        showAlertFordwardingLessSecureIfRequired(forState: safeState) { [weak self] (accepted) in
-            guard let me = self else {
-                Log.shared.lostMySelf()
-                return
-            }
+        // The user might be prompt to decide if he wants to send the email or not.
+        // This handles that decision.
+        func handleUserDecision(accepted: Bool) {
             guard accepted else {
+                DispatchQueue.main.async { [weak self] in
+                    guard let me = self else {
+                        Log.shared.lostMySelf()
+                        return
+                    }
+                    me.delegate?.dismiss()
+                }
                 return
             }
             let msg = sendClosure()
-            // As the util has state we ensure it's not reused.
-            me.attachmentSizeUtil = nil
-            me.delegate?.dismiss()
-
+            DispatchQueue.main.async { [weak self] in
+                guard let me = self else {
+                    Log.shared.lostMySelf()
+                    return
+                }
+                me.delegate?.dismiss()
+            }
             if let theMsg = msg {
-                me.composeViewModelEndActionDelegate?.userWantsToSend(message: theMsg)
+                composeViewModelEndActionDelegate?.userWantsToSend(message: theMsg)
             } else {
-                me.composeViewModelEndActionDelegate?.couldNotCreateOutgoingMessage()
+                composeViewModelEndActionDelegate?.couldNotCreateOutgoingMessage()
+            }
+        }
+
+        guard let composeMode = safeState.initData?.composeMode else {
+            Log.shared.errorAndCrash("Compose mode not found")
+            return
+        }
+
+        if composeMode == .normal {
+            showAlertSendingUnencryptedMessageIfRequied(forMessage: safeState) { accepted in
+                handleUserDecision(accepted: accepted)
+            }
+        } else {
+            showAlertFordwardingLessSecureIfRequired(forState: safeState) { (accepted) in
+                handleUserDecision(accepted: accepted)
             }
         }
     }
@@ -396,76 +485,6 @@ extension ComposeViewModel {
     }
 
     typealias Accepted = Bool
-    /// When forwarding/answering a previously decrypted message and the pEpRating is considered as
-    /// less secure as the original message's pEp rating, warn the user.
-    private func showAlertFordwardingLessSecureIfRequired(forState state: ComposeViewModelState,
-                                                          completion: @escaping (Accepted)->()) {
-        guard AppSettings.shared.unsecureReplyWarningEnabled else {
-            // Setting is disabled ...
-            // ... nothing to do.
-            completion(true)
-            return
-        }
-        guard
-            let composeMode = state.initData?.composeMode,
-            composeMode != .normal
-        else {
-            // The message is not forwarded or answered, not our use case ...
-            // ... nothing to do
-            completion(true)
-            return
-        }
-        guard let originalMessage = state.initData?.originalMessage else {
-            Log.shared.errorAndCrash("Invalid state: Forward && not having an original message")
-            completion(true)
-            return
-        }
-        var originalRating: Rating? = nil //!!!: BUFF: AFAIU originalRating MUST NOT taken be taken into account any more since IOS-2414
-        let group = DispatchGroup()
-        group.enter()
-        originalMessage.pEpRating { (rating) in
-            originalRating = rating
-            group.leave()
-        }
-        group.notify(queue: DispatchQueue.main) {[weak self] in
-            guard let me = self else {
-                // Valid case. The we might have been dismissed already.
-                // Do nothing ...
-                return
-            }
-            guard let originalRating = originalRating else {
-                Log.shared.errorAndCrash("No rating")
-                completion(false)
-                return
-            }
-            let pEpRating = state.rating
-            let title: String
-            let message: String
-            if composeMode == .forward {
-                title = NSLocalizedString("Confirm Forward",
-                                          comment: "Confirm less secure forwarding message alert title")
-                message = NSLocalizedString("You are about to forward a secure message as unsecure. If you choose to proceed, confidential information might be leaked putting you and your communication partners at risk. Are you sure you want to continue?",
-                                            comment: "Confirm less secure forwarding message alert body")
-            } else {
-                title = NSLocalizedString("Confirm Answer",
-                                          comment: "Confirm less secure answering message alert title")
-                message = NSLocalizedString("You are about to answer a secure message as unsecure. If you choose to proceed, confidential information might be leaked putting you and your communication partners at risk. Are you sure you want to continue?",
-                                            comment: "Confirm less secure answer message alert body")
-            }
-
-            if pEpRating.hasLessSecurePepColor(than: originalRating) {
-                // Forwarded mesasge is less secure than original message. Warn the user.
-                me.delegate?.showTwoButtonAlert(withTitle: title,
-                                                message: message,
-                                                cancelButtonText: NSLocalizedString("NO", comment: "'No' button to confirm less secure email sent"),
-                                                positiveButtonText: NSLocalizedString("YES", comment: "'Yes' button to confirm less secure email sent"),
-                                                cancelButtonAction: { completion(false) },
-                                                positiveButtonAction: { completion(true) })
-            } else {
-                completion(true)
-            }
-        }
-    }
 }
 
 // MARK: - ComposeViewModelStateDelegate
@@ -476,11 +495,13 @@ extension ComposeViewModel: ComposeViewModelStateDelegate {
                                didChangeValidationStateTo isValid: Bool) {
         let userSeemsTyping = existsDirtyCell()
         delegate?.validatedStateChanged(to: isValid && !userSeemsTyping)
+        handleRecipientsBanner()
     }
 
     func composeViewModelState(_ composeViewModelState: ComposeViewModelState,
                                didChangePEPRatingTo newRating: Rating) {
         delegate?.colorBatchNeedsUpdate(for: newRating, protectionEnabled: state.pEpProtection)
+        handleRecipientsBanner()
     }
 
     func composeViewModelState(_ composeViewModelState: ComposeViewModelState,
@@ -915,15 +936,26 @@ extension ComposeViewModel: TrustmanagementProtectionStateChangeDelegate {
 extension ComposeViewModel: RecipientCellViewModelResultDelegate {
 
     func recipientCellViewModel(_ vm: RecipientCellViewModel,
-                                didChangeRecipients newRecipients: [Identity]) {
+                                didChangeRecipients newRecipients: [Identity],
+                                hiddenRecipients: [Identity]?) {
         switch vm.type {
         case .to:
             state.toRecipients = newRecipients
+            if let hiddenRecipients = hiddenRecipients {
+                state.toRecipientsHidden = hiddenRecipients
+            }
         case .cc:
             state.ccRecipients = newRecipients
+            if let hiddenRecipients = hiddenRecipients {
+                state.ccRecipientsHidden = hiddenRecipients
+            }
         case .bcc:
             state.bccRecipients = newRecipients
+            if let hiddenRecipients = hiddenRecipients {
+                state.ccRecipientsHidden = hiddenRecipients
+            }
         }
+        delegate?.focusSwitched()
     }
 
     func recipientCellViewModel(_ vm: RecipientCellViewModel, didBeginEditing text: String) {
@@ -934,6 +966,28 @@ extension ComposeViewModel: RecipientCellViewModelResultDelegate {
         lastRowWithSuggestions = idxPath
         delegate?.showSuggestions(forRowAt: idxPath)
         suggestionsVM?.updateSuggestion(searchString: text.cleanAttachments)
+
+        if vm.type == .to && !state.toRecipientsHidden.isEmpty {
+            let hidden = state.toRecipientsHidden
+            state.toRecipients.append(contentsOf: hidden)
+            hidden.forEach { identity in
+                vm.add(recipient: identity)
+            }
+        } else if vm.type == .cc && !state.ccRecipientsHidden.isEmpty {
+            let hidden = state.ccRecipientsHidden
+            state.ccRecipients.append(contentsOf: hidden)
+            hidden.forEach { identity in
+                vm.add(recipient: identity)
+            }
+        } else if vm.type == .bcc && !state.bccRecipientsHidden.isEmpty {
+            let hidden = state.bccRecipientsHidden
+            state.bccRecipients.append(contentsOf: hidden)
+            hidden.forEach { identity in
+                vm.add(recipient: identity)
+            }
+        }
+
+        delegate?.focusSwitched()
     }
 
     func recipientCellViewModelDidEndEditing(_ vm: RecipientCellViewModel) {
@@ -958,6 +1012,22 @@ extension ComposeViewModel: RecipientCellViewModelResultDelegate {
 
     func addContactTapped() {
         delegate?.showContactsPicker()
+    }
+
+    func isPresentingConctactsPicker() -> Bool {
+        guard let del = delegate else {
+            Log.shared.errorAndCrash("Delegate not found")
+            return false
+        }
+        return del.isPresentingContactsPicker()
+    }
+
+    func isDismissing() -> Bool {
+        guard let del = delegate else {
+            Log.shared.errorAndCrash("Delegate not found")
+            return false
+        }
+        return del.isDismissing()
     }
 
     func handleContactSelected(address: String, addressBookID: String, userName: String) {
@@ -1052,5 +1122,135 @@ extension ComposeViewModel: BodyCellViewModelResultDelegate {
 extension ComposeViewModel: TrustmanagementRatingChangedDelegate {
     func ratingMayHaveChanged() {
         state.reevaluatePepRating()
+    }
+}
+
+// MARK: - Warnings
+
+extension ComposeViewModel {
+
+    /// When the user composes an email that will be sent unencrypted gets a warning
+    private func showAlertSendingUnencryptedMessageIfRequied(forMessage safeState: ComposeViewModelState,
+                                                             completion: @escaping (Accepted)->()) {
+        guard let msg = ComposeUtil.messageToSend(withDataFrom: safeState) else {
+            Log.shared.warn("No message for sending")
+            completion(false)
+            return
+        }
+
+        let group = DispatchGroup()
+        group.enter()
+        msg.pEpRating { (rating) in
+            guard rating == .unencrypted else {
+                return
+            }
+            group.notify(queue: DispatchQueue.main) { [weak self] in
+                guard let me = self else {
+                    // Valid case. The we might have been dismissed already.
+                    // Do nothing ...
+                    return
+                }
+
+                let warningTitle = NSLocalizedString("Warning", comment: "Warning title")
+                let warningMessage = NSLocalizedString("This message will be sent unencrypted", comment: "Warning message")
+                let cancelButtonText = NSLocalizedString("NO", comment: "'No' button to confirm less secure email sent")
+                let positiveButtonText =  NSLocalizedString("YES", comment: "'Yes' button to confirm less secure email sent")
+
+                me.delegate?.showTwoButtonAlert(withTitle: warningTitle,
+                                                message: warningMessage,
+                                                cancelButtonText: cancelButtonText,
+                                                positiveButtonText: positiveButtonText, cancelButtonAction: { completion(false) },
+                                                positiveButtonAction: { completion(true) })
+                }
+            }
+            group.leave()
+        }
+
+    /// When forwarding/answering a previously decrypted message and the pEpRating is considered as
+    /// less secure as the original message's pEp rating, warn the user.
+    private func showAlertFordwardingLessSecureIfRequired(forState state: ComposeViewModelState,
+                                                          completion: @escaping (Accepted)->()) {
+        guard AppSettings.shared.unsecureReplyWarningEnabled else {
+            // Setting is disabled ...
+            // ... nothing to do.
+            completion(true)
+            return
+        }
+        guard let data = state.initData, let originalMessage = data.originalMessage else {
+            Log.shared.errorAndCrash("Invalid state: Forward && not having an original message")
+            completion(true)
+            return
+        }
+
+        var originalRating: Rating? = nil //!!!: BUFF: AFAIU originalRating MUST NOT taken be taken into account any more since IOS-2414
+        let group = DispatchGroup()
+        group.enter()
+        originalMessage.pEpRating { (rating) in
+            originalRating = rating
+            group.leave()
+        }
+        group.notify(queue: DispatchQueue.main) { [weak self] in
+            guard let me = self else {
+                // Valid case. The we might have been dismissed already.
+                // Do nothing ...
+                return
+            }
+            guard let originalRating = originalRating else {
+                Log.shared.errorAndCrash("No rating")
+                completion(false)
+                return
+            }
+            let pEpRating = state.rating
+            let title: String
+            let message: String
+            if data.composeMode == .forward {
+                title = NSLocalizedString("Confirm Forward",
+                                          comment: "Confirm less secure forwarding message alert title")
+                message = NSLocalizedString("You are about to forward a secure message as unsecure. If you choose to proceed, confidential information might be leaked putting you and your communication partners at risk. Are you sure you want to continue?",
+                                            comment: "Confirm less secure forwarding message alert body")
+            } else {
+                title = NSLocalizedString("Confirm Answer",
+                                          comment: "Confirm less secure answering message alert title")
+                message = NSLocalizedString("You are about to answer a secure message as unsecure. If you choose to proceed, confidential information might be leaked putting you and your communication partners at risk. Are you sure you want to continue?",
+                                            comment: "Confirm less secure answer message alert body")
+            }
+
+            if pEpRating.hasLessSecurePepColor(than: originalRating) {
+                // Forwarded mesasge is less secure than original message. Warn the user.
+                me.delegate?.showTwoButtonAlert(withTitle: title,
+                                                message: message,
+                                                cancelButtonText: NSLocalizedString("NO", comment: "'No' button to confirm less secure email sent"),
+                                                positiveButtonText: NSLocalizedString("YES", comment: "'Yes' button to confirm less secure email sent"),
+                                                cancelButtonAction: { completion(false) },
+                                                positiveButtonAction: { completion(true) })
+            } else {
+                completion(true)
+            }
+        }
+    }
+}
+
+// MARK: - RecipientListViewModelDelegate
+
+extension ComposeViewModel: RecipientListViewModelDelegate {
+
+    public func removeFromState(addresses: [String]) {
+        DispatchQueue.main.async { [weak self] in
+            guard let me = self else {
+                Log.shared.errorAndCrash("Lost myself")
+                return
+            }
+            addresses.forEach { address in
+                me.state.toRecipients.removeAll(where: {$0.address == address })
+                me.state.ccRecipients.removeAll(where: {$0.address == address })
+                me.state.bccRecipients.removeAll(where: {$0.address == address })
+                me.state.toRecipientsHidden.removeAll(where: {$0.address == address })
+                me.state.ccRecipientsHidden.removeAll(where: {$0.address == address })
+                me.state.bccRecipientsHidden.removeAll(where: {$0.address == address })
+            }
+
+            me.handleRecipientsBanner()
+            me.delegate?.removeRecipientsFromTextfields(addresses: addresses)
+        }
     }
 }

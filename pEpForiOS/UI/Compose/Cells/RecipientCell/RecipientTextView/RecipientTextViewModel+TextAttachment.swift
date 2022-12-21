@@ -21,6 +21,7 @@ extension RecipientTextViewModel {
     public class TextAttachment: NSTextAttachment {
         public private(set) var recipient: Identity
         private var font: UIFont
+        public var isBadge: Bool = false
 
         init(recipient: Identity,
              font: UIFont = UIFont.pepFont(style: .footnote, weight: .regular),
@@ -55,17 +56,55 @@ extension RecipientTextViewModel {
             return superRect
         }
 
+        private func getBadgeAttributes() -> [NSAttributedString.Key : NSObject] {
+            let badgeAttributes: [NSAttributedString.Key : NSObject]
+            if #available(iOS 13.0, *) {
+                badgeAttributes = [
+                    NSAttributedString.Key.foregroundColor: UIColor.label,
+                    NSAttributedString.Key.font: font,
+                ]
+            } else {
+                badgeAttributes = [
+                    NSAttributedString.Key.foregroundColor: UIColor.pEpDarkText,
+                    NSAttributedString.Key.font: font,
+                ]
+            }
+
+            return badgeAttributes
+        }
+
+        private func getRecipientsAttributes(textColor: UIColor) -> [NSAttributedString.Key : NSObject] {
+            var recipientBackgroundColor: UIColor
+            if #available(iOS 13.0, *) {
+                recipientBackgroundColor = UITraitCollection.current.userInterfaceStyle == .dark ? UIColor.pEpLightBackground : UIColor.pEpGreyRecipientBackground
+            } else {
+                recipientBackgroundColor = UIColor.pEpGreyRecipientBackground
+            }
+            return [
+                NSAttributedString.Key.foregroundColor: textColor,
+                NSAttributedString.Key.font: font,
+                NSAttributedString.Key.backgroundColor: recipientBackgroundColor
+            ]
+        }
+
         private func setupRecipientImage(for recipient: Identity,
                                          font:  UIFont,
                                          textColor: UIColor = .pEpDarkText,
                                          maxWidth: CGFloat = 0.0) {
-            let text = recipient.address
-            let attributes = [
-                NSAttributedString.Key.foregroundColor: textColor,
-                NSAttributedString.Key.font: font
-            ]
-
+            var text: String
+            if let username = recipient.userName, username.isEmpty {
+                text = " \(recipient.address) "
+            } else {
+                text = " \(recipient.userName ?? recipient.address) "
+            }
+            let badgeAttributes = getBadgeAttributes()
+            var attributes = getRecipientsAttributes(textColor: textColor)
             let textMargin: CGFloat = 3.0
+
+            if !recipient.address.isProbablyValidEmail() {
+                attributes = badgeAttributes
+            }
+
             let textSize = text.size(withAttributes: attributes)
             let width = textSize.width > maxWidth ? maxWidth : textSize.width
             var textFrame = CGRect(x: 0, y: 0, width: width, height: textSize.height)
@@ -97,7 +136,11 @@ extension RecipientTextViewModel {
             }
             UIGraphicsEndImageContext()
 
-            image = createe
+            guard let result = createe.withRoundedCorners(radius: 16) else {
+                image = createe
+                return
+            }
+            image = result
         }
     }
 }

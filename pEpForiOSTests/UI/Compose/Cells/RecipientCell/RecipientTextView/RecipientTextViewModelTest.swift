@@ -407,7 +407,7 @@ class TestRecipientTextViewModelResultDelegate: RecipientTextViewModelResultDele
     }
 
     func recipientTextViewModel(_ vm: RecipientTextViewModel,
-                                didChangeRecipients newRecipients: [Identity]) {
+                                didChangeRecipients newRecipients: [Identity], hiddenRecipients: [Identity]?) {
         guard let exp = expectDidChangeRecipientsCalled else {
             // We ignore called or not
             return
@@ -453,6 +453,7 @@ class TestRecipientTextViewModelResultDelegate: RecipientTextViewModelResultDele
 }
 
 class TestRecipientTextViewModelDelegate: RecipientTextViewModelDelegate {
+
     //add(recipient:)
     let expectAddRecipientCalled: XCTestExpectation?
     let addRecipientValue: String?
@@ -490,4 +491,17 @@ class TestRecipientTextViewModelDelegate: RecipientTextViewModelDelegate {
         exp.fulfill()
         XCTAssertEqual(recipient, addRecipientValue)
     }
+
+    func removeBadgeTextAttachments() {
+
+    }
+
+    func removeRecipientsTextAttachments(recipients: [pEpForiOS.RecipientTextViewModel.TextAttachment]) {
+
+    }
+
+    func isThereSpaceForANewTextAttachment(recipientsTextAttachmentWidth: CGFloat, expectedWidthOfTheNewTextAttachment: CGFloat) -> Bool {
+        return false
+    }
+
 }

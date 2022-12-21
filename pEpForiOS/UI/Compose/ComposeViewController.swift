@@ -21,12 +21,14 @@ import MessageModel
 import pEpIOSToolbox
 #endif
 
-class ComposeViewController: UIViewController {
+class ComposeViewController: UIViewController, RecipientsBannerDelegate {
+
     public static let storyboardId = "ComposeViewController"
 
     @IBOutlet weak var sendButton: UIBarButtonItem!
     @IBOutlet weak var cancelButton: UIBarButtonItem!
     @IBOutlet var tableView: UITableView!
+    @IBOutlet weak var recipientsBannerContainerView: UIView!
 
     private var suggestionsChildViewController: SuggestTableViewController?
 
@@ -304,6 +306,90 @@ extension ComposeViewController {
 
 extension ComposeViewController: ComposeViewModelDelegate {
 
+    func isDismissing() -> Bool {
+        return isAboutToClose
+    }
+
+    // MARK: - Recipients Banner
+
+    func showRecipientsBanner() {
+        setRecipientsBanner(visible: true)
+    }
+
+    func hideRecipientsBanner() {
+        setRecipientsBanner(visible: false)
+    }
+
+    func removeRecipientsFromTextfields(addresses: [String]) {
+        // Get all recipients cells.
+        guard let recipientsCells = tableView.visibleCells.filter({ $0 is RecipientCell }) as? [RecipientCell] else {
+            //Nothing to do.
+            return
+        }
+
+        // Iterate the recipients cells
+        for recipientCell in recipientsCells {
+            // Grab the text view
+            guard let textView = recipientCell.textView as? RecipientTextView else {
+                // Not a RecipientTextView, nothing to do.
+                continue
+            }
+            guard let attributedText = textView.attributedText, attributedText.length > 0 else {
+                // Empty textfield, nothing to do.
+                continue
+            }
+            let range = NSRange(location: 0, length: attributedText.length)
+            guard let mutableAttr = recipientCell.textView.attributedText.mutableCopy() as? NSMutableAttributedString else {
+                Log.shared.errorAndCrash("This should not happen")
+                continue
+            }
+            // Look for NSTextAttachments
+            recipientCell.textView.attributedText.enumerateAttribute(.attachment, in: range, options: []) {
+                value, range, stop in
+                if let attachment = value as? RecipientTextViewModel.TextAttachment {
+                    // Remove all attachments that matches the given addresses.
+                    if addresses.contains(attachment.recipient.address) || addresses.contains(attachment.recipient.userName ?? "") || attachment.isBadge {
+                        mutableAttr.removeAttribute(.attachment, range: range)
+                        textView.viewModel?.removeAllRecipientAttachmentOfTheSameRecipient(attachment: attachment)
+                    }
+                }
+            }
+            // Update the textview
+            recipientCell.textView.attributedText = mutableAttr
+            // Re layout to fix minor glitch (caret in wrong position).
+            if let indexPath = tableView.indexPath(for: recipientCell) {
+                contentChanged(inRowAt: indexPath)
+            }
+        }
+    }
+
+    private func setRecipientsBanner(visible: Bool) {
+        UIView.animate(withDuration: 0.3, delay: 0) { [weak self] in
+            guard let me = self else {
+                Log.shared.errorAndCrash("Lost myself")
+                return
+            }
+
+            guard let recipientsBannerViewController = me.children.first(where: {$0 is RecipientsBannerViewController }) as? RecipientsBannerViewController else {
+                Log.shared.errorAndCrash("No Banner. Unexpected")
+                return
+            }
+
+            if visible {
+                guard let recipientsBannerViewModel = me.viewModel?.getRecipientBannerViewModel(delegate: me) else {
+                    Log.shared.errorAndCrash("Visible but no recipients. Unexpected")
+                    return
+                }
+                recipientsBannerViewController.viewModel = recipientsBannerViewModel
+            } else {
+                recipientsBannerViewController.viewModel = nil
+            }
+            me.recipientsBannerContainerView.isHidden = !visible
+        }
+    }
+
+    // MARK: - Suggestions
+
     func hideSuggestions() {
         suggestionsChildViewController?.view.isHidden = true
         tableView.isScrollEnabled = true
@@ -396,6 +482,10 @@ extension ComposeViewController: ComposeViewModelDelegate {
         presentContactPicker()
     }
 
+    func isPresentingContactsPicker() -> Bool {
+        return UIApplication.currentlyVisibleViewController() is CNContactPickerViewController
+    }
+
     /// Restore focus to the previous focused cell after closing the picker action
     private func didHideContactPicker() {
         guard let vm = viewModel else {
@@ -414,7 +504,7 @@ extension ComposeViewController: ComposeViewModelDelegate {
     }
 
     func documentAttachmentPickerDone() {
-        self.setPreviousFocusAfterPicker()
+        setPreviousFocusAfterPicker()
     }
 
     func showTwoButtonAlert(withTitle title: String,
@@ -478,6 +568,7 @@ extension ComposeViewController: SegueHandlerType {
 
     enum SegueIdentifier: String {
         case segueTrustManagement
+        case segueRecipientsBanner
     }
 
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
@@ -498,6 +589,21 @@ extension ComposeViewController: SegueHandlerType {
                 return
             }
             destination.viewModel = trustManagementViewModel
+        case .segueRecipientsBanner:
+            guard
+                let destination = segue.destination as? RecipientsBannerViewController else {
+                    Log.shared.errorAndCrash("Missing VCs")
+                    return
+            }
+            guard let vm = viewModel else {
+                Log.shared.errorAndCrash("No vm")
+                return
+            }
+            guard let recipientsViewModel = vm.getRecipientBannerViewModel(delegate: self)  else {
+                Log.shared.error("Message not found")
+                return
+            }
+            destination.viewModel = recipientsViewModel
         }
     }
 }
@@ -1099,6 +1205,40 @@ extension ComposeViewController {
     }
 }
 
+//MARK: - Recipients List
+
+extension ComposeViewController {
+
+    @objc private func closeScreen() {
+        dismiss()
+    }
+
+    func presentRecipientsListView(viewModel: RecipientsListViewModel) {
+        let storyboard = UIStoryboard(name: Constants.recipientsStoryboard, bundle: nil)
+        guard let navigationController = storyboard.instantiateViewController(withIdentifier:
+                Constants.unsecureRecipientsListNavigation) as? UINavigationController
+            else {
+                Log.shared.errorAndCrash("Missing required VCs")
+                return
+        }
+        guard let recipientsListViewController = navigationController.children.first as? RecipientsListViewController else {
+            Log.shared.errorAndCrash("No VC")
+            return
+        }
+        let navBarButtonTitle = NSLocalizedString("Done", comment: "Done")
+        let endButton = UIBarButtonItem(title: navBarButtonTitle,
+                                        style: .done,
+                                        target: self,
+                                        action: #selector(closeScreen))
+        endButton.accessibilityIdentifier = AccessibilityIdentifier.doneButton
+        endButton.isAccessibilityElement = true
+        recipientsListViewController.navigationItem.rightBarButtonItem = endButton
+        viewModel.delegate = recipientsListViewController
+        recipientsListViewController.viewModel = viewModel
+        present(navigationController, animated: true, completion: nil)
+    }
+}
+
 // MARK: - Keyboard Related Issues
 
 extension ComposeViewController {
@@ -1133,6 +1273,8 @@ extension ComposeViewController {
         return keyboardSize.height
     }
 }
+
+// MARK: - Trait Collection
 
 extension ComposeViewController {
 

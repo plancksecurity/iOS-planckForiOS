@@ -15,6 +15,7 @@ import pEpIOSToolbox
 #endif
 
 protocol ComposeViewModelStateDelegate: AnyObject {
+
     func composeViewModelState(_ composeViewModelState: ComposeViewModel.ComposeViewModelState,
                                didChangeValidationStateTo isValid: Bool)
 
@@ -86,16 +87,27 @@ extension ComposeViewModel {
                 validate()
             }
         }
+
+        // UI state. Collapsed to recipients.
+        var toRecipientsHidden = [Identity]()
+
         var ccRecipients = [Identity]() {
             didSet {
                 validate()
             }
         }
+
+        // UI state. Collapsed cc recipients.
+        var ccRecipientsHidden = [Identity]()
+
         var bccRecipients = [Identity]() {
             didSet {
                 validate()
             }
         }
+
+        // UI state. Collapsed bcc recipients.
+        var bccRecipientsHidden = [Identity]()
 
         var from: Identity? {
             didSet {
