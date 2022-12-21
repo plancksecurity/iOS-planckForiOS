@@ -430,9 +430,6 @@ class ComposeViewModel {
                 handleUserDecision(accepted: accepted)
             }
         }
-
-        // As the util has state we ensure it's not reused
-        attachmentSizeUtil = nil
     }
 
     public func isAttachmentSection(indexPath: IndexPath) -> Bool {
