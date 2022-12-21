@@ -45,22 +45,22 @@ struct ComposeUtil {
                 }
                 let origTos = om.to
                 let originalTosWithoutMe = origTos.filter { $0 != me}
-                let allRecipients = originalTosWithoutMe + [omFrom]
+                result = originalTosWithoutMe + [omFrom]
 
                 // When a user us replying to an email,
                 // the recipients are sorted by rating in order to have the non secure recipients first
                 var identitiesAndColors = [Identity:Color]()
                 let group = DispatchGroup()
-                for i in 0 ..< allRecipients.count {
+                for i in 0 ..< result.count {
+                    let identity = result[i]
                     group.enter()
-                    let identity = allRecipients[i]
                     identity.pEpRating { rating in
                         identitiesAndColors = [identity: rating.pEpColor()]
                         group.leave()
                     }
-                    group.wait()
                 }
 
+                // Rating requests are complete
                 group.notify(queue: .main) {
                     let red = identitiesAndColors.filter { $0.value == .red }.map { $0.key }
                     let noColor = identitiesAndColors.filter { $0.value == .noColor }.map { $0.key }
