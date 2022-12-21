@@ -24,6 +24,9 @@ class RecipientListTableViewCell: UITableViewCell {
     func configure(address: String, username: String?) {
         if let username {
             usernameLabel.text = username
+            usernameLabel.isHidden = false
+        } else {
+            usernameLabel.isHidden = true
         }
         addressLabel.text = address
     }

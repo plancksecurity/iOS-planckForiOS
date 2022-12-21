@@ -92,8 +92,9 @@
                                 </subviews>
                             </stackView>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="G0B-Xs-2vm" userLabel="Remove all">
-                                <rect key="frame" x="15.999999999999993" y="406" width="106.33333333333331" height="50"/>
+                                <rect key="frame" x="0.0" y="406" width="120" height="50"/>
                                 <constraints>
+                                    <constraint firstAttribute="width" relation="greaterThanOrEqual" constant="120" id="1lg-Zn-Qm1"/>
                                     <constraint firstAttribute="height" constant="50" id="8lt-I4-uk7"/>
                                 </constraints>
                                 <state key="normal" title="Button"/>
@@ -113,8 +114,8 @@
                             <constraint firstAttribute="trailing" relation="greaterThanOrEqual" secondItem="G0B-Xs-2vm" secondAttribute="trailing" constant="20" symbolic="YES" id="UUT-Lb-1OP"/>
                             <constraint firstItem="ie4-Qq-1ue" firstAttribute="top" secondItem="VuQ-wD-88j" secondAttribute="bottom" constant="20" id="b9o-hB-yAX"/>
                             <constraint firstItem="cKE-n2-8zR" firstAttribute="width" secondItem="JlA-J3-XUM" secondAttribute="width" id="eu6-Kv-oSo"/>
-                            <constraint firstItem="G0B-Xs-2vm" firstAttribute="leading" secondItem="JlA-J3-XUM" secondAttribute="leadingMargin" id="iTM-yT-VM1"/>
                             <constraint firstItem="Dsa-4H-3F0" firstAttribute="centerX" secondItem="ie4-Qq-1ue" secondAttribute="centerX" id="jDf-gM-xP3"/>
+                            <constraint firstItem="G0B-Xs-2vm" firstAttribute="leading" secondItem="HCk-vq-wsO" secondAttribute="leading" id="naF-Xp-pmr"/>
                             <constraint firstItem="G0B-Xs-2vm" firstAttribute="top" secondItem="Dsa-4H-3F0" secondAttribute="bottom" constant="7.6666666666666288" id="wOH-V8-vqF"/>
                         </constraints>
                     </view>

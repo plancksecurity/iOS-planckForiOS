@@ -1138,9 +1138,11 @@
                                 <rect key="frame" x="0.0" y="44" width="414" height="692"/>
                                 <subviews>
                                     <containerView hidden="YES" opaque="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="SBO-iF-u5f">
-                                        <rect key="frame" x="0.0" y="0.0" width="414" height="40"/>
+                                        <rect key="frame" x="0.0" y="0.0" width="414" height="50"/>
                                         <constraints>
-                                            <constraint firstAttribute="height" constant="40" identifier="BannerPreferredHeight" id="KIF-rk-9Ee"/>
+                                            <constraint firstAttribute="height" constant="40" identifier="BannerPreferredHeight" id="KIF-rk-9Ee">
+                                                <variation key="heightClass=regular-widthClass=compact" constant="50"/>
+                                            </constraint>
                                         </constraints>
                                         <connections>
                                             <segue destination="hrq-S4-HtH" kind="embed" identifier="segueRecipientsBanner" id="0xH-sQ-Obw"/>
@@ -1434,11 +1436,11 @@
                         <viewControllerLayoutGuide type="bottom" id="P32-yh-ebv"/>
                     </layoutGuides>
                     <view key="view" contentMode="scaleToFill" id="PwV-13-jSq">
-                        <rect key="frame" x="0.0" y="0.0" width="414" height="40"/>
+                        <rect key="frame" x="0.0" y="0.0" width="414" height="50"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Pzw-KP-hgZ" userLabel="Unsecure recipients button">
-                                <rect key="frame" x="0.0" y="8" width="414" height="24"/>
+                                <rect key="frame" x="0.0" y="8" width="414" height="34"/>
                                 <state key="normal" title="Button"/>
                                 <buttonConfiguration key="configuration" style="plain" title="3 unsecure recipients. Click here to review and remove.">
                                     <backgroundConfiguration key="background">
