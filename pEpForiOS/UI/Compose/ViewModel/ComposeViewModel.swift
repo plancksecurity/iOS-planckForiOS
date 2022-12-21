@@ -34,7 +34,7 @@ protocol ComposeViewModelDelegate: AnyObject {
 
     func sectionChanged(section: Int)
 
-    func colorBatchNeedsUpdate(for rating: Rating, protectionEnabled: Bool)
+    func colorBatchNeedsUpdate(for rating: Rating, protectionEnabled: Bool, hasRecipients: Bool)
 
     func hideSuggestions()
 
@@ -82,8 +82,7 @@ class ComposeViewModel {
 
     weak var delegate: ComposeViewModelDelegate? {
         didSet {
-            delegate?.colorBatchNeedsUpdate(for: state.rating,
-                                            protectionEnabled: state.pEpProtection)
+            delegate?.colorBatchNeedsUpdate(for: state.rating, protectionEnabled: state.pEpProtection, hasRecipients: hasRecipients)
         }
     }
 
@@ -103,6 +102,11 @@ class ComposeViewModel {
     /// IndexPath of "To:" receipientVM
     private var indexPathToVm: IndexPath {
         return IndexPath(item: 0, section: 0)
+    }
+
+    private var hasRecipients: Bool {
+        let allRecipients = state.toRecipients + state.ccRecipients + state.bccRecipients
+        return !allRecipients.isEmpty
     }
 
     /// IndexPath of "Subject" VM
@@ -480,12 +484,12 @@ extension ComposeViewModel: ComposeViewModelStateDelegate {
 
     func composeViewModelState(_ composeViewModelState: ComposeViewModelState,
                                didChangePEPRatingTo newRating: Rating) {
-        delegate?.colorBatchNeedsUpdate(for: newRating, protectionEnabled: state.pEpProtection)
+        delegate?.colorBatchNeedsUpdate(for: newRating, protectionEnabled: state.pEpProtection, hasRecipients: hasRecipients)
     }
 
     func composeViewModelState(_ composeViewModelState: ComposeViewModelState,
                                didChangeProtection newValue: Bool) {
-        delegate?.colorBatchNeedsUpdate(for: state.rating, protectionEnabled: newValue)
+        delegate?.colorBatchNeedsUpdate(for: state.rating, protectionEnabled: newValue, hasRecipients: hasRecipients)
     }
 }
 
