@@ -204,15 +204,15 @@ class ComposeViewController: UIViewController {
 // MARK: - PEP Color View
 
 extension ComposeViewController {
-    private func setupPepColorView(for pEpRating: Rating, pEpProtected: Bool) {
+    private func setupPepColorView(for pEpRating: Rating, pEpProtected: Bool, hasRecipients: Bool) {
         guard let vm = viewModel else {
             Log.shared.errorAndCrash("No VM")
             return
         }
-
         //Not so nice. The view(controller) should not know about state and protection.
         let pEpRatingView = showNavigationBarSecurityBadge(pEpRating: pEpRating,
                                                            pEpProtection: pEpProtected)
+        navigationItem.titleView?.isHidden = !hasRecipients
 
         // Handshake on simple touch if possible
         vm.canDoHandshake { [weak self] (canDoHandshake) in
@@ -370,8 +370,8 @@ extension ComposeViewController: ComposeViewModelDelegate {
         tableView.endUpdates()
     }
 
-    func colorBatchNeedsUpdate(for rating: Rating, protectionEnabled: Bool) {
-        setupPepColorView(for: rating, pEpProtected: protectionEnabled)
+    func colorBatchNeedsUpdate(for rating: Rating, protectionEnabled: Bool, hasRecipients: Bool) {
+        setupPepColorView(for: rating, pEpProtected: protectionEnabled, hasRecipients: hasRecipients)
     }
 
     func showMediaAttachmentPicker() {
