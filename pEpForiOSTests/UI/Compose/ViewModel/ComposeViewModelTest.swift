@@ -439,7 +439,7 @@ class ComposeViewModelTest: AccountDrivenTestBase {
             }
         }
 
-        func colorBatchNeedsUpdate(for rating: Rating, protectionEnabled: Bool) {
+        func colorBatchNeedsUpdate(for rating: Rating, protectionEnabled: Bool, hasRecipients: Bool) {
             guard let exp = expColorBatchNeedsUpdateCalled else {
                 // We ignore called or not
                 return
