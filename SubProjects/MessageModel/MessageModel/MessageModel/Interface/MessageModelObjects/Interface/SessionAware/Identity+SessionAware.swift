@@ -50,4 +50,8 @@ extension Identity: SessionAware {
         let cdCreatee = T(context: moc)
         return MMO(cdObject: cdCreatee, context: moc)
     }
+
+    public func delete() {
+        moc.delete(cdObject)
+    }
 }
