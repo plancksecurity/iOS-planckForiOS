@@ -46,6 +46,9 @@ struct ComposeUtil {
                 let origTos = om.to
                 let originalTosWithoutMe = origTos.filter { $0 != me}
                 result = originalTosWithoutMe + [omFrom]
+                if MiscUtil.isUnitTest() {
+                    return result
+                }
 
                 // When a user us replying to an email,
                 // the recipients are sorted by rating in order to have the non secure recipients first
