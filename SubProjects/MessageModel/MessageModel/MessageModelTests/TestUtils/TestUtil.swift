@@ -243,28 +243,6 @@ extension TestUtil {
 
     // MARK: - Moved from App target. Needs love, review, ideally remove
 
-    static func checkForExistanceAndUniqueness(uuids: [MessageID],
-                                               context: NSManagedObjectContext) {
-        for uuid in uuids {
-            if let ms = CdMessage.all(attributes: ["uuid": uuid], in: context) as? [CdMessage] {
-                var folder: CdFolder? = nil
-                // check if that message is either unique, or all copies are in different folders
-                for m in ms {
-                    if let forig = folder {
-                        if let f = m.parent {
-                            XCTAssertNotEqual(forig, f)
-                            folder = f
-                        } else {
-                            XCTFail()
-                        }
-                    }
-                }
-            } else {
-                XCTFail("no message with message ID \(uuid)")
-            }
-        }
-    }
-
     static func setupSomePEPIdentities()
         -> (identity: PEPIdentity, receiver1: PEPIdentity,
         receiver2: PEPIdentity, receiver3: PEPIdentity,
