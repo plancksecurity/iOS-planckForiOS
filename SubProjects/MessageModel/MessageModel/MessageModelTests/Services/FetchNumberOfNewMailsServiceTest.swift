@@ -11,28 +11,36 @@ import XCTest
 @testable import MessageModel
 
 final class FetchNumberOfNewMailsServiceTest: PersistentStoreDrivenTestBase {
+    func testEndlessRunner() throws {
+        guard let context = Stack.shared.mainContext else {
+            XCTFail()
+            return
+        }
 
-    override func setUpWithError() throws {
-        // Put setup code here. This method is called before the invocation of each test method in the class.
-    }
+        guard let cdAccount = (CdAccount.all(in: context) as? [CdAccount])?.first else {
+            XCTFail("No account to sync")
+            return
+        }
 
-    override func tearDownWithError() throws {
-        // Put teardown code here. This method is called after the invocation of each test method in the class.
-    }
+        let accountName = cdAccount.identityOrCrash.addressOrCrash
 
-    func testExample() throws {
-        // This is an example of a functional test case.
-        // Use XCTAssert and related functions to verify your tests produce the correct results.
-        // Any test you write for XCTest can be annotated as throws and async.
-        // Mark your test throws to produce an unexpected failure when your test encounters an uncaught error.
-        // Mark your test async to allow awaiting for asynchronous code to complete. Check the results with assertions afterwards.
-    }
+        syncAndWait(cdAccountsToSync: [cdAccount], context: context)
 
-    func testPerformanceExample() throws {
-        // This is an example of a performance test case.
-        self.measure {
-            // Put the code you want to measure the time of here.
+        while true {
+            let errorContainer = ErrorPropagator.ErrorContainer()
+            let numberOfNewMailsOptional = fetchNumberOfNewMails(errorContainer: errorContainer,
+                                                                 context: context)
+
+            guard let numberOfNewMails = numberOfNewMailsOptional else {
+                XCTFail()
+                return
+            }
+
+            XCTAssertFalse(errorContainer.hasErrors)
+
+            print("**** new emails (\(accountName): \(numberOfNewMails)")
+
+            Thread.sleep(forTimeInterval: 15.0)
         }
     }
-
 }
