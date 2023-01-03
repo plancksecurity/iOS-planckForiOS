@@ -1144,8 +1144,15 @@ extension ComposeViewModel {
 
         let group = DispatchGroup()
         group.enter()
-        msg.pEpRating { (rating) in
+        msg.pEpRating { [weak self] (rating) in
             guard rating == .unencrypted else {
+                guard let me = self else {
+                    Log.shared.errorAndCrash("Lost myself")
+                    return
+                }
+                DispatchQueue.main.async {
+                    me.delegate?.dismiss()
+                }
                 return
             }
             group.notify(queue: DispatchQueue.main) { [weak self] in
