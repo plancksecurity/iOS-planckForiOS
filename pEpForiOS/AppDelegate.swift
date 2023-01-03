@@ -190,39 +190,34 @@ extension AppDelegate {
 
     func application(_ application: UIApplication, performFetchWithCompletionHandler
                         completionHandler: @escaping (UIBackgroundFetchResult) -> Void) {
-        if #available(iOS 13.0, *) {
-            // According to Apple docs:
-            //
-            // "Adding a BGTaskSchedulerPermittedIdentifiers key to the
-            // Info.plist disables application(_:performFetchWithCompletionHandler:) and
-            // setMinimumBackgroundFetchInterval(_:) in iOS 13 and later."
-            //
-            // This method is called anyway by the OS. Which is a contradiction imo.
-            Log.shared.warn("BGAppRefreshTask: Should not be called on iOS>=13. Should use BGTaskScheduler defined method instead")
-            // Do nothing. We use different API (BGTaskScheduler) for iOS13 and up.
+        // According to Apple docs:
+        //
+        // "Adding a BGTaskSchedulerPermittedIdentifiers key to the
+        // Info.plist disables application(_:performFetchWithCompletionHandler:) and
+        // setMinimumBackgroundFetchInterval(_:) in iOS 13 and later."
+        //
+        // This method is called anyway by the OS. Which is a contradiction imo.
+        //
+        // Do a background fetch anyways, because, why not?
+        guard let messageModelService = messageModelService else {
+            Log.shared.error("no networkService")
             completionHandler(.failed)
-        } else {
-            Log.shared.info("BGAppRefreshTask: we are < iOS13. Fallback to BackgroundFetch ...")
-            guard let messageModelService = messageModelService else {
-                Log.shared.error("no networkService")
-                completionHandler(.failed)
+            return
+        }
+
+        messageModelService.checkForNewMails_old() {[unowned self] (numMails: Int?) in
+            var result = UIBackgroundFetchResult.failed
+            defer { completionHandler(result)}
+            guard let numMails = numMails else {
+                result = .failed
                 return
             }
-
-            messageModelService.checkForNewMails_old() {[unowned self] (numMails: Int?) in
-                var result = UIBackgroundFetchResult.failed
-                defer { completionHandler(result)}
-                guard let numMails = numMails else {
-                    result = .failed
-                    return
-                }
-                switch numMails {
-                case 0:
-                    result = .noData
-                default:
-                    self.informUser(numNewMails: numMails) {
-                        result = .newData
-                    }
+            switch numMails {
+            case 0:
+                result = .noData
+            default:
+                self.informUser(numNewMails: numMails) {
+                    result = .newData
                 }
             }
         }
