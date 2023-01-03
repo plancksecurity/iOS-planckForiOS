@@ -70,24 +70,4 @@ extension XCTestCase {
 
         wait(for: [expSynced], timeout: TestUtil.waitTime)
     }
-
-    public func fetchNumberOfNewMails(errorContainer: ErrorContainerProtocol,
-                                      context: NSManagedObjectContext) -> Int? {
-        let expNumMails = expectation(description: "expNumMails")
-        var numMails: Int?
-        let fetchNumMailsOp = FetchNumberOfNewMailsService(imapConnectionDataCache: nil,
-                                                           context: context)
-        fetchNumMailsOp.start() { theNumMails in
-            numMails = theNumMails
-            expNumMails.fulfill()
-        }
-
-        waitForExpectations(timeout: TestUtil.waitTime, handler: { error in
-            XCTAssertNil(error)
-            XCTAssertNotNil(numMails)
-            XCTAssertNil(errorContainer.error)
-        })
-
-        return numMails
-    }
 }
