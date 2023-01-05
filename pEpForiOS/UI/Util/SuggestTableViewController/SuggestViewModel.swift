@@ -136,7 +136,7 @@ class SuggestViewModel {
 
     /// Update the suggestions based of the user input.
     /// - Parameter searchString: The text the user searches.
-    public func updateSuggestion(searchString: String) {
+    public func updateSuggestion(searchString: String, addedIdentities: [Identity]) {
         workQueue.cancelAllOperations()
 
         guard searchString.count >= minNumberSearchStringChars else {
@@ -145,7 +145,10 @@ class SuggestViewModel {
             return
         }
 
-        let identities = Identity.recipientsSuggestions(for: searchString)
+        var identities = Identity.recipientsSuggestions(for: searchString)
+        let addedAddresses = addedIdentities.map { $0.address }
+        identities = identities.filter { !addedAddresses.contains($0.address) }
+
         if identities.count > 0 {
             // We found matching Identities in the DB.
             // Show them to the user imediatelly and update the list later when Contacts are
@@ -163,7 +166,20 @@ class SuggestViewModel {
                 return
             }
             me.session.performAndWait {
-                let contacts = AddressBook.searchContacts(searchterm: searchString)
+                var contacts = AddressBook.searchContacts(searchterm: searchString)
+                contacts = contacts.filter { contact in
+                    guard let contactAddreses = contact.emailAddresses.compactMap({ $0.value }) as? [String] else {
+                        return false
+                    }
+                    var shouldAddContact = true
+                    addedAddresses.forEach { address in
+                        if contactAddreses.contains(address) {
+                            shouldAddContact = false
+                        }
+                    }
+                    return shouldAddContact
+                }
+
                 me.updateRows(with: identities, contacts: contacts, callingOperation: operation)
             }
             AppSettings.shared.userHasBeenAskedForContactAccessPermissions = true

@@ -123,6 +123,10 @@ class ComposeViewModel {
         return !allRecipients.isEmpty
     }
 
+    private var addedIdentities : [Identity] {
+        return state.toRecipients + state.ccRecipients + state.bccRecipients
+    }
+
     /// IndexPath of "Subject" VM
     private var indexPathSubjectVm: IndexPath {
         let subjectSection = section(for: .subject)
@@ -969,7 +973,7 @@ extension ComposeViewModel: RecipientCellViewModelResultDelegate {
         }
         lastRowWithSuggestions = idxPath
         delegate?.showSuggestions(forRowAt: idxPath)
-        suggestionsVM?.updateSuggestion(searchString: text.cleanAttachments)
+        suggestionsVM?.updateSuggestion(searchString: text.cleanAttachments, addedIdentities: addedIdentities)
 
         if vm.type == .to && !state.toRecipientsHidden.isEmpty {
             let hidden = state.toRecipientsHidden
@@ -1009,7 +1013,7 @@ extension ComposeViewModel: RecipientCellViewModelResultDelegate {
 
         delegate?.contentChanged(inRowAt: idxPath)
         delegate?.showSuggestions(forRowAt: idxPath)
-        suggestionsVM?.updateSuggestion(searchString: newText.cleanAttachments)
+        suggestionsVM?.updateSuggestion(searchString: newText.cleanAttachments, addedIdentities: addedIdentities)
     }
 
     // MARK: - Add Contact
