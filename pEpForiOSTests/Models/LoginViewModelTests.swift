@@ -49,8 +49,8 @@ class LoginViewModelTests: XCTestCase {
         var serverSMTP: String?
         var portSMTP: UInt16 = 587
         var transportSMTP: ConnectionTransport = .startTLS
-        var isAutomaticallyTrustedImapServer = false
-        var isManuallyTrustedImapServer = false
+        var isAutomaticallyTrustedImapServer = true
+        var isManuallyTrustedImapServer = true
         var verifiableAccountDelegate: VerifiableAccountDelegate?
 
         var keySyncEnable = false

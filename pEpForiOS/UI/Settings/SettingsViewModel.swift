@@ -246,7 +246,6 @@ extension SettingsViewModel {
             } else {
                 rows.append(generateNavigationRow(type: .defaultAccount, isDangerous: false))
                 rows.append(generateNavigationRow(type: .credits, isDangerous: false))
-                rows.append(generateNavigationRow(type: .trustedServer, isDangerous: false))
                 rows.append(generateNavigationRow(type: .pgpKeyImport, isDangerous: false))
                 rows.append(generateSwitchRow(type: .unsecureReplyWarningEnabled,
                                               isDangerous: false,

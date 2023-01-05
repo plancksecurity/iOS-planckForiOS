@@ -165,7 +165,7 @@ final class LoginViewModel {
             verifiableAccount.serverSMTP = outgoingServer.hostname
             verifiableAccount.portSMTP = UInt16(outgoingServer.port)
             verifiableAccount.transportSMTP = smtpTransport
-            verifiableAccount.isAutomaticallyTrustedImapServer = false
+            verifiableAccount.isAutomaticallyTrustedImapServer = true
 
             checkIfServerShouldBeConsideredATrustedServer()
         }
@@ -218,7 +218,7 @@ extension LoginViewModel {
             qualifyServerIsLocalService.delegate = self
             qualifyServerIsLocalService.qualify(serverName: imapServer)
         } else {
-            markServerAsTrusted(trusted: false)
+            markServerAsTrusted(trusted: true)
         }
     }
 
