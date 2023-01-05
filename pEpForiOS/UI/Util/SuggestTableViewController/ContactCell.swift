@@ -18,12 +18,10 @@ import MessageModel
 final class ContactCell: UITableViewCell {
     static let reuseId = "ContactCell"
 
-    @IBOutlet weak var pEpStatusImageView: UIImageView!
     @IBOutlet weak var nameLabel: UILabel!
     @IBOutlet weak var emailLabel: UILabel!
 
     override func awakeFromNib() {
-        pEpStatusImageView.image = nil
         super.awakeFromNib()
     }
 
@@ -35,7 +33,6 @@ final class ContactCell: UITableViewCell {
 
     override func prepareForReuse() {
         super.prepareForReuse()
-        pEpStatusImageView.image = nil
         nameLabel.text = nil
         emailLabel.text = nil
     }
