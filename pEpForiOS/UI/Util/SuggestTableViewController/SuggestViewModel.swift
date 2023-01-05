@@ -168,12 +168,12 @@ class SuggestViewModel {
             me.session.performAndWait {
                 var contacts = AddressBook.searchContacts(searchterm: searchString)
                 contacts = contacts.filter { contact in
-                    guard let contactAddreses = contact.emailAddresses.compactMap({ $0.value }) as? [String] else {
+                    guard let contactAddreses = contact.emailAddresses.compactMap({ $0.value.lowercased }) as? [String] else {
                         return false
                     }
                     var shouldAddContact = true
                     addedAddresses.forEach { address in
-                        if contactAddreses.contains(address) {
+                        if contactAddreses.contains(address.lowercased()) {
                             shouldAddContact = false
                         }
                     }
