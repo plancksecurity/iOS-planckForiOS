@@ -63,7 +63,7 @@ class EmailDetailViewModel: EmailDisplayViewModel {
                 Log.shared.error("Message not found")
                 return nil
             }
-            return TrustManagementViewModel(message: message, pEpProtectionModifyable: false, delegate: self, ratingDelegate: self)
+            return TrustManagementViewModel(message: message, pEpProtectionModifyable: false)
         }
     }
 
@@ -420,23 +420,5 @@ extension EmailDetailViewModel: QueryResultsIndexPathRowDelegate {
            insertedIndexPath.row <= currentlyShownIndex.row {
             updateInsertedOrRemovedMessagesBeforeCurrentlyShownMessage = true
         }
-    }
-}
-
-extension EmailDetailViewModel: TrustManagementViewModelDelegate {
-
-    func reload() {
-        delegate?.reloadData(viewModel: self)
-    }
-
-    /// Called when data changed.
-    func dataChanged(forRowAt indexPath: IndexPath) {
-        delegate?.reloadData(viewModel: self)
-    }
-}
-
-extension EmailDetailViewModel: TrustmanagementRatingChangedDelegate {
-    func ratingMayHaveChanged() {
-        delegate?.reloadData(viewModel: self)
     }
 }
