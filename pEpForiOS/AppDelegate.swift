@@ -56,6 +56,12 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     }
 
     private func setupServices() {
+        if !MDMUtil.isEnabled() {
+            EchoProtocolUtil().enableEchoProtocol(enabled: false)
+            MediaKeysUtil()
+        }
+
+
         messageModelService = MessageModelService(errorPropagator: errorPropagator,
                                                   cnContactsAccessPermissionProvider: AppSettings.shared,
                                                   keySyncServiceHandshakeHandler: KeySyncHandshakeService(),
