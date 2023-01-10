@@ -165,7 +165,7 @@ final class LoginViewModel {
             verifiableAccount.serverSMTP = outgoingServer.hostname
             verifiableAccount.portSMTP = UInt16(outgoingServer.port)
             verifiableAccount.transportSMTP = smtpTransport
-            verifiableAccount.isAutomaticallyTrustedImapServer = true
+            verifiableAccount.isAutomaticallyTrustedImapServer = false
 
             checkIfServerShouldBeConsideredATrustedServer()
         }
