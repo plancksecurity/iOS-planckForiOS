@@ -392,15 +392,7 @@ extension LoginViewController {
     }
 
     private func configureAppearance() {
-        if #available(iOS 13, *) {
-            Appearance.customiseForLogin(viewController: self)
-        } else {
-            navigationItem.leftBarButtonItem?.tintColor = UIColor.white
-            navigationController?.navigationBar.setBackgroundImage(UIImage(), for: .default)
-            navigationController?.navigationBar.shadowImage = UIImage()
-            navigationController?.navigationBar.isTranslucent = true
-            navigationController?.navigationBar.backgroundColor = UIColor.clear
-        }
+        Appearance.customiseForLogin(viewController: self)
         navigationItem.leftBarButtonItem?.tintColor = UIColor.white
         
     }
@@ -642,10 +634,8 @@ extension LoginViewController {
             return
         }
 
-        if #available(iOS 13.0, *) {
-            if thePreviousTraitCollection.hasDifferentColorAppearance(comparedTo: traitCollection) {
-                view.layoutIfNeeded()
-            }
+        if thePreviousTraitCollection.hasDifferentColorAppearance(comparedTo: traitCollection) {
+            view.layoutIfNeeded()
         }
     }
 }

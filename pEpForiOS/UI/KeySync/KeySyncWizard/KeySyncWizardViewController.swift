@@ -24,11 +24,7 @@ final class KeySyncWizardViewController: PEPPageViewControllerBase {
     private(set) var isNewGroup = true
 
     private var style: UIColor = {
-        if #available(iOS 13.0, *) {
-            return .label
-        } else {
-            return .pEpTextDark
-        }
+        return .label
     }()
 
     // MARK: - Life Cycle
@@ -325,10 +321,8 @@ extension KeySyncWizardViewController {
             return
         }
 
-        if #available(iOS 13.0, *) {
-            if thePreviousTraitCollection.hasDifferentColorAppearance(comparedTo: traitCollection) {
-                view.layoutIfNeeded()
-            }
+        if thePreviousTraitCollection.hasDifferentColorAppearance(comparedTo: traitCollection) {
+            view.layoutIfNeeded()
         }
     }
 }

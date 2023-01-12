@@ -121,11 +121,9 @@ extension CalendarEventBannerViewController {
             return
         }
 
-        if #available(iOS 13.0, *) {
-            if thePreviousTraitCollection.hasDifferentColorAppearance(comparedTo: traitCollection) {
-                setup()
-                view.layoutIfNeeded()
-            }
+        if thePreviousTraitCollection.hasDifferentColorAppearance(comparedTo: traitCollection) {
+            setup()
+            view.layoutIfNeeded()
         }
     }
 }
@@ -140,19 +138,14 @@ extension CalendarEventBannerViewController: UINavigationControllerDelegate {
         /// The background color of the cells that are dequeued again changes  for no reason.
         /// This workaround prevents a wrong layout.
         if let tableViewController = viewController as? UITableViewController {
-            if #available(iOS 13.0, *) {
-                if UITraitCollection.current.userInterfaceStyle == .light {
-                    tableViewController.view.backgroundColor = UIColor.white
-                    tableViewController.tableView.backgroundColor = UIColor.white
-                } else {
-                    tableViewController.view.backgroundColor = UIColor.secondarySystemBackground
-                    tableViewController.tableView.backgroundColor = UIColor.secondarySystemBackground
-                }
-            } else {
+            if UITraitCollection.current.userInterfaceStyle == .light {
                 tableViewController.view.backgroundColor = UIColor.white
                 tableViewController.tableView.backgroundColor = UIColor.white
+            } else {
+                tableViewController.view.backgroundColor = UIColor.secondarySystemBackground
+                tableViewController.tableView.backgroundColor = UIColor.secondarySystemBackground
             }
-            tableViewController.tableView.backgroundView = .none	
+            tableViewController.tableView.backgroundView = .none
         }
     }
 }
@@ -162,13 +155,9 @@ extension CalendarEventBannerViewController: UINavigationControllerDelegate {
 extension CalendarEventBannerViewController {
 
     private func setup() {
-        if #available(iOS 13.0, *) {
-            if UITraitCollection.current.userInterfaceStyle == .dark {
-                view.backgroundColor = UIColor.pEpBackgroundGray2
-                titleLabel.textColor = .white
-            } else {
-                view.backgroundColor = UIColor.black
-            }
+        if UITraitCollection.current.userInterfaceStyle == .dark {
+            view.backgroundColor = UIColor.pEpBackgroundGray2
+            titleLabel.textColor = .white
         } else {
             view.backgroundColor = UIColor.black
         }

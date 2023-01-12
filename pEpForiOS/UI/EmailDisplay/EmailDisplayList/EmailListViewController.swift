@@ -209,11 +209,7 @@ final class EmailListViewController: UIViewController {
             //Valid case: we might be in a local folder.
             return
         }
-        if #available(iOS 13.0, *) {
-            if UITraitCollection.current.userInterfaceStyle == .light {
-                refreshController.tintColor = UIColor.pEpGreen
-            }
-        } else {
+        if UITraitCollection.current.userInterfaceStyle == .light {
             refreshController.tintColor = UIColor.pEpGreen
         }
 
@@ -1468,17 +1464,15 @@ extension EmailListViewController {
             tableView.reloadData()
         }
 
-        if #available(iOS 13.0, *) {
-            if thePreviousTraitCollection.hasDifferentColorAppearance(comparedTo: traitCollection) {
-                guard let vm = viewModel else {
-                    Log.shared.errorAndCrash("VM not found")
-                    return
-                }
-                /// Clear the cache and get the correct version of the avatar..
-                vm.freeMemory()
-                setSeparator()
-                tableView.reloadData()
+        if thePreviousTraitCollection.hasDifferentColorAppearance(comparedTo: traitCollection) {
+            guard let vm = viewModel else {
+                Log.shared.errorAndCrash("VM not found")
+                return
             }
+            /// Clear the cache and get the correct version of the avatar..
+            vm.freeMemory()
+            setSeparator()
+            tableView.reloadData()
         }
     }
 }
@@ -1581,14 +1575,10 @@ extension EmailListViewController {
     }
 
     private func setSeparator() {
-        if #available(iOS 13.0, *) {
-            if UITraitCollection.current.userInterfaceStyle == .dark {
-                tableView.separatorColor = UIColor.pEpSeparator
-            } else {
-                tableView.separatorColor = .opaqueSeparator
-            }
+        if UITraitCollection.current.userInterfaceStyle == .dark {
+            tableView.separatorColor = UIColor.pEpSeparator
         } else {
-            // Fallback on earlier versions
+            tableView.separatorColor = .opaqueSeparator
         }
     }
 }

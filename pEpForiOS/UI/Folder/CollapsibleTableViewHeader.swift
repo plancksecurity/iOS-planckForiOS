@@ -72,15 +72,7 @@ class CollapsibleTableViewHeader: UITableViewHeaderFooterView {
         contentView.addSubview(rightStackView)
         contentView.addSubview(labelStackView)
         contentView.addSubview(sectionButton)
-
-        if #available(iOS 13.0, *) {
-            tintColor = UIColor.systemBackground
-        } else {
-            backgroundColor = UIColor.white
-            contentView.backgroundColor = UIColor.white
-            tintColor = UIColor.white
-        }
-
+        tintColor = UIColor.systemBackground
         autolayout()
     }
 
