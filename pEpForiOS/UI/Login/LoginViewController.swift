@@ -565,7 +565,6 @@ extension LoginViewController {
         } else {
             LoadingInterface.removeLoadingInterface()
         }
-
         navigationController?.navigationBar.isHidden = false
         navigationItem.hidesBackButton = false
 
