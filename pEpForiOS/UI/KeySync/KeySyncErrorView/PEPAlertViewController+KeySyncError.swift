@@ -37,11 +37,7 @@ extension PEPAlertViewController {
         })
         let errorTryAaginTitle = NSLocalizedString("Try Again", comment: "keySyncWizard error view Try Again button title")
         var style: UIColor
-        if #available(iOS 13.0, *) {
-            style = .label
-        } else {
-            style = .pEpTextDark
-        }
+        style = .label
         let errorTryAgainAction = PEPUIAlertAction(title: errorTryAaginTitle,
                                                    style: style,
                                                    handler: { alert in

@@ -106,13 +106,8 @@ final class EmailListViewCell: PEPSwipeTableViewCell, MessageViewModelConfigurab
         subjectLabel.text = atLeastOneSpace(possiblyEmptyString: viewModel.subject)
         dateLabel.font = UIFont.pepFont(style: dateFontStyle, weight: viewModel.isSeen ? seenFontWeight : unseenFontWeight)
 
-
         if !viewModel.isSeen {
-            if #available(iOS 13.0, *) {
-                contactImageView.applyBorder(color: .label)
-            } else {
-                contactImageView.applyBorder(color: UIColor.pEpBlack)
-            }
+            contactImageView.applyBorder(color: .label)
         } else {
             contactImageView.removeBorder()
         }
@@ -243,10 +238,8 @@ extension EmailListViewCell {
 
     private func setBackgroundSelectionColor() {
         originalBackgroundSelectionColor = UIColor.pEpGreyBackground
-        if #available(iOS 13.0, *) {
-            if UITraitCollection.current.userInterfaceStyle == .dark {
-                originalBackgroundSelectionColor = UIColor.systemGray5
-            }
+        if UITraitCollection.current.userInterfaceStyle == .dark {
+            originalBackgroundSelectionColor = UIColor.systemGray5
         }
     }
 
@@ -257,10 +250,8 @@ extension EmailListViewCell {
             return
         }
 
-        if #available(iOS 13.0, *) {
-            if thePreviousTraitCollection.hasDifferentColorAppearance(comparedTo: traitCollection) {
-                setBackgroundSelectionColor()
-            }
+        if thePreviousTraitCollection.hasDifferentColorAppearance(comparedTo: traitCollection) {
+            setBackgroundSelectionColor()
         }
     }
 }

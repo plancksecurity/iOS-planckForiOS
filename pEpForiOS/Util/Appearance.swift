@@ -18,16 +18,11 @@ class Appearance {
         // Still needed for iOS 13 for button bar items.
         UINavigationBar.appearance().tintColor = .pEpGreen
 
-        if #available(iOS 13, *) {
-            // iOS 13 ignores the navigation bar tint color in some cases,
-            // therefore we use the new appearance API to customise explicitly.
-            let normalNavigationBar = UINavigationBar.appearance()
-            normalNavigationBar.standardAppearance = navigationBarAppearanceDefault(color: UIColor.label)
-            normalNavigationBar.scrollEdgeAppearance = normalNavigationBar.standardAppearance
-        } else {
-            UINavigationBar.appearance().backgroundColor = .white
-            UINavigationBar.appearance().titleTextAttributes = titleTextAttributes()
-        }
+        // iOS 13 ignores the navigation bar tint color in some cases,
+        // therefore we use the new appearance API to customise explicitly.
+        let normalNavigationBar = UINavigationBar.appearance()
+        normalNavigationBar.standardAppearance = navigationBarAppearanceDefault(color: UIColor.label)
+        normalNavigationBar.scrollEdgeAppearance = normalNavigationBar.standardAppearance
 
         UIToolbar.appearance().backgroundColor = .pEpGreen
         UIToolbar.appearance().barTintColor = .pEpGreen
@@ -45,34 +40,20 @@ class Appearance {
 
         UISearchBar.appearance().barTintColor = .white
         UISearchBar.appearance().tintColor = .pEpGreen
-        if #available(iOS 13, *) {
-            // The navigation bar doesn't react to setting the tint color,
-            // so better do nothing there at all.
-        } else {
-            UINavigationBar.appearance().barTintColor = .pEpNavigation
-            UISearchBar.appearance().backgroundColor = .pEpNavigation
-        }
 
         setAlertControllerTintColor(.pEpGreen)
 
         Appearance.configureSelectedBackgroundViewForPep(tableViewCell: UITableViewCell.appearance())
 
-        if #available(iOS 13, *) {
-            UITextField.appearance(whenContainedInInstancesOf: [UISearchBar.self]).backgroundColor = UIColor.systemBackground
-            UITextField.appearance(whenContainedInInstancesOf: [UISearchBar.self]).tintColor = UIColor.pEpGreen
-            UISearchBar.appearance().backgroundColor = UIColor.systemBackground
-        }
+        UITextField.appearance(whenContainedInInstancesOf: [UISearchBar.self]).backgroundColor = UIColor.systemBackground
+        UITextField.appearance(whenContainedInInstancesOf: [UISearchBar.self]).tintColor = UIColor.pEpGreen
+        UISearchBar.appearance().backgroundColor = UIColor.systemBackground
     }
 
     /// Configure the background view of the table view cells.
     /// - Parameter tableViewCell: The cell to set the background view.
     public static func configureSelectedBackgroundViewForPep(tableViewCell: UITableViewCell) {
-        var backgroundColor: UIColor
-        if #available(iOS 13.0, *) {
-             backgroundColor = UITraitCollection.current.userInterfaceStyle == .dark ? UIColor.systemGray5 : UIColor.pEpGreen.withAlphaComponent(0.2)
-        } else {
-            backgroundColor = UIColor.pEpGreen.withAlphaComponent(0.2)
-        }
+        let backgroundColor = UITraitCollection.current.userInterfaceStyle == .dark ? UIColor.systemGray5 : UIColor.pEpGreen.withAlphaComponent(0.2)
         let tableViewCellSelectedbackgroundView = UIView()
         tableViewCellSelectedbackgroundView.backgroundColor = backgroundColor
         tableViewCell.selectedBackgroundView = tableViewCellSelectedbackgroundView
@@ -80,7 +61,6 @@ class Appearance {
 
     /// Customises a tutorial view controller's navigation bar appearance.
     /// - Parameter viewController: UIViewController: The view controller to customize.
-    @available(iOS 13, *)
     static public func customiseForTutorial(viewController: UIViewController) {
         customiseNavigationBar(viewController: viewController) { appearance in
             customiseForTutorial(navigationBarAppearance: appearance)
@@ -93,7 +73,6 @@ class Appearance {
 
     /// Customises a login view controller's navigation bar appearance.
     /// - Parameter viewController: UIViewController: The view controller to customize.
-    @available(iOS 13, *)
     public static func customiseForLogin(viewController: UIViewController) {
         customiseNavigationBar(viewController: viewController) { appearance in
             customiseForLogin(navigationBarAppearance: appearance)
@@ -115,10 +94,7 @@ extension Appearance {
         return [.foregroundColor: UIColor.black]
     }
 
-    // MARK: - iOS 13
-
     /// Default appearance for navigation bars (iOS 13 and upwards).
-    @available(iOS 13, *)
     static private func navigationBarAppearanceDefault(color: UIColor) -> UINavigationBarAppearance {
         let appearance = UINavigationBarAppearance()
         appearance.configureWithOpaqueBackground()
@@ -139,7 +115,6 @@ extension Appearance {
 
     /// Customises the buttons of a navigation bar appearance, for the tutorial and login view.
     /// - Parameter navigationBarAppearance: The appearance to customize.
-    @available(iOS 13, *)
     static private func customiseButtons(navigationBarAppearance: UINavigationBarAppearance) {
         let titleTextAttributes: [NSAttributedString.Key : Any] = [.foregroundColor: UIColor.white]
         navigationBarAppearance.buttonAppearance.normal.titleTextAttributes = titleTextAttributes
@@ -151,7 +126,6 @@ extension Appearance {
 
     /// Customises a navigation bar appearance for the tutorial view.
     /// - Parameter navigationBarAppearance: The appearance to customize.
-    @available(iOS 13, *)
     static private func customiseForTutorial(navigationBarAppearance: UINavigationBarAppearance) {
         navigationBarAppearance.configureWithOpaqueBackground()
         navigationBarAppearance.backgroundColor = UIColor.pEpGreen
@@ -160,7 +134,6 @@ extension Appearance {
 
     /// Customises a navigation bar appearance for the login view.
     /// - Parameter navigationBarAppearance: The appearance to customize.
-    @available(iOS 13, *)
     static private func customiseForLogin(navigationBarAppearance: UINavigationBarAppearance) {
         navigationBarAppearance.configureWithTransparentBackground()
         navigationBarAppearance.backgroundColor = UIColor.clear
@@ -172,7 +145,6 @@ extension Appearance {
     /// Helper for changing the appearance of a navigation bar containing a view controller.
     /// - Parameter viewController: The view controller that is embedded in a navigation controller.
     /// - Parameter appearanceModifier: A block that will modify the navigation bar appearance.
-    @available(iOS 13, *)
     static private func customiseNavigationBar(viewController: UIViewController,
                                                appearanceModifier: (UINavigationBarAppearance) -> Void) {
         if let navigationController = viewController.navigationController {

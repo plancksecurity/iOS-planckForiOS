@@ -50,16 +50,7 @@ final class AccountTypeSelectorViewController: UIViewController {
     }
 
     private func configureAppearance() {
-        if #available(iOS 13, *) {
-            Appearance.customiseForLogin(viewController: self)
-        } else {
-            self.navigationItem.leftBarButtonItem?.tintColor = .white
-            self.navigationController?.navigationBar.setBackgroundImage(UIImage(), for: .default)
-            self.navigationController?.navigationBar.shadowImage = UIImage()
-            self.navigationController?.navigationBar.isTranslucent = true
-            self.navigationController?.navigationBar.backgroundColor = UIColor.clear
-            self.navigationController?.navigationBar.tintColor = UIColor.white
-        }
+        Appearance.customiseForLogin(viewController: self)
     }
 
     private func configureView() {

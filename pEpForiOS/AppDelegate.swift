@@ -102,19 +102,14 @@ extension AppDelegate {
 
         Log.shared.logDebugInfo()
 
-        if #available(iOS 13.0, *) {
-            Log.shared.info("BGAppRefreshTask: Registering BGTaskScheduler.shared.register(forTaskWithIdentifier: ...")
-            BGTaskScheduler.shared.register(forTaskWithIdentifier: Constants.appRefreshTaskBackgroundtaskBackgroundfetchSchedulerid,
-                                            using: nil) { [weak self] task in
-                guard let me = self else {
-                    Log.shared.errorAndCrash("BGAppRefreshTask: Lost myself")
-                    return
-                }
-                me.handleAppRefreshTask(task as! BGAppRefreshTask)
+        Log.shared.info("BGAppRefreshTask: Registering BGTaskScheduler.shared.register(forTaskWithIdentifier: ...")
+        BGTaskScheduler.shared.register(forTaskWithIdentifier: Constants.appRefreshTaskBackgroundtaskBackgroundfetchSchedulerid,
+                                        using: nil) { [weak self] task in
+            guard let me = self else {
+                Log.shared.errorAndCrash("BGAppRefreshTask: Lost myself")
+                return
             }
-        } else {
-            Log.shared.info("BGAppRefreshTask: we are < iOS13. Fallback to BackgroundFetch ...")
-            application.setMinimumBackgroundFetchInterval(60.0 * 2)
+            me.handleAppRefreshTask(task as! BGAppRefreshTask)
         }
 
         Appearance.setup()
@@ -158,9 +153,7 @@ extension AppDelegate {
         messageModelService?.finish()
         // Make sure we do not permanently disable auto locking
         UIApplication.shared.enableAutoLockingDevice()
-        if #available(iOS 13.0, *) {
-            scheduleAppRefresh()
-        }
+        scheduleAppRefresh()
     }
 
     /// Called as part of the transition from the background to the inactive state; here you can
@@ -193,44 +186,19 @@ extension AppDelegate {
     }
 
     func application(_ application: UIApplication, performFetchWithCompletionHandler
-                        completionHandler: @escaping (UIBackgroundFetchResult) -> Void) {
-        if #available(iOS 13.0, *) {
-            // According to Apple docs:
-            //
-            // "Adding a BGTaskSchedulerPermittedIdentifiers key to the
-            // Info.plist disables application(_:performFetchWithCompletionHandler:) and
-            // setMinimumBackgroundFetchInterval(_:) in iOS 13 and later."
-            //
-            // This method is called anyway by the OS. Which is a contradiction imo.
-            Log.shared.warn("BGAppRefreshTask: Should not be called on iOS>=13. Should use BGTaskScheduler defined method instead")
-            // Do nothing. We use different API (BGTaskScheduler) for iOS13 and up.
-            completionHandler(.failed)
-        } else {
-            Log.shared.info("BGAppRefreshTask: we are < iOS13. Fallback to BackgroundFetch ...")
-            guard let messageModelService = messageModelService else {
-                Log.shared.error("no networkService")
-                completionHandler(.failed)
-                return
-            }
-
-            messageModelService.checkForNewMails_old() {[unowned self] (numMails: Int?) in
-                var result = UIBackgroundFetchResult.failed
-                defer { completionHandler(result)}
-                guard let numMails = numMails else {
-                    result = .failed
-                    return
-                }
-                switch numMails {
-                case 0:
-                    result = .noData
-                default:
-                    self.informUser(numNewMails: numMails) {
-                        result = .newData
-                    }
-                }
-            }
-        }
+                     completionHandler: @escaping (UIBackgroundFetchResult) -> Void) {
+        // According to Apple docs:
+        //
+        // "Adding a BGTaskSchedulerPermittedIdentifiers key to the
+        // Info.plist disables application(_:performFetchWithCompletionHandler:) and
+        // setMinimumBackgroundFetchInterval(_:) in iOS 13 and later."
+        //
+        // This method is called anyway by the OS. Which is a contradiction imo.
+        Log.shared.warn("BGAppRefreshTask: Should not be called on iOS>=13. Should use BGTaskScheduler defined method instead")
+        // Do nothing. We use different API (BGTaskScheduler) for iOS13 and up.
+        completionHandler(.failed)
     }
+
 
     func application(_ app: UIApplication,
                      open url: URL,
@@ -289,7 +257,6 @@ extension AppDelegate {
         }
     }
 
-    @available(iOS 13, *)
     func scheduleAppRefresh() {
         let request = BGAppRefreshTaskRequest(identifier: Constants.appRefreshTaskBackgroundtaskBackgroundfetchSchedulerid)
         request.earliestBeginDate = Date(timeIntervalSinceNow: 60.0 * 2)

@@ -40,14 +40,10 @@ final class PEPAlertViewController: UIViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        if #available(iOS 13.0, *) {
-            if UITraitCollection.current.userInterfaceStyle == .dark {
-                keyInputView.backgroundColor = .secondarySystemBackground
-            } else {
-                keyInputView.backgroundColor = .systemBackground
-            }
+        if UITraitCollection.current.userInterfaceStyle == .dark {
+            keyInputView.backgroundColor = .secondarySystemBackground
         } else {
-            keyInputView.backgroundColor = .white
+            keyInputView.backgroundColor = .systemBackground
         }
         setUp(title: titleString,
               paintPEPInTitle: paintPEPInTitle,
@@ -114,22 +110,14 @@ extension PEPAlertViewController {
         case .warn:
             return .pEpRed
         case .undo:
-            if #available(iOS 13.0, *) {
-                return .label
-            } else {
-                return .pEpBlack
-            }
+            return .label
         }
     }
 
     public var secondaryColor: UIColor {
         switch alertStyle {
         case .default, .warn, .undo:
-            if #available(iOS 13.0, *) {
-                return .secondaryLabel
-            } else {
-                return .pEpBlack
-            }
+            return .secondaryLabel
         }
     }
 }
@@ -198,14 +186,10 @@ extension PEPAlertViewController {
             button.setTitleColor(action.style, for: .normal)
             setUp(alertButton: button, style: viewModel.alertType)
 
-            if #available(iOS 13.0, *) {
-                if UITraitCollection.current.userInterfaceStyle == .dark {
-                    button.backgroundColor = .secondarySystemBackground
-                } else {
-                    button.backgroundColor = .systemBackground
-                }
+            if UITraitCollection.current.userInterfaceStyle == .dark {
+                button.backgroundColor = .secondarySystemBackground
             } else {
-                button.backgroundColor = .white
+                button.backgroundColor = .systemBackground
             }
             button.tag = viewModel.alertActionsCount
             button.addTarget(self, action: #selector(didPress(sender:)), for: .touchUpInside)
@@ -226,10 +210,8 @@ extension PEPAlertViewController {
             return
         }
 
-        if #available(iOS 13.0, *) {
-            if thePreviousTraitCollection.hasDifferentColorAppearance(comparedTo: traitCollection) {
-                view.layoutIfNeeded()
-            }
+        if thePreviousTraitCollection.hasDifferentColorAppearance(comparedTo: traitCollection) {
+            view.layoutIfNeeded()
         }
     }
 }

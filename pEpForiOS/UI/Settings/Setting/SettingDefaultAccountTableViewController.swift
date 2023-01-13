@@ -20,11 +20,7 @@ class SettingDefaultAccountTableViewController: UITableViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        if #available(iOS 13.0, *) {
-            tableView.backgroundColor = .systemGroupedBackground
-        } else {
-            tableView.backgroundColor = .groupTableViewBackground
-        }
+        tableView.backgroundColor = .systemGroupedBackground
     }
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)

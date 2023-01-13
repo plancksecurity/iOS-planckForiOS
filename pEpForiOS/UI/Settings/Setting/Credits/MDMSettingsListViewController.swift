@@ -15,11 +15,7 @@ class MDMSettingsListViewController: PEPWebViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        if #available(iOS 13.0, *) {
-            webView.backgroundColor = UIColor.systemBackground
-        } else {
-            webView.backgroundColor = .white
-        }
+        webView.backgroundColor = UIColor.systemBackground
         title = NSLocalizedString("Current Settings from MDM", comment: "Current Settings from MDM view title")
         webView.loadHTMLString(html(), baseURL: nil)
         setupShareButton()
@@ -31,12 +27,10 @@ class MDMSettingsListViewController: PEPWebViewController {
             // Valid case: optional value from Apple.
             return
         }
-        if #available(iOS 13.0, *) {
-            if thePreviousTraitCollection.hasDifferentColorAppearance(comparedTo: traitCollection) {
-                // As the html needs to change, we don't reload the existing html.
-                // Instead we re-define it and then the load the new one.
-                webView.loadHTMLString(html(), baseURL: nil)
-            }
+        if thePreviousTraitCollection.hasDifferentColorAppearance(comparedTo: traitCollection) {
+            // As the html needs to change, we don't reload the existing html.
+            // Instead we re-define it and then the load the new one.
+            webView.loadHTMLString(html(), baseURL: nil)
         }
     }
 }
@@ -73,13 +67,9 @@ extension MDMSettingsListViewController {
         activityViewController.popoverPresentationController?.permittedArrowDirections = .up
 
         // Pre-configuring activity items
-        if #available(iOS 13.0, *) {
-            activityViewController.activityItemsConfiguration = [
-                UIActivity.ActivityType.message
-            ] as? UIActivityItemsConfigurationReading
-        } else {
-            // Fallback on earlier versions
-        }
+        activityViewController.activityItemsConfiguration = [
+            UIActivity.ActivityType.message
+        ] as? UIActivityItemsConfigurationReading
 
         activityViewController.excludedActivityTypes = [
             UIActivity.ActivityType.postToWeibo,
@@ -94,23 +84,15 @@ extension MDMSettingsListViewController {
             UIActivity.ActivityType.postToTwitter
         ]
 
-        if #available(iOS 13.0, *) {
-            activityViewController.isModalInPresentation = true
-        } else {
-            // Fallback on earlier versions
-        }
+        activityViewController.isModalInPresentation = true
         return activityViewController
     }
 
     private func html() -> String {
         let json = MDMDeployment().mdmPrettyPrintedDictionary()
-        var backgroundColor = UIColor.white
-        var fontColor = UIColor.pEpGray
+        let backgroundColor = UIColor.systemBackground
+        let fontColor = UIColor.label
 
-        if #available(iOS 13.0, *) {
-            backgroundColor = UIColor.systemBackground
-            fontColor = UIColor.label
-        }
         let fontSize = "18"
         let fontFamily = "Helvetica Neue"
         let fontWeight = "500"

@@ -15,11 +15,7 @@ class CreditsWebViewController: PEPWebViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        if #available(iOS 13.0, *) {
-            webView.backgroundColor = UIColor.systemBackground
-        } else {
-            webView.backgroundColor = .white
-        }
+        webView.backgroundColor = UIColor.systemBackground
         webView.loadHTMLString(html(), baseURL: nil)
         title = NSLocalizedString("Credits", comment: "Credits view title")
     }
@@ -30,12 +26,10 @@ class CreditsWebViewController: PEPWebViewController {
             // Valid case: optional value from Apple.
             return
         }
-        if #available(iOS 13.0, *) {
-            if thePreviousTraitCollection.hasDifferentColorAppearance(comparedTo: traitCollection) {
-                // As the html needs to change, we don't reload the existing html.
-                // Instead we re-define it and then the load the new one.
-                webView.loadHTMLString(html(), baseURL: nil)
-            }
+        if thePreviousTraitCollection.hasDifferentColorAppearance(comparedTo: traitCollection) {
+            // As the html needs to change, we don't reload the existing html.
+            // Instead we re-define it and then the load the new one.
+            webView.loadHTMLString(html(), baseURL: nil)
         }
     }
 
@@ -43,13 +37,8 @@ class CreditsWebViewController: PEPWebViewController {
 
     private func html() -> String {
         let appVersion = InfoPlist.versionDisplayString() ?? "666"
-        var backgroundColor = UIColor.white
-        var fontColor = UIColor.pEpGray
-
-        if #available(iOS 13.0, *) {
-            backgroundColor = UIColor.systemBackground
-            fontColor = UIColor.label
-        }
+        let backgroundColor = UIColor.systemBackground
+        let fontColor = UIColor.label
         let fontSize = "18"
         let fontFamily = "Helvetica Neue"
         let fontWeight = "500"
@@ -127,10 +116,7 @@ class CreditsWebViewController: PEPWebViewController {
     }
 
     private func eula() -> String {
-        var fontColor = UIColor.black
-        if #available(iOS 13.0, *) {
-            fontColor = UIColor.label
-        }
+        var fontColor = UIColor.label
 
         let eula =
             """
@@ -188,14 +174,8 @@ class CreditsWebViewController: PEPWebViewController {
     }
 
     private func p(_ text: String) -> String {
-        var fontColor = UIColor.black
-        if #available(iOS 13.0, *) {
-            fontColor = UIColor.label
-        } else {
-            // Nothing to do
-        }
         return """
-            <p style="margin-bottom: 0.14in; line-height: 100%;"><span style="color: \(fontColor.toHex()); font-family: Times New Roman, serif; font-size: x-large;" lang="en">
+            <p style="margin-bottom: 0.14in; line-height: 100%;"><span style="color: \(UIColor.label.toHex()); font-family: Times New Roman, serif; font-size: x-large;" lang="en">
                 \(text)
             </span></p>
         """

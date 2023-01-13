@@ -77,11 +77,7 @@ extension SettingsTableViewController {
         title = Localized.navigationTitle
         tableView.register(PEPHeaderView.self,
                            forHeaderFooterViewReuseIdentifier: PEPHeaderView.reuseIdentifier)
-        if #available(iOS 13.0, *) {
-            view.backgroundColor = UIColor.systemGroupedBackground
-        } else {
-            view.backgroundColor = .groupTableViewBackground
-        }
+        view.backgroundColor = UIColor.systemGroupedBackground
     }
     /// Prepares and returns the swipe tableview cell, with the corresponding color and title.
     /// - Parameters:
@@ -518,9 +514,7 @@ extension SettingsTableViewController {
                                                           paintPEPInTitle: false,
                                                           viewModel: PEPAlertViewModel(alertType: .pEpSyncWizard))
         var style: UIColor = .pEpDarkText
-        if #available(iOS 13.0, *) {
-            style = .label
-        }
+        style = .label
         let cancelActionTitle = NSLocalizedString("Cancel", comment: "keysync alert leave device group cancel")
         let cancelAction = PEPUIAlertAction(title: cancelActionTitle, style: style) { [weak self] _ in
             guard let me = self else {
