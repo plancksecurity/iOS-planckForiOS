@@ -24,7 +24,6 @@ final class EmailListViewCell: PEPSwipeTableViewCell, MessageViewModelConfigurab
 
     @IBOutlet weak var flaggedImageView: UIImageView!
 
-    @IBOutlet weak var ratingImage: UIImageView!
     @IBOutlet weak var attachmentIcon: UIImageView!
     @IBOutlet weak var contactImageView: UIImageView!
 
@@ -139,14 +138,6 @@ final class EmailListViewCell: PEPSwipeTableViewCell, MessageViewModelConfigurab
                 self?.setContactImage(image: image)
             }
         }
-        viewModel.getSecurityBadge { [weak self] (badgeImage) in
-            guard let me = self else {
-                // Valid case. The view might have already been dismissed.
-                // Do nothing ...
-                return
-            }
-            me.setPepRatingImage(image: badgeImage)
-        }
     }
 
     public func clear() {
@@ -179,11 +170,6 @@ extension EmailListViewCell {
     //
     //    }
 
-    private func setPepRatingImage(image: UIImage?) {
-        ratingImage.image = image
-        ratingImage.isHidden = (image == nil)
-    }
-
     private func setContactImage(image: UIImage?) {
         guard image != nil else {
             return
@@ -194,8 +180,6 @@ extension EmailListViewCell {
     private func resetToDefault() {
         clear()
         summaryLabel.text = nil
-        ratingImage.isHidden = true
-        ratingImage.image = nil
         contactImageView.image = EmailListViewCell.emptyContactImage
         tintColor = UIColor.pEpGreen
     }
