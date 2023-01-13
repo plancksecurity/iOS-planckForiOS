@@ -144,6 +144,9 @@ extension SettingsTableViewController {
         let row : SettingsRowProtocol = viewModel.section(for: indexPath.section).rows[indexPath.row]
         dequeuedCell.accessibilityIdentifier = row.title
         switch row.identifier {
+        case .trustedServer:
+            Log.shared.errorAndCrash(message: "Row doesn't match the expected type")
+            return UITableViewCell()
         case .account:
             return prepareSwipeTableViewCell(dequeuedCell, for: row)
         case .resetAccounts,
@@ -152,7 +155,6 @@ extension SettingsTableViewController {
         case .defaultAccount,
              .pgpKeyImport,
              .credits,
-             .trustedServer,
              .extraKeys,
              .tutorial,
              .exportDBs:

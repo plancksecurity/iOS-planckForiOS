@@ -1163,7 +1163,8 @@ extension ComposeViewModel {
                 me.delegate?.showTwoButtonAlert(withTitle: warningTitle,
                                                 message: warningMessage,
                                                 cancelButtonText: cancelButtonText,
-                                                positiveButtonText: positiveButtonText, cancelButtonAction: { completion(false) },
+                                                positiveButtonText: positiveButtonText,
+                                                cancelButtonAction: { completion(false) },
                                                 positiveButtonAction: { completion(true) })
                 }
             }
