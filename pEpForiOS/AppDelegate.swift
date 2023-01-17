@@ -185,7 +185,8 @@ extension AppDelegate {
         UIApplication.shared.enableAutoLockingDevice()
     }
 
-    func application(_ application: UIApplication, performFetchWithCompletionHandler
+    func application(_ application: UIApplication,
+                     performFetchWithCompletionHandler
                      completionHandler: @escaping (UIBackgroundFetchResult) -> Void) {
         // According to Apple docs:
         //
@@ -194,11 +195,31 @@ extension AppDelegate {
         // setMinimumBackgroundFetchInterval(_:) in iOS 13 and later."
         //
         // This method is called anyway by the OS. Which is a contradiction imo.
-        Log.shared.warn("BGAppRefreshTask: Should not be called on iOS>=13. Should use BGTaskScheduler defined method instead")
-        // Do nothing. We use different API (BGTaskScheduler) for iOS13 and up.
-        completionHandler(.failed)
-    }
+        //
+        // Do a background fetch anyways, because, why not?
+        guard let messageModelService = messageModelService else {
+            Log.shared.error("no networkService")
+            completionHandler(.failed)
+            return
+        }
 
+        messageModelService.checkForNewMails_old() {[unowned self] (numMails: Int?) in
+            var result = UIBackgroundFetchResult.failed
+            defer { completionHandler(result)}
+            guard let numMails = numMails else {
+                result = .failed
+                return
+            }
+            switch numMails {
+            case 0:
+                result = .noData
+            default:
+                self.informUser(numNewMails: numMails) {
+                    result = .newData
+                }
+            }
+        }
+    }
 
     func application(_ app: UIApplication,
                      open url: URL,
@@ -220,7 +241,6 @@ extension AppDelegate {
 
 extension AppDelegate {
 
-    @available(iOS 13, *)
     private func handleAppRefreshTask(_ task: BGAppRefreshTask) {
         // Schedule a new refresh task
         scheduleAppRefresh()
