@@ -302,10 +302,8 @@ extension AccountSettingsViewController {
             tableView.reloadData()
         }
 
-        if #available(iOS 13.0, *) {
-            if thePreviousTraitCollection.hasDifferentColorAppearance(comparedTo: traitCollection) {
-                tableView.reloadData()
-            }
+        if thePreviousTraitCollection.hasDifferentColorAppearance(comparedTo: traitCollection) {
+            tableView.reloadData()
         }
     }
 }

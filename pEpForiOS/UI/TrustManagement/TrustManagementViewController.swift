@@ -440,14 +440,11 @@ extension TrustManagementViewController {
             // Valid case: optional value from Apple.
             return
         }
-
-        if #available(iOS 13.0, *) {
-            if thePreviousTraitCollection.hasDifferentColorAppearance(comparedTo: traitCollection) {
-                setBackgroundColor()
-                IdentityImageTool.clearCache()
-                loadView() //Needed to re-load reset button.
-                tableView.reloadData()
-            }
+        if thePreviousTraitCollection.hasDifferentColorAppearance(comparedTo: traitCollection) {
+            setBackgroundColor()
+            IdentityImageTool.clearCache()
+            loadView() //Needed to re-load reset button.
+            tableView.reloadData()
         }
     }
 }
@@ -465,14 +462,10 @@ extension TrustManagementViewController {
     }
 
     private func setBackgroundColor(onView view: UIView) {
-        if #available(iOS 13.0, *) {
-            if UITraitCollection.current.userInterfaceStyle == .light {
-                view.backgroundColor = .white
-            } else {
-                view.backgroundColor = .secondarySystemBackground
-            }
-        } else {
+        if UITraitCollection.current.userInterfaceStyle == .light {
             view.backgroundColor = .white
+        } else {
+            view.backgroundColor = .secondarySystemBackground
         }
     }
 }

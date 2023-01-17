@@ -17,11 +17,7 @@ final class KeySyncHandshakeViewController: UIViewController {
 
     @IBOutlet private weak var trustwordsView: UIView! {
         didSet {
-            if #available(iOS 13.0, *) {
-                trustwordsView.backgroundColor = .systemBackground
-            } else {
-                trustwordsView.backgroundColor = .white
-            }
+            trustwordsView.backgroundColor = .systemBackground
             trustwordsView.layer.borderColor = UIColor.pEpGreyLines.cgColor
             trustwordsView.layer.cornerRadius = 3
             trustwordsView.layer.borderWidth = 1
@@ -31,23 +27,14 @@ final class KeySyncHandshakeViewController: UIViewController {
     @IBOutlet private weak var trustwordsLabel: UILabel! {
         didSet {
             trustwordsLabel.setPEPFont(style: .body, weight: .regular)
-            if #available(iOS 13.0, *) {
-                trustwordsLabel.backgroundColor = .clear
-                trustwordsLabel.textColor = .label
-            } else {
-                trustwordsLabel.backgroundColor = .white
-            }
+            trustwordsLabel.backgroundColor = .clear
+            trustwordsLabel.textColor = .label
         }
     }
 
     @IBOutlet private weak var contentView: KeyInputView! {
         didSet {
-            if #available(iOS 13.0, *) {
-                contentView.backgroundColor = .systemGray6
-            } else {
-                contentView.backgroundColor = .pEpGreyBackground
-            }
-
+            contentView.backgroundColor = .systemGray6
             let languangePicker = UIPickerView()
             languangePicker.dataSource = self
             languangePicker.delegate = self
@@ -76,11 +63,7 @@ final class KeySyncHandshakeViewController: UIViewController {
             accept.setTitleColor(.pEpGreen, for: .normal)
             accept.setTitle(NSLocalizedString("Confirm",
                                               comment: "accept hand shake confirm button"), for: .normal)
-            if #available(iOS 13.0, *) {
-                accept.backgroundColor = .systemGray6
-            } else {
-                accept.backgroundColor = .pEpGreyBackground
-            }
+            accept.backgroundColor = .systemGray6
         }
     }
 
@@ -90,13 +73,7 @@ final class KeySyncHandshakeViewController: UIViewController {
             decline.setTitleColor(.pEpRed, for: .normal)
             decline.setTitle(NSLocalizedString("Reject",
                                                comment: "reject hand shake button"), for: .normal)
-            if #available(iOS 13.0, *) {
-                decline.backgroundColor = .systemGray6
-
-            } else {
-                decline.backgroundColor = .pEpGreyBackground
-            }
-
+            decline.backgroundColor = .systemGray6
         }
     }
 
@@ -106,21 +83,13 @@ final class KeySyncHandshakeViewController: UIViewController {
             cancel.setTitleColor(.pEpGreyText, for: .normal)
             cancel.setTitle(NSLocalizedString("Not Now",
                                               comment: "not now button"), for: .normal)
-            if #available(iOS 13.0, *) {
-                cancel.backgroundColor = .systemGray6
-            } else {
-                cancel.backgroundColor = .pEpGreyBackground
-            }
+            cancel.backgroundColor = .systemGray6
         }
     }
 
     @IBOutlet private weak var buttonsView: UIView! {
         didSet {
-            if #available(iOS 13.0, *) {
-                buttonsView.backgroundColor = UIColor.separator
-            } else {
-                buttonsView.backgroundColor = .pEpGreyButtonLines
-            }
+            buttonsView.backgroundColor = UIColor.separator
         }
     }
 

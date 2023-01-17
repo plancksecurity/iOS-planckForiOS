@@ -610,7 +610,7 @@ extension EmailDetailViewController: UIPopoverPresentationControllerDelegate, UI
 /// designed for usage with UITableView methods like willUpdate & didupdate. As UICollectionView
 /// does not offer those methods but uses batchUpdate we are collecting the update tasks and run
 /// them all in one batchUpdate.
-/// - note: FRC does have callbacks for batchUpdate starting from iOS13. Remove this class and use
+/// - note: FRC does have callbacks for batchUpdate starting from iOS 13. Remove this class and use
 ///         the batchupdate delegte methods of FRC directly after iOS12 support is dropped.
 extension EmailDetailViewController: EmailDetailViewModelDelegate {
 

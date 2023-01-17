@@ -31,13 +31,9 @@ class CalendarEventDescriptionTableViewCell: UITableViewCell {
         self.eventDescriptionLabel.text = cellViewModel.datetimeDescription
 
         //Force to layout to get correct height
-        if #available(iOS 13.0, *) {
-            if UITraitCollection.current.userInterfaceStyle == .dark {
-                contentView.backgroundColor = UIColor.pEpBackgroundGray2
-                eventDescriptionLabel.textColor = UIColor.white
-            } else {
-                contentView.backgroundColor = UIColor.black
-            }
+        if UITraitCollection.current.userInterfaceStyle == .dark {
+            contentView.backgroundColor = UIColor.pEpBackgroundGray2
+            eventDescriptionLabel.textColor = UIColor.white
         } else {
             contentView.backgroundColor = UIColor.black
         }

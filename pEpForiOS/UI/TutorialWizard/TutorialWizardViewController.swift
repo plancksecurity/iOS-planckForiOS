@@ -17,16 +17,12 @@ final class TutorialWizardViewController: PEPPageViewControllerBase {
     override func viewDidLoad() {
         super.viewDidLoad()
         setupView()
-        if #available(iOS 13.0, *) {
-            if UITraitCollection.current.userInterfaceStyle == .dark {
-                view.backgroundColor = .secondarySystemBackground
-            } else {
-                view.backgroundColor = .white
-            }
-            Appearance.customiseForTutorial(viewController: self)
+        if UITraitCollection.current.userInterfaceStyle == .dark {
+            view.backgroundColor = .secondarySystemBackground
         } else {
             view.backgroundColor = .white
         }
+        Appearance.customiseForTutorial(viewController: self)
     }
 
     /// Presents the tutorial wizard
@@ -45,15 +41,10 @@ final class TutorialWizardViewController: PEPPageViewControllerBase {
         tutorialWizard.showDots = true
         tutorialWizard.pageControlTint = .pEpGray
 
-        if #available(iOS 13.0, *) {
-            if UITraitCollection.current.userInterfaceStyle == .dark {
-                tutorialWizard.pageControlTint = .lightGray
-                tutorialWizard.pageControlPageIndicatorColor = .white
-                tutorialWizard.pageControlBackgroundColor = .secondarySystemBackground
-            } else {
-                tutorialWizard.pageControlPageIndicatorColor = .black
-                tutorialWizard.pageControlBackgroundColor = .white
-            }
+        if UITraitCollection.current.userInterfaceStyle == .dark {
+            tutorialWizard.pageControlTint = .lightGray
+            tutorialWizard.pageControlPageIndicatorColor = .white
+            tutorialWizard.pageControlBackgroundColor = .secondarySystemBackground
         } else {
             tutorialWizard.pageControlPageIndicatorColor = .black
             tutorialWizard.pageControlBackgroundColor = .white
@@ -137,21 +128,19 @@ extension TutorialWizardViewController {
             return
         }
 
-        if #available(iOS 13.0, *) {
-            if thePreviousTraitCollection.hasDifferentColorAppearance(comparedTo: traitCollection) {
-                if UITraitCollection.current.userInterfaceStyle == .dark {
-                    pageControlTint = .lightGray
-                    pageControlPageIndicatorColor = .white
-                    pageControlBackgroundColor = .secondarySystemBackground
-                    view.backgroundColor = .secondarySystemBackground
-                } else {
-                    pageControlPageIndicatorColor = .black
-                    pageControlBackgroundColor = .white
-                    view.backgroundColor = .white
-                }
-
-                view.layoutIfNeeded()
+        if thePreviousTraitCollection.hasDifferentColorAppearance(comparedTo: traitCollection) {
+            if UITraitCollection.current.userInterfaceStyle == .dark {
+                pageControlTint = .lightGray
+                pageControlPageIndicatorColor = .white
+                pageControlBackgroundColor = .secondarySystemBackground
+                view.backgroundColor = .secondarySystemBackground
+            } else {
+                pageControlPageIndicatorColor = .black
+                pageControlBackgroundColor = .white
+                view.backgroundColor = .white
             }
+            view.layoutIfNeeded()
         }
+
     }
 }

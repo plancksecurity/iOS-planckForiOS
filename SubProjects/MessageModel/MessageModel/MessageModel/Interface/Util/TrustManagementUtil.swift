@@ -287,7 +287,11 @@ extension TrustManagementUtil : TrustManagementUtilProtocol {
     }
 
     public func resetTrust(for partnerIdentity: Identity?, completion: @escaping () -> ()) {
-        partnerIdentity?.resetTrust(completion: completion)
+        guard let identity = partnerIdentity else {
+            Log.shared.errorAndCrash("Identity must not be nil")
+            return
+        }
+        identity.resetTrust(completion: completion)
     }
 
     public func getFingerprint(for identity: Identity,

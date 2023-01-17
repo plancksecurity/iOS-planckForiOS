@@ -86,13 +86,9 @@ class ComposeViewController: UIViewController, RecipientsBannerDelegate {
         }
         registerForNotifications()
 
-        if #available(iOS 13.0, *) {
-            if traitCollection.userInterfaceStyle == .dark {
-                tableView.backgroundColor = .secondarySystemBackground
-            } else {
-                tableView.backgroundColor = .white
-            }
-        }  else {
+        if traitCollection.userInterfaceStyle == .dark {
+            tableView.backgroundColor = .secondarySystemBackground
+        } else {
             tableView.backgroundColor = .white
         }
 
@@ -133,12 +129,7 @@ class ComposeViewController: UIViewController, RecipientsBannerDelegate {
         tableView.rowHeight = UITableView.automaticDimension
          //An arbitrary value auto resize seems to require for some reason.
         tableView.estimatedRowHeight = 1000
-
-        if #available(iOS 13.0, *) {
-            tableView.backgroundColor = .systemBackground
-        } else {
-            tableView.backgroundColor = .white
-        }
+        tableView.backgroundColor = .systemBackground
     }
 
     private func setupModel() {
@@ -1286,17 +1277,13 @@ extension ComposeViewController {
             return
         }
 
-        if #available(iOS 13.0, *) {
-            if thePreviousTraitCollection.hasDifferentColorAppearance(comparedTo: traitCollection) {
-                // Do not reload. There might be content written!
-                if traitCollection.userInterfaceStyle == .dark {
-                    tableView.backgroundColor = .secondarySystemBackground
-                } else {
-                    tableView.backgroundColor = .white
-                }
+        if thePreviousTraitCollection.hasDifferentColorAppearance(comparedTo: traitCollection) {
+            // Do not reload. There might be content written!
+            if traitCollection.userInterfaceStyle == .dark {
+                tableView.backgroundColor = .secondarySystemBackground
+            } else {
+                tableView.backgroundColor = .white
             }
-        } else {
-            tableView.backgroundColor = .white
         }
     }
 }

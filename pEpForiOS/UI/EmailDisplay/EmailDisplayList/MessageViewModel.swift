@@ -149,14 +149,6 @@ class MessageViewModel: CustomDebugStringConvertible {
         }
     }
 
-    public func getSecurityBadge(completion: @escaping (UIImage?)->Void) {
-        message.securityBadgeForContactPicture { (image) in
-            DispatchQueue.main.async {
-                completion(image)
-            }
-        }
-    }
-
     public var debugDescription: String {
         return "<MessageViewModel |\(uuid)| |\(longMessageFormatted?.prefix(3) ?? "nil")|>"
     }
