@@ -84,14 +84,8 @@ extension ClientCertificateManagementViewController {
         selectCertificateTitleLabel.setPEPFont(style: .title2, weight: .regular)
         selectCertificateSubtitleLabel.setPEPFont(style: .title3, weight: .regular)
         addCertButton.setPEPFont(style: .body, weight: .regular)
-        if #available(iOS 13, *) {
-            Appearance.customiseForLogin(viewController: self)
-        } else {
-            navigationController?.navigationBar.setBackgroundImage(UIImage(), for: .default)
-            navigationController?.navigationBar.shadowImage = UIImage()
-            navigationController?.navigationBar.isTranslucent = true
-            navigationController?.navigationBar.backgroundColor = UIColor.clear
-        }
+        Appearance.customiseForLogin(viewController: self)
+
         navigationController?.navigationBar.barStyle = .black
         navigationController?.navigationBar.isHidden = false
         let image = UIImage(named: "button-add")

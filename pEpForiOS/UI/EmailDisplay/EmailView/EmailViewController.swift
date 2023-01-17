@@ -123,11 +123,9 @@ class EmailViewController: UIViewController {
             reloadTableView()
             return
         }
-        if #available(iOS 13.0, *) {
-            if thePreviousTraitCollection.hasDifferentColorAppearance(comparedTo: traitCollection) {
-                reloadTableView()
-                return
-            }
+        if thePreviousTraitCollection.hasDifferentColorAppearance(comparedTo: traitCollection) {
+            reloadTableView()
+            return
         }
         if ((traitCollection.verticalSizeClass != thePreviousTraitCollection.verticalSizeClass)
             || (traitCollection.horizontalSizeClass != thePreviousTraitCollection.horizontalSizeClass)) {

@@ -39,12 +39,8 @@ extension RecipientButton {
 
     private func setTitleColor(_ color: UIColor) {
         setTitleColor(color, for: .normal)
-        if #available(iOS 13.0, *) {
-            if UITraitCollection.current.userInterfaceStyle == .dark {
-                setTitleColor(UIColor.secondaryLabel, for: [.highlighted, .selected])
-            } else {
-                setTitleColor(UIColor.darkGray, for: [.highlighted, .selected])
-            }
+        if UITraitCollection.current.userInterfaceStyle == .dark {
+            setTitleColor(UIColor.secondaryLabel, for: [.highlighted, .selected])
         } else {
             setTitleColor(UIColor.darkGray, for: [.highlighted, .selected])
         }

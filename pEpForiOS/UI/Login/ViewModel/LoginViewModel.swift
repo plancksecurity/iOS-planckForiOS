@@ -218,7 +218,7 @@ extension LoginViewModel {
             qualifyServerIsLocalService.delegate = self
             qualifyServerIsLocalService.qualify(serverName: imapServer)
         } else {
-            markServerAsTrusted(trusted: false)
+            markServerAsTrusted(trusted: true)
         }
     }
 

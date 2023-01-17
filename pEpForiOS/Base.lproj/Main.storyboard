@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="21225" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="21507" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES">
     <device id="retina5_5" orientation="portrait" appearance="light"/>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="21207"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="21505"/>
         <capability name="System colors in document resources" minToolsVersion="11.0"/>
         <capability name="collection view cell content view" minToolsVersion="11.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
@@ -41,21 +41,10 @@
                                                     <rect key="frame" x="5" y="0.0" width="404" height="85"/>
                                                     <subviews>
                                                         <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="wra-Ql-iZp">
-                                                            <rect key="frame" x="2" y="17.666666666666671" width="72" height="50"/>
+                                                            <rect key="frame" x="2" y="17.666666666666671" width="58" height="50"/>
                                                             <subviews>
-                                                                <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" verticalCompressionResistancePriority="751" insetsLayoutMarginsFromSafeArea="NO" image="pEp-status-yellow_white-border" translatesAutoresizingMaskIntoConstraints="NO" id="gja-fY-c60">
-                                                                    <rect key="frame" x="0.0" y="16.999999999999996" width="16" height="16.000000000000004"/>
-                                                                    <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
-                                                                    <constraints>
-                                                                        <constraint firstAttribute="width" secondItem="gja-fY-c60" secondAttribute="height" multiplier="1:1" id="Vs6-dF-zOe"/>
-                                                                        <constraint firstAttribute="height" constant="16" id="ssx-xa-4Tt"/>
-                                                                    </constraints>
-                                                                    <userDefinedRuntimeAttributes>
-                                                                        <userDefinedRuntimeAttribute type="boolean" keyPath="translatesAutoresizingMaskIntoConstraints" value="NO"/>
-                                                                    </userDefinedRuntimeAttributes>
-                                                                </imageView>
                                                                 <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="empty-avatar" translatesAutoresizingMaskIntoConstraints="NO" id="ocF-vy-7Ef" userLabel="Contact Image">
-                                                                    <rect key="frame" x="22" y="0.0" width="50" height="50"/>
+                                                                    <rect key="frame" x="8" y="0.0" width="50" height="50"/>
                                                                     <constraints>
                                                                         <constraint firstAttribute="width" constant="50" id="SxH-gw-Ygu"/>
                                                                         <constraint firstAttribute="width" secondItem="ocF-vy-7Ef" secondAttribute="height" multiplier="1:1" id="nBE-3s-ERQ"/>
@@ -67,19 +56,17 @@
                                                             </subviews>
                                                             <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                                             <constraints>
-                                                                <constraint firstItem="gja-fY-c60" firstAttribute="centerY" secondItem="wra-Ql-iZp" secondAttribute="centerY" id="GkE-5o-W8a"/>
                                                                 <constraint firstAttribute="bottom" secondItem="ocF-vy-7Ef" secondAttribute="bottom" id="bbx-Am-jgz"/>
                                                                 <constraint firstItem="ocF-vy-7Ef" firstAttribute="top" secondItem="wra-Ql-iZp" secondAttribute="top" id="eQL-Vi-ezR"/>
                                                                 <constraint firstAttribute="trailing" secondItem="ocF-vy-7Ef" secondAttribute="trailing" id="epg-GW-QI8"/>
-                                                                <constraint firstItem="gja-fY-c60" firstAttribute="leading" secondItem="wra-Ql-iZp" secondAttribute="leading" id="mdf-hQ-6kD"/>
-                                                                <constraint firstItem="ocF-vy-7Ef" firstAttribute="leading" secondItem="wra-Ql-iZp" secondAttribute="leading" constant="22" id="ria-SA-KqO"/>
+                                                                <constraint firstItem="ocF-vy-7Ef" firstAttribute="leading" secondItem="wra-Ql-iZp" secondAttribute="leading" constant="8" id="ria-SA-KqO"/>
                                                             </constraints>
                                                             <userDefinedRuntimeAttributes>
                                                                 <userDefinedRuntimeAttribute type="boolean" keyPath="translatesAutoresizingMaskIntoConstraints" value="NO"/>
                                                             </userDefinedRuntimeAttributes>
                                                         </view>
                                                         <stackView opaque="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="cG7-zS-ib7" userLabel="First Line Stack View">
-                                                            <rect key="frame" x="86" y="16.666666666666671" width="310" height="20.333333333333329"/>
+                                                            <rect key="frame" x="72" y="16.666666666666671" width="324" height="20.333333333333329"/>
                                                             <subviews>
                                                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="750" verticalHuggingPriority="251" verticalCompressionResistancePriority="1000" text="Sender sfasflask jfhsajfkas fjksaj" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontForContentSizeCategory="YES" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="KTi-T9-Inm">
                                                                     <rect key="frame" x="0.0" y="0.0" width="246" height="20.333333333333332"/>
@@ -87,7 +74,7 @@
                                                                     <nil key="highlightedColor"/>
                                                                 </label>
                                                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" horizontalCompressionResistancePriority="751" text="Date" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontForContentSizeCategory="YES" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="a1D-BW-3Rd">
-                                                                    <rect key="frame" x="246" y="0.0" width="64" height="20.333333333333332"/>
+                                                                    <rect key="frame" x="246" y="0.0" width="78" height="20.333333333333332"/>
                                                                     <fontDescription key="fontDescription" style="UICTFontTextStyleSubhead"/>
                                                                     <color key="textColor" systemColor="secondaryLabelColor"/>
                                                                     <nil key="highlightedColor"/>
@@ -95,12 +82,12 @@
                                                             </subviews>
                                                         </stackView>
                                                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" verticalCompressionResistancePriority="1000" text="Subject jlkfj glkafj kal jfa slfaj alsjf aslj fsajk" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontForContentSizeCategory="YES" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="ha5-Vd-x3U">
-                                                            <rect key="frame" x="86" y="41" width="290.33333333333331" height="18"/>
+                                                            <rect key="frame" x="72" y="41" width="290.33333333333331" height="18"/>
                                                             <fontDescription key="fontDescription" style="UICTFontTextStyleSubhead"/>
                                                             <nil key="highlightedColor"/>
                                                         </label>
                                                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" verticalCompressionResistancePriority="1000" text="Summary" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontForContentSizeCategory="YES" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Tbi-dG-KCA">
-                                                            <rect key="frame" x="86" y="63" width="65" height="18"/>
+                                                            <rect key="frame" x="72" y="63" width="65" height="18"/>
                                                             <fontDescription key="fontDescription" style="UICTFontTextStyleSubhead"/>
                                                             <color key="textColor" systemColor="secondaryLabelColor"/>
                                                             <nil key="highlightedColor"/>
@@ -160,7 +147,6 @@
                                             <outlet property="dateLabel" destination="a1D-BW-3Rd" id="gbR-pS-LqK"/>
                                             <outlet property="firstLineStackView" destination="cG7-zS-ib7" id="ful-cW-Bfr"/>
                                             <outlet property="flaggedImageView" destination="hoT-RP-AkI" id="Agf-WF-8kR"/>
-                                            <outlet property="ratingImage" destination="gja-fY-c60" id="upE-7t-pJp"/>
                                             <outlet property="subjectLabel" destination="ha5-Vd-x3U" id="T89-ft-3zQ"/>
                                             <outlet property="summaryLabel" destination="Tbi-dG-KCA" id="Mqb-EJ-M21"/>
                                         </connections>
@@ -1661,7 +1647,6 @@
         <image name="doc" catalog="system" width="115" height="128"/>
         <image name="empty-avatar" width="150" height="150"/>
         <image name="icon-settings" width="49" height="20"/>
-        <image name="pEp-status-yellow_white-border" width="21" height="21"/>
         <image name="pEpForiOS-icon-delete" width="16" height="24"/>
         <image name="pEpForiOS-icon-movetofolder" width="29" height="24"/>
         <image name="pEpForiOS-icon-reply" width="31" height="24"/>

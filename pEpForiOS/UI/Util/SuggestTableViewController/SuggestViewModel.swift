@@ -177,35 +177,6 @@ class SuggestViewModel {
 extension SuggestViewModel {
     typealias Address = String
     typealias RatingIcon = UIImage
-
-    /// Get the pep rating icon.
-    /// - Parameters:
-    ///   - row: The row that represents the suggestion.
-    ///   - completion: The callback returning: the pep rating icon is returned.
-    ///                                 - the pep rating icon
-    ///                                 - the adress of the identity represented by `row`.
-    public func pEpRatingIcon(for row: Row, completion: @escaping (RatingIcon?, Address?)->Void) {
-        workQueue.addOperation { [weak self] in
-            guard let me = self else {
-                //Valid case: view might be dismissed
-                return
-            }
-            guard let from = row.from else {
-                Log.shared.errorAndCrash("No From")
-                completion(Rating.undefined.pEpColor().statusIconInContactPicture(), nil)
-                return
-            }
-            let to = row.to
-            let safeFrom = Identity.makeSafe(from, forSession: me.session)
-            let safeTo = Identity.makeSafe(to, forSession: me.session)
-            me.session.perform {
-                let toAddress = safeTo.address
-                Rating.outgoingMessageRating(from: safeFrom, to: [safeTo], cc: [], bcc: []) { (rating) in
-                    completion(rating.pEpColor().statusIconInContactPicture(), toAddress)
-                }
-            }
-        }
-    }
 }
 
 

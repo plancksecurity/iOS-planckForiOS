@@ -126,19 +126,14 @@ class IdentityImageTool {
 
 
         var backgroundColor = UIColor.pEpGrayBackgroundReset
-        if #available(iOS 13.0, *) {
-            if UITraitCollection.current.userInterfaceStyle == .dark {
-                backgroundColor = UIColor.pEpGrayDarkBackgroundReset
-            }
+        if UITraitCollection.current.userInterfaceStyle == .dark {
+            backgroundColor = UIColor.pEpGrayDarkBackgroundReset
         }
-
         /// If the text color is passed by parameter, let's use it.
         /// Otherwise, evaluate if dark mode is on: in that case use pEpBlack, else, white.
         var textColorToSet: UIColor = UIColor.pEpBlack
-        if #available(iOS 13.0, *) {
-            if UITraitCollection.current.userInterfaceStyle == .dark {
-                textColorToSet = .label
-            }
+        if UITraitCollection.current.userInterfaceStyle == .dark {
+            textColorToSet = .label
         }
 
         if let cachedImage = cachedIdentityImage(for: identityKey) {

@@ -49,7 +49,7 @@ class BodyCell: TextViewContainingTableViewCell {
         } else {
             textView.text = text
         }
-        textView.setLabelTextColor()
+        textView.textColor = .label
         vm.handleTextChange(newText: textView.text, newAttributedText: textView.attributedText)
     }
 
@@ -123,7 +123,7 @@ extension BodyCell {
         }
         vm.maxTextattachmentWidth = textView.bounds.width
         setupContextMenu()
-        textView.setLabelTextColor()
+        textView.textColor = .label
     }
 
     func textViewDidEndEditing(_ textView: UITextView) {

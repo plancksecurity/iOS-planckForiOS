@@ -24,7 +24,6 @@ final class EmailListViewCell: PEPSwipeTableViewCell, MessageViewModelConfigurab
 
     @IBOutlet weak var flaggedImageView: UIImageView!
 
-    @IBOutlet weak var ratingImage: UIImageView!
     @IBOutlet weak var attachmentIcon: UIImageView!
     @IBOutlet weak var contactImageView: UIImageView!
 
@@ -107,13 +106,8 @@ final class EmailListViewCell: PEPSwipeTableViewCell, MessageViewModelConfigurab
         subjectLabel.text = atLeastOneSpace(possiblyEmptyString: viewModel.subject)
         dateLabel.font = UIFont.pepFont(style: dateFontStyle, weight: viewModel.isSeen ? seenFontWeight : unseenFontWeight)
 
-
         if !viewModel.isSeen {
-            if #available(iOS 13.0, *) {
-                contactImageView.applyBorder(color: .label)
-            } else {
-                contactImageView.applyBorder(color: UIColor.pEpBlack)
-            }
+            contactImageView.applyBorder(color: .label)
         } else {
             contactImageView.removeBorder()
         }
@@ -138,14 +132,6 @@ final class EmailListViewCell: PEPSwipeTableViewCell, MessageViewModelConfigurab
             viewModel.getProfilePicture { [weak self] image in
                 self?.setContactImage(image: image)
             }
-        }
-        viewModel.getSecurityBadge { [weak self] (badgeImage) in
-            guard let me = self else {
-                // Valid case. The view might have already been dismissed.
-                // Do nothing ...
-                return
-            }
-            me.setPepRatingImage(image: badgeImage)
         }
     }
 
@@ -179,11 +165,6 @@ extension EmailListViewCell {
     //
     //    }
 
-    private func setPepRatingImage(image: UIImage?) {
-        ratingImage.image = image
-        ratingImage.isHidden = (image == nil)
-    }
-
     private func setContactImage(image: UIImage?) {
         guard image != nil else {
             return
@@ -194,8 +175,6 @@ extension EmailListViewCell {
     private func resetToDefault() {
         clear()
         summaryLabel.text = nil
-        ratingImage.isHidden = true
-        ratingImage.image = nil
         contactImageView.image = EmailListViewCell.emptyContactImage
         tintColor = UIColor.pEpGreen
     }
@@ -259,10 +238,8 @@ extension EmailListViewCell {
 
     private func setBackgroundSelectionColor() {
         originalBackgroundSelectionColor = UIColor.pEpGreyBackground
-        if #available(iOS 13.0, *) {
-            if UITraitCollection.current.userInterfaceStyle == .dark {
-                originalBackgroundSelectionColor = UIColor.systemGray5
-            }
+        if UITraitCollection.current.userInterfaceStyle == .dark {
+            originalBackgroundSelectionColor = UIColor.systemGray5
         }
     }
 
@@ -273,10 +250,8 @@ extension EmailListViewCell {
             return
         }
 
-        if #available(iOS 13.0, *) {
-            if thePreviousTraitCollection.hasDifferentColorAppearance(comparedTo: traitCollection) {
-                setBackgroundSelectionColor()
-            }
+        if thePreviousTraitCollection.hasDifferentColorAppearance(comparedTo: traitCollection) {
+            setBackgroundSelectionColor()
         }
     }
 }

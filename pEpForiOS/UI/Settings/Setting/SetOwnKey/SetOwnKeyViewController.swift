@@ -53,10 +53,8 @@ class SetOwnKeyViewController: UIViewController {
         if thePreviousTraitCollection.preferredContentSizeCategory != traitCollection.preferredContentSizeCategory {
             configureView(for: traitCollection)
         }
-        if #available(iOS 13.0, *) {
-            if thePreviousTraitCollection.hasDifferentColorAppearance(comparedTo: traitCollection) {
-                loadView()
-            }
+        if thePreviousTraitCollection.hasDifferentColorAppearance(comparedTo: traitCollection) {
+            loadView()
         }
     }
     

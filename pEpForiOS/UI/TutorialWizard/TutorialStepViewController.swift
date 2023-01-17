@@ -16,11 +16,7 @@ class TutorialStepViewController: UIViewController {
     private var shouldUpdateLayoutDueRotation: Bool = false
 
     var tutorialTextColor: UIColor {
-        if #available(iOS 13.0, *) {
-            return UIColor.label
-        } else {
-            return UIColor.black
-        }
+        return UIColor.label
     }
 
     var left: NSMutableParagraphStyle {
@@ -50,9 +46,7 @@ class TutorialStepViewController: UIViewController {
         }
 
         var foregroundColor = UIColor(white: 24.0 / 255.0, alpha: 1.0)
-        if #available(iOS 13.0, *) {
-            foregroundColor = .secondaryLabel
-        }
+        foregroundColor = .secondaryLabel
         return [
             .font: font,
             .foregroundColor: foregroundColor,
@@ -160,23 +154,17 @@ extension TutorialStepViewController {
             return
         }
 
-        if #available(iOS 13.0, *) {
-            if thePreviousTraitCollection.hasDifferentColorAppearance(comparedTo: traitCollection) {
-                configureView()
-                view.layoutIfNeeded()
-            }
+        if thePreviousTraitCollection.hasDifferentColorAppearance(comparedTo: traitCollection) {
+            configureView()
+            view.layoutIfNeeded()
         }
     }
 
     func setBackgroundColor() {
-        if #available(iOS 13.0, *) {
-            if UITraitCollection.current.userInterfaceStyle == .light {
-                view.backgroundColor = .white
-            } else {
-                view.backgroundColor = .secondarySystemBackground
-            }
-        } else {
+        if UITraitCollection.current.userInterfaceStyle == .light {
             view.backgroundColor = .white
+        } else {
+            view.backgroundColor = .secondarySystemBackground
         }
     }
 }
