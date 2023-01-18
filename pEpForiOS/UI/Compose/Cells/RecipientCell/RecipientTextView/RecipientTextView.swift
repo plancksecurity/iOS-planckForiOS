@@ -50,7 +50,7 @@ extension RecipientTextView: UITextViewDelegate {
 
     public func textViewDidBeginEditing(_ textView: UITextView) {
         reportWidthChange()
-        setLabelTextColor()
+        textColor = .label
         guard let vm = viewModel else {
             Log.shared.errorAndCrash("VM not found")
             return
@@ -75,7 +75,7 @@ extension RecipientTextView: UITextViewDelegate {
         }
         if vm.isAddressDeliminator(str: text) {
             let result = vm.handleAddressDelimiterTyped(range: range, of: textView.attributedText)
-            setLabelTextColor()
+            textColor = .label
             return result
         }
         let hasSelection = !(selectedTextRange?.isEmpty ?? true)
@@ -271,10 +271,6 @@ extension RecipientTextView: RecipientTextViewModelDelegate {
             return
         }
         vm.handleDidEndEditing(range: selectedRange, of: attributedText)
-        if #available(iOS 13.0, *) {
-            textColor = .label
-        } else {
-            // Fallback on earlier versions: nothing to do.
-        }
+        textColor = .label
     }
 }

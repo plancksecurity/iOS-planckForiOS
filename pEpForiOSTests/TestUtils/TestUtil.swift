@@ -66,12 +66,6 @@ class TestUtil {
        context.saveAndLogErrors()
    }
 
-   // MARK: - Sync Loop
-
-   static public func syncAndWait(numAccountsToSync: Int = 1, testCase: XCTestCase) {
-       //BUFF: Is implemented in MM TestUtils. How can we get it here too? Do we need it at all (think yes)
-   }
-
    // MARK: - Messages
 
    @discardableResult static func createMessages(number: Int,

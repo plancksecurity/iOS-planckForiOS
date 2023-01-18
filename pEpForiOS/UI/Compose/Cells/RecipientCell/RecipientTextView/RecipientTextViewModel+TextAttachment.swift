@@ -57,29 +57,14 @@ extension RecipientTextViewModel {
         }
 
         private func getBadgeAttributes() -> [NSAttributedString.Key : NSObject] {
-            let badgeAttributes: [NSAttributedString.Key : NSObject]
-            if #available(iOS 13.0, *) {
-                badgeAttributes = [
-                    NSAttributedString.Key.foregroundColor: UIColor.label,
-                    NSAttributedString.Key.font: font,
-                ]
-            } else {
-                badgeAttributes = [
-                    NSAttributedString.Key.foregroundColor: UIColor.pEpDarkText,
-                    NSAttributedString.Key.font: font,
-                ]
-            }
-
-            return badgeAttributes
+            return [
+                NSAttributedString.Key.foregroundColor: UIColor.label,
+                NSAttributedString.Key.font: font,
+            ]
         }
 
         private func getRecipientsAttributes(textColor: UIColor) -> [NSAttributedString.Key : NSObject] {
-            var recipientBackgroundColor: UIColor
-            if #available(iOS 13.0, *) {
-                recipientBackgroundColor = UITraitCollection.current.userInterfaceStyle == .dark ? UIColor.pEpLightBackground : UIColor.pEpGreyRecipientBackground
-            } else {
-                recipientBackgroundColor = UIColor.pEpGreyRecipientBackground
-            }
+            let recipientBackgroundColor = UITraitCollection.current.userInterfaceStyle == .dark ? UIColor.pEpLightBackground : UIColor.pEpGreyRecipientBackground
             return [
                 NSAttributedString.Key.foregroundColor: textColor,
                 NSAttributedString.Key.font: font,

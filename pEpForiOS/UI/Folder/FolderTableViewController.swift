@@ -58,16 +58,14 @@ class FolderTableViewController: UITableViewController {
             tableView.reloadData()
         }
 
-        if #available(iOS 13.0, *) {
-            if thePreviousTraitCollection.hasDifferentColorAppearance(comparedTo: traitCollection) {
-                guard let vm = folderVM else {
-                    Log.shared.errorAndCrash("VM not found")
-                    return
-                }
-                vm.handleAppereanceChanged()
-                Appearance.configureSelectedBackgroundViewForPep(tableViewCell: UITableViewCell.appearance())
-                tableView.reloadData()
+        if thePreviousTraitCollection.hasDifferentColorAppearance(comparedTo: traitCollection) {
+            guard let vm = folderVM else {
+                Log.shared.errorAndCrash("VM not found")
+                return
             }
+            vm.handleAppereanceChanged()
+            Appearance.configureSelectedBackgroundViewForPep(tableViewCell: UITableViewCell.appearance())
+            tableView.reloadData()
         }
     }
 
@@ -199,13 +197,7 @@ class FolderTableViewController: UITableViewController {
         cell.padding = fcvm.padding
         cell.titleLabel.text = fcvm.title
         cell.titleLabel.setPEPFont(style: .body, weight: .regular)
-
-        if #available(iOS 13.0, *) {
-            cell.titleLabel?.textColor = fcvm.isSelectable ? .label : .tertiaryLabel
-        } else {
-            cell.titleLabel?.textColor = fcvm.isSelectable ? .black : .pEpGray
-        }
-
+        cell.titleLabel?.textColor = fcvm.isSelectable ? .label : .tertiaryLabel
         cell.unreadMailsLabel.font = UIFont.pepFont(style: .body, weight: .regular)
         let numUnreadMails = fcvm.numUnreadMails
         cell.unreadMailsLabel.text = numUnreadMails > 0 ? String(numUnreadMails) : ""
@@ -548,17 +540,6 @@ extension FolderTableViewController {
             return 0.0
         } else {
             return tableView.sectionHeaderHeight
-        }
-    }
-
-    override func tableView(_ tableView: UITableView, willDisplayHeaderView view: UIView, forSection section: Int) {
-        // In iOS12, the first subview (_UITableViewHeaderFooterViewBackground) has a gray background.
-        // Remove this when iOS 12 support is dropped.
-        guard #available(iOS 13, *) else {
-            if let header = view as? UITableViewHeaderFooterView, let subview = header.subviews.first {
-                subview.backgroundColor = .white
-            }
-            return
         }
     }
 }

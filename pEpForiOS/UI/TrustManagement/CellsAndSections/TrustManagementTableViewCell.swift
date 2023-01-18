@@ -74,16 +74,9 @@ final class TrustManagementTableViewCell: UITableViewCell {
     // MARK: - Private
     
     private func setupButtons() {
-        //Buttons
-        if #available(iOS 13.0, *), UITraitCollection.current.userInterfaceStyle == .dark {
-            resetButton.pEpIfyForTrust(backgroundColor: .systemGray2, textColor: .label)
-            confirmButton.pEpIfyForTrust(backgroundColor: .pEpGreen, textColor: .label)
-            declineButton.pEpIfyForTrust(backgroundColor: .pEpRed, textColor: .label)
-        } else {
-            resetButton.pEpIfyForTrust(backgroundColor: .pEpGrayBackgroundReset, textColor: .white)
-            confirmButton.pEpIfyForTrust(backgroundColor: .pEpGreen, textColor: .white)
-            declineButton.pEpIfyForTrust(backgroundColor: .pEpRed, textColor: .white)
-        }
+        resetButton.pEpIfyForTrust(backgroundColor: .systemGray2, textColor: .label)
+        confirmButton.pEpIfyForTrust(backgroundColor: .pEpGreen, textColor: .label)
+        declineButton.pEpIfyForTrust(backgroundColor: .pEpRed, textColor: .label)
     }
 
     /// Setup the view with the row data.

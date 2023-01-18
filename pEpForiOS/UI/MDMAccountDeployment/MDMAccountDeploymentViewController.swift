@@ -30,12 +30,8 @@ class MDMAccountDeploymentViewController: UIViewController, UITextFieldDelegate 
 
         setupUI()
 
-        if #available(iOS 13.0, *) {
-            // Prevent the user to be able to "swipe down" this VC
-            isModalInPresentation = true
-        } else {
-            // Modal is modal already?
-        }
+        // Prevent the user to be able to "swipe down" this VC
+        isModalInPresentation = true
 
         navigationController?.setNavigationBarHidden(true, animated: false)
     }
@@ -151,20 +147,12 @@ class MDMAccountDeploymentViewController: UIViewController, UITextFieldDelegate 
             textFieldPassword?.isEnabled = enabled
         }
 
-        func createActivityIndicator() -> UIActivityIndicatorView {
-            if #available(iOS 13.0, *) {
-                return UIActivityIndicatorView(style: .large)
-            } else {
-                return UIActivityIndicatorView(style: .whiteLarge)
-            }
-        }
-
         enableUI(enabled: false)
 
         // Remove any error from previous attempts
         unsetError()
 
-        let activityIndicator = createActivityIndicator()
+        let activityIndicator = UIActivityIndicatorView(style: .large)
         activityIndicator.startAnimating()
         stackView.addArrangedSubview(activityIndicator)
 

@@ -81,11 +81,7 @@ final class PEPHeaderView: UITableViewHeaderFooterView {
 
 extension PEPHeaderView {
     private func setUp() {
-        if #available(iOS 13.0, *) {
-            backgroundColor = .systemGroupedBackground
-        } else {
-            backgroundColor = .groupTableViewBackground
-        }
+        backgroundColor = .systemGroupedBackground
         titleTextView.sizeToFit()
         contentView.addSubview(titleTextView)
         setFont()
