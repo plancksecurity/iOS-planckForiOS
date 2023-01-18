@@ -60,7 +60,7 @@ extension DecryptMessageOperation {
         var inOutFlags = cdMessageToDecrypt.isOnTrustedServer ? PEPDecryptFlags.none : .untrustedServer
         var inOutMessage = cdMessageToDecrypt.pEpMessage()
         var fprsOfExtraKeys = CdExtraKey.fprsOfAllExtraKeys(in: moc)
-        var rating = PEPRating.undefined
+        var decryptedRating = PEPRating.undefined
         var pEpDecryptedMessage: PEPMessage? = nil
 
         // We must block here until the adapter calls back. Else we will not exist any more when it
@@ -72,11 +72,11 @@ extension DecryptMessageOperation {
         PEPSession().decryptMessage(inOutMessage, flags: inOutFlags, extraKeys: fprsOfExtraKeys, errorCallback: { (error) in
             nsError = error as NSError
             group.leave()
-        }) { (pEpSourceMessage, pEpDecryptedMsg, keyList, decryptFlags, isFormerlyEncryptedReuploadedMessage) in
+        }) { (pEpSourceMessage, pEpDecryptedMsg, keyList, rating, decryptFlags, isFormerlyEncryptedReuploadedMessage) in
             inOutMessage = pEpSourceMessage
             pEpDecryptedMessage = pEpDecryptedMsg
             fprsOfExtraKeys = keyList
-            rating = pEpDecryptedMsg.rating
+            decryptedRating = rating
             inOutFlags = decryptFlags
             isAFormerlyEncryptedReuploadedMessage = isFormerlyEncryptedReuploadedMessage
             group.leave()
@@ -110,7 +110,7 @@ extension DecryptMessageOperation {
                                     inOutMessage: inOutMessage,
                                     decryptFlags: inOutFlags,
                                     ratingBeforeEngine: ratingBeforeMessage,
-                                    rating: rating,
+                                    rating: decryptedRating,
                                     keys: fprsOfExtraKeys ?? [],
                                     isFormerlyEncryptedReuploadedMessage: isAFormerlyEncryptedReuploadedMessage)
         }
