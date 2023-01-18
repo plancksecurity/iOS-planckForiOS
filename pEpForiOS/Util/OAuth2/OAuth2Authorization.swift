@@ -48,21 +48,6 @@ class OAuth2Authorization: OAuth2AuthorizationProtocol {
                     accessToken: nil)
             }
         }
-
-        userAgentSession = OIDAuthState.authState(byPresenting: request,
-                                                  presenting: viewController) { [weak self] authState, error in
-            if error == nil, let state = authState {
-                self?.authState = state
-                self?.delegate?.authorizationRequestFinished(
-                    error: error,
-                    accessToken: OAuth2AccessToken(authState: state, keyChainID: UUID().uuidString))
-            } else {
-                self?.authState = nil
-                self?.delegate?.authorizationRequestFinished(
-                    error: OAuth2AuthorizationError.inconsistentAuthorizationResult,
-                    accessToken: nil)
-            }
-        }
     }
 }
 
