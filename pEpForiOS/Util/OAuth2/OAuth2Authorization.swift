@@ -16,7 +16,7 @@ import MessageModel
 class OAuth2Authorization: OAuth2AuthorizationProtocol {
     let uuid = Foundation.UUID()
 
-    var currentAuthorizationFlow: OIDAuthorizationFlowSession?
+    var userAgentSession: OIDExternalUserAgentSession?
     var authState: OIDAuthState?
 
     // MARK: - OAuth2AuthorizationProtocol
@@ -34,8 +34,23 @@ class OAuth2Authorization: OAuth2AuthorizationProtocol {
             responseType: OIDResponseTypeCode,
             additionalParameters: nil)
 
-        currentAuthorizationFlow = OIDAuthState.authState(
-        byPresenting: request, presenting: viewController) { [weak self] authState, error in
+        userAgentSession = OIDAuthState.authState(byPresenting: request,
+                                                  presenting: viewController) { [weak self] authState, error in
+            if error == nil, let state = authState {
+                self?.authState = state
+                self?.delegate?.authorizationRequestFinished(
+                    error: error,
+                    accessToken: OAuth2AccessToken(authState: state, keyChainID: UUID().uuidString))
+            } else {
+                self?.authState = nil
+                self?.delegate?.authorizationRequestFinished(
+                    error: OAuth2AuthorizationError.inconsistentAuthorizationResult,
+                    accessToken: nil)
+            }
+        }
+
+        userAgentSession = OIDAuthState.authState(byPresenting: request,
+                                                  presenting: viewController) { [weak self] authState, error in
             if error == nil, let state = authState {
                 self?.authState = state
                 self?.delegate?.authorizationRequestFinished(
@@ -53,11 +68,11 @@ class OAuth2Authorization: OAuth2AuthorizationProtocol {
 
 extension OAuth2Authorization: OAuth2AuthorizationURLHandlerProtocol {
     func processAuthorizationRedirect(url: URL) -> Bool {
-        guard let authFlow = currentAuthorizationFlow else {
+        guard let theUserAgentSession = userAgentSession else {
             return false
         }
-        if authFlow.resumeAuthorizationFlow(with: url) {
-            self.currentAuthorizationFlow = nil
+        if theUserAgentSession.resumeExternalUserAgentFlow(with: url) {
+            self.userAgentSession = nil
             return true
         }
         return false
