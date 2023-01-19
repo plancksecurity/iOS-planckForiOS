@@ -24,6 +24,8 @@ protocol SettingsViewModelDelegate: AnyObject {
     func showDBExportSuccess()
     /// Shows an alert to indicate databases export failed
     func showDBExportFailed()
+    /// Show ephemeral feedback for short period.
+    func showFeedback(message: String)
 }
 
 /// Protocol that represents the basic data in a row.
@@ -413,7 +415,7 @@ extension SettingsViewModel {
         case .account:
             return nil
         case .resetAccounts:
-            return NSLocalizedString("Reset All",
+            return NSLocalizedString("Reset own keys",
                                      comment: "Settings: Cell (button) title for reset all identities")
         case .credits:
             return NSLocalizedString("Credits",
@@ -550,12 +552,20 @@ extension SettingsViewModel {
     private func handleResetAllIdentities() {
         delegate?.showLoadingView()
         Account.resetAllOwnKeys() { [weak self] result in
+            guard let me = self else {
+                Log.shared.errorAndCrash("Lost myself")
+                return
+            }
             switch result {
             case .success:
                 Log.shared.info("Success", [])
-                self?.delegate?.hideLoadingView()
+                DispatchQueue.main.async {
+                    me.delegate?.hideLoadingView()
+                    let message = NSLocalizedString("Reset successful", comment: "Reset successfull toast message")
+                    me.delegate?.showFeedback(message: message)
+                }
             case .failure(let error):
-                self?.delegate?.hideLoadingView()
+                me.delegate?.hideLoadingView()
                 Log.shared.errorAndCrash("Fail to reset all identities, with error %@ ",
                                          error.localizedDescription)
             }
