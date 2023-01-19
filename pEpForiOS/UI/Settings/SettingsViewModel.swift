@@ -208,9 +208,8 @@ extension SettingsViewModel {
     /// - Parameter type: The type of the section to generate the rows.
     /// - Returns: An array with the settings rows. Every setting row must conform the SettingsRowProtocol.
     private func generateRows(type: SectionType) -> [SettingsRowProtocol] {
-        var rows = [SettingsRowProtocol]()
-        switch type {
-        case .accounts:
+        // At some point, we will add this to End User verions.
+        func addAccountRows() {
             Account.all().forEach { (acc) in
                 var accountRow = ActionRow(identifier: .account, title: acc.user.address,
                                            isDangerous: false)
@@ -227,11 +226,16 @@ extension SettingsViewModel {
                         Log.shared.error("section lost")
                         return
                     }
-                    
+
                     me.items[index].rows = section.rows.filter { $0.title != accountRow.title }
                 }
                 rows.append(accountRow)
             }
+        }
+
+        var rows = [SettingsRowProtocol]()
+        switch type {
+        case .accounts:
             rows.append(generateActionRow(type: .resetAccounts, isDangerous: true) { [weak self] in
                 guard let me = self else {
                     Log.shared.lostMySelf()
