@@ -24,7 +24,7 @@ protocol SettingsViewModelDelegate: AnyObject {
     func showDBExportSuccess()
     /// Shows an alert to indicate databases export failed
     func showDBExportFailed()
-    /// Show ephemeral feedback for short period.
+    /// Show a feedback message for a short period.
     func showFeedback(message: String)
 }
 

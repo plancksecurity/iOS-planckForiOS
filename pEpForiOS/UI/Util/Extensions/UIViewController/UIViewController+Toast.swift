@@ -11,6 +11,11 @@ import UIKit
 
 extension UIViewController {
 
+
+    /// Show a message as a Toast.
+    /// It will dissapear after a few seconds. 
+    ///
+    /// - Parameter message: The message to show
     func showToast(message : String) {
         let font = UIFont.pepFont(style: .body, weight: .regular)
         let maxWidth = view.frame.size.width - 40

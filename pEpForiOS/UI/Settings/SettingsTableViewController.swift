@@ -311,6 +311,7 @@ extension SettingsTableViewController : SwipeTableViewCellDelegate {
 // MARK: - Loading views & Editability State Change Alert
 
 extension SettingsTableViewController : SettingsViewModelDelegate {
+
     func showFeedback(message: String) {
         showToast(message: message)
     }
