@@ -595,6 +595,12 @@
 		5BF39DA8257A737A00A00A96 /* AccountSettingsHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5BF39DA7257A737A00A00A96 /* AccountSettingsHelper.swift */; };
 		5BF449F4240827F500B23E50 /* TutorialStep0iPhoneViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5BF449F3240827F500B23E50 /* TutorialStep0iPhoneViewController.swift */; };
 		5BF505FE253EFBA50051FBD3 /* MailtoTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5BD917E1252DD64D0092B30F /* MailtoTest.swift */; };
+		5BF7538C29798D5200E4113B /* EnterpriseUtil.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5BF7538B29798D4C00E4113B /* EnterpriseUtil.swift */; };
+		5BF7538D29798D5300E4113B /* EnterpriseUtil.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5BF7538B29798D4C00E4113B /* EnterpriseUtil.swift */; };
+		5BF7538F2979907E00E4113B /* EnterpriseSettingsProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5BF7538E2979907E00E4113B /* EnterpriseSettingsProtocol.swift */; };
+		5BF753902979907E00E4113B /* EnterpriseSettingsProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5BF7538E2979907E00E4113B /* EnterpriseSettingsProtocol.swift */; };
+		5BF753922979917600E4113B /* AppSettings+EnterpriseSettingsProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5BF753912979917600E4113B /* AppSettings+EnterpriseSettingsProtocol.swift */; };
+		5BF753932979917600E4113B /* AppSettings+EnterpriseSettingsProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5BF753912979917600E4113B /* AppSettings+EnterpriseSettingsProtocol.swift */; };
 		5BF90036262F2517005B08D4 /* NSNotificationName+Settings.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5BF90035262F2517005B08D4 /* NSNotificationName+Settings.swift */; };
 		5BF9B3D723FAF2BF00EBC945 /* TrustManagementResetTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5BF9B3D623FAF2BF00EBC945 /* TrustManagementResetTableViewCell.swift */; };
 		5BF9E18B286F387A00C4CCF8 /* CopyableLabel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5BF9E18A286F387A00C4CCF8 /* CopyableLabel.swift */; };
@@ -1203,6 +1209,9 @@
 		5BF39DA2257A71AC00A00A96 /* EditableAccountSettingsViewModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EditableAccountSettingsViewModel.swift; sourceTree = "<group>"; };
 		5BF39DA7257A737A00A00A96 /* AccountSettingsHelper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AccountSettingsHelper.swift; sourceTree = "<group>"; };
 		5BF449F3240827F500B23E50 /* TutorialStep0iPhoneViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TutorialStep0iPhoneViewController.swift; sourceTree = "<group>"; };
+		5BF7538B29798D4C00E4113B /* EnterpriseUtil.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EnterpriseUtil.swift; sourceTree = "<group>"; };
+		5BF7538E2979907E00E4113B /* EnterpriseSettingsProtocol.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EnterpriseSettingsProtocol.swift; sourceTree = "<group>"; };
+		5BF753912979917600E4113B /* AppSettings+EnterpriseSettingsProtocol.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "AppSettings+EnterpriseSettingsProtocol.swift"; sourceTree = "<group>"; };
 		5BF90035262F2517005B08D4 /* NSNotificationName+Settings.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "NSNotificationName+Settings.swift"; sourceTree = "<group>"; };
 		5BF9B3D623FAF2BF00EBC945 /* TrustManagementResetTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TrustManagementResetTableViewCell.swift; sourceTree = "<group>"; };
 		5BF9E18A286F387A00C4CCF8 /* CopyableLabel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CopyableLabel.swift; sourceTree = "<group>"; };
@@ -2338,6 +2347,7 @@
 				43D0702D2133DB3F0013B120 /* AppSettings */,
 				43980E261CBD0BC900A7FC3C /* AppDelegate.swift */,
 				5BBEA6A728F83EED00BDC78E /* MDMUtil.swift */,
+				5BF7538B29798D4C00E4113B /* EnterpriseUtil.swift */,
 				5BD3C103282BFEB000701B94 /* ReachabilityManager.swift */,
 				1543B69F22AAC882002B59AB /* Resources */,
 				43980E351CBD0BCA00A7FC3C /* Info.plist */,
@@ -2697,7 +2707,9 @@
 			isa = PBXGroup;
 			children = (
 				5B2198A228BE3A6500668445 /* AppSettings+UserSettingsProtocol.swift */,
+				5BF753912979917600E4113B /* AppSettings+EnterpriseSettingsProtocol.swift */,
 				5B21989628BDFAB200668445 /* UserSettingsProtocol.swift */,
+				5BF7538E2979907E00E4113B /* EnterpriseSettingsProtocol.swift */,
 			);
 			path = UserSettingsProtocol;
 			sourceTree = "<group>";
@@ -3447,6 +3459,7 @@
 				434C1A0025D3EFB500F622DB /* HtmlToTextSaxParser.swift in Sources */,
 				434C1A8625D40B6E00F622DB /* UIStoryboard+Constants.swift in Sources */,
 				434A6C4E25D2A3A400179335 /* ComposeViewModel+InitData.swift in Sources */,
+				5BF753902979907E00E4113B /* EnterpriseSettingsProtocol.swift in Sources */,
 				434A6C6525D2A3CB00179335 /* NSAttributedString+BodyTextUtils.swift in Sources */,
 				434C1ACC25D4123900F622DB /* PEPUIAlertAction.swift in Sources */,
 				43959CFE261C85CA00410108 /* UILayout+Extension.swift in Sources */,
@@ -3476,6 +3489,7 @@
 				434C1AFC25D4266900F622DB /* String+NSAttributedString.swift in Sources */,
 				434C1AF025D416AF00F622DB /* Capability.swift in Sources */,
 				5B2C2B2729350CAC000E8F20 /* RecipientsListViewController.swift in Sources */,
+				5BF753932979917600E4113B /* AppSettings+EnterpriseSettingsProtocol.swift in Sources */,
 				434A6C6225D2A3C800179335 /* BodyCellViewModel.swift in Sources */,
 				434A6C7C25D2A3F100179335 /* WrappedBccViewModel.swift in Sources */,
 				5B21989B28BDFBA200668445 /* MDMSettingsProtocol.swift in Sources */,
@@ -3501,6 +3515,7 @@
 				4300CF6325ECEF98003DBEB4 /* SharedData.swift in Sources */,
 				434C19CE25D3E13E00F622DB /* TextViewInTableViewScrollUtil.swift in Sources */,
 				434C1AD525D4133400F622DB /* Color+PrivacyStatusDescription.swift in Sources */,
+				5BF7538D29798D5300E4113B /* EnterpriseUtil.swift in Sources */,
 				43BDE04B25DE7FA800FC0C68 /* houdini_html_u.c in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -3545,6 +3560,7 @@
 				1521B78D241BDAD3000EAE57 /* UIUtils+Settings.swift in Sources */,
 				43269D6C2552B744001E18C6 /* VerifiableAccountValidationError+LocalizedError.swift in Sources */,
 				B7DFEA56225397AB0080A2BA /* Folder+LocalizedName.swift in Sources */,
+				5BF7538F2979907E00E4113B /* EnterpriseSettingsProtocol.swift in Sources */,
 				4351C2D51F4441190053381F /* latex.c in Sources */,
 				B74F37CD24ADD2B00083501B /* EmailViewController.swift in Sources */,
 				37816546230EE5F700B967E3 /* PEPUIAlertAction.swift in Sources */,
@@ -3726,6 +3742,7 @@
 				433E7438225B564400B84CD9 /* Account+Extension.swift in Sources */,
 				005A21FB20CAA5F50082D19F /* ThreadedEmailViewModel.swift in Sources */,
 				5B5BBC2B26A8240500430F73 /* UIUtils+CalendarEvents.swift in Sources */,
+				5BF7538C29798D5200E4113B /* EnterpriseUtil.swift in Sources */,
 				1546CBFA252B5B9F00A7AA7D /* CreditsViewModel.swift in Sources */,
 				5B818DC325E3FEC2004D04F0 /* TutorialStep1iPadViewController.swift in Sources */,
 				3A085A6E23FAF4D50013C63E /* PEPHeaderView.swift in Sources */,
@@ -3782,6 +3799,7 @@
 				15146C8A237EE77A00D69495 /* SettingsInternalError.swift in Sources */,
 				15255B031F825CD100A2CFC9 /* IdentityImageTool.swift in Sources */,
 				152A39D121905C3E00D9F8E4 /* AttachmentViewModel.swift in Sources */,
+				5BF753922979917600E4113B /* AppSettings+EnterpriseSettingsProtocol.swift in Sources */,
 				3AD2CBC923FD92650003A536 /* AccountSettingsViewModel.swift in Sources */,
 				152A39E121905C3E00D9F8E4 /* RecipientCellViewModel+FieldType.swift in Sources */,
 				4351C2CC1F4441190053381F /* cmark_ctype.c in Sources */,
