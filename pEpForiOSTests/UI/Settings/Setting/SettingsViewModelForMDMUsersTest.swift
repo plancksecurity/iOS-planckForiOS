@@ -40,7 +40,8 @@ class SettingsViewModelForMDMUsersTest: AccountDrivenTestBase {
         let delegate = SettingsViewModeldelegate()
         setupViewModel(delegate: delegate, appSettings: MDMMockAppSettings())
         let numberOfStaticCellInAccountsSection = 1
-        let numberOfAccounts = 0 //Account.all().count
+        // In case we bring back accounts to Settings, please use this: `let numberOfAccounts = Account.all().count`
+        let numberOfAccounts = 0
         ///Position of the first section
         let indexPath = IndexPath(row: 0, section: 0)
 
