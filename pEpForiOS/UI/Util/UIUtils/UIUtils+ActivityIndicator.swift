@@ -16,11 +16,14 @@ extension UIUtils {
     ///
     /// - Returns: UIActivityIndicatorView. Useful to hold for removing from super view
     @discardableResult
-    static public func showActivityIndicator() -> UIActivityIndicatorView {
-        let activityIndicator = UIActivityIndicatorView(style: .gray)
+    static public func showActivityIndicator(viewController: UIViewController? = nil) -> UIActivityIndicatorView {
+        let activityIndicator = UIActivityIndicatorView(style: .medium)
         activityIndicator.startAnimating()
         activityIndicator.translatesAutoresizingMaskIntoConstraints = false
-        let presenterVc = UIApplication.currentlyVisibleViewController()
+        var presenterVc = UIApplication.currentlyVisibleViewController()
+        if presenterVc is PEPAlertViewController, let vc = viewController {
+            presenterVc = vc
+        }
         let view: UIView = presenterVc.view
         view.addSubview(activityIndicator)
         NSLayoutConstraint(item: activityIndicator,
@@ -30,6 +33,7 @@ extension UIUtils {
                            attribute: .centerX,
                            multiplier: 1,
                            constant: 0).isActive = true
+
         NSLayoutConstraint(item: activityIndicator,
                            attribute: .centerY,
                            relatedBy: .equal,
@@ -37,6 +41,7 @@ extension UIUtils {
                            attribute: .centerY,
                            multiplier: 1,
                            constant: 0).isActive = true
+
         return activityIndicator
     }
 }
