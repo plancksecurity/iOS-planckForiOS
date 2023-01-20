@@ -198,4 +198,9 @@ class SettingsViewModeldelegate: SettingsViewModelDelegate {
     func showDBExportFailed() {
         XCTFail()
     }
+
+    func showFeedback(message: String) {
+        XCTFail()
+    }
+
 }
