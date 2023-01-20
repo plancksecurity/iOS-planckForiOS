@@ -601,6 +601,10 @@
 		5BF753902979907E00E4113B /* EnterpriseSettingsProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5BF7538E2979907E00E4113B /* EnterpriseSettingsProtocol.swift */; };
 		5BF753922979917600E4113B /* AppSettings+EnterpriseSettingsProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5BF753912979917600E4113B /* AppSettings+EnterpriseSettingsProtocol.swift */; };
 		5BF753932979917600E4113B /* AppSettings+EnterpriseSettingsProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5BF753912979917600E4113B /* AppSettings+EnterpriseSettingsProtocol.swift */; };
+		5BF753862979577800E4113B /* String+Dimensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5BF753852979577700E4113B /* String+Dimensions.swift */; };
+		5BF753872979577800E4113B /* String+Dimensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5BF753852979577700E4113B /* String+Dimensions.swift */; };
+		5BF75389297958C600E4113B /* UIViewController+Toast.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5BF75388297958C600E4113B /* UIViewController+Toast.swift */; };
+		5BF7538A297958C600E4113B /* UIViewController+Toast.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5BF75388297958C600E4113B /* UIViewController+Toast.swift */; };
 		5BF90036262F2517005B08D4 /* NSNotificationName+Settings.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5BF90035262F2517005B08D4 /* NSNotificationName+Settings.swift */; };
 		5BF9B3D723FAF2BF00EBC945 /* TrustManagementResetTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5BF9B3D623FAF2BF00EBC945 /* TrustManagementResetTableViewCell.swift */; };
 		5BF9E18B286F387A00C4CCF8 /* CopyableLabel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5BF9E18A286F387A00C4CCF8 /* CopyableLabel.swift */; };
@@ -1212,6 +1216,8 @@
 		5BF7538B29798D4C00E4113B /* EnterpriseUtil.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EnterpriseUtil.swift; sourceTree = "<group>"; };
 		5BF7538E2979907E00E4113B /* EnterpriseSettingsProtocol.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EnterpriseSettingsProtocol.swift; sourceTree = "<group>"; };
 		5BF753912979917600E4113B /* AppSettings+EnterpriseSettingsProtocol.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "AppSettings+EnterpriseSettingsProtocol.swift"; sourceTree = "<group>"; };
+		5BF753852979577700E4113B /* String+Dimensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "String+Dimensions.swift"; sourceTree = "<group>"; };
+		5BF75388297958C600E4113B /* UIViewController+Toast.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIViewController+Toast.swift"; sourceTree = "<group>"; };
 		5BF90035262F2517005B08D4 /* NSNotificationName+Settings.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "NSNotificationName+Settings.swift"; sourceTree = "<group>"; };
 		5BF9B3D623FAF2BF00EBC945 /* TrustManagementResetTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TrustManagementResetTableViewCell.swift; sourceTree = "<group>"; };
 		5BF9E18A286F387A00C4CCF8 /* CopyableLabel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CopyableLabel.swift; sourceTree = "<group>"; };
@@ -2007,6 +2013,8 @@
 			isa = PBXGroup;
 			children = (
 				43293EFA1EB9DD6700EEE010 /* UIViewController+Extension.swift */,
+				5BF75388297958C600E4113B /* UIViewController+Toast.swift */,
+				5BF753852979577700E4113B /* String+Dimensions.swift */,
 				37156E51234DD49A00845A28 /* LoadingInterface */,
 			);
 			path = UIViewController;
@@ -3416,6 +3424,7 @@
 				434A6C6E25D2A3DC00179335 /* RecipientTextViewModel+TextAttachment.swift in Sources */,
 				5BD93BEF2673AB7D000F2A8C /* ComposeViewModel+AttachmentSizeUtil.swift in Sources */,
 				43DD9ED228BCCCC90082C65D /* MDMDeployment.swift in Sources */,
+				5BF753872979577800E4113B /* String+Dimensions.swift in Sources */,
 				434C1A0325D3EFF500F622DB /* BasicSaxParser.swift in Sources */,
 				43BDE05425DE81D300FC0C68 /* utf8.c in Sources */,
 				434C19C725D3E11100F622DB /* SuggestTableViewController.swift in Sources */,
@@ -3441,6 +3450,7 @@
 				434C1AE125D4141800F622DB /* TrustManagementTableViewCellProtocols.swift in Sources */,
 				5BCD37DD269F3CBF0052A030 /* UIImageView+ContactImage.swift in Sources */,
 				439C659426135008001893BD /* UIView+ActivityIndicator.swift in Sources */,
+				5BF7538A297958C600E4113B /* UIViewController+Toast.swift in Sources */,
 				43C415C725EE687A0071C608 /* NSItemProvider+MimeType.swift in Sources */,
 				434C1AC325D411B700F622DB /* UIUtils+Alerts.swift in Sources */,
 				434A6C6925D2A3D200179335 /* RecipientCellViewModel+FieldType.swift in Sources */,
@@ -3540,6 +3550,7 @@
 				B7C7E3142334E7A1009ABFFE /* ResetTrustViewModel.swift in Sources */,
 				3A928C86242259E300FEFA4C /* HtmlTagParser.swift in Sources */,
 				B72C7BAC2395198D0013B12E /* AccountTypeSelectorViewModel.swift in Sources */,
+				5BF75389297958C600E4113B /* UIViewController+Toast.swift in Sources */,
 				B792889A2302D3DE00D2C68B /* Array+Extension.swift in Sources */,
 				5BCD37DC269F3CBF0052A030 /* UIImageView+ContactImage.swift in Sources */,
 				5B7235D125E0013100033F88 /* TutorialStep0iPadViewController.swift in Sources */,
@@ -3645,6 +3656,7 @@
 				5B4A718A252CC4A500436FCF /* Mailto.swift in Sources */,
 				15146C8C237F006F00D69495 /* KeySyncWizardViewController.swift in Sources */,
 				43DD9ED128BCCCC90082C65D /* MDMDeployment.swift in Sources */,
+				5BF753862979577800E4113B /* String+Dimensions.swift in Sources */,
 				5BFAE3812821889E00B003D4 /* NotificationBannerUtil.swift in Sources */,
 				431E68B3246C267A00B3A977 /* KeyImportViewModel.swift in Sources */,
 				B70A3A63220065F600EDCE61 /* String+pEp.swift in Sources */,
