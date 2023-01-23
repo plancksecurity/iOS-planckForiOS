@@ -12,3 +12,4 @@
 #include "../../pep_for_ios_intern/secret.xcconfig"
 
 MDM_ENABLED = NO
+IS_ENTERPRISE = YES

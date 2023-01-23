@@ -116,9 +116,12 @@ class MockRegularUsersAppSettings : AppSettingsProtocol {
     }
 
     let mdmEchoProtocolEnabled = false
+
     let mdmEchoProtocolInOutgoingMessageRatingPreviewEnabled = false
 
     let mdmMediaKeys = [[String:String]]()
+
+    var isEnterprise = false
 
     func removeFolderViewCollapsedStateOfAccountWith(address: String) {
     }

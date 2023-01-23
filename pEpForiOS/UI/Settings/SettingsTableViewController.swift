@@ -311,7 +311,11 @@ extension SettingsTableViewController : SwipeTableViewCellDelegate {
 // MARK: - Loading views & Editability State Change Alert
 
 extension SettingsTableViewController : SettingsViewModelDelegate {
-    
+
+    func showFeedback(message: String) {
+        showToast(message: message)
+    }
+
     /// Displays a loading view
     func showLoadingView() {
         DispatchQueue.main.async { [weak self] in
@@ -319,7 +323,7 @@ extension SettingsTableViewController : SettingsViewModelDelegate {
                 Log.shared.lostMySelf()
                 return
             }
-            me.activityIndicatorView = UIUtils.showActivityIndicator()
+            me.activityIndicatorView = UIUtils.showActivityIndicator(viewController: self)
         }
     }
 
@@ -341,9 +345,9 @@ extension SettingsTableViewController : SettingsViewModelDelegate {
     
     func showResetAllWarning(callback: @escaping SettingsViewModel.ActionBlock) {
         let title = NSLocalizedString("Reset All Identities", comment: "Settings confirm to reset all identity title alert")
-        let message = NSLocalizedString("This action will reset all your identities. \n Are you sure you want to reset?", comment: "Account settings confirm to reset identity title alert")
+        let message = NSLocalizedString("Resetting your key pair generates new private and public keys for you that p≡p will immediately start using. Are you sure?", comment: "Account settings confirm to reset identity title alert")
         let cancelTitle = NSLocalizedString("Cancel", comment: "Cancel reset account identity button title")
-        let resetTitle = NSLocalizedString("Reset All", comment: "Reset account identity button title")
+        let resetTitle = NSLocalizedString("Yes, Reset", comment: "Reset account identity button title")
         UIUtils.showTwoButtonAlert(withTitle: title, message: message, cancelButtonText: cancelTitle, positiveButtonText: resetTitle, positiveButtonAction: {
             callback()
         },

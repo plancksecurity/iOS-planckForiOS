@@ -120,6 +120,8 @@ class MDMMockAppSettings : AppSettingsProtocol {
 
     let mdmMediaKeys = [[String:String]]()
 
+    var isEnterprise = false
+
     func removeFolderViewCollapsedStateOfAccountWith(address: String) {
     }
 

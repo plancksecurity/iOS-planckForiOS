@@ -4,6 +4,8 @@
 <dict>
 	<key>MDM_ENABLED</key>
 	<string>$(MDM_ENABLED)</string>
+	<key>IS_ENTERPRISE</key>
+	<string>$(IS_ENTERPRISE)</string>
 	<key>BGTaskSchedulerPermittedIdentifiers</key>
 	<array>
 		<string>security.pep.pep4ios.backgroundtaskschedulerid.backgroundfetch</string>
