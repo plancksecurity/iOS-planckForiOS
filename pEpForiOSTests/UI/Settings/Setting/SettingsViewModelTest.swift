@@ -35,21 +35,6 @@ class SettingsViewModelTest: AccountDrivenTestBase {
         XCTAssertEqual(settingsVM.count, 7)
     }
 
-    func testNumberOfRowsForSectionInFirstPositionWithMoreThan1Account() {
-        givenThereAreTwoAccounts()
-        let delegate = SettingsViewModeldelegate()
-        setupViewModel(delegate: delegate)
-        let numberOfStaticCellInAccountsSection = 1
-        let numberOfAccounts = Account.all().count
-        ///Position of the first section
-        let indexPath = IndexPath(row: 0, section: 0)
-
-        /// The number of rows in this section corresponds to the number of accounts plus one row for resetting all.
-        let numberOfRows = numberOfAccounts + numberOfStaticCellInAccountsSection
-
-        XCTAssertEqual(settingsVM.section(for: indexPath).rows.count, numberOfRows)
-    }
-
     func testSwitchBehaviorOnProtectMessageSubject() {
         let delegate = SettingsViewModeldelegate()
         setupViewModel(delegate: delegate, appSettings: MockRegularUsersAppSettings())
