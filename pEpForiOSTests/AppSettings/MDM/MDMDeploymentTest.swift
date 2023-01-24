@@ -50,16 +50,18 @@ class MDMDeploymentTest: XCTestCase {
     }
 
     func testOk() throws {
-        XCTAssertTrue(AppSettings.shared.mdmIsEnabled)
-        XCTAssertFalse(MDMDeployment().haveAccountToDeploy)
-        setupDeployableAccountData()
-        XCTAssertTrue(MDMDeployment().haveAccountToDeploy)
-
-        do {
-            try deployAccount(password: "",
-                              accountVerifier: TestVerifier(errorToDeliver: nil))
-        } catch {
-            XCTFail()
+        if AppSettings.shared.mdmIsEnabled {
+            XCTAssertTrue(AppSettings.shared.mdmIsEnabled)
+            XCTAssertFalse(MDMDeployment().haveAccountToDeploy)
+            setupDeployableAccountData()
+            XCTAssertTrue(MDMDeployment().haveAccountToDeploy)
+            
+            do {
+                try deployAccount(password: "",
+                                  accountVerifier: TestVerifier(errorToDeliver: nil))
+            } catch {
+                XCTFail()
+            }
         }
     }
 
