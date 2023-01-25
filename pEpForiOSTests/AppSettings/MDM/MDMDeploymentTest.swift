@@ -71,7 +71,7 @@ class MDMDeploymentTest: XCTestCase {
             XCTAssertFalse(MDMDeployment().haveAccountToDeploy)
             setupDeployableAccountData()
             XCTAssertTrue(MDMDeployment().haveAccountToDeploy)
-            
+
             do {
                 try deployAccount(password: "surely wrong!",
                                   accountVerifier: TestVerifier(errorToDeliver: ImapSyncOperationError.authenticationFailed("", "")))
@@ -81,7 +81,7 @@ class MDMDeploymentTest: XCTestCase {
             } catch {
                 XCTFail()
             }
-            
+
             let accounts = Account.all()
             XCTAssertEqual(accounts.count, 0)
         }
