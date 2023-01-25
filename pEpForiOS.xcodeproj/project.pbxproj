@@ -349,6 +349,9 @@
 		434C1B3D25D42D5400F622DB /* NSString+Markdown.m in Sources */ = {isa = PBXBuildFile; fileRef = 4351C2DD1F4457620053381F /* NSString+Markdown.m */; };
 		434C1B4025D433D600F622DB /* HtmlTagParser.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A928C85242259E200FEFA4C /* HtmlTagParser.swift */; };
 		434C1B7425D5123A00F622DB /* NothingSelectedViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 00BEC89620B85FD300A36E60 /* NothingSelectedViewController.swift */; };
+		434C5AA4297855BA007496AF /* secret.xcconfig in Resources */ = {isa = PBXBuildFile; fileRef = 434C5AA3297855BA007496AF /* secret.xcconfig */; };
+		434C5AA5297855BA007496AF /* secret.xcconfig in Resources */ = {isa = PBXBuildFile; fileRef = 434C5AA3297855BA007496AF /* secret.xcconfig */; };
+		434C5AA6297855BA007496AF /* secret.xcconfig in Resources */ = {isa = PBXBuildFile; fileRef = 434C5AA3297855BA007496AF /* secret.xcconfig */; };
 		4351C2C81F4441190053381F /* blocks.c in Sources */ = {isa = PBXBuildFile; fileRef = 4351C2B31F4441190053381F /* blocks.c */; };
 		4351C2C91F4441190053381F /* buffer.c in Sources */ = {isa = PBXBuildFile; fileRef = 4351C2B41F4441190053381F /* buffer.c */; };
 		4351C2CB1F4441190053381F /* cmark.c in Sources */ = {isa = PBXBuildFile; fileRef = 4351C2B61F4441190053381F /* cmark.c */; };
@@ -420,7 +423,6 @@
 		43C4156525EE5CA50071C608 /* Attachment+InlinedImage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43C4156125EE5BD80071C608 /* Attachment+InlinedImage.swift */; };
 		43C415C725EE687A0071C608 /* NSItemProvider+MimeType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43C415C625EE687A0071C608 /* NSItemProvider+MimeType.swift */; };
 		43C88FA028BCBD8D00670977 /* MDMAccountDeployment.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 43C88FA228BCBD8D00670977 /* MDMAccountDeployment.storyboard */; };
-		43C9112726454538005B9CDE /* AppAuthForExtensions.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 43C9112526454538005B9CDE /* AppAuthForExtensions.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		43C98AC3219C275E006418B0 /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = 43C98AC1219C275E006418B0 /* Localizable.strings */; };
 		43D070312133DB920013B120 /* AppSettingsProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43D070302133DB920013B120 /* AppSettingsProtocol.swift */; };
 		43D070332133DC500013B120 /* AppSettings.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43D070322133DC500013B120 /* AppSettings.swift */; };
@@ -713,7 +715,6 @@
 				1512133E24166CE0009B7C88 /* ldns_xcode.framework in Embed Frameworks */,
 				43E60263262F0E8100232FE6 /* MessageModelForAppExtensions.framework in Embed Frameworks */,
 				154272B62537387000DD333E /* pEp4iosIntern.framework in Embed Frameworks */,
-				43C9112726454538005B9CDE /* AppAuthForExtensions.framework in Embed Frameworks */,
 				B710526F241684AB007148E8 /* MessageModel.framework in Embed Frameworks */,
 				B710526924168474007148E8 /* pEpIOSToolbox.framework in Embed Frameworks */,
 				B710526624168400007148E8 /* SwipeCellKit.framework in Embed Frameworks */,
@@ -824,7 +825,6 @@
 		1541D7EF1FC81ED900D52A5D /* URL+ExtensionsTest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "URL+ExtensionsTest.swift"; sourceTree = "<group>"; };
 		154272B42537387000DD333E /* pEp4iosIntern.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = pEp4iosIntern.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		1543B6A122AACA4E002B59AB /* KeySyncHandshakeService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KeySyncHandshakeService.swift; sourceTree = "<group>"; };
-		1543B6A322AACD69002B59AB /* secret.xcconfig */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xcconfig; name = secret.xcconfig; path = ../../../pep_for_ios_intern/secret.xcconfig; sourceTree = "<group>"; };
 		1543B6A722ABDAAE002B59AB /* Identity+pEp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Identity+pEp.swift"; sourceTree = "<group>"; };
 		1543B6AF22ABF53C002B59AB /* KeySyncDeviceGroupUtil.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KeySyncDeviceGroupUtil.swift; sourceTree = "<group>"; };
 		154660D32334E2FC008D2137 /* Message+SecurityBadge.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Message+SecurityBadge.swift"; sourceTree = "<group>"; };
@@ -969,6 +969,7 @@
 		434C1A9025D40CEC00F622DB /* UIUtils+ShowError.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIUtils+ShowError.swift"; sourceTree = "<group>"; };
 		434C1AA525D40F3B00F622DB /* UIUtils+DraftsPreview.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIUtils+DraftsPreview.swift"; sourceTree = "<group>"; };
 		434C1AB725D410F400F622DB /* SecureWebViewUrlClickHandlerProtocol.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SecureWebViewUrlClickHandlerProtocol.swift; sourceTree = "<group>"; };
+		434C5AA3297855BA007496AF /* secret.xcconfig */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xcconfig; name = secret.xcconfig; path = ../../pep_for_ios_intern/secret.xcconfig; sourceTree = "<group>"; };
 		4351C2A21F4441190053381F /* buffer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = buffer.h; sourceTree = "<group>"; };
 		4351C2A31F4441190053381F /* chunk.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = chunk.h; sourceTree = "<group>"; };
 		4351C2A41F4441190053381F /* cmark.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = cmark.h; sourceTree = "<group>"; };
@@ -1021,7 +1022,6 @@
 		438052861FE3E1B100ACF729 /* OAuth2AuthorizationFactoryProtocol.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OAuth2AuthorizationFactoryProtocol.swift; sourceTree = "<group>"; };
 		438052881FE3E24400ACF729 /* OAuth2AuthorizationProtocol.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OAuth2AuthorizationProtocol.swift; sourceTree = "<group>"; };
 		4380528A1FE3E2E800ACF729 /* OAuth2AuthorizationURLHandlerProtocol.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OAuth2AuthorizationURLHandlerProtocol.swift; sourceTree = "<group>"; };
-		4388A0E02008AF61008CB98D /* public.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = public.xcconfig; sourceTree = "<group>"; };
 		4395CDED20AAC909003FC5F1 /* UIImageExtensionsTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIImageExtensionsTests.swift; sourceTree = "<group>"; };
 		4395CDEF20AAD0D6003FC5F1 /* icon_001.gif */ = {isa = PBXFileReference; lastKnownFileType = image.gif; path = icon_001.gif; sourceTree = "<group>"; };
 		43980E231CBD0BC900A7FC3C /* pEp.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = pEp.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -1640,13 +1640,11 @@
 		1543B69F22AAC882002B59AB /* Resources */ = {
 			isa = PBXGroup;
 			children = (
-				15D3F53824DC0DEE007942C2 /* pEp.entitlements */,
 				432E80FA2191AF5100359879 /* Fonts */,
+				15D3F53824DC0DEE007942C2 /* pEp.entitlements */,
 				1517DABA23FD7F88005BAE97 /* pEpForiOS-icon.pdf */,
-				1543B6A322AACD69002B59AB /* secret.xcconfig */,
 				3AD0E0A023E4659F006FFED3 /* Assets.xcassets */,
 				439C62402611BFCF001893BD /* SharedAssets.xcassets */,
-				4388A0E02008AF61008CB98D /* public.xcconfig */,
 			);
 			path = Resources;
 			sourceTree = "<group>";
@@ -2789,6 +2787,7 @@
 			children = (
 				5BBEA69F28F83A8E00BDC78E /* DEBUG.xcconfig */,
 				5BBEA6A028F83AE900BDC78E /* RELEASE.xcconfig */,
+				434C5AA3297855BA007496AF /* secret.xcconfig */,
 			);
 			path = Configuration;
 			sourceTree = "<group>";
@@ -3245,6 +3244,7 @@
 				4313A55525E7C1FC001E6767 /* FolderViews.storyboard in Resources */,
 				4313A55D25E7C214001E6767 /* Certificates.storyboard in Resources */,
 				434A6C1225D2A08800179335 /* Main.storyboard in Resources */,
+				434C5AA6297855BA007496AF /* secret.xcconfig in Resources */,
 				434A6C5D25D2A3BE00179335 /* AttachmentCell.xib in Resources */,
 				4313A55625E7C203001E6767 /* Reusable.storyboard in Resources */,
 				43DC6308262DCC8A0017D1BD /* Localizable.strings in Resources */,
@@ -3281,6 +3281,7 @@
 				37156E50234DD3FB00845A28 /* LoadingInterface.xib in Resources */,
 				151C67FF2418158B00481F75 /* SFUIText-Semibold.ttf in Resources */,
 				433404CB2379789600E785F1 /* NothingSelected.storyboard in Resources */,
+				434C5AA4297855BA007496AF /* secret.xcconfig in Resources */,
 				43C98AC3219C275E006418B0 /* Localizable.strings in Resources */,
 				5BFAE38A282292C400B003D4 /* ErrorBannerView.xib in Resources */,
 				3A2119E424125AC60030C3E4 /* Certificates.storyboard in Resources */,
@@ -3303,6 +3304,7 @@
 				431BB9451E49B7A9000BCBF1 /* PorpoiseGalaxy_HubbleFraile_960.jpg in Resources */,
 				5BBEA6A528F83AED00BDC78E /* DEBUG.xcconfig in Resources */,
 				4395CDF020AAD0D7003FC5F1 /* icon_001.gif in Resources */,
+				434C5AA5297855BA007496AF /* secret.xcconfig in Resources */,
 				5BFBB21825D2B46600F269C4 /* random.docx in Resources */,
 				5BBEA6A228F83AE900BDC78E /* RELEASE.xcconfig in Resources */,
 				1512132824166AD9009B7C88 /* large-animated-gif.gif in Resources */,
