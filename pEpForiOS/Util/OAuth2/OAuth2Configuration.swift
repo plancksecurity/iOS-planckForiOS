@@ -67,7 +67,6 @@ struct OAuth2Configuration: OAuth2ConfigurationProtocol {
         switch oauth2Type {
         case .google: redirectUrlString = "\(redirectURLScheme):/oauth2\(OAuth2Configuration.createTokenURLParamString())"
         case .o365: redirectUrlString = "\(redirectURLScheme)://auth/"
-        case .yahoo: redirectUrlString = "not supported, not implemented"
         }
 
         guard let redirectURL = URL(string: redirectUrlString) else {
