@@ -62,9 +62,15 @@ struct OAuth2Configuration: OAuth2ConfigurationProtocol {
             return nil
         }
 
-        let gmailRedirectStringUrl = "\(redirectURLScheme):/oauth2\(OAuth2Configuration.createTokenURLParamString())"
-        let redirectStringUrl = oauth2Type == .o365 ? "\(redirectURLScheme)://auth/" : gmailRedirectStringUrl
-        guard let redirectURL = URL(string: redirectStringUrl) else {
+        var redirectUrlString = ""
+
+        switch oauth2Type {
+        case .google: redirectUrlString = "\(redirectURLScheme):/oauth2\(OAuth2Configuration.createTokenURLParamString())"
+        case .o365: redirectUrlString = "\(redirectURLScheme)://auth/"
+        case .yahoo: redirectUrlString = "not supported, not implemented"
+        }
+
+        guard let redirectURL = URL(string: redirectUrlString) else {
             return nil
         }
 
