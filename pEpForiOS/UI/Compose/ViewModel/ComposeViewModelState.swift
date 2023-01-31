@@ -257,8 +257,6 @@ extension ComposeViewModel.ComposeViewModelState {
             }
         }
     }
-
-
 }
 
 // MARK: - Handshake
