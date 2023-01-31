@@ -18,6 +18,32 @@ import pEpIOSToolbox
 
 extension UIUtils {
 
+
+    /// Shows an alert with "Close" button only.
+    ///
+    /// - Parameters:
+    ///   - title: alert title
+    ///   - message: alert message
+    ///   - completion: called when "OK" has been pressed
+    public static func showAlertWithOnlyCloseButton(title: String,
+                                                    message: String?,
+                                                    style: PEPAlertViewController.AlertStyle = .default,
+                                                    completion: (()->Void)? = nil) {
+        guard let alertViewController = UIUtils.getAlert(withTitle: title,
+                                                         message: message,
+                                                         positiveButtonText: NSLocalizedString("Close", comment: ""),
+                                                         positiveButtonAction: {
+            completion?()
+        },
+                                                         style: style,
+                                                         numberOfButtons: .one) else {
+            Log.shared.errorAndCrash("Can't instanciate alert")
+            return
+        }
+        UIUtils.show(alertViewController)
+    }
+
+
     /// Shows an alert with "OK" button only.
     ///
     /// - Parameters:
