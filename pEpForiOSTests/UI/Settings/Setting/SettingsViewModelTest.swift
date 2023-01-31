@@ -133,7 +133,11 @@ class SettingsViewModeldelegate: SettingsViewModelDelegate {
         XCTFail()
     }
 
-    func showFeedback(message: String) {
+    func showFeedback(title: String, message: String) {
+        XCTFail()
+    }
+
+    func showTryAgain(title: String, message: String) {
         XCTFail()
     }
 

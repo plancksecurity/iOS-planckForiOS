@@ -24,8 +24,10 @@ protocol SettingsViewModelDelegate: AnyObject {
     func showDBExportSuccess()
     /// Shows an alert to indicate databases export failed
     func showDBExportFailed()
-    /// Show a feedback message for a short period.
-    func showFeedback(message: String)
+    /// Show a feedback message.
+    func showFeedback(title: String, message: String)
+    /// Show a feedback message to try again
+    func showTryAgain(title: String, message: String)
 }
 
 /// Protocol that represents the basic data in a row.
@@ -77,22 +79,25 @@ final class SettingsViewModel {
         let row = section(for: indexPath.section).rows[indexPath.row]
         switch row.identifier {
         case .account,
-             .defaultAccount,
-             .pgpKeyImport,
-             .credits,
-             .extraKeys,
-             .trustedServer,
-             .resetTrust, 
-             .tutorial,
-             .exportDBs:
+                .defaultAccount,
+                .pgpKeyImport,
+                .credits,
+                .extraKeys,
+                .trustedServer,
+                .resetTrust,
+                .tutorial,
+                .exportDBs,
+                .groupMailboxes,
+                .deviceGroups,
+                .about:
             return "SettingsCell"
         case .resetAccounts:
             return "SettingsActionCell"
-        case .passiveMode,
-             .protectMessageSubject,
-             .pEpSync,
-             .usePEPFolder,
-             .unsecureReplyWarningEnabled:
+        case    .passiveMode,
+                .protectMessageSubject,
+                .pEpSync,
+                .usePEPFolder,
+                .unsecureReplyWarningEnabled:
             return "switchOptionCell"
         }
     }
@@ -151,6 +156,10 @@ final class SettingsViewModel {
         delegate?.showResetAllWarning(callback: action)
     }
 
+    public func handleTryAgainResetAllIdentities() {
+        handleResetAllIdentities()
+    }
+
     public func pgpKeyImportSettingViewModel() -> PGPKeyImportSettingViewModel {
         return PGPKeyImportSettingViewModel()
     }
@@ -191,7 +200,6 @@ extension SettingsViewModel {
         if appSettings.mdmIsEnabled {
             items.append(sectionForType(sectionType: .accounts))
             items.append(sectionForType(sectionType: .globalSettings))
-
         } else {
             SettingsViewModel.SectionType.allCases.forEach { (type) in
                 items.append(sectionForType(sectionType: type))
@@ -400,10 +408,10 @@ extension SettingsViewModel {
         case .pEpSync, .companyFeatures, .tutorial, .support:
             return nil
         case .accounts:
-            return NSLocalizedString("Performs a reset of the privacy settings of your account(s)",
+            return NSLocalizedString("Performs a reset of the privacy settings of your account(s).",
                                      comment: "Settings accounts section, footer below Reset All cell")
         case .globalSettings:
-            return NSLocalizedString("Public key material will only be attached to a message if p≡p detects that the recipient is also using p≡p.",
+            return NSLocalizedString("Public key material will only be attached to a message if p≡p.",
                                      comment: "passive mode description")
         case .contacts:
             return NSLocalizedString("Performs a reset of the privacy settings saved for a communication partner. Could be needed for example if your communication partner cannot read your messages.",
@@ -458,6 +466,12 @@ extension SettingsViewModel {
             return NSLocalizedString("Tutorial", comment: "setting row title: Tutorial")
         case .exportDBs:
             return NSLocalizedString("Export p≡p databases to file system", comment: "setting row title: Export DBs")
+        case .groupMailboxes:
+            return NSLocalizedString("Group Mailboxes", comment: "setting row title: Group Mailboxes")
+        case .deviceGroups:
+            return NSLocalizedString("Device Groups", comment: "setting row title: Device Groups")
+        case .about:
+            return NSLocalizedString("About", comment: "setting row title: About")
         }
     }
 
@@ -469,19 +483,22 @@ extension SettingsViewModel {
         case .defaultAccount:
             return AppSettings.shared.defaultAccount
         case .account,
-             .credits,
-             .extraKeys,
-             .passiveMode,
-             .pEpSync,
-             .usePEPFolder,
-             .protectMessageSubject,
-             .resetAccounts,
-             .resetTrust,
-             .pgpKeyImport,
-             .trustedServer,
-             .unsecureReplyWarningEnabled,
-             .tutorial,
-             .exportDBs:
+                .credits,
+                .extraKeys,
+                .passiveMode,
+                .pEpSync,
+                .usePEPFolder,
+                .protectMessageSubject,
+                .resetAccounts,
+                .resetTrust,
+                .pgpKeyImport,
+                .trustedServer,
+                .unsecureReplyWarningEnabled,
+                .tutorial,
+                .exportDBs,
+                .groupMailboxes,
+                .deviceGroups,
+                .about:
             return nil
         }
     }
@@ -565,13 +582,17 @@ extension SettingsViewModel {
                 Log.shared.info("Success", [])
                 DispatchQueue.main.async {
                     me.delegate?.hideLoadingView()
-                    let message = NSLocalizedString("Reset successful", comment: "Reset successfull toast message")
-                    me.delegate?.showFeedback(message: message)
+                    let title = NSLocalizedString("Reset Own Key", comment: "Reset Own Key successfull title")
+                    let message = NSLocalizedString("You have successfully reset your own keys.", comment: "Reset Own Keys feedback messsage ")
+                    me.delegate?.showFeedback(title: title, message: message)
                 }
             case .failure(let error):
-                me.delegate?.hideLoadingView()
-                Log.shared.errorAndCrash("Fail to reset all identities, with error %@ ",
-                                         error.localizedDescription)
+                DispatchQueue.main.async { [weak self] in
+                    me.delegate?.hideLoadingView()
+                    let title = NSLocalizedString("Reset Own Key", comment: "Reset Own Key successfull title")
+                    let message = NSLocalizedString("An error has occurred reseting your own keys. Try again or if the problem persist cancel and please contact with an IT Member", comment: "Reset Own Key - Try again message")
+                    me.delegate?.showTryAgain(title: title, message: message)
+                }
             }
         }
     }
@@ -608,6 +629,10 @@ extension SettingsViewModel {
         case extraKeys
         case tutorial
         case exportDBs
+
+        case groupMailboxes
+        case deviceGroups
+        case about
     }
 
     /// Struct that represents a section in SettingsTableViewController
