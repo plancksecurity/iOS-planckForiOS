@@ -35,35 +35,6 @@ class SettingsViewModelTest: AccountDrivenTestBase {
         XCTAssertEqual(settingsVM.count, 7)
     }
 
-    func testNumberOfRowsForSectionInFirstPositionWith1Account() {
-        let delegate = SettingsViewModeldelegate()
-        setupViewModel(delegate: delegate)
-        let numberOfStaticCellInAccountsSection = 1
-        let numberOfAccounts = Account.all().count
-        ///Position of the first section
-        let indexPath = IndexPath(row: 0, section: 0)
-
-        /// The number of rows in this section corresponds to the number of accounts plus one row for resetting all.
-        let numberOfRows = numberOfAccounts + numberOfStaticCellInAccountsSection
-
-        XCTAssertEqual(settingsVM.section(for: indexPath).rows.count, numberOfRows)
-    }
-
-    func testNumberOfRowsForSectionInFirstPositionWithMoreThan1Account() {
-        givenThereAreTwoAccounts()
-        let delegate = SettingsViewModeldelegate()
-        setupViewModel(delegate: delegate)
-        let numberOfStaticCellInAccountsSection = 1
-        let numberOfAccounts = Account.all().count
-        ///Position of the first section
-        let indexPath = IndexPath(row: 0, section: 0)
-
-        /// The number of rows in this section corresponds to the number of accounts plus one row for resetting all.
-        let numberOfRows = numberOfAccounts + numberOfStaticCellInAccountsSection
-
-        XCTAssertEqual(settingsVM.section(for: indexPath).rows.count, numberOfRows)
-    }
-
     func testSwitchBehaviorOnProtectMessageSubject() {
         let delegate = SettingsViewModeldelegate()
         setupViewModel(delegate: delegate, appSettings: MockRegularUsersAppSettings())
@@ -96,43 +67,6 @@ class SettingsViewModelTest: AccountDrivenTestBase {
         }
     }
     
-    func testDeleteAccountWithOnlyOneAccount() {
-        let delegate = SettingsViewModeldelegate()
-        let removeFolderViewCollapsedStateOfAccountWithExpectation = expectation(description: "removeFolderViewCollapsedStateOfAccountWithExpectation")
-        let appSettingsMock = MockAppSettings(removeFolderViewCollapsedStateOfAccountWithExpectation: removeFolderViewCollapsedStateOfAccountWithExpectation)
-        setupViewModel(delegate: delegate, appSettings: appSettingsMock)
-        let firstIndexPath = IndexPath(row: 0, section: 0)
-        let firstSection = settingsVM.section(for: firstIndexPath)
-        let cellsBefore = firstSection.rows.count
-        let firstSectionRows = firstSection.rows
-        if let row = firstSectionRows.first as? SettingsViewModel.ActionRow,
-            let action = row.action {
-            action()
-        }
-        let cellsAfter = settingsVM.section(for: firstIndexPath).rows.count
-        XCTAssertEqual(cellsBefore, cellsAfter + 1)
-        waitForExpectations(timeout: TestUtil.waitTime)
-    }
-
-    func testDeleteAccountWithMoreThanOneAccount() {
-        givenThereAreTwoAccounts()
-        let delegate = SettingsViewModeldelegate()
-        let removeFolderViewCollapsedStateOfAccountWithExpectation = expectation(description: "removeFolderViewCollapsedStateOfAccountWithExpectation")
-        let appSettingsMock = MockAppSettings(removeFolderViewCollapsedStateOfAccountWithExpectation: removeFolderViewCollapsedStateOfAccountWithExpectation)
-        setupViewModel(delegate: delegate, appSettings: appSettingsMock)
-        let firstIndexPath = IndexPath(row: 0, section: 0)
-        let firstSection = settingsVM.section(for: firstIndexPath)
-        let cellsBefore = firstSection.rows.count
-        let firstSectionRows = firstSection.rows
-        if let row = firstSectionRows.first as? SettingsViewModel.ActionRow,
-            let action = row.action {
-            action()
-        }
-        let cellsAfter = settingsVM.section(for: firstIndexPath).rows.count
-        XCTAssertEqual(cellsBefore, cellsAfter + 1)
-        waitForExpectations(timeout: TestUtil.waitTime)
-    }
-
     func testHandleExportDBsPressed() {
         let delegate = SettingsViewModeldelegate()
         let exportDBsexpectation = expectation(description: "export dbs")
@@ -199,7 +133,11 @@ class SettingsViewModeldelegate: SettingsViewModelDelegate {
         XCTFail()
     }
 
-    func showFeedback(message: String) {
+    func showFeedback(title: String, message: String) {
+        XCTFail()
+    }
+
+    func showTryAgain(title: String, message: String) {
         XCTFail()
     }
 

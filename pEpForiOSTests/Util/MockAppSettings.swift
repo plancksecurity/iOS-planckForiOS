@@ -94,6 +94,8 @@ class MockAppSettings: AppSettingsProtocol {
 
     let mdmMediaKeys = [[String:String]]()
 
+    var isEnterprise = false
+
     init(verboseLogginEnabled: Bool) {
         self.verboseLogginEnabled = verboseLogginEnabled
     }

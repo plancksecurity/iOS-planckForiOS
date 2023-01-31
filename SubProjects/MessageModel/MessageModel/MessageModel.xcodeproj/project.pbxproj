@@ -369,6 +369,7 @@
 		434C24BF25D6D7CC00F622DB /* Persistable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 15795C0322C60E3400010938 /* Persistable.swift */; };
 		434C24C325D6DB2B00F622DB /* SessionAware.swift in Sources */ = {isa = PBXBuildFile; fileRef = 15795C0622C60E9B00010938 /* SessionAware.swift */; };
 		434C24C725D6DD0D00F622DB /* Account+SessionAware.swift in Sources */ = {isa = PBXBuildFile; fileRef = 15E39FC522551DBB0016A1C4 /* Account+SessionAware.swift */; };
+		434C5AA129784B04007496AF /* AppAuth.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 434C5AA029784B04007496AF /* AppAuth.framework */; };
 		434C87FB20CFD9FE000C3A9E /* CdMessageTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 434C87FA20CFD9FE000C3A9E /* CdMessageTest.swift */; };
 		434DC0D51DAE72D4007C98B8 /* Server.swift in Sources */ = {isa = PBXBuildFile; fileRef = 434DC0D41DAE72D4007C98B8 /* Server.swift */; };
 		434DC0D71DAE7407007C98B8 /* Account.swift in Sources */ = {isa = PBXBuildFile; fileRef = 434DC0D61DAE7407007C98B8 /* Account.swift */; };
@@ -550,7 +551,6 @@
 		43CB60931DA4EB4E0015281E /* MessageModel.h in Headers */ = {isa = PBXBuildFile; fileRef = 43CB60851DA4EB4E0015281E /* MessageModel.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		43CB60A51DA4EBB60015281E /* Folder.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43CB609E1DA4EBB60015281E /* Folder.swift */; };
 		43CB60A61DA4EBB60015281E /* Message.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43CB609F1DA4EBB60015281E /* Message.swift */; };
-		43CDF0AA264282F000E8E944 /* AppAuthForExtensions.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 43CDF0A9264282F000E8E944 /* AppAuthForExtensions.framework */; };
 		43D47A4E225C729900E97C5B /* AccountInfoCache.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43D47A4D225C729900E97C5B /* AccountInfoCache.swift */; };
 		43D47A50225C751500E97C5B /* ServerInfoCache.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43D47A4F225C751500E97C5B /* ServerInfoCache.swift */; };
 		43D47A52225C767B00E97C5B /* ServerCredentialsInfoCache.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43D47A51225C767B00E97C5B /* ServerCredentialsInfoCache.swift */; };
@@ -970,6 +970,7 @@
 		434A6CE425D2BF1B00179335 /* MessageModelForAppExtensions.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = MessageModelForAppExtensions.h; sourceTree = "<group>"; };
 		434A6CE525D2BF1B00179335 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		434A6D5A25D2CB2F00179335 /* libPEPObjCAdapter_iOS.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; path = libPEPObjCAdapter_iOS.a; sourceTree = BUILT_PRODUCTS_DIR; };
+		434C5AA029784B04007496AF /* AppAuth.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = AppAuth.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		434C87FA20CFD9FE000C3A9E /* CdMessageTest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CdMessageTest.swift; sourceTree = "<group>"; };
 		434DC0D41DAE72D4007C98B8 /* Server.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Server.swift; sourceTree = "<group>"; };
 		434DC0D61DAE7407007C98B8 /* Account.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Account.swift; sourceTree = "<group>"; };
@@ -1231,7 +1232,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				43CDF0AA264282F000E8E944 /* AppAuthForExtensions.framework in Frameworks */,
+				434C5AA129784B04007496AF /* AppAuth.framework in Frameworks */,
 				43A7661A260A136600E67592 /* pEpIOSToolboxForExtensions.framework in Frameworks */,
 				434A6D5B25D2CB2F00179335 /* libPEPObjCAdapter_iOS.a in Frameworks */,
 			);
@@ -2726,6 +2727,7 @@
 		B7DB7FA322147000003968DA /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				434C5AA029784B04007496AF /* AppAuth.framework */,
 				43CDF0A9264282F000E8E944 /* AppAuthForExtensions.framework */,
 				43A76619260A136600E67592 /* pEpIOSToolboxForExtensions.framework */,
 				434A6D5A25D2CB2F00179335 /* libPEPObjCAdapter_iOS.a */,

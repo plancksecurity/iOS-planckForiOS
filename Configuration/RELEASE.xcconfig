@@ -9,4 +9,7 @@
 // Configuration settings file format documentation can be found at:
 // https://help.apple.com/xcode/#/dev745c5c974
 
-MDM_ENABLED = YES
+#include "../../pep_for_ios_intern/secret.xcconfig"
+
+MDM_ENABLED = NO
+IS_ENTERPRISE = YES

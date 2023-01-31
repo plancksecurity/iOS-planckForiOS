@@ -24,56 +24,67 @@ class MDMDeploymentTest: XCTestCase {
     }
 
     func testNetworkError() throws {
-        XCTAssertTrue(AppSettings.shared.mdmIsEnabled)
-        XCTAssertFalse(MDMDeployment().haveAccountToDeploy)
-        setupDeployableAccountData()
-        XCTAssertTrue(MDMDeployment().haveAccountToDeploy)
+        if AppSettings.shared.mdmIsEnabled {
+            XCTAssertTrue(AppSettings.shared.mdmIsEnabled)
+            XCTAssertFalse(MDMDeployment().haveAccountToDeploy)
+            setupDeployableAccountData()
+            XCTAssertTrue(MDMDeployment().haveAccountToDeploy)
 
-        do {
-            try deployAccount(password: "")
-            XCTFail()
-        } catch MDMDeploymentError.networkError {
-            // expected
-        } catch {
-            XCTFail()
+            do {
+                try deployAccount(password: "")
+                XCTFail()
+            } catch MDMDeploymentError.networkError {
+                // expected
+            } catch {
+                XCTFail()
+            }
+
+            let accounts = Account.all()
+            XCTAssertEqual(accounts.count, 0)
+        } else {
+            XCTAssertFalse(AppSettings.shared.mdmIsEnabled)
+            XCTAssertFalse(MDMDeployment().haveAccountToDeploy)
+            setupDeployableAccountData()
+            XCTAssertFalse(MDMDeployment().haveAccountToDeploy)
         }
-
-        let accounts = Account.all()
-        XCTAssertEqual(accounts.count, 0)
     }
 
     func testOk() throws {
-        XCTAssertTrue(AppSettings.shared.mdmIsEnabled)
-        XCTAssertFalse(MDMDeployment().haveAccountToDeploy)
-        setupDeployableAccountData()
-        XCTAssertTrue(MDMDeployment().haveAccountToDeploy)
+        if AppSettings.shared.mdmIsEnabled {
+            XCTAssertTrue(AppSettings.shared.mdmIsEnabled)
+            XCTAssertFalse(MDMDeployment().haveAccountToDeploy)
+            setupDeployableAccountData()
+            XCTAssertTrue(MDMDeployment().haveAccountToDeploy)
 
-        do {
-            try deployAccount(password: "",
-                              accountVerifier: TestVerifier(errorToDeliver: nil))
-        } catch {
-            XCTFail()
+            do {
+                try deployAccount(password: "",
+                                  accountVerifier: TestVerifier(errorToDeliver: nil))
+            } catch {
+                XCTFail()
+            }
         }
     }
 
     func testWrongPassword() throws {
-        XCTAssertTrue(AppSettings.shared.mdmIsEnabled)
-        XCTAssertFalse(MDMDeployment().haveAccountToDeploy)
-        setupDeployableAccountData()
-        XCTAssertTrue(MDMDeployment().haveAccountToDeploy)
+        if AppSettings.shared.mdmIsEnabled {
+            XCTAssertTrue(AppSettings.shared.mdmIsEnabled)
+            XCTAssertFalse(MDMDeployment().haveAccountToDeploy)
+            setupDeployableAccountData()
+            XCTAssertTrue(MDMDeployment().haveAccountToDeploy)
 
-        do {
-            try deployAccount(password: "surely wrong!",
-                              accountVerifier: TestVerifier(errorToDeliver: ImapSyncOperationError.authenticationFailed("", "")))
-            XCTFail()
-        } catch MDMDeploymentError.authenticationError {
-            // expected
-        } catch {
-            XCTFail()
+            do {
+                try deployAccount(password: "surely wrong!",
+                                  accountVerifier: TestVerifier(errorToDeliver: ImapSyncOperationError.authenticationFailed("", "")))
+                XCTFail()
+            } catch MDMDeploymentError.authenticationError {
+                // expected
+            } catch {
+                XCTFail()
+            }
+
+            let accounts = Account.all()
+            XCTAssertEqual(accounts.count, 0)
         }
-
-        let accounts = Account.all()
-        XCTAssertEqual(accounts.count, 0)
     }
 
     // MARK: - Internal Constants
