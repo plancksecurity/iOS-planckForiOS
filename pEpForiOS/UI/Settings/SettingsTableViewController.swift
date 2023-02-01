@@ -153,7 +153,10 @@ extension SettingsTableViewController {
              .credits,
              .extraKeys,
              .tutorial,
-             .exportDBs:
+             .exportDBs,
+             .groupMailboxes,
+             .deviceGroups,
+             .about:
             guard let row = row as? SettingsViewModel.NavigationRow else {
                 Log.shared.errorAndCrash(message: "Row doesn't match the expected type")
                 return UITableViewCell()
@@ -301,7 +304,11 @@ extension SettingsTableViewController : SwipeTableViewCellDelegate {
              .pEpSync,
              .usePEPFolder,
              .protectMessageSubject,
-             .unsecureReplyWarningEnabled:
+             .unsecureReplyWarningEnabled,
+             .groupMailboxes,
+             .deviceGroups,
+             .about:
+            tableView.deselectRow(at: indexPath, animated: true)
             // Nothing to do.
             return
         }
@@ -312,8 +319,18 @@ extension SettingsTableViewController : SwipeTableViewCellDelegate {
 
 extension SettingsTableViewController : SettingsViewModelDelegate {
 
-    func showFeedback(message: String) {
-        showToast(message: message)
+    func showFeedback(title: String, message: String) {
+        UIUtils.showAlertWithOnlyCloseButton(title: title, message: message)
+    }
+
+    func showTryAgain(title: String, message: String) {
+        UIUtils.showTwoButtonAlert(withTitle: title, message: message) { [weak self] in
+            guard let me = self else {
+                Log.shared.errorAndCrash("Lost myself")
+                return
+            }
+            me.viewModel.handleTryAgainResetAllIdentities()
+        }
     }
 
     /// Displays a loading view
@@ -345,7 +362,7 @@ extension SettingsTableViewController : SettingsViewModelDelegate {
     
     func showResetAllWarning(callback: @escaping SettingsViewModel.ActionBlock) {
         let title = NSLocalizedString("Reset All Identities", comment: "Settings confirm to reset all identity title alert")
-        let message = NSLocalizedString("Resetting your key pair generates new private and public keys for you that p≡p will immediately start using. Are you sure?", comment: "Account settings confirm to reset identity title alert")
+        let message = NSLocalizedString("Resetting your key pair generates new private and public keys for you that p≡p will immediately start using.\n\nResetting also removes your device from any device group.\n\nAre you sure you want to reset?", comment: "Account settings confirm to reset identity title alert")
         let cancelTitle = NSLocalizedString("Cancel", comment: "Cancel reset account identity button title")
         let resetTitle = NSLocalizedString("Yes, Reset", comment: "Reset account identity button title")
         UIUtils.showTwoButtonAlert(withTitle: title, message: message, cancelButtonText: cancelTitle, positiveButtonText: resetTitle, positiveButtonAction: {
@@ -393,6 +410,9 @@ extension SettingsTableViewController {
         case noAccounts
         case resetTrust
         case tutorial
+        case segueGroupMailboxes
+        case segueDeviceGroups
+        case segueAbout
         /// Use for cells that do not segue, like switch cells
         case none
     }
@@ -417,6 +437,12 @@ extension SettingsTableViewController {
             return .tutorial
         case .passiveMode, .usePEPFolder, .pEpSync, .unsecureReplyWarningEnabled, .protectMessageSubject, .resetAccounts, .exportDBs:
             return .none
+        case .groupMailboxes:
+            return .none // .segueGroupMailboxes
+        case .deviceGroups:
+            return .none // .segueDeviceGroups
+        case .about:
+            return .none // .segueAbout
         }
     }
 
@@ -447,7 +473,10 @@ extension SettingsTableViewController {
              .resetTrust,
              .segueExtraKeys,
              .segueShowSettingTrustedServers,
-             .tutorial:
+             .tutorial,
+             .segueGroupMailboxes,
+             .segueDeviceGroups,
+             .segueAbout:
             // Nothing to prepare for those seques
             // We do not use ´default´ in switch because it is less error prone.
             // So if the destination vc doesn't need anything we just let it in this case.

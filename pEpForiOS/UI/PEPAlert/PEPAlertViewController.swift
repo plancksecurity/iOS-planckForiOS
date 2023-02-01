@@ -106,7 +106,7 @@ extension PEPAlertViewController {
     public var primaryColor: UIColor {
         switch alertStyle {
         case .default:
-            return .pEpGreen
+            return .label
         case .warn:
             return .pEpRed
         case .undo:
@@ -117,7 +117,7 @@ extension PEPAlertViewController {
     public var secondaryColor: UIColor {
         switch alertStyle {
         case .default, .warn, .undo:
-            return .secondaryLabel
+            return .label
         }
     }
 }
