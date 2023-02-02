@@ -234,7 +234,9 @@ extension TrustManagementViewController: TrustManagementViewModelDelegate {
                 Log.shared.errorAndCrash("Lost myself")
                 return
             }
-            me.viewModel?.handleResetPressed(forRowAt: indexPath)
+            me.dismissAndPerform {
+                me.viewModel?.handleResetPressed(forRowAt: indexPath)
+            }
         }
     }
 
@@ -499,8 +501,19 @@ extension TrustManagementViewController {
         let message = NSLocalizedString("Resetting your partner key pair......... \n\nAre you sure you want to reset?", comment: "TrustManagementViewModel confirm to reset partner's key title alert")
         let cancelTitle = NSLocalizedString("Cancel", comment: "Cancel reset account identity button title")
         let resetTitle = NSLocalizedString("Yes, Reset", comment: "Reset account identity button title")
-        UIUtils.showTwoButtonAlert(withTitle: title, message: message, cancelButtonText: cancelTitle, positiveButtonText: resetTitle, positiveButtonAction: {
-            callback()
+        UIUtils.showTwoButtonAlert(withTitle: title,
+                                   message: message,
+                                   cancelButtonText: cancelTitle,
+                                   positiveButtonText: resetTitle,
+                                   positiveButtonAction: { [weak self] in
+            guard let me = self else {
+                Log.shared.errorAndCrash("Lost myself")
+                return
+            }
+            me.dismissAndPerform {
+                callback()
+            }
+
         },
         style: PEPAlertViewController.AlertStyle.warn)
     }
