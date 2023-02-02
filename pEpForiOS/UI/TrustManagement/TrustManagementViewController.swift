@@ -219,6 +219,24 @@ extension TrustManagementViewController {
 // MARK: - TrustManagementViewModelDelegate
 
 extension TrustManagementViewController: TrustManagementViewModelDelegate {
+    func showResetPartnerKeySuccessfully() {
+        let title = NSLocalizedString("Reset Partner's Key", comment: "Reset Partner's Key successfull title")
+        let message = NSLocalizedString("You have successfully reset your partner's keys.", comment: "Reset partners Keys feedback messsage ")
+        UIUtils.showAlertWithOnlyCloseButton(title: title, message: message)
+    }
+
+    func showResetPartnerKeyFailed(forRowAt indexPath: IndexPath) {
+        let title = NSLocalizedString("Reset Partner's Key", comment: "Reset Partner's Key failed title")
+        let message = NSLocalizedString("An error has occurred reseting your partner's key. Try again or if the problem persist cancel and please contact with an IT Member", comment: "Reset Own Key - Try again message")
+        let tryAgainTitle = NSLocalizedString("Try Again", comment: "Try again button title")
+        UIUtils.showTwoButtonAlert(withTitle: title, message: message, positiveButtonText: tryAgainTitle) { [weak self] in
+            guard let me = self else {
+                Log.shared.errorAndCrash("Lost myself")
+                return
+            }
+            me.viewModel?.handleResetPressed(forRowAt: indexPath)
+        }
+    }
 
     func dataChanged(forRowAt indexPath: IndexPath) {
         tableView.reloadRows(at: [indexPath], with: .automatic)
@@ -303,7 +321,9 @@ extension TrustManagementViewController: TrustManagementTableViewCellDelegate, T
             return
         }
         if let indexPath = tableView.indexPath(for: cell) {
-            viewModel.handleResetPressed(forRowAt: indexPath)
+            showResetPartnerKey {
+                viewModel.handleResetPressed(forRowAt: indexPath)
+            }
         }
     }
     
@@ -467,5 +487,21 @@ extension TrustManagementViewController {
         } else {
             view.backgroundColor = .secondarySystemBackground
         }
+    }
+}
+
+//MARK: - Reset Partner Key
+
+extension TrustManagementViewController {
+
+    private func showResetPartnerKey(callback: @escaping TrustManagementViewModel.ActionBlock) {
+        let title = NSLocalizedString("Reset Partner Key", comment: "Confirm to Reset Partner Key title alert")
+        let message = NSLocalizedString("Resetting your partner key pair......... \n\nAre you sure you want to reset?", comment: "TrustManagementViewModel confirm to reset partner's key title alert")
+        let cancelTitle = NSLocalizedString("Cancel", comment: "Cancel reset account identity button title")
+        let resetTitle = NSLocalizedString("Yes, Reset", comment: "Reset account identity button title")
+        UIUtils.showTwoButtonAlert(withTitle: title, message: message, cancelButtonText: cancelTitle, positiveButtonText: resetTitle, positiveButtonAction: {
+            callback()
+        },
+        style: PEPAlertViewController.AlertStyle.warn)
     }
 }
