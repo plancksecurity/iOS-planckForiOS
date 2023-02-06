@@ -44,6 +44,7 @@ class AccountTypeSelectorViewModel {
     public func refreshAccountTypes() {
         accountTypes = [.icloud,
                         .o365,
+                        .outlook,
                         .gmail,
                         .clientCertificate,
                         .other]
@@ -90,6 +91,8 @@ class AccountTypeSelectorViewModel {
             return "asset-Office365"
         case .icloud:
             return "asset-iCloud"
+        case .outlook:
+            return "asset-Outlook"
         }
     }
 

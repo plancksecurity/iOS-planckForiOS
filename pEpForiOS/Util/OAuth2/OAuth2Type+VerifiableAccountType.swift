@@ -17,7 +17,7 @@ extension OAuth2Type {
             self = .google
         case .o365:
             self = .o365
-        case .other, .clientCertificate, .icloud:
+        case .other, .clientCertificate, .icloud, .outlook:
             return nil
         }
     }
