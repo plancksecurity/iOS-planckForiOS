@@ -426,7 +426,7 @@ class ComposeViewModel {
         }
 
         if composeMode == .normal {
-            showAlertSendingUnencryptedMessageIfRequied(forMessage: safeState) { accepted in
+            showAlertSendingUnencryptedMessageIfRequired(forState: safeState) { accepted in
                 handleUserDecision(accepted: accepted)
             }
         } else {
@@ -1134,47 +1134,67 @@ extension ComposeViewModel: TrustmanagementRatingChangedDelegate {
 extension ComposeViewModel {
 
     /// When the user composes an email that will be sent unencrypted gets a warning
-    private func showAlertSendingUnencryptedMessageIfRequied(forMessage safeState: ComposeViewModelState,
-                                                             completion: @escaping (Accepted)->()) {
-        guard let msg = ComposeUtil.messageToSend(withDataFrom: safeState) else {
-            Log.shared.warn("No message for sending")
-            completion(false)
-            return
+    private func showAlertSendingUnencryptedMessageIfRequired(forState safeState: ComposeViewModelState,
+                                                              completion: @escaping (Accepted) -> ()) {
+        // Message is secure anyways, no need to ask the user, call the completion block
+        // simulating an affirmative from the user.
+        func noNeedToAskTheUser() {
+            completion(true)
         }
 
-        let group = DispatchGroup()
-        group.enter()
-        msg.pEpRating { (rating) in
-            guard rating == .unencrypted else {
-                return
-            }
-            group.notify(queue: DispatchQueue.main) { [weak self] in
-                guard let me = self else {
-                    // Valid case. The we might have been dismissed already.
-                    // Do nothing ...
-                    return
-                }
+        func askTheUserBecauseUnsecure() {
+            let warningTitle = NSLocalizedString("Warning", comment: "Warning title")
+            let warningMessage = NSLocalizedString("This message will be sent unencrypted", comment: "Warning message")
+            let cancelButtonText = NSLocalizedString("NO", comment: "'No' button to confirm less secure email sent")
+            let positiveButtonText =  NSLocalizedString("YES", comment: "'Yes' button to confirm less secure email sent")
 
-                let warningTitle = NSLocalizedString("Warning", comment: "Warning title")
-                let warningMessage = NSLocalizedString("This message will be sent unencrypted", comment: "Warning message")
-                let cancelButtonText = NSLocalizedString("NO", comment: "'No' button to confirm less secure email sent")
-                let positiveButtonText =  NSLocalizedString("YES", comment: "'Yes' button to confirm less secure email sent")
-
-                me.delegate?.showTwoButtonAlert(withTitle: warningTitle,
-                                                message: warningMessage,
-                                                cancelButtonText: cancelButtonText,
-                                                positiveButtonText: positiveButtonText,
-                                                cancelButtonAction: { completion(false) },
-                                                positiveButtonAction: { completion(true) })
-                }
-            }
-            group.leave()
+            delegate?.showTwoButtonAlert(withTitle: warningTitle,
+                                         message: warningMessage,
+                                         cancelButtonText: cancelButtonText,
+                                         positiveButtonText: positiveButtonText,
+                                         cancelButtonAction: { completion(false) },
+                                         positiveButtonAction: { completion(true) })
         }
+
+        // Use the current outgoing rating.
+        //
+        // Since the use case is "Help user to avoid sending unsecure emails",
+        // anything that is not encrypted is handled as unsecure, including non-sensical
+        // cases arising because there is no special type for outgoing rating only.
+        switch safeState.rating {
+        case .undefined:
+            askTheUserBecauseUnsecure()
+        case .cannotDecrypt:
+            askTheUserBecauseUnsecure()
+        case .haveNoKey:
+            askTheUserBecauseUnsecure()
+        case .unencrypted:
+            askTheUserBecauseUnsecure()
+        case .mediaKeyEncryption:
+            noNeedToAskTheUser()
+        case .unreliable:
+            askTheUserBecauseUnsecure()
+        case .b0rken:
+            askTheUserBecauseUnsecure()
+        case .reliable:
+            noNeedToAskTheUser()
+        case .trusted:
+            noNeedToAskTheUser()
+        case .trustedAndAnonymized:
+            noNeedToAskTheUser()
+        case .fullyAnonymous:
+            noNeedToAskTheUser()
+        case .mistrust:
+            askTheUserBecauseUnsecure()
+        case .underAttack:
+            askTheUserBecauseUnsecure()
+        }
+    }
 
     /// When forwarding/answering a previously decrypted message and the pEpRating is considered as
     /// less secure as the original message's pEp rating, warn the user.
     private func showAlertFordwardingLessSecureIfRequired(forState state: ComposeViewModelState,
-                                                          completion: @escaping (Accepted)->()) {
+                                                          completion: @escaping (Accepted) -> ()) {
         guard AppSettings.shared.unsecureReplyWarningEnabled else {
             // Setting is disabled ...
             // ... nothing to do.
