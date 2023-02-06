@@ -35,7 +35,7 @@ curl https://sh.rustup.rs -sSf | sh
 sudo port install openjdk11
 ```
 
-add this to ~/.profile (create if it doesn't exist):
+Add this to ~/.profile (create if it doesn't exist):
 
 ```
 source $HOME/.cargo/env
@@ -46,9 +46,11 @@ Restart your Console!
 
 ```
 sudo port install pkgconfig
+rustup target add x86_64-apple-darwin
+rustup target add x86_64-apple-ios
+rustup target add aarch64-apple-darwin
+rustup target add aarch64-apple-ios
 rustup update
-rustup target add aarch64-apple-ios x86_64-apple-ios
-sudo port pkgconfig
 ```
 
 ### Set up Xcode
