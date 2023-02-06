@@ -25,8 +25,10 @@ protocol TrustManagementViewModelDelegate: AnyObject {
     /// Called when data changed.
     func dataChanged(forRowAt indexPath: IndexPath)
 
+    /// Show a message to indicate the partner key was successfully reset
     func showResetPartnerKeySuccessfully()
 
+    /// Show a message to indicate the partner key reset failed
     func showResetPartnerKeyFailed(forRowAt indexPath: IndexPath)
 }
 

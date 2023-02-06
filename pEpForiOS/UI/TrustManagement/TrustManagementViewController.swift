@@ -221,7 +221,7 @@ extension TrustManagementViewController {
 extension TrustManagementViewController: TrustManagementViewModelDelegate {
     func showResetPartnerKeySuccessfully() {
         let title = NSLocalizedString("Reset Partner's Key", comment: "Reset Partner's Key successfull title")
-        let message = NSLocalizedString("You have successfully reset your partner's keys.", comment: "Reset partners Keys feedback messsage ")
+        let message = NSLocalizedString("You have successfully reset your partner key.", comment: "Reset partners Key feedback messsage ")
         UIUtils.showAlertWithOnlyCloseButton(title: title, message: message)
     }
 
@@ -498,7 +498,12 @@ extension TrustManagementViewController {
 
     private func showResetPartnerKey(callback: @escaping TrustManagementViewModel.ActionBlock) {
         let title = NSLocalizedString("Reset Partner Key", comment: "Confirm to Reset Partner Key title alert")
-        let message = NSLocalizedString("Resetting your partner key pair......... \n\nAre you sure you want to reset?", comment: "TrustManagementViewModel confirm to reset partner's key title alert")
+
+        let message = NSLocalizedString("""
+        Resetting the public key of a recipient will clear the link between that key and the recipient's key from your database.
+
+        After resetting and as soon as you start composing an email to the recipient, p≡p will automatically get the correct public key.
+        """, comment: "Reset partner key pop up message")
         let cancelTitle = NSLocalizedString("Cancel", comment: "Cancel reset account identity button title")
         let resetTitle = NSLocalizedString("Yes, Reset", comment: "Reset account identity button title")
         UIUtils.showTwoButtonAlert(withTitle: title,
