@@ -23,7 +23,6 @@ extension VerifiableAccount {
         case clientCertificate
         case o365
         case icloud
-        case outlook
 
         public var isOauth: Bool {
             return [.gmail, .o365].contains(self)
@@ -36,7 +35,6 @@ extension VerifiableAccount {
             case .clientCertificate: return "clientCertificate"
             case .o365: return "o365"
             case .icloud: return "icloud"
-            case .outlook: return "outlook"
             }
         }
     }
@@ -651,27 +649,6 @@ extension VerifiableAccount {
                                          transportIMAP: .TLS,
                                          loginNameSMTP: nil,
                                          serverSMTP: "smtp.mail.me.com",
-                                         portSMTP: 587,
-                                         transportSMTP: .startTLS,
-                                         automaticallyTrustedImapServer: false,
-                                         manuallyTrustedImapServer: false,
-                                         keySyncEnable: true,
-                                         containsCompleteServerInfo: true,
-                                         usePEPFolderProvider: usePEPFolderProvider)
-        case .outlook:
-            account =  VerifiableAccount(verifiableAccountDelegate: nil,
-                                         address: nil,
-                                         userName: nil,
-                                         authMethod: .cramMD5,
-                                         imapPassword: nil,
-                                         smtpPassword: nil,
-                                         accessToken: nil,
-                                         loginNameIMAP: nil,
-                                         serverIMAP: "outlook.office365.com",
-                                         portIMAP: 993,
-                                         transportIMAP: .TLS,
-                                         loginNameSMTP: nil,
-                                         serverSMTP: "smtp.office365.com",
                                          portSMTP: 587,
                                          transportSMTP: .startTLS,
                                          automaticallyTrustedImapServer: false,

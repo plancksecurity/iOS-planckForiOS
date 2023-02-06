@@ -22,7 +22,7 @@ extension OutlookO365SpecificInformation: ProviderSpecificInformationProtocol {
 
     func belongsToProvider(_ folder: CdFolder) -> Bool {
         let acType = folder.accountOrCrash.accountType
-        return acType == .o365 || acType == .outlook
+        return acType == .o365
     }
 
     func isOkToAppendMessages(toFolder folder: Folder) -> Bool {
