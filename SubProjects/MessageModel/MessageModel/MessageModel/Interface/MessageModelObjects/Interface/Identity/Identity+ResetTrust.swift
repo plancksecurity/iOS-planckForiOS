@@ -30,7 +30,7 @@ extension Identity {
     }
 
     /// Reset trust for the identity
-    public func resetTrust(completion: @escaping () -> ()) {
+    public func resetTrust(completion: @escaping () -> (), errorCallback: (() -> Void)? = nil) {
         func logError() {
             Log.shared.info("User has choosen to rest trust for an identity we have no key for. Valid case, just for the record. The identity is: %@", self.debugDescription)
         }
@@ -47,10 +47,14 @@ extension Identity {
                 return
             }
             PEPSession().keyReset(updatedIdentity,
-                                       fingerprint: updatedFingerprint,
-                                       errorCallback: { (_) in
-                                        logError()
-                                        completion()
+                                  fingerprint: updatedFingerprint,
+                                  errorCallback: { (_) in
+                logError()
+                completion()
+                if let errorCB = errorCallback {
+                    errorCB()
+                }
+
             }) {
                 completion()
             }

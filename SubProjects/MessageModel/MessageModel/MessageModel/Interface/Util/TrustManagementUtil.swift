@@ -61,8 +61,13 @@ public protocol TrustManagementUtilProtocol: AnyObject {
                               completion: @escaping (Error?) -> ())
     
     /// Method that reset all information about the partner identity
+    ///
     /// - Parameter partnerIdentity: Identity in which the action will be taken.
-    func resetTrust(for partnerIdentity: Identity?, completion: @escaping () -> ())
+    ///   - completion: Success completion block
+    ///   - errorCallback: Error callback
+    func resetTrust(for partnerIdentity: Identity?,
+                    completion: @escaping () -> (),
+                    errorCallback: (() -> Void)?)
 
     /// Calls the completion block with a list of available languages codes
     /// in ISO 639-1 for the self identity
@@ -286,12 +291,14 @@ extension TrustManagementUtil : TrustManagementUtilProtocol {
         }
     }
 
-    public func resetTrust(for partnerIdentity: Identity?, completion: @escaping () -> ()) {
+    public func resetTrust(for partnerIdentity: Identity?,
+                           completion: @escaping () -> (),
+                           errorCallback: (() -> Void)? = nil) {
         guard let identity = partnerIdentity else {
             Log.shared.errorAndCrash("Identity must not be nil")
             return
         }
-        identity.resetTrust(completion: completion)
+        identity.resetTrust(completion: completion, errorCallback: errorCallback)
     }
 
     public func getFingerprint(for identity: Identity,
