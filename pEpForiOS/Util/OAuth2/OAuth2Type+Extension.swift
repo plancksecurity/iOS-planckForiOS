@@ -17,13 +17,6 @@ extension OAuth2Type {
                 scopes: ["https://mail.google.com/"],
                 clientIDKey: "OAUTH2_GMAIL_CLIENT_ID",
                 redirectURLSchemeKey: "OAUTH2_GMAIL_REDIRECT_URL_SCHEME")
-        case .yahoo:
-            return OAuth2Configuration(
-                oauth2Type: .yahoo,
-                scopes: ["openid"],
-                clientIDKey: "OAUTH2_YAHOO_CLIENT_ID",
-                clientSecretKey: "OAUTH2_YAHOO_CLIENT_SECRET",
-                redirectURLKey: "OAUTH2_YAHOO_REDIRECT_URL")
         case .o365:
             return OAuth2Configuration(
                 oauth2Type: .o365,
@@ -41,10 +34,6 @@ extension OAuth2Type {
             return OIDServiceConfiguration(
                 authorizationEndpoint: URL(string: "https://accounts.google.com/o/oauth2/v2/auth")!,
                 tokenEndpoint: URL(string: "https://www.googleapis.com/oauth2/v4/token")!)
-        case .yahoo:
-            return OIDServiceConfiguration(
-                authorizationEndpoint: URL(string: "https://api.login.yahoo.com/oauth2/request_auth")!,
-                tokenEndpoint: URL(string: "https://api.login.yahoo.com/oauth2/get_token")!)
         case .o365:
             return OIDServiceConfiguration(
                 authorizationEndpoint: URL(string: "https://login.microsoftonline.com/common/oauth2/v2.0/authorize")!,

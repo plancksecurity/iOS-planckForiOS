@@ -47,12 +47,11 @@ struct OAuth2Configuration: OAuth2ConfigurationProtocol {
                   clientSecret: clientSecret, redirectURL: redirectURL)
     }
 
-    init?(
-        oauth2Type: OAuth2Type,
-        scopes: [String],
-        clientIDKey: String,
-        clientSecretKey: String? = nil,
-        redirectURLSchemeKey: String) {
+    init?(oauth2Type: OAuth2Type,
+          scopes: [String],
+          clientIDKey: String,
+          clientSecretKey: String? = nil,
+          redirectURLSchemeKey: String) {
         guard let settings = Bundle.main.infoDictionary else {
             return nil
         }
@@ -63,15 +62,20 @@ struct OAuth2Configuration: OAuth2ConfigurationProtocol {
             return nil
         }
 
-        let gmailRedirectStringUrl = "\(redirectURLScheme):/oauth2\(OAuth2Configuration.createTokenURLParamString())"
-        let redirectStringUrl = oauth2Type == .o365 ? "\(redirectURLScheme)://auth" : gmailRedirectStringUrl
-        guard let redirectURL = URL(string: redirectStringUrl) else {
+        var redirectUrlString = ""
+
+        switch oauth2Type {
+        case .google: redirectUrlString = "\(redirectURLScheme):/oauth2\(OAuth2Configuration.createTokenURLParamString())"
+        case .o365: redirectUrlString = "\(redirectURLScheme)://auth/"
+        }
+
+        guard let redirectURL = URL(string: redirectUrlString) else {
             return nil
         }
 
         var clientSecret: String? = nil
         if let theKey = clientSecretKey,
-            let theClientSecret = settings[theKey] as? String {
+           let theClientSecret = settings[theKey] as? String {
             clientSecret = theClientSecret
         }
 

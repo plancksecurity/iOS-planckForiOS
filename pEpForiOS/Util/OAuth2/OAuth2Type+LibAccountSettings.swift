@@ -16,8 +16,6 @@ extension OAuth2Type {
         if let provider = ac.providerID {
             if provider == AccountSettingsProviderIDGmail {
                 self = .google
-            } else if provider == AccountSettingsProviderIDYahoo {
-                self = .yahoo
             } else {
                 return nil
             }
