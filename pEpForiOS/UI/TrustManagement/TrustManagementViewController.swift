@@ -235,7 +235,11 @@ extension TrustManagementViewController: TrustManagementViewModelDelegate {
                 return
             }
             me.dismissAndPerform {
-                me.viewModel?.handleResetPressed(forRowAt: indexPath)
+                guard let vm = me.viewModel else {
+                    Log.shared.errorAndCrash("VM not found")
+                    return
+                }
+                vm.handleResetPressed(forRowAt: indexPath)
             }
         }
     }
