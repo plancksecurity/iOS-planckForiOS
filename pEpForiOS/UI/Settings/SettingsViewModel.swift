@@ -586,8 +586,8 @@ extension SettingsViewModel {
                     let message = NSLocalizedString("You have successfully reset your own keys.", comment: "Reset Own Keys feedback messsage ")
                     me.delegate?.showFeedback(title: title, message: message)
                 }
-            case .failure(let error):
-                DispatchQueue.main.async { [weak self] in
+            case .failure:
+                DispatchQueue.main.async {
                     me.delegate?.hideLoadingView()
                     let title = NSLocalizedString("Reset Own Key", comment: "Reset Own Key successfull title")
                     let message = NSLocalizedString("An error has occurred reseting your own keys. Try again or if the problem persist cancel and please contact with an IT Member", comment: "Reset Own Key - Try again message")
