@@ -8,6 +8,8 @@
 
 import UIKit
 
+import MessageModel
+
 final class KeySyncHandshakeViewController: UIViewController {
     enum Action {
         case cancel, decline, accept
@@ -95,16 +97,16 @@ final class KeySyncHandshakeViewController: UIViewController {
 
     private let viewModel = KeySyncHandshakeViewModel()
     private var pickerLanguages = [String]()
-    private var meFPR: String?
-    private var partnerFPR: String?
+    private var identityMe: Identity?
+    private var identityPartner: Identity?
     private var isNewGroup = true
 
     override func viewDidLoad() {
         super.viewDidLoad()
         viewModel.delegate = self
-        viewModel.setFingerPrints(meFPR: meFPR,
-                                  partnerFPR: partnerFPR,
-                                  isNewGroup: isNewGroup)
+        viewModel.setIdentities(identityMe: identityMe,
+                                identityPartner: identityPartner,
+                                isNewGroup: isNewGroup)
     }
 
     override func viewDidAppear(_ animated: Bool) {
@@ -112,11 +114,11 @@ final class KeySyncHandshakeViewController: UIViewController {
         message.text = viewModel.getMessage()
     }
 
-    func setFingerPrints(meFPR: String,
-                         partnerFPR: String,
-                         isNewGroup: Bool) {
-        self.meFPR = meFPR
-        self.partnerFPR = partnerFPR
+    func setIdentities(identityMe: Identity,
+                       identityPartner: Identity,
+                       isNewGroup: Bool) {
+        self.identityMe = identityMe
+        self.identityPartner = identityPartner
         self.isNewGroup = isNewGroup
     }
 

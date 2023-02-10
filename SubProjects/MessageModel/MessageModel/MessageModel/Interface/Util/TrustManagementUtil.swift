@@ -28,14 +28,8 @@ public protocol TrustManagementUtilProtocol: AnyObject {
     func getTrustwords(for SelfIdentity: Identity, and partnerIdentity: Identity,
                        language: String,
                        long: Bool,
-                       completion: @escaping (String?)->Void)
+                       completion: @escaping (String?) -> Void)
 
-    func getTrustwords(forFpr1 fpr1: String,
-                       fpr2: String,
-                       language: String,
-                       full: Bool,
-                       completion: @escaping (String?)->Void)
-    
     /// Confirms trust on a partner identity.
     /// - Parameters:
     ///   - partnerIdentity: The partner identity to deny trust on
@@ -137,24 +131,11 @@ extension TrustManagementUtil : TrustManagementUtilProtocol {
         }
     }
 
-    public func getTrustwords(forFpr1 fpr1: String,
-                              fpr2: String,
-                              language: String,
-                              full: Bool,
-                              completion: @escaping (String?)->Void) {
-        PEPSession().getTrustwordsFpr1(fpr1, fpr2: fpr2, language: language, full: full, errorCallback: { (error) in
-            Log.shared.error("%@", error.localizedDescription)
-            completion(nil)
-        }) { (trustwords) in
-            completion(trustwords)
-        }
-    }
-
     public func getTrustwords(for SelfIdentity: Identity,
                               and partnerIdentity: Identity,
                               language: String,
                               long: Bool,
-                              completion: @escaping (String?)->Void) {
+                              completion: @escaping (String?) -> Void) {
         var selfPEPIdentity = SelfIdentity.pEpIdentity()
         var partnerPEPIdentity = partnerIdentity.pEpIdentity()
         var isPartnerpEpUser = false

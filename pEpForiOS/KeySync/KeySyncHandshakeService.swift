@@ -51,25 +51,26 @@ extension KeySyncHandshakeService {
 
 extension KeySyncHandshakeService: KeySyncServiceHandshakeHandlerProtocol {
 
-    public func showHandshake(meFingerprint: String?,
-                              partnerFingerprint: String?,
+    public func showHandshake(identityMe: Identity?,
+                              identityPartner: Identity?,
                               isNewGroup: Bool,
-                              completion: ((KeySyncHandshakeResult)->())? = nil) {
-        guard let meFPR = meFingerprint, let partnerFPR = partnerFingerprint else {
-            Log.shared.errorAndCrash("Missing FPRs")
-            return
-        }
-
+                              completion: ((KeySyncHandshakeResult) -> ())? = nil) {
         // pEpSyncWizard should be presented over other pEp modals (like Login, Tutorial, etc)
         // if a pEpModal is being presented. We present pEpSyncWizard over it.
         // Else the viewController to present it
         DispatchQueue.main.async { [weak self] in
             guard let me = self else {
-                Log.shared.errorAndCrash("Lost myself")
+                Log.shared.lostMySelf()
                 return
             }
-            me.pEpSyncWizard = UIUtils.showKeySyncWizard(meFPR: meFPR,
-                                                         partnerFPR: partnerFPR,
+
+            guard let theIdentityMe = identityMe, let theIdentityParter = identityPartner else {
+                Log.shared.errorAndCrash("Handshake identities are nil")
+                return
+            }
+
+            me.pEpSyncWizard = UIUtils.showKeySyncWizard(identityMe: theIdentityMe,
+                                                         identityPartner: theIdentityParter,
                                                          isNewGroup: isNewGroup) { action in
                 switch action {
                 case .accept:

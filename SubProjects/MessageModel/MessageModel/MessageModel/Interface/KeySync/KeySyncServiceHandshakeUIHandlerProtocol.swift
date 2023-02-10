@@ -11,12 +11,12 @@ public protocol KeySyncServiceHandshakeHandlerProtocol: AnyObject {
     /// Show pEp Sync Wizard
     ///
     /// - Parameters:
-    ///   - me: my trust words
-    ///   - partner: my partner trust words
+    ///   - identityMe: own identity
+    ///   - identityPartner: a partner identity
     ///   - isNewGroup: is it a new group creation or i am joining an existing group
     ///   - completion: handle the possible results of type PEPSyncHandshakeResult
-    func showHandshake(meFingerprint: String?,
-                       partnerFingerprint: String?,
+    func showHandshake(identityMe: Identity?,
+                       identityPartner: Identity?,
                        isNewGroup: Bool,
                        completion: ((KeySyncHandshakeResult)->())?)
 

@@ -36,8 +36,8 @@ final class KeySyncHandshakeViewModel {
     weak var delegate: KeySyncHandshakeViewModelDelegate?
     var fullTrustWords = false //Internal since testing
     private var languageCode = Locale.current.languageCode ?? "en"
-    private var meFPR: String?
-    private var partnerFPR: String?
+    private var identityMe: Identity?
+    private var identityPartner: Identity?
     private var isNewGroup = true
 
     private var _languages = [TrustwordsLanguage]()
@@ -95,11 +95,11 @@ final class KeySyncHandshakeViewModel {
         }
     }
 
-    func setFingerPrints(meFPR: String?,
-                         partnerFPR: String?,
-                         isNewGroup: Bool) {
-        self.meFPR = meFPR
-        self.partnerFPR = partnerFPR
+    func setIdentities(identityMe: Identity?,
+                       identityPartner: Identity?,
+                       isNewGroup: Bool) {
+        self.identityMe = identityMe
+        self.identityPartner = identityPartner
         self.isNewGroup = isNewGroup
         updateTrustwords()
     }
@@ -130,13 +130,13 @@ extension KeySyncHandshakeViewModel {
         }
     }
 
-    private func trustWords(completion: @escaping (String)->Void) {
-        guard let meFPR = meFPR, let partnerFPR = partnerFPR else {
-            Log.shared.errorAndCrash("Nil meFingerPrints or Nil partnerFingerPrints")
+    private func trustWords(completion: @escaping (String) -> Void) {
+        guard let identityMe = identityMe, let identityPartner = identityPartner else {
+            Log.shared.errorAndCrash("Identities are nil (own or partner)")
             completion("")
             return
         }
-        TrustManagementUtil().getTrustwords(forFpr1: meFPR, fpr2: partnerFPR, language: languageCode, full: fullTrustWords) { (trustwords) in
+        TrustManagementUtil().getTrustwords(for: identityMe, and: identityPartner, language: languageCode, long: fullTrustWords) {  (trustwords) in
             DispatchQueue.main.async {
                 completion(trustwords ?? "")
             }

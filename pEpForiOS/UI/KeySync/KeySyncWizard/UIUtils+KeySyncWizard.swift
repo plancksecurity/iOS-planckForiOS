@@ -16,18 +16,18 @@ extension UIUtils {
     /// Presents the KeySync wizard, if possible.
     /// - note: This is an async task. The `KeySyncWizardViewController` is NOT presented yet after this method returned!
     /// - Parameters:
-    ///   - meFPR: The fingerprints of the user.
-    ///   - partnerFPR: The fingerprints of his communication partner.
-    ///   - isNewGroup: Indicates if it's a new group or it's joining an existing group
+    ///   - identityMe: The own user Identity.
+    ///   - identityPartner: The partner identity.
+    ///   - isNewGroup: Indicates if it's a new group or it's joining an existing group.
     ///   - completion: Callback to be executed when the user interacts with keysync wizard buttons.
-    /// - Returns: the view controller of the key sync, if it's presented, nil otherwise.
+    /// - Returns: The view controller of the key sync, if it's presented, nil otherwise.
     @discardableResult
-    static public func showKeySyncWizard(meFPR: String,
-                                         partnerFPR: String,
+    static public func showKeySyncWizard(identityMe: Identity,
+                                         identityPartner: Identity,
                                          isNewGroup: Bool,
                                          completion: @escaping (KeySyncWizardViewController.Action) -> Void ) -> KeySyncWizardViewController? {
-        guard let pEpSyncWizard = KeySyncWizardViewController.fromStoryboard(meFPR: meFPR,
-                                                                             partnerFPR: partnerFPR,
+        guard let pEpSyncWizard = KeySyncWizardViewController.fromStoryboard(identityMe: identityMe,
+                                                                             identityPartner: identityPartner,
                                                                              isNewGroup: isNewGroup,
                                                                              completion: completion) else {
             Log.shared.errorAndCrash("Missing pEpSyncWizard")
