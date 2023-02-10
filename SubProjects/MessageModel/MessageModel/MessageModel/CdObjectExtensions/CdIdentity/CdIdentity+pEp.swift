@@ -44,8 +44,16 @@ extension CdIdentity {
                 completion(false)
                 return
             }
-            me.pEpColor { (color) in
-                completion(color == .green)
+            me.pEpRating { rating in
+                switch rating {
+                case .b0rken, .undefined, .cannotDecrypt,
+                        .haveNoKey, .unencrypted, .unreliable,
+                        .mediaKeyProtected, .trusted, .trustedAndAnonymized,
+                        .fullyAnonymous, .mistrust, .underAttack:
+                    completion(false)
+                case .reliable:
+                    completion(true)
+                }
             }
         }
     }
