@@ -397,8 +397,8 @@ extension TrustManagementViewController {
             }
 
             if identifier == me.onlyMasterCellIdentifier {
-                //cell.trustwordsStackView.isHidden = true
-                //cell.trustwordsButtonsContainer.isHidden = true
+                cell.trustwordsStackView.isHidden = true
+                cell.trustwordsButtonsContainer.isHidden = true
             } else if identifier == me.masterAndDetailCellIdentifier {
                 cell.languageButton.isHidden = true
                 cell.trustwordsLabel.isHidden = true
