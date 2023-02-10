@@ -82,6 +82,10 @@ extension KeySyncService: PEPNotifyHandshakeDelegate {
         case .outgoingRatingChange:
             outgoingRatingService.handleOutgoingRatingChange()
 
+        case .groupInvitation:
+            // TODO
+            Log.shared.errorAndCrash("missing implementation for .groupInvitation")
+
         // Other
         case .undefined:
             handshakeHandler?.cancelHandshake()
