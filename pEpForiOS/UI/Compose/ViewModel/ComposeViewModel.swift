@@ -401,6 +401,7 @@ class ComposeViewModel {
                         Log.shared.lostMySelf()
                         return
                     }
+                    me.handleSaveActionTriggered()
                     me.delegate?.dismiss()
                 }
                 return

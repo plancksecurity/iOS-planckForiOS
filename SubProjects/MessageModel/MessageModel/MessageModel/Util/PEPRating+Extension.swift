@@ -70,6 +70,8 @@ extension PEPRating {
              .mistrust,
              .underAttack:
             return true
+        default:
+            return false
         }
     }
 }
