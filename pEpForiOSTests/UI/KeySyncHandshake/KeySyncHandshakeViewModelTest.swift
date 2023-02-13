@@ -9,6 +9,7 @@
 import XCTest
 
 @testable import pEpForiOS
+import MessageModel
 
 final class KeySyncHandshakeViewModelTest: XCTestCase {
 
@@ -23,7 +24,12 @@ final class KeySyncHandshakeViewModelTest: XCTestCase {
         keySyncHandshakeVM = KeySyncHandshakeViewModel()
         keySyncHandshakeVM?.delegate = self
         expDelegateCalled = expectation(description: "expDelegateCalled")
-        keySyncHandshakeVM?.setFingerPrints(meFPR: "", partnerFPR: "", isNewGroup: true)
+
+        let identityMe = Identity(address: "blargMe@example.com")
+
+        keySyncHandshakeVM?.setIdentities(identityMe: identityMe,
+                                          identityPartner:identityMe,
+                                          isNewGroup: true)
 
         wait(for: [expDelegateCalled!], timeout: TestUtil.waitTimeLocal)
 
