@@ -42,6 +42,9 @@ final class KeySyncHandshakeViewModel {
 
     private var _languages = [TrustwordsLanguage]()
 
+    // Prevent it from going out of scope when async methods are used on it.
+    private let trustManagementUtil = TrustManagementUtil()
+
     func languages(completion: @escaping ([TrustwordsLanguage]) -> ()) {
         if !_languages.isEmpty {
             completion(_languages)
@@ -136,7 +139,7 @@ extension KeySyncHandshakeViewModel {
             completion("")
             return
         }
-        TrustManagementUtil().getTrustwords(for: identityMe, and: identityPartner, language: languageCode, long: fullTrustWords) {  (trustwords) in
+        trustManagementUtil.getTrustwords(for: identityMe, and: identityPartner, language: languageCode, long: fullTrustWords) {  (trustwords) in
             DispatchQueue.main.async {
                 completion(trustwords ?? "")
             }
