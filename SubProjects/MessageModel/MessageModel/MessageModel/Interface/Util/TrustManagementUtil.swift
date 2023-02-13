@@ -131,13 +131,13 @@ extension TrustManagementUtil : TrustManagementUtilProtocol {
         }
     }
 
-    public func getTrustwords(for SelfIdentity: Identity,
-                              and partnerIdentity: Identity,
+    public func getTrustwords(for identitySelf: Identity,
+                              and identityPartner: Identity,
                               language: String,
                               long: Bool,
                               completion: @escaping (String?) -> Void) {
-        var selfPEPIdentity = SelfIdentity.pEpIdentity()
-        var partnerPEPIdentity = partnerIdentity.pEpIdentity()
+        var selfPEPIdentity = identitySelf.pEpIdentity()
+        var partnerPEPIdentity = identityPartner.pEpIdentity()
         var isPartnerpEpUser = false
         let group = DispatchGroup()
         var success = true
@@ -186,7 +186,7 @@ extension TrustManagementUtil : TrustManagementUtilProtocol {
                 // partner is a PGP user
                 let fprPrettySelf = fprSelf.prettyFingerPrint()
                 let fprPrettyPartner = fprPartner.prettyFingerPrint()
-                completion("\(partnerIdentity.userNameOrAddress):\n\(fprPrettyPartner)\n\n" + "\(SelfIdentity.userNameOrAddress):\n\(fprPrettySelf)")
+                completion("\(identityPartner.userNameOrAddress):\n\(fprPrettyPartner)\n\n" + "\(identitySelf.userNameOrAddress):\n\(fprPrettySelf)")
             } else {
                 me.determineTrustwords(identitySelf: selfPEPIdentity,
                                     identityPartner: partnerPEPIdentity,
