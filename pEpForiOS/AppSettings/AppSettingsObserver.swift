@@ -47,6 +47,13 @@ class AppSettingsObserver {
         // save the current MDM settings for later comparison
         mdmDictionary = mdm
 
+        //Make sure we have same values for MDM-less.
+        AppSettings.shared.usePEPFolderEnabled = AppSettings.shared.mdmPEPSyncFolderEnabled
+
+        // In MDM, we have mdmPEPSyncAccountEnabled and additionally mdmPEPSyncNewDevicesEnabled.
+        // In non-mdm, keySyncEnabled is both in one.
+        AppSettings.shared.keySyncEnabled = AppSettings.shared.mdmPEPSyncAccountEnabled && AppSettings.shared.mdmPEPSyncNewDevicesEnabled
+
         // Carry the configuration into all subsystems, like adapter/engine etc.
         // Note that any error is currently ignored.
         MDMSettingsUtil().configure { _ in
