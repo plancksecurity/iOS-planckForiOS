@@ -249,6 +249,7 @@ extension RecipientTextView: RecipientTextViewModelDelegate {
         }
         self.attributedText = mutableAttr
         vm.handleReplaceSelectedAttachments(recipients)
+        vm.handleDidEndEditing(range: selectedRange, of: self.attributedText)
     }
 
     func isThereSpaceForANewTextAttachment(recipientsTextAttachmentWidth: CGFloat, expectedWidthOfTheNewTextAttachment: CGFloat) -> Bool {
