@@ -24,6 +24,12 @@ protocol TrustManagementViewModelDelegate: AnyObject {
 
     /// Called when data changed.
     func dataChanged(forRowAt indexPath: IndexPath)
+
+    /// Show a message to indicate the partner key was successfully reset
+    func showResetPartnerKeySuccessfully()
+
+    /// Show a message to indicate the partner key reset failed
+    func showResetPartnerKeyFailed(forRowAt indexPath: IndexPath)
 }
 
 protocol TrustmanagementProtectionStateChangeDelegate: AnyObject {
@@ -225,6 +231,8 @@ extension TrustManagementViewModel {
 
 /// View Model to handle the TrustManagementViewModel views.
 final class TrustManagementViewModel {
+    typealias ActionBlock = (() -> Void)
+
     weak public var delegate : TrustManagementViewModelDelegate?
 
     weak public var ratingDelegate: TrustmanagementRatingChangedDelegate?
@@ -358,6 +366,15 @@ final class TrustManagementViewModel {
                     return
                 }
                 me.reevaluateMessage(forRowAt: indexPath)
+                me.delegate?.showResetPartnerKeySuccessfully()
+            }
+        }, errorCallback: { [weak self] in
+            DispatchQueue.main.async {
+                guard let me = self else {
+                    // UI, can happen
+                    return
+                }
+                me.delegate?.showResetPartnerKeyFailed(forRowAt: indexPath)
             }
         })
     }

@@ -271,13 +271,15 @@ class TrustManagementUtilMock: TrustManagementUtilProtocol {
         completion(nil)
     }
 
-    func resetTrust(for partnerIdentity: Identity?, completion: () -> ()) {
+    func resetTrust(for partnerIdentity: MessageModel.Identity?, completion: @escaping () -> (), errorCallback: (() -> Void)?) {
         resetExpectation?.fulfill()
     }
+
 }
 
 /// Use this mock class to verify the calls on the delegate are being performed
 class TrustManagementViewModelDelegateMock : TrustManagementViewModelDelegate {
+
     var didEndShakeMotionExpectation: XCTestExpectation?
     var didResetHandshakeExpectation: XCTestExpectation?
     var didConfirmHandshakeExpectation: XCTestExpectation?
@@ -343,10 +345,16 @@ class TrustManagementViewModelDelegateMock : TrustManagementViewModelDelegate {
             XCTFail("didToogleProtection failed")
         }
     }
+
+    func showResetPartnerKeySuccessfully() { }
+
+    func showResetPartnerKeyFailed(forRowAt indexPath: IndexPath) { }
+
 }
 
 /// Use for waiting for successful model setup
 class TrustManagementViewModelDelegateSetupMock: TrustManagementViewModelDelegate {
+
     let expDidFinishSetup: XCTestExpectation
 
     init(expDidFinishSetup: XCTestExpectation) {
@@ -360,10 +368,12 @@ class TrustManagementViewModelDelegateSetupMock: TrustManagementViewModelDelegat
         expDidFinishSetup.fulfill()
     }
 
-    func didToogleProtection(forRowAt indexPath: IndexPath) {
-    }
-}
+    func didToogleProtection(forRowAt indexPath: IndexPath) { }
 
+    func showResetPartnerKeySuccessfully() { }
+
+    func showResetPartnerKeyFailed(forRowAt indexPath: IndexPath) { }
+}
 
 extension TrustManagementViewModelTest {
     private func setupViewModel(util : TrustManagementUtilProtocol? = nil) {
