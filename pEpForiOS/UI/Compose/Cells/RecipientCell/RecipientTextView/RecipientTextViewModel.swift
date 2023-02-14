@@ -270,7 +270,7 @@ extension RecipientTextViewModel {
     /// If there is nothing to hide, it does nothing.
     /// The hidden recipients are NSTextAttachments removed and are stored into the hidden recipients of the ComposeViewModelState .
     public func collapseRecipients() {
-        guard let recipientTextAttachments = attributedText?.recipientTextAttachments() else {
+        guard let recipientTextAttachments = attributedText?.recipientTextAttachments(), recipientTextAttachments.count > 0 else {
             // No attachments. Nothing to do.
             return
         }
@@ -299,6 +299,11 @@ extension RecipientTextViewModel {
                 toShow.append(textAttachment)
             } else {
                 toHide.append(textAttachment)
+            }
+
+            guard !toShow.isEmpty || !toHide.isEmpty else {
+                Log.shared.errorAndCrash("Something went wrong here. To show should have at least 1 element.")
+                return
             }
         }
 
