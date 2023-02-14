@@ -270,12 +270,23 @@ extension RecipientTextViewModel {
     /// If there is nothing to hide, it does nothing.
     /// The hidden recipients are NSTextAttachments removed and are stored into the hidden recipients of the ComposeViewModelState .
     public func collapseRecipients() {
+        // Check for historical reasons (there was a dispatch to the main queue here).
+        if !Thread.isMainThread {
+            Log.shared.errorAndCrash(message: "Unexpectedly not on the main thread")
+        }
+
         guard let recipientTextAttachments = attributedText?.recipientTextAttachments(), recipientTextAttachments.count > 0 else {
             // No attachments. Nothing to do.
             return
         }
+
         guard let del = delegate else {
             Log.shared.errorAndCrash("Delegate not found")
+            return
+        }
+
+        guard let attr = attributedText else {
+            Log.shared.logError(message: "Unexpected nil attributed text")
             return
         }
 
@@ -307,22 +318,17 @@ extension RecipientTextViewModel {
             }
         }
 
-        DispatchQueue.main.async { [weak self] in
-            guard let me = self, let attr = me.attributedText else {
-                Log.shared.errorAndCrash("Lost myself")
-                return
-            }
+        // Hide attachments that exceed the first line.
+        let newRecipients = toShow.map { $0.recipient }
+        let recipientsToHide = toHide.map { $0.recipient }
 
-            // Hide attachments that exceed the first line.
-            let newRecipients = toShow.map { $0.recipient }
-            let recipientsToHide = toHide.map { $0.recipient }
-
-            if !recipientsToHide.isEmpty {
-                let range = NSRange(location: max(attr.length, 0), length: 0)
-                me.addBadge(inRange: range, of: attr, number: recipientsToHide.count)
-            }
-            me.resultDelegate?.recipientTextViewModel(me, didChangeRecipients: newRecipients, hiddenRecipients: recipientsToHide)
-            me.delegate?.removeRecipientsTextAttachments(recipients: toHide)
+        if !recipientsToHide.isEmpty {
+            let range = NSRange(location: max(attr.length, 0), length: 0)
+            addBadge(inRange: range, of: attr, number: recipientsToHide.count)
         }
+        resultDelegate?.recipientTextViewModel(self,
+                                               didChangeRecipients: newRecipients,
+                                               hiddenRecipients: recipientsToHide)
+        delegate?.removeRecipientsTextAttachments(recipients: toHide)
     }
 }

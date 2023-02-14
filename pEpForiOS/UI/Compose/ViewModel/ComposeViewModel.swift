@@ -193,16 +193,15 @@ class ComposeViewModel {
 
     /// Shows and Hides the warning banner if needed.
     private func handleRecipientsBanner() {
-        DispatchQueue.main.async { [weak self] in
-            guard let me = self else {
-                Log.shared.errorAndCrash("Lost myself")
-                return
-            }
-            if me.shouldShowRecipientsBanner() {
-                me.delegate?.showRecipientsBanner()
-            } else {
-                me.delegate?.hideRecipientsBanner()
-            }
+        // Check for historical reasons (there was a dispatch to the main queue here).
+        if !Thread.isMainThread {
+            Log.shared.errorAndCrash(message: "Unexpectedly not on the main thread")
+        }
+
+        if shouldShowRecipientsBanner() {
+            delegate?.showRecipientsBanner()
+        } else {
+            delegate?.hideRecipientsBanner()
         }
     }
 
