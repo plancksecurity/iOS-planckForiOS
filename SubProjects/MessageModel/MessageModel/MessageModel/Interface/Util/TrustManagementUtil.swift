@@ -154,16 +154,16 @@ extension TrustManagementUtil : TrustManagementUtilProtocol {
         }) { (updatedOwnIdentity) in
             selfPEPIdentity = updatedOwnIdentity
             PEPSession().update(partnerPEPIdentity,
-                                     errorCallback: { _ in
-                                        Log.shared.error("unable to get the fingerprints")
-                                        success = false
-                                        group.leave()
+                                errorCallback: { _ in
+                Log.shared.error("unable to get the fingerprints")
+                success = false
+                group.leave()
             }) { updatedPartnerIdentity in
                 partnerPEPIdentity = updatedPartnerIdentity
                 PEPSession().isPEPUser(updatedPartnerIdentity,
-                                            errorCallback: { _ in
-                                                success = false
-                                                group.leave()
+                                       errorCallback: { _ in
+                    success = false
+                    group.leave()
                 }) { pEpUserOrNot in
                     isPartnerpEpUser = pEpUserOrNot
                     group.leave()
