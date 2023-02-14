@@ -22,7 +22,7 @@ class RecipientsBannerViewController: UIViewController {
         }
     }
 
-    @IBOutlet public private(set) weak var unsecureRecipientsButton: UIButton!
+    @IBOutlet public private(set) weak var unsecureRecipientsButton: UIButton?
 
     @IBAction private func unsecureRecipientsButtonPressed() {
         guard let vm = viewModel else {
@@ -38,13 +38,13 @@ class RecipientsBannerViewController: UIViewController {
 extension RecipientsBannerViewController {
 
     private func setupUI() {
-        unsecureRecipientsButton.setPEPFont(style: .footnote, weight: .regular)
+        unsecureRecipientsButton?.setPEPFont(style: .footnote, weight: .regular)
         guard let vm = viewModel else {
             // No view model.
-            unsecureRecipientsButton.setTitle("", for: .normal)
+            unsecureRecipientsButton?.setTitle("", for: .normal)
             return
         }
-        unsecureRecipientsButton.setTitle(vm.buttonTitle, for: .normal)
+        unsecureRecipientsButton?.setTitle(vm.buttonTitle, for: .normal)
     }
 
 }
