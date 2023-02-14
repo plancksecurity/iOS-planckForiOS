@@ -31,7 +31,7 @@ final class KeySyncHandshakeViewModelTest: XCTestCase {
                                           identityPartner:identityMe,
                                           isNewGroup: true)
 
-        wait(for: [expDelegateCalled!], timeout: TestUtil.waitTimeLocal)
+        wait(for: [expDelegateCalled!], timeout: TestUtil.waitTime10)
 
         setDefaultActualState()
         keySyncHandshakeVM?.completionHandler = { [weak self] action in
