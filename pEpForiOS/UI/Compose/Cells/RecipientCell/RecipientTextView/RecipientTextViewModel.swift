@@ -311,11 +311,11 @@ extension RecipientTextViewModel {
             } else {
                 toHide.append(textAttachment)
             }
+        }
 
-            guard !toShow.isEmpty else {
-                Log.shared.errorAndCrash("Something went wrong here. To show should have at least 1 element.")
-                return
-            }
+        guard !toShow.isEmpty else {
+            Log.shared.errorAndCrash("Something went wrong here. To show should have at least 1 element.")
+            return
         }
 
         // Hide attachments that exceed the first line.
