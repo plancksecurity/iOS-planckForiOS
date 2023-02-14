@@ -312,7 +312,7 @@ extension RecipientTextViewModel {
                 toHide.append(textAttachment)
             }
 
-            guard !toShow.isEmpty || !toHide.isEmpty else {
+            guard !toShow.isEmpty else {
                 Log.shared.errorAndCrash("Something went wrong here. To show should have at least 1 element.")
                 return
             }
