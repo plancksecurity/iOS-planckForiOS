@@ -315,7 +315,7 @@ extension RecipientTextViewModel {
         }
 
         guard !toShow.isEmpty else {
-            Log.shared.errorAndCrash("Something went wrong here. To show should have at least 1 element.")
+            Log.shared.errorAndCrash("Something went wrong here. We should have at least 1 element to show.")
             return
         }
 
