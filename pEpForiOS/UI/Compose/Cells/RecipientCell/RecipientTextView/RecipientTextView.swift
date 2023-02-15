@@ -249,10 +249,11 @@ extension RecipientTextView: RecipientTextViewModelDelegate {
         }
         self.attributedText = mutableAttr
         vm.handleReplaceSelectedAttachments(recipients)
+        vm.handleDidEndEditing(range: selectedRange, of: self.attributedText)
     }
 
     func isThereSpaceForANewTextAttachment(recipientsTextAttachmentWidth: CGFloat, expectedWidthOfTheNewTextAttachment: CGFloat) -> Bool {
-        let margin: CGFloat = 40.0 // This is margin + 3 characters text attachment for the badge.
+        let margin: CGFloat = 35.0 // This is margin + 3 characters text attachment for the badge.
         let expectedFullWidth = recipientsTextAttachmentWidth + expectedWidthOfTheNewTextAttachment
         return expectedFullWidth < frame.width - margin
     }
