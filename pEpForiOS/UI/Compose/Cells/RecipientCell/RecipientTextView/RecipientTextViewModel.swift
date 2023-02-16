@@ -275,7 +275,7 @@ extension RecipientTextViewModel {
             Log.shared.errorAndCrash(message: "Unexpectedly not on the main thread")
         }
 
-        guard let recipientTextAttachments = attributedText?.recipientTextAttachments() else {
+        guard let recipientTextAttachments = attributedText?.recipientTextAttachments(), recipientTextAttachments.count > 0 else {
             // No attachments. Nothing to do.
             return
         }
@@ -301,16 +301,22 @@ extension RecipientTextViewModel {
             }
 
             // Sum the width of every attachment to show to calculate if there is space for one more.
-            let recipientsTextAttachmentWidth = toShow.compactMap { $0.image?.size.width }.reduce(0, +)
-
+            var recipientsTextAttachmentWidth = toShow.compactMap { $0.image?.size.width }.reduce(0, +)
+            recipientsTextAttachmentWidth += CGFloat(toShow.count * 2) // space between textAttachments
             // Evaluate if there is space for the next attachment. Group the text attachments accordingly.
-            let shouldShow = del.isThereSpaceForANewTextAttachment(recipientsTextAttachmentWidth: recipientsTextAttachmentWidth, expectedWidthOfTheNewTextAttachment: expectedWidthOfTheNewTextAttachment)
+            let shouldShow = del.isThereSpaceForANewTextAttachment(recipientsTextAttachmentWidth: recipientsTextAttachmentWidth,
+                                                                   expectedWidthOfTheNewTextAttachment: expectedWidthOfTheNewTextAttachment) && toHide.isEmpty
 
             if shouldShow {
                 toShow.append(textAttachment)
             } else {
                 toHide.append(textAttachment)
             }
+        }
+
+        guard !toShow.isEmpty else {
+            Log.shared.errorAndCrash("Something went wrong here. We should have at least 1 element to show.")
+            return
         }
 
         // Hide attachments that exceed the first line.
