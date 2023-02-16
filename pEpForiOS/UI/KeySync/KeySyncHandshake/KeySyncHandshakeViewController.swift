@@ -15,6 +15,38 @@ final class KeySyncHandshakeViewController: UIViewController {
 
     static let storyboardId = "KeySyncHandshakeViewController"
 
+    @IBOutlet private weak var myFingerprintsLabel: UILabel! {
+        didSet {
+            myFingerprintsLabel.setPEPFont(style: .callout, weight: .regular)
+            myFingerprintsLabel.backgroundColor = .clear
+            myFingerprintsLabel.textColor = .label
+        }
+    }
+
+    @IBOutlet private weak var myFingerprintsValueLabel: UILabel! {
+        didSet {
+            myFingerprintsLabel.setPEPFont(style: .caption1, weight: .regular)
+            myFingerprintsLabel.backgroundColor = .clear
+            myFingerprintsLabel.textColor = .label
+        }
+    }
+
+    @IBOutlet private weak var otherDeviceFingerprintsLabel: UILabel! {
+        didSet {
+            otherDeviceFingerprintsLabel.setPEPFont(style: .callout, weight: .regular)
+            otherDeviceFingerprintsLabel.backgroundColor = .clear
+            otherDeviceFingerprintsLabel.textColor = .label
+        }
+    }
+
+    @IBOutlet private weak var otherDeviceFingerprintsValueLabel: UILabel! {
+        didSet {
+            otherDeviceFingerprintsValueLabel.setPEPFont(style: .caption1, weight: .regular)
+            otherDeviceFingerprintsValueLabel.backgroundColor = .clear
+            otherDeviceFingerprintsValueLabel.textColor = .label
+        }
+    }
+    
     @IBOutlet private weak var trustwordsView: UIView! {
         didSet {
             trustwordsView.backgroundColor = .systemBackground
@@ -146,6 +178,7 @@ final class KeySyncHandshakeViewController: UIViewController {
 // MARK: - KeySyncHandshakeViewModelDelegate
 
 extension KeySyncHandshakeViewController: KeySyncHandshakeViewModelDelegate {
+
     func showPicker(withLanguages languages: [String], selectedLanguageIndex: Int?) {
         pickerLanguages = languages
         DispatchQueue.main.async { [weak self] in
@@ -168,9 +201,16 @@ extension KeySyncHandshakeViewController: KeySyncHandshakeViewModelDelegate {
             self?.trustwordsLabel.text = handshakeWordsTo
         }
     }
+
+    func change(myFingerprints: String, partnerFingerprints: String) {
+        myFingerprintsValueLabel.text = myFingerprints
+        otherDeviceFingerprintsValueLabel.text = partnerFingerprints
+    }
+
 }
 
 // MARK: - UIPickerViewDelegate
+
 extension KeySyncHandshakeViewController: UIPickerViewDelegate {
     func pickerView(_ pickerView: UIPickerView, titleForRow row: Int, forComponent component: Int) -> String? {
         return pickerLanguages[row]
@@ -193,6 +233,7 @@ extension KeySyncHandshakeViewController: UIPickerViewDataSource {
 }
 
 // MARK: - Private
+
 extension KeySyncHandshakeViewController {
     private func pressedAction(tag: Int) -> KeySyncHandshakeViewModel.Action? {
         switch tag {
