@@ -119,17 +119,17 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="fiE-pm-mWd" customClass="KeyInputView" customModule="pEpForiOS" customModuleProvider="target">
-                                <rect key="frame" x="37.5" y="133.5" width="300" height="400"/>
+                                <rect key="frame" x="37.5" y="123.5" width="300" height="420"/>
                                 <subviews>
-                                    <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" alignment="center" spacing="10" translatesAutoresizingMaskIntoConstraints="NO" id="YMa-Kc-JoR">
-                                        <rect key="frame" x="0.0" y="10" width="300" height="390"/>
+                                    <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" alignment="center" spacing="8" translatesAutoresizingMaskIntoConstraints="NO" id="YMa-Kc-JoR">
+                                        <rect key="frame" x="0.0" y="10" width="300" height="410"/>
                                         <subviews>
                                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="htI-ge-ZQj">
                                                 <rect key="frame" x="12" y="0.0" width="276" height="30"/>
                                                 <subviews>
                                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="ckp-rp-1Pd">
-                                                        <rect key="frame" x="116.5" y="4.5" width="43.5" height="21"/>
-                                                        <fontDescription key="fontDescription" type="system" weight="semibold" pointSize="17"/>
+                                                        <rect key="frame" x="117.5" y="6.5" width="41.5" height="17"/>
+                                                        <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                                         <nil key="textColor"/>
                                                         <nil key="highlightedColor"/>
                                                     </label>
@@ -155,43 +155,43 @@
                                                     <constraint firstItem="ckp-rp-1Pd" firstAttribute="centerY" secondItem="htI-ge-ZQj" secondAttribute="centerY" id="wj5-ro-Hwx"/>
                                                 </constraints>
                                             </view>
-                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" horizontalCompressionResistancePriority="1000" verticalCompressionResistancePriority="1000" text="Long long message to test how it behaves when exceed the number of lines" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="rPi-Px-Pyp">
-                                                <rect key="frame" x="12" y="40" width="276" height="33.5"/>
-                                                <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" horizontalCompressionResistancePriority="1000" verticalCompressionResistancePriority="1000" text="Long long message to test how it behaves when exceed the number of lines" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontForContentSizeCategory="YES" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="rPi-Px-Pyp">
+                                                <rect key="frame" x="12" y="38" width="276" height="29"/>
+                                                <fontDescription key="fontDescription" type="system" pointSize="12"/>
                                                 <nil key="textColor"/>
                                                 <nil key="highlightedColor"/>
                                             </label>
-                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="My Fingerprints:" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontForContentSizeCategory="YES" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Kzk-9N-Dws" userLabel="My fingerprints Label">
-                                                <rect key="frame" x="12" y="83.5" width="276" height="19.5"/>
-                                                <fontDescription key="fontDescription" style="UICTFontTextStyleCallout"/>
+                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="My Fingerprints:" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Kzk-9N-Dws" userLabel="My device FPR title">
+                                                <rect key="frame" x="12" y="75" width="276" height="19.5"/>
+                                                <fontDescription key="fontDescription" type="system" pointSize="16"/>
                                                 <nil key="textColor"/>
                                                 <nil key="highlightedColor"/>
                                             </label>
-                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="A999 B749 8D1A 8DC4 73E5 3C92 309F 635D AD1B 5517" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontForContentSizeCategory="YES" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="ZUS-e1-qvj" userLabel="My Fingerprints value">
-                                                <rect key="frame" x="12" y="113" width="276" height="30.5"/>
-                                                <fontDescription key="fontDescription" style="UICTFontTextStyleCaption1"/>
+                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="A999 B749 8D1A 8DC4 73E5 3C92 309F 635D AD1B 5517" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontForContentSizeCategory="YES" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="ZUS-e1-qvj" userLabel="My device FPR value">
+                                                <rect key="frame" x="12" y="102.5" width="276" height="29"/>
+                                                <fontDescription key="fontDescription" type="system" pointSize="12"/>
                                                 <nil key="textColor"/>
                                                 <nil key="highlightedColor"/>
                                             </label>
-                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="My partner fingerprints:" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontForContentSizeCategory="YES" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="CGm-5R-f3G" userLabel="Partner Fingerprints Label">
-                                                <rect key="frame" x="12" y="153.5" width="276" height="19.5"/>
-                                                <fontDescription key="fontDescription" style="UICTFontTextStyleCallout"/>
+                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="New device fingerprints:" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="CGm-5R-f3G" userLabel="New Device FPR title">
+                                                <rect key="frame" x="12" y="139.5" width="276" height="19.5"/>
+                                                <fontDescription key="fontDescription" type="system" pointSize="16"/>
                                                 <nil key="textColor"/>
                                                 <nil key="highlightedColor"/>
                                             </label>
-                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="B787  8D1A C48D E573 5F92 509F 635D AB1B  B749" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontForContentSizeCategory="YES" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="4Ib-7E-2Fh" userLabel="Partner Fingerprints Value ">
-                                                <rect key="frame" x="12" y="183" width="276" height="30.5"/>
-                                                <fontDescription key="fontDescription" style="UICTFontTextStyleCaption1"/>
+                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="B787  8D1A C48D E573 5F92 509F 635D AB1B  B749" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="4Ib-7E-2Fh" userLabel="New Device FPR value">
+                                                <rect key="frame" x="12" y="167" width="276" height="29"/>
+                                                <fontDescription key="fontDescription" type="system" pointSize="12"/>
                                                 <nil key="textColor"/>
                                                 <nil key="highlightedColor"/>
                                             </label>
                                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="lPc-Pm-3dz">
-                                                <rect key="frame" x="12" y="223.5" width="276" height="110.5"/>
+                                                <rect key="frame" x="12" y="204" width="276" height="152"/>
                                                 <subviews>
                                                     <label opaque="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" lineBreakMode="tailTruncation" numberOfLines="0" minimumFontSize="7" translatesAutoresizingMaskIntoConstraints="NO" id="GC3-wG-GHD">
-                                                        <rect key="frame" x="8" y="8" width="260" height="117"/>
+                                                        <rect key="frame" x="8" y="8" width="260" height="84"/>
                                                         <gestureRecognizers/>
-                                                        <string key="text">Lorem ipsum dolor sit er elit lamet, consectetaur cillium adipisicing pecu, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. </string>
+                                                        <string key="text">Lorem ipsum dolor sit er elit lamet, consectetaur cillium adipisicing pecu, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim </string>
                                                         <fontDescription key="fontDescription" type="system" weight="medium" pointSize="14"/>
                                                         <nil key="textColor"/>
                                                         <nil key="highlightedColor"/>
@@ -209,7 +209,7 @@
                                                 </constraints>
                                             </view>
                                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="FhS-sc-rLm">
-                                                <rect key="frame" x="0.0" y="344" width="300" height="46"/>
+                                                <rect key="frame" x="0.0" y="364" width="300" height="46"/>
                                                 <subviews>
                                                     <stackView opaque="NO" contentMode="scaleToFill" distribution="fillEqually" spacing="1" translatesAutoresizingMaskIntoConstraints="NO" id="H3i-qp-hfc">
                                                         <rect key="frame" x="0.0" y="1" width="300" height="45"/>
@@ -282,7 +282,7 @@
                                 <color key="backgroundColor" systemColor="secondarySystemBackgroundColor"/>
                                 <constraints>
                                     <constraint firstItem="YMa-Kc-JoR" firstAttribute="leading" secondItem="fiE-pm-mWd" secondAttribute="leading" id="EAC-nr-iun"/>
-                                    <constraint firstAttribute="height" constant="400" id="RXz-tw-xhk"/>
+                                    <constraint firstAttribute="height" constant="420" id="RXz-tw-xhk"/>
                                     <constraint firstAttribute="width" constant="420" id="T8h-SO-PE2"/>
                                     <constraint firstAttribute="width" constant="300" id="gFV-Fr-i1l"/>
                                     <constraint firstItem="YMa-Kc-JoR" firstAttribute="top" secondItem="fiE-pm-mWd" secondAttribute="top" constant="10" id="neq-VA-ZUu"/>
@@ -322,10 +322,10 @@
                         <outlet property="buttonsView" destination="FhS-sc-rLm" id="5Kd-Yz-Pub"/>
                         <outlet property="cancel" destination="emU-WV-Kap" id="DjI-VP-c4R"/>
                         <outlet property="contentView" destination="fiE-pm-mWd" id="eNm-5G-7Xa"/>
+                        <outlet property="currentDeviceFingerprintsLabel" destination="Kzk-9N-Dws" id="oqi-op-fu0"/>
+                        <outlet property="currentDeviceFingerprintsValueLabel" destination="ZUS-e1-qvj" id="Mog-3Z-uhx"/>
                         <outlet property="decline" destination="Rgh-E1-f1w" id="h3F-j9-O5m"/>
                         <outlet property="message" destination="rPi-Px-Pyp" id="Pyb-o1-Nmp"/>
-                        <outlet property="myFingerprintsLabel" destination="Kzk-9N-Dws" id="oqi-op-fu0"/>
-                        <outlet property="myFingerprintsValueLabel" destination="ZUS-e1-qvj" id="Mog-3Z-uhx"/>
                         <outlet property="otherDeviceFingerprintsLabel" destination="CGm-5R-f3G" id="j6w-oT-SU3"/>
                         <outlet property="otherDeviceFingerprintsValueLabel" destination="4Ib-7E-2Fh" id="nzn-fx-wWE"/>
                         <outlet property="trustwordsLabel" destination="GC3-wG-GHD" id="D6t-PC-XAb"/>

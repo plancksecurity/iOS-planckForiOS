@@ -15,37 +15,21 @@ final class KeySyncHandshakeViewController: UIViewController {
 
     static let storyboardId = "KeySyncHandshakeViewController"
 
-    @IBOutlet private weak var myFingerprintsLabel: UILabel! {
+    @IBOutlet private weak var currentDeviceFingerprintsLabel: UILabel! {
         didSet {
-            myFingerprintsLabel.setPEPFont(style: .callout, weight: .regular)
-            myFingerprintsLabel.backgroundColor = .clear
-            myFingerprintsLabel.textColor = .label
+            currentDeviceFingerprintsLabel.text = NSLocalizedString("Fingerprints of this device", comment: "Fingerprints of this device - title")
         }
     }
 
-    @IBOutlet private weak var myFingerprintsValueLabel: UILabel! {
-        didSet {
-            myFingerprintsLabel.setPEPFont(style: .caption1, weight: .regular)
-            myFingerprintsLabel.backgroundColor = .clear
-            myFingerprintsLabel.textColor = .label
-        }
-    }
+    @IBOutlet private weak var currentDeviceFingerprintsValueLabel: UILabel!
 
     @IBOutlet private weak var otherDeviceFingerprintsLabel: UILabel! {
         didSet {
-            otherDeviceFingerprintsLabel.setPEPFont(style: .callout, weight: .regular)
-            otherDeviceFingerprintsLabel.backgroundColor = .clear
-            otherDeviceFingerprintsLabel.textColor = .label
+            otherDeviceFingerprintsLabel.text = NSLocalizedString("Fingerprints of the new device", comment: "Fingerprints of the new device - title")
         }
     }
 
-    @IBOutlet private weak var otherDeviceFingerprintsValueLabel: UILabel! {
-        didSet {
-            otherDeviceFingerprintsValueLabel.setPEPFont(style: .caption1, weight: .regular)
-            otherDeviceFingerprintsValueLabel.backgroundColor = .clear
-            otherDeviceFingerprintsValueLabel.textColor = .label
-        }
-    }
+    @IBOutlet private weak var otherDeviceFingerprintsValueLabel: UILabel!
     
     @IBOutlet private weak var trustwordsView: UIView! {
         didSet {
@@ -203,7 +187,7 @@ extension KeySyncHandshakeViewController: KeySyncHandshakeViewModelDelegate {
     }
 
     func change(myFingerprints: String, partnerFingerprints: String) {
-        myFingerprintsValueLabel.text = myFingerprints
+        currentDeviceFingerprintsValueLabel.text = myFingerprints
         otherDeviceFingerprintsValueLabel.text = partnerFingerprints
     }
 
