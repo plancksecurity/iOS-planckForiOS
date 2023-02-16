@@ -15,6 +15,22 @@ final class KeySyncHandshakeViewController: UIViewController {
 
     static let storyboardId = "KeySyncHandshakeViewController"
 
+    @IBOutlet private weak var currentDeviceFingerprintsLabel: UILabel! {
+        didSet {
+            currentDeviceFingerprintsLabel.text = NSLocalizedString("Fingerprints of this device", comment: "Fingerprints of this device - title")
+        }
+    }
+
+    @IBOutlet private weak var currentDeviceFingerprintsValueLabel: UILabel!
+
+    @IBOutlet private weak var otherDeviceFingerprintsLabel: UILabel! {
+        didSet {
+            otherDeviceFingerprintsLabel.text = NSLocalizedString("Fingerprints of the new device", comment: "Fingerprints of the new device - title")
+        }
+    }
+
+    @IBOutlet private weak var otherDeviceFingerprintsValueLabel: UILabel!
+    
     @IBOutlet private weak var trustwordsView: UIView! {
         didSet {
             trustwordsView.backgroundColor = .systemBackground
@@ -146,6 +162,7 @@ final class KeySyncHandshakeViewController: UIViewController {
 // MARK: - KeySyncHandshakeViewModelDelegate
 
 extension KeySyncHandshakeViewController: KeySyncHandshakeViewModelDelegate {
+
     func showPicker(withLanguages languages: [String], selectedLanguageIndex: Int?) {
         pickerLanguages = languages
         DispatchQueue.main.async { [weak self] in
@@ -168,9 +185,16 @@ extension KeySyncHandshakeViewController: KeySyncHandshakeViewModelDelegate {
             self?.trustwordsLabel.text = handshakeWordsTo
         }
     }
+
+    func change(myFingerprints: String, partnerFingerprints: String) {
+        currentDeviceFingerprintsValueLabel.text = myFingerprints
+        otherDeviceFingerprintsValueLabel.text = partnerFingerprints
+    }
+
 }
 
 // MARK: - UIPickerViewDelegate
+
 extension KeySyncHandshakeViewController: UIPickerViewDelegate {
     func pickerView(_ pickerView: UIPickerView, titleForRow row: Int, forComponent component: Int) -> String? {
         return pickerLanguages[row]
@@ -193,6 +217,7 @@ extension KeySyncHandshakeViewController: UIPickerViewDataSource {
 }
 
 // MARK: - Private
+
 extension KeySyncHandshakeViewController {
     private func pressedAction(tag: Int) -> KeySyncHandshakeViewModel.Action? {
         switch tag {
