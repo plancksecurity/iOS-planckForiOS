@@ -166,9 +166,9 @@ public class VerifiableAccount: VerifiableAccountProtocol {
                 }
                 let alsoCreatePEPFolder = me.keySyncEnable && (me.usePEPFolderProvider?.usePEPFolder ?? false)
                 me.prepareAccountForSavingService.prepareAccount(cdAccount: cdAccount,
-                                                          pEpSyncEnable: me.keySyncEnable,
-                                                          alsoCreatePEPFolder: alsoCreatePEPFolder,
-                                                          context: moc) { success in
+                                                                 pEpSyncEnable: me.keySyncEnable,
+                                                                 alsoCreatePEPFolder: alsoCreatePEPFolder,
+                                                                 context: moc) { success in
                     DispatchQueue.main.async {
                         if success {
                             // The account has been successfully verified and prepared.
