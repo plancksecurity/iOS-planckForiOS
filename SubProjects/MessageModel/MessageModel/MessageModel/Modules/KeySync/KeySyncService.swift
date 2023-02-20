@@ -137,8 +137,8 @@ class KeySyncService: NSObject, KeySyncServiceProtocol {
                     }
                 }
                 group.notify(queue: DispatchQueue.main) {
-                    // spex:    in case Sync is enabled while startup the application must call start_sync(),
-                    //          otherwise it must not (default: enabled)
+                    // https://dev.pep.foundation/Engine/Sync%20from%20an%20application%20developer’s%20perspective#application-startup
+                    // if the account should be enabled for Sync (default) call enable_identity_for_sync() otherwise call disable_identity_for_sync()
                     guard stateProvider.isKeySyncEnabled else {
                         // Do not start KeySync if the user disabled it.
                         return
