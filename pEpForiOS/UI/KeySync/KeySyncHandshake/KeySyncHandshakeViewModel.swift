@@ -15,6 +15,7 @@ protocol KeySyncHandshakeViewModelDelegate: AnyObject {
     func showPicker(withLanguages languages: [String], selectedLanguageIndex: Int?)
     func closePicker()
     func change(handshakeWordsTo: String)
+    func change(myFingerprints: String, partnerFingerprints: String)
 }
 
 final class KeySyncHandshakeViewModel {
@@ -130,12 +131,32 @@ extension KeySyncHandshakeViewModel {
         }
     }
 
+    private func setFingerprints() {
+        guard let meFPR = meFPR, let partnerFPR = partnerFPR else {
+            Log.shared.errorAndCrash("Nil meFingerPrints or Nil partnerFingerPrints")
+            return
+        }
+
+        DispatchQueue.main.async { [weak self] in
+            guard let me = self else {
+                Log.shared.errorAndCrash("Lost myself")
+                return
+            }
+            guard let delegate = me.delegate else {
+                Log.shared.errorAndCrash("Lost delegate")
+                return
+            }
+            delegate.change(myFingerprints: meFPR, partnerFingerprints: partnerFPR)
+        }
+    }
+
     private func trustWords(completion: @escaping (String)->Void) {
         guard let meFPR = meFPR, let partnerFPR = partnerFPR else {
             Log.shared.errorAndCrash("Nil meFingerPrints or Nil partnerFingerPrints")
             completion("")
             return
         }
+        setFingerprints()
         TrustManagementUtil().getTrustwords(forFpr1: meFPR, fpr2: partnerFPR, language: languageCode, full: fullTrustWords) { (trustwords) in
             DispatchQueue.main.async {
                 completion(trustwords ?? "")
