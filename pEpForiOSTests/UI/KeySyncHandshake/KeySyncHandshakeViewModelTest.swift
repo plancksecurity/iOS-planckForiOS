@@ -110,6 +110,9 @@ extension KeySyncHandshakeViewModelTest: KeySyncHandshakeViewModelDelegate {
         actual?.didCallToUpdateTrustedWords = true
         actual?.fullWordsVersion = keySyncHandshakeVM?.fullTrustWords
     }
+
+    func change(myFingerprints: String, partnerFingerprints: String) {
+    }
 }
 
 // MARK: - Private

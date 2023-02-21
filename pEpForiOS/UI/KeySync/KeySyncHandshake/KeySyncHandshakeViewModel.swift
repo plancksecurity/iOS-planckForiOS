@@ -15,6 +15,7 @@ protocol KeySyncHandshakeViewModelDelegate: AnyObject {
     func showPicker(withLanguages languages: [String], selectedLanguageIndex: Int?)
     func closePicker()
     func change(handshakeWordsTo: String)
+    func change(myFingerprints: String, partnerFingerprints: String)
 }
 
 final class KeySyncHandshakeViewModel {
@@ -133,12 +134,56 @@ extension KeySyncHandshakeViewModel {
         }
     }
 
+    private func setFingerprints(identityOwn: Identity, identityPartner: Identity) {
+        var fingerprintMe = ""
+        var fingerprintPartner = ""
+
+        trustManagementUtil.getFingerprint(for: identityOwn) { [weak self] fingerprint in
+            guard let theFingerprint = fingerprint else {
+                Log.shared.errorAndCrash("No own fingerprint")
+                return
+            }
+
+            guard let me = self else {
+                Log.shared.errorAndCrash("Lost myself")
+                return
+            }
+
+            fingerprintMe = theFingerprint
+
+            me.trustManagementUtil.getFingerprint(for: identityPartner) { fingerprint in
+                guard let theFingerprint = fingerprint else {
+                    Log.shared.errorAndCrash("No partner fingerprint")
+                    return
+                }
+
+                fingerprintPartner = theFingerprint
+
+                DispatchQueue.main.async { [weak self] in
+                    guard let me = self else {
+                        Log.shared.errorAndCrash("Lost myself")
+                        return
+                    }
+
+                    guard let delegate = me.delegate else {
+                        Log.shared.errorAndCrash("Lost delegate")
+                        return
+                    }
+
+                    delegate.change(myFingerprints: fingerprintMe,
+                                    partnerFingerprints: fingerprintPartner)
+                }
+            }
+        }
+    }
+
     private func trustWords(completion: @escaping (String) -> Void) {
         guard let identityMe = identityMe, let identityPartner = identityPartner else {
             Log.shared.errorAndCrash("Identities are nil (own or partner)")
             completion("")
             return
         }
+        setFingerprints(identityOwn: identityMe, identityPartner: identityPartner)
         trustManagementUtil.getTrustwords(for: identityMe, and: identityPartner, language: languageCode, long: fullTrustWords) {  (trustwords) in
             DispatchQueue.main.async {
                 completion(trustwords ?? "")
