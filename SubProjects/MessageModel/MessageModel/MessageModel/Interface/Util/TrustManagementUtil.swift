@@ -286,9 +286,9 @@ extension TrustManagementUtil : TrustManagementUtilProtocol {
                                completion: @escaping (String?) -> ()) {
         let pepIdentity = identity.pEpIdentity()
         PEPSession().update(pepIdentity,
-                                 errorCallback: { _ in
-                                    Log.shared.error("some went wrong getting the fingerprint for one identity")
-                                    completion(nil)
+                            errorCallback: { _ in
+            Log.shared.error("some went wrong getting the fingerprint for one identity")
+            completion(nil)
         }) { identity in
             completion(identity.fingerPrint)
         }
