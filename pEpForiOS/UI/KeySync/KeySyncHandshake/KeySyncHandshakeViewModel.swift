@@ -15,7 +15,7 @@ protocol KeySyncHandshakeViewModelDelegate: AnyObject {
     func showPicker(withLanguages languages: [String], selectedLanguageIndex: Int?)
     func closePicker()
     func change(handshakeWordsTo: String)
-    func change(myFingerprints: String, partnerFingerprints: String)
+    func change(myFingerprint: String, partnerFingerprint: String)
 }
 
 final class KeySyncHandshakeViewModel {
@@ -157,8 +157,8 @@ extension KeySyncHandshakeViewModel {
                 return
             }
 
-            delegate.change(myFingerprints: theFingerprintOwn,
-                            partnerFingerprints: theFingerprintPartner)
+            delegate.change(myFingerprint: theFingerprintOwn,
+                            partnerFingerprint: theFingerprintPartner)
         }
     }
 

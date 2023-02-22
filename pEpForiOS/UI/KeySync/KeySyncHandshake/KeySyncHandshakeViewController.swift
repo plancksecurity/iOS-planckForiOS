@@ -188,7 +188,7 @@ extension KeySyncHandshakeViewController: KeySyncHandshakeViewModelDelegate {
         }
     }
 
-    func change(myFingerprints: String, partnerFingerprints: String) {
+    func change(myFingerprint: String, partnerFingerprint: String) {
         currentDeviceFingerprintsValueLabel.text = myFingerprints
         otherDeviceFingerprintsValueLabel.text = partnerFingerprints
     }

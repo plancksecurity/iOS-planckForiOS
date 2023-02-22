@@ -215,7 +215,7 @@ extension TrustManagementUtil : TrustManagementUtilProtocol {
             Log.shared.error("some went wrong getting the fingerprint for one identity")
             completion(nil)
         }) { identity in
-            completion(identity.fingerPrint)
+            completion(identity.fingerPrint?.prettyFingerPrint())
         }
     }
 
@@ -248,7 +248,7 @@ extension TrustManagementUtil : TrustManagementUtilProtocol {
         }
 
         group.notify(queue: DispatchQueue.main) {
-            completion(fingerprintOwn, fingerprintPartner)
+            completion(fingerprintOwn?.prettyFingerPrint(), fingerprintPartner?.prettyFingerPrint())
         }
     }
 

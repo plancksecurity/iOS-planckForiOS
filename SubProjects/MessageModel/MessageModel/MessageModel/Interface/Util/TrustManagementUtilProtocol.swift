@@ -70,11 +70,11 @@ public protocol TrustManagementUtilProtocol: AnyObject {
     ///   - completion: The completion block
     func languagesList(acceptedLanguages: [String]?, completion: @escaping ([String]) -> ())
 
-    /// Asynchronously gets the fingerprint for the given `Idendity`.
+    /// Asynchronously gets the (formatted) fingerprint for the given `Idendity`.
     func getFingerprint(for identity: Identity,
                         completion: @escaping (String?) -> ())
 
-    /// Asynchronously gets the fingerprint for the given own `Idendity` and partner `Idendity`.
+    /// Asynchronously gets the (formatted) fingerprint for the given own `Idendity` and partner `Idendity`.
     func getFingerprints(identityOwn: Identity,
                          identityPartner: Identity,
                          completion: @escaping (String?, String?) -> ())
