@@ -78,8 +78,8 @@ public protocol TrustManagementUtilProtocol: AnyObject {
     func getFingerprint(for identity: Identity,
                         completion: @escaping (String?) -> ())
 
-    func getFingerprints(ownIdentity: Identity,
-                         partnerIdentity: Identity,
+    func getFingerprints(identityOwn: Identity,
+                         identityPartner: Identity,
                          completion: @escaping (String?, String?) -> ())
 
     /// - Parameter message: The message to generate the handshake combinations.
@@ -298,34 +298,36 @@ extension TrustManagementUtil : TrustManagementUtilProtocol {
         }
     }
 
-    public func getFingerprints(ownIdentity: Identity,
-                                partnerIdentity: Identity,
+    public func getFingerprints(identityOwn: Identity,
+                                identityPartner: Identity,
                                 completion: @escaping (String?, String?) -> ()) {
-        var ownFingerprint: String?
-        var partnerFingerprint: String?
+        var fingerprintOwn: String?
+        var fingerprintPartner: String?
 
         let group = DispatchGroup()
 
-        PEPSession().update(ownIdentity.pEpIdentity(),
+        group.enter()
+        PEPSession().update(identityOwn.pEpIdentity(),
                             errorCallback: { _ in
-            ownFingerprint = nil
+            fingerprintOwn = nil
             group.leave()
         }) { identity in
-            ownFingerprint = identity.fingerPrint
+            fingerprintOwn = identity.fingerPrint
             group.leave()
         }
 
-        PEPSession().update(partnerIdentity.pEpIdentity(),
+        group.enter()
+        PEPSession().update(identityPartner.pEpIdentity(),
                             errorCallback: { _ in
-            partnerFingerprint = nil
+            fingerprintPartner = nil
             group.leave()
         }) { identity in
-            partnerFingerprint = identity.fingerPrint
+            fingerprintPartner = identity.fingerPrint
             group.leave()
         }
 
         group.notify(queue: DispatchQueue.main) {
-            completion(ownFingerprint, partnerFingerprint)
+            completion(fingerprintOwn, fingerprintPartner)
         }
     }
 
