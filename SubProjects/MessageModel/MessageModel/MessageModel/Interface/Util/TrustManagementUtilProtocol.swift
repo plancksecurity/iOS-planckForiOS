@@ -19,7 +19,8 @@ public protocol TrustManagementUtilProtocol: AnyObject {
     ///   - long: if false will return only 5 words, if true will return all posible trustwords for both identities.
     ///    - completion returns the result if available, returns nil otherwize
     /// For example absense of fingerprints, or a failure in the session. If so will be nil.
-    func getTrustwords(for SelfIdentity: Identity, and partnerIdentity: Identity,
+    func getTrustwords(for SelfIdentity: Identity,
+                       and partnerIdentity: Identity,
                        language: String,
                        long: Bool,
                        completion: @escaping (String?) -> Void)
