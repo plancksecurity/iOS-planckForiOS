@@ -78,6 +78,9 @@ public protocol TrustManagementUtilProtocol: AnyObject {
     func getFingerprint(for identity: Identity,
                         completion: @escaping (String?) -> ())
 
+    func getFingerprints(for identities: [Identity],
+                         completion: @escaping ([Identity:String]) -> ())
+
     /// - Parameter message: The message to generate the handshake combinations.
     /// - returns: The possible handshake combinations.
     func handshakeCombinations(message: Message,
@@ -291,6 +294,29 @@ extension TrustManagementUtil : TrustManagementUtilProtocol {
             completion(nil)
         }) { identity in
             completion(identity.fingerPrint)
+        }
+    }
+
+    public func getFingerprints(for identities: [Identity],
+                                completion: @escaping ([Identity:String]) -> ()) {
+        let group = DispatchGroup()
+
+        var result = [Identity:String]()
+
+        for identity in identities {
+            let pEpIdentity = identity.pEpIdentity()
+            group.enter()
+            PEPSession().update(pEpIdentity,
+                                errorCallback: { _ in
+                group.leave()
+            }) { pEpIdentity in
+                result[identity] = pEpIdentity.fingerPrint
+                group.leave()
+            }
+        }
+
+        group.notify(queue: DispatchQueue.main) {
+            completion(result)
         }
     }
 

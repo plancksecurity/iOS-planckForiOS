@@ -135,12 +135,14 @@ extension KeySyncHandshakeViewModel {
     }
 
     private func setFingerprints(identityOwn: Identity, identityPartner: Identity) {
-        var fingerprintMe = ""
-        var fingerprintPartner = ""
+        trustManagementUtil.getFingerprints(for: [identityOwn, identityPartner]) { [weak self] fingerprints in
+            guard let fingerprintOwn = fingerprints[identityOwn] else {
+                Log.shared.errorAndCrash(message: "No own fingerprint")
+                return
+            }
 
-        trustManagementUtil.getFingerprint(for: identityOwn) { [weak self] fingerprint in
-            guard let theFingerprint = fingerprint else {
-                Log.shared.errorAndCrash("No own fingerprint")
+            guard let fingerprintPartner = fingerprints[identityPartner] else {
+                Log.shared.errorAndCrash(message: "No partner fingerprint")
                 return
             }
 
@@ -149,31 +151,13 @@ extension KeySyncHandshakeViewModel {
                 return
             }
 
-            fingerprintMe = theFingerprint
-
-            me.trustManagementUtil.getFingerprint(for: identityPartner) { fingerprint in
-                guard let theFingerprint = fingerprint else {
-                    Log.shared.errorAndCrash("No partner fingerprint")
-                    return
-                }
-
-                fingerprintPartner = theFingerprint
-
-                DispatchQueue.main.async { [weak self] in
-                    guard let me = self else {
-                        Log.shared.errorAndCrash("Lost myself")
-                        return
-                    }
-
-                    guard let delegate = me.delegate else {
-                        Log.shared.errorAndCrash("Lost delegate")
-                        return
-                    }
-
-                    delegate.change(myFingerprints: fingerprintMe,
-                                    partnerFingerprints: fingerprintPartner)
-                }
+            guard let delegate = me.delegate else {
+                Log.shared.errorAndCrash("Lost delegate")
+                return
             }
+
+            delegate.change(myFingerprints: fingerprintOwn,
+                            partnerFingerprints: fingerprintPartner)
         }
     }
 
