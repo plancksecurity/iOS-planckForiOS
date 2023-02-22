@@ -7,7 +7,7 @@
 //
 
 import Foundation
-
+import UIKit
 import PEPObjCAdapter
 
 /// Derived from the adapter's `PEPRating`, which in turn is derived from
@@ -80,6 +80,21 @@ extension Rating {
     /// Whether or not the message could not yet be decrypted
     public func isUnDecryptable() -> Bool {
         return Rating.undecryptableRatings.contains(self)
+    }
+
+    public func statusIconForMessage(enabled: Bool = true) -> UIImage? {
+        switch self {
+        case .cannotDecrypt:
+            return nil
+        case .b0rken, .undefined:
+            return UIImage(named: "pEp-status-red_white-border")
+        case .underAttack, .mistrust, .haveNoKey, .unencrypted:
+            return UIImage(named: "pEp-status-msg-red")
+        case .reliable, .unreliable, .mediaKeyEncryption: //Secure
+            return UIImage(named: "pEp-status-msg-green-secure") //missing asset
+        case .trusted, .trustedAndAnonymized, .fullyAnonymous: // Secure and trusted
+            return UIImage(named: "pEp-status-msg-green")
+        }
     }
 }
 
