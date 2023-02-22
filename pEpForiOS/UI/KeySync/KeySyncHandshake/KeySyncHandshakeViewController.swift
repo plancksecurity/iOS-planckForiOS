@@ -19,7 +19,7 @@ final class KeySyncHandshakeViewController: UIViewController {
 
     @IBOutlet private weak var currentDeviceFingerprintsLabel: UILabel! {
         didSet {
-            currentDeviceFingerprintsLabel.text = NSLocalizedString("Fingerprints of this device", comment: "Fingerprints of this device - title")
+            currentDeviceFingerprintsLabel.text = NSLocalizedString("Fingerprint of this device", comment: "Fingerprint title current device")
         }
     }
 
@@ -27,7 +27,7 @@ final class KeySyncHandshakeViewController: UIViewController {
 
     @IBOutlet private weak var otherDeviceFingerprintsLabel: UILabel! {
         didSet {
-            otherDeviceFingerprintsLabel.text = NSLocalizedString("Fingerprints of the new device", comment: "Fingerprints of the new device - title")
+            otherDeviceFingerprintsLabel.text = NSLocalizedString("Fingerprint of the new device", comment: "Fingerprint title other device")
         }
     }
 
