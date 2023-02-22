@@ -135,13 +135,14 @@ extension KeySyncHandshakeViewModel {
     }
 
     private func setFingerprints(identityOwn: Identity, identityPartner: Identity) {
-        trustManagementUtil.getFingerprints(for: [identityOwn, identityPartner]) { [weak self] fingerprints in
-            guard let fingerprintOwn = fingerprints[identityOwn] else {
+        trustManagementUtil.getFingerprints(ownIdentity: identityOwn, partnerIdentity: identityPartner) {
+            [weak self] fingerprintOwn, fingerprintPartner in
+            guard let theFingerprintOwn = fingerprintOwn else {
                 Log.shared.errorAndCrash(message: "No own fingerprint")
                 return
             }
 
-            guard let fingerprintPartner = fingerprints[identityPartner] else {
+            guard let theFingerprintPartner = fingerprintPartner else {
                 Log.shared.errorAndCrash(message: "No partner fingerprint")
                 return
             }
@@ -156,8 +157,8 @@ extension KeySyncHandshakeViewModel {
                 return
             }
 
-            delegate.change(myFingerprints: fingerprintOwn,
-                            partnerFingerprints: fingerprintPartner)
+            delegate.change(myFingerprints: theFingerprintOwn,
+                            partnerFingerprints: theFingerprintPartner)
         }
     }
 

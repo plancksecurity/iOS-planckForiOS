@@ -264,9 +264,10 @@ class TrustManagementUtilMock: TrustManagementUtilProtocol {
         completion(nil)
     }
 
-    func getFingerprints(for identities: [Identity],
-                         completion: @escaping ([Identity:String]) -> ()) {
-        completion([:])
+    func getFingerprints(ownIdentity: Identity,
+                         partnerIdentity: Identity,
+                         completion: @escaping (String?, String?) -> ()) {
+        completion(nil, nil)
     }
 
     func undoMisstrustOrTrust(for partnerIdentity: Identity,
