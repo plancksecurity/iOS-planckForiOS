@@ -32,6 +32,8 @@ final class KeySyncHandshakeViewModel {
         }
     }
 
+    let trustManagementUtil = TrustManagementUtil()
+
     var completionHandler: ((KeySyncHandshakeViewController.Action) -> Void)? //!!!: A viewModel must not know the Controller
 
     weak var delegate: KeySyncHandshakeViewModelDelegate?
@@ -173,12 +175,12 @@ extension KeySyncHandshakeViewModel {
 
         setFingerprints()
 
-        TrustManagementUtil().getTrustwords(email: theEmail,
-                                            username: username,
-                                            fpr1: meFPR,
-                                            fpr2: partnerFPR,
-                                            language: languageCode,
-                                            full: fullTrustWords) { (trustwords) in
+        trustManagementUtil.getTrustwords(email: theEmail,
+                                          username: username,
+                                          fpr1: meFPR,
+                                          fpr2: partnerFPR,
+                                          language: languageCode,
+                                          full: fullTrustWords) { (trustwords) in
             DispatchQueue.main.async {
                 completion(trustwords ?? "")
             }

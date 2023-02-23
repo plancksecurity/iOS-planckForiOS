@@ -30,6 +30,8 @@ extension ComposeViewModel {
 
     /// Wraps bookholding properties
     class ComposeViewModelState {
+        let trustManagementUtil = TrustManagementUtil()
+
         private(set) var initData: InitData?
         private var isValidatedForSending = false {
             didSet {
@@ -275,7 +277,7 @@ extension ComposeViewModel.ComposeViewModelState {
             allIdenties.append(from)
             allIdenties.append(contentsOf: ccRecipients)
             allIdenties.append(contentsOf: bccRecipients)
-            TrustManagementUtil().handshakeCombinations(identities: allIdenties, completion: completion)
+            trustManagementUtil.handshakeCombinations(identities: allIdenties, completion: completion)
         } else {
             completion([])
         }
