@@ -87,6 +87,10 @@ extension KeySyncService: PEPNotifyHandshakeDelegate {
             handshakeHandler?.cancelHandshake()
             fastPollingDelegate?.disableFastPolling()
             Log.shared.errorAndCrash("undefined case")
+
+        case .groupInvitation:
+            // TODO
+            Log.shared.errorAndCrash(".groupInvitation has to be implemented")
         }
 
         return .OK
