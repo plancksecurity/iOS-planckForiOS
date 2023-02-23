@@ -8,6 +8,8 @@
 
 import UIKit
 
+import MessageModel // Only for KeySyncHandshakeData
+
 final class KeySyncHandshakeViewController: UIViewController {
     enum Action {
         case cancel, decline, accept
@@ -122,9 +124,7 @@ final class KeySyncHandshakeViewController: UIViewController {
         message.text = viewModel.getMessage()
     }
 
-    func setFingerPrints(meFPR: String,
-                         partnerFPR: String,
-                         isNewGroup: Bool) {
+    func setKeySyncHandshakeData(keySyncHandshakeData: KeySyncHandshakeData) {
         // TODO What has to be done here?
     }
 
