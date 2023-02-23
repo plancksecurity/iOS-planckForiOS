@@ -34,7 +34,7 @@ public protocol TrustManagementUtilProtocol: AnyObject {
     /// Get the trustwords for key sync.
     func getTrustwords(email: String,
                        username: String?,
-                       forFpr1 fpr1: String,
+                       fpr1 fpr1: String,
                        fpr2: String,
                        language: String,
                        full: Bool,
@@ -143,7 +143,7 @@ extension TrustManagementUtil : TrustManagementUtilProtocol {
 
     public func getTrustwords(email: String,
                               username: String?,
-                              forFpr1 fpr1: String,
+                              fpr1: String,
                               fpr2: String,
                               language: String,
                               full: Bool,

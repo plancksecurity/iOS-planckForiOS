@@ -233,7 +233,7 @@ class TrustManagementUtilMock: TrustManagementUtilProtocol {
 
     func getTrustwords(email: String,
                        username: String?,
-                       forFpr1 fpr1: String,
+                       fpr1: String,
                        fpr2: String,
                        language: String,
                        full: Bool,

@@ -175,7 +175,7 @@ extension KeySyncHandshakeViewModel {
 
         TrustManagementUtil().getTrustwords(email: theEmail,
                                             username: username,
-                                            forFpr1: meFPR,
+                                            fpr1: meFPR,
                                             fpr2: partnerFPR,
                                             language: languageCode,
                                             full: fullTrustWords) { (trustwords) in
