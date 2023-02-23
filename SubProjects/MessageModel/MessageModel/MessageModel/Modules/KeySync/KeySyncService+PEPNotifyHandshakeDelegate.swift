@@ -128,8 +128,10 @@ extension KeySyncService {
                 Log.shared.errorAndCrash("Lost myself")
                 return
             }
-            strongSelf.handshakeHandler?.showHandshake(meFingerprint: me.fingerPrint,
-                                                       partnerFingerprint: partner.fingerPrint,
+            strongSelf.handshakeHandler?.showHandshake(email: me.address,
+                                                       username: me.userName,
+                                                       fingerprintLocal: me.fingerPrint,
+                                                       fingerprintOther: partner.fingerPrint,
                                                        isNewGroup: isNewGroup) { result in
                 if result == .cancel || result == .rejected {
                     strongSelf.fastPollingDelegate?.disableFastPolling()

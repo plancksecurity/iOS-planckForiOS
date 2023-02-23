@@ -37,6 +37,13 @@ final class KeySyncHandshakeViewModel {
     weak var delegate: KeySyncHandshakeViewModelDelegate?
     var fullTrustWords = false //Internal since testing
     private var languageCode = Locale.current.languageCode ?? "en"
+
+    /// The email address of the account this is doing the key sync
+    private var email: String?
+
+    /// The name of the (local) user doing the key sync
+    private var username: String?
+
     private var meFPR: String?
     private var partnerFPR: String?
     private var isNewGroup = true
@@ -96,9 +103,11 @@ final class KeySyncHandshakeViewModel {
         }
     }
 
-    func setFingerPrints(meFPR: String?,
+    func setFingerPrints(email: String?,
+                         meFPR: String?,
                          partnerFPR: String?,
                          isNewGroup: Bool) {
+        self.email = email
         self.meFPR = meFPR
         self.partnerFPR = partnerFPR
         self.isNewGroup = isNewGroup
@@ -156,8 +165,20 @@ extension KeySyncHandshakeViewModel {
             completion("")
             return
         }
+
+        guard let theEmail = email else {
+            Log.shared.errorAndCrash("Need a valid email for getting key sync trustwords")
+            return
+        }
+
         setFingerprints()
-        TrustManagementUtil().getTrustwords(forFpr1: meFPR, fpr2: partnerFPR, language: languageCode, full: fullTrustWords) { (trustwords) in
+
+        TrustManagementUtil().getTrustwords(email: theEmail,
+                                            username: username,
+                                            forFpr1: meFPR,
+                                            fpr2: partnerFPR,
+                                            language: languageCode,
+                                            full: fullTrustWords) { (trustwords) in
             DispatchQueue.main.async {
                 completion(trustwords ?? "")
             }

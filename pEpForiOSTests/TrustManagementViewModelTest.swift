@@ -231,12 +231,14 @@ class TrustManagementUtilMock: TrustManagementUtilProtocol {
         completion(TrustManagementUtilMock.someTrustWords)
     }
 
-    func getTrustwords(forFpr1 fpr1: String,
+    func getTrustwords(email: String,
+                       username: String?,
+                       forFpr1 fpr1: String,
                        fpr2: String,
                        language: String,
                        full: Bool,
                        completion: @escaping (String?) -> Void) {
-        // Dummy for conforming the protocol
+        // Dummy for conforming to the protocol
     }
     
     func confirmTrust(for identity: Identity) {

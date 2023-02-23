@@ -11,12 +11,16 @@ public protocol KeySyncServiceHandshakeHandlerProtocol: AnyObject {
     /// Show pEp Sync Wizard
     ///
     /// - Parameters:
-    ///   - me: my trust words
-    ///   - partner: my partner trust words
+    ///   - email: The email address of the account
+    ///   - username: The (optional) name of the user
+    ///   - fingerprintLocal: The fingerprint of the local identity
+    ///   - fingerprintOther: The fingerprint of the other identity
     ///   - isNewGroup: is it a new group creation or i am joining an existing group
     ///   - completion: handle the possible results of type PEPSyncHandshakeResult
-    func showHandshake(meFingerprint: String?,
-                       partnerFingerprint: String?,
+    func showHandshake(email: String,
+                       username: String?,
+                       fingerprintLocal: String?,
+                       fingerprintOther: String?,
                        isNewGroup: Bool,
                        completion: ((KeySyncHandshakeResult)->())?)
 

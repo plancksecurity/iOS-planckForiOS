@@ -23,7 +23,10 @@ final class KeySyncHandshakeViewModelTest: XCTestCase {
         keySyncHandshakeVM = KeySyncHandshakeViewModel()
         keySyncHandshakeVM?.delegate = self
         expDelegateCalled = expectation(description: "expDelegateCalled")
-        keySyncHandshakeVM?.setFingerPrints(meFPR: "", partnerFPR: "", isNewGroup: true)
+        keySyncHandshakeVM?.setFingerPrints(email: "",
+                                            meFPR: "",
+                                            partnerFPR: "",
+                                            isNewGroup: true)
 
         wait(for: [expDelegateCalled!], timeout: TestUtil.waitTimeLocal)
 

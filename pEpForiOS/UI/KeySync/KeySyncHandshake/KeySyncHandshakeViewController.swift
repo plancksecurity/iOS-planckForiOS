@@ -111,16 +111,10 @@ final class KeySyncHandshakeViewController: UIViewController {
 
     private let viewModel = KeySyncHandshakeViewModel()
     private var pickerLanguages = [String]()
-    private var meFPR: String?
-    private var partnerFPR: String?
-    private var isNewGroup = true
 
     override func viewDidLoad() {
         super.viewDidLoad()
         viewModel.delegate = self
-        viewModel.setFingerPrints(meFPR: meFPR,
-                                  partnerFPR: partnerFPR,
-                                  isNewGroup: isNewGroup)
     }
 
     override func viewDidAppear(_ animated: Bool) {
@@ -131,9 +125,7 @@ final class KeySyncHandshakeViewController: UIViewController {
     func setFingerPrints(meFPR: String,
                          partnerFPR: String,
                          isNewGroup: Bool) {
-        self.meFPR = meFPR
-        self.partnerFPR = partnerFPR
-        self.isNewGroup = isNewGroup
+        // TODO What has to be done here?
     }
 
     private func setFont(button: UIButton) {
