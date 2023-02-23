@@ -125,7 +125,7 @@ final class KeySyncHandshakeViewController: UIViewController {
     }
 
     func setKeySyncHandshakeData(keySyncHandshakeData: KeySyncHandshakeData) {
-        // TODO What has to be done here?
+        viewModel.setKeySyncHandshakeData(keySyncHandshakeData: keySyncHandshakeData)
     }
 
     private func setFont(button: UIButton) {

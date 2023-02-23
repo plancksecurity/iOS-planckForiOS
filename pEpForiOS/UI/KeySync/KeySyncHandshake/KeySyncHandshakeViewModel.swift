@@ -105,14 +105,12 @@ final class KeySyncHandshakeViewModel {
         }
     }
 
-    func setFingerPrints(email: String?,
-                         meFPR: String?,
-                         partnerFPR: String?,
-                         isNewGroup: Bool) {
-        self.email = email
-        self.meFPR = meFPR
-        self.partnerFPR = partnerFPR
-        self.isNewGroup = isNewGroup
+    func setKeySyncHandshakeData(keySyncHandshakeData: KeySyncHandshakeData) {
+        self.email = keySyncHandshakeData.email
+        self.meFPR = keySyncHandshakeData.fingerprintLocal
+        self.partnerFPR = keySyncHandshakeData.fingerprintOther
+        self.isNewGroup = keySyncHandshakeData.isNewGroup
+
         updateTrustwords()
     }
 
