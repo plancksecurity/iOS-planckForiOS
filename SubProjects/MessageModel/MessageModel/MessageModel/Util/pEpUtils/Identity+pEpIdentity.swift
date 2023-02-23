@@ -7,19 +7,11 @@
 //
 
 import Foundation
-import CoreData
 
 import PEPObjCAdapter
 
 extension Identity {
     func pEpIdentity() -> PEPIdentity {
         return cdObject.pEpIdentity()
-    }
-
-    static func from(pEpIdentity: PEPIdentity, context: NSManagedObjectContext) -> Identity? {
-        guard let cdIdentity = CdIdentity.from(pEpContact: pEpIdentity, context: context) else {
-            return nil
-        }
-        return Identity(cdObject: cdIdentity, context: context)
     }
 }

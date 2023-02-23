@@ -15,7 +15,7 @@ protocol KeySyncHandshakeViewModelDelegate: AnyObject {
     func showPicker(withLanguages languages: [String], selectedLanguageIndex: Int?)
     func closePicker()
     func change(handshakeWordsTo: String)
-    func change(myFingerprint: String, partnerFingerprint: String)
+    func change(myFingerprints: String, partnerFingerprints: String)
 }
 
 final class KeySyncHandshakeViewModel {
@@ -37,14 +37,11 @@ final class KeySyncHandshakeViewModel {
     weak var delegate: KeySyncHandshakeViewModelDelegate?
     var fullTrustWords = false //Internal since testing
     private var languageCode = Locale.current.languageCode ?? "en"
-    private var identityMe: Identity?
-    private var identityPartner: Identity?
+    private var meFPR: String?
+    private var partnerFPR: String?
     private var isNewGroup = true
 
     private var _languages = [TrustwordsLanguage]()
-
-    // Prevent it from going out of scope when async methods are used on it.
-    private let trustManagementUtil = TrustManagementUtil()
 
     func languages(completion: @escaping ([TrustwordsLanguage]) -> ()) {
         if !_languages.isEmpty {
@@ -99,11 +96,11 @@ final class KeySyncHandshakeViewModel {
         }
     }
 
-    func setIdentities(identityMe: Identity?,
-                       identityPartner: Identity?,
-                       isNewGroup: Bool) {
-        self.identityMe = identityMe
-        self.identityPartner = identityPartner
+    func setFingerPrints(meFPR: String?,
+                         partnerFPR: String?,
+                         isNewGroup: Bool) {
+        self.meFPR = meFPR
+        self.partnerFPR = partnerFPR
         self.isNewGroup = isNewGroup
         updateTrustwords()
     }
@@ -134,42 +131,33 @@ extension KeySyncHandshakeViewModel {
         }
     }
 
-    private func setFingerprints(identityOwn: Identity, identityPartner: Identity) {
-        trustManagementUtil.getFingerprints(identityOwn: identityOwn, identityPartner: identityPartner) {
-            [weak self] fingerprintOwn, fingerprintPartner in
-            guard let theFingerprintOwn = fingerprintOwn else {
-                Log.shared.errorAndCrash(message: "No own fingerprint")
-                return
-            }
+    private func setFingerprints() {
+        guard let meFPR = meFPR, let partnerFPR = partnerFPR else {
+            Log.shared.errorAndCrash("Nil meFingerPrints or Nil partnerFingerPrints")
+            return
+        }
 
-            guard let theFingerprintPartner = fingerprintPartner else {
-                Log.shared.errorAndCrash(message: "No partner fingerprint")
-                return
-            }
-
+        DispatchQueue.main.async { [weak self] in
             guard let me = self else {
                 Log.shared.errorAndCrash("Lost myself")
                 return
             }
-
             guard let delegate = me.delegate else {
                 Log.shared.errorAndCrash("Lost delegate")
                 return
             }
-
-            delegate.change(myFingerprint: theFingerprintOwn,
-                            partnerFingerprint: theFingerprintPartner)
+            delegate.change(myFingerprints: meFPR, partnerFingerprints: partnerFPR)
         }
     }
 
-    private func trustWords(completion: @escaping (String) -> Void) {
-        guard let identityMe = identityMe, let identityPartner = identityPartner else {
-            Log.shared.errorAndCrash("Identities are nil (own or partner)")
+    private func trustWords(completion: @escaping (String)->Void) {
+        guard let meFPR = meFPR, let partnerFPR = partnerFPR else {
+            Log.shared.errorAndCrash("Nil meFingerPrints or Nil partnerFingerPrints")
             completion("")
             return
         }
-        setFingerprints(identityOwn: identityMe, identityPartner: identityPartner)
-        trustManagementUtil.getTrustwords(for: identityMe, and: identityPartner, language: languageCode, long: fullTrustWords) {  (trustwords) in
+        setFingerprints()
+        TrustManagementUtil().getTrustwords(forFpr1: meFPR, fpr2: partnerFPR, language: languageCode, full: fullTrustWords) { (trustwords) in
             DispatchQueue.main.async {
                 completion(trustwords ?? "")
             }

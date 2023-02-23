@@ -8,8 +8,6 @@
 
 import UIKit
 
-import MessageModel
-
 final class KeySyncHandshakeViewController: UIViewController {
     enum Action {
         case cancel, decline, accept
@@ -19,7 +17,7 @@ final class KeySyncHandshakeViewController: UIViewController {
 
     @IBOutlet private weak var currentDeviceFingerprintsLabel: UILabel! {
         didSet {
-            currentDeviceFingerprintsLabel.text = NSLocalizedString("Fingerprint of this device", comment: "Fingerprint title current device")
+            currentDeviceFingerprintsLabel.text = NSLocalizedString("Fingerprints of this device", comment: "Fingerprints of this device - title")
         }
     }
 
@@ -27,7 +25,7 @@ final class KeySyncHandshakeViewController: UIViewController {
 
     @IBOutlet private weak var otherDeviceFingerprintsLabel: UILabel! {
         didSet {
-            otherDeviceFingerprintsLabel.text = NSLocalizedString("Fingerprint of the new device", comment: "Fingerprint title other device")
+            otherDeviceFingerprintsLabel.text = NSLocalizedString("Fingerprints of the new device", comment: "Fingerprints of the new device - title")
         }
     }
 
@@ -113,16 +111,16 @@ final class KeySyncHandshakeViewController: UIViewController {
 
     private let viewModel = KeySyncHandshakeViewModel()
     private var pickerLanguages = [String]()
-    private var identityMe: Identity?
-    private var identityPartner: Identity?
+    private var meFPR: String?
+    private var partnerFPR: String?
     private var isNewGroup = true
 
     override func viewDidLoad() {
         super.viewDidLoad()
         viewModel.delegate = self
-        viewModel.setIdentities(identityMe: identityMe,
-                                identityPartner: identityPartner,
-                                isNewGroup: isNewGroup)
+        viewModel.setFingerPrints(meFPR: meFPR,
+                                  partnerFPR: partnerFPR,
+                                  isNewGroup: isNewGroup)
     }
 
     override func viewDidAppear(_ animated: Bool) {
@@ -130,11 +128,11 @@ final class KeySyncHandshakeViewController: UIViewController {
         message.text = viewModel.getMessage()
     }
 
-    func setIdentities(identityMe: Identity,
-                       identityPartner: Identity,
-                       isNewGroup: Bool) {
-        self.identityMe = identityMe
-        self.identityPartner = identityPartner
+    func setFingerPrints(meFPR: String,
+                         partnerFPR: String,
+                         isNewGroup: Bool) {
+        self.meFPR = meFPR
+        self.partnerFPR = partnerFPR
         self.isNewGroup = isNewGroup
     }
 
@@ -188,9 +186,9 @@ extension KeySyncHandshakeViewController: KeySyncHandshakeViewModelDelegate {
         }
     }
 
-    func change(myFingerprint: String, partnerFingerprint: String) {
-        currentDeviceFingerprintsValueLabel.text = myFingerprint
-        otherDeviceFingerprintsValueLabel.text = partnerFingerprint
+    func change(myFingerprints: String, partnerFingerprints: String) {
+        currentDeviceFingerprintsValueLabel.text = myFingerprints
+        otherDeviceFingerprintsValueLabel.text = partnerFingerprints
     }
 
 }

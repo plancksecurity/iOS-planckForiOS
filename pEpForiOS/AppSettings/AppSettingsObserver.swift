@@ -47,25 +47,21 @@ class AppSettingsObserver {
         // save the current MDM settings for later comparison
         mdmDictionary = mdm
 
-        mdmToAppSettings()
+        //Make sure we have same values for MDM-less.
+        AppSettings.shared.usePEPFolderEnabled = AppSettings.shared.mdmPEPSyncFolderEnabled
+
+        // In MDM, we have mdmPEPSyncAccountEnabled and additionally mdmPEPSyncNewDevicesEnabled.
+        // In non-mdm, keySyncEnabled is both in one.
+        AppSettings.shared.keySyncEnabled = AppSettings.shared.mdmPEPSyncAccountEnabled && AppSettings.shared.mdmPEPSyncNewDevicesEnabled
 
         // Carry the configuration into all subsystems, like adapter/engine etc.
         // Note that any error is currently ignored.
         MDMSettingsUtil().configure { _ in
             DispatchQueue.main.async {
                 // inform views that display settings related data
-                NotificationCenter.default.post(name:.pEpMDMSettingsChanged,
-                                                object: mdm,
-                                                userInfo: nil)
+                NotificationCenter.default.post(name:.pEpMDMSettingsChanged, object: mdm, userInfo: nil)
             }
         }
-    }
-
-    /// Transfer MDM settings to equivalent app settings, so the components that use the app version
-    /// will behave accordingly.
-    private func mdmToAppSettings() {
-        AppSettings.shared.usePEPFolderEnabled = AppSettings.shared.mdmPEPSyncFolderEnabled
-        AppSettings.shared.keySyncEnabled = AppSettings.shared.mdmPEPSyncAccountEnabled
     }
 
     // MARK: - Deinit

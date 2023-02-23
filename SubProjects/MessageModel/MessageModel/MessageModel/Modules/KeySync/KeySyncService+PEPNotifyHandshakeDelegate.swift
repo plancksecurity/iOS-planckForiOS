@@ -82,10 +82,6 @@ extension KeySyncService: PEPNotifyHandshakeDelegate {
         case .outgoingRatingChange:
             outgoingRatingService.handleOutgoingRatingChange()
 
-        case .groupInvitation:
-            // TODO
-            Log.shared.errorAndCrash("missing implementation for .groupInvitation")
-
         // Other
         case .undefined:
             handshakeHandler?.cancelHandshake()
@@ -128,12 +124,8 @@ extension KeySyncService {
                 Log.shared.errorAndCrash("Lost myself")
                 return
             }
-
-            let identityMe = Identity.from(pEpIdentity: me, context: Session.main.moc)
-            let identityPartner = Identity.from(pEpIdentity: partner, context: Session.main.moc)
-
-            strongSelf.handshakeHandler?.showHandshake(identityMe: identityMe,
-                                                       identityPartner: identityPartner,
+            strongSelf.handshakeHandler?.showHandshake(meFingerprint: me.fingerPrint,
+                                                       partnerFingerprint: partner.fingerPrint,
                                                        isNewGroup: isNewGroup) { result in
                 if result == .cancel || result == .rejected {
                     strongSelf.fastPollingDelegate?.disableFastPolling()

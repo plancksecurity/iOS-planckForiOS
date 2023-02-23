@@ -8,7 +8,6 @@
 
 import UIKit
 
-import MessageModel
 import pEpIOSToolbox
 
 extension KeySyncWizardViewController {
@@ -58,12 +57,12 @@ final class KeySyncWizardViewController: PEPPageViewControllerBase {
     /// init KeySyncWizardViewController, to guide the user with the KeySync proccess.
     ///
     /// - Parameters:
-    ///   - identityMe: An own identity.
-    ///   - identityPartner: A partner identity.
-    ///   - isNewGroup: Is it a new group creation or am I joining an existing group?
-    ///   - completion: Handle the possible results of type PEPSyncHandshakeResult.
-    static func fromStoryboard(identityMe: Identity,
-                               identityPartner: Identity,
+    ///   - me: my trust words
+    ///   - partner: my partner trust words
+    ///   - isNewGroup: is it a new group creation or i am joining an existing group
+    ///   - completion: handle the possible results of type PEPSyncHandshakeResult
+    static func fromStoryboard(meFPR: String,
+                               partnerFPR: String,
                                isNewGroup: Bool,
                                completion: @escaping (Action) -> Void) -> KeySyncWizardViewController? {
         guard let createe = fromStoryboard() else {
@@ -71,8 +70,8 @@ final class KeySyncWizardViewController: PEPPageViewControllerBase {
             return nil
         }
         createe.setup(pageCompletion: completion,
-                      identityMe: identityMe,
-                      identityPartner: identityPartner,
+                      meFPR: meFPR,
+                      partnerFPR: partnerFPR,
                       isNewGroup: isNewGroup)
         createe.modalTransitionStyle = .crossDissolve
         createe.modalPresentationStyle = .overFullScreen
@@ -101,36 +100,36 @@ extension KeySyncWizardViewController {
     }
 
     private func setup(pageCompletion: @escaping (Action) -> Void,
-                       identityMe: Identity,
-                       identityPartner: Identity,
+                       meFPR: String,
+                       partnerFPR: String,
                        isNewGroup: Bool) {
         self.isNewGroup = isNewGroup
         self.views = wizardViews(pageCompletion: pageCompletion,
-                                 identityMe: identityMe,
-                                 identityPartner: identityPartner,
+                                 meFPR: meFPR,
+                                 partnerFPR: partnerFPR,
                                  isNewGroup: isNewGroup)
     }
 
     private func wizardViews(pageCompletion: @escaping (Action) -> Void,
-                             identityMe: Identity,
-                             identityPartner: Identity,
+                             meFPR: String,
+                             partnerFPR: String,
                              isNewGroup: Bool) -> [UIViewController] {
 
-        guard let introView = introView(isNewGroup: isNewGroup,
-                                        pageCompletion: pageCompletion),
-              let trustWordsView = trustWordsView(identityMe: identityMe,
-                                                  identityPartner: identityPartner,
-                                                  isNewGroup: isNewGroup,
+            guard let introView = introView(isNewGroup: isNewGroup,
+                                            pageCompletion: pageCompletion),
+                let trustWordsView = trustWordsView(meFPR: meFPR,
+                                                    partnerFPR: partnerFPR,
+                                                    isNewGroup: isNewGroup,
+                                                    pageCompletion: pageCompletion),
+                let animationView = animationView(isNewGroup: isNewGroup,
                                                   pageCompletion: pageCompletion),
-              let animationView = animationView(isNewGroup: isNewGroup,
-                                                pageCompletion: pageCompletion),
-              let completionView = completionView(isNewGroup: isNewGroup,
-                                                  pageCompletion: pageCompletion) else {
-            return []
-        }
+                let completionView = completionView(isNewGroup: isNewGroup,
+                                                    pageCompletion: pageCompletion) else {
+                                                        return []
+            }
 
 
-        return [introView, trustWordsView, animationView, completionView]
+            return [introView, trustWordsView, animationView, completionView]
     }
 
     private func introView(isNewGroup: Bool,
@@ -175,8 +174,8 @@ extension KeySyncWizardViewController {
         return introView
     }
 
-    private func trustWordsView(identityMe: Identity,
-                                identityPartner: Identity,
+    private func trustWordsView(meFPR: String,
+                                partnerFPR: String,
                                 isNewGroup: Bool,
                                 pageCompletion: @escaping (Action) -> Void) -> KeySyncHandshakeViewController? {
         let storyboard = UIStoryboard(name: Constants.reusableStoryboard, bundle: .main)
@@ -205,9 +204,9 @@ extension KeySyncWizardViewController {
             }
         }
 
-        handShakeViewController.setIdentities(identityMe: identityMe,
-                                              identityPartner: identityPartner,
-                                              isNewGroup: isNewGroup)
+        handShakeViewController.setFingerPrints(meFPR: meFPR,
+                                                partnerFPR: partnerFPR,
+                                                isNewGroup: isNewGroup)
 
         return handShakeViewController
     }
