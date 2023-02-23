@@ -15,4 +15,17 @@ public struct KeySyncHandshakeData {
     public let fingerprintLocal: String?
     public let fingerprintOther: String?
     public let isNewGroup: Bool
+
+    // Default, internal initializer
+}
+
+extension KeySyncHandshakeData {
+    // Ugly. Make this accessible for tests.
+    public init(fingerprintLocal: String, fingerprintOther: String) {
+        self.email = ""
+        self.username = nil
+        self.fingerprintLocal = fingerprintLocal
+        self.fingerprintOther = fingerprintOther
+        self.isNewGroup = false
+    }
 }
