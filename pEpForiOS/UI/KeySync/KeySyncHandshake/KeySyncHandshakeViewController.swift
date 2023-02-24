@@ -114,8 +114,8 @@ final class KeySyncHandshakeViewController: UIViewController {
     private let viewModel = KeySyncHandshakeViewModel()
     private var pickerLanguages = [String]()
 
-    override func viewDidLoad() {
-        super.viewDidLoad()
+    required init?(coder: NSCoder) {
+        super.init(coder: coder)
         viewModel.delegate = self
     }
 
