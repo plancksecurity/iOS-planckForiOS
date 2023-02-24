@@ -15,13 +15,12 @@ extension Color {
         switch pEpColor {
         case .noColor:
             self = .noColor
+        case .yellow:
+            self = .yellow
         case .green:
             self = .green
         case .red:
             self = .red
-        case .yellow:
-            // This is not an error: please see PEMA-89.
-            self = .green
         }
     }
 
@@ -29,6 +28,8 @@ extension Color {
         switch self {
         case .noColor:
             return .noColor
+        case .yellow:
+            return .yellow
         case .green:
             return .green
         case .red:

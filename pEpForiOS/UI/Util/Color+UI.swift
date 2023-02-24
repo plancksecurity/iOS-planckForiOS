@@ -26,6 +26,12 @@ extension Color {
             return nil
         case .red:
             return withText ? UIImage(named: "pEp-status-msg-red") : UIImage(named: "pEp-status-red_white-border")
+        case .yellow:
+            if enabled {
+                return withText ? UIImage(named: "pEp-status-msg-yellow") : UIImage(named: "pEp-status-yellow_white-border")
+            } else {
+                return withText ? UIImage(named: "pEp-status-msg-disabled-secure") : nil
+            }
         case .green:
             if enabled {
                 return withText ? UIImage(named: "pEp-status-msg-green") : UIImage(named: "pEp-status-green_white-border")
@@ -44,6 +50,8 @@ extension Color {
             return nil
         case .red:
             return UIImage(named: "pEp-status-red_white-border")
+        case .yellow:
+            return UIImage(named: "pEp-status-yellow_white-border")
         case .green:
             return UIImage(named: "pEp-status-green_white-border")
         }

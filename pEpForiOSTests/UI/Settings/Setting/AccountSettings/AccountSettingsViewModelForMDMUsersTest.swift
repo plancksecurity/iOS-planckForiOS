@@ -29,6 +29,11 @@ class AccountSettingsViewModelForMDMUsersTest: AccountDrivenTestBase {
         viewModel = AccountSettingsViewModel(account: account, appSettings: MDMMockAppSettings())
     }
 
+    func testNumberOfSectionsForMDMUsers() throws {
+        setupForMDMUsers()
+        XCTAssertEqual(viewModel.sections.count, dummySections.count)
+    }
+
     func testNumberOfSections() throws {
         XCTAssertEqual(viewModel.sections.count, dummySections.count)
     }

@@ -12,6 +12,7 @@ import Foundation
 /// the engine's `PEP_color`.
 public enum Color {
     case noColor
+    case yellow
     case green
     case red
 }
