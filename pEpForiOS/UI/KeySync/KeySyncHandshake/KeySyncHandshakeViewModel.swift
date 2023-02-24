@@ -159,7 +159,7 @@ extension KeySyncHandshakeViewModel {
         }
     }
 
-    private func trustWords(completion: @escaping (String)->Void) {
+    private func trustWords(completion: @escaping (String) -> Void) {
         guard let meFPR = meFPR, let partnerFPR = partnerFPR else {
             Log.shared.errorAndCrash("Nil meFingerPrints or Nil partnerFingerPrints")
             completion("")
