@@ -148,15 +148,14 @@ extension TrustManagementUtil : TrustManagementUtilProtocol {
                               language: String,
                               full: Bool,
                               completion: @escaping (String?) -> Void) {
-        let ownUserId = "pEp_own_userId" // TODO Where is PEP_OWN_USERID here?
         let pEpIdentityLocal = PEPIdentity(address: email,
-                                           userID: ownUserId,
+                                           userID: nil,
                                            userName: username,
                                            isOwn: true)
         pEpIdentityLocal.fingerPrint = fpr1
 
         let pEpIdentityOther = PEPIdentity(address: email,
-                                           userID: ownUserId,
+                                           userID: nil,
                                            userName: username,
                                            isOwn: false)
         pEpIdentityOther.fingerPrint = fpr2
