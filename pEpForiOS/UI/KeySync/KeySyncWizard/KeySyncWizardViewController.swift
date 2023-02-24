@@ -8,7 +8,7 @@
 
 import UIKit
 
-import MessageModel
+import MessageModel // for KeySyncHandshakeData
 import pEpIOSToolbox
 
 extension KeySyncWizardViewController {
