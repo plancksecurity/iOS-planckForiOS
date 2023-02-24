@@ -1,51 +1,51 @@
 {
   "images" : [
     {
-      "idiom" : "universal",
-      "filename" : "pep-status-secure-english.pdf"
+      "filename" : "ico-secure-EN-1.pdf",
+      "idiom" : "universal"
     },
     {
+      "filename" : "ico-secure-DE.pdf",
       "idiom" : "universal",
-      "filename" : "pep-status-secure-catalan.pdf",
-      "locale" : "ca"
-    },
-    {
-      "idiom" : "universal",
-      "filename" : "pep-status-secure-german.pdf",
       "locale" : "de"
     },
     {
+      "filename" : "ico-secure-EN.pdf",
       "idiom" : "universal",
-      "filename" : "pep-status-secure-english-1.pdf",
       "locale" : "en"
     },
     {
+      "filename" : "ico-secure-CAT.pdf",
       "idiom" : "universal",
-      "filename" : "pep-status-secure-spanish.pdf",
+      "locale" : "ca"
+    },
+    {
+      "filename" : "ico-secure-ES.pdf",
+      "idiom" : "universal",
       "locale" : "es"
     },
     {
+      "filename" : "ico-secure-FR.pdf",
       "idiom" : "universal",
-      "filename" : "pep-status-secure-french.pdf",
       "locale" : "fr"
     },
     {
+      "filename" : "ico-secure-NL.pdf",
       "idiom" : "universal",
-      "filename" : "pep-status-secure-dutch.pdf",
       "locale" : "nl"
     },
     {
+      "filename" : "ico-secure-TR.pdf",
       "idiom" : "universal",
-      "filename" : "pep-status-secure-turkish.pdf",
       "locale" : "tr"
     }
   ],
   "info" : {
-    "version" : 1,
-    "author" : "xcode"
+    "author" : "xcode",
+    "version" : 1
   },
   "properties" : {
-    "preserves-vector-representation" : true,
-    "localizable" : true
+    "localizable" : true,
+    "preserves-vector-representation" : true
   }
 }

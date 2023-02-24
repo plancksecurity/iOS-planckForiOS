@@ -21,8 +21,6 @@ extension Rating {
             self = .fullyAnonymous
         case .haveNoKey:
             self = .haveNoKey
-        case .mediaKeyProtected:
-            self = .mediaKeyEncryption
         case .mistrust:
             self = .mistrust
         case .reliable:
@@ -52,8 +50,6 @@ extension Rating {
             return .fullyAnonymous
         case .haveNoKey:
             return .haveNoKey
-        case .mediaKeyEncryption:
-            return .mediaKeyProtected
         case .mistrust:
             return .mistrust
         case .reliable:

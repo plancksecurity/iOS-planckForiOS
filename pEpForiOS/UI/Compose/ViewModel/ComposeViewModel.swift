@@ -1170,8 +1170,6 @@ extension ComposeViewModel {
             askTheUserBecauseUnsecure()
         case .unencrypted:
             askTheUserBecauseUnsecure()
-        case .mediaKeyEncryption:
-            noNeedToAskTheUser()
         case .unreliable:
             askTheUserBecauseUnsecure()
         case .b0rken:
