@@ -23,7 +23,7 @@ final class KeySyncHandshakeViewController: UIViewController {
         }
     }
 
-    @IBOutlet private weak var currentDeviceFingerprintsValueLabel: UILabel!
+    @IBOutlet private weak var currentDeviceFingerprintsValueLabel: UILabel?
 
     @IBOutlet private weak var otherDeviceFingerprintsLabel: UILabel! {
         didSet {
@@ -31,7 +31,7 @@ final class KeySyncHandshakeViewController: UIViewController {
         }
     }
 
-    @IBOutlet private weak var otherDeviceFingerprintsValueLabel: UILabel!
+    @IBOutlet private weak var otherDeviceFingerprintsValueLabel: UILabel?
     
     @IBOutlet private weak var trustwordsView: UIView! {
         didSet {
@@ -42,11 +42,11 @@ final class KeySyncHandshakeViewController: UIViewController {
         }
     }
 
-    @IBOutlet private weak var trustwordsLabel: UILabel! {
+    @IBOutlet private weak var trustwordsLabel: UILabel? {
         didSet {
-            trustwordsLabel.setPEPFont(style: .body, weight: .regular)
-            trustwordsLabel.backgroundColor = .clear
-            trustwordsLabel.textColor = .label
+            trustwordsLabel?.setPEPFont(style: .body, weight: .regular)
+            trustwordsLabel?.backgroundColor = .clear
+            trustwordsLabel?.textColor = .label
         }
     }
 
@@ -119,6 +119,11 @@ final class KeySyncHandshakeViewController: UIViewController {
         viewModel.delegate = self
     }
 
+    override func viewDidLoad() {
+        // Recalculate the trustwords, and update the UI.
+        viewModel.updateTrustwords()
+    }
+
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
         message.text = viewModel.getMessage()
@@ -174,13 +179,13 @@ extension KeySyncHandshakeViewController: KeySyncHandshakeViewModelDelegate {
 
     func change(handshakeWordsTo: String) {
         DispatchQueue.main.async { [weak self] in
-            self?.trustwordsLabel.text = handshakeWordsTo
+            self?.trustwordsLabel?.text = handshakeWordsTo
         }
     }
 
     func change(myFingerprints: String, partnerFingerprints: String) {
-        currentDeviceFingerprintsValueLabel.text = myFingerprints
-        otherDeviceFingerprintsValueLabel.text = partnerFingerprints
+        currentDeviceFingerprintsValueLabel?.text = myFingerprints
+        otherDeviceFingerprintsValueLabel?.text = partnerFingerprints
     }
 
 }

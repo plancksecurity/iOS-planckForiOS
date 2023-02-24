@@ -26,9 +26,9 @@ final class KeySyncHandshakeViewModel {
     private struct Localized {
         struct Message {
             static let twoDevices = NSLocalizedString("Please make sure you have both devices together so you can compare the Trustwords on both devices. Are the Trustwords below equal to the Trustwords on the other device?",
-                                               comment: "keySync handshake alert message for two devices in group")
+                                                      comment: "keySync handshake alert message for two devices in group")
             static let moreThanTwoDevices = NSLocalizedString("Please make sure you have the devices together so you can compare the Trustwords on the devices. Are the Trustwords below equal to the Trustwords on the other device?",
-                                                       comment: "keySync handshake alert message for more than two devices in group")
+                                                              comment: "keySync handshake alert message for more than two devices in group")
         }
     }
 
@@ -121,16 +121,11 @@ final class KeySyncHandshakeViewModel {
 
     func getMessage() -> String {
         return isNewGroup
-            ? Localized.Message.twoDevices
-            : Localized.Message.moreThanTwoDevices
+        ? Localized.Message.twoDevices
+        : Localized.Message.moreThanTwoDevices
     }
-}
 
-// MARK: - Private
-
-extension KeySyncHandshakeViewModel {
-
-    private func updateTrustwords() {
+    func updateTrustwords() {
         trustWords { [weak self] (trustWords) in
             guard let me = self else {
                 // Valid case. We might have been dismissed already.
@@ -139,7 +134,11 @@ extension KeySyncHandshakeViewModel {
             me.delegate?.change(handshakeWordsTo: trustWords)
         }
     }
+}
 
+// MARK: - Private
+
+extension KeySyncHandshakeViewModel {
     private func setFingerprints() {
         guard let meFPR = meFPR, let partnerFPR = partnerFPR else {
             Log.shared.errorAndCrash("Nil meFingerPrints or Nil partnerFingerPrints")
