@@ -72,7 +72,8 @@ extension PEPUtils {
                          context: NSManagedObjectContext = Stack.shared.mainContext,
                          completion: @escaping (PEPColor) -> Void) {
         pEpRating(cdIdentity: cdIdentity, context: context) { (rating) in
-            completion(rating.pEpRating().pEpColor())
+            let pEpColor = PEPUtils.pEpColor(pEpRating: rating.pEpRating())
+            completion(pEpColor)
         }
     }
 

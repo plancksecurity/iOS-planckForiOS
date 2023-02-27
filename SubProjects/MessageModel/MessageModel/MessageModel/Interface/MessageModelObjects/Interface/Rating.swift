@@ -17,6 +17,7 @@ public enum Rating {
     case cannotDecrypt
     case haveNoKey
     case unencrypted
+    case mediaKeyEncryption
     case unreliable
     case b0rken
     case reliable
@@ -47,17 +48,14 @@ extension Rating {
     /// - returns:  true if the pEp color represents a less secure communication channel than the given one.
     ///             false otherwize.
     public func hasLessSecurePepColor(than rating: Rating) -> Bool {
-        if rating.pEpColor() == .green &&
-            self.pEpColor() != .green {
+        if rating.pEpColor() == .green && pEpColor() != .green {
             return true
-        } else if rating.pEpColor() == .yellow &&
-            (self.pEpColor() != .green && self.pEpColor() != .yellow) {
+        } else if rating.pEpColor() == .yellow && (pEpColor() != .green && pEpColor() != .yellow) {
             return true
-        }
-        else if rating.pEpColor() == .noColor &&
-            (self.pEpColor() != .green && self.pEpColor() != .yellow && self.pEpColor() != .noColor) {
+        } else if rating.pEpColor() == .noColor && ![.noColor, .green,  .yellow].contains(pEpColor()) {
             return true
         }
+        
         return false
     }
 
@@ -71,6 +69,7 @@ extension Rating {
              .unreliable,
              .reliable,
              .trusted,
+             .mediaKeyEncryption,
              .trustedAndAnonymized,
              .fullyAnonymous,
              .mistrust,
