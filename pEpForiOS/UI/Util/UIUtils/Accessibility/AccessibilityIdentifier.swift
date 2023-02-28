@@ -57,6 +57,7 @@ class AccessibilityIdentifier {
     static let secureAndTrusted = "Secure and Trusted"
     static let mistrusted = "Mistrusted"
     static let unknownTrust = "Unknown Trust"
+    static let secure = "Secure"
 
     // MARK: - Others
 

@@ -395,15 +395,30 @@ extension TrustManagementViewController {
                 // Valid case. We might have been dismissed already.
                 return
             }
-
+            //Yellow means secure but not trusted.
+            //That means that's the only case must display the trustwords
             if identifier == me.onlyMasterCellIdentifier {
-                cell.trustwordsStackView.isHidden = true
-                cell.trustwordsButtonsContainer.isHidden = true
+                if rowColor == .yellow {
+                    cell.trustwordsLabel.text = row.trustwords
+                    cell.trustwordsStackView.isHidden = false
+                    cell.trustwordsButtonsContainer.isHidden = false
+                } else {
+                    cell.trustwordsStackView.isHidden = true
+                    cell.trustwordsButtonsContainer.isHidden = true
+                }
             } else if identifier == me.masterAndDetailCellIdentifier {
-                cell.languageButton.isHidden = true
-                cell.trustwordsLabel.isHidden = true
-                cell.confirmButton.isHidden = true
-                cell.declineButton.isHidden = true
+                if rowColor == .yellow {
+                    cell.trustwordsLabel.text = row.trustwords
+                    cell.trustwordsLabel.isHidden = false
+                    cell.confirmButton.isHidden = false
+                    cell.declineButton.isHidden = false
+                    cell.languageButton.isHidden = false
+                } else {
+                    cell.languageButton.isHidden = true
+                    cell.trustwordsLabel.isHidden = true
+                    cell.confirmButton.isHidden = true
+                    cell.declineButton.isHidden = true
+                }
             }
         }
         updateSizeGroup.notify(queue: DispatchQueue.main) { [weak self] in
