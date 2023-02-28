@@ -10,7 +10,6 @@ import UIKit
 
 extension UIBarButtonItem {
 
-
     /// Compose button
     /// - Parameters:
     ///   - tapAction: Required selector for tap gesture recognizer

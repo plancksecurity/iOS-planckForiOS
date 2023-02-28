@@ -572,8 +572,7 @@ final class EmailListViewController: UIViewController {
             toolbarItems?.insert(textFilterButton, at: 1)
             toolbarItems?.insert(flexibleSpace, at: 1)
         } else {
-            toolbarItems?.remove(at: 1)
-            toolbarItems?.remove(at: 1)
+            showStandardToolbar()
         }
         updateFilterButton()
     }
