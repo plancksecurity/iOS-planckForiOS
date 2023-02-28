@@ -207,7 +207,7 @@ class ComposeViewModel {
 
     /// Evaluates if email rating is Red and if there is at least a red recipient.
     private func shouldShowRecipientsBanner() -> Bool {
-        return [.red, .noColor].contains(state.rating.pEpColor()) && getUnsecureRecipients().count > 0
+        return .red == state.rating.pEpColor() && getUnsecureRecipients().count > 0
     }
 
     /// Get the Recipientslendar Banner ViewModel.
@@ -230,7 +230,7 @@ class ComposeViewModel {
             let identity = allRecipients[i]
             identity.pEpRating { rating in
                 let color = rating.pEpColor()
-                if [.red, .noColor].contains(color) {
+                if .red == color {
                     redRecipients.append(identity)
                 }
                 group.leave()
