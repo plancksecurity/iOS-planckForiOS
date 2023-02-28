@@ -14,21 +14,22 @@ extension Color {
     init(pEpColor: PEPColor) {
         switch pEpColor {
         case .noColor:
-            self = .noColor
+            self = .red
+        case .yellow:
+            self = .yellow
         case .green:
             self = .green
         case .red:
             self = .red
-        case .yellow:
-            // This is not an error: please see PEMA-89.
-            self = .green
         }
     }
 
     func pEpColor() -> PEPColor {
         switch self {
         case .noColor:
-            return .noColor
+            return .red
+        case .yellow:
+            return .yellow
         case .green:
             return .green
         case .red:

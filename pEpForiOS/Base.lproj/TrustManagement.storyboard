@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="17701" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="PZt-VJ-X5t">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="21507" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="PZt-VJ-X5t">
     <device id="ipad9_7" orientation="portrait" layout="fullscreen" appearance="light"/>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="17703"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="21505"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
         <capability name="System colors in document resources" minToolsVersion="11.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
@@ -15,7 +15,7 @@
                 <navigationController storyboardIdentifier="TrustManagementViewControllerID" automaticallyAdjustsScrollViewInsets="NO" useStoryboardIdentifierAsRestorationIdentifier="YES" id="PZt-VJ-X5t" sceneMemberID="viewController">
                     <toolbarItems/>
                     <navigationBar key="navigationBar" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" id="0Ex-jP-6bo">
-                        <rect key="frame" x="0.0" y="0.0" width="768" height="50"/>
+                        <rect key="frame" x="0.0" y="20" width="768" height="50"/>
                         <autoresizingMask key="autoresizingMask"/>
                     </navigationBar>
                     <nil name="viewControllers"/>
@@ -36,11 +36,11 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="none" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="crl-YO-ia8">
-                                <rect key="frame" x="0.0" y="50" width="768" height="974"/>
+                                <rect key="frame" x="0.0" y="70" width="768" height="954"/>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 <prototypes>
                                     <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" selectionStyle="blue" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="TrustManagementEmptyHeaderTableViewCell" id="yMU-X4-4om">
-                                        <rect key="frame" x="0.0" y="28" width="768" height="44"/>
+                                        <rect key="frame" x="0.0" y="50" width="768" height="44"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="yMU-X4-4om" id="jkE-w4-XJN">
                                             <rect key="frame" x="0.0" y="0.0" width="768" height="44"/>
@@ -49,7 +49,7 @@
                                         <color key="backgroundColor" systemColor="secondarySystemBackgroundColor"/>
                                     </tableViewCell>
                                     <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="none" indentationWidth="10" reuseIdentifier="TrustManagementTableViewResetCell" rowHeight="250" id="yWq-sT-nzZ" userLabel="TrustManagementCellReset" customClass="TrustManagementResetTableViewCell" customModule="pEpForiOS" customModuleProvider="target">
-                                        <rect key="frame" x="0.0" y="72" width="768" height="250"/>
+                                        <rect key="frame" x="0.0" y="94" width="768" height="250"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="yWq-sT-nzZ" id="h4u-4a-ram" userLabel="TrustManagementContentView">
                                             <rect key="frame" x="0.0" y="0.0" width="768" height="250"/>
@@ -163,7 +163,7 @@
                                         </connections>
                                     </tableViewCell>
                                     <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="none" indentationWidth="10" reuseIdentifier="TrustManagementTableViewCell_OnlyMaster" rowHeight="370" id="dBo-wY-3Nn" userLabel="TrustManagementCell" customClass="TrustManagementTableViewCell" customModule="pEpForiOS" customModuleProvider="target">
-                                        <rect key="frame" x="0.0" y="322" width="768" height="370"/>
+                                        <rect key="frame" x="0.0" y="344" width="768" height="370"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="dBo-wY-3Nn" id="PBy-V2-1ZV" userLabel="TrustManagementContentView">
                                             <rect key="frame" x="0.0" y="0.0" width="768" height="370"/>
@@ -200,7 +200,7 @@
                                                                             <nil key="textColor"/>
                                                                             <nil key="highlightedColor"/>
                                                                         </label>
-                                                                        <imageView userInteractionEnabled="NO" contentMode="scaleToFill" image="pEp-status-yellow_white-border" translatesAutoresizingMaskIntoConstraints="NO" id="TCB-Zy-Xsu">
+                                                                        <imageView userInteractionEnabled="NO" contentMode="scaleToFill" image="pEp-status-green_white-border" translatesAutoresizingMaskIntoConstraints="NO" id="TCB-Zy-Xsu">
                                                                             <rect key="frame" x="48" y="46" width="24" height="24"/>
                                                                             <accessibility key="accessibilityConfiguration" identifier="pEpStatusImageView"/>
                                                                             <constraints>
@@ -397,7 +397,7 @@
                                         </connections>
                                     </tableViewCell>
                                     <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="none" indentationWidth="10" reuseIdentifier="TrustManagementTableViewCell_Detailed" rowHeight="370" id="rJy-jc-TFR" userLabel="TrustManagementWideCell" customClass="TrustManagementTableViewCell" customModule="pEpForiOS" customModuleProvider="target">
-                                        <rect key="frame" x="0.0" y="692" width="768" height="370"/>
+                                        <rect key="frame" x="0.0" y="714" width="768" height="370"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="rJy-jc-TFR" id="IGB-g2-b9y" userLabel="TrustManagementContentView">
                                             <rect key="frame" x="0.0" y="0.0" width="768" height="370"/>
@@ -437,7 +437,7 @@
                                                                                     <nil key="textColor"/>
                                                                                     <nil key="highlightedColor"/>
                                                                                 </label>
-                                                                                <imageView userInteractionEnabled="NO" contentMode="scaleToFill" image="pEp-status-yellow_white-border" translatesAutoresizingMaskIntoConstraints="NO" id="Ncx-4B-mS4">
+                                                                                <imageView userInteractionEnabled="NO" contentMode="scaleToFill" image="pEp-status-green_white-border" translatesAutoresizingMaskIntoConstraints="NO" id="Ncx-4B-mS4">
                                                                                     <rect key="frame" x="48" y="46" width="24" height="24"/>
                                                                                     <accessibility key="accessibilityConfiguration" identifier="pEpStatusImageView"/>
                                                                                     <constraints>
@@ -658,7 +658,7 @@
     </scenes>
     <resources>
         <image name="empty-avatar" width="150" height="150"/>
-        <image name="pEp-status-yellow_white-border" width="21" height="21"/>
+        <image name="pEp-status-green_white-border" width="21" height="21"/>
         <image name="pEpForiOS-icon-languagechange" width="100" height="100"/>
         <systemColor name="secondarySystemBackgroundColor">
             <color red="0.94901960784313721" green="0.94901960784313721" blue="0.96862745098039216" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
