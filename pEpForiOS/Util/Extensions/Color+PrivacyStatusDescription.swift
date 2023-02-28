@@ -20,6 +20,10 @@ extension Color {
         case .red:
             return NSLocalizedString("This contact is mistrusted and might be an attack by a man-in-the-middle.",
                                      comment: "privacyStatusDescription red")
+        case .yellow:
+            return NSLocalizedString(
+                "Communication with this contact will be completely Secure & Trusted by comparing the following Trustwords with your contact, for example by making a phone call.",
+                comment: "privacyStatusDescription yellow")
         case .green:
             return NSLocalizedString(
                 "This contact is completely trusted. All communication will be with the maximum level of privacy.",

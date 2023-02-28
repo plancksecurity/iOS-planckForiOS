@@ -79,21 +79,9 @@ extension PEPUtils {
 
     static func pEpColor(pEpRating: PEPRating?) -> PEPColor {
         if let rating = pEpRating {
-            switch (rating) {
-            case .undefined, .haveNoKey, .unencrypted, .b0rken, .underAttack, .mistrust:
-                return .red
-            case .unreliable,
-                    .reliable,
-                    .trusted,
-                    .trustedAndAnonymized,
-                    .fullyAnonymous,
-                    .mediaKeyProtected:
-                return .green
-            case .cannotDecrypt:
-                return .noColor
-            }
+            return PEPSession().color(from: rating)
         } else {
-            return .noColor
+            return PEPColor.noColor
         }
     }
 }

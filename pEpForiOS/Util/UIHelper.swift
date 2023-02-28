@@ -59,4 +59,18 @@ class UIHelper {
             label.isHidden = true
         }
     }
+
+    /**
+     Gives the label a background color depending on the given privacy color.
+     If the privacy color is `PrivacyColor.NoColor` the default color is used.
+     */
+    static func setBackgroundColor(
+        _ privacyColor: Color, forLabel label: UILabel, defaultColor: UIColor?) {
+        if privacyColor != .noColor {
+            let uiColor = UIHelper.textBackgroundUIColorFromPrivacyColor(privacyColor)
+            label.backgroundColor = uiColor
+        } else {
+            label.backgroundColor = defaultColor
+        }
+    }
 }

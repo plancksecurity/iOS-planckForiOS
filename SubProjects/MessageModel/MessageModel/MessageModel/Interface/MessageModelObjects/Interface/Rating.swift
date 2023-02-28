@@ -50,9 +50,12 @@ extension Rating {
     public func hasLessSecurePepColor(than rating: Rating) -> Bool {
         if rating.pEpColor() == .green && pEpColor() != .green {
             return true
-        } else if rating.pEpColor() == .noColor && ![.noColor, .green].contains(pEpColor()) {
+        } else if rating.pEpColor() == .yellow && (pEpColor() != .green && pEpColor() != .yellow) {
+            return true
+        } else if rating.pEpColor() == .noColor && ![.noColor, .green,  .yellow].contains(pEpColor()) {
             return true
         }
+        
         return false
     }
 
@@ -93,7 +96,7 @@ extension Rating {
                                            to: to,
                                            cc: cc,
                                            bcc: bcc) { pEpRating in
-            completion(Rating(pEpRating: pEpRating))
+                                            completion(Rating(pEpRating: pEpRating))
         }
     }
 }
