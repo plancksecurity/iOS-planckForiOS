@@ -14,7 +14,7 @@ extension OAuth2Type {
         case .google:
             return OAuth2Configuration(
                 oauth2Type: .google,
-                scopes: ["https://mail.google.com/", OIDScopeEmail, OIDScopeProfile],
+                scopes: ["https://mail.google.com/", OIDScopeOpenID, OIDScopeEmail],
                 clientIDKey: "OAUTH2_GMAIL_CLIENT_ID",
                 redirectURLSchemeKey: "OAUTH2_GMAIL_REDIRECT_URL_SCHEME")
         case .o365:
@@ -22,7 +22,7 @@ extension OAuth2Type {
                 oauth2Type: .o365,
                 scopes: [
                     "https://outlook.office.com/IMAP.AccessAsUser.All",
-                    "https://outlook.office.com/SMTP.Send", OIDScopeOpenID, OIDScopeEmail, OIDScopeProfile],
+                    "https://outlook.office.com/SMTP.Send", OIDScopeOpenID, OIDScopeEmail],
                 clientIDKey: "OAUTH2_O365_CLIENT_ID",
                 redirectURLSchemeKey: "OAUTH2_O365_REDIRECT_URL_SCHEME")
         }
