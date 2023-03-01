@@ -24,9 +24,6 @@ extension LoginViewModel {
 }
 
 final class LoginViewModel {
-    /// If the last login attempt was via OAuth2, this will collect temporary parameters
-    private var lastOAuth2Parameters: OAuth2Parameters?
-
     weak var accountVerificationResultDelegate: AccountVerificationResultDelegate?
     weak var loginViewModelLoginErrorDelegate: LoginViewModelLoginErrorDelegate?
     weak var loginViewModelOAuth2ErrorDelegate: LoginViewModelOAuth2ErrorDelegate?
@@ -67,15 +64,9 @@ final class LoginViewModel {
 
     func loginWithOAuth2(
         viewController: UIViewController,
-        emailAddress: String,
-        userName: String,
         oauth2Authorizer: OAuth2AuthorizationProtocol) {
-        lastOAuth2Parameters = OAuth2Parameters(emailAddress: emailAddress,
-                                                userName: userName)
-
         oauthAuthorizer.delegate = self
         oauthAuthorizer.authorize(authorizer: oauth2Authorizer,
-                                  emailAddress: emailAddress,
                                   accountType: verifiableAccount.accountType,
                                   viewController: viewController)
     }
@@ -241,20 +232,14 @@ extension LoginViewModel: OAuthAuthorizerDelegate {
             loginViewModelOAuth2ErrorDelegate?.handle(oauth2Error: err)
         } else {
             if let token = accessToken {
-                guard let oauth2Params = lastOAuth2Parameters else {
-                    loginViewModelOAuth2ErrorDelegate?.handle(
-                        oauth2Error: OAuthAuthorizerError.noParametersForVerification)
-                    return
-                }
-                login(emailAddress: oauth2Params.emailAddress,
-                      displayName: oauth2Params.userName,
+                login(emailAddress: token.getEmail(),
+                      displayName: "token.getEmail()",
                       accessToken: token)
             } else {
                 loginViewModelOAuth2ErrorDelegate?.handle(
                     oauth2Error: OAuthAuthorizerError.noToken)
             }
         }
-        lastOAuth2Parameters = nil
         currentOauth2Authorizer = nil
     }
 }
