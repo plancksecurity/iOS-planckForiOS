@@ -10,22 +10,29 @@ import UIKit
 import pEpIOSToolbox
 
 enum AccountType: Int {
-    case google
-    case microsoft
-    case other
+    case google = 0
+    case microsoft = 1
+    case other = 2
 }
 
+/// How to use this button:
+///
+/// 1. Create a button in IB.
+/// 2. Set the right dimensions and constraints.
+/// 3. Set the `accountType` value in IB.
 @IBDesignable
 class AccountSelectorButton: UIButton {
 
     private var type: AccountType = .other
 
-    @IBInspectable var accountType: Int {
-        get {
-            return type.rawValue
-        }
-        set(type) {
-            self.type = AccountType(rawValue: type) ?? .other
+    /// To change the button type set the value of the this property on IB.
+    /// Use only the numbers of the AccountType enum.
+    /// The default value of this computed variable will be ignored.
+    @IBInspectable
+    var accountType: Int = 2 {
+        didSet {
+            self.type = AccountType(rawValue: accountType) ?? .other
+            commonInit()
         }
     }
 
@@ -45,16 +52,6 @@ class AccountSelectorButton: UIButton {
         }
     }
 
-    func setBackgroundColor(_ c: UIColor, forState: UIControl.State) -> Void {
-        if forState == UIControl.State.normal {
-            normalBackground = c
-        } else if forState == UIControl.State.highlighted {
-            highlightBackground = c
-        } else {
-            // implement other states as desired
-        }
-    }
-
     override init(frame: CGRect) {
         super.init(frame: frame)
         commonInit()
@@ -62,11 +59,26 @@ class AccountSelectorButton: UIButton {
 
     required init?(coder: NSCoder) {
         super.init(coder: coder)
+#if !TARGET_INTERFACE_BUILDER
         commonInit()
+#endif
     }
 
-    func commonInit() -> Void {
+}
 
+extension AccountSelectorButton {
+
+    private func setBackgroundColor(_ color: UIColor, forState: UIControl.State) -> Void {
+        if forState == UIControl.State.normal {
+            normalBackground = color
+        } else if forState == UIControl.State.highlighted {
+            highlightBackground = color
+        } else {
+            // implement other states as desired
+        }
+    }
+
+    private func commonInit() -> Void {
         // 1. rounded corners
         layer.cornerRadius = 10.0
 
@@ -82,6 +94,7 @@ class AccountSelectorButton: UIButton {
         setTextAndImage()
     }
 
+
     private func setShadow() {
         layer.shadowColor = UIColor.black.cgColor
         layer.shadowOffset = CGSize(width: 0, height: 3)
@@ -93,7 +106,8 @@ class AccountSelectorButton: UIButton {
     private func setTextAndImage() {
         var imageName: String
         var text: String
-        switch type {
+
+        switch AccountType(rawValue: accountType) {
         case .google:
             imageName = "ico-google"
             text = NSLocalizedString("Sign in with Google", comment: "Sign in with Google button title")
@@ -103,7 +117,12 @@ class AccountSelectorButton: UIButton {
         case .other:
             imageName = "ico-key"
             text = NSLocalizedString("Sign in with Password", comment: "Sign in with Password button title")
+        case .none:
+            Log.shared.errorAndCrash("Not found")
+            imageName = "ico-key"
+            text = NSLocalizedString("Sign in with Password", comment: "Sign in with Password button title")
         }
+
         let image = UIImage(named: imageName)
         setImage(image, for: .normal)
         setTitle(text, for: .normal)
