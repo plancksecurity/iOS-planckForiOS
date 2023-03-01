@@ -3152,6 +3152,8 @@
 				3A503AA5253737B20070AB6A /* PBXTargetDependency */,
 			);
 			name = pEp;
+			packageProductDependencies = (
+			);
 			productName = pEpForiOS;
 			productReference = 43980E231CBD0BC900A7FC3C /* pEp.app */;
 			productType = "com.apple.product-type.application";
@@ -3227,6 +3229,8 @@
 				de,
 			);
 			mainGroup = 43980E1A1CBD0BC900A7FC3C;
+			packageReferences = (
+			);
 			productRefGroup = 43980E241CBD0BC900A7FC3C /* Products */;
 			projectDirPath = "";
 			projectRoot = "";

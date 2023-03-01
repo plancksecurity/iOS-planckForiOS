@@ -190,7 +190,6 @@ extension AccountSettingsViewModel {
         oauthViewModel.delegate = vc
         oauthViewModel.authorize(
             authorizer: oauth,
-            emailAddress: account.user.address,
             accountType: account.accountType,
             viewController: vc)
     }
