@@ -116,6 +116,20 @@ final class LoginViewController: UIViewController {
         dismissKeyboard()
         isCurrentlyVerifying = true
 
+        guard let vm = viewModel else {
+            Log.shared.errorAndCrash("No VM")
+            return
+        }
+
+        if vm.verifiableAccount.accountType.isOauth {
+            // OAuth does not require user input of any type, as such it is directly called
+            vm.accountVerificationResultDelegate = self
+            let oauth = OAuth2ProviderFactory().oauth2Provider().createOAuth2Authorizer()
+            vm.loginWithOAuth2(viewController: self,
+                               oauth2Authorizer: oauth)
+            return
+        }
+
         guard let email = emailAddress.text?.trimmed(), email != "" else {
             handleLoginError(error: LoginViewController.LoginError.missingEmail,
                              offerManualSetup: false)
@@ -126,10 +140,6 @@ final class LoginViewController: UIViewController {
         // (was calling `email.isProbablyValidEmail` and reporting
         // `LoginViewController.LoginError.invalidEmail` in case).
 
-        guard let vm = viewModel else {
-            Log.shared.errorAndCrash("No VM")
-            return
-        }
         guard !vm.exist(address: email) else {
             isCurrentlyVerifying = false
             handleLoginError(error: LoginViewController.LoginError.accountExistence,
@@ -149,23 +159,15 @@ final class LoginViewController: UIViewController {
         // isOauthAccount is use to disable for ever the password field (when loading this view)
         // isOAuth2Possible is use to hide password field only if isOauthAccount is false and the
         // user type a possible ouath in the email textfield.
-        if vm.verifiableAccount.accountType.isOauth {
-            let oauth = OAuth2ProviderFactory().oauth2Provider().createOAuth2Authorizer()
-            vm.loginWithOAuth2(viewController: self,
-                               emailAddress: email,
-                               userName: userName,
-                               oauth2Authorizer: oauth)
-        } else {
-            guard let pass = password.text, pass != "" else {
-                handleLoginError(error: LoginViewController.LoginError.missingPassword,
-                                 offerManualSetup: false)
-                return
-            }
-
-            vm.login(emailAddress: email,
-                     displayName: userName,
-                     password: pass)
+        guard let pass = password.text, pass != "" else {
+            handleLoginError(error: LoginViewController.LoginError.missingPassword,
+                             offerManualSetup: false)
+            return
         }
+
+        vm.login(emailAddress: email,
+                 displayName: userName,
+                 password: pass)
     }
 
     @IBAction func pEpSyncStateChanged(_ sender: UISwitch) {

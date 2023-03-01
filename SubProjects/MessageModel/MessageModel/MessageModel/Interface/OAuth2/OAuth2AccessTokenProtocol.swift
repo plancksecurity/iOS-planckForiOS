@@ -19,6 +19,7 @@ public protocol OAuth2AccessTokenProtocol: NSSecureCoding {
     var keyChainID: String { get }
 
     // MARK: Refreshing tokens
+    func getEmail() -> String
 
     func performAction(
         freshTokensBlock: @escaping (_ error: Error?, _ accessToken: String?) -> Void)
