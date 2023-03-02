@@ -20,6 +20,7 @@ enum AccountType: Int {
 /// 1. Create a button in IB.
 /// 2. Set the right height, probably 56 pt, and constraints (not fixed width, but minimum 240 pt aprox so they all look similar).
 /// 3. Set the `accountType` value in IB user defined runtime attributes.
+/// 4. Set the font and text color by using attributed string in IB.
 @IBDesignable
 class AccountSelectorButton: UIButton {
 
@@ -107,9 +108,11 @@ extension AccountSelectorButton {
         if UITraitCollection.current.userInterfaceStyle == .light {
             backgroundColor = UIColor(hexString: "#FFFBFE")
             setBackgroundColor(.pEpLightBackground, forState: .highlighted)
+            setBackgroundColor(.pEpLightBackground, forState: .selected)
         } else {
             backgroundColor = .systemBackground
             setBackgroundColor(.secondarySystemBackground, forState: .highlighted)
+            setBackgroundColor(.secondarySystemBackground, forState: .selected)
         }
 
         setBackgroundColor(backgroundColor, forState: .normal)
@@ -154,7 +157,7 @@ extension AccountSelectorButton {
         setTitle(text, for: .normal)
         titleLabel?.lineBreakMode = .byWordWrapping
         titleLabel?.numberOfLines = 1
-        titleLabel?.setPepRobotoFont(style: .caption1, weight: .regular)
+        titleLabel?.font = UIFont(name: "Roboto-Regular", size: 8)
         setTitleColor(.label, for: .normal)
         setTitleColor(.secondaryLabel, for: .highlighted)
     }
