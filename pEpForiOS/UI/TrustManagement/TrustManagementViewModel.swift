@@ -186,6 +186,8 @@ extension TrustManagementViewModel {
 
             var longTw: String? = nil
             var shortTw: String? = nil
+            var ownFingerprint: String? = nil
+            var partnerFingerprint: String? = nil
 
             group.enter()
             trustManagementUtil.getTrustwords(for: combination.ownIdentity,
@@ -198,12 +200,24 @@ extension TrustManagementViewModel {
             }
 
             group.enter()
+            trustManagementUtil.getFingerprint(for: combination.ownIdentity) { someOwnFingerprint in
+                ownFingerprint = someOwnFingerprint
+                group.leave()
+            }
+
+            group.enter()
             trustManagementUtil.getTrustwords(for: combination.ownIdentity,
                                               and: combination.partnerIdentity,
                                               language: language,
                                               long: false)
             { (trustwords) in
                 shortTw = trustwords
+                group.leave()
+            }
+
+            group.enter()
+            trustManagementUtil.getFingerprint(for: combination.partnerIdentity) { somePartnerFingerprint in
+                partnerFingerprint = somePartnerFingerprint
                 group.leave()
             }
 
