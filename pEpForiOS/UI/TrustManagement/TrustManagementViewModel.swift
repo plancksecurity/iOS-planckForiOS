@@ -171,6 +171,9 @@ extension TrustManagementViewModel {
         private var trustwordsShort: String?
         private var trustwordsLong: String?
 
+        public var ownFormattedFingerprint: String?
+        public var partnerFormattedFingerprint: String?
+
         /// Prevents the overkill of requiring the trustwords when it's not necesary.
         fileprivate var forceRed: Bool = false
 
@@ -227,6 +230,9 @@ extension TrustManagementViewModel {
                     // Do nothing.
                     return
                 }
+
+                me.ownFormattedFingerprint = ownFingerprint?.prettyFingerPrint()
+                me.partnerFormattedFingerprint = partnerFingerprint?.prettyFingerPrint()
 
                 me.trustwordsLong = me.prepareTrustwordStringForDisplay(trustwords: longTw)
 
