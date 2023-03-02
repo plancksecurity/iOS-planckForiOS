@@ -63,7 +63,7 @@ final class LoginViewController: UIViewController {
         super.viewWillAppear(animated)
         setup()
         updateView()
-        setupPasswordField()
+        setupLoginFields()
         guard let vm = viewModel else {
             Log.shared.errorAndCrash("VM not found")
             return
@@ -121,9 +121,10 @@ final class LoginViewController: UIViewController {
             return
         }
 
+        vm.accountVerificationResultDelegate = self
+
         if vm.verifiableAccount.accountType.isOauth {
             // OAuth does not require user input of any type, as such it is directly called
-            vm.accountVerificationResultDelegate = self
             let oauth = OAuth2ProviderFactory().oauth2Provider().createOAuth2Authorizer()
             vm.loginWithOAuth2(viewController: self,
                                oauth2Authorizer: oauth)
@@ -154,11 +155,6 @@ final class LoginViewController: UIViewController {
             return
         }
 
-        vm.accountVerificationResultDelegate = self
-
-        // isOauthAccount is use to disable for ever the password field (when loading this view)
-        // isOAuth2Possible is use to hide password field only if isOauthAccount is false and the
-        // user type a possible ouath in the email textfield.
         guard let pass = password.text, pass != "" else {
             handleLoginError(error: LoginViewController.LoginError.missingPassword,
                              offerManualSetup: false)
@@ -487,15 +483,17 @@ extension LoginViewController {
                                                object: nil)
     }
 
-    private func setupPasswordField() {
-           guard let vm = viewModel else {
-               Log.shared.errorAndCrash("No VM")
-               return
-           }
-           let shouldShow = vm.shouldShowPasswordField
-           password.isHidden = !shouldShow
-           password.isEnabled = shouldShow
-       }
+    private func setupLoginFields() {
+        guard let vm = viewModel else {
+            Log.shared.errorAndCrash("No VM")
+            return
+        }
+        let shouldShow = vm.shouldShowLoginFields
+        password.isHidden = !shouldShow
+        password.isEnabled = shouldShow
+        //emailAddress.isHidden = !shouldShow
+        //emailAddress.isEnabled = shouldShow
+    }
 
     private func configureAnimatedTextFields() {
         user.textColorWithText = .pEpGreen
@@ -576,7 +574,7 @@ extension LoginViewController {
         loginButton.isEnabled = !isCurrentlyVerifying
         manualConfigButton.isEnabled = !isCurrentlyVerifying
 
-        setupPasswordField()
+        setupLoginFields()
     }
 
     private func isLandscape() -> Bool {

@@ -14,15 +14,6 @@ import pEpIOSToolbox
 // TODO: For ConnectionTransport. Eliminate?
 import PantomimeFramework
 
-// MARK: - OAuth2Parameters
-
-extension LoginViewModel {
-    struct OAuth2Parameters {
-        let emailAddress: String
-        let userName: String
-    }
-}
-
 final class LoginViewModel {
     weak var accountVerificationResultDelegate: AccountVerificationResultDelegate?
     weak var loginViewModelLoginErrorDelegate: LoginViewModelLoginErrorDelegate?
@@ -41,7 +32,7 @@ final class LoginViewModel {
         }
     }
 
-    public var shouldShowPasswordField: Bool {
+    public var shouldShowLoginFields: Bool {
            return !verifiableAccount.accountType.isOauth
     }
 
@@ -233,7 +224,7 @@ extension LoginViewModel: OAuthAuthorizerDelegate {
         } else {
             if let token = accessToken {
                 login(emailAddress: token.getEmail(),
-                      displayName: "token.getEmail()",
+                      displayName: token.getName(),
                       accessToken: token)
             } else {
                 loginViewModelOAuth2ErrorDelegate?.handle(
