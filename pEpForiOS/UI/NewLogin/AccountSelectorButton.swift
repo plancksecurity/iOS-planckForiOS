@@ -142,6 +142,9 @@ extension AccountSelectorButton {
         case .other:
             imageName = "ico-key"
             text = NSLocalizedString("Sign in with Password", comment: "Sign in with Password button title")
+        case .clientCertificate:
+            imageName = "ico-key"
+            text = NSLocalizedString("Sign in with Client Certificate", comment: "Sign in with Client Certificate button title")
         case .none:
             Log.shared.errorAndCrash("Not found")
             imageName = "ico-key"
