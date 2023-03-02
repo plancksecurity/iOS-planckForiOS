@@ -13,6 +13,7 @@ enum AccountType: Int {
     case google = 0
     case microsoft = 1
     case other = 2
+    case clientCertificate = 3
 }
 
 /// How to use this button:
