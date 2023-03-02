@@ -64,7 +64,27 @@ class AccountSelectorButton: UIButton {
 #endif
     }
 
+    override func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
+        super.traitCollectionDidChange(previousTraitCollection)
+        guard let thePreviousTraitCollection = previousTraitCollection else {
+            // Valid case: optional value from Apple.
+            return
+        }
+        if thePreviousTraitCollection.hasDifferentColorAppearance(comparedTo: traitCollection) {
+            if UITraitCollection.current.userInterfaceStyle == .dark {
+                backgroundColor = .systemBackground
+                setBackgroundColor(.secondarySystemBackground, forState: .highlighted)
+            } else {
+                backgroundColor = UIColor(hexString: "#FFFBFE")
+                setBackgroundColor(.pEpLightBackground, forState: .highlighted)
+            }
+            layoutIfNeeded()
+        }
+    }
+
 }
+
+// MARK: - Private
 
 extension AccountSelectorButton {
 
@@ -83,9 +103,16 @@ extension AccountSelectorButton {
         layer.cornerRadius = 10.0
 
         // 2. Default Colors for state
-        let backgroundColor = UIColor(hexString: "#FFFBFE")
+        let backgroundColor: UIColor
+        if UITraitCollection.current.userInterfaceStyle == .light {
+            backgroundColor = UIColor(hexString: "#FFFBFE")
+            setBackgroundColor(.pEpLightBackground, forState: .highlighted)
+        } else {
+            backgroundColor = .systemBackground
+            setBackgroundColor(.secondarySystemBackground, forState: .highlighted)
+        }
+
         setBackgroundColor(backgroundColor, forState: .normal)
-        setBackgroundColor(.pEpLightBackground, forState: .highlighted)
 
         // 3. Add the shadow
         setShadow()
@@ -93,7 +120,6 @@ extension AccountSelectorButton {
         //4. Text config
         setTextAndImage()
     }
-
 
     private func setShadow() {
         layer.shadowColor = UIColor.black.cgColor
@@ -128,6 +154,9 @@ extension AccountSelectorButton {
         setTitle(text, for: .normal)
         titleLabel?.lineBreakMode = .byWordWrapping
         titleLabel?.numberOfLines = 1
-        titleLabel?.setPEPFont(style: .caption1, weight: .regular)
+        titleLabel?.setPepRobotoFont(style: .caption1, weight: .regular)
+        setTitleColor(.label, for: .normal)
+        setTitleColor(.secondaryLabel, for: .highlighted)
     }
 }
+
