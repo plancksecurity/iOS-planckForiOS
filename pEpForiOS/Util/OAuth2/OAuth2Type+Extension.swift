@@ -22,7 +22,7 @@ extension OAuth2Type {
                 oauth2Type: .o365,
                 scopes: [
                     "https://outlook.office.com/IMAP.AccessAsUser.All",
-                    "https://outlook.office.com/SMTP.Send", OIDScopeEmail, OIDScopeProfile],
+                    "https://outlook.office.com/SMTP.Send", OIDScopeOpenID, OIDScopeEmail, OIDScopeProfile],
                 clientIDKey: "OAUTH2_O365_CLIENT_ID",
                 redirectURLSchemeKey: "OAUTH2_O365_REDIRECT_URL_SCHEME")
         }
