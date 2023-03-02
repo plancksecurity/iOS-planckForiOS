@@ -22,17 +22,4 @@ extension UILabel {
         font = UIFont.pepFont(style: style, weight: weight)
         adjustsFontForContentSizeCategory = true
     }
-
-    /// Sets the Roboto font used in p≡p configured with the text style and the weight,
-    /// scaled for accessibility if needed at max 30 point size.
-    /// Also enables adjustsFontForContentSizeCategory.
-    ///
-    /// - Parameters:
-    ///   - style: The preferred font style.
-    ///   - weight: The preferred font weight.
-    public func setPepRobotoFont(style: UIFont.TextStyle, weight: UIFont.Weight) {
-        font = UIFont.pepRobotoFont(style: style, weight: weight)
-        adjustsFontForContentSizeCategory = true
-    }
-
 }
