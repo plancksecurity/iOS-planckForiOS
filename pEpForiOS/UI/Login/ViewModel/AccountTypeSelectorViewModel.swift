@@ -31,16 +31,16 @@ class AccountTypeSelectorViewModel {
         refreshAccountTypes()
     }
 
-    var count: Int {
-        get {
-            return accountTypes.count
-        }
-    }
+//    var count: Int {
+//        get {
+//            return accountTypes.count
+//        }
+//    }
 
     subscript(index: Int) -> VerifiableAccount.AccountType {
         return accountTypes[index]
     }
-    
+
     public func refreshAccountTypes() {
         accountTypes = [.icloud,
                         .o365,
@@ -57,13 +57,13 @@ class AccountTypeSelectorViewModel {
         }
     }
 
-    public func accountType(row: Int) -> VerifiableAccount.AccountType {
-        guard row < accountTypes.count else {
-            Log.shared.errorAndCrash("Index out of range")
-            return .other
-        }
-        return accountTypes[row]
-    }
+//    public func accountType(row: Int) -> VerifiableAccount.AccountType {
+//        guard row < accountTypes.count else {
+//            Log.shared.errorAndCrash("Index out of range")
+//            return .other
+//        }
+//        return accountTypes[row]
+//    }
 
     public func handleDidChooseClientCertificate() {
         if clientCertificateUtil.listCertificates(session: nil).count == 0 {
@@ -75,34 +75,54 @@ class AccountTypeSelectorViewModel {
     }
 
     /// returns the text corresponding to the provider
-    /// - Parameter provider: provider to obtain it's text
-    public func fileNameOrText(provider: VerifiableAccount.AccountType) -> String {
-        switch provider {
-        case .gmail:
-            return "asset-Google"
-        case .other:
-            return NSLocalizedString("Other", comment: "Other provider key")
-        case .clientCertificate:
-            return NSLocalizedString("""
-            Client
-            Certificate
-            """, comment: "client certificate provider key")
-        case .o365:
-            return "asset-Office365"
-        case .icloud:
-            return "asset-iCloud"
-        case .outlook:
-            return "asset-Outlook"
-        }
-    }
+//    /// - Parameter provider: provider to obtain it's text
+//    public func fileNameOrText(provider: VerifiableAccount.AccountType) -> String {
+//        switch provider {
+//        case .gmail:
+//            return "asset-Google"
+//        case .other:
+//            return NSLocalizedString("Other", comment: "Other provider key")
+//        case .clientCertificate:
+//            return NSLocalizedString("""
+//            Client
+//            Certificate
+//            """, comment: "client certificate provider key")
+//        case .o365:
+//            return "asset-Office365"
+//        case .icloud:
+//            return "asset-iCloud"
+//        case .outlook:
+//            return "asset-Outlook"
+//        }
+//    }
 
     public func isThereAnAccount() -> Bool {
         return !Account.all().isEmpty
     }
 
-    public func handleDidSelect(rowAt indexPath: IndexPath) {
-        chosenAccountType = accountTypes[indexPath.row]
+    public func handleDidSelect(accountType: AccountType) {
+        switch accountType {
+        case .google:
+            chosenAccountType = .gmail
+
+        case .microsoft:
+            chosenAccountType = .o365
+
+        case .other:
+            chosenAccountType = .other
+        }
+
+//    case .clientCertificate:
+//        viewModel.handleDidChooseClientCertificate()
+//    default:
+//        viewModel.handleDidSelect(rowAt: indexPath)
+//        performSegue(withIdentifier: SegueIdentifier.showLogin, sender: self)
+
     }
+
+//    public func handleDidSelect(rowAt indexPath: IndexPath) {
+//        chosenAccountType = accountTypes[indexPath.row]
+//    }
 
     public func clientCertificateManagementViewModel() -> ClientCertificateManagementViewModel {
         return ClientCertificateManagementViewModel(verifiableAccount: verifiableAccountForCoosenAccountType(), shouldHideCancelButton: true)
@@ -117,7 +137,6 @@ class AccountTypeSelectorViewModel {
 
 extension AccountTypeSelectorViewModel {
     private func verifiableAccountForCoosenAccountType() -> VerifiableAccountProtocol{
-        return VerifiableAccount.verifiableAccount(for: chosenAccountType,
-                                                   usePEPFolderProvider: AppSettings.shared)
+        return VerifiableAccount.verifiableAccount(for: chosenAccountType, usePEPFolderProvider: AppSettings.shared)
     }
 }
