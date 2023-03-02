@@ -69,6 +69,13 @@ extension TrustManagementViewModel {
             return name ?? address
         }
 
+        /// The own name (e.g., as title for the fingerprint)
+        public var ownName: String {
+            let name = handshakeCombination.ownIdentity.userName
+            let address = handshakeCombination.ownIdentity.address
+            return name ?? address
+        }
+
         /// The description for the row
         public func description(completion: @escaping (String) -> Void) {
             if forceRed {
