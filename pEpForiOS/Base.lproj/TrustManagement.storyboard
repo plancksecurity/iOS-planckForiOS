@@ -242,14 +242,31 @@
                                                             </constraints>
                                                             <edgeInsets key="layoutMargins" top="0.0" left="0.0" bottom="0.0" right="8"/>
                                                         </stackView>
+                                                        <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" translatesAutoresizingMaskIntoConstraints="NO" id="ySy-AX-PhS" userLabel="FingerprintsStackView">
+                                                            <rect key="frame" x="0.0" y="130.5" width="728" height="41"/>
+                                                            <subviews>
+                                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="nvk-pP-Ae6" userLabel="OwnFingerprintLabel">
+                                                                    <rect key="frame" x="0.0" y="0.0" width="728" height="20.5"/>
+                                                                    <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                                                    <nil key="textColor"/>
+                                                                    <nil key="highlightedColor"/>
+                                                                </label>
+                                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="qA7-Ca-dt1" userLabel="PartnerFingerprintLabel">
+                                                                    <rect key="frame" x="0.0" y="20.5" width="728" height="20.5"/>
+                                                                    <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                                                    <nil key="textColor"/>
+                                                                    <nil key="highlightedColor"/>
+                                                                </label>
+                                                            </subviews>
+                                                        </stackView>
                                                         <stackView opaque="NO" contentMode="scaleToFill" verticalCompressionResistancePriority="751" spacing="20" translatesAutoresizingMaskIntoConstraints="NO" id="RT3-1U-A8N" userLabel="TrustwordsStackView">
-                                                            <rect key="frame" x="0.0" y="130.5" width="728" height="59.5"/>
+                                                            <rect key="frame" x="0.0" y="191.5" width="728" height="20.5"/>
                                                             <subviews>
                                                                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Qnu-G6-wXn" userLabel="Container">
-                                                                    <rect key="frame" x="0.0" y="0.0" width="720" height="59.5"/>
+                                                                    <rect key="frame" x="0.0" y="0.0" width="720" height="20.5"/>
                                                                     <subviews>
                                                                         <label opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" verticalHuggingPriority="251" verticalCompressionResistancePriority="751" text="OUTDISTANCE BLAH BLAH2 BLAH3 BLAH4 BLAH5" textAlignment="natural" lineBreakMode="wordWrap" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="0uK-Ys-aO5" userLabel="TrustWordsLabel">
-                                                                            <rect key="frame" x="0.0" y="0.0" width="393.5" height="59.5"/>
+                                                                            <rect key="frame" x="0.0" y="0.0" width="393.5" height="20.5"/>
                                                                             <accessibility key="accessibilityConfiguration" label="trustWordsLabel"/>
                                                                             <fontDescription key="fontDescription" style="UICTFontTextStyleBody"/>
                                                                             <nil key="textColor"/>
@@ -282,10 +299,10 @@
                                                             <edgeInsets key="layoutMargins" top="0.0" left="0.0" bottom="0.0" right="8"/>
                                                         </stackView>
                                                         <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="a6h-q0-Slk" userLabel="TrustButtonsView">
-                                                            <rect key="frame" x="0.0" y="210" width="728" height="50"/>
+                                                            <rect key="frame" x="0.0" y="232" width="728" height="35.5"/>
                                                             <subviews>
                                                                 <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="wordWrap" translatesAutoresizingMaskIntoConstraints="NO" id="sVr-xT-f8t" userLabel="DeclineButton">
-                                                                    <rect key="frame" x="0.0" y="0.0" width="60" height="50"/>
+                                                                    <rect key="frame" x="0.0" y="0.0" width="60" height="35.5"/>
                                                                     <accessibility key="accessibilityConfiguration" label="wrongButton"/>
                                                                     <fontDescription key="fontDescription" style="UICTFontTextStyleHeadline"/>
                                                                     <state key="normal" title="Decline"/>
@@ -294,7 +311,7 @@
                                                                     </connections>
                                                                 </button>
                                                                 <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="wordWrap" translatesAutoresizingMaskIntoConstraints="NO" id="Q7n-8c-O25" userLabel="ConfirmButton">
-                                                                    <rect key="frame" x="70" y="8.5" width="65" height="33"/>
+                                                                    <rect key="frame" x="70" y="1.5" width="65" height="33"/>
                                                                     <accessibility key="accessibilityConfiguration" label="confirmButton"/>
                                                                     <fontDescription key="fontDescription" style="UICTFontTextStyleHeadline"/>
                                                                     <state key="normal" title="Confirm"/>
@@ -315,10 +332,10 @@
                                                             </constraints>
                                                         </view>
                                                         <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="XLY-Tc-o7v" userLabel="ResetContainer">
-                                                            <rect key="frame" x="0.0" y="280" width="728" height="50"/>
+                                                            <rect key="frame" x="0.0" y="287.5" width="728" height="42.5"/>
                                                             <subviews>
                                                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Reset all p≡p data for this comunication partner:" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="K85-bq-q6Q" userLabel="Reset Label">
-                                                                    <rect key="frame" x="0.0" y="0.0" width="200" height="50"/>
+                                                                    <rect key="frame" x="0.0" y="0.0" width="200" height="42.5"/>
                                                                     <constraints>
                                                                         <constraint firstAttribute="width" constant="200" id="1xv-Oo-8IZ"/>
                                                                     </constraints>
@@ -337,7 +354,7 @@
                                                                     </variation>
                                                                 </label>
                                                                 <button opaque="NO" contentMode="scaleToFill" horizontalCompressionResistancePriority="1000" verticalCompressionResistancePriority="1000" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="6bf-Gd-X5g">
-                                                                    <rect key="frame" x="666" y="7.5" width="54" height="35"/>
+                                                                    <rect key="frame" x="666" y="4" width="54" height="35"/>
                                                                     <color key="backgroundColor" white="0.66666666669999997" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                                                     <constraints>
                                                                         <constraint firstAttribute="height" constant="35" id="MrI-s1-INH"/>
