@@ -501,7 +501,6 @@
 		5B2C2B2729350CAC000E8F20 /* RecipientsListViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5B2C2B2529350CAC000E8F20 /* RecipientsListViewController.swift */; };
 		5B2C2B292935173D000E8F20 /* RecipientListTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5B2C2B282935173D000E8F20 /* RecipientListTableViewCell.swift */; };
 		5B2C2B2A2935173D000E8F20 /* RecipientListTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5B2C2B282935173D000E8F20 /* RecipientListTableViewCell.swift */; };
-		5B2E2E4129B0A0D600834618 /* Roboto-Regular.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 5B2E2E4029B0A0D600834618 /* Roboto-Regular.ttf */; };
 		5B2F7E63240D25CF004DDFA2 /* TutorialStepViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5B2F7E62240D25CF004DDFA2 /* TutorialStepViewController.swift */; };
 		5B394E1323ED5673006A1FC0 /* TrustManagementTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5B394E1223ED5673006A1FC0 /* TrustManagementTableViewCell.swift */; };
 		5B3B019124B46CFC00FBB4B5 /* UILayout+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5B3B019024B46CFC00FBB4B5 /* UILayout+Extension.swift */; };
@@ -1130,7 +1129,6 @@
 		5B2198A228BE3A6500668445 /* AppSettings+UserSettingsProtocol.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "AppSettings+UserSettingsProtocol.swift"; sourceTree = "<group>"; };
 		5B2C2B2529350CAC000E8F20 /* RecipientsListViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RecipientsListViewController.swift; sourceTree = "<group>"; };
 		5B2C2B282935173D000E8F20 /* RecipientListTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RecipientListTableViewCell.swift; sourceTree = "<group>"; };
-		5B2E2E4029B0A0D600834618 /* Roboto-Regular.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Roboto-Regular.ttf"; sourceTree = "<group>"; };
 		5B2F7E62240D25CF004DDFA2 /* TutorialStepViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TutorialStepViewController.swift; sourceTree = "<group>"; };
 		5B394E1223ED5673006A1FC0 /* TrustManagementTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TrustManagementTableViewCell.swift; sourceTree = "<group>"; };
 		5B3B019024B46CFC00FBB4B5 /* UILayout+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UILayout+Extension.swift"; sourceTree = "<group>"; };
@@ -2772,7 +2770,6 @@
 				151C67FE2418158B00481F75 /* SFUIText-Medium.ttf */,
 				151C67FD2418158B00481F75 /* SFUIText-Regular.ttf */,
 				151C67FC2418158B00481F75 /* SFUIText-Semibold.ttf */,
-				5B2E2E4029B0A0D600834618 /* Roboto-Regular.ttf */,
 			);
 			path = SF;
 			sourceTree = "<group>";
@@ -3287,7 +3284,6 @@
 				5B885DB225E7B0350027DD24 /* Tutorial_iPad.storyboard in Resources */,
 				4307D5DA23575853004569C4 /* InfoPlist.strings in Resources */,
 				439C62412611BFD8001893BD /* SharedAssets.xcassets in Resources */,
-				5B2E2E4129B0A0D600834618 /* Roboto-Regular.ttf in Resources */,
 				37F615CC238BE51F001AAE48 /* ManualAccountSetupView.xib in Resources */,
 				439817592418ED2000C8AB84 /* TrustManagement.storyboard in Resources */,
 				151DE7E41FC5D41600CDC273 /* FolderViews.storyboard in Resources */,
