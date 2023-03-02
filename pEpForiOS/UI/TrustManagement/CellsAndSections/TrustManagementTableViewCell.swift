@@ -35,7 +35,12 @@ final class TrustManagementTableViewCell: UITableViewCell {
     //Hide these views in case pepColor is not yellow.
     @IBOutlet weak var trustwordsStackView: UIStackView!
     @IBOutlet weak var trustwordsButtonsContainer: UIView!
-    
+
+    @IBOutlet weak var ownFingerprintTitleLabel: UILabel!
+    @IBOutlet weak var partnerFingerprintTitleLabel: UILabel!
+    @IBOutlet weak var ownFingerprintLabel: UILabel!
+    @IBOutlet weak var partnerFingerprintLabel: UILabel!
+
     weak var delegate : TrustManagementTableViewCellDelegate?
     
     override func awakeFromNib() {
