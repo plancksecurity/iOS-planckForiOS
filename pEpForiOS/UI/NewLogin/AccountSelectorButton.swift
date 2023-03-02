@@ -18,9 +18,10 @@ enum AccountType: Int {
 /// How to use this button:
 ///
 /// 1. Create a button in IB.
-/// 2. Set the right height, probably 56 pt, and constraints (not fixed width, but minimum 240 pt aprox so they all look similar).
+/// 2. Set the right height, probably 56 pt, and constraints (not fixed width, but minimum 290 pt aprox so they all look similar).
 /// 3. Set the `accountType` value in IB user defined runtime attributes.
 /// 4. Set the font and text color by using attributed string in IB.
+/// 5. Set padding in IB 12 pt.
 @IBDesignable
 class AccountSelectorButton: UIButton {
 
@@ -72,13 +73,7 @@ class AccountSelectorButton: UIButton {
             return
         }
         if thePreviousTraitCollection.hasDifferentColorAppearance(comparedTo: traitCollection) {
-            if UITraitCollection.current.userInterfaceStyle == .dark {
-                backgroundColor = .systemBackground
-                setBackgroundColor(.secondarySystemBackground, forState: .highlighted)
-            } else {
-                backgroundColor = UIColor(hexString: "#FFFBFE")
-                setBackgroundColor(.pEpLightBackground, forState: .highlighted)
-            }
+            commonInit()
             layoutIfNeeded()
         }
     }
@@ -157,9 +152,7 @@ extension AccountSelectorButton {
         setTitle(text, for: .normal)
         titleLabel?.lineBreakMode = .byWordWrapping
         titleLabel?.numberOfLines = 1
-        titleLabel?.font = UIFont(name: "Roboto-Regular", size: 8)
         setTitleColor(.label, for: .normal)
         setTitleColor(.secondaryLabel, for: .highlighted)
     }
 }
-
