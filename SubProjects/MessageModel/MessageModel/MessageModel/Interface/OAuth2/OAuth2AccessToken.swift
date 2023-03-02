@@ -49,8 +49,8 @@ public class OAuth2AccessToken: NSObject, NSSecureCoding {
         listenToStateChanges()
     }
     func decode(jwtToken jwt: String) -> [String: Any] {
-      let segments = jwt.components(separatedBy: ".")
-      return decodeJWTPart(segments[1]) ?? [:]
+        let segments = jwt.components(separatedBy: ".")
+        return decodeJWTPart(segments[1]) ?? [:]
     }
 
     func base64UrlDecode(_ value: String) -> Data? {
@@ -75,9 +75,9 @@ public class OAuth2AccessToken: NSObject, NSSecureCoding {
       }
       return payload
     }
-    
+
     public func getEmail() -> String {
-        if let idToken = self.authState.lastTokenResponse?.idToken {
+        if let idToken = authState.lastTokenResponse?.idToken {
             let jwt = decode(jwtToken: idToken)
             if let email = jwt["email"] as? String {
                 return email;
@@ -85,6 +85,17 @@ public class OAuth2AccessToken: NSObject, NSSecureCoding {
 
         }
         return "";
+    }
+    public func getName() -> String {
+        if let idToken = authState.lastTokenResponse?.idToken {
+            let jwt = decode(jwtToken: idToken)
+            if let email = jwt["name"] as? String {
+                return email;
+            }
+
+        }
+        return "";
+
     }
     public func encode(with aCoder: NSCoder) {
         aCoder.encode(keyChainID, forKey: kKeyChainID)

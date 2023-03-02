@@ -224,7 +224,7 @@ extension LoginViewModel: OAuthAuthorizerDelegate {
         } else {
             if let token = accessToken {
                 login(emailAddress: token.getEmail(),
-                      displayName: "token.getEmail()",
+                      displayName: token.getName(),
                       accessToken: token)
             } else {
                 loginViewModelOAuth2ErrorDelegate?.handle(
