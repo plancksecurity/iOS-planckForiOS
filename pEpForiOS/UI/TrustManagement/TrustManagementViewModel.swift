@@ -183,8 +183,10 @@ extension TrustManagementViewModel {
                                      language: LanguageCode,
                                      completion: @escaping () -> Void) {
             let group = DispatchGroup()
+
             var longTw: String? = nil
             var shortTw: String? = nil
+
             group.enter()
             trustManagementUtil.getTrustwords(for: combination.ownIdentity,
                                               and: combination.partnerIdentity,
@@ -194,6 +196,7 @@ extension TrustManagementViewModel {
                 longTw = trustwords
                 group.leave()
             }
+
             group.enter()
             trustManagementUtil.getTrustwords(for: combination.ownIdentity,
                                               and: combination.partnerIdentity,
@@ -203,6 +206,7 @@ extension TrustManagementViewModel {
                 shortTw = trustwords
                 group.leave()
             }
+
             group.notify(queue: DispatchQueue.main) { [weak self] in
                 guard let me = self else {
                     // Valid case. We might have been dismissed already.
@@ -216,6 +220,7 @@ extension TrustManagementViewModel {
                     // Short TWs must have three dots for signaling as truncated
                     shortTw = "\(tmp)…"
                 }
+
                 me.trustwordsShort = me.prepareTrustwordStringForDisplay(trustwords: shortTw)
                 completion()
             }
