@@ -171,7 +171,7 @@ extension TrustManagementViewModel {
         private var trustwordsShort: String?
         private var trustwordsLong: String?
 
-        /// Prevents the overkill of require the trustwords when it's not necesary.
+        /// Prevents the overkill of requiring the trustwords when it's not necesary.
         fileprivate var forceRed: Bool = false
 
         /// The identity of the user to do the handshake
