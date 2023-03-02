@@ -96,7 +96,7 @@ extension AccountSelectorButton {
 
     private func commonInit() -> Void {
         // 1. rounded corners
-        layer.cornerRadius = 10.0
+        layer.cornerRadius = 16.0
 
         // 2. Default Colors for state
         let backgroundColor: UIColor
