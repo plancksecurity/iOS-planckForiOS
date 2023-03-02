@@ -18,8 +18,8 @@ enum AccountType: Int {
 /// How to use this button:
 ///
 /// 1. Create a button in IB.
-/// 2. Set the right height, probably 56 pt, and constraints (not fixed width).
-/// 3. Set the `accountType` value in IB.
+/// 2. Set the right height, probably 56 pt, and constraints (not fixed width, but minimum 240 pt aprox so they all look similar).
+/// 3. Set the `accountType` value in IB user defined runtime attributes.
 @IBDesignable
 class AccountSelectorButton: UIButton {
 
