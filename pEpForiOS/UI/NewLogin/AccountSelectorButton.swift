@@ -84,7 +84,7 @@ class AccountSelectorButton: UIButton {
 
 extension AccountSelectorButton {
 
-    private func setBackgroundColor(_ color: UIColor, forState: UIControl.State) -> Void {
+    private func setBackgroundColor(_ color: UIColor, forState: UIControl.State) {
         if forState == UIControl.State.normal {
             normalBackground = color
         } else if forState == UIControl.State.highlighted {
