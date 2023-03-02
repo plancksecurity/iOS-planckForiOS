@@ -19,16 +19,17 @@ public protocol TrustManagementUtilProtocol: AnyObject {
     ///   - long: if false will return only 5 words, if true will return all posible trustwords for both identities.
     ///    - completion returns the result if available, returns nil otherwize
     /// For example absense of fingerprints, or a failure in the session. If so will be nil.
-    func getTrustwords(for SelfIdentity: Identity, and partnerIdentity: Identity,
+    func getTrustwords(for SelfIdentity: Identity,
+                       and partnerIdentity: Identity,
                        language: String,
                        long: Bool,
-                       completion: @escaping (String?)->Void)
+                       completion: @escaping (String?) -> Void)
 
     func getTrustwords(forFpr1 fpr1: String,
                        fpr2: String,
                        language: String,
                        full: Bool,
-                       completion: @escaping (String?)->Void)
+                       completion: @escaping (String?) -> Void)
 
     /// Confirms trust on a partner identity.
     /// - Parameters:
@@ -81,10 +82,10 @@ public protocol TrustManagementUtilProtocol: AnyObject {
     /// - Parameter message: The message to generate the handshake combinations.
     /// - returns: The possible handshake combinations.
     func handshakeCombinations(message: Message,
-                               completion: @escaping ([TrustManagementUtil.HandshakeCombination])->Void)
+                               completion: @escaping ([TrustManagementUtil.HandshakeCombination]) -> Void)
 
     /// - Parameter identities: The identities to generate the handshake combinations
     /// - returns: The possible handshake combinations.
     func handshakeCombinations(identities: [Identity],
-                               completion: @escaping ([TrustManagementUtil.HandshakeCombination])->Void)
+                               completion: @escaping ([TrustManagementUtil.HandshakeCombination]) -> Void)
 }
