@@ -26,12 +26,10 @@ final class AccountTypeSelectorViewController: UIViewController {
 
     @IBAction func microsoftButtonPressed() {
         viewModel.handleDidSelect(accountType: .microsoft)
-        performSegue(withIdentifier: SegueIdentifier.showLogin, sender: self)
     }
 
     @IBAction func googleButtonPressed() {
         viewModel.handleDidSelect(accountType: .google)
-        performSegue(withIdentifier: SegueIdentifier.showLogin, sender: self)
     }
 
     @IBAction func passwordButtonPressed() {
