@@ -120,10 +120,12 @@ extension TrustManagementViewModel {
         fileprivate var language: String {
             return _language
         }
+
         /// Indicates if the long (or the short) version of the trustwords should be shown
         var showLongTrustwordVersion: Bool = false
+
         /// Status indicator
-        func color(completion: @escaping (Color) -> Void){
+        func color(completion: @escaping (Color) -> Void) {
             if forceRed {
                 completion(.red)
             } else {
