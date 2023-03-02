@@ -181,7 +181,7 @@ extension TrustManagementViewModel {
 
         private func setupTrustwords(combination: TrustManagementUtil.HandshakeCombination,
                                      language: LanguageCode,
-                                     completion: @escaping ()->Void) {
+                                     completion: @escaping () -> Void) {
             let group = DispatchGroup()
             var longTw: String? = nil
             var shortTw: String? = nil
