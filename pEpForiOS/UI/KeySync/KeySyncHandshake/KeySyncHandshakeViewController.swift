@@ -19,7 +19,8 @@ final class KeySyncHandshakeViewController: UIViewController {
 
     @IBOutlet private weak var currentDeviceFingerprintsLabel: UILabel! {
         didSet {
-            currentDeviceFingerprintsLabel.text = NSLocalizedString("Fingerprints of this device", comment: "Fingerprints of this device - title")
+            currentDeviceFingerprintsLabel.text = NSLocalizedString("Fingerprint of this device:",
+                                                                    comment: "Key Sync, fingerprint of this device - title")
         }
     }
 
@@ -27,7 +28,8 @@ final class KeySyncHandshakeViewController: UIViewController {
 
     @IBOutlet private weak var otherDeviceFingerprintsLabel: UILabel! {
         didSet {
-            otherDeviceFingerprintsLabel.text = NSLocalizedString("Fingerprints of the new device", comment: "Fingerprints of the new device - title")
+            otherDeviceFingerprintsLabel.text = NSLocalizedString("Fingerprint of the other device:",
+                                                                  comment: "Key Sync, fingerprint of the other device - title")
         }
     }
 
@@ -184,8 +186,8 @@ extension KeySyncHandshakeViewController: KeySyncHandshakeViewModelDelegate {
     }
 
     func change(myFingerprints: String, partnerFingerprints: String) {
-        currentDeviceFingerprintsValueLabel?.text = myFingerprints
-        otherDeviceFingerprintsValueLabel?.text = partnerFingerprints
+        currentDeviceFingerprintsValueLabel?.text = myFingerprints.prettyFingerPrint()
+        otherDeviceFingerprintsValueLabel?.text = partnerFingerprints.prettyFingerPrint()
     }
 
 }
