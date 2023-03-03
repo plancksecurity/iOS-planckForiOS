@@ -68,11 +68,22 @@ final class LoginViewController: UIViewController {
             Log.shared.errorAndCrash("VM not found")
             return
         }
+
         if vm.verifiableAccount.accountType == .icloud {
             showiCloudAlert()
         }
     }
+    override func viewDidAppear(_ animated: Bool) {
+        guard let vm = viewModel else {
+            Log.shared.errorAndCrash("VM not found")
+            return
+        }
+        if vm.verifiableAccount.accountType.isOauth {
+            // OAuth does not require user input of any type, as such it is directly called
+            logIn("")
+        }
 
+    }
     override func viewDidLayoutSubviews() {
         super.viewDidLayoutSubviews()
         setManualSetupButtonHidden(manualConfigButton.isHidden)
