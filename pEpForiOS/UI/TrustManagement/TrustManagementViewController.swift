@@ -395,8 +395,8 @@ extension TrustManagementViewController {
                 // Valid case. We might have been dismissed already.
                 return
             }
-            //Yellow means secure but not trusted.
-            //That means that's the only case must display the trustwords
+            // In engine parlance, yellow means reliable but not trusted,
+            // which is the case to display the trustwords.
             if identifier == me.onlyMasterCellIdentifier {
                 if rowColor == .yellow {
                     cell.trustwordsLabel.text = row.trustwords
