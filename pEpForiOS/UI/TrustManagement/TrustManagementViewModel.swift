@@ -69,7 +69,7 @@ extension TrustManagementViewModel {
             return name ?? address
         }
 
-        /// The own name (e.g., as title for the fingerprint)
+        /// The name of the own identity
         public var ownName: String {
             let name = handshakeCombination.ownIdentity.userName
             let address = handshakeCombination.ownIdentity.address
