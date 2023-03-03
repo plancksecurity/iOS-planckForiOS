@@ -87,6 +87,10 @@ extension KeySyncService: PEPNotifyHandshakeDelegate {
             handshakeHandler?.cancelHandshake()
             fastPollingDelegate?.disableFastPolling()
             Log.shared.errorAndCrash("undefined case")
+
+        case .groupInvitation:
+            // TODO
+            Log.shared.errorAndCrash(".groupInvitation has to be implemented")
         }
 
         return .OK
@@ -124,9 +128,12 @@ extension KeySyncService {
                 Log.shared.errorAndCrash("Lost myself")
                 return
             }
-            strongSelf.handshakeHandler?.showHandshake(meFingerprint: me.fingerPrint,
-                                                       partnerFingerprint: partner.fingerPrint,
-                                                       isNewGroup: isNewGroup) { result in
+            let keySyncHandshakeData = KeySyncHandshakeData(email: me.address,
+                                                            username: me.userName,
+                                                            fingerprintLocal: me.fingerPrint,
+                                                            fingerprintOther: partner.fingerPrint,
+                                                            isNewGroup: isNewGroup)
+            strongSelf.handshakeHandler?.showHandshake(keySyncHandshakeData: keySyncHandshakeData) { result in
                 if result == .cancel || result == .rejected {
                     strongSelf.fastPollingDelegate?.disableFastPolling()
                 }
