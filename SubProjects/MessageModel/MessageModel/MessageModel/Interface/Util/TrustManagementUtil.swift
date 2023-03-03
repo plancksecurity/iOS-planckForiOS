@@ -46,7 +46,6 @@ extension TrustManagementUtil : TrustManagementUtilProtocol {
             Log.shared.error("Missing lenguage list")
             completion([])
         }) { langs in
-
             if let acceptedLanguages = acceptedLanguages, !acceptedLanguages.isEmpty {
                 let filteredLanguages = langs.filter({acceptedLanguages.contains($0.code)})
                 completion(filteredLanguages.map { $0.code })
