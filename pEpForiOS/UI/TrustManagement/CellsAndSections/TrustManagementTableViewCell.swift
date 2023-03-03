@@ -36,6 +36,7 @@ final class TrustManagementTableViewCell: UITableViewCell {
     @IBOutlet weak var trustwordsStackView: UIStackView!
     @IBOutlet weak var trustwordsButtonsContainer: UIView!
 
+    @IBOutlet weak var fingerprintStackView: UIStackView!
     @IBOutlet weak var ownFingerprintTitleLabel: UILabel!
     @IBOutlet weak var partnerFingerprintTitleLabel: UILabel!
     @IBOutlet weak var ownFingerprintLabel: UILabel!
@@ -107,6 +108,9 @@ final class TrustManagementTableViewCell: UITableViewCell {
         //Image view
         partnerImageView.layer.cornerRadius = 10
         partnerImageView.layer.masksToBounds = true
+
+        let spacingBetweenFingerprints = 12.0
+        fingerprintStackView.setCustomSpacing(spacingBetweenFingerprints, after: ownFingerprintLabel)
     }
 
     private func removeGestureRecognizers() {

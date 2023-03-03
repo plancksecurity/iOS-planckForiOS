@@ -413,6 +413,7 @@
                                             <outlet property="confirmButton" destination="Q7n-8c-O25" id="XVl-UD-xLe"/>
                                             <outlet property="declineButton" destination="sVr-xT-f8t" id="kEN-Gx-MJe"/>
                                             <outlet property="descriptionLabel" destination="HIb-Ji-yfV" id="QOi-nq-RYb"/>
+                                            <outlet property="fingerprintStackView" destination="ySy-AX-PhS" id="fop-KW-VVW"/>
                                             <outlet property="languageButton" destination="GVU-Lg-dr3" id="wEP-mh-aUS"/>
                                             <outlet property="ownFingerprintLabel" destination="eP0-VK-KMb" id="sfd-W1-0DN"/>
                                             <outlet property="ownFingerprintTitleLabel" destination="nvk-pP-Ae6" id="tzq-Lu-Al5"/>
