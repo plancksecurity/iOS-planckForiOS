@@ -403,10 +403,10 @@ extension TrustManagementViewController {
                     cell.trustwordsStackView.isHidden = false
                     cell.trustwordsButtonsContainer.isHidden = false
 
-                    cell.ownFingerprintTitleLabel.text = row.ownName
+                    cell.ownFingerprintTitleLabel.text = row.ownTitle
                     cell.ownFingerprintLabel.text = row.ownFormattedFingerprint
 
-                    cell.partnerFingerprintTitleLabel.text = row.name
+                    cell.partnerFingerprintTitleLabel.text = row.partnerTitle
                     cell.partnerFingerprintLabel.text = row.partnerFormattedFingerprint
                 } else {
                     cell.trustwordsStackView.isHidden = true

@@ -76,6 +76,16 @@ extension TrustManagementViewModel {
             return name ?? address
         }
 
+        /// Content of the label shown as title before the own fingerprint
+        public var ownTitle: String {
+            return ownName + ":"
+        }
+
+        /// Content of the label shown as title before the partner fingerprint
+        public var partnerTitle: String {
+            return name + ":"
+        }
+
         /// The description for the row
         public func description(completion: @escaping (String) -> Void) {
             if forceRed {
