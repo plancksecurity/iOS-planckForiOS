@@ -16,19 +16,13 @@ extension UIUtils {
     /// Presents the KeySync wizard, if possible.
     /// - note: This is an async task. The `KeySyncWizardViewController` is NOT presented yet after this method returned!
     /// - Parameters:
-    ///   - meFPR: The fingerprints of the user.
-    ///   - partnerFPR: The fingerprints of his communication partner.
-    ///   - isNewGroup: Indicates if it's a new group or it's joining an existing group
+    ///   - keySyncHandshakeData: All data needed for a key sync handshake
     ///   - completion: Callback to be executed when the user interacts with keysync wizard buttons.
     /// - Returns: the view controller of the key sync, if it's presented, nil otherwise.
     @discardableResult
-    static public func showKeySyncWizard(meFPR: String,
-                                         partnerFPR: String,
-                                         isNewGroup: Bool,
+    static public func showKeySyncWizard(keySyncHandshakeData: KeySyncHandshakeData,
                                          completion: @escaping (KeySyncWizardViewController.Action) -> Void ) -> KeySyncWizardViewController? {
-        guard let pEpSyncWizard = KeySyncWizardViewController.fromStoryboard(meFPR: meFPR,
-                                                                             partnerFPR: partnerFPR,
-                                                                             isNewGroup: isNewGroup,
+        guard let pEpSyncWizard = KeySyncWizardViewController.fromStoryboard(keySyncHandshakeData: keySyncHandshakeData,
                                                                              completion: completion) else {
             Log.shared.errorAndCrash("Missing pEpSyncWizard")
             return nil

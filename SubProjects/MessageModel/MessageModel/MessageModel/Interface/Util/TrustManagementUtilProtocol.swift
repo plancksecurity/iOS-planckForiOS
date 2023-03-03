@@ -25,12 +25,6 @@ public protocol TrustManagementUtilProtocol: AnyObject {
                        long: Bool,
                        completion: @escaping (String?) -> Void)
 
-    func getTrustwords(forFpr1 fpr1: String,
-                       fpr2: String,
-                       language: String,
-                       full: Bool,
-                       completion: @escaping (String?) -> Void)
-
     /// Confirms trust on a partner identity.
     /// - Parameters:
     ///   - partnerIdentity: The partner identity to deny trust on

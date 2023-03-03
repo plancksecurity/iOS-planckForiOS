@@ -40,7 +40,6 @@ public class TrustManagementUtil {
 // MARK: - TrustManagementUtilProtocol
 
 extension TrustManagementUtil : TrustManagementUtilProtocol {
-
     public func languagesList(acceptedLanguages: [String]?, completion: @escaping ([String]) -> ()) {
         PEPSession().languageList({ error in
             Log.shared.error("Missing lenguage list")
@@ -56,12 +55,30 @@ extension TrustManagementUtil : TrustManagementUtilProtocol {
         }
     }
 
-    public func getTrustwords(forFpr1 fpr1: String,
+    public func getTrustwords(email: String,
+                              username: String?,
+                              fpr1: String,
                               fpr2: String,
                               language: String,
                               full: Bool,
-                              completion: @escaping (String?)->Void) {
-        PEPSession().getTrustwordsFpr1(fpr1, fpr2: fpr2, language: language, full: full, errorCallback: { (error) in
+                              completion: @escaping (String?) -> Void) {
+        let pEpIdentityLocal = PEPIdentity(address: email,
+                                           userID: nil,
+                                           userName: username,
+                                           isOwn: true)
+        pEpIdentityLocal.fingerPrint = fpr1
+
+        let pEpIdentityOther = PEPIdentity(address: email,
+                                           userID: nil,
+                                           userName: username,
+                                           isOwn: false)
+        pEpIdentityOther.fingerPrint = fpr2
+
+        PEPSession().getTrustwordsIdentity1(pEpIdentityLocal,
+                                            identity2: pEpIdentityOther,
+                                            language: language,
+                                            full: full,
+                                            errorCallback: { (error) in
             Log.shared.error("%@", error.localizedDescription)
             completion(nil)
         }) { (trustwords) in
