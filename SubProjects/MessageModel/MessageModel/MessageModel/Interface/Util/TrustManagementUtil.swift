@@ -40,7 +40,8 @@ public class TrustManagementUtil {
 // MARK: - TrustManagementUtilProtocol
 
 extension TrustManagementUtil : TrustManagementUtilProtocol {
-    public func languagesList(acceptedLanguages: [String]?, completion: @escaping ([String]) -> ()) {
+    public func languagesList(acceptedLanguages: [String]?,
+                              completion: @escaping ([String]) -> ()) {
         PEPSession().languageList({ error in
             Log.shared.error("Missing lenguage list")
             completion([])
