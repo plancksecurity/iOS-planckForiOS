@@ -93,11 +93,13 @@ final class TrustManagementTableViewCell: UITableViewCell {
         trustwordsLabel.addGestureRecognizer(gesture)
 
         //Confirm Button
-        let confirmTitle = NSLocalizedString("Confirm", comment: "Confirm correct trustwords/PGP fingerprint")
+        let confirmTitle = NSLocalizedString("Confirm",
+                                             comment: "Confirm correct trustwords/PGP fingerprint")
         confirmButton.setTitle(confirmTitle, for: .normal)
 
         //Decline Button
-        let declineTitle = NSLocalizedString("Decline", comment: "Incorrect trustwords/PGP fingerprint")
+        let declineTitle = NSLocalizedString("Decline",
+                                             comment: "Incorrect trustwords/PGP fingerprint")
         declineButton.setTitle(declineTitle, for: .normal)
 
         setupButtons()
