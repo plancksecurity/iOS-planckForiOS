@@ -26,17 +26,26 @@ final class KeySyncHandshakeViewModel {
     private struct Localized {
         struct Message {
             static let twoDevices = NSLocalizedString("Please make sure you have both devices together so you can compare the Trustwords on both devices. Are the Trustwords below equal to the Trustwords on the other device?",
-                                               comment: "keySync handshake alert message for two devices in group")
+                                                      comment: "keySync handshake alert message for two devices in group")
             static let moreThanTwoDevices = NSLocalizedString("Please make sure you have the devices together so you can compare the Trustwords on the devices. Are the Trustwords below equal to the Trustwords on the other device?",
-                                                       comment: "keySync handshake alert message for more than two devices in group")
+                                                              comment: "keySync handshake alert message for more than two devices in group")
         }
     }
+
+    let trustManagementUtil = TrustManagementUtil()
 
     var completionHandler: ((KeySyncHandshakeViewController.Action) -> Void)? //!!!: A viewModel must not know the Controller
 
     weak var delegate: KeySyncHandshakeViewModelDelegate?
     var fullTrustWords = false //Internal since testing
     private var languageCode = Locale.current.languageCode ?? "en"
+
+    /// The email address of the account this is doing the key sync
+    private var email: String?
+
+    /// The name of the (local) user doing the key sync
+    private var username: String?
+
     private var meFPR: String?
     private var partnerFPR: String?
     private var isNewGroup = true
@@ -96,12 +105,12 @@ final class KeySyncHandshakeViewModel {
         }
     }
 
-    func setFingerPrints(meFPR: String?,
-                         partnerFPR: String?,
-                         isNewGroup: Bool) {
-        self.meFPR = meFPR
-        self.partnerFPR = partnerFPR
-        self.isNewGroup = isNewGroup
+    func setKeySyncHandshakeData(keySyncHandshakeData: KeySyncHandshakeData) {
+        self.email = keySyncHandshakeData.email
+        self.meFPR = keySyncHandshakeData.fingerprintLocal
+        self.partnerFPR = keySyncHandshakeData.fingerprintOther
+        self.isNewGroup = keySyncHandshakeData.isNewGroup
+
         updateTrustwords()
     }
 
@@ -112,16 +121,11 @@ final class KeySyncHandshakeViewModel {
 
     func getMessage() -> String {
         return isNewGroup
-            ? Localized.Message.twoDevices
-            : Localized.Message.moreThanTwoDevices
+        ? Localized.Message.twoDevices
+        : Localized.Message.moreThanTwoDevices
     }
-}
 
-// MARK: - Private
-
-extension KeySyncHandshakeViewModel {
-
-    private func updateTrustwords() {
+    func updateTrustwords() {
         trustWords { [weak self] (trustWords) in
             guard let me = self else {
                 // Valid case. We might have been dismissed already.
@@ -130,7 +134,11 @@ extension KeySyncHandshakeViewModel {
             me.delegate?.change(handshakeWordsTo: trustWords)
         }
     }
+}
 
+// MARK: - Private
+
+extension KeySyncHandshakeViewModel {
     private func setFingerprints() {
         guard let meFPR = meFPR, let partnerFPR = partnerFPR else {
             Log.shared.errorAndCrash("Nil meFingerPrints or Nil partnerFingerPrints")
@@ -150,14 +158,26 @@ extension KeySyncHandshakeViewModel {
         }
     }
 
-    private func trustWords(completion: @escaping (String)->Void) {
+    private func trustWords(completion: @escaping (String) -> Void) {
         guard let meFPR = meFPR, let partnerFPR = partnerFPR else {
             Log.shared.errorAndCrash("Nil meFingerPrints or Nil partnerFingerPrints")
             completion("")
             return
         }
+
+        guard let theEmail = email else {
+            Log.shared.errorAndCrash("Need a valid email for getting key sync trustwords")
+            return
+        }
+
         setFingerprints()
-        TrustManagementUtil().getTrustwords(forFpr1: meFPR, fpr2: partnerFPR, language: languageCode, full: fullTrustWords) { (trustwords) in
+
+        trustManagementUtil.getTrustwords(email: theEmail,
+                                          username: username,
+                                          fpr1: meFPR,
+                                          fpr2: partnerFPR,
+                                          language: languageCode,
+                                          full: fullTrustWords) { (trustwords) in
             DispatchQueue.main.async {
                 completion(trustwords ?? "")
             }

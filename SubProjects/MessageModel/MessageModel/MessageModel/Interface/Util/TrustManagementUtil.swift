@@ -25,16 +25,20 @@ public protocol TrustManagementUtilProtocol: AnyObject {
     ///   - long: if false will return only 5 words, if true will return all posible trustwords for both identities.
     ///    - completion returns the result if available, returns nil otherwize
     /// For example absense of fingerprints, or a failure in the session. If so will be nil.
-    func getTrustwords(for SelfIdentity: Identity, and partnerIdentity: Identity,
+    func getTrustwords(for SelfIdentity: Identity,
+                       and partnerIdentity: Identity,
                        language: String,
                        long: Bool,
                        completion: @escaping (String?)->Void)
 
-    func getTrustwords(forFpr1 fpr1: String,
+    /// Get the trustwords for key sync.
+    func getTrustwords(email: String,
+                       username: String?,
+                       fpr1 fpr1: String,
                        fpr2: String,
                        language: String,
                        full: Bool,
-                       completion: @escaping (String?)->Void)
+                       completion: @escaping (String?) -> Void)
     
     /// Confirms trust on a partner identity.
     /// - Parameters:
@@ -137,12 +141,30 @@ extension TrustManagementUtil : TrustManagementUtilProtocol {
         }
     }
 
-    public func getTrustwords(forFpr1 fpr1: String,
+    public func getTrustwords(email: String,
+                              username: String?,
+                              fpr1: String,
                               fpr2: String,
                               language: String,
                               full: Bool,
-                              completion: @escaping (String?)->Void) {
-        PEPSession().getTrustwordsFpr1(fpr1, fpr2: fpr2, language: language, full: full, errorCallback: { (error) in
+                              completion: @escaping (String?) -> Void) {
+        let pEpIdentityLocal = PEPIdentity(address: email,
+                                           userID: nil,
+                                           userName: username,
+                                           isOwn: true)
+        pEpIdentityLocal.fingerPrint = fpr1
+
+        let pEpIdentityOther = PEPIdentity(address: email,
+                                           userID: nil,
+                                           userName: username,
+                                           isOwn: false)
+        pEpIdentityOther.fingerPrint = fpr2
+
+        PEPSession().getTrustwordsIdentity1(pEpIdentityLocal,
+                                            identity2: pEpIdentityOther,
+                                            language: language,
+                                            full: full,
+                                            errorCallback: { (error) in
             Log.shared.error("%@", error.localizedDescription)
             completion(nil)
         }) { (trustwords) in

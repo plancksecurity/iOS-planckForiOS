@@ -51,11 +51,10 @@ extension KeySyncHandshakeService {
 
 extension KeySyncHandshakeService: KeySyncServiceHandshakeHandlerProtocol {
 
-    public func showHandshake(meFingerprint: String?,
-                              partnerFingerprint: String?,
-                              isNewGroup: Bool,
-                              completion: ((KeySyncHandshakeResult)->())? = nil) {
-        guard let meFPR = meFingerprint, let partnerFPR = partnerFingerprint else {
+    public func showHandshake(keySyncHandshakeData: KeySyncHandshakeData,
+                              completion: ((KeySyncHandshakeResult) -> ())? = nil) {
+        guard let _ = keySyncHandshakeData.fingerprintLocal,
+              let  _ = keySyncHandshakeData.fingerprintOther else {
             Log.shared.errorAndCrash("Missing FPRs")
             return
         }
@@ -68,9 +67,7 @@ extension KeySyncHandshakeService: KeySyncServiceHandshakeHandlerProtocol {
                 Log.shared.errorAndCrash("Lost myself")
                 return
             }
-            me.pEpSyncWizard = UIUtils.showKeySyncWizard(meFPR: meFPR,
-                                                         partnerFPR: partnerFPR,
-                                                         isNewGroup: isNewGroup) { action in
+            me.pEpSyncWizard = UIUtils.showKeySyncWizard(keySyncHandshakeData: keySyncHandshakeData) { action in
                 switch action {
                 case .accept:
                     completion?(.accepted)

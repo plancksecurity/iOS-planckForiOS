@@ -8,6 +8,8 @@
 
 import UIKit
 
+import MessageModel // Only for KeySyncHandshakeData
+
 final class KeySyncHandshakeViewController: UIViewController {
     enum Action {
         case cancel, decline, accept
@@ -21,7 +23,7 @@ final class KeySyncHandshakeViewController: UIViewController {
         }
     }
 
-    @IBOutlet private weak var currentDeviceFingerprintsValueLabel: UILabel!
+    @IBOutlet private weak var currentDeviceFingerprintsValueLabel: UILabel?
 
     @IBOutlet private weak var otherDeviceFingerprintsLabel: UILabel! {
         didSet {
@@ -29,7 +31,7 @@ final class KeySyncHandshakeViewController: UIViewController {
         }
     }
 
-    @IBOutlet private weak var otherDeviceFingerprintsValueLabel: UILabel!
+    @IBOutlet private weak var otherDeviceFingerprintsValueLabel: UILabel?
     
     @IBOutlet private weak var trustwordsView: UIView! {
         didSet {
@@ -40,11 +42,11 @@ final class KeySyncHandshakeViewController: UIViewController {
         }
     }
 
-    @IBOutlet private weak var trustwordsLabel: UILabel! {
+    @IBOutlet private weak var trustwordsLabel: UILabel? {
         didSet {
-            trustwordsLabel.setPEPFont(style: .body, weight: .regular)
-            trustwordsLabel.backgroundColor = .clear
-            trustwordsLabel.textColor = .label
+            trustwordsLabel?.setPEPFont(style: .body, weight: .regular)
+            trustwordsLabel?.backgroundColor = .clear
+            trustwordsLabel?.textColor = .label
         }
     }
 
@@ -111,16 +113,15 @@ final class KeySyncHandshakeViewController: UIViewController {
 
     private let viewModel = KeySyncHandshakeViewModel()
     private var pickerLanguages = [String]()
-    private var meFPR: String?
-    private var partnerFPR: String?
-    private var isNewGroup = true
+
+    required init?(coder: NSCoder) {
+        super.init(coder: coder)
+        viewModel.delegate = self
+    }
 
     override func viewDidLoad() {
-        super.viewDidLoad()
-        viewModel.delegate = self
-        viewModel.setFingerPrints(meFPR: meFPR,
-                                  partnerFPR: partnerFPR,
-                                  isNewGroup: isNewGroup)
+        // Recalculate the trustwords, and update the UI.
+        viewModel.updateTrustwords()
     }
 
     override func viewDidAppear(_ animated: Bool) {
@@ -128,12 +129,8 @@ final class KeySyncHandshakeViewController: UIViewController {
         message.text = viewModel.getMessage()
     }
 
-    func setFingerPrints(meFPR: String,
-                         partnerFPR: String,
-                         isNewGroup: Bool) {
-        self.meFPR = meFPR
-        self.partnerFPR = partnerFPR
-        self.isNewGroup = isNewGroup
+    func setKeySyncHandshakeData(keySyncHandshakeData: KeySyncHandshakeData) {
+        viewModel.setKeySyncHandshakeData(keySyncHandshakeData: keySyncHandshakeData)
     }
 
     private func setFont(button: UIButton) {
@@ -182,13 +179,13 @@ extension KeySyncHandshakeViewController: KeySyncHandshakeViewModelDelegate {
 
     func change(handshakeWordsTo: String) {
         DispatchQueue.main.async { [weak self] in
-            self?.trustwordsLabel.text = handshakeWordsTo
+            self?.trustwordsLabel?.text = handshakeWordsTo
         }
     }
 
     func change(myFingerprints: String, partnerFingerprints: String) {
-        currentDeviceFingerprintsValueLabel.text = myFingerprints
-        otherDeviceFingerprintsValueLabel.text = partnerFingerprints
+        currentDeviceFingerprintsValueLabel?.text = myFingerprints
+        otherDeviceFingerprintsValueLabel?.text = partnerFingerprints
     }
 
 }
