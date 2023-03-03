@@ -48,20 +48,6 @@ class AccountTypeSelectorTest: AccountDrivenTestBase {
         vm.handleDidChooseClientCertificate()
         waitForExpectations(timeout: TestUtil.waitTime)
     }
-    
-    func testAccountTypeSelectorNames() {
-        let account = TestData().createWorkingAccount()
-        account.session.commit()
-        let vm = AccountTypeSelectorViewModel()
-        XCTAssertEqual(vm.fileNameOrText(provider: .clientCertificate), """
- Client
- Certificate
- """)
-        /// Localized value to pass the test even if the simulator is configured in other language.
-        let otherText = NSLocalizedString("Other", comment: "Other")
-        XCTAssertEqual(vm.fileNameOrText(provider: .gmail), "asset-Google")
-        XCTAssertEqual(vm.fileNameOrText(provider: .other), otherText)
-    }
 }
 
 class AccountTypeDelegateMockTest: AccountTypeSelectorViewModelDelegate {

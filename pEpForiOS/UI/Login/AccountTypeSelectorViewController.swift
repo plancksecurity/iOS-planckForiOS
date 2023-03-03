@@ -18,6 +18,7 @@ final class AccountTypeSelectorViewController: UIViewController {
 
     @IBOutlet private weak var selectAccountTypeLabel: UILabel!
     @IBOutlet private weak var welcomeToPepLabel: UILabel!
+    @IBOutlet weak var clientCertificateButton: AccountSelectorButton!
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -41,7 +42,7 @@ final class AccountTypeSelectorViewController: UIViewController {
         super.viewWillAppear(animated)
         configureAppearance()
         configureView()
-        viewModel.refreshAccountTypes()
+        clientCertificateButton.isHidden = !viewModel.shouldShowClientCertificateButton()
     }
 
     private func configureAppearance() {
@@ -117,9 +118,10 @@ extension AccountTypeSelectorViewController: SegueHandlerType {
 }
 
 // MARK: - ClientCertificateImport Delegate
+
 extension AccountTypeSelectorViewController: ClientCertificateImportViewControllerDelegate {
 
     func certificateCouldImported() {
-        viewModel.refreshAccountTypes()
+        clientCertificateButton.isHidden = !viewModel.shouldShowClientCertificateButton()
     }
 }
