@@ -151,7 +151,7 @@ extension AccountSelectorButton {
             text = NSLocalizedString("Sign in with Password", comment: "Sign in with Password button title")
         }
 
-        let image = UIImage(named: imageName)
+        let image = UIImage(named: imageName)?.withRenderingMode(.alwaysOriginal)
         setImage(image, for: .normal)
         setTitle(text, for: .normal)
         titleLabel?.lineBreakMode = .byWordWrapping

@@ -919,7 +919,7 @@
                                 <nil key="highlightedColor"/>
                             </label>
                             <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" spacing="16" translatesAutoresizingMaskIntoConstraints="NO" id="fVd-qi-AfL">
-                                <rect key="frame" x="20" y="256.33333333333331" width="335" height="200"/>
+                                <rect key="frame" x="20" y="256.33333333333331" width="335" height="271.99999999999994"/>
                                 <subviews>
                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Euu-PA-Zcn" customClass="AccountSelectorButton" customModule="pEpForiOS" customModuleProvider="target">
                                         <rect key="frame" x="0.0" y="0.0" width="335" height="56"/>
@@ -981,6 +981,26 @@
                                             <action selector="passwordButtonPressed" destination="L5l-QH-yd0" eventType="touchUpInside" id="B6b-S3-Uqe"/>
                                         </connections>
                                     </button>
+                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="ccp-K0-lHz" userLabel="Sign in with Client Certificate" customClass="AccountSelectorButton" customModule="pEpForiOS" customModuleProvider="target">
+                                        <rect key="frame" x="0.0" y="216" width="335" height="56"/>
+                                        <constraints>
+                                            <constraint firstAttribute="width" relation="greaterThanOrEqual" constant="44" id="Bfv-OI-O8h"/>
+                                            <constraint firstAttribute="height" constant="56" id="pcG-Vr-mTb"/>
+                                        </constraints>
+                                        <state key="normal" title="Button"/>
+                                        <buttonConfiguration key="configuration" style="plain" image="ico-key" title="Sign in with Password" imagePadding="12"/>
+                                        <userDefinedRuntimeAttributes>
+                                            <userDefinedRuntimeAttribute type="number" keyPath="accountType">
+                                                <integer key="value" value="3"/>
+                                            </userDefinedRuntimeAttribute>
+                                            <userDefinedRuntimeAttribute type="color" keyPath="normalBackground">
+                                                <color key="value" systemColor="systemBackgroundColor"/>
+                                            </userDefinedRuntimeAttribute>
+                                        </userDefinedRuntimeAttributes>
+                                        <connections>
+                                            <action selector="passwordButtonPressed" destination="L5l-QH-yd0" eventType="touchUpInside" id="lrs-r7-z5q"/>
+                                        </connections>
+                                    </button>
                                 </subviews>
                             </stackView>
                         </subviews>
@@ -1011,6 +1031,7 @@
                     <navigationItem key="navigationItem" id="Fvo-rK-Wij"/>
                     <nil key="simulatedTopBarMetrics"/>
                     <connections>
+                        <outlet property="clientCertificateButton" destination="ccp-K0-lHz" id="MR9-nI-vhO"/>
                         <outlet property="selectAccountTypeLabel" destination="fLS-EM-fbk" id="Qcc-Zz-CcI"/>
                         <outlet property="welcomeToPepLabel" destination="YOK-e7-Ke7" id="7A7-7v-PvG"/>
                         <segue destination="clh-8B-z2B" kind="show" identifier="showLogin" id="A6U-Bz-3KU"/>
@@ -1082,6 +1103,9 @@
         </designable>
         <designable name="Nx2-xq-Km8">
             <size key="intrinsicContentSize" width="13" height="29"/>
+        </designable>
+        <designable name="ccp-K0-lHz">
+            <size key="intrinsicContentSize" width="225.33333333333334" height="34.333333333333336"/>
         </designable>
         <designable name="e3d-56-GP8">
             <size key="intrinsicContentSize" width="13" height="28"/>
