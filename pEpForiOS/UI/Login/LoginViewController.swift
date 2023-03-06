@@ -383,35 +383,14 @@ extension LoginViewController {
         Log.shared.log(error: error)
         isCurrentlyVerifying = false
 
-        guard let vm = viewModel else {
-            Log.shared.errorAndCrash("No VM")
+        guard let displayError = DisplayUserError(withError: error) else {
+            // Do nothing. The error type is not suitable to bother the user with.
             return
         }
 
-        var title: String
-        var message: String?
+        var title = displayError.title
+        var message = displayError.errorDescription
 
-        if let oauthError = error as? OAuthAuthorizerError, oauthError == .noConfiguration {
-            title = NSLocalizedString("Invalid Address",
-                                      comment: "Please enter a valid Gmail address.Fail to log in, email does not match account type")
-            switch vm.loginLogic.verifiableAccount.accountType {
-            case .gmail:
-                message = NSLocalizedString("Please enter a valid Gmail address.",
-                                            comment: "Fail to log in, email does not match account type")
-            case .o365:
-                message = NSLocalizedString("Please enter a valid Email address.",
-                                            comment: "Fail to log in, email does not match account type")
-            default:
-                Log.shared.errorAndCrash("Login should not do oauth with other email address")
-            }
-        } else {
-            guard let displayError = DisplayUserError(withError: error) else {
-                // Do nothing. The error type is not suitable to bother the user with.
-                return
-            }
-            title = displayError.title
-            message = displayError.errorDescription
-        }
         UIUtils.showAlertWithOnlyPositiveButton(title: title, message: message) { [weak self] in
             guard let me = self else {
                 Log.shared.lostMySelf()

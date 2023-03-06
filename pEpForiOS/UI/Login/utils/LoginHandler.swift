@@ -10,13 +10,8 @@ import Foundation
 import MessageModel
 import pEpIOSToolbox
 
-// TODO: For ConnectionTransport. Eliminate?
 import PantomimeFramework
-//Class does:
-//Handle login via OAuth or normal server (ie steps from being handed the login data, user name, oauth token, etc...) and returns the final state (success, failure, etc...)
-//Class does not do:
-//Acquire Login data (password, etc..), handle post proccedures
-class LoginLogic {
+class LoginHandler {
     weak var loginProtocolResponseDelegate: LoginProtocolResponseDelegate?
 
     /// Holding both the data of the current account in verification,
@@ -49,7 +44,7 @@ class LoginLogic {
 }
 // MARK: - Private
 
-extension LoginLogic {
+extension LoginHandler {
     /// Depending on `VerifiableAccountProtocol.containsCompleteServerInfo`,
     /// either tries to retrive account settings via a query
     /// to the account settings lib, or procedes directly to attempting a login.
@@ -107,7 +102,7 @@ extension LoginLogic {
         func libAccoutSettingsStatusOK() {
             if let error = AccountSettings.AccountSettingsError(accountSettings: acSettings) {
                 Log.shared.log(error: error)
-                loginProtocolResponseDelegate?.handle(loginError: error)
+                loginProtocolResponseDelegate?.didFail(error: error)
                 return
             }
 
@@ -191,7 +186,7 @@ extension LoginLogic {
             try verifiableAccount.verify()
         } catch {
             Log.shared.log(error: error)
-            loginProtocolResponseDelegate?.handle(loginError: error)
+            loginProtocolResponseDelegate?.didFail(error: error)
         }
     }
 
@@ -200,18 +195,23 @@ extension LoginLogic {
 
 // MARK: - OAuthAuthorizerDelegate
 
-extension LoginLogic: OAuthAuthorizerDelegate {
+extension LoginHandler: OAuthAuthorizerDelegate {
     func didAuthorize(oauth2Error: Error?, accessToken: OAuth2AccessTokenProtocol?) {
         if let err = oauth2Error {
-            loginProtocolResponseDelegate?.handle(oauth2Error: err)
+            loginProtocolResponseDelegate?.didFail(error: err)
         } else {
             if let token = accessToken {
-                startLogin(emailAddress: token.authState.getEmail(),
-                      displayName: token.authState.getName(),
-                      accessToken: token)
+                if let email = token.authState.getEmail(), let name = token.authState.getName(){
+                    startLogin(emailAddress: email,
+                          displayName: name,
+                          accessToken: token)
+                } else {
+                    loginProtocolResponseDelegate?.didFail(
+                        error: OAuthAuthorizerError.noToken)
+                }
             } else {
-                loginProtocolResponseDelegate?.handle(
-                    oauth2Error: OAuthAuthorizerError.noToken)
+                loginProtocolResponseDelegate?.didFail(
+                    error: OAuthAuthorizerError.noToken)
             }
         }
         currentOauth2Authorizer = nil
@@ -220,7 +220,7 @@ extension LoginLogic: OAuthAuthorizerDelegate {
 
 // MARK: - LoginProtocol
 
-extension LoginLogic: loginprotocol {
+extension LoginHandler: loginprotocol {
     func initialize(loginProtocolErrorDelegate: LoginProtocolResponseDelegate) {
         self.loginProtocolResponseDelegate = loginProtocolErrorDelegate
     }
@@ -247,7 +247,7 @@ extension LoginLogic: loginprotocol {
 
 // MARK: - QualifyServerIsLocalServiceDelegate
 
-extension LoginLogic: QualifyServerIsLocalServiceDelegate {
+extension LoginHandler: QualifyServerIsLocalServiceDelegate {
     func didQualify(serverName: String, isLocal: Bool?, error: Error?) {
         DispatchQueue.main.async { [weak self] in
             guard let me = self else {
@@ -255,7 +255,7 @@ extension LoginLogic: QualifyServerIsLocalServiceDelegate {
                 return
             }
             if let err = error {
-                self?.loginProtocolResponseDelegate?.handle(loginError: err)
+                self?.loginProtocolResponseDelegate?.didFail(error: err)
                 return
             }
             me.markServerAsTrusted(trusted: isLocal ?? false)
@@ -265,7 +265,7 @@ extension LoginLogic: QualifyServerIsLocalServiceDelegate {
 
 // MARK: - VerifiableAccountDelegate
 
-extension LoginLogic: VerifiableAccountDelegate {
+extension LoginHandler: VerifiableAccountDelegate {
     func informAccountVerificationResultDelegate(error: Error? = nil) {
         if let imapError = error as? ImapSyncOperationError {
             loginProtocolResponseDelegate?.didVerify(

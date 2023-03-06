@@ -28,7 +28,7 @@
 		00EB89AD20E3D3C200CDFA0D /* ThreadedEmailViewModel+MoveToFolderDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 00EB89AC20E3D3C200CDFA0D /* ThreadedEmailViewModel+MoveToFolderDelegate.swift */; };
 		00EB89AF20E3E4A000CDFA0D /* ReplyAlertCreator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 00EB89AE20E3E4A000CDFA0D /* ReplyAlertCreator.swift */; };
 		00FD0CE62101F7D700BA0C56 /* ScreenComposerProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = 00FD0CE52101F7D700BA0C56 /* ScreenComposerProtocol.swift */; };
-		0A6B959D29B229610011FD61 /* LoginLogic.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0A6B959C29B229600011FD61 /* LoginLogic.swift */; };
+		0A6B959D29B229610011FD61 /* LoginHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0A6B959C29B229600011FD61 /* LoginHandler.swift */; };
 		0A6B959F29B22ACC0011FD61 /* OIDAuthState+pEp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0A6B959E29B22ACC0011FD61 /* OIDAuthState+pEp.swift */; };
 		0A6B95A129B617D00011FD61 /* LoginProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0A6B95A029B617D00011FD61 /* LoginProtocol.swift */; };
 		150707DC21006CD000AA213F /* ComposeUtilTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 150707DB21006CD000AA213F /* ComposeUtilTest.swift */; };
@@ -747,7 +747,7 @@
 		00EB89AC20E3D3C200CDFA0D /* ThreadedEmailViewModel+MoveToFolderDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "ThreadedEmailViewModel+MoveToFolderDelegate.swift"; sourceTree = "<group>"; };
 		00EB89AE20E3E4A000CDFA0D /* ReplyAlertCreator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReplyAlertCreator.swift; sourceTree = "<group>"; };
 		00FD0CE52101F7D700BA0C56 /* ScreenComposerProtocol.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScreenComposerProtocol.swift; sourceTree = "<group>"; };
-		0A6B959C29B229600011FD61 /* LoginLogic.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginLogic.swift; sourceTree = "<group>"; };
+		0A6B959C29B229600011FD61 /* LoginHandler.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginHandler.swift; sourceTree = "<group>"; };
 		0A6B959E29B22ACC0011FD61 /* OIDAuthState+pEp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "OIDAuthState+pEp.swift"; sourceTree = "<group>"; };
 		0A6B95A029B617D00011FD61 /* LoginProtocol.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginProtocol.swift; sourceTree = "<group>"; };
 		150707DB21006CD000AA213F /* ComposeUtilTest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ComposeUtilTest.swift; sourceTree = "<group>"; };
@@ -1351,7 +1351,7 @@
 		0A6B959B29B226A40011FD61 /* utils */ = {
 			isa = PBXGroup;
 			children = (
-				0A6B959C29B229600011FD61 /* LoginLogic.swift */,
+				0A6B959C29B229600011FD61 /* LoginHandler.swift */,
 				0A6B959E29B22ACC0011FD61 /* OIDAuthState+pEp.swift */,
 				0A6B95A029B617D00011FD61 /* LoginProtocol.swift */,
 			);
@@ -3824,7 +3824,7 @@
 				4351C2CD1F4441190053381F /* commonmark.c in Sources */,
 				5BBEA012252F062300B34979 /* ComposeViewModel+Factory.swift in Sources */,
 				B722EC651E5B49BA00A2B9D5 /* FolderSectionViewModel.swift in Sources */,
-				0A6B959D29B229610011FD61 /* LoginLogic.swift in Sources */,
+				0A6B959D29B229610011FD61 /* LoginHandler.swift in Sources */,
 				490CEBA72100EAD500E8579C /* SelfDismissable.swift in Sources */,
 				152A39E321905C3E00D9F8E4 /* RecipientTextView.swift in Sources */,
 				43ED53701CC77F95006AB156 /* EmailListViewController.swift in Sources */,

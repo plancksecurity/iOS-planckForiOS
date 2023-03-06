@@ -12,6 +12,7 @@ import MessageModel
 protocol loginprotocol {
     //Move to constructor, these are required for the class to respond
     func initialize(loginProtocolErrorDelegate: LoginProtocolResponseDelegate)
+    
     //Login via usrname+password
     func login(emailAddress: String,
                displayName: String,
@@ -25,11 +26,7 @@ protocol LoginProtocolResponseDelegate: AnyObject {
     /**
      Called to signal an error when logging in.
      */
-    func handle(loginError: Error)
-    /**
-     Called to signal an error when logging via oauth.
-     */
-    func handle(oauth2Error: Error)
+    func didFail(error: Error)
     /**
      Called once the login process is done.
      */

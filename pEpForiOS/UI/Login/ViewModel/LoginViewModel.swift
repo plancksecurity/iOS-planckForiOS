@@ -16,7 +16,7 @@ final class LoginViewModel {
     weak var loginViewModelLoginErrorDelegate: LoginViewModelLoginErrorDelegate?
 
     /// Helper class to handle login logic via OAuth or manual input.
-    var loginLogic = LoginLogic()
+    var loginLogic = LoginHandler()
 
     var isAccountPEPSyncEnable = true {
         didSet {
@@ -64,16 +64,13 @@ extension LoginViewModel {
 }
 
 // MARK: - LoginProtocolResponseDelegate
-//TODO Remove, this is a temporal fix
+
 extension LoginViewModel : LoginProtocolResponseDelegate {
     func didVerify(result: MessageModel.AccountVerificationResult) {
         accountVerificationResultDelegate?.didVerify(result: result)
     }
 
-    func handle(loginError: Error) {
-        loginViewModelLoginErrorDelegate?.handle(loginError: loginError)
-    }
-
-    func handle(oauth2Error: Error) {
+    func didFail(error : Error) {
+        loginViewModelLoginErrorDelegate?.handle(loginError: error)
     }
 }
