@@ -7,6 +7,7 @@
 //
 
 import Foundation
+import AppAuth
 
 /**
  After a successful authorization, use this to get access to tokens.
@@ -17,9 +18,7 @@ public protocol OAuth2AccessTokenProtocol: NSSecureCoding {
      this key is used.
      */
     var keyChainID: String { get }
-
-    func getEmail() -> String
-    func getName() -> String
+    var authState: OIDAuthState { get }
 
     // MARK: Refreshing tokens
     func performAction(

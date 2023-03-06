@@ -11,38 +11,27 @@ import Foundation
 import MessageModel
 import pEpIOSToolbox
 
-// TODO: For ConnectionTransport. Eliminate?
-import PantomimeFramework
-
 final class LoginViewModel {
     weak var accountVerificationResultDelegate: AccountVerificationResultDelegate?
     weak var loginViewModelLoginErrorDelegate: LoginViewModelLoginErrorDelegate?
-    weak var loginViewModelOAuth2ErrorDelegate: LoginViewModelOAuth2ErrorDelegate?
 
-    /// Holding both the data of the current account in verification,
-    /// and also the implementation of the verification.
-    var verifiableAccount: VerifiableAccountProtocol
-    /// An OAuth2 process lives longer than the method call, so this object needs to survive.
-    var currentOauth2Authorizer: OAuth2AuthorizationProtocol?
-    /// Helper model to handle most of the OAuth2 authorization.
-    var oauthAuthorizer = OAuthAuthorizer()
+    /// Helper class to handle login logic via OAuth or manual input.
+    var loginLogic = LoginLogic()
+
     var isAccountPEPSyncEnable = true {
         didSet {
-            verifiableAccount.keySyncEnable = isAccountPEPSyncEnable
+            loginLogic.verifiableAccount.keySyncEnable = isAccountPEPSyncEnable
         }
-    }
-
-    public var shouldShowLoginFields: Bool {
-           return !verifiableAccount.accountType.isOauth
     }
 
     let qualifyServerIsLocalService = QualifyServerIsLocalService()
 
     init(verifiableAccount: VerifiableAccountProtocol? = nil) {
-        self.verifiableAccount =
+        loginLogic.verifiableAccount =
             verifiableAccount ??
             VerifiableAccount.verifiableAccount(for: .other,
                                                 usePEPFolderProvider: AppSettings.shared)
+        loginLogic.loginProtocolResponseDelegate = self
     }
 
     func isThereAnAccount() -> Bool {
@@ -53,141 +42,18 @@ final class LoginViewModel {
         return Account.by(address: address) != nil
     }
 
-    func loginWithOAuth2(
-        viewController: UIViewController,
-        oauth2Authorizer: OAuth2AuthorizationProtocol) {
-        oauthAuthorizer.delegate = self
-        oauthAuthorizer.authorize(authorizer: oauth2Authorizer,
-                                  accountType: verifiableAccount.accountType,
-                                  viewController: viewController)
-    }
-
     /// Depending on `VerifiableAccountProtocol.containsCompleteServerInfo`,
     /// either tries to retrive account settings via a query
     /// to the account settings lib, or procedes directly to attempting a login.
     /// - Parameters:
     ///   - emailAddres: The email of this account
     ///   - displayName: The chosen name of the user, or nick
-    ///   - loginName: The optional login name for this account, if different from the email
     ///   - password: The password for the account
-    ///   - accessToken: The access token for this account
     func login(emailAddress: String,
                displayName: String,
-               loginName: String? = nil,
-               password: String? = nil,
-               accessToken: OAuth2AccessTokenProtocol? = nil) {
-        if verifiableAccount.containsCompleteServerInfo {
-            addVerificationData(verifiableAccount: verifiableAccount,
-                                emailAddress: emailAddress,
-                                displayName: displayName,
-                                loginName: loginName,
-                                password: password,
-                                accessToken: accessToken)
-
-            checkIfServerShouldBeConsideredATrustedServer()
-        } else {
-            loginViaAccountSettings(emailAddress: emailAddress,
-                                    displayName: displayName,
-                                    loginName: loginName,
-                                    password: password,
-                                    accessToken: accessToken)
-        }
-    }
-
-    /// Tries to get login information via account settings, then continues with
-    /// the account setup (login).
-    /// - Parameters:
-    ///   - emailAddress: The email of this account
-    ///   - displayName: The chosen name of the user, or nick
-    ///   - loginName: The optional login name for this account, if different from the email
-    ///   - password: The password for the account
-    ///   - accessToken: The access token for this account
-    private func loginViaAccountSettings(emailAddress: String,
-                                         displayName: String,
-                                         loginName: String? = nil,
-                                         password: String? = nil,
-                                         accessToken: OAuth2AccessTokenProtocol? = nil) {
-        let acSettings = AccountSettings(accountName: emailAddress,
-                                         provider: nil,
-                                         flags: AS_FLAG_USE_ANY,
-                                         credentials: nil)
-        acSettings.lookupCompletion() { settings in
-            DispatchQueue.main.async {
-                libAccoutSettingsStatusOK()
-            }
-        }
-
-        func libAccoutSettingsStatusOK() {
-            if let error = AccountSettings.AccountSettingsError(accountSettings: acSettings) {
-                Log.shared.log(error: error)
-                loginViewModelLoginErrorDelegate?.handle(loginError: error)
-                return
-            }
-
-            guard let incomingServer = acSettings.incoming,
-                let outgoingServer = acSettings.outgoing else {
-                    // AccountSettingsError() already handled the error
-                    return
-            }
-            let imapTransport = ConnectionTransport(accountSettingsTransport: incomingServer.transport,
-                                                    imapPort: incomingServer.port)
-            let smtpTransport = ConnectionTransport(accountSettingsTransport: outgoingServer.transport,
-                                                    smtpPort: outgoingServer.port)
-
-            addVerificationData(verifiableAccount: verifiableAccount,
-                                emailAddress: emailAddress,
-                                displayName: displayName,
-                                loginName: loginName,
-                                password: password,
-                                accessToken: accessToken)
-
-            verifiableAccount.serverIMAP = incomingServer.hostname
-            verifiableAccount.portIMAP = UInt16(incomingServer.port)
-            verifiableAccount.transportIMAP = imapTransport
-            verifiableAccount.serverSMTP = outgoingServer.hostname
-            verifiableAccount.portSMTP = UInt16(outgoingServer.port)
-            verifiableAccount.transportSMTP = smtpTransport
-            verifiableAccount.isAutomaticallyTrustedImapServer = false
-
-            checkIfServerShouldBeConsideredATrustedServer()
-        }
-    }
-
-    /// Set up a given verifiable account with parameters, changing it in-place.
-    /// - Parameters:
-    ///   - verifiableAccount: The verifiable account to change
-    ///   - emailAddress: The email address of the account
-    ///   - displayName: The user-chosen display name / nick
-    ///   - loginName: The login name needed for the servers, if different from the email address
-    ///   - password: The password to log in
-    ///   - accessToken: An optional OAUTH2 access token
-    private func addVerificationData(verifiableAccount: VerifiableAccountProtocol,
-                                     emailAddress: String,
-                                     displayName: String,
-                                     loginName: String? = nil,
-                                     password: String? = nil,
-                                     accessToken: OAuth2AccessTokenProtocol? = nil) {
-        var theVerifiableAccount = verifiableAccount
-
-        // Note: auth method is never taken from LAS. We either have OAuth2,
-        // as determined previously, or we will defer to pantomime to find out the best method.
-        theVerifiableAccount.authMethod = accessToken != nil ? .saslXoauth2 : nil
-
-        theVerifiableAccount.verifiableAccountDelegate = self
-        theVerifiableAccount.address = emailAddress
-        theVerifiableAccount.userName = displayName
-
-        let login = loginName ?? emailAddress
-        theVerifiableAccount.loginNameIMAP = login
-        theVerifiableAccount.loginNameSMTP = login
-
-        // Use the same password for imap and smtp when the user attemps to login in the first screen of the flow.
-        // If login fails, the user will be prompt to enter those passwords separately.
-        theVerifiableAccount.imapPassword = password
-        theVerifiableAccount.smtpPassword = password
-        theVerifiableAccount.accessToken = accessToken
-
-        theVerifiableAccount.verifiableAccountDelegate = self
+               password: String) {
+        //Fix later
+        loginLogic.login(emailAddress: emailAddress, displayName: displayName, password: password)
     }
 }
 
@@ -195,100 +61,19 @@ final class LoginViewModel {
 
 extension LoginViewModel {
 
-    private func checkIfServerShouldBeConsideredATrustedServer() {
-        if let imapServer = verifiableAccount.serverIMAP {
-            qualifyServerIsLocalService.delegate = self
-            qualifyServerIsLocalService.qualify(serverName: imapServer)
-        } else {
-            markServerAsTrusted(trusted: true)
-        }
-    }
-
-    private func markServerAsTrusted(trusted: Bool) {
-        verifiableAccount.isAutomaticallyTrustedImapServer = trusted
-        do {
-            try verifiableAccount.verify()
-        } catch {
-            Log.shared.log(error: error)
-            loginViewModelLoginErrorDelegate?.handle(loginError: error)
-        }
-    }
 }
 
-// MARK: - OAuthAuthorizerDelegate
-
-extension LoginViewModel: OAuthAuthorizerDelegate {
-    func didAuthorize(oauth2Error: Error?, accessToken: OAuth2AccessTokenProtocol?) {
-        if let err = oauth2Error {
-            loginViewModelOAuth2ErrorDelegate?.handle(oauth2Error: err)
-        } else {
-            if let token = accessToken {
-                login(emailAddress: token.getEmail(),
-                      displayName: token.getName(),
-                      accessToken: token)
-            } else {
-                loginViewModelOAuth2ErrorDelegate?.handle(
-                    oauth2Error: OAuthAuthorizerError.noToken)
-            }
-        }
-        currentOauth2Authorizer = nil
-    }
-}
-
-// MARK: - QualifyServerIsLocalServiceDelegate
-
-extension LoginViewModel: QualifyServerIsLocalServiceDelegate {
-    func didQualify(serverName: String, isLocal: Bool?, error: Error?) {
-        DispatchQueue.main.async { [weak self] in
-            guard let me = self else {
-                Log.shared.lostMySelf()
-                return
-            }
-            if let err = error {
-                self?.loginViewModelLoginErrorDelegate?.handle(loginError: err)
-                return
-            }
-            me.markServerAsTrusted(trusted: isLocal ?? false)
-        }
-    }
-}
-
-// MARK: - VerifiableAccountDelegate
-
-extension LoginViewModel: VerifiableAccountDelegate {
-    func informAccountVerificationResultDelegate(error: Error? = nil) {
-        if let imapError = error as? ImapSyncOperationError {
-            accountVerificationResultDelegate?.didVerify(
-                result: .imapError(imapError))
-        } else if let smtpError = error as? SmtpSendError {
-            accountVerificationResultDelegate?.didVerify(
-                result: .smtpError(smtpError))
-        } else {
-            if let theError = error {
-                Log.shared.errorAndCrash(error: theError)
-            } else {
-                accountVerificationResultDelegate?.didVerify(result: .ok)
-            }
-        }
+// MARK: - LoginProtocolResponseDelegate
+//TODO Remove, this is a temporal fix
+extension LoginViewModel : LoginProtocolResponseDelegate {
+    func didVerify(result: MessageModel.AccountVerificationResult) {
+        accountVerificationResultDelegate?.didVerify(result: result)
     }
 
-    func didEndVerification(result: Result<Void, Error>) {
-        switch result {
-        case .success:
-            verifiableAccount.save { [weak self] (result) in
-                guard let me = self else {
-                // Valid case. We might have been dismissed already.
-                    return
-                }
-                switch result {
-                case .success:
-                    me.informAccountVerificationResultDelegate()
-                case .failure(let error):
-                    me.informAccountVerificationResultDelegate(error: error)
-                }
-            }
-        case .failure(let error):
-            informAccountVerificationResultDelegate(error: error)
-        }
+    func handle(loginError: Error) {
+        loginViewModelLoginErrorDelegate?.handle(loginError: loginError)
+    }
+
+    func handle(oauth2Error: Error) {
     }
 }
