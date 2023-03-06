@@ -16,7 +16,7 @@ final class LoginViewModel {
     weak var loginViewModelLoginErrorDelegate: LoginViewModelLoginErrorDelegate?
 
     /// Helper class to handle login logic via OAuth or manual input.
-    var loginLogic = LoginHandler()
+    var loginLogic: LoginHandler
 
     var isAccountPEPSyncEnable = true {
         didSet {
@@ -27,10 +27,7 @@ final class LoginViewModel {
     let qualifyServerIsLocalService = QualifyServerIsLocalService()
 
     init(verifiableAccount: VerifiableAccountProtocol? = nil) {
-        loginLogic.verifiableAccount =
-            verifiableAccount ??
-            VerifiableAccount.verifiableAccount(for: .other,
-                                                usePEPFolderProvider: AppSettings.shared)
+        loginLogic = LoginHandler(verifiableAccount: verifiableAccount)
         loginLogic.loginProtocolResponseDelegate = self
     }
 
