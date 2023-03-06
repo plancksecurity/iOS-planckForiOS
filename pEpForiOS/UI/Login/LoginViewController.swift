@@ -63,27 +63,16 @@ final class LoginViewController: UIViewController {
         super.viewWillAppear(animated)
         setup()
         updateView()
-        setupLoginFields()
         guard let vm = viewModel else {
             Log.shared.errorAndCrash("VM not found")
             return
         }
 
-        if vm.verifiableAccount.accountType == .icloud {
+        if vm.loginLogic.verifiableAccount.accountType == .icloud {
             showiCloudAlert()
         }
     }
-    override func viewDidAppear(_ animated: Bool) {
-        guard let vm = viewModel else {
-            Log.shared.errorAndCrash("VM not found")
-            return
-        }
-        if vm.verifiableAccount.accountType.isOauth {
-            // OAuth does not require user input of any type, as such it is directly called
-            logIn("")
-        }
 
-    }
     override func viewDidLayoutSubviews() {
         super.viewDidLayoutSubviews()
         setManualSetupButtonHidden(manualConfigButton.isHidden)
@@ -133,14 +122,6 @@ final class LoginViewController: UIViewController {
         }
 
         vm.accountVerificationResultDelegate = self
-
-        if vm.verifiableAccount.accountType.isOauth {
-            // OAuth does not require user input of any type, as such it is directly called
-            let oauth = OAuth2ProviderFactory().oauth2Provider().createOAuth2Authorizer()
-            vm.loginWithOAuth2(viewController: self,
-                               oauth2Authorizer: oauth)
-            return
-        }
 
         guard let email = emailAddress.text?.trimmed(), email != "" else {
             handleLoginError(error: LoginViewController.LoginError.missingEmail,
@@ -209,7 +190,7 @@ extension LoginViewController {
             return
         }
         vm.loginViewModelLoginErrorDelegate = self
-        vm.loginViewModelOAuth2ErrorDelegate = self
+
     }
 }
 
@@ -257,12 +238,12 @@ extension LoginViewController: UITextFieldDelegate {
         }
         switch textField {
         case emailAddress:
-            vm.verifiableAccount.address = textField.text
+            vm.loginLogic.verifiableAccount.address = textField.text
         case password:
-            vm.verifiableAccount.imapPassword = textField.text
-            vm.verifiableAccount.smtpPassword = textField.text
+            vm.loginLogic.verifiableAccount.imapPassword = textField.text
+            vm.loginLogic.verifiableAccount.smtpPassword = textField.text
         case user:
-            vm.verifiableAccount.userName = textField.text
+            vm.loginLogic.verifiableAccount.userName = textField.text
         default:
             Log.shared.errorAndCrash("Unhandled case")
         }
@@ -291,7 +272,7 @@ extension LoginViewController: SegueHandlerType {
                     return
             }
             // Give the next model all that we know.
-            vc.verifiableAccount = vm.verifiableAccount
+            vc.verifiableAccount = vm.loginLogic.verifiableAccount
         default:
             Log.shared.errorAndCrash("Unhandled segue type")
             return
@@ -330,14 +311,6 @@ extension LoginViewController: AccountVerificationResultDelegate {
 extension LoginViewController: LoginViewModelLoginErrorDelegate {
     func handle(loginError: Error) {
         handleLoginError(error: loginError, offerManualSetup: true)
-    }
-}
-
-// MARK: - LoginViewModelOAuth2ErrorDelegate
-
-extension LoginViewController: LoginViewModelOAuth2ErrorDelegate {
-    func handle(oauth2Error: Error) {
-        handleLoginError(error: oauth2Error, offerManualSetup: false)
     }
 }
 
@@ -421,7 +394,7 @@ extension LoginViewController {
         if let oauthError = error as? OAuthAuthorizerError, oauthError == .noConfiguration {
             title = NSLocalizedString("Invalid Address",
                                       comment: "Please enter a valid Gmail address.Fail to log in, email does not match account type")
-            switch vm.verifiableAccount.accountType {
+            switch vm.loginLogic.verifiableAccount.accountType {
             case .gmail:
                 message = NSLocalizedString("Please enter a valid Gmail address.",
                                             comment: "Fail to log in, email does not match account type")
@@ -492,18 +465,6 @@ extension LoginViewController {
                                                selector: #selector(hideSpecificDeviceButton),
                                                name: UIDevice.orientationDidChangeNotification,
                                                object: nil)
-    }
-
-    private func setupLoginFields() {
-        guard let vm = viewModel else {
-            Log.shared.errorAndCrash("No VM")
-            return
-        }
-        let shouldShow = vm.shouldShowLoginFields
-        password.isHidden = !shouldShow
-        password.isEnabled = shouldShow
-        //emailAddress.isHidden = !shouldShow
-        //emailAddress.isEnabled = shouldShow
     }
 
     private func configureAnimatedTextFields() {
@@ -584,8 +545,6 @@ extension LoginViewController {
 
         loginButton.isEnabled = !isCurrentlyVerifying
         manualConfigButton.isEnabled = !isCurrentlyVerifying
-
-        setupLoginFields()
     }
 
     private func isLandscape() -> Bool {

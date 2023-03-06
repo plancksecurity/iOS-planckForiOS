@@ -9,6 +9,7 @@
 import UIKit
 
 import pEpIOSToolbox
+import MessageModel
 
 final class AccountTypeSelectorViewController: UIViewController {
 
@@ -20,19 +21,25 @@ final class AccountTypeSelectorViewController: UIViewController {
     @IBOutlet private weak var welcomeToPepLabel: UILabel!
     @IBOutlet weak var clientCertificateButton: AccountSelectorButton!
 
+    private var isCurrentlyVerifying = false {
+        didSet {
+            updateView()
+        }
+    }
+
     override func viewDidLoad() {
         super.viewDidLoad()
         viewModel.delegate = self
     }
 
     @IBAction func microsoftButtonPressed() {
-        viewModel.handleDidSelect(accountType: .microsoft)
-        performSegue(withIdentifier: SegueIdentifier.showLogin, sender: self)
+        isCurrentlyVerifying = true
+        viewModel.handleDidSelect(accountType: .microsoft, viewController : self)
     }
 
     @IBAction func googleButtonPressed() {
-        viewModel.handleDidSelect(accountType: .google)
-        performSegue(withIdentifier: SegueIdentifier.showLogin, sender: self)
+        isCurrentlyVerifying = true
+        viewModel.handleDidSelect(accountType: .google, viewController : self)
     }
 
     @IBAction func passwordButtonPressed() {
@@ -44,7 +51,23 @@ final class AccountTypeSelectorViewController: UIViewController {
         super.viewWillAppear(animated)
         configureAppearance()
         configureView()
+        updateView()
         clientCertificateButton.isHidden = !viewModel.shouldShowClientCertificateButton()
+    }
+
+    @objc func backButton() {
+        dismiss(animated: true)
+    }
+}
+// MARK: - Private
+
+extension AccountTypeSelectorViewController {
+    private func updateView() {
+        if isCurrentlyVerifying {
+            LoadingInterface.showLoadingInterface()
+        } else {
+            LoadingInterface.removeLoadingInterface()
+        }
     }
 
     private func configureAppearance() {
@@ -67,13 +90,63 @@ final class AccountTypeSelectorViewController: UIViewController {
         let finalBarButton = UIBarButtonItem(customView: imagebutton)
         navigationItem.leftBarButtonItem = finalBarButton
     }
-    
-    @objc func backButton() {
-        dismiss(animated: true)
+
+    private func handleLoginError(error: Error) {
+        Log.shared.log(error: error)
+        isCurrentlyVerifying = false
+
+        var title = NSLocalizedString("Invalid Address",
+                                             comment: "Please enter a valid Gmail address.Fail to log in, email does not match account type")
+
+        var message: String?
+
+        switch viewModel.loginLogic.verifiableAccount.accountType {
+        case .gmail:
+            message = NSLocalizedString("Please enter a valid Gmail address.",
+                                        comment: "Fail to log in, email does not match account type")
+        case .o365:
+            message = NSLocalizedString("Please enter a valid Email address.",
+                                        comment: "Fail to log in, email does not match account type")
+        default:
+            Log.shared.errorAndCrash("Login should not do oauth with other email address")
+        }
+        UIUtils.showAlertWithOnlyPositiveButton(title: title, message: message) { [weak self] in
+            guard self != nil else {
+                Log.shared.lostMySelf()
+                return
+            }
+        }
     }
+
 }
+// MARK: - AccountTypeSelectorViewModelDelegate
 
 extension AccountTypeSelectorViewController: AccountTypeSelectorViewModelDelegate {
+    func didVerify(result: AccountVerificationResult) {
+        DispatchQueue.main.async { [weak self] in
+            guard let me = self else {
+                Log.shared.lostMySelf()
+                return
+            }
+            switch result {
+            case .ok:
+                me.isCurrentlyVerifying = false
+                me.loginDelegate?.loginViewControllerDidCreateNewAccount(LoginViewController())
+                me.navigationController?.dismiss(animated: true)
+            case .imapError(let err):
+                me.handleLoginError(error: err)
+            case .smtpError(let err):
+                me.handleLoginError(error: err)
+            case .noImapConnectData, .noSmtpConnectData:
+                me.handleLoginError(error: LoginViewController.LoginError.noConnectData)
+            }
+        }
+    }
+
+    func handle(oauth2Error: Error) {
+        handleLoginError(error: oauth2Error)
+    }
+
     func showClientCertificateSeletionView() {
         performSegue(withIdentifier: SegueIdentifier.clientCertManagementSegue,
                      sender: self)
