@@ -21,7 +21,7 @@ protocol AccountTypeSelectorViewModelDelegate: AnyObject {
 
 class AccountTypeSelectorViewModel {
     /// Helper class to handle login logic via OAuth or manual input.
-    var loginLogic = LoginLogic()
+    var loginLogic = LoginHandler()
 
     private let clientCertificateUtil: ClientCertificateUtilProtocol
 
@@ -92,17 +92,13 @@ extension AccountTypeSelectorViewModel {
 }
 
 // MARK: - LoginProtocolResponseDelegate
-//TODO Remove, this is a temporal fix
+
 extension AccountTypeSelectorViewModel : LoginProtocolResponseDelegate {
     func didVerify(result: MessageModel.AccountVerificationResult) {
         delegate?.didVerify(result: result)
     }
 
-    func handle(loginError: Error) {
-    }
-
-    func handle(oauth2Error: Error) {
-        delegate?.handle(oauth2Error: oauth2Error)
-
+    func didFail(error : Error) {
+        delegate?.handle(oauth2Error: error)
     }
 }
