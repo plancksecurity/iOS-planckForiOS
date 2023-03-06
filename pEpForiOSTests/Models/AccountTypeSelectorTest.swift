@@ -51,7 +51,7 @@ class AccountTypeSelectorTest: AccountDrivenTestBase {
 }
 
 class AccountTypeDelegateMockTest: AccountTypeSelectorViewModelDelegate {
-    
+
     let noClientCertificatesExpectation: XCTestExpectation?
     let thereAreClientCertificatesExpectation: XCTestExpectation?
     
@@ -76,6 +76,15 @@ class AccountTypeDelegateMockTest: AccountTypeSelectorViewModelDelegate {
             XCTFail()
         }
     }
+    func didVerify(result: MessageModel.AccountVerificationResult) {
+        //TODO PEMA-309 write tests
+
+    }
+
+    func handle(oauth2Error: Error) {
+        //TODO PEMA-309 write tests
+    }
+
 }
 
 class ClientCertificateUtilMockTest: ClientCertificateUtilProtocol {
