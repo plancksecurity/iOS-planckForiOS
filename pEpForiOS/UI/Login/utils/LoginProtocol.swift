@@ -10,15 +10,10 @@ import Foundation
 import MessageModel
 
 protocol loginprotocol {
-    //Move to constructor, these are required for the class to respond
-    func initialize(loginProtocolErrorDelegate: LoginProtocolResponseDelegate)
-    
-    //Login via usrname+password
     func login(emailAddress: String,
                displayName: String,
                password: String)
     
-    //login via OAuth
     func loginWithOAuth2(viewController: UIViewController)
 
 }

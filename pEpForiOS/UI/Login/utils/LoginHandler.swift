@@ -16,7 +16,9 @@ class LoginHandler {
 
     /// Holding both the data of the current account in verification,
     /// and also the implementation of the verification.
-    var verifiableAccount: VerifiableAccountProtocol
+    var verifiableAccount = VerifiableAccount.verifiableAccount(for: .other,
+                                                                usePEPFolderProvider: AppSettings.shared)
+
     /// An OAuth2 process lives longer than the method call, so this object needs to survive.
     var currentOauth2Authorizer: OAuth2AuthorizationProtocol?
     /// Helper model to handle most of the OAuth2 authorization.
@@ -27,20 +29,13 @@ class LoginHandler {
         }
     }
 
-    public var shouldShowLoginFields: Bool {
-           return !verifiableAccount.accountType.isOauth
-    }
-
     let qualifyServerIsLocalService = QualifyServerIsLocalService()
 
     init(verifiableAccount: VerifiableAccountProtocol? = nil) {
-        self.verifiableAccount =
-            verifiableAccount ??
-            VerifiableAccount.verifiableAccount(for: .other,
-                                                usePEPFolderProvider: AppSettings.shared)
+        if (verifiableAccount != nil){
+            self.verifiableAccount=verifiableAccount!
+        }
     }
-
-
 }
 // MARK: - Private
 
