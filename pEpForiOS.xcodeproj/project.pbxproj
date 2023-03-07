@@ -669,6 +669,8 @@
 		B7DFEA56225397AB0080A2BA /* Folder+LocalizedName.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7DFEA55225397AB0080A2BA /* Folder+LocalizedName.swift */; };
 		B7F4A793212DDFC500507B76 /* EmailListViewModelTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7F4A792212DDFC500507B76 /* EmailListViewModelTest.swift */; };
 		B7F676BD227C4B26007E5E3A /* MessageQueryResultsFilter+FilterButtonTitle.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7F676BC227C4B26007E5E3A /* MessageQueryResultsFilter+FilterButtonTitle.swift */; };
+		F70AE5BF29B72E9900D0CC48 /* TrustBannerViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = F70AE5BE29B72E9900D0CC48 /* TrustBannerViewModel.swift */; };
+		F70AE5C129B7394900D0CC48 /* TrustBannerViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F70AE5C029B7394900D0CC48 /* TrustBannerViewController.swift */; };
 		F73E4F72217F238300CCFFED /* FolderSectionViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = F73E4F71217F238300CCFFED /* FolderSectionViewModelTests.swift */; };
 		F73E4F7A2180744700CCFFED /* FolderCellViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = F73E4F792180744700CCFFED /* FolderCellViewModelTests.swift */; };
 /* End PBXBuildFile section */
@@ -1277,6 +1279,8 @@
 		B7DFEA55225397AB0080A2BA /* Folder+LocalizedName.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Folder+LocalizedName.swift"; sourceTree = "<group>"; };
 		B7F4A792212DDFC500507B76 /* EmailListViewModelTest.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EmailListViewModelTest.swift; sourceTree = "<group>"; };
 		B7F676BC227C4B26007E5E3A /* MessageQueryResultsFilter+FilterButtonTitle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "MessageQueryResultsFilter+FilterButtonTitle.swift"; sourceTree = "<group>"; };
+		F70AE5BE29B72E9900D0CC48 /* TrustBannerViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TrustBannerViewModel.swift; sourceTree = "<group>"; };
+		F70AE5C029B7394900D0CC48 /* TrustBannerViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TrustBannerViewController.swift; sourceTree = "<group>"; };
 		F73E4F71217F238300CCFFED /* FolderSectionViewModelTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FolderSectionViewModelTests.swift; sourceTree = "<group>"; };
 		F73E4F792180744700CCFFED /* FolderCellViewModelTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FolderCellViewModelTests.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -1864,6 +1868,7 @@
 		15944A3323980E62006B133B /* EmailView */ = {
 			isa = PBXGroup;
 			children = (
+				F70AE5BD29B72E7800D0CC48 /* TrustBanner */,
 				B74F37CC24ADD2B00083501B /* EmailViewController.swift */,
 				5BBD1D0F26270319009D9D8A /* RecipientButton.swift */,
 				5B5C2A9E25D293F300F9C18A /* EmailViewModel.swift */,
@@ -3103,6 +3108,15 @@
 			path = Extensions;
 			sourceTree = "<group>";
 		};
+		F70AE5BD29B72E7800D0CC48 /* TrustBanner */ = {
+			isa = PBXGroup;
+			children = (
+				F70AE5BE29B72E9900D0CC48 /* TrustBannerViewModel.swift */,
+				F70AE5C029B7394900D0CC48 /* TrustBannerViewController.swift */,
+			);
+			path = TrustBanner;
+			sourceTree = "<group>";
+		};
 		F73E4F7B2180746400CCFFED /* Folder */ = {
 			isa = PBXGroup;
 			children = (
@@ -3681,6 +3695,7 @@
 				5BC0738D25B218DB00ECE3FC /* TextFieldWithoutSelection.swift in Sources */,
 				5B3C13BF23D8AF2E00FC0A53 /* SettingsTableViewController.swift in Sources */,
 				152A39D721905C3E00D9F8E4 /* BodyCellViewModel+TextAttachment.swift in Sources */,
+				F70AE5BF29B72E9900D0CC48 /* TrustBannerViewModel.swift in Sources */,
 				43ED53711CC77F95006AB156 /* IMAPSettingsViewController.swift in Sources */,
 				43EC75AE2164D03500048CFE /* SetOwnKeyViewModel.swift in Sources */,
 				43E34BE028BCB5230035D051 /* MDMDeploymentProtocol.swift in Sources */,
@@ -3890,6 +3905,7 @@
 				00FD0CE62101F7D700BA0C56 /* ScreenComposerProtocol.swift in Sources */,
 				3705096C22DC8C1800CB73D6 /* KeyInputView.swift in Sources */,
 				5B5C2A9225D2902C00F9C18A /* MessageAttachmentCell.swift in Sources */,
+				F70AE5C129B7394900D0CC48 /* TrustBannerViewController.swift in Sources */,
 				5BBE80CD24B733C0008DE0E5 /* AccountSettingsSwitchTableViewCell.swift in Sources */,
 				43C4156225EE5BD80071C608 /* Attachment+InlinedImage.swift in Sources */,
 				4351C2D81F4441190053381F /* references.c in Sources */,

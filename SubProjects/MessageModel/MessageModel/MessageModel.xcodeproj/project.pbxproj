@@ -3053,6 +3053,7 @@
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = "/bin/bash -l";
 			shellScript = "# Triggers the generation of Core Data related boilerplate code if:\n# - the trigger file does not exist (see \"Output Files\" section below)\n# OR\n# - the data model (MOM) did change (see \"Input Files\" section below)\n#\n# To force re-generation\n\nSCRIPT_PATH=\"${PROJECT_DIR}/MessageModel/Submodule/CoreData/scripts/generate_attribute_name_constants/generate.sh\"\n\nsource ${SCRIPT_PATH}\n";
+			showEnvVarsInLog = 0;
 		};
 		4961BA0F1E7BF09700920DF8 /* Warnings for TODO++ Script */ = {
 			isa = PBXShellScriptBuildPhase;

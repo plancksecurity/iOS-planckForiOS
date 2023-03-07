@@ -102,7 +102,22 @@ class EmailViewModel {
         }
         return CalendarEventsBannerViewModel(attachments: icsFilesAttachments, delegate: delegate)
     }
+    
+    /// Get the Trust Banner ViewModel.
+    /// - Returns: The Trust Banner ViewModel
+    func getTrustBannerViewModel(delegate: TrustBannerDelegate, pEpProtectionModifyable: Bool) -> TrustBannerViewModel {
+        return TrustBannerViewModel(delegate: delegate, message: message, pEpProtectionModifyable: pEpProtectionModifyable)
+    }
 
+    /// - Returns: The Trust Management ViewModel
+    func getTrustManagementViewModel(protectionStateChangeDelegate: TrustmanagementProtectionStateChangeDelegate? = nil, ratingDelegate: TrustmanagementRatingChangedDelegate? = nil) -> TrustManagementViewModel {
+        return TrustManagementViewModel(message: message,
+                                        pEpProtectionModifyable: true,
+                                        persistRatingChangesForMessage: false,
+                                        protectionStateChangeDelegate: protectionStateChangeDelegate,
+                                        ratingDelegate: ratingDelegate)
+    }
+                
     // Indicates if the External Content View has to be shown.
     public var shouldShowExternalContentView: Bool {
         guard let body = htmlBody else {

@@ -19,10 +19,12 @@ protocol EmailViewControllerDelegate: AnyObject {
 
 class EmailViewController: UIViewController {
 
+    @IBOutlet private weak var trustBannerContainerView: UIView!
     @IBOutlet private weak var bannerContainerView: UIView!
     @IBOutlet private weak var stackView: UIStackView!
     @IBOutlet private weak var bannerHeightConstraint: NSLayoutConstraint!
-
+    @IBOutlet private weak var trustBannerHeightConstraint: NSLayoutConstraint!
+    
     public var viewModel: EmailViewModel? {
         didSet {
             viewModel?.delegate = self
@@ -86,6 +88,10 @@ class EmailViewController: UIViewController {
         super.preferredContentSizeDidChange(forChildContentContainer: container)
         if let container = container as? CalendarEventBannerViewController, !bannerContainerView.isHidden {
             bannerHeightConstraint?.constant = container.preferredContentSize.height
+        }
+        
+        if let container = container as? TrustBannerViewController, !trustBannerContainerView.isHidden {
+            trustBannerHeightConstraint?.constant = container.preferredContentSize.height
         }
     }
 
@@ -383,6 +389,8 @@ extension EmailViewController: SegueHandlerType {
 
     enum SegueIdentifier: String {
         case segueCalendarBanner
+        case segueTrustBanner
+        case segueTrustManagementView
     }
 
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
@@ -405,7 +413,30 @@ extension EmailViewController: SegueHandlerType {
             vc.viewModel = calendarEventBannerViewModel
             vc.delegate = vm
             bannerContainerView.isHidden = !calendarEventBannerViewModel.shouldShowEventsBanner
+        case .segueTrustBanner:
+            guard
+                let vc = segue.destination as? TrustBannerViewController else {
+                    Log.shared.errorAndCrash("Missing VCs")
+                    return
+            }
+            let trustBannerViewModel = vm.getTrustBannerViewModel(delegate: self, pEpProtectionModifyable: true)
+            vc.viewModel = trustBannerViewModel
+            trustBannerContainerView.isHidden = !trustBannerViewModel.shouldShowTrustBanner()
+        case .segueTrustManagementView:
+            guard let nv = segue.destination as? UINavigationController,
+                  let vc = nv.topViewController as? TrustManagementViewController else {
+                Log.shared.errorAndCrash("Missing VCs")
+                return
+            }
+            vc.viewModel = vm.getTrustManagementViewModel()
         }
+    }
+}
+
+extension EmailViewController: TrustBannerDelegate {
+ 
+    func presentTrustManagementView() {
+        performSegue(withIdentifier: .segueTrustManagementView, sender: self)
     }
 }
 
@@ -512,6 +543,20 @@ extension EmailViewController {
         }
         if indexPath.row == vm.numberOfRows - 1 {
             tableView.updateSize()
+        }
+    }
+    
+    
+    private func setTrustBannerVisible(isVisible: Bool) {
+        DispatchQueue.main.async {
+            UIView.animate(withDuration: 1, delay: 0, usingSpringWithDamping: 0.9, initialSpringVelocity: 1, options: [], animations: { [weak self] in
+                guard let me = self else {
+                    //Valid case: might be dismissed already.
+                    return
+                }
+                me.trustBannerContainerView.isHidden = !isVisible
+                me.stackView.layoutIfNeeded()
+            }, completion: nil)
         }
     }
 

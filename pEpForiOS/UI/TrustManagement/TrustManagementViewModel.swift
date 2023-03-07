@@ -281,7 +281,7 @@ final class TrustManagementViewModel {
         setupRows()
     }
 
-    ///MARK - Actions
+    /// MARK - Actions
     
     /// Reject the handshake
     /// - Parameter indexPath: The indexPath of the item to get the user to reject the handshake

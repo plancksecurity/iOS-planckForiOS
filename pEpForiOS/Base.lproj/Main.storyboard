@@ -457,7 +457,9 @@
         <!--TrustManagement-->
         <scene sceneID="vNc-oF-Keh">
             <objects>
-                <viewControllerPlaceholder storyboardName="TrustManagement" id="Dbs-KG-RkX" sceneMemberID="viewController"/>
+                <viewControllerPlaceholder storyboardName="TrustManagement" id="Dbs-KG-RkX" sceneMemberID="viewController">
+                    <navigationItem key="navigationItem" id="snJ-tz-m3h"/>
+                </viewControllerPlaceholder>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="Vev-AJ-nPB" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="5522" y="-470"/>
@@ -477,6 +479,15 @@
                             <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" alignment="center" translatesAutoresizingMaskIntoConstraints="NO" id="req-zi-fdO">
                                 <rect key="frame" x="0.0" y="0.0" width="414" height="736"/>
                                 <subviews>
+                                    <containerView hidden="YES" opaque="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="SXU-8a-7xk" userLabel="Trust Container View">
+                                        <rect key="frame" x="0.0" y="0.0" width="414" height="34"/>
+                                        <constraints>
+                                            <constraint firstAttribute="height" constant="34" identifier="BannerPreferredHeight" id="4L0-oL-5m8"/>
+                                        </constraints>
+                                        <connections>
+                                            <segue destination="Htz-xH-eMI" kind="embed" identifier="segueTrustBanner" id="C8V-td-4Yt"/>
+                                        </connections>
+                                    </containerView>
                                     <containerView hidden="YES" opaque="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="DDl-A4-DAm">
                                         <rect key="frame" x="0.0" y="0.0" width="414" height="100"/>
                                         <constraints>
@@ -1040,13 +1051,16 @@
                                     </view>
                                 </subviews>
                                 <constraints>
+                                    <constraint firstItem="SXU-8a-7xk" firstAttribute="leading" secondItem="req-zi-fdO" secondAttribute="leading" id="7cc-Bj-qS5"/>
                                     <constraint firstItem="DDl-A4-DAm" firstAttribute="top" secondItem="req-zi-fdO" secondAttribute="top" id="Bis-1n-bhP"/>
                                     <constraint firstItem="1gM-RO-PE9" firstAttribute="leading" secondItem="req-zi-fdO" secondAttribute="leading" id="IGw-8E-52s"/>
                                     <constraint firstItem="DDl-A4-DAm" firstAttribute="leading" secondItem="req-zi-fdO" secondAttribute="leading" id="Krn-yy-b8o"/>
                                     <constraint firstAttribute="trailing" secondItem="DDl-A4-DAm" secondAttribute="trailing" id="NgE-cA-mdX"/>
                                     <constraint firstAttribute="bottom" secondItem="1gM-RO-PE9" secondAttribute="bottom" id="YkA-OU-bWG"/>
+                                    <constraint firstAttribute="trailing" secondItem="SXU-8a-7xk" secondAttribute="trailing" id="bi7-yf-xcA"/>
                                     <constraint firstAttribute="trailing" secondItem="1gM-RO-PE9" secondAttribute="trailing" id="brZ-Fd-4nS"/>
                                     <constraint firstAttribute="trailing" secondItem="SId-vz-C31" secondAttribute="trailing" id="dDU-Nr-Jt2"/>
+                                    <constraint firstItem="SXU-8a-7xk" firstAttribute="top" secondItem="req-zi-fdO" secondAttribute="top" id="jDE-A0-1g8"/>
                                     <constraint firstItem="1gM-RO-PE9" firstAttribute="top" secondItem="SId-vz-C31" secondAttribute="bottom" id="sXc-G5-FbR"/>
                                     <constraint firstItem="SId-vz-C31" firstAttribute="leading" secondItem="req-zi-fdO" secondAttribute="leading" id="vQ8-tW-2w6"/>
                                 </constraints>
@@ -1068,12 +1082,15 @@
                         <outlet property="showExternalContentView" destination="1gM-RO-PE9" id="7ds-Vj-bex"/>
                         <outlet property="stackView" destination="req-zi-fdO" id="sKq-CX-moR"/>
                         <outlet property="tableView" destination="SId-vz-C31" id="3Om-uV-g6Q"/>
+                        <outlet property="trustBannerContainerView" destination="SXU-8a-7xk" id="bvO-AU-XXP"/>
+                        <outlet property="trustBannerHeightConstraint" destination="4L0-oL-5m8" id="6nx-Eh-5QR"/>
                         <segue destination="WY0-yJ-1SU" kind="presentation" identifier="segueShowMoveToFolder" destinationCreationSelector="buttonPressed:" id="e2D-Sv-Lmt"/>
                         <segue destination="NY2-HI-4ou" kind="presentation" identifier="segueReplyFrom" id="wZp-rH-OFv"/>
                         <segue destination="NY2-HI-4ou" kind="presentation" identifier="segueReplyAllForm" id="sHh-66-AtW"/>
                         <segue destination="NY2-HI-4ou" kind="presentation" identifier="segueForward" id="X1h-eK-GkJ"/>
                         <segue destination="Dbs-KG-RkX" kind="presentation" identifier="segueTrustManagement" id="jws-oj-jHZ"/>
                         <segue destination="Dbs-KG-RkX" kind="presentation" identifier="segueTrustManagementCollapsed" id="jct-YG-JYz"/>
+                        <segue destination="Dbs-KG-RkX" kind="presentation" identifier="segueTrustManagementView" id="dpb-kq-I1f"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="ylu-IZ-Joc" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
@@ -1625,7 +1642,53 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="wIv-8k-7gQ" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="5381.1594202898559" y="-1243.2065217391305"/>
+            <point key="canvasLocation" x="5554" y="-1154"/>
+        </scene>
+        <!--Trust Banner View Controller-->
+        <scene sceneID="gLk-0D-9Js">
+            <objects>
+                <viewController id="Htz-xH-eMI" customClass="TrustBannerViewController" customModule="pEpForiOS" customModuleProvider="target" sceneMemberID="viewController">
+                    <layoutGuides>
+                        <viewControllerLayoutGuide type="top" id="nHm-2N-0YS"/>
+                        <viewControllerLayoutGuide type="bottom" id="RFK-Dx-BGw"/>
+                    </layoutGuides>
+                    <view key="view" contentMode="scaleToFill" id="h86-h2-G9D">
+                        <rect key="frame" x="0.0" y="0.0" width="414" height="34"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="87V-sS-PPH" userLabel="Trust button">
+                                <rect key="frame" x="0.0" y="0.0" width="414" height="34"/>
+                                <state key="normal" title="Button"/>
+                                <buttonConfiguration key="configuration" style="plain" title="Tap to establish trust with this sender.">
+                                    <backgroundConfiguration key="background">
+                                        <color key="backgroundColor" systemColor="systemGray6Color"/>
+                                    </backgroundConfiguration>
+                                    <fontDescription key="titleFontDescription" style="UICTFontTextStyleFootnote"/>
+                                    <color key="baseForegroundColor" red="0.011764705882352941" green="0.66666666666666663" blue="0.29411764705882354" alpha="1" colorSpace="calibratedRGB"/>
+                                </buttonConfiguration>
+                                <connections>
+                                    <action selector="trustButtonPressed" destination="Htz-xH-eMI" eventType="touchUpInside" id="4k4-zb-1LM"/>
+                                </connections>
+                            </button>
+                        </subviews>
+                        <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+                        <constraints>
+                            <constraint firstItem="87V-sS-PPH" firstAttribute="centerX" secondItem="h86-h2-G9D" secondAttribute="centerX" id="Aog-Ml-kI9"/>
+                            <constraint firstItem="87V-sS-PPH" firstAttribute="width" secondItem="h86-h2-G9D" secondAttribute="width" id="O6K-If-Y2F"/>
+                            <constraint firstItem="87V-sS-PPH" firstAttribute="centerY" secondItem="h86-h2-G9D" secondAttribute="centerY" id="P20-bo-sds"/>
+                            <constraint firstItem="87V-sS-PPH" firstAttribute="height" secondItem="h86-h2-G9D" secondAttribute="height" id="saA-kx-IRs"/>
+                        </constraints>
+                    </view>
+                    <navigationItem key="navigationItem" id="qMw-eP-8C3"/>
+                    <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
+                    <size key="freeformSize" width="414" height="34"/>
+                    <connections>
+                        <outlet property="trustButton" destination="87V-sS-PPH" id="pGf-Jq-dFW"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="Jtt-OV-qgU" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="5554" y="-1027"/>
         </scene>
     </scenes>
     <designables>
@@ -1634,9 +1697,9 @@
         </designable>
     </designables>
     <inferredMetricsTieBreakers>
-        <segue reference="cRe-YG-393"/>
-        <segue reference="vPE-SC-TBS"/>
-        <segue reference="Bs0-pZ-8nY"/>
+        <segue reference="e2D-Sv-Lmt"/>
+        <segue reference="dpb-kq-I1f"/>
+        <segue reference="sHh-66-AtW"/>
     </inferredMetricsTieBreakers>
     <resources>
         <image name="attachment-list-icon" width="14" height="15"/>
