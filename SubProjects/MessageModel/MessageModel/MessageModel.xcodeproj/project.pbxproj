@@ -204,6 +204,8 @@
 		43123FB9225369660038D72C /* CdMessage+NonOptionalConvenienceAccessors.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43123FB8225369660038D72C /* CdMessage+NonOptionalConvenienceAccessors.swift */; };
 		43123FBD225374030038D72C /* CdFolder+IMAP.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43123FBC225374030038D72C /* CdFolder+IMAP.swift */; };
 		43123FC2225388FB0038D72C /* CdMessage+IMAP.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43123FC1225388FB0038D72C /* CdMessage+IMAP.swift */; };
+		43148AAF29B0A45700CCFF1B /* TrustManagementUtilProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43148AAE29B0A45700CCFF1B /* TrustManagementUtilProtocol.swift */; };
+		43148AB029B0A49900CCFF1B /* TrustManagementUtilProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43148AAE29B0A45700CCFF1B /* TrustManagementUtilProtocol.swift */; };
 		431995C224DACCD3004B2811 /* KeySyncHandshakeResult+PEPSyncHandshakeResult.swift in Sources */ = {isa = PBXBuildFile; fileRef = 431995C124DACCD3004B2811 /* KeySyncHandshakeResult+PEPSyncHandshakeResult.swift */; };
 		431BAE34246D4F330043490F /* KeyImportUtil.swift in Sources */ = {isa = PBXBuildFile; fileRef = 431BAE33246D4F330043490F /* KeyImportUtil.swift */; };
 		431BAE39246D5BEF0043490F /* KeyImportUtilTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 431BAE38246D5BEF0043490F /* KeyImportUtilTest.swift */; };
@@ -950,6 +952,7 @@
 		43123FB8225369660038D72C /* CdMessage+NonOptionalConvenienceAccessors.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "CdMessage+NonOptionalConvenienceAccessors.swift"; sourceTree = "<group>"; };
 		43123FBC225374030038D72C /* CdFolder+IMAP.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "CdFolder+IMAP.swift"; sourceTree = "<group>"; };
 		43123FC1225388FB0038D72C /* CdMessage+IMAP.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "CdMessage+IMAP.swift"; sourceTree = "<group>"; };
+		43148AAE29B0A45700CCFF1B /* TrustManagementUtilProtocol.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TrustManagementUtilProtocol.swift; sourceTree = "<group>"; };
 		431995C124DACCD3004B2811 /* KeySyncHandshakeResult+PEPSyncHandshakeResult.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "KeySyncHandshakeResult+PEPSyncHandshakeResult.swift"; sourceTree = "<group>"; };
 		431BAE33246D4F330043490F /* KeyImportUtil.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KeyImportUtil.swift; sourceTree = "<group>"; };
 		431BAE38246D5BEF0043490F /* KeyImportUtilTest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KeyImportUtilTest.swift; sourceTree = "<group>"; };
@@ -2641,6 +2644,7 @@
 				5BC6A24D267791CD00769972 /* Array+Attachments.swift */,
 				5B4A715A252B5B6F00436FCF /* NSError+Passphrase.swift */,
 				5B4A715B252B5B6F00436FCF /* Error+Passphrase.swift */,
+				43148AAE29B0A45700CCFF1B /* TrustManagementUtilProtocol.swift */,
 				5B88A19C2406C1A2003240B8 /* TrustManagementUtil.swift */,
 				15E01F9E24AB420B00DFADA3 /* PassphraseUtil.swift */,
 				439CAD8A2562D5BF0043077E /* String+Attachment.swift */,
@@ -3105,6 +3109,7 @@
 				43FD3F4326148B1D0032F809 /* PEPDecryptFlags+ReUpload.swift in Sources */,
 				43BDDDA225DD4D4900FC0C68 /* SmtpSendError.swift in Sources */,
 				434C22A325D69CD200F622DB /* CdAccount+NonOptionalConvenienceAccessors.swift.swift in Sources */,
+				43148AB029B0A49900CCFF1B /* TrustManagementUtilProtocol.swift in Sources */,
 				43BDDD0225DD34EE00FC0C68 /* Attachment+ContentID.swift in Sources */,
 				43BDDD8625DD4B2100FC0C68 /* CdAccount+ProviderSpecific.swift in Sources */,
 				437B127225F785D1000CCFBA /* EncryptAndSendSharingProtocol.swift in Sources */,
@@ -3394,6 +3399,7 @@
 				43E5A91A23A298DE007ABAAE /* ImapExpungeOperation.swift in Sources */,
 				B7A1152322C3CA3F00FB6E91 /* PrepareAccountForSavingService.swift in Sources */,
 				43EA4880221E9518006E8F83 /* MoveToFolderOperation.swift in Sources */,
+				43148AAF29B0A45700CCFF1B /* TrustManagementUtilProtocol.swift in Sources */,
 				155FE574228B52D4003D3E68 /* CdServerCredentials+KeyChain.swift in Sources */,
 				43EA487F221E9518006E8F83 /* LoginSmtpOperation.swift in Sources */,
 				158A6DFC2305B887006A9ECE /* CdExtraKey.swift in Sources */,

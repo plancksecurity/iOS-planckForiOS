@@ -205,12 +205,12 @@ extension String {
     
     
     public static func trustIdentityTranslation(pEpRating: Rating?) -> PEPStatusText {
-        let defaultRestult = undefinedPEPTrustIdentityRating()
+        let defaultResult = undefinedPEPTrustIdentityRating()
         if let rating = pEpRating {
             return trustIdentityTranslation[rating] ??
-                trustIdentityTranslation[.undefined] ?? defaultRestult
+                trustIdentityTranslation[.undefined] ?? defaultResult
         } else {
-            return defaultRestult
+            return defaultResult
         }
     }
 

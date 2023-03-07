@@ -69,6 +69,23 @@ extension TrustManagementViewModel {
             return name ?? address
         }
 
+        /// The name of the own identity
+        public var ownName: String {
+            let name = handshakeCombination.ownIdentity.userName
+            let address = handshakeCombination.ownIdentity.address
+            return name ?? address
+        }
+
+        /// Content of the label shown as title before the own fingerprint
+        public var ownTitle: String {
+            return ownName + ":"
+        }
+
+        /// Content of the label shown as title before the partner fingerprint
+        public var partnerTitle: String {
+            return name + ":"
+        }
+
         /// The description for the row
         public func description(completion: @escaping (String) -> Void) {
             if forceRed {
@@ -120,10 +137,12 @@ extension TrustManagementViewModel {
         fileprivate var language: String {
             return _language
         }
+
         /// Indicates if the long (or the short) version of the trustwords should be shown
         var showLongTrustwordVersion: Bool = false
+
         /// Status indicator
-        func color(completion: @escaping (Color) -> Void){
+        func color(completion: @escaping (Color) -> Void) {
             if forceRed {
                 completion(.red)
             } else {
@@ -168,18 +187,28 @@ extension TrustManagementViewModel {
 
         private var trustwordsShort: String?
         private var trustwordsLong: String?
-        //Prevents the overkill of require the trustwords when it's not necesary.
+
+        public var ownFormattedFingerprint: String?
+        public var partnerFormattedFingerprint: String?
+
+        /// Prevents the overkill of requiring the trustwords when it's not necesary.
         fileprivate var forceRed: Bool = false
+
         /// The identity of the user to do the handshake
         fileprivate var handshakeCombination: TrustManagementUtil.HandshakeCombination
+
         fileprivate var fingerprint: String?
 
         private func setupTrustwords(combination: TrustManagementUtil.HandshakeCombination,
                                      language: LanguageCode,
-                                     completion: @escaping ()->Void) {
+                                     completion: @escaping () -> Void) {
             let group = DispatchGroup()
+
             var longTw: String? = nil
             var shortTw: String? = nil
+            var ownFingerprint: String? = nil
+            var partnerFingerprint: String? = nil
+
             group.enter()
             trustManagementUtil.getTrustwords(for: combination.ownIdentity,
                                               and: combination.partnerIdentity,
@@ -189,6 +218,13 @@ extension TrustManagementViewModel {
                 longTw = trustwords
                 group.leave()
             }
+
+            group.enter()
+            trustManagementUtil.getFingerprint(for: combination.ownIdentity) { someOwnFingerprint in
+                ownFingerprint = someOwnFingerprint
+                group.leave()
+            }
+
             group.enter()
             trustManagementUtil.getTrustwords(for: combination.ownIdentity,
                                               and: combination.partnerIdentity,
@@ -198,6 +234,13 @@ extension TrustManagementViewModel {
                 shortTw = trustwords
                 group.leave()
             }
+
+            group.enter()
+            trustManagementUtil.getFingerprint(for: combination.partnerIdentity) { somePartnerFingerprint in
+                partnerFingerprint = somePartnerFingerprint
+                group.leave()
+            }
+
             group.notify(queue: DispatchQueue.main) { [weak self] in
                 guard let me = self else {
                     // Valid case. We might have been dismissed already.
@@ -205,12 +248,16 @@ extension TrustManagementViewModel {
                     return
                 }
 
+                me.ownFormattedFingerprint = ownFingerprint?.prettyFingerPrint()
+                me.partnerFormattedFingerprint = partnerFingerprint?.prettyFingerPrint()
+
                 me.trustwordsLong = me.prepareTrustwordStringForDisplay(trustwords: longTw)
 
                 if let tmp = shortTw {
                     // Short TWs must have three dots for signaling as truncated
                     shortTw = "\(tmp)…"
                 }
+
                 me.trustwordsShort = me.prepareTrustwordStringForDisplay(trustwords: shortTw)
                 completion()
             }
