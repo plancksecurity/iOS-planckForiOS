@@ -545,20 +545,6 @@ extension EmailViewController {
             tableView.updateSize()
         }
     }
-    
-    
-    private func setTrustBannerVisible(isVisible: Bool) {
-        DispatchQueue.main.async {
-            UIView.animate(withDuration: 1, delay: 0, usingSpringWithDamping: 0.9, initialSpringVelocity: 1, options: [], animations: { [weak self] in
-                guard let me = self else {
-                    //Valid case: might be dismissed already.
-                    return
-                }
-                me.trustBannerContainerView.isHidden = !isVisible
-                me.stackView.layoutIfNeeded()
-            }, completion: nil)
-        }
-    }
 
     private func setBannerVisible(isVisible: Bool) {
         DispatchQueue.main.async {

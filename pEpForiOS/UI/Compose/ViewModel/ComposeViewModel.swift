@@ -224,7 +224,7 @@ class ComposeViewModel {
     private func getUnsecureRecipients() -> [Identity] {
         let allRecipients = state.toRecipients + state.ccRecipients + state.bccRecipients + state.toRecipientsHidden + state.ccRecipientsHidden + state.bccRecipientsHidden
         var redRecipients = [Identity]()
-        /*
+
         let group = DispatchGroup()
         for i in 0 ..< allRecipients.count {
             group.enter()
@@ -238,7 +238,6 @@ class ComposeViewModel {
             }
             group.wait()
         }
-         */
         return redRecipients
     }
 
