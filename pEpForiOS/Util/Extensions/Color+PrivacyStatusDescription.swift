@@ -22,7 +22,7 @@ extension Color {
                                      comment: "privacyStatusDescription red")
         case .yellow:
             return NSLocalizedString(
-                "Communication with this contact will be completely Secure & Trusted by comparing the following Trustwords with your contact, for example by making a phone call.",
+                "Communication with this contact will be completely Secure & Trusted by comparing the following Trustwords/Fingerprints with your contact, for example by making a phone call.",
                 comment: "privacyStatusDescription yellow")
         case .green:
             return NSLocalizedString(

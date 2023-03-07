@@ -35,7 +35,13 @@ final class TrustManagementTableViewCell: UITableViewCell {
     //Hide these views in case pepColor is not yellow.
     @IBOutlet weak var trustwordsStackView: UIStackView!
     @IBOutlet weak var trustwordsButtonsContainer: UIView!
-    
+
+    @IBOutlet weak var fingerprintStackView: UIStackView!
+    @IBOutlet weak var ownFingerprintTitleLabel: UILabel!
+    @IBOutlet weak var partnerFingerprintTitleLabel: UILabel!
+    @IBOutlet weak var ownFingerprintLabel: UILabel!
+    @IBOutlet weak var partnerFingerprintLabel: UILabel!
+
     weak var delegate : TrustManagementTableViewCellDelegate?
     
     override func awakeFromNib() {
@@ -87,11 +93,13 @@ final class TrustManagementTableViewCell: UITableViewCell {
         trustwordsLabel.addGestureRecognizer(gesture)
 
         //Confirm Button
-        let confirmTitle = NSLocalizedString("Confirm", comment: "Confirm correct trustwords/PGP fingerprint")
+        let confirmTitle = NSLocalizedString("Confirm",
+                                             comment: "Confirm correct trustwords/PGP fingerprint")
         confirmButton.setTitle(confirmTitle, for: .normal)
 
         //Decline Button
-        let declineTitle = NSLocalizedString("Decline", comment: "Incorrect trustwords/PGP fingerprint")
+        let declineTitle = NSLocalizedString("Decline",
+                                             comment: "Incorrect trustwords/PGP fingerprint")
         declineButton.setTitle(declineTitle, for: .normal)
 
         setupButtons()
@@ -102,6 +110,9 @@ final class TrustManagementTableViewCell: UITableViewCell {
         //Image view
         partnerImageView.layer.cornerRadius = 10
         partnerImageView.layer.masksToBounds = true
+
+        let spacingBetweenFingerprints = 12.0
+        fingerprintStackView.setCustomSpacing(spacingBetweenFingerprints, after: ownFingerprintLabel)
     }
 
     private func removeGestureRecognizers() {
