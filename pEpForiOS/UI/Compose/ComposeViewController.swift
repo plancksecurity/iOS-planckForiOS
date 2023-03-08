@@ -360,7 +360,6 @@ extension ComposeViewController: ComposeViewModelDelegate {
                 Log.shared.errorAndCrash("Lost myself")
                 return
             }
-            
             me.recipientsBannerContainerView.isHidden = !visible
             if visible {
                 guard let recipientsBannerViewController = me.children.first(where: {$0 is RecipientsBannerViewController }) as? RecipientsBannerViewController else {
