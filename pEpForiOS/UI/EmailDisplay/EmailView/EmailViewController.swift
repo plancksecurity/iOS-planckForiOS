@@ -8,7 +8,7 @@
 
 import pEpIOSToolbox
 import QuickLook
-
+import MessageModel
 import EventKit
 import EventKitUI
 import pEpIOSToolbox
@@ -293,6 +293,10 @@ extension EmailViewController: UIPopoverPresentationControllerDelegate, UIPopove
 
 extension EmailViewController: EmailViewModelDelegate {
 
+    func updateNavigationBarSecurityBadge(pEpRating: Rating) {
+        showNavigationBarSecurityBadge(pEpRating: pEpRating)
+    }
+
     func showQuickLookOfAttachment(quickLookItem: QLPreviewItem) {
         guard let url = quickLookItem.previewItemURL else {
             Log.shared.errorAndCrash("QL item is not an URL")
@@ -428,8 +432,19 @@ extension EmailViewController: SegueHandlerType {
                 Log.shared.errorAndCrash("Missing VCs")
                 return
             }
-            vc.viewModel = vm.getTrustManagementViewModel()
+            vc.viewModel = vm.getTrustManagementViewModel(ratingDelegate:self)
         }
+    }
+}
+import MessageModel
+
+extension EmailViewController: TrustmanagementRatingChangedDelegate {
+    func ratingMayHaveChanged() {
+        guard let vm = viewModel else {
+            Log.shared.errorAndCrash("No VM")
+            return
+        }
+        vm.updateRating()
     }
 }
 

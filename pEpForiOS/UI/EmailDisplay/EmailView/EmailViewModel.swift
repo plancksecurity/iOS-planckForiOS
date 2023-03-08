@@ -28,6 +28,8 @@ protocol EmailViewModelDelegate: AnyObject {
     func hideLoadingView()
     /// Informs the viewModel is ready to provide external content.
     func showExternalContent()
+    /// Update the navigation bar badge
+    func updateNavigationBarSecurityBadge(pEpRating: Rating)
 }
 
 //MARK: - EmailRowProtocol
@@ -164,6 +166,22 @@ class EmailViewModel {
         return rows.count
     }
 
+    func updateRating() {
+        message.pEpRating { (rating) in
+            DispatchQueue.main.async { [weak self] in
+                guard let me = self else {
+                    Log.shared.errorAndCrash("Lost myself")
+                    return
+                }
+                guard let del = me.delegate else {
+                    Log.shared.errorAndCrash("Lost delegate")
+                    return
+                }
+                del.updateNavigationBarSecurityBadge(pEpRating: rating)
+            }
+        }
+    }
+    
     /// Retrieves the row
     subscript(index: Int) -> EmailRowProtocol {
         get {
