@@ -413,6 +413,7 @@ final class TrustManagementViewModel {
                     return
                 }
                 me.reevaluateMessage(forRowAt: indexPath)
+                me.ratingDelegate?.ratingMayHaveChanged()
                 me.delegate?.showResetPartnerKeySuccessfully()
             }
         }, errorCallback: { [weak self] in
