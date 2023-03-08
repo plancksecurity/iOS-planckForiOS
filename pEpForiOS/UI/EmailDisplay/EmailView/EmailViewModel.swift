@@ -167,7 +167,8 @@ class EmailViewModel {
     }
 
     func updateRating() {
-        message.pEpRating { (rating) in
+        let safeMessage = message.safeForSession(.main)
+        RatingReEvaluator.reevaluate(message: safeMessage, storeMessageWhenDone: true) {
             DispatchQueue.main.async { [weak self] in
                 guard let me = self else {
                     Log.shared.errorAndCrash("Lost myself")
@@ -177,7 +178,9 @@ class EmailViewModel {
                     Log.shared.errorAndCrash("Lost delegate")
                     return
                 }
-                del.updateNavigationBarSecurityBadge(pEpRating: rating)
+                safeMessage.pEpRating { rating in
+                    del.updateNavigationBarSecurityBadge(pEpRating: rating)
+                }
             }
         }
     }

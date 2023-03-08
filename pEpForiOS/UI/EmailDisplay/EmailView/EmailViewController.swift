@@ -295,6 +295,12 @@ extension EmailViewController: EmailViewModelDelegate {
 
     func updateNavigationBarSecurityBadge(pEpRating: Rating) {
         showNavigationBarSecurityBadge(pEpRating: pEpRating)
+        guard let vm = viewModel else {
+            Log.shared.errorAndCrash("VM not found")
+            return
+        }
+        let trustBannerViewModel = vm.getTrustBannerViewModel(delegate: self, pEpProtectionModifyable: true)
+        trustBannerContainerView.isHidden = !trustBannerViewModel.shouldShowTrustBanner()
     }
 
     func showQuickLookOfAttachment(quickLookItem: QLPreviewItem) {
