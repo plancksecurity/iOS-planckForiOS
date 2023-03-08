@@ -413,6 +413,12 @@ extension TrustManagementViewController {
                 } else {
                     cell.trustwordsStackView.isHidden = true
                     cell.trustwordsButtonsContainer.isHidden = true
+
+                    cell.ownFingerprintTitleLabel.isHidden = true
+                    cell.ownFingerprintLabel.isHidden = true
+
+                    cell.partnerFingerprintTitleLabel.isHidden = true
+                    cell.partnerFingerprintLabel.isHidden = true
                 }
             } else if identifier == me.masterAndDetailCellIdentifier {
                 if rowColor == .yellow {
