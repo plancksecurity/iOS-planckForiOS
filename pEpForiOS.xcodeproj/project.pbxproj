@@ -28,8 +28,8 @@
 		00EB89AD20E3D3C200CDFA0D /* ThreadedEmailViewModel+MoveToFolderDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 00EB89AC20E3D3C200CDFA0D /* ThreadedEmailViewModel+MoveToFolderDelegate.swift */; };
 		00EB89AF20E3E4A000CDFA0D /* ReplyAlertCreator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 00EB89AE20E3E4A000CDFA0D /* ReplyAlertCreator.swift */; };
 		00FD0CE62101F7D700BA0C56 /* ScreenComposerProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = 00FD0CE52101F7D700BA0C56 /* ScreenComposerProtocol.swift */; };
-		0A6B959D29B229610011FD61 /* LoginHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0A6B959C29B229600011FD61 /* LoginHandler.swift */; };
-		0A6B959F29B22ACC0011FD61 /* OIDAuthState+pEp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0A6B959E29B22ACC0011FD61 /* OIDAuthState+pEp.swift */; };
+		0A6B959D29B229610011FD61 /* LoginUtil.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0A6B959C29B229600011FD61 /* LoginUtil.swift */; };
+		0A6B959F29B22ACC0011FD61 /* OIDAuthState+Email.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0A6B959E29B22ACC0011FD61 /* OIDAuthState+Email.swift */; };
 		0A6B95A129B617D00011FD61 /* LoginProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0A6B95A029B617D00011FD61 /* LoginProtocol.swift */; };
 		150707DC21006CD000AA213F /* ComposeUtilTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 150707DB21006CD000AA213F /* ComposeUtilTest.swift */; };
 		150B8E991FCDACBB00374438 /* AccountSettingsUserInputError.swift in Sources */ = {isa = PBXBuildFile; fileRef = 150B8E971FCDACBB00374438 /* AccountSettingsUserInputError.swift */; };
@@ -747,8 +747,8 @@
 		00EB89AC20E3D3C200CDFA0D /* ThreadedEmailViewModel+MoveToFolderDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "ThreadedEmailViewModel+MoveToFolderDelegate.swift"; sourceTree = "<group>"; };
 		00EB89AE20E3E4A000CDFA0D /* ReplyAlertCreator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReplyAlertCreator.swift; sourceTree = "<group>"; };
 		00FD0CE52101F7D700BA0C56 /* ScreenComposerProtocol.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScreenComposerProtocol.swift; sourceTree = "<group>"; };
-		0A6B959C29B229600011FD61 /* LoginHandler.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginHandler.swift; sourceTree = "<group>"; };
-		0A6B959E29B22ACC0011FD61 /* OIDAuthState+pEp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "OIDAuthState+pEp.swift"; sourceTree = "<group>"; };
+		0A6B959C29B229600011FD61 /* LoginUtil.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginUtil.swift; sourceTree = "<group>"; };
+		0A6B959E29B22ACC0011FD61 /* OIDAuthState+Email.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "OIDAuthState+Email.swift"; sourceTree = "<group>"; };
 		0A6B95A029B617D00011FD61 /* LoginProtocol.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginProtocol.swift; sourceTree = "<group>"; };
 		150707DB21006CD000AA213F /* ComposeUtilTest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ComposeUtilTest.swift; sourceTree = "<group>"; };
 		150B8E971FCDACBB00374438 /* AccountSettingsUserInputError.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AccountSettingsUserInputError.swift; sourceTree = "<group>"; };
@@ -1348,14 +1348,14 @@
 			name = Row;
 			sourceTree = "<group>";
 		};
-		0A6B959B29B226A40011FD61 /* utils */ = {
+		0A62F9A129B9FC2100AE1B91 /* Utils */ = {
 			isa = PBXGroup;
 			children = (
-				0A6B959C29B229600011FD61 /* LoginHandler.swift */,
-				0A6B959E29B22ACC0011FD61 /* OIDAuthState+pEp.swift */,
+				0A6B959C29B229600011FD61 /* LoginUtil.swift */,
+				0A6B959E29B22ACC0011FD61 /* OIDAuthState+Email.swift */,
 				0A6B95A029B617D00011FD61 /* LoginProtocol.swift */,
 			);
-			path = utils;
+			path = Utils;
 			sourceTree = "<group>";
 		};
 		15033C7223473CD20060A1A2 /* KeySync */ = {
@@ -2927,7 +2927,7 @@
 		B70D32AA205BCCC70094A92A /* Login */ = {
 			isa = PBXGroup;
 			children = (
-				0A6B959B29B226A40011FD61 /* utils */,
+				0A62F9A129B9FC2100AE1B91 /* Utils */,
 				B70D32AB205BCCDD0094A92A /* ViewModel */,
 				49D3BECB20F8F7330043E05D /* LoginViewController.swift */,
 				5BC8C72225ADDAF1000AAC7A /* TwoLinesButton.swift */,
@@ -3598,7 +3598,7 @@
 				1521B78D241BDAD3000EAE57 /* UIUtils+Settings.swift in Sources */,
 				43269D6C2552B744001E18C6 /* VerifiableAccountValidationError+LocalizedError.swift in Sources */,
 				B7DFEA56225397AB0080A2BA /* Folder+LocalizedName.swift in Sources */,
-				0A6B959F29B22ACC0011FD61 /* OIDAuthState+pEp.swift in Sources */,
+				0A6B959F29B22ACC0011FD61 /* OIDAuthState+Email.swift in Sources */,
 				5BF7538F2979907E00E4113B /* EnterpriseSettingsProtocol.swift in Sources */,
 				4351C2D51F4441190053381F /* latex.c in Sources */,
 				B74F37CD24ADD2B00083501B /* EmailViewController.swift in Sources */,
@@ -3824,7 +3824,7 @@
 				4351C2CD1F4441190053381F /* commonmark.c in Sources */,
 				5BBEA012252F062300B34979 /* ComposeViewModel+Factory.swift in Sources */,
 				B722EC651E5B49BA00A2B9D5 /* FolderSectionViewModel.swift in Sources */,
-				0A6B959D29B229610011FD61 /* LoginHandler.swift in Sources */,
+				0A6B959D29B229610011FD61 /* LoginUtil.swift in Sources */,
 				490CEBA72100EAD500E8579C /* SelfDismissable.swift in Sources */,
 				152A39E321905C3E00D9F8E4 /* RecipientTextView.swift in Sources */,
 				43ED53701CC77F95006AB156 /* EmailListViewController.swift in Sources */,

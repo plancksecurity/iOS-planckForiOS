@@ -7,6 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		0A62F9A329BA0CC700AE1B91 /* OIDAuthState+JWT.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0A62F9A229BA0CC600AE1B91 /* OIDAuthState+JWT.swift */; };
+		0A62F9A429BA0CC700AE1B91 /* OIDAuthState+JWT.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0A62F9A229BA0CC600AE1B91 /* OIDAuthState+JWT.swift */; };
 		1506E8DA25ADEE5C00909821 /* QualifyServerIsLocalServiceTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1506E8D925ADEE5C00909821 /* QualifyServerIsLocalServiceTest.swift */; };
 		1506E9BE25AF0BCB00909821 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 1506E8E925ADF00500909821 /* Main.storyboard */; };
 		1506E9C525AF0BD100909821 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 1506E8E725ADF00500909821 /* LaunchScreen.storyboard */; };
@@ -741,6 +743,7 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
+		0A62F9A229BA0CC600AE1B91 /* OIDAuthState+JWT.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "OIDAuthState+JWT.swift"; sourceTree = "<group>"; };
 		1506E8D925ADEE5C00909821 /* QualifyServerIsLocalServiceTest.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = QualifyServerIsLocalServiceTest.swift; sourceTree = "<group>"; };
 		1506E8E825ADF00500909821 /* en */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = en; path = en.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		1506E8EA25ADF00500909821 /* en */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = en; path = en.lproj/Main.storyboard; sourceTree = "<group>"; };
@@ -2448,6 +2451,7 @@
 		43CB60AB1DA4EBBF0015281E /* Util */ = {
 			isa = PBXGroup;
 			children = (
+				0A62F9A229BA0CC600AE1B91 /* OIDAuthState+JWT.swift */,
 				4355E4CE233C98C0005772D5 /* CWIMAPMessage+pEp.swift */,
 				1543B6A922ABDC4D002B59AB /* pEpUtils */,
 				3785564F229D2DCE00AACFD2 /* Internal */,
@@ -3201,6 +3205,7 @@
 				43BDDCBF25DD0CC000FC0C68 /* Message+pEp.swift in Sources */,
 				5B65440928CF69860064E1C7 /* EchoProtocolUtil.swift in Sources */,
 				434C218025D6966D00F622DB /* Session.swift in Sources */,
+				0A62F9A429BA0CC700AE1B91 /* OIDAuthState+JWT.swift in Sources */,
 				434C233225D6A29300F622DB /* BaseImapFolderOperation.swift in Sources */,
 				434C227025D69B9100F622DB /* MessageID+UUID.swift in Sources */,
 				434C237225D6BFF700F622DB /* AccountInfoCache.swift in Sources */,
@@ -3441,6 +3446,7 @@
 				43E74C6C1E38B38C00A2F7A6 /* ImapFlagsUtility.swift in Sources */,
 				434DC0E21DAE7A49007C98B8 /* Identity.swift in Sources */,
 				154660E223392004008D2137 /* DecryptMessageOperation.swift in Sources */,
+				0A62F9A329BA0CC700AE1B91 /* OIDAuthState+JWT.swift in Sources */,
 				43EA4863221E9518006E8F83 /* CdAccount+Extension.swift in Sources */,
 				43EA4854221E9518006E8F83 /* ConnectInfo.swift in Sources */,
 				43ACAA5026089FF30013AE20 /* MigrateKeychainOperation.swift in Sources */,

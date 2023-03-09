@@ -18,7 +18,10 @@ public protocol OAuth2AccessTokenProtocol: NSSecureCoding {
      this key is used.
      */
     var keyChainID: String { get }
-    var authState: OIDAuthState { get }
+
+    func getEmail() -> String?
+
+    func getName() -> String?
 
     // MARK: Refreshing tokens
     func performAction(

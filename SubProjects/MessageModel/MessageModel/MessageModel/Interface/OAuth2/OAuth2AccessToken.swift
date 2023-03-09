@@ -16,7 +16,7 @@ import AppAuth
  */
 public class OAuth2AccessToken: NSObject, NSSecureCoding {
     public let keyChainID: String
-    public let authState: OIDAuthState
+    let authState: OIDAuthState
 
     public init(authState: OIDAuthState, keyChainID: String) {
         self.authState = authState
@@ -53,6 +53,18 @@ public class OAuth2AccessToken: NSObject, NSSecureCoding {
     public func encode(with aCoder: NSCoder) {
         aCoder.encode(keyChainID, forKey: kKeyChainID)
         aCoder.encode(authState, forKey: kAuthState)
+    }
+
+    /// Depending on `OIDAuthState.getField`,
+    /// returns the value for the field 'email' of the JWToken, or nil should it not exist.
+    public func getEmail() -> String? {
+        return authState.getField(fieldName: "email")
+    }
+
+    /// Depending on `OIDAuthState.getField`,
+    /// returns the value for the field 'email' of the JWToken, or nil should it not exist.
+    public func getName() -> String? {
+        return authState.getField(fieldName: "name")
     }
 
     func listenToStateChanges() {

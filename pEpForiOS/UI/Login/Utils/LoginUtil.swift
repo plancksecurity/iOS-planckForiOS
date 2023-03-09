@@ -1,5 +1,5 @@
 //
-//  LoginLogic.swift
+//  LoginUtil.swift
 //  pEp
 //
 //  Created by Sascha Bacardit on 3/3/23.
@@ -7,11 +7,12 @@
 //
 
 import Foundation
+
 import MessageModel
 import pEpIOSToolbox
-
 import PantomimeFramework
-class LoginHandler {
+
+class LoginUtil {
     weak var loginProtocolResponseDelegate: LoginProtocolResponseDelegate?
 
     /// Holding both the data of the current account in verification,
@@ -21,8 +22,10 @@ class LoginHandler {
 
     /// An OAuth2 process lives longer than the method call, so this object needs to survive.
     var currentOauth2Authorizer: OAuth2AuthorizationProtocol?
+
     /// Helper model to handle most of the OAuth2 authorization.
     var oauthAuthorizer = OAuthAuthorizer()
+
     var isAccountPEPSyncEnable = true {
         didSet {
             verifiableAccount.keySyncEnable = isAccountPEPSyncEnable
@@ -39,7 +42,7 @@ class LoginHandler {
 }
 // MARK: - Private
 
-extension LoginHandler {
+extension LoginUtil {
     /// Depending on `VerifiableAccountProtocol.containsCompleteServerInfo`,
     /// either tries to retrive account settings via a query
     /// to the account settings lib, or procedes directly to attempting a login.
@@ -50,10 +53,10 @@ extension LoginHandler {
     ///   - password: The password for the account
     ///   - accessToken: The access token for this account
     private func startLogin(emailAddress: String,
-               displayName: String,
-               loginName: String? = nil,
-               password: String? = nil,
-               accessToken: OAuth2AccessTokenProtocol? = nil) {
+                            displayName: String,
+                            loginName: String? = nil,
+                            password: String? = nil,
+                            accessToken: OAuth2AccessTokenProtocol? = nil) {
         if verifiableAccount.containsCompleteServerInfo {
             addVerificationData(verifiableAccount: verifiableAccount,
                                 emailAddress: emailAddress,
@@ -71,6 +74,7 @@ extension LoginHandler {
                                     accessToken: accessToken)
         }
     }
+
     /// Tries to get login information via account settings, then continues with
     /// the account setup (login).
     /// - Parameters:
@@ -88,13 +92,13 @@ extension LoginHandler {
                                          provider: nil,
                                          flags: AS_FLAG_USE_ANY,
                                          credentials: nil)
-        acSettings.lookupCompletion() { settings in
+        acSettings.lookupCompletion() { _ in
             DispatchQueue.main.async {
-                libAccoutSettingsStatusOK()
+                libAccountSettingsFinish()
             }
         }
 
-        func libAccoutSettingsStatusOK() {
+        func libAccountSettingsFinish() {
             if let error = AccountSettings.AccountSettingsError(accountSettings: acSettings) {
                 Log.shared.log(error: error)
                 loginProtocolResponseDelegate?.didFail(error: error)
@@ -166,6 +170,7 @@ extension LoginHandler {
 
         theVerifiableAccount.verifiableAccountDelegate = self
     }
+
     private func checkIfServerShouldBeConsideredATrustedServer() {
         if let imapServer = verifiableAccount.serverIMAP {
             qualifyServerIsLocalService.delegate = self
@@ -190,13 +195,13 @@ extension LoginHandler {
 
 // MARK: - OAuthAuthorizerDelegate
 
-extension LoginHandler: OAuthAuthorizerDelegate {
+extension LoginUtil: OAuthAuthorizerDelegate {
     func didAuthorize(oauth2Error: Error?, accessToken: OAuth2AccessTokenProtocol?) {
         if let err = oauth2Error {
             loginProtocolResponseDelegate?.didFail(error: err)
         } else {
             if let token = accessToken {
-                if let email = token.authState.getEmail(), let name = token.authState.getName(){
+                if let email = token.getEmail(), let name = token.getName() {
                     startLogin(emailAddress: email,
                           displayName: name,
                           accessToken: token)
@@ -215,7 +220,7 @@ extension LoginHandler: OAuthAuthorizerDelegate {
 
 // MARK: - LoginProtocol
 
-extension LoginHandler: loginprotocol {
+extension LoginUtil: LoginProtocol {
     func initialize(loginProtocolErrorDelegate: LoginProtocolResponseDelegate) {
         self.loginProtocolResponseDelegate = loginProtocolErrorDelegate
     }
@@ -228,6 +233,7 @@ extension LoginHandler: loginprotocol {
                    displayName: displayName,
                    password: password)
     }
+    
     //login via OAuth
     func loginWithOAuth2(
         viewController: UIViewController){
@@ -242,7 +248,7 @@ extension LoginHandler: loginprotocol {
 
 // MARK: - QualifyServerIsLocalServiceDelegate
 
-extension LoginHandler: QualifyServerIsLocalServiceDelegate {
+extension LoginUtil: QualifyServerIsLocalServiceDelegate {
     func didQualify(serverName: String, isLocal: Bool?, error: Error?) {
         DispatchQueue.main.async { [weak self] in
             guard let me = self else {
@@ -260,7 +266,7 @@ extension LoginHandler: QualifyServerIsLocalServiceDelegate {
 
 // MARK: - VerifiableAccountDelegate
 
-extension LoginHandler: VerifiableAccountDelegate {
+extension LoginUtil: VerifiableAccountDelegate {
     func informAccountVerificationResultDelegate(error: Error? = nil) {
         if let imapError = error as? ImapSyncOperationError {
             loginProtocolResponseDelegate?.didVerify(

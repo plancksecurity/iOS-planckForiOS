@@ -7,9 +7,11 @@
 //
 
 import Foundation
+
 import MessageModel
 
-protocol loginprotocol {
+protocol LoginProtocol {
+    
     func login(emailAddress: String,
                displayName: String,
                password: String)
@@ -18,10 +20,12 @@ protocol loginprotocol {
 
 }
 protocol LoginProtocolResponseDelegate: AnyObject {
+
     /**
      Called to signal an error when logging in.
      */
     func didFail(error: Error)
+
     /**
      Called once the login process is done.
      */

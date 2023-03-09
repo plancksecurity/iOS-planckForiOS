@@ -100,7 +100,7 @@ extension AccountTypeSelectorViewController {
 
         var message: String?
 
-        switch viewModel.loginLogic.verifiableAccount.accountType {
+        switch viewModel.loginUtil.verifiableAccount.accountType {
         case .gmail:
             message = NSLocalizedString("Please enter a valid Gmail address.",
                                         comment: "Fail to log in, email does not match account type")

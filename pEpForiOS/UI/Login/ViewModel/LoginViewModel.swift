@@ -16,19 +16,19 @@ final class LoginViewModel {
     weak var loginViewModelLoginErrorDelegate: LoginViewModelLoginErrorDelegate?
 
     /// Helper class to handle login logic via OAuth or manual input.
-    var loginLogic: LoginHandler
+    var loginUtil: LoginUtil
 
     var isAccountPEPSyncEnable = true {
         didSet {
-            loginLogic.verifiableAccount.keySyncEnable = isAccountPEPSyncEnable
+            loginUtil.verifiableAccount.keySyncEnable = isAccountPEPSyncEnable
         }
     }
 
     let qualifyServerIsLocalService = QualifyServerIsLocalService()
 
     init(verifiableAccount: VerifiableAccountProtocol? = nil) {
-        loginLogic = LoginHandler(verifiableAccount: verifiableAccount)
-        loginLogic.loginProtocolResponseDelegate = self
+        loginUtil = LoginUtil(verifiableAccount: verifiableAccount)
+        loginUtil.loginProtocolResponseDelegate = self
     }
 
     func isThereAnAccount() -> Bool {
@@ -50,7 +50,7 @@ final class LoginViewModel {
                displayName: String,
                password: String) {
         //Fix later
-        loginLogic.login(emailAddress: emailAddress, displayName: displayName, password: password)
+        loginUtil.login(emailAddress: emailAddress, displayName: displayName, password: password)
     }
 }
 
