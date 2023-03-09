@@ -35,9 +35,10 @@ class LoginUtil {
     let qualifyServerIsLocalService = QualifyServerIsLocalService()
 
     init(verifiableAccount: VerifiableAccountProtocol? = nil) {
-        if (verifiableAccount != nil){
-            self.verifiableAccount=verifiableAccount!
+        guard let unwrappedAccount = verifiableAccount else {
+            return
         }
+        self.verifiableAccount = unwrappedAccount
     }
 }
 // MARK: - Private
@@ -255,8 +256,13 @@ extension LoginUtil: QualifyServerIsLocalServiceDelegate {
                 Log.shared.lostMySelf()
                 return
             }
+            guard let unwrappedDelegate = me.loginProtocolResponseDelegate else {
+                Log.shared.errorAndCrash(message: "Delegate not found")
+                return
+            }
+
             if let err = error {
-                self?.loginProtocolResponseDelegate?.didFail(error: err)
+                unwrappedDelegate.didFail(error: err)
                 return
             }
             me.markServerAsTrusted(trusted: isLocal ?? false)
@@ -268,17 +274,20 @@ extension LoginUtil: QualifyServerIsLocalServiceDelegate {
 
 extension LoginUtil: VerifiableAccountDelegate {
     func informAccountVerificationResultDelegate(error: Error? = nil) {
+        guard let unwrappedDelegate = loginProtocolResponseDelegate else {
+            Log.shared.errorAndCrash(message: "Delegate not found")
+            return
+        }
+
         if let imapError = error as? ImapSyncOperationError {
-            loginProtocolResponseDelegate?.didVerify(
-                result: .imapError(imapError))
+            unwrappedDelegate.didVerify(result: .imapError(imapError))
         } else if let smtpError = error as? SmtpSendError {
-            loginProtocolResponseDelegate?.didVerify(
-                result: .smtpError(smtpError))
+            unwrappedDelegate.didVerify(result: .smtpError(smtpError))
         } else {
             if let theError = error {
                 Log.shared.errorAndCrash(error: theError)
             } else {
-                loginProtocolResponseDelegate?.didVerify(result: .ok)
+                unwrappedDelegate.didVerify(result: .ok)
             }
         }
     }

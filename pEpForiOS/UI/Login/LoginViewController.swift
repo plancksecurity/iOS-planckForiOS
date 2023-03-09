@@ -68,7 +68,7 @@ final class LoginViewController: UIViewController {
             return
         }
 
-        if vm.loginUtil.verifiableAccount.accountType == .icloud {
+        if vm.isCloud() {
             showiCloudAlert()
         }
     }
@@ -123,7 +123,7 @@ final class LoginViewController: UIViewController {
 
         vm.accountVerificationResultDelegate = self
 
-        guard let email = emailAddress.text?.trimmed(), email != "" else {
+        guard let email = emailAddress.text?.trimmed(), !email.isEmpty else {
             handleLoginError(error: LoginViewController.LoginError.missingEmail,
                              offerManualSetup: false)
             return
@@ -147,7 +147,7 @@ final class LoginViewController: UIViewController {
             return
         }
 
-        guard let pass = password.text, pass != "" else {
+        guard let pass = password.text, !pass.isEmpty else {
             handleLoginError(error: LoginViewController.LoginError.missingPassword,
                              offerManualSetup: false)
             return
