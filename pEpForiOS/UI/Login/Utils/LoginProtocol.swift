@@ -10,6 +10,7 @@ import Foundation
 
 import MessageModel
 
+/// Expected login flow, frm the login start functions to the delegate responses.
 protocol LoginProtocol {
     
     func login(emailAddress: String,

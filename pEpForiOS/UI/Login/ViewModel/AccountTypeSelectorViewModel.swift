@@ -95,10 +95,18 @@ extension AccountTypeSelectorViewModel {
 
 extension AccountTypeSelectorViewModel : LoginProtocolResponseDelegate {
     func didVerify(result: MessageModel.AccountVerificationResult) {
-        delegate?.didVerify(result: result)
+        guard let unwrappedDelegate = delegate else {
+            Log.shared.errorAndCrash(message: "Delegate not found")
+            return
+        }
+        unwrappedDelegate.didVerify(result: result)
     }
 
     func didFail(error : Error) {
-        delegate?.handle(oauth2Error: error)
+        guard let unwrappedDelegate = delegate else {
+            Log.shared.errorAndCrash(message: "Delegate not found")
+            return
+        }
+        unwrappedDelegate.handle(oauth2Error: error)
     }
 }

@@ -39,6 +39,9 @@ final class LoginViewModel {
         return Account.by(address: address) != nil
     }
 
+    public func isCloud() -> Bool {
+        return loginUtil.verifiableAccount.accountType == .icloud
+    }
     /// Depending on `VerifiableAccountProtocol.containsCompleteServerInfo`,
     /// either tries to retrive account settings via a query
     /// to the account settings lib, or procedes directly to attempting a login.
