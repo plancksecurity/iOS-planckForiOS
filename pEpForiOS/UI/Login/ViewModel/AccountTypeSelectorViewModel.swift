@@ -21,7 +21,7 @@ protocol AccountTypeSelectorViewModelDelegate: AnyObject {
 
 class AccountTypeSelectorViewModel {
     /// Helper class to handle login logic via OAuth or manual input.
-    var loginLogic = LoginHandler()
+    var loginUtil = LoginUtil()
 
     private let clientCertificateUtil: ClientCertificateUtilProtocol
 
@@ -31,7 +31,7 @@ class AccountTypeSelectorViewModel {
 
     init(clientCertificateUtil: ClientCertificateUtilProtocol? = nil) {
         self.clientCertificateUtil = clientCertificateUtil ?? ClientCertificateUtil()
-        loginLogic.loginProtocolResponseDelegate = self
+        loginUtil.loginProtocolResponseDelegate = self
     }
 
     public func shouldShowClientCertificateButton() -> Bool {
@@ -47,9 +47,9 @@ class AccountTypeSelectorViewModel {
         }
     }
     public func handleDiDChooseOAuth(viewController : UIViewController) {
-        loginLogic.verifiableAccount = VerifiableAccount.verifiableAccount(for: chosenAccountType,
+        loginUtil.verifiableAccount = VerifiableAccount.verifiableAccount(for: chosenAccountType,
                                                                            usePEPFolderProvider: AppSettings.shared)
-        loginLogic.loginWithOAuth2(viewController: viewController)
+        loginUtil.loginWithOAuth2(viewController: viewController)
 
 
     }

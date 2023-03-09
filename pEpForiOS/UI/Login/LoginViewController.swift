@@ -68,7 +68,7 @@ final class LoginViewController: UIViewController {
             return
         }
 
-        if vm.loginLogic.verifiableAccount.accountType == .icloud {
+        if vm.loginUtil.verifiableAccount.accountType == .icloud {
             showiCloudAlert()
         }
     }
@@ -238,12 +238,12 @@ extension LoginViewController: UITextFieldDelegate {
         }
         switch textField {
         case emailAddress:
-            vm.loginLogic.verifiableAccount.address = textField.text
+            vm.loginUtil.verifiableAccount.address = textField.text
         case password:
-            vm.loginLogic.verifiableAccount.imapPassword = textField.text
-            vm.loginLogic.verifiableAccount.smtpPassword = textField.text
+            vm.loginUtil.verifiableAccount.imapPassword = textField.text
+            vm.loginUtil.verifiableAccount.smtpPassword = textField.text
         case user:
-            vm.loginLogic.verifiableAccount.userName = textField.text
+            vm.loginUtil.verifiableAccount.userName = textField.text
         default:
             Log.shared.errorAndCrash("Unhandled case")
         }
@@ -272,7 +272,7 @@ extension LoginViewController: SegueHandlerType {
                     return
             }
             // Give the next model all that we know.
-            vc.verifiableAccount = vm.loginLogic.verifiableAccount
+            vc.verifiableAccount = vm.loginUtil.verifiableAccount
         default:
             Log.shared.errorAndCrash("Unhandled segue type")
             return
