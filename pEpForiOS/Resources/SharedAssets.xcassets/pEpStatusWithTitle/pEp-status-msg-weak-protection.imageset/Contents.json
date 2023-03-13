@@ -1,0 +1,24 @@
+{
+  "images" : [
+    {
+      "filename" : "ico-weak-protection-EN 1.pdf",
+      "idiom" : "universal"
+    },
+    {
+      "idiom" : "universal",
+      "locale" : "de"
+    },
+    {
+      "filename" : "ico-weak-protection-EN.pdf",
+      "idiom" : "universal",
+      "locale" : "en"
+    }
+  ],
+  "info" : {
+    "author" : "xcode",
+    "version" : 1
+  },
+  "properties" : {
+    "localizable" : true
+  }
+}
