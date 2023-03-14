@@ -1,0 +1,25 @@
+{
+  "images" : [
+    {
+      "filename" : "ico_cannot_decrypt_EN.pdf",
+      "idiom" : "universal"
+    },
+    {
+      "filename" : "ico_cannot_decrypt_DE.pdf",
+      "idiom" : "universal",
+      "locale" : "de"
+    },
+    {
+      "filename" : "ico_cannot_decrypt_EN 1.pdf",
+      "idiom" : "universal",
+      "locale" : "en"
+    }
+  ],
+  "info" : {
+    "author" : "xcode",
+    "version" : 1
+  },
+  "properties" : {
+    "localizable" : true
+  }
+}

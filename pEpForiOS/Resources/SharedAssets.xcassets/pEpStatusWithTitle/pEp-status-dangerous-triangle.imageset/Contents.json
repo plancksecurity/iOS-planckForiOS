@@ -1,15 +1,16 @@
 {
   "images" : [
     {
-      "filename" : "ico-basic-protection-EN.pdf",
+      "filename" : "ico_triangle_dangerous_EN 1.pdf",
       "idiom" : "universal"
     },
     {
+      "filename" : "ico_triangle_dangerous_DE.pdf",
       "idiom" : "universal",
       "locale" : "de"
     },
     {
-      "filename" : "ico-basic-protection-EN 1.pdf",
+      "filename" : "ico_triangle_dangerous_EN.pdf",
       "idiom" : "universal",
       "locale" : "en"
     }

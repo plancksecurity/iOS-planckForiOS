@@ -1,15 +1,16 @@
 {
   "images" : [
     {
-      "filename" : "ico-weak-protection-EN 1.pdf",
+      "filename" : "ico_trusted_EN.pdf",
       "idiom" : "universal"
     },
     {
+      "filename" : "ico_trusted_DE.pdf",
       "idiom" : "universal",
       "locale" : "de"
     },
     {
-      "filename" : "ico-weak-protection-EN.pdf",
+      "filename" : "ico_trusted_EN 1.pdf",
       "idiom" : "universal",
       "locale" : "en"
     }
