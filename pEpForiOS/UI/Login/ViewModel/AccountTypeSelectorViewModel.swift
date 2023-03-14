@@ -62,10 +62,18 @@ class AccountTypeSelectorViewModel {
         switch accountType {
         case .google:
             chosenAccountType = .gmail
-            handleDiDChooseOAuth(viewController: viewController!)
+            guard let VC = viewController else {
+                Log.shared.errorAndCrash("VC not found")
+                return
+            }
+            handleDiDChooseOAuth(viewController: VC)
         case .microsoft:
             chosenAccountType = .o365
-            handleDiDChooseOAuth(viewController: viewController!)
+            guard let VC = viewController else {
+                Log.shared.errorAndCrash("VC not found")
+                return
+            }
+            handleDiDChooseOAuth(viewController: VC)
         case .other:
             chosenAccountType = .other
         case .clientCertificate:

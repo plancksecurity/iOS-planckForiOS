@@ -96,7 +96,7 @@ extension AccountTypeSelectorViewController {
         isCurrentlyVerifying = false
 
         var title = NSLocalizedString("Invalid Address",
-                                             comment: "Please enter a valid Gmail address.Fail to log in, email does not match account type")
+                                      comment: "Please enter a valid Gmail address.Fail to log in, email does not match account type")
 
         var message: String?
 
@@ -105,7 +105,7 @@ extension AccountTypeSelectorViewController {
             message = NSLocalizedString("Please enter a valid Gmail address.",
                                         comment: "Fail to log in, email does not match account type")
         case .o365:
-            message = NSLocalizedString("Please enter a valid Email address.",
+            message = NSLocalizedString("Please enter a valid Microsoft address.",
                                         comment: "Fail to log in, email does not match account type")
         default:
             Log.shared.errorAndCrash("Login should not do oauth with other email address")
