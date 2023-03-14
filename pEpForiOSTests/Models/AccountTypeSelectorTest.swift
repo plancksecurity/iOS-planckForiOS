@@ -77,12 +77,10 @@ class AccountTypeDelegateMockTest: AccountTypeSelectorViewModelDelegate {
         }
     }
     func didVerify(result: MessageModel.AccountVerificationResult) {
-        //TODO PEMA-309 write tests
 
     }
 
     func handle(oauth2Error: Error) {
-        //TODO PEMA-309 write tests
     }
 
 }
