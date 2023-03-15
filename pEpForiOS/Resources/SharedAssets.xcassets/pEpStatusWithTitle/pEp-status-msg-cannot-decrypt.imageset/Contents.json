@@ -5,12 +5,44 @@
       "idiom" : "universal"
     },
     {
+      "appearances" : [
+        {
+          "appearance" : "luminosity",
+          "value" : "dark"
+        }
+      ],
+      "filename" : "ico_cannot_decrypt_EN_Dark.pdf",
+      "idiom" : "universal"
+    },
+    {
       "filename" : "ico_cannot_decrypt_DE.pdf",
       "idiom" : "universal",
       "locale" : "de"
     },
     {
+      "appearances" : [
+        {
+          "appearance" : "luminosity",
+          "value" : "dark"
+        }
+      ],
+      "filename" : "ico_cannot_decrypt_DE_Dark.pdf",
+      "idiom" : "universal",
+      "locale" : "de"
+    },
+    {
       "filename" : "ico_cannot_decrypt_EN 1.pdf",
+      "idiom" : "universal",
+      "locale" : "en"
+    },
+    {
+      "appearances" : [
+        {
+          "appearance" : "luminosity",
+          "value" : "dark"
+        }
+      ],
+      "filename" : "ico_cannot_decrypt_EN_Dark 1.pdf",
       "idiom" : "universal",
       "locale" : "en"
     }

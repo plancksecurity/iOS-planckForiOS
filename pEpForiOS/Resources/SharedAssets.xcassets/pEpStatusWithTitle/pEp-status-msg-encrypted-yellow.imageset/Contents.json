@@ -5,12 +5,44 @@
       "idiom" : "universal"
     },
     {
+      "appearances" : [
+        {
+          "appearance" : "luminosity",
+          "value" : "dark"
+        }
+      ],
+      "filename" : "ico_yellow_encrypted_EN_Dark.pdf",
+      "idiom" : "universal"
+    },
+    {
       "filename" : "ico_yellow_encrypted_DE (5c608c3f-6b57-47ba-8141-08a972ed983c).pdf",
       "idiom" : "universal",
       "locale" : "de"
     },
     {
+      "appearances" : [
+        {
+          "appearance" : "luminosity",
+          "value" : "dark"
+        }
+      ],
+      "filename" : "ico_yellow_encrypted_DE_Dark.pdf",
+      "idiom" : "universal",
+      "locale" : "de"
+    },
+    {
       "filename" : "ico_yellow_encrypted_EN 1.pdf",
+      "idiom" : "universal",
+      "locale" : "en"
+    },
+    {
+      "appearances" : [
+        {
+          "appearance" : "luminosity",
+          "value" : "dark"
+        }
+      ],
+      "filename" : "ico_yellow_encrypted_EN_Dark 1.pdf",
       "idiom" : "universal",
       "locale" : "en"
     }
