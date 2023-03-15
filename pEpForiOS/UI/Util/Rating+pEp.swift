@@ -22,12 +22,10 @@ extension Rating {
     /// - Returns: icon suitable for indicating the pEp rating of a message
     public func statusIconForMessage(enabled: Bool = true, withText : Bool = true) -> UIImage? {
         switch self {
-        case .undefined:
+        case .undefined, .fullyAnonymous, .haveNoKey:
             return nil
         case .cannotDecrypt:
             return withText ? UIImage(named: "pEp-status-msg-cannot-decrypt") : UIImage(named: "pEp-status-cannot-decrypt")
-        case .haveNoKey:
-            return withText ? UIImage(named: "pEp-status-msg-red") : UIImage(named: "pEp-status-red_white-border")
         case .unencrypted:
             return withText ? UIImage(named: "pEp-status-msg-not-encrypted") : UIImage(named: "pEp-status-red_white-border")
         case .mediaKeyEncryption:
@@ -42,35 +40,21 @@ extension Rating {
             } else {
                 return withText ? UIImage(named: "pEp-status-msg-disabled-secure") : nil
             }
-        case .underAttack:
-            return withText ? UIImage(named: "pEp-status-msg-dangerous-triangle") : UIImage(named: "pEp-status-red_white-border")
         case .reliable:
             if enabled {
                 return withText ? UIImage(named: "pEp-status-msg-encrypted-green") : UIImage(named: "pEp-status-encrypted")
             } else {
                 return withText ? UIImage(named: "pEp-status-msg-disabled-secure") : nil
             }
-        case .trusted:
+        case .trusted, .trustedAndAnonymized:
             if enabled {
                 return withText ? UIImage(named: "pEp-status-msg-trusted") : UIImage(named: "pEp-status-trusted")
             } else {
                 return withText ? UIImage(named: "pEp-status-msg-disabled-secure") : nil
             }
-        case .trustedAndAnonymized:
-            if enabled {
-                return withText ? UIImage(named: "pEp-status-msg-green") : UIImage(named: "pEp-status-green_white-border")
-            } else {
-                return withText ? UIImage(named: "pEp-status-msg-disabled-trusted") : nil
-            }
-        case .fullyAnonymous:
-            if enabled {
-                return withText ? UIImage(named: "pEp-status-msg-green") : UIImage(named: "pEp-status-green_white-border")
-            } else {
-                return withText ? UIImage(named: "pEp-status-msg-disabled-trusted") : nil
-            }
         case .mistrust:
             return withText ? UIImage(named: "pEp-status-msg-dangerous-circle") : UIImage(named: "pEp-status-dangerous-circle")
-        case .b0rken:
+        case .b0rken, .underAttack:
             return withText ? UIImage(named: "pEp-status-msg-dangerous-triangle") : UIImage(named: "pEp-status-dangerous-triangle")
 
         }
