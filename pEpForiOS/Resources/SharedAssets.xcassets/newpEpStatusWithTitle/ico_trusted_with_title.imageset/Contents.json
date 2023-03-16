@@ -13,6 +13,7 @@
       "idiom" : "universal"
     },
     {
+      "filename" : "ico_trusted_DE.pdf",
       "idiom" : "universal",
       "locale" : "de"
     },
@@ -28,6 +29,7 @@
       "locale" : "de"
     },
     {
+      "filename" : "ico_trusted_EN.pdf",
       "idiom" : "universal",
       "locale" : "en"
     },
