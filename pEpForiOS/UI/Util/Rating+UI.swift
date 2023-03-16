@@ -14,6 +14,8 @@ import MessageModelForAppExtensions
 #else
 import MessageModel
 #endif
+//pEp-status-msg-disabled-secure circle
+//pEp-status-msg-disabled-trusted triangle
 
 extension Rating {
     /// The icon suitable for indicating the pEp rating of a message.
@@ -25,37 +27,53 @@ extension Rating {
         case .undefined, .fullyAnonymous, .haveNoKey:
             return nil
         case .cannotDecrypt:
-            return withText ? UIImage(named: "pEp-status-msg-cannot-decrypt") : UIImage(named: "pEp-status-cannot-decrypt")
+            if enabled {
+                return withText ? UIImage(named: "pEp-status-msg-cannot-decrypt") : UIImage(named: "pEp-status-cannot-decrypt")
+            } else {
+                return nil
+            }
         case .unencrypted:
-            return withText ? UIImage(named: "pEp-status-msg-not-encrypted") : UIImage(named: "pEp-status-weakly-encrypted")
+            if enabled {
+                return withText ? UIImage(named: "pEp-status-msg-not-encrypted") : UIImage(named: "pEp-status-weakly-encrypted")
+            } else {
+                return nil
+            }
         case .mediaKeyEncryption:
             if enabled {
                 return withText ? UIImage(named: "pEp-status-msg-encrypted-yellow") : UIImage(named: "pEp-status-weakly-encrypted")
             } else {
-                return withText ? UIImage(named: "pEp-status-msg-disabled-secure") : nil
+                return withText ? UIImage(named: "pEp-status-msg-disabled-trusted") : nil
             }
         case .unreliable:
             if enabled {
                 return withText ? UIImage(named: "pEp-status-msg-weak-encryption") : UIImage(named: "pEp-status-weakly-encrypted")
             } else {
-                return withText ? UIImage(named: "pEp-status-msg-disabled-secure") : nil
+                return withText ? UIImage(named: "pEp-status-msg-disabled-trusted") : nil
             }
         case .reliable:
             if enabled {
                 return withText ? UIImage(named: "pEp-status-msg-encrypted-green") : UIImage(named: "pEp-status-encrypted")
             } else {
-                return withText ? UIImage(named: "pEp-status-msg-disabled-secure") : nil
+                return withText ? UIImage(named: "pEp-status-msg-disabled-trusted") : nil
             }
         case .trusted, .trustedAndAnonymized:
             if enabled {
                 return withText ? UIImage(named: "pEp-status-msg-trusted") : UIImage(named: "pEp-status-trusted")
             } else {
-                return withText ? UIImage(named: "pEp-status-msg-disabled-secure") : nil
+                return withText ? UIImage(named: "pEp-status-msg-disabled-trusted") : nil
             }
         case .mistrust:
-            return withText ? UIImage(named: "pEp-status-msg-dangerous-circle") : UIImage(named: "pEp-status-dangerous-circle")
+            if enabled {
+                return withText ? UIImage(named: "pEp-status-msg-dangerous-circle") : UIImage(named: "pEp-status-dangerous-circle")
+            } else {
+                return nil
+            }
         case .b0rken, .underAttack:
-            return withText ? UIImage(named: "pEp-status-msg-dangerous-triangle") : UIImage(named: "pEp-status-dangerous-triangle")
+            if enabled {
+                return withText ? UIImage(named: "pEp-status-msg-dangerous-triangle") : UIImage(named: "pEp-status-dangerous-triangle")
+            } else {
+                return nil
+            }
 
         }
     }
