@@ -9,6 +9,7 @@
 import UIKit
 
 import pEpIOSToolbox
+import MessageModel
 
 final class AccountTypeSelectorViewController: UIViewController {
 
@@ -18,34 +19,54 @@ final class AccountTypeSelectorViewController: UIViewController {
 
     @IBOutlet private weak var selectAccountTypeLabel: UILabel!
     @IBOutlet private weak var welcomeToPepLabel: UILabel!
-    @IBOutlet private var collectionView: UICollectionView!
+    @IBOutlet weak var clientCertificateButton: AccountSelectorButton!
+
+    private var isCurrentlyVerifying = false {
+        didSet {
+            updateView()
+        }
+    }
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        collectionView.delegate = self
-        collectionView.dataSource = self
         viewModel.delegate = self
-        welcomeToPepLabel.setPEPFont(style: .largeTitle, weight: .regular)
-        selectAccountTypeLabel.setPEPFont(style: .callout, weight: .regular)
     }
-    
+
+    @IBAction func microsoftButtonPressed() {
+        isCurrentlyVerifying = true
+        viewModel.handleDidSelect(accountType: .microsoft, viewController : self)
+    }
+
+    @IBAction func googleButtonPressed() {
+        isCurrentlyVerifying = true
+        viewModel.handleDidSelect(accountType: .google, viewController : self)
+    }
+
+    @IBAction func passwordButtonPressed() {
+        viewModel.handleDidSelect(accountType: .other)
+        performSegue(withIdentifier: SegueIdentifier.showLogin, sender: self)
+    }
+
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         configureAppearance()
         configureView()
-        viewModel.refreshAccountTypes()
-        collectionView.reloadData()
+        updateView()
+        clientCertificateButton.isHidden = !viewModel.shouldShowClientCertificateButton()
     }
 
-    override func viewWillTransition(to size: CGSize, with coordinator: UIViewControllerTransitionCoordinator) {
-        super.viewWillTransition(to: size, with: coordinator)
-        collectionView.reloadData()
-        coordinator.animate(alongsideTransition: nil) { [weak self] context in
-            guard let me = self else {
-                Log.shared.errorAndCrash("Lost myself")
-                return
-            }
-            me.configureView()
+    @objc func backButton() {
+        dismiss(animated: true)
+    }
+}
+// MARK: - Private
+
+extension AccountTypeSelectorViewController {
+    private func updateView() {
+        if isCurrentlyVerifying {
+            LoadingInterface.showLoadingInterface()
+        } else {
+            LoadingInterface.removeLoadingInterface()
         }
     }
 
@@ -69,58 +90,63 @@ final class AccountTypeSelectorViewController: UIViewController {
         let finalBarButton = UIBarButtonItem(customView: imagebutton)
         navigationItem.leftBarButtonItem = finalBarButton
     }
-    
-    @objc func backButton() {
-        dismiss(animated: true)
-    }
-}
 
-extension AccountTypeSelectorViewController: UICollectionViewDelegate {
-    func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-        switch viewModel.accountType(row: indexPath.row) {
-        case .clientCertificate:
-            viewModel.handleDidChooseClientCertificate()
+    private func handleLoginError(error: Error) {
+        Log.shared.log(error: error)
+        isCurrentlyVerifying = false
+
+        var title = NSLocalizedString("Invalid Address",
+                                      comment: "Please enter a valid Gmail address.Fail to log in, email does not match account type")
+
+        var message: String?
+
+        switch viewModel.loginUtil.verifiableAccount.accountType {
+        case .gmail:
+            message = NSLocalizedString("Please enter a valid Gmail address.",
+                                        comment: "Fail to log in, email does not match account type")
+        case .o365:
+            message = NSLocalizedString("Please enter a valid Microsoft address.",
+                                        comment: "Fail to log in, email does not match account type")
         default:
-            viewModel.handleDidSelect(rowAt: indexPath)
-            performSegue(withIdentifier: SegueIdentifier.showLogin, sender: self)
+            Log.shared.errorAndCrash("Login should not do oauth with other email address")
+        }
+        UIUtils.showAlertWithOnlyPositiveButton(title: title, message: message) { [weak self] in
+            guard self != nil else {
+                Log.shared.lostMySelf()
+                return
+            }
         }
     }
+
 }
-
-extension AccountTypeSelectorViewController: UICollectionViewDataSource {
-    func numberOfSections(in collectionView: UICollectionView) -> Int {
-        return 1
-    }
-
-    func collectionView(_ collectionView: UICollectionView,
-                        numberOfItemsInSection section: Int) -> Int {
-        return viewModel.count
-    }
-
-    func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        let cellProvider = viewModel[indexPath.row]
-        switch cellProvider {
-        case .gmail, .o365, .icloud, .outlook:
-            guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "providerImageCell",
-                                                                for: indexPath) as? AccountTypeSelectorImageCollectionViewCell else {
-                                                                    return UICollectionViewCell()
-            }
-            cell.imageToFill.accessibilityIdentifier = cellProvider.accessibilityIdentifier
-            cell.imageToFill.isAccessibilityElement = true
-            cell.configure(withFileName: viewModel.fileNameOrText(provider: cellProvider))
-            return cell
-        case .other, .clientCertificate:
-            guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "providerTextCell",
-                                                                for: indexPath) as? AccountTypeSelectorTextCollectionViewCell else {
-                                                                    return UICollectionViewCell()
-            }
-            cell.configure(withText: viewModel.fileNameOrText(provider: cellProvider))
-            return cell
-        }
-    }
-}
+// MARK: - AccountTypeSelectorViewModelDelegate
 
 extension AccountTypeSelectorViewController: AccountTypeSelectorViewModelDelegate {
+    func didVerify(result: AccountVerificationResult) {
+        DispatchQueue.main.async { [weak self] in
+            guard let me = self else {
+                Log.shared.lostMySelf()
+                return
+            }
+            switch result {
+            case .ok:
+                me.isCurrentlyVerifying = false
+                me.loginDelegate?.loginViewControllerDidCreateNewAccount(LoginViewController())
+                me.navigationController?.dismiss(animated: true)
+            case .imapError(let err):
+                me.handleLoginError(error: err)
+            case .smtpError(let err):
+                me.handleLoginError(error: err)
+            case .noImapConnectData, .noSmtpConnectData:
+                me.handleLoginError(error: LoginViewController.LoginError.noConnectData)
+            }
+        }
+    }
+
+    func handle(oauth2Error: Error) {
+        handleLoginError(error: oauth2Error)
+    }
+
     func showClientCertificateSeletionView() {
         performSegue(withIdentifier: SegueIdentifier.clientCertManagementSegue,
                      sender: self)
@@ -138,22 +164,6 @@ extension AccountTypeSelectorViewController: AccountTypeSelectorViewModelDelegat
             }
             me.navigationController?.popViewController(animated: true)
         }
-    }
-}
-
-extension AccountTypeSelectorViewController: UICollectionViewDelegateFlowLayout {
-    func collectionView(_ collectionView: UICollectionView,
-                        layout collectionViewLayout: UICollectionViewLayout,
-                        sizeForItemAt indexPath: IndexPath) -> CGSize {
-        var numberOfRows: CGFloat = 2.0
-        if UIApplication.shared.statusBarOrientation.isLandscape {
-            numberOfRows = 3.0
-        }
-        // this forces the collection view to have only 2 colums and all the cells with the same size
-        let spaceBetweenCells: CGFloat = 30.0
-        let cellwidth = (collectionView.frame.width - spaceBetweenCells) / numberOfRows
-        let cellHeight = cellwidth/2
-        return CGSize(width: cellwidth, height: cellHeight)
     }
 }
 
@@ -183,10 +193,10 @@ extension AccountTypeSelectorViewController: SegueHandlerType {
 }
 
 // MARK: - ClientCertificateImport Delegate
+
 extension AccountTypeSelectorViewController: ClientCertificateImportViewControllerDelegate {
 
     func certificateCouldImported() {
-        viewModel.refreshAccountTypes()
-        collectionView.reloadData()
+        clientCertificateButton.isHidden = !viewModel.shouldShowClientCertificateButton()
     }
 }

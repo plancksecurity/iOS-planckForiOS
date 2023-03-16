@@ -22,7 +22,7 @@ extension NSAttributedString {
                               in selectedRange: NSRange,
                               maxWidth: CGFloat = 0.0)
         -> (newString: NSAttributedString,  attachment: RecipientTextViewModel.TextAttachment) {
-            let margin: CGFloat = 10.0
+            let margin: CGFloat = 16.0
             let attrText = NSMutableAttributedString(attributedString: self)
 
             let textColor = UIColor.pEpDarkText

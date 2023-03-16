@@ -57,7 +57,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
     private func setupServices() {
         if !MDMUtil.isEnabled() {
-            EchoProtocolUtil().enableEchoProtocol(enabled: false)
+            EchoProtocolUtil().enableEchoProtocol(enabled: true)
         }
 
         messageModelService = MessageModelService(errorPropagator: errorPropagator,
