@@ -1,7 +1,6 @@
 {
   "images" : [
     {
-      "filename" : "ico_triangle_dangerous_EN 3.pdf",
       "idiom" : "universal"
     },
     {
@@ -11,7 +10,6 @@
           "value" : "dark"
         }
       ],
-      "filename" : "ico_triangle_dangerous_EN_Dark 1.pdf",
       "idiom" : "universal"
     },
     {
@@ -30,7 +28,6 @@
       "locale" : "de"
     },
     {
-      "filename" : "ico_triangle_dangerous_EN 1.pdf",
       "idiom" : "universal",
       "locale" : "en"
     },
