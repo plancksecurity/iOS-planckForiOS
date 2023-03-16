@@ -17,7 +17,7 @@ import pEpIOSToolbox
 #endif
 
 /// This VM handles the banner that appears in the compose view when the user introduces an address of a red identity in a recipient field.
-/// Its main responsability is to provide data for the layout, and handle the interaction with the single button it has to remove them from compose view. 
+/// Its main responsability is to provide data for the layout, and handle the interaction with the single button it has to remove them from compose view.
 class RecipientsBannerViewModel {
 
     private var recipients: [Identity] = []
@@ -43,9 +43,9 @@ class RecipientsBannerViewModel {
         var format: String
         // Prepare text considering if it's singular or plural
         if numberOfUnsecureRecipients == 1 {
-            format = NSLocalizedString("%d unsecure recipients. Tap here to remove.", comment: "unsecure recipient button")
-        } else {
             format = NSLocalizedString("%d unsecure recipient. Tap here to remove.", comment: "unsecure recipient button")
+        } else {
+            format = NSLocalizedString("%d unsecure recipients. Tap here to remove.", comment: "unsecure recipient button")
         }
 
         return String.localizedStringWithFormat(format, numberOfUnsecureRecipients)
