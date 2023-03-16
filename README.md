@@ -91,6 +91,7 @@ git clone https://gitea.pep.foundation/pEp.foundation/pEpEngine
 git clone http://pep-security.lu/gitlab/iOS/pep-toolbox.git
 git clone https://gitea.pep.foundation/pep.foundation/Pantomime.git
 git clone https://gitea.pep.foundation/pep.foundation/pEpObjCAdapter.git
+git clone https://gitea.pep.foundation/pEp.foundation/libpEpTransport.git
 
 git clone https://pep-security.lu/gitlab/iOS/pep4ios.git
 ```
