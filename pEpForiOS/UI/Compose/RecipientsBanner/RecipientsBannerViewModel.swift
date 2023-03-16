@@ -17,7 +17,7 @@ import pEpIOSToolbox
 #endif
 
 /// This VM handles the banner that appears in the compose view when the user introduces an address of a red identity in a recipient field.
-/// Its main responsability is to provide data for the layout and handle the interaction with the single button it has.
+/// Its main responsability is to provide data for the layout, and handle the interaction with the single button it has to remove them from compose view. 
 class RecipientsBannerViewModel {
 
     private var recipients: [Identity] = []
