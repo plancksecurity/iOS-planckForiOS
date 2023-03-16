@@ -27,10 +27,10 @@ extension Rating {
         case .cannotDecrypt:
             return withText ? UIImage(named: "pEp-status-msg-cannot-decrypt") : UIImage(named: "pEp-status-cannot-decrypt")
         case .unencrypted:
-            return withText ? UIImage(named: "pEp-status-msg-not-encrypted") : UIImage(named: "pEp-status-red_white-border")
+            return withText ? UIImage(named: "pEp-status-msg-not-encrypted") : UIImage(named: "pEp-status-weakly-encrypted")
         case .mediaKeyEncryption:
             if enabled {
-                return withText ? UIImage(named: "pEp-status-msg-basic-protection") : UIImage(named: "pEp-status-green_white-border")
+                return withText ? UIImage(named: "pEp-status-msg-encrypted-yellow") : UIImage(named: "pEp-status-weakly-encrypted")
             } else {
                 return withText ? UIImage(named: "pEp-status-msg-disabled-secure") : nil
             }
