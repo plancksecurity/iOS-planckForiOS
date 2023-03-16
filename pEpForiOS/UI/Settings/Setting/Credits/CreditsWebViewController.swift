@@ -111,8 +111,7 @@ class CreditsWebViewController: PEPWebViewController {
                      "https://github.com/CocoaLumberjack/CocoaLumberjack",
                      "https://github.com/openid/AppAuth-iOS",
                      "https://sequoia-pgp.org/",
-                     "https://github.com/mischa-hildebrand/AlignedCollectionViewFlowLayout",
-                     "https://userguide.pep.security/pEp_for_iOS_User_Guide.pdf"]
+                     "https://github.com/mischa-hildebrand/AlignedCollectionViewFlowLayout"]
 
         var htmlThanx = ""
         for (i, name) in names.enumerated() {
