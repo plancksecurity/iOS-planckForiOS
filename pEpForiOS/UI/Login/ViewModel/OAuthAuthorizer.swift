@@ -23,12 +23,6 @@ enum OAuthAuthorizerError: Error {
      The OAuth2 call yielded no token, but there was no error condition
      */
     case noToken
-
-    /**
-     The OAuth2 authorization was successful, but we lack the `lastOAuth2Parameters`
-     for continuing login.
-     */
-    case noParametersForVerification
 }
 
 protocol OAuthAuthorizerDelegate: AnyObject {
@@ -50,7 +44,6 @@ class OAuthAuthorizer {
     var currentAuthorizer: OAuth2AuthorizationProtocol?
 
     func authorize(authorizer: OAuth2AuthorizationProtocol,
-                   emailAddress: String,
                    accountType: VerifiableAccount.AccountType,
                    viewController: UIViewController) {
         currentAuthorizer = authorizer

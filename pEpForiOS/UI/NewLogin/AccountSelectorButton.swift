@@ -13,6 +13,7 @@ enum AccountType: Int {
     case google = 0
     case microsoft = 1
     case other = 2
+    case clientCertificate = 3
 }
 
 /// How to use this button:
@@ -141,13 +142,16 @@ extension AccountSelectorButton {
         case .other:
             imageName = "ico-key"
             text = NSLocalizedString("Sign in with Password", comment: "Sign in with Password button title")
+        case .clientCertificate:
+            imageName = "ico-key"
+            text = NSLocalizedString("Sign in with Client Certificate", comment: "Sign in with Client Certificate button title")
         case .none:
             Log.shared.errorAndCrash("Not found")
             imageName = "ico-key"
             text = NSLocalizedString("Sign in with Password", comment: "Sign in with Password button title")
         }
 
-        let image = UIImage(named: imageName)
+        let image = UIImage(named: imageName)?.withRenderingMode(.alwaysOriginal)
         setImage(image, for: .normal)
         setTitle(text, for: .normal)
         titleLabel?.lineBreakMode = .byWordWrapping
