@@ -16,18 +16,9 @@ import MessageModel
 import pEpIOSToolbox
 #endif
 
-protocol RecipientsBannerDelegate: AnyObject {
-
-    /// Presents the recipients list view
-    func presentRecipientsListView(viewModel: RecipientsListViewModel)
-}
-
 /// This VM handles the banner that appears in the compose view when the user introduces an address of a red identity in a recipient field.
 /// Its main responsability is to provide data for the layout and handle the interaction with the single button it has.
 class RecipientsBannerViewModel {
-
-    /// Delegate to communicate with the view.
-    public weak var delegate: RecipientsBannerDelegate?
 
     private var recipients: [Identity] = []
 
@@ -38,12 +29,11 @@ class RecipientsBannerViewModel {
     /// - parameters:
     ///   - recipients: The list of unsecure recipients
     ///   - delegate: The delegate to communicate with the view.
-    init?(recipients: [Identity], delegate: RecipientsBannerDelegate, composeViewModel: ComposeViewModel) {
+    init?(recipients: [Identity], composeViewModel: ComposeViewModel) {
         if recipients.isEmpty {
             return nil
         }
         self.recipients = recipients.uniques
-        self.delegate = delegate
         self.composeViewModel = composeViewModel
     }
 
@@ -53,26 +43,23 @@ class RecipientsBannerViewModel {
         var format: String
         // Prepare text considering if it's singular or plural
         if numberOfUnsecureRecipients == 1 {
-            format = NSLocalizedString("%d unsecure recipient. Tap here to review and remove", comment: "unsecure recipient button")
+            format = NSLocalizedString("%d unsecure recipients. Tap here to remove.", comment: "unsecure recipient button")
         } else {
-            format = NSLocalizedString("%d unsecure recipients. Tap here to review and remove", comment: "unsecure recipient button")
+            format = NSLocalizedString("%d unsecure recipient. Tap here to remove.", comment: "unsecure recipient button")
         }
+
         return String.localizedStringWithFormat(format, numberOfUnsecureRecipients)
     }
 
     /// Handle recipients button was pressed.
     public func handleRecipientsButtonPressed() {
-        let recipientsListViewModel = RecipientsListViewModel(recipients: recipients, viewModelDelegate: composeViewModel)
         DispatchQueue.main.async { [weak self] in
             guard let me = self else {
                 Log.shared.errorAndCrash("Lost myself")
                 return
             }
-            guard let delegate = me.delegate else {
-                Log.shared.errorAndCrash("No delegate. Unexpected")
-                return
-            }
-            delegate.presentRecipientsListView(viewModel: recipientsListViewModel)
+            me.composeViewModel.removeFromState(addresses: me.recipients.map { $0.address} )
+            me.composeViewModel.handleRecipientsBanner()
         }
     }
 }
