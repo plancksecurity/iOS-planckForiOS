@@ -28,6 +28,8 @@ protocol EmailViewModelDelegate: AnyObject {
     func hideLoadingView()
     /// Informs the viewModel is ready to provide external content.
     func showExternalContent()
+    /// Update the navigation bar badge
+    func updateNavigationBarSecurityBadge(pEpRating: Rating)
 }
 
 //MARK: - EmailRowProtocol
@@ -102,7 +104,22 @@ class EmailViewModel {
         }
         return CalendarEventsBannerViewModel(attachments: icsFilesAttachments, delegate: delegate)
     }
+    
+    /// Get the Trust Banner ViewModel.
+    /// - Returns: The Trust Banner ViewModel
+    func getTrustBannerViewModel(delegate: TrustBannerDelegate, pEpProtectionModifyable: Bool) -> TrustBannerViewModel {
+        return TrustBannerViewModel(delegate: delegate, message: message, pEpProtectionModifyable: pEpProtectionModifyable)
+    }
 
+    /// - Returns: The Trust Management ViewModel
+    func getTrustManagementViewModel(protectionStateChangeDelegate: TrustmanagementProtectionStateChangeDelegate? = nil, ratingDelegate: TrustmanagementRatingChangedDelegate? = nil) -> TrustManagementViewModel {
+        return TrustManagementViewModel(message: message,
+                                        pEpProtectionModifyable: true,
+                                        persistRatingChangesForMessage: false,
+                                        protectionStateChangeDelegate: protectionStateChangeDelegate,
+                                        ratingDelegate: ratingDelegate)
+    }
+                
     // Indicates if the External Content View has to be shown.
     public var shouldShowExternalContentView: Bool {
         guard let body = htmlBody else {
@@ -149,6 +166,25 @@ class EmailViewModel {
         return rows.count
     }
 
+    func updateRating() {
+        let safeMessage = message.safeForSession(.main)
+        RatingReEvaluator.reevaluate(message: safeMessage, storeMessageWhenDone: true) {
+            DispatchQueue.main.async { [weak self] in
+                guard let me = self else {
+                    Log.shared.errorAndCrash("Lost myself")
+                    return
+                }
+                guard let del = me.delegate else {
+                    Log.shared.errorAndCrash("Lost delegate")
+                    return
+                }
+                safeMessage.pEpRating { rating in
+                    del.updateNavigationBarSecurityBadge(pEpRating: rating)
+                }
+            }
+        }
+    }
+    
     /// Retrieves the row
     subscript(index: Int) -> EmailRowProtocol {
         get {

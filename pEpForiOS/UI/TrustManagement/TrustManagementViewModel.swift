@@ -328,7 +328,7 @@ final class TrustManagementViewModel {
         setupRows()
     }
 
-    ///MARK - Actions
+    /// MARK - Actions
     
     /// Reject the handshake
     /// - Parameter indexPath: The indexPath of the item to get the user to reject the handshake
@@ -413,6 +413,7 @@ final class TrustManagementViewModel {
                     return
                 }
                 me.reevaluateMessage(forRowAt: indexPath)
+                me.ratingDelegate?.ratingMayHaveChanged()
                 me.delegate?.showResetPartnerKeySuccessfully()
             }
         }, errorCallback: { [weak self] in
