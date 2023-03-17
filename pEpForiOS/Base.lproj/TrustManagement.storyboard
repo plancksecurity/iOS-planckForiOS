@@ -201,7 +201,7 @@
                                                                             <nil key="textColor"/>
                                                                             <nil key="highlightedColor"/>
                                                                         </label>
-                                                                        <imageView userInteractionEnabled="NO" contentMode="scaleToFill" image="pEp-status-green_white-border" translatesAutoresizingMaskIntoConstraints="NO" id="TCB-Zy-Xsu">
+                                                                        <imageView userInteractionEnabled="NO" contentMode="scaleToFill" image="pEp-status-trusted" translatesAutoresizingMaskIntoConstraints="NO" id="TCB-Zy-Xsu">
                                                                             <rect key="frame" x="48" y="46" width="24" height="24"/>
                                                                             <accessibility key="accessibilityConfiguration" identifier="pEpStatusImageView"/>
                                                                             <constraints>
@@ -472,7 +472,7 @@
                                                                                     <nil key="textColor"/>
                                                                                     <nil key="highlightedColor"/>
                                                                                 </label>
-                                                                                <imageView userInteractionEnabled="NO" contentMode="scaleToFill" image="pEp-status-green_white-border" translatesAutoresizingMaskIntoConstraints="NO" id="Ncx-4B-mS4">
+                                                                                <imageView userInteractionEnabled="NO" contentMode="scaleToFill" image="pEp-status-trusted" translatesAutoresizingMaskIntoConstraints="NO" id="Ncx-4B-mS4">
                                                                                     <rect key="frame" x="48" y="46" width="24" height="24"/>
                                                                                     <accessibility key="accessibilityConfiguration" identifier="pEpStatusImageView"/>
                                                                                     <constraints>
@@ -693,7 +693,7 @@
     </scenes>
     <resources>
         <image name="empty-avatar" width="150" height="150"/>
-        <image name="pEp-status-green_white-border" width="21" height="21"/>
+        <image name="pEp-status-trusted" width="32" height="30"/>
         <image name="pEpForiOS-icon-languagechange" width="100" height="100"/>
         <systemColor name="secondarySystemBackgroundColor">
             <color red="0.94901960784313721" green="0.94901960784313721" blue="0.96862745098039216" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>

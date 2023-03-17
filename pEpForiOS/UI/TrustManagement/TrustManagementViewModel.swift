@@ -116,11 +116,11 @@ extension TrustManagementViewModel {
         /// The privacy status image
         public func privacyStatusImage(completion: @escaping (UIImage?) -> Void) {
             if forceRed {
-                completion(Color.red.statusIconForMessage(enabled: true, withText: false))
+                completion(Rating.mistrust.statusIconForMessage(enabled: true, withText: false))
             }else {
-                color { (color) in
+                rating{ (rating) in
                     DispatchQueue.main.async {
-                        completion(color.statusIconForMessage(enabled: true, withText: false))
+                        completion(rating.statusIconForMessage(enabled: true, withText: false))
                     }
                 }
             }
@@ -149,6 +149,18 @@ extension TrustManagementViewModel {
                 handshakeCombination.partnerIdentity.pEpColor { (color) in
                     DispatchQueue.main.async {
                         completion(color)
+                    }
+                }
+            }
+        }
+        /// Status indicator
+        func rating(completion: @escaping (Rating) -> Void) {
+            if forceRed {
+                completion(.mistrust)
+            } else {
+                handshakeCombination.partnerIdentity.pEpRating{ (rating) in
+                    DispatchQueue.main.async {
+                        completion(rating)
                     }
                 }
             }
