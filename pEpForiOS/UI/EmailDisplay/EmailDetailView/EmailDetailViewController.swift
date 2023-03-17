@@ -362,17 +362,7 @@ extension EmailDetailViewController {
                 // Do nothing.
                 return
             }
-            guard let ratingView = me.showNavigationBarSecurityBadge(pEpRating: rating) else {
-                // Nothing to show for current message
-                return
-            }
-            vm.shouldShowPrivacyStatus(forItemAt: indexPath) { (shouldShowPrivacyStatus) in
-                if shouldShowPrivacyStatus {
-                    let tapGestureRecognizer = UITapGestureRecognizer(target: me,
-                                                                      action: #selector(me.showTrustManagementView(gestureRecognizer:)))
-                    ratingView.addGestureRecognizer(tapGestureRecognizer)
-                }
-            }
+            me.showNavigationBarSecurityBadge(pEpRating: rating)
         }
     }
     
