@@ -28,6 +28,8 @@
 		00EB89AD20E3D3C200CDFA0D /* ThreadedEmailViewModel+MoveToFolderDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 00EB89AC20E3D3C200CDFA0D /* ThreadedEmailViewModel+MoveToFolderDelegate.swift */; };
 		00EB89AF20E3E4A000CDFA0D /* ReplyAlertCreator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 00EB89AE20E3E4A000CDFA0D /* ReplyAlertCreator.swift */; };
 		00FD0CE62101F7D700BA0C56 /* ScreenComposerProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = 00FD0CE52101F7D700BA0C56 /* ScreenComposerProtocol.swift */; };
+		0A4D982D29C47C8200A4E9D2 /* Rating+UI.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0A4D982C29C47C8200A4E9D2 /* Rating+UI.swift */; };
+		0A4D982E29C47C8200A4E9D2 /* Rating+UI.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0A4D982C29C47C8200A4E9D2 /* Rating+UI.swift */; };
 		0A6B959D29B229610011FD61 /* LoginUtil.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0A6B959C29B229600011FD61 /* LoginUtil.swift */; };
 		0A6B95A129B617D00011FD61 /* LoginProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0A6B95A029B617D00011FD61 /* LoginProtocol.swift */; };
 		150707DC21006CD000AA213F /* ComposeUtilTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 150707DB21006CD000AA213F /* ComposeUtilTest.swift */; };
@@ -744,6 +746,7 @@
 		00EB89AC20E3D3C200CDFA0D /* ThreadedEmailViewModel+MoveToFolderDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "ThreadedEmailViewModel+MoveToFolderDelegate.swift"; sourceTree = "<group>"; };
 		00EB89AE20E3E4A000CDFA0D /* ReplyAlertCreator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReplyAlertCreator.swift; sourceTree = "<group>"; };
 		00FD0CE52101F7D700BA0C56 /* ScreenComposerProtocol.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScreenComposerProtocol.swift; sourceTree = "<group>"; };
+		0A4D982C29C47C8200A4E9D2 /* Rating+UI.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Rating+UI.swift"; sourceTree = "<group>"; };
 		0A6B959C29B229600011FD61 /* LoginUtil.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginUtil.swift; sourceTree = "<group>"; };
 		0A6B95A029B617D00011FD61 /* LoginProtocol.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginProtocol.swift; sourceTree = "<group>"; };
 		150707DB21006CD000AA213F /* ComposeUtilTest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ComposeUtilTest.swift; sourceTree = "<group>"; };
@@ -2429,6 +2432,7 @@
 		43AA82511E9B925000ABD5A8 /* Util */ = {
 			isa = PBXGroup;
 			children = (
+				0A4D982C29C47C8200A4E9D2 /* Rating+UI.swift */,
 				5BB7C74824D85BD600D5F328 /* PEPWebviewController */,
 				5BC0738C25B218DB00ECE3FC /* TextFieldWithoutSelection.swift */,
 				5BC0F96626AEE8ED0089760D /* EdgeInsetLabel.swift */,
@@ -2454,7 +2458,6 @@
 				B7DFEA5322536D5E0080A2BA /* UnifiedFolderBase.swift */,
 				5BB7C73324D2EB2300D5F328 /* Unified Folders */,
 				3705096B22DC8C1800CB73D6 /* KeyInputView.swift */,
-				0A6C867A29BB7DFC0090FBF3 /* Rating+UI.swift */,
 			);
 			path = Util;
 			sourceTree = "<group>";
@@ -3521,6 +3524,7 @@
 				434C1AF025D416AF00F622DB /* Capability.swift in Sources */,
 				5B2C2B2729350CAC000E8F20 /* RecipientsListViewController.swift in Sources */,
 				5BF753932979917600E4113B /* AppSettings+EnterpriseSettingsProtocol.swift in Sources */,
+				0A4D982E29C47C8200A4E9D2 /* Rating+UI.swift in Sources */,
 				434A6C6225D2A3C800179335 /* BodyCellViewModel.swift in Sources */,
 				434A6C7C25D2A3F100179335 /* WrappedBccViewModel.swift in Sources */,
 				5B21989B28BDFBA200668445 /* MDMSettingsProtocol.swift in Sources */,
@@ -3545,7 +3549,6 @@
 				43BDE05A25DE821C00FC0C68 /* inlines.c in Sources */,
 				4300CF6325ECEF98003DBEB4 /* SharedData.swift in Sources */,
 				434C19CE25D3E13E00F622DB /* TextViewInTableViewScrollUtil.swift in Sources */,
-				0A6C867C29BB84580090FBF3 /* Rating+UI.swift in Sources */,
 				434C1AD525D4133400F622DB /* Color+PrivacyStatusDescription.swift in Sources */,
 				5BF7538D29798D5300E4113B /* EnterpriseUtil.swift in Sources */,
 				43BDE04B25DE7FA800FC0C68 /* houdini_html_u.c in Sources */,
@@ -3629,7 +3632,6 @@
 				4351C2D31F4441190053381F /* inlines.c in Sources */,
 				5B41C6082418F15100C268CE /* TutorialStep3iPhoneViewController.swift in Sources */,
 				15874BCD2127493E00A3A4A6 /* AccountSettingsError.swift in Sources */,
-				0A6C867B29BB7DFC0090FBF3 /* Rating+UI.swift in Sources */,
 				15147EF7237EBE2A003989FE /* AppSettings+KeySyncDeviceGroupStateChangeNotification.swift in Sources */,
 				5B0B339D24AC85E800CABD0B /* UIUtils+Passphrase.swift in Sources */,
 				5BEB56CA25E7977500304A38 /* TutorialStep3iPadViewController.swift in Sources */,
@@ -3919,6 +3921,7 @@
 				4351C2D91F4441190053381F /* render.c in Sources */,
 				B722EC4D1E5B01B300A2B9D5 /* FolderCellViewModel.swift in Sources */,
 				B71EBBBC1E55E4AE00150177 /* FolderTableViewController.swift in Sources */,
+				0A4D982D29C47C8200A4E9D2 /* Rating+UI.swift in Sources */,
 				492EF92F20C699D0004EAE14 /* ThreadViewController+TableView.swift in Sources */,
 				43D070312133DB920013B120 /* AppSettingsProtocol.swift in Sources */,
 				B7B0E8F324094BB1003A34DC /* SplitViewHandlingProtocol.swift in Sources */,
