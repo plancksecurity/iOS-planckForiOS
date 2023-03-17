@@ -439,6 +439,7 @@ extension EmailViewController: SegueHandlerType {
                 return
             }
             vc.viewModel = vm.getTrustManagementViewModel(ratingDelegate:self)
+            nv.modalPresentationStyle = .overFullScreen
         }
     }
 }
