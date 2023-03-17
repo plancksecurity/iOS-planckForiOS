@@ -142,7 +142,7 @@ extension TrustManagementViewModel {
         var showLongTrustwordVersion: Bool = false
 
         /// Status indicator
-        func color(completion: @escaping (Color)) {
+        func color(completion: @escaping (Color) -> Void) {
             if forceRed {
                 completion(.red)
             } else {
@@ -153,9 +153,8 @@ extension TrustManagementViewModel {
                 }
             }
         }
-
         /// Status indicator
-        func rating(completion: @escaping (Rating)) {
+        func rating(completion: @escaping (Rating) -> Void) {
             if forceRed {
                 completion(.mistrust)
             } else {
