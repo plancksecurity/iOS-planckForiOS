@@ -14,9 +14,7 @@ import MessageModelForAppExtensions
 #else
 import MessageModel
 #endif
-//pEp-status-msg-disabled-secure circle
-//pEp-status-msg-disabled-trusted triangle
-
+/// Helper extension to relate a status from the engine to UI assets, if any exist
 extension Rating {
     /// The icon suitable for indicating the pEp rating of a message.
     ///
@@ -77,8 +75,4 @@ extension Rating {
 
         }
     }
-
-    /// Similar to `statusIcon`, but for a message in a local folder and embedded
-    /// in the contact's profile picture.
-    /// Typically includes a white border, and doesn't support disabled protection.
 }
