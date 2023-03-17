@@ -46,10 +46,41 @@ struct TrustBannerViewModel {
     /// Indicate whether the banner must be shown.
     /// True if it must be shown. False otherwise.
     func shouldShowTrustBanner() -> Bool {
-        guard let rating = message?.pEpRatingInt, rating == Rating.reliable.toInt() else {
+        guard let message = message else {
             return false
         }
-        return true
+
+        // Only should show the trust banner when there is one sender and one recipient and the message is “secure” (reliable).
+
+        guard message.pEpRatingInt == Rating.reliable.toInt() else {
+            return false
+        }
+        
+        guard message.from != nil else {
+            //From does not exist. The banner must be hidden.
+            return false
+        }
+
+        let onlyOneToRecipient = message.to.count == 1 && message.cc.isEmpty && message.bcc.isEmpty
+        if onlyOneToRecipient {
+            // Only one TO recipient. The banner must be visible.
+            return true
+        }
+        
+        let onlyOneCCRecipient = message.cc.count == 1 && message.to.isEmpty && message.bcc.isEmpty
+        if onlyOneCCRecipient {
+            // Only one CC recipient. The banner must be visible.
+            return true
+        }
+
+        let onlyOneBCCRecipient = message.bcc.count == 1 && message.to.isEmpty && message.cc.isEmpty
+        if onlyOneBCCRecipient {
+            // Only one BCC recipient. The banner must be visible.
+            return true
+        }
+
+        // More than on recipient. The banner must be hidden.
+        return false
     }
 
     /// The button title
