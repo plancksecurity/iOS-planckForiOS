@@ -13,12 +13,7 @@ extension Message {
     /// Retrieves a status icon matching the status of the given message.
     func securityBadgeForContactPicture(completion: @escaping (UIImage?)->Void) {
         pEpRating { (rating) in
-            let color = rating.pEpColor()
-            var image: UIImage? = nil
-            if color != .noColor {
-                image = color.statusIconInContactPicture()
-            }
-            completion(image)
+            completion(rating.statusIconForMessage(withText: false))
         }
     }
 }

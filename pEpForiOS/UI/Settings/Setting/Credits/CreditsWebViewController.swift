@@ -65,7 +65,8 @@ class CreditsWebViewController: PEPWebViewController {
         <p>Thanks to:
         \(thanxRows())
         </p>
-
+        <br />
+        \(getDivWithLinkToTyC())
         <p>&nbsp;</p>
         <p>
         \(eula())
@@ -81,6 +82,13 @@ class CreditsWebViewController: PEPWebViewController {
         </html>
         """
         return result
+    }
+    
+    private func getDivWithLinkToTyC() -> String {
+        let termsAndConditions = NSLocalizedString("Terms & Conditions", comment: "terms and conditions")
+        let link = "https://userguide.pep.security/pEp_for_iOS_User_Guide.pdf"
+        let paragraph = "<p><a href=\"\(link)\">\(termsAndConditions)</a></p>"
+        return "<div class=\"links\">\(paragraph)</div>"
     }
 
     private func thanxRows() -> String {
