@@ -63,12 +63,12 @@ final class LoginViewController: UIViewController {
         super.viewWillAppear(animated)
         setup()
         updateView()
-        setupPasswordField()
         guard let vm = viewModel else {
             Log.shared.errorAndCrash("VM not found")
             return
         }
-        if vm.verifiableAccount.accountType == .icloud {
+
+        if vm.isCloud() {
             showiCloudAlert()
         }
     }
@@ -116,7 +116,14 @@ final class LoginViewController: UIViewController {
         dismissKeyboard()
         isCurrentlyVerifying = true
 
-        guard let email = emailAddress.text?.trimmed(), email != "" else {
+        guard let vm = viewModel else {
+            Log.shared.errorAndCrash("No VM")
+            return
+        }
+
+        vm.accountVerificationResultDelegate = self
+
+        guard let email = emailAddress.text?.trimmed(), !email.isEmpty else {
             handleLoginError(error: LoginViewController.LoginError.missingEmail,
                              offerManualSetup: false)
             return
@@ -126,10 +133,6 @@ final class LoginViewController: UIViewController {
         // (was calling `email.isProbablyValidEmail` and reporting
         // `LoginViewController.LoginError.invalidEmail` in case).
 
-        guard let vm = viewModel else {
-            Log.shared.errorAndCrash("No VM")
-            return
-        }
         guard !vm.exist(address: email) else {
             isCurrentlyVerifying = false
             handleLoginError(error: LoginViewController.LoginError.accountExistence,
@@ -144,28 +147,15 @@ final class LoginViewController: UIViewController {
             return
         }
 
-        vm.accountVerificationResultDelegate = self
-
-        // isOauthAccount is use to disable for ever the password field (when loading this view)
-        // isOAuth2Possible is use to hide password field only if isOauthAccount is false and the
-        // user type a possible ouath in the email textfield.
-        if vm.verifiableAccount.accountType.isOauth {
-            let oauth = OAuth2ProviderFactory().oauth2Provider().createOAuth2Authorizer()
-            vm.loginWithOAuth2(viewController: self,
-                               emailAddress: email,
-                               userName: userName,
-                               oauth2Authorizer: oauth)
-        } else {
-            guard let pass = password.text, pass != "" else {
-                handleLoginError(error: LoginViewController.LoginError.missingPassword,
-                                 offerManualSetup: false)
-                return
-            }
-
-            vm.login(emailAddress: email,
-                     displayName: userName,
-                     password: pass)
+        guard let pass = password.text, !pass.isEmpty else {
+            handleLoginError(error: LoginViewController.LoginError.missingPassword,
+                             offerManualSetup: false)
+            return
         }
+
+        vm.login(emailAddress: email,
+                 displayName: userName,
+                 password: pass)
     }
 
     @IBAction func pEpSyncStateChanged(_ sender: UISwitch) {
@@ -200,7 +190,7 @@ extension LoginViewController {
             return
         }
         vm.loginViewModelLoginErrorDelegate = self
-        vm.loginViewModelOAuth2ErrorDelegate = self
+
     }
 }
 
@@ -248,12 +238,12 @@ extension LoginViewController: UITextFieldDelegate {
         }
         switch textField {
         case emailAddress:
-            vm.verifiableAccount.address = textField.text
+            vm.loginUtil.verifiableAccount.address = textField.text
         case password:
-            vm.verifiableAccount.imapPassword = textField.text
-            vm.verifiableAccount.smtpPassword = textField.text
+            vm.loginUtil.verifiableAccount.imapPassword = textField.text
+            vm.loginUtil.verifiableAccount.smtpPassword = textField.text
         case user:
-            vm.verifiableAccount.userName = textField.text
+            vm.loginUtil.verifiableAccount.userName = textField.text
         default:
             Log.shared.errorAndCrash("Unhandled case")
         }
@@ -282,7 +272,7 @@ extension LoginViewController: SegueHandlerType {
                     return
             }
             // Give the next model all that we know.
-            vc.verifiableAccount = vm.verifiableAccount
+            vc.verifiableAccount = vm.loginUtil.verifiableAccount
         default:
             Log.shared.errorAndCrash("Unhandled segue type")
             return
@@ -321,14 +311,6 @@ extension LoginViewController: AccountVerificationResultDelegate {
 extension LoginViewController: LoginViewModelLoginErrorDelegate {
     func handle(loginError: Error) {
         handleLoginError(error: loginError, offerManualSetup: true)
-    }
-}
-
-// MARK: - LoginViewModelOAuth2ErrorDelegate
-
-extension LoginViewController: LoginViewModelOAuth2ErrorDelegate {
-    func handle(oauth2Error: Error) {
-        handleLoginError(error: oauth2Error, offerManualSetup: false)
     }
 }
 
@@ -401,35 +383,14 @@ extension LoginViewController {
         Log.shared.log(error: error)
         isCurrentlyVerifying = false
 
-        guard let vm = viewModel else {
-            Log.shared.errorAndCrash("No VM")
+        guard let displayError = DisplayUserError(withError: error) else {
+            // Do nothing. The error type is not suitable to bother the user with.
             return
         }
 
-        var title: String
-        var message: String?
+        var title = displayError.title
+        var message = displayError.errorDescription
 
-        if let oauthError = error as? OAuthAuthorizerError, oauthError == .noConfiguration {
-            title = NSLocalizedString("Invalid Address",
-                                      comment: "Please enter a valid Gmail address.Fail to log in, email does not match account type")
-            switch vm.verifiableAccount.accountType {
-            case .gmail:
-                message = NSLocalizedString("Please enter a valid Gmail address.",
-                                            comment: "Fail to log in, email does not match account type")
-            case .o365:
-                message = NSLocalizedString("Please enter a valid Email address.",
-                                            comment: "Fail to log in, email does not match account type")
-            default:
-                Log.shared.errorAndCrash("Login should not do oauth with other email address")
-            }
-        } else {
-            guard let displayError = DisplayUserError(withError: error) else {
-                // Do nothing. The error type is not suitable to bother the user with.
-                return
-            }
-            title = displayError.title
-            message = displayError.errorDescription
-        }
         UIUtils.showAlertWithOnlyPositiveButton(title: title, message: message) { [weak self] in
             guard let me = self else {
                 Log.shared.lostMySelf()
@@ -484,16 +445,6 @@ extension LoginViewController {
                                                name: UIDevice.orientationDidChangeNotification,
                                                object: nil)
     }
-
-    private func setupPasswordField() {
-           guard let vm = viewModel else {
-               Log.shared.errorAndCrash("No VM")
-               return
-           }
-           let shouldShow = vm.shouldShowPasswordField
-           password.isHidden = !shouldShow
-           password.isEnabled = shouldShow
-       }
 
     private func configureAnimatedTextFields() {
         user.textColorWithText = .pEpGreen
@@ -573,8 +524,6 @@ extension LoginViewController {
 
         loginButton.isEnabled = !isCurrentlyVerifying
         manualConfigButton.isEnabled = !isCurrentlyVerifying
-
-        setupPasswordField()
     }
 
     private func isLandscape() -> Bool {

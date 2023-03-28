@@ -1,7 +1,7 @@
 {
   "images" : [
     {
-      "filename" : "splashscreen.pdf",
+      "filename" : "splashscreen 1.pdf",
       "idiom" : "universal"
     },
     {
@@ -11,7 +11,7 @@
           "value" : "light"
         }
       ],
-      "filename" : "splashscreen-1.pdf",
+      "filename" : "splashscreen.pdf",
       "idiom" : "universal"
     },
     {

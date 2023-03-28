@@ -192,7 +192,7 @@ class ComposeViewModel {
     }
 
     /// Shows and Hides the warning banner if needed.
-    private func handleRecipientsBanner() {
+    public func handleRecipientsBanner() {
         // Check for historical reasons (there was a dispatch to the main queue here).
         if !Thread.isMainThread {
             Log.shared.errorAndCrash(message: "Unexpectedly not on the main thread")
@@ -213,8 +213,8 @@ class ComposeViewModel {
     /// Get the Recipientslendar Banner ViewModel.
     /// Or nil, if there is no recipients that should be managed (red).
     /// - Returns: The Recipients Banner ViewModel
-    func getRecipientBannerViewModel(delegate: RecipientsBannerDelegate) -> RecipientsBannerViewModel? {
-        return RecipientsBannerViewModel(recipients: getUnsecureRecipients(), delegate: delegate, composeViewModel: self)
+    func getRecipientBannerViewModel() -> RecipientsBannerViewModel? {
+        return RecipientsBannerViewModel(recipients: getUnsecureRecipients(), composeViewModel: self)
     }
 
     /// Get the red recipients.
@@ -1257,7 +1257,7 @@ extension ComposeViewModel {
 
 // MARK: - RecipientListViewModelDelegate
 
-extension ComposeViewModel: RecipientListViewModelDelegate {
+extension ComposeViewModel {
 
     public func removeFromState(addresses: [String]) {
         DispatchQueue.main.async { [weak self] in

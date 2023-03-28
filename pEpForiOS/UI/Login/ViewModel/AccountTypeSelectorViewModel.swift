@@ -14,55 +14,28 @@ import pEpIOSToolbox
 protocol AccountTypeSelectorViewModelDelegate: AnyObject {
     func showMustImportClientCertificateAlert()
     func showClientCertificateSeletionView()
+    func didVerify(result: AccountVerificationResult)
+    func handle(oauth2Error: Error)
+
 }
 
 class AccountTypeSelectorViewModel {
+    /// Helper class to handle login logic via OAuth or manual input.
+    var loginUtil = LoginUtil()
+
     private let clientCertificateUtil: ClientCertificateUtilProtocol
 
     public weak var delegate: AccountTypeSelectorViewModelDelegate?
-
-    /// list of providers to show
-    private var accountTypes = [VerifiableAccount.AccountType]()
 
     var chosenAccountType: VerifiableAccount.AccountType = .other
 
     init(clientCertificateUtil: ClientCertificateUtilProtocol? = nil) {
         self.clientCertificateUtil = clientCertificateUtil ?? ClientCertificateUtil()
-        refreshAccountTypes()
+        loginUtil.loginProtocolResponseDelegate = self
     }
 
-    var count: Int {
-        get {
-            return accountTypes.count
-        }
-    }
-
-    subscript(index: Int) -> VerifiableAccount.AccountType {
-        return accountTypes[index]
-    }
-    
-    public func refreshAccountTypes() {
-        accountTypes = [.icloud,
-                        .o365,
-                        .outlook,
-                        .gmail,
-                        .clientCertificate,
-                        .other]
-        if self.clientCertificateUtil.listCertificates(session: nil).count == 0 && accountTypes.contains(.clientCertificate) {
-            guard let positionOfClientCert = accountTypes.firstIndex(of: .clientCertificate) else {
-                Log.shared.errorAndCrash(message: "wrong data in accountTypes")
-                return
-            }
-            accountTypes.remove(at: positionOfClientCert)
-        }
-    }
-
-    public func accountType(row: Int) -> VerifiableAccount.AccountType {
-        guard row < accountTypes.count else {
-            Log.shared.errorAndCrash("Index out of range")
-            return .other
-        }
-        return accountTypes[row]
+    public func shouldShowClientCertificateButton() -> Bool {
+        return clientCertificateUtil.listCertificates(session: nil).count > 0
     }
 
     public func handleDidChooseClientCertificate() {
@@ -73,35 +46,40 @@ class AccountTypeSelectorViewModel {
             delegate?.showClientCertificateSeletionView()
         }
     }
+    public func handleDiDChooseOAuth(viewController : UIViewController) {
+        loginUtil.verifiableAccount = VerifiableAccount.verifiableAccount(for: chosenAccountType,
+                                                                           usePEPFolderProvider: AppSettings.shared)
+        loginUtil.loginWithOAuth2(viewController: viewController)
 
-    /// returns the text corresponding to the provider
-    /// - Parameter provider: provider to obtain it's text
-    public func fileNameOrText(provider: VerifiableAccount.AccountType) -> String {
-        switch provider {
-        case .gmail:
-            return "asset-Google"
-        case .other:
-            return NSLocalizedString("Other", comment: "Other provider key")
-        case .clientCertificate:
-            return NSLocalizedString("""
-            Client
-            Certificate
-            """, comment: "client certificate provider key")
-        case .o365:
-            return "asset-Office365"
-        case .icloud:
-            return "asset-iCloud"
-        case .outlook:
-            return "asset-Outlook"
-        }
+
     }
-
     public func isThereAnAccount() -> Bool {
         return !Account.all().isEmpty
     }
 
-    public func handleDidSelect(rowAt indexPath: IndexPath) {
-        chosenAccountType = accountTypes[indexPath.row]
+    public func handleDidSelect(accountType: AccountType,
+                                viewController : UIViewController? = nil) {
+        switch accountType {
+        case .google:
+            chosenAccountType = .gmail
+            guard let VC = viewController else {
+                Log.shared.errorAndCrash("VC not found")
+                return
+            }
+            handleDiDChooseOAuth(viewController: VC)
+        case .microsoft:
+            chosenAccountType = .o365
+            guard let VC = viewController else {
+                Log.shared.errorAndCrash("VC not found")
+                return
+            }
+            handleDiDChooseOAuth(viewController: VC)
+        case .other:
+            chosenAccountType = .other
+        case .clientCertificate:
+            chosenAccountType = .clientCertificate
+            handleDidChooseClientCertificate()
+        }
     }
 
     public func clientCertificateManagementViewModel() -> ClientCertificateManagementViewModel {
@@ -116,8 +94,27 @@ class AccountTypeSelectorViewModel {
 // MARK: - Private
 
 extension AccountTypeSelectorViewModel {
-    private func verifiableAccountForCoosenAccountType() -> VerifiableAccountProtocol{
-        return VerifiableAccount.verifiableAccount(for: chosenAccountType,
-                                                   usePEPFolderProvider: AppSettings.shared)
+    private func verifiableAccountForCoosenAccountType() -> VerifiableAccountProtocol {
+        return VerifiableAccount.verifiableAccount(for: chosenAccountType, usePEPFolderProvider: AppSettings.shared)
+    }
+}
+
+// MARK: - LoginProtocolResponseDelegate
+
+extension AccountTypeSelectorViewModel : LoginProtocolResponseDelegate {
+    func didVerify(result: MessageModel.AccountVerificationResult) {
+        guard let unwrappedDelegate = delegate else {
+            Log.shared.errorAndCrash(message: "Delegate not found")
+            return
+        }
+        unwrappedDelegate.didVerify(result: result)
+    }
+
+    func didFail(error : Error) {
+        guard let unwrappedDelegate = delegate else {
+            Log.shared.errorAndCrash(message: "Delegate not found")
+            return
+        }
+        unwrappedDelegate.handle(oauth2Error: error)
     }
 }
