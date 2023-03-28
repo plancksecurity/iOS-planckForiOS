@@ -20,7 +20,21 @@ final class AccountTypeSelectorViewController: UIViewController {
     @IBOutlet private weak var selectAccountTypeLabel: UILabel!
     @IBOutlet private weak var welcomeToPepLabel: UILabel!
     @IBOutlet weak var clientCertificateButton: AccountSelectorButton!
+    
+    private var attrs = [
+        NSAttributedString.Key.font : UIFont.pepFont(style: .callout, weight: .regular),
+        NSAttributedString.Key.foregroundColor : UIColor.white,
+        NSAttributedString.Key.underlineStyle : 1] as [NSAttributedString.Key : Any]
 
+    private var highlightedAttrs = [
+        NSAttributedString.Key.font : UIFont.pepFont(style: .callout, weight: .regular),
+        NSAttributedString.Key.foregroundColor : UIColor.pEpGreen,
+        NSAttributedString.Key.underlineStyle : 1] as [NSAttributedString.Key : Any]
+
+    var attributedString = NSMutableAttributedString(string:"")
+
+    @IBOutlet weak var termsAndConditionsButton: UIButton!
+    
     private var isCurrentlyVerifying = false {
         didSet {
             updateView()
@@ -30,6 +44,22 @@ final class AccountTypeSelectorViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         viewModel.delegate = self
+        let termsAndConditions = NSLocalizedString("Terms and conditions", comment: "Terms and conditions - title")
+        let buttonTitleStr = NSMutableAttributedString(string:termsAndConditions, attributes:attrs)
+        let highlightedButtonTitleStr = NSMutableAttributedString(string:termsAndConditions, attributes:highlightedAttrs)
+
+        attributedString.append(buttonTitleStr)
+        termsAndConditionsButton.setAttributedTitle(attributedString, for: .normal)
+        termsAndConditionsButton.setAttributedTitle(highlightedButtonTitleStr, for: .highlighted)
+    }
+
+    @IBAction func termsAndConditionsButtonPressed() {
+        let myUrl = "https://userguide.pep.security/pEp_for_iOS_User_Guide.pdf"
+        guard let url = URL(string: "\(myUrl)") else {
+            Log.shared.errorAndCrash("URL corrupted")
+            return
+        }
+        UIApplication.shared.open(url, options: [:], completionHandler: nil)
     }
 
     @IBAction func microsoftButtonPressed() {
