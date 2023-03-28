@@ -8,7 +8,7 @@
 
 import pEpIOSToolbox
 import QuickLook
-
+import MessageModel
 import EventKit
 import EventKitUI
 import pEpIOSToolbox
@@ -19,10 +19,12 @@ protocol EmailViewControllerDelegate: AnyObject {
 
 class EmailViewController: UIViewController {
 
+    @IBOutlet private weak var trustBannerContainerView: UIView!
     @IBOutlet private weak var bannerContainerView: UIView!
     @IBOutlet private weak var stackView: UIStackView!
     @IBOutlet private weak var bannerHeightConstraint: NSLayoutConstraint!
-
+    @IBOutlet private weak var trustBannerHeightConstraint: NSLayoutConstraint!
+    
     public var viewModel: EmailViewModel? {
         didSet {
             viewModel?.delegate = self
@@ -86,6 +88,10 @@ class EmailViewController: UIViewController {
         super.preferredContentSizeDidChange(forChildContentContainer: container)
         if let container = container as? CalendarEventBannerViewController, !bannerContainerView.isHidden {
             bannerHeightConstraint?.constant = container.preferredContentSize.height
+        }
+        
+        if let container = container as? TrustBannerViewController, !trustBannerContainerView.isHidden {
+            trustBannerHeightConstraint?.constant = container.preferredContentSize.height
         }
     }
 
@@ -287,6 +293,16 @@ extension EmailViewController: UIPopoverPresentationControllerDelegate, UIPopove
 
 extension EmailViewController: EmailViewModelDelegate {
 
+    func updateNavigationBarSecurityBadge(pEpRating: Rating) {
+        showNavigationBarSecurityBadge(pEpRating: pEpRating)
+        guard let vm = viewModel else {
+            Log.shared.errorAndCrash("VM not found")
+            return
+        }
+        let trustBannerViewModel = vm.getTrustBannerViewModel(delegate: self, pEpProtectionModifyable: true)
+        trustBannerContainerView.isHidden = !trustBannerViewModel.shouldShowTrustBanner()
+    }
+
     func showQuickLookOfAttachment(quickLookItem: QLPreviewItem) {
         guard let url = quickLookItem.previewItemURL else {
             Log.shared.errorAndCrash("QL item is not an URL")
@@ -383,6 +399,8 @@ extension EmailViewController: SegueHandlerType {
 
     enum SegueIdentifier: String {
         case segueCalendarBanner
+        case segueTrustBanner
+        case segueTrustManagementView
     }
 
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
@@ -405,7 +423,41 @@ extension EmailViewController: SegueHandlerType {
             vc.viewModel = calendarEventBannerViewModel
             vc.delegate = vm
             bannerContainerView.isHidden = !calendarEventBannerViewModel.shouldShowEventsBanner
+        case .segueTrustBanner:
+            guard
+                let vc = segue.destination as? TrustBannerViewController else {
+                    Log.shared.errorAndCrash("Missing VCs")
+                    return
+            }
+            let trustBannerViewModel = vm.getTrustBannerViewModel(delegate: self, pEpProtectionModifyable: true)
+            vc.viewModel = trustBannerViewModel
+            trustBannerContainerView.isHidden = !trustBannerViewModel.shouldShowTrustBanner()
+        case .segueTrustManagementView:
+            guard let nv = segue.destination as? UINavigationController,
+                  let vc = nv.topViewController as? TrustManagementViewController else {
+                Log.shared.errorAndCrash("Missing VCs")
+                return
+            }
+            vc.viewModel = vm.getTrustManagementViewModel(ratingDelegate:self)
         }
+    }
+}
+import MessageModel
+
+extension EmailViewController: TrustmanagementRatingChangedDelegate {
+    func ratingMayHaveChanged() {
+        guard let vm = viewModel else {
+            Log.shared.errorAndCrash("No VM")
+            return
+        }
+        vm.updateRating()
+    }
+}
+
+extension EmailViewController: TrustBannerDelegate {
+ 
+    func presentTrustManagementView() {
+        performSegue(withIdentifier: .segueTrustManagementView, sender: self)
     }
 }
 
