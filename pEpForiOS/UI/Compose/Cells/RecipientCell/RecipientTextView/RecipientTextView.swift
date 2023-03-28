@@ -28,8 +28,8 @@ class RecipientTextView: UITextView {
             return
         }
         // This refers to badge icon of the amount of recipients that are not shown in the first and single line of recipinets in the textview.
-        let plusBadgeIconWidht = 26.0
-        vm.maxTextattachmentWidth = bounds.width - plusBadgeIconWidht
+        let plusBadgeIconWidth = 26.0
+        vm.maxTextattachmentWidth = bounds.width - plusBadgeIconWidth
     }
 
     public func setInitialText() {
