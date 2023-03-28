@@ -1003,6 +1003,16 @@
                                     </button>
                                 </subviews>
                             </stackView>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="43r-Yy-Dpk">
+                                <rect key="frame" x="92.666666666666686" y="737.66666666666663" width="190" height="34.333333333333371"/>
+                                <state key="normal" title="Button"/>
+                                <buttonConfiguration key="configuration" style="plain" title="Terms and Conditions">
+                                    <color key="baseForegroundColor" systemColor="labelColor"/>
+                                </buttonConfiguration>
+                                <connections>
+                                    <action selector="termsAndConditionsButtonPressed" destination="L5l-QH-yd0" eventType="touchUpInside" id="Sgf-1G-F0Z"/>
+                                </connections>
+                            </button>
                         </subviews>
                         <viewLayoutGuide key="safeArea" id="4SX-0s-gq3"/>
                         <color key="backgroundColor" systemColor="systemBackgroundColor"/>
@@ -1014,7 +1024,9 @@
                             <constraint firstAttribute="bottom" secondItem="Qvj-Kg-e68" secondAttribute="bottom" id="Dza-IP-yGG"/>
                             <constraint firstItem="Qvj-Kg-e68" firstAttribute="leading" secondItem="vCs-pa-EKN" secondAttribute="leading" id="Kdx-W7-Dfx"/>
                             <constraint firstItem="fVd-qi-AfL" firstAttribute="top" secondItem="fLS-EM-fbk" secondAttribute="bottom" constant="26" id="O8K-ux-sDL"/>
+                            <constraint firstItem="43r-Yy-Dpk" firstAttribute="top" relation="greaterThanOrEqual" secondItem="fVd-qi-AfL" secondAttribute="bottom" constant="20" id="OWh-ag-i4w"/>
                             <constraint firstItem="YOK-e7-Ke7" firstAttribute="centerX" secondItem="vCs-pa-EKN" secondAttribute="centerX" id="Vco-8i-FcX"/>
+                            <constraint firstItem="43r-Yy-Dpk" firstAttribute="centerX" secondItem="4SX-0s-gq3" secondAttribute="centerX" id="asV-Xr-bMW"/>
                             <constraint firstItem="Wse-Yc-UaA" firstAttribute="top" secondItem="YOK-e7-Ke7" secondAttribute="bottom" id="d0d-1F-DRM"/>
                             <constraint firstItem="4SX-0s-gq3" firstAttribute="trailing" secondItem="fVd-qi-AfL" secondAttribute="trailing" constant="20" id="efM-1U-OAd"/>
                             <constraint firstItem="Qvj-Kg-e68" firstAttribute="top" secondItem="vCs-pa-EKN" secondAttribute="top" id="pVV-sD-NCc"/>
@@ -1026,6 +1038,7 @@
                             <constraint firstItem="Qvj-Kg-e68" firstAttribute="trailing" secondItem="vCs-pa-EKN" secondAttribute="trailing" id="x7u-wD-nFa"/>
                             <constraint firstItem="fLS-EM-fbk" firstAttribute="top" secondItem="Wse-Yc-UaA" secondAttribute="bottom" constant="20" id="yc3-xG-80u"/>
                             <constraint firstItem="fLS-EM-fbk" firstAttribute="centerX" secondItem="vCs-pa-EKN" secondAttribute="centerX" id="yvS-mc-uSj"/>
+                            <constraint firstItem="43r-Yy-Dpk" firstAttribute="bottom" secondItem="Qvj-Kg-e68" secondAttribute="bottom" constant="-40" id="z3x-CD-hI7"/>
                         </constraints>
                     </view>
                     <navigationItem key="navigationItem" id="Fvo-rK-Wij"/>
@@ -1033,6 +1046,7 @@
                     <connections>
                         <outlet property="clientCertificateButton" destination="ccp-K0-lHz" id="MR9-nI-vhO"/>
                         <outlet property="selectAccountTypeLabel" destination="fLS-EM-fbk" id="Qcc-Zz-CcI"/>
+                        <outlet property="termsAndConditionsButton" destination="43r-Yy-Dpk" id="zl1-p5-5Qu"/>
                         <outlet property="welcomeToPepLabel" destination="YOK-e7-Ke7" id="7A7-7v-PvG"/>
                         <segue destination="clh-8B-z2B" kind="show" identifier="showLogin" id="A6U-Bz-3KU"/>
                         <segue destination="Qyj-kG-7VF" kind="show" identifier="clientCertManagementSegue" id="efU-cA-Rt3"/>
@@ -1126,6 +1140,9 @@
         <image name="ico-key" width="24" height="12"/>
         <image name="ico-windows-group" width="24" height="24"/>
         <image name="splashscreen" width="393" height="852"/>
+        <systemColor name="labelColor">
+            <color red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+        </systemColor>
         <systemColor name="systemBackgroundColor">
             <color white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
         </systemColor>
