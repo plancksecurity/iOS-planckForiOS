@@ -79,23 +79,27 @@ extension UIViewController {
 
     private func navigationItemTitleView(pEpRating: Rating?, pEpProtection: Bool = true) -> UIView? {
         if let color = pEpRating?.pEpColor(),
-            let image = color.statusIconForMessage(enabled: pEpProtection) {
+           let image = pEpRating?.statusIconForMessage(enabled: pEpProtection, withText: true) {
+
             // according to apple's design guidelines ('Hit Targets'):
             // https://developer.apple.com/design/tips/
             let minimumHitTestDimension: CGFloat = 44
 
             let imageView = UIImageView(image: image)
+
             var accessibilityIdentifier: String
+
             switch color {
-            case .noColor:
-                accessibilityIdentifier = AccessibilityIdentifier.unknownTrust
-            case .yellow:
-                accessibilityIdentifier = AccessibilityIdentifier.secure
-            case .green:
-                accessibilityIdentifier = AccessibilityIdentifier.secureAndTrusted
-            case .red:
-                accessibilityIdentifier = AccessibilityIdentifier.mistrusted
+                case .noColor:
+                    accessibilityIdentifier = AccessibilityIdentifier.unknownTrust
+                case .yellow:
+                    accessibilityIdentifier = AccessibilityIdentifier.secure
+                case .green:
+                    accessibilityIdentifier = AccessibilityIdentifier.secureAndTrusted
+                case .red:
+                    accessibilityIdentifier = AccessibilityIdentifier.mistrusted
             }
+
             imageView.accessibilityIdentifier = accessibilityIdentifier
             imageView.isAccessibilityElement = true
             imageView.translatesAutoresizingMaskIntoConstraints = false

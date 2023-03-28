@@ -1,0 +1,57 @@
+{
+  "images" : [
+    {
+      "filename" : "ico_weakly_encrypted_EN 1.pdf",
+      "idiom" : "universal"
+    },
+    {
+      "appearances" : [
+        {
+          "appearance" : "luminosity",
+          "value" : "dark"
+        }
+      ],
+      "filename" : "ico_weakly_encrypted_EN_Dark.pdf",
+      "idiom" : "universal"
+    },
+    {
+      "filename" : "ico_weakly_encrypted_DE.pdf",
+      "idiom" : "universal",
+      "locale" : "de"
+    },
+    {
+      "appearances" : [
+        {
+          "appearance" : "luminosity",
+          "value" : "dark"
+        }
+      ],
+      "filename" : "ico_weakly_encrypted_DE_Dark.pdf",
+      "idiom" : "universal",
+      "locale" : "de"
+    },
+    {
+      "filename" : "ico_weakly_encrypted_EN.pdf",
+      "idiom" : "universal",
+      "locale" : "en"
+    },
+    {
+      "appearances" : [
+        {
+          "appearance" : "luminosity",
+          "value" : "dark"
+        }
+      ],
+      "filename" : "ico_weakly_encrypted_EN_Dark 1.pdf",
+      "idiom" : "universal",
+      "locale" : "en"
+    }
+  ],
+  "info" : {
+    "author" : "xcode",
+    "version" : 1
+  },
+  "properties" : {
+    "localizable" : true
+  }
+}
