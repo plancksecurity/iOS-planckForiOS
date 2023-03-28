@@ -79,11 +79,45 @@ class ShareViewModel {
                 if itemProvider.hasItemConformingToTypeIdentifier(kUTTypeImage as String) {
                     foundItemProviders.append(itemProvider)
                     dispatchGroup.enter()
-                    loadImage(dispatchGroup: dispatchGroup,
-                              sharedData: sharedData,
-                              extensionItem: extensionItem,
-                              attributedTitle: attributedTitle,
-                              itemProvider: itemProvider)
+                    itemProvider.loadItem(forTypeIdentifier: kUTTypeImage as String,
+                                          options: nil,
+                                          completionHandler: { [weak self] item, error in
+                        guard let me = self else {
+                            // assume user somehow canceled early
+                            dispatchGroup.leave()
+                            return
+                        }
+                        guard error == nil else {
+                            dispatchGroup.leave()
+                            return
+                        }
+                        if let imgUrl = item as? URL,
+                           let imgData = try? Data(contentsOf: imgUrl),
+                           let img = UIImage(data: imgData) {
+                            let mimeType = itemProvider.supportedMimeTypeForInlineAttachment() ?? MimeTypeUtils.mimeType(fromURL: imgUrl)
+                            let filename = imgUrl.fileName(includingExtension: true)
+                            sharedData.add(itemProvider: itemProvider,
+                                           dataWithType: .image(attributedTitle,
+                                                                filename,
+                                                                img,
+                                                                imgData,
+                                                                mimeType))
+                        } else if let img = item as? UIImage,
+                                  let data = img.jpeg(.highest) {
+                            let defaultImageName = "image"
+                            let mimeType = itemProvider.supportedMimeTypeForInlineAttachment() ?? MimeTypeUtils.mimeType(fromFileExtension: "jpg")
+                            sharedData.add(itemProvider: itemProvider,
+                                           dataWithType: .image(attributedTitle,
+                                                                defaultImageName,
+                                                                img,
+                                                                data,
+                                                                mimeType))
+                        } else {
+                            me.shareViewModelDelegate?.attachmentCouldNotBeLoaded(error: error)
+                        }
+                        dispatchGroup.leave()
+                    })
+                    
                 } else if itemProvider.hasItemConformingToTypeIdentifier(kUTTypeFileURL as String) {
                     foundItemProviders.append(itemProvider)
                     dispatchGroup.enter()
@@ -123,7 +157,26 @@ class ShareViewModel {
                 }
             }
         }
+        
+        dispatchGroup.notify(queue: DispatchQueue.main) { [weak self] in
+            guard let me = self else {
+                // assume user somehow canceled early
+                return
+            }
+            do {
+                let composeVM = try me.composeViewModel(sharedTypes: sharedData.allSharedTypes())
+                me.shareViewModelDelegate?.startComposeView(composeViewModel: composeVM)
+            } catch MessageCreationError.noAccount {
+                me.shareViewModelDelegate?.noAccount()
+            } catch MessageCreationError.attachmentLimitExceeded {
+                me.shareViewModelDelegate?.attachmentLimitExceeded()
+            } catch {
+                Log.shared.errorAndCrash(error: error)
+                me.shareViewModelDelegate?.canceledByUser()
+            }
+        }
 
+        /*
         // the action to execute when all shared data has been loaded
         let finishWorkItem = DispatchWorkItem(qos: .userInitiated, flags: []) { [weak self] in
             guard let me = self else {
@@ -146,6 +199,7 @@ class ShareViewModel {
 
         // let the dispatch group call us when all is done
         dispatchGroup.notify(queue: DispatchQueue.main, work: finishWorkItem)
+        */
     }
 
     // MARK: - Private
@@ -320,38 +374,38 @@ extension ShareViewModel {
         itemProvider.loadItem(forTypeIdentifier: kUTTypeImage as String,
                               options: nil,
                               completionHandler: { [weak self] item, error in
-                                guard let me = self else {
-                                    // assume user somehow canceled early
-                                    dispatchGroup.leave()
-                                    return
-                                }
-
-                                if let imgUrl = item as? URL,
-                                   let imgData = try? Data(contentsOf: imgUrl),
-                                   let img = UIImage(data: imgData) {
-                                    let mimeType = itemProvider.supportedMimeTypeForInlineAttachment() ?? MimeTypeUtils.mimeType(fromURL: imgUrl)
-                                    let filename = imgUrl.fileName(includingExtension: true)
-                                    sharedData.add(itemProvider: itemProvider,
-                                                   dataWithType: .image(attributedTitle,
-                                                                        filename,
-                                                                        img,
-                                                                        imgData,
-                                                                        mimeType))
-                                } else if let img = item as? UIImage,
-                                          let data = img.jpeg(.high) {
-                                    let defaultImageName = "image"
-                                    let mimeType = itemProvider.supportedMimeTypeForInlineAttachment() ?? MimeTypeUtils.mimeType(fromFileExtension: "jpg")
-                                    sharedData.add(itemProvider: itemProvider,
-                                                   dataWithType: .image(attributedTitle,
-                                                                        defaultImageName,
-                                                                        img,
-                                                                        data,
-                                                                        mimeType))
-                                } else {
-                                    me.shareViewModelDelegate?.attachmentCouldNotBeLoaded(error: error)
-                                }
-                                dispatchGroup.leave()
-                              })
+            guard let me = self else {
+                // assume user somehow canceled early
+                dispatchGroup.leave()
+                return
+            }
+            
+            if let imgUrl = item as? URL,
+               let imgData = try? Data(contentsOf: imgUrl),
+               let img = UIImage(data: imgData) {
+                let mimeType = itemProvider.supportedMimeTypeForInlineAttachment() ?? MimeTypeUtils.mimeType(fromURL: imgUrl)
+                let filename = imgUrl.fileName(includingExtension: true)
+                sharedData.add(itemProvider: itemProvider,
+                               dataWithType: .image(attributedTitle,
+                                                    filename,
+                                                    img,
+                                                    imgData,
+                                                    mimeType))
+            } else if let img = item as? UIImage,
+                      let data = img.jpeg(.high) {
+                let defaultImageName = "image"
+                let mimeType = itemProvider.supportedMimeTypeForInlineAttachment() ?? MimeTypeUtils.mimeType(fromFileExtension: "jpg")
+                sharedData.add(itemProvider: itemProvider,
+                               dataWithType: .image(attributedTitle,
+                                                    defaultImageName,
+                                                    img,
+                                                    data,
+                                                    mimeType))
+            } else {
+                me.shareViewModelDelegate?.attachmentCouldNotBeLoaded(error: error)
+            }
+            //dispatchGroup.leave()
+        })
     }
 
     private func loadFile(utiString: String,

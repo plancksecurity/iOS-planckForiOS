@@ -16,12 +16,11 @@ final class ShareViewController: UIViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
-
+        view.backgroundColor = UIColor.pEpGreen
         guard let context = extensionContext else {
             Log.shared.errorAndCrash(message: "Lost extension context!")
             return
         }
-
         vm.shareViewModelDelegate = self
         vm.loadInputItems(extensionContext: context)
     }
