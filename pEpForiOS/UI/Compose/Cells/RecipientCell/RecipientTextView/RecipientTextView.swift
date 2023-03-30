@@ -27,7 +27,9 @@ class RecipientTextView: UITextView {
             Log.shared.errorAndCrash("VM not found")
             return
         }
-        vm.maxTextattachmentWidth = bounds.width
+        // This refers to badge icon of the amount of recipients that are not shown in the first and single line of recipinets in the textview.
+        let plusBadgeIconWidth = 26.0
+        vm.maxTextattachmentWidth = bounds.width - plusBadgeIconWidth
     }
 
     public func setInitialText() {

@@ -21,7 +21,7 @@ import MessageModel
 import pEpIOSToolbox
 #endif
 
-class ComposeViewController: UIViewController, RecipientsBannerDelegate {
+class ComposeViewController: UIViewController {
 
     public static let storyboardId = "ComposeViewController"
 
@@ -366,7 +366,7 @@ extension ComposeViewController: ComposeViewModelDelegate {
                     Log.shared.errorAndCrash("No Banner. Unexpected")
                     return
                 }
-                guard let recipientsBannerViewModel = me.viewModel?.getRecipientBannerViewModel(delegate: me) else {
+                guard let recipientsBannerViewModel = me.viewModel?.getRecipientBannerViewModel() else {
                     Log.shared.errorAndCrash("Visible but no recipients. Unexpected")
                     return
                 }
@@ -586,7 +586,7 @@ extension ComposeViewController: SegueHandlerType {
                 Log.shared.errorAndCrash("No vm")
                 return
             }
-            guard let recipientsViewModel = vm.getRecipientBannerViewModel(delegate: self)  else {
+            guard let recipientsViewModel = vm.getRecipientBannerViewModel()  else {
                 Log.shared.error("Message not found")
                 return
             }
@@ -1198,31 +1198,6 @@ extension ComposeViewController {
 
     @objc private func closeScreen() {
         dismiss()
-    }
-
-    func presentRecipientsListView(viewModel: RecipientsListViewModel) {
-        let storyboard = UIStoryboard(name: Constants.recipientsStoryboard, bundle: nil)
-        guard let navigationController = storyboard.instantiateViewController(withIdentifier:
-                Constants.unsecureRecipientsListNavigation) as? UINavigationController
-            else {
-                Log.shared.errorAndCrash("Missing required VCs")
-                return
-        }
-        guard let recipientsListViewController = navigationController.children.first as? RecipientsListViewController else {
-            Log.shared.errorAndCrash("No VC")
-            return
-        }
-        let navBarButtonTitle = NSLocalizedString("Done", comment: "Done")
-        let endButton = UIBarButtonItem(title: navBarButtonTitle,
-                                        style: .done,
-                                        target: self,
-                                        action: #selector(closeScreen))
-        endButton.accessibilityIdentifier = AccessibilityIdentifier.doneButton
-        endButton.isAccessibilityElement = true
-        recipientsListViewController.navigationItem.rightBarButtonItem = endButton
-        viewModel.delegate = recipientsListViewController
-        recipientsListViewController.viewModel = viewModel
-        present(navigationController, animated: true, completion: nil)
     }
 }
 

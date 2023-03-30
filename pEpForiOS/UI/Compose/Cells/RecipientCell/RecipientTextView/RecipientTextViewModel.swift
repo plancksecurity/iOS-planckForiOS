@@ -305,8 +305,7 @@ extension RecipientTextViewModel {
             recipientsTextAttachmentWidth += CGFloat(toShow.count * 2) // space between textAttachments
             // Evaluate if there is space for the next attachment. Group the text attachments accordingly.
             let shouldShow = del.isThereSpaceForANewTextAttachment(recipientsTextAttachmentWidth: recipientsTextAttachmentWidth,
-                                                                   expectedWidthOfTheNewTextAttachment: expectedWidthOfTheNewTextAttachment) && toHide.isEmpty
-
+                                                                   expectedWidthOfTheNewTextAttachment: expectedWidthOfTheNewTextAttachment) || toShow.isEmpty
             if shouldShow {
                 toShow.append(textAttachment)
             } else {
@@ -316,6 +315,7 @@ extension RecipientTextViewModel {
 
         guard !toShow.isEmpty else {
             Log.shared.errorAndCrash("Something went wrong here. We should have at least 1 element to show.")
+            removeBadgeTextAttachments()
             return
         }
 
