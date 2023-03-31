@@ -266,6 +266,9 @@ class MockEmailViewModelDelegate: EmailViewModelDelegate {
     func showExternalContent() {
         fulfillIfNotNil(expectation: showExternalContentExpectation)
     }
+    
+    func updateNavigationBarSecurityBadge(pEpRating: MessageModel.Rating) {
+    }
 
     private func fulfillIfNotNil(expectation: XCTestExpectation?) {
         if expectation != nil {
