@@ -287,7 +287,10 @@ extension SettingsTableViewController : SwipeTableViewCellDelegate {
             tableView.deselectRow(at: indexPath, animated: true)
             return
         case .userManual:
-            if NetworkMonitorUtil.shared.netOn {
+            tableView.deselectRow(at: indexPath, animated: true)
+            
+            if !NetworkMonitorUtil.shared.netOn {
+                //Inform the user if there is no internet connection.
                 UIUtils.showNoInternetConnectionBanner(viewController: self)
                 return
             }
