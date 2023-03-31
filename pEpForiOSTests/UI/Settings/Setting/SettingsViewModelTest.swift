@@ -108,9 +108,6 @@ class MockFileExportUtil : FileExportUtilProtocol {
 // MARK: - delegate mocks
 
 class SettingsViewModeldelegate: SettingsViewModelDelegate {
-    func showUserManual() {
-        XCTFail()
-    }
     
     func showLoadingView() {
         XCTFail()

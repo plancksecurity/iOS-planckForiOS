@@ -335,9 +335,6 @@ extension SettingsTableViewController : SwipeTableViewCellDelegate {
 // MARK: - Loading views & Editability State Change Alert
 
 extension SettingsTableViewController : SettingsViewModelDelegate {
-    func showUserManual() {
-        
-    }
 
     func showFeedback(title: String, message: String) {
         UIUtils.showAlertWithOnlyCloseButton(title: title, message: message)

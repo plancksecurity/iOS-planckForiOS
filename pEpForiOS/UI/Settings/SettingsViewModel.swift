@@ -28,8 +28,6 @@ protocol SettingsViewModelDelegate: AnyObject {
     func showFeedback(title: String, message: String)
     /// Show a feedback message to try again
     func showTryAgain(title: String, message: String)
-    /// Show user manual
-    func showUserManual()
 }
 
 /// Protocol that represents the basic data in a row.
@@ -161,16 +159,6 @@ final class SettingsViewModel {
 
     public func handleTryAgainResetAllIdentities() {
         handleResetAllIdentities()
-    }
-
-    public func handleUserManual() {
-        DispatchQueue.main.async { [weak self] in
-            guard let me = self else {
-                Log.shared.errorAndCrash("Lost myself")
-                return
-            }
-            me.delegate?.showUserManual()
-        }
     }
     
     public func pgpKeyImportSettingViewModel() -> PGPKeyImportSettingViewModel {
