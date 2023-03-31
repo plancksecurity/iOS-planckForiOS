@@ -84,11 +84,11 @@ class ShareViewModel {
                                           completionHandler: { [weak self] item, error in
                         guard let me = self else {
                             // assume user somehow canceled early
-                            dispatchGroup.leave()
+                            //dispatchGroup.leave()
                             return
                         }
                         guard error == nil else {
-                            dispatchGroup.leave()
+                            //dispatchGroup.leave()
                             return
                         }
                         if let imgUrl = item as? URL,
@@ -163,6 +163,7 @@ class ShareViewModel {
                 // assume user somehow canceled early
                 return
             }
+
             do {
                 let composeVM = try me.composeViewModel(sharedTypes: sharedData.allSharedTypes())
                 me.shareViewModelDelegate?.startComposeView(composeViewModel: composeVM)
