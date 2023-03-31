@@ -56,7 +56,7 @@ class NotificationBannerUtil: NotificationBannerUtilProtocol {
                 return
             }
 #else
-            guard vc is EmailListViewController || vc is ComposeViewController else {
+            guard vc is EmailListViewController || vc is ComposeViewController || SettingsTableViewController else {
                 //The banner MUST NOT be shown in other VCs than Email List and Compose.
                 return
             }

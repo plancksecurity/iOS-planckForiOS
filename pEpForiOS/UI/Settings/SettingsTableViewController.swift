@@ -151,6 +151,7 @@ extension SettingsTableViewController {
         case .defaultAccount,
              .pgpKeyImport,
              .credits,
+             .userManual,
              .extraKeys,
              .tutorial,
              .exportDBs,
@@ -285,11 +286,24 @@ extension SettingsTableViewController : SwipeTableViewCellDelegate {
             showExportDBsAlert()
             tableView.deselectRow(at: indexPath, animated: true)
             return
+        case .userManual:
+            if NetworkMonitorUtil.shared.netOn {
+                UIUtils.showNoInternetConnectionBanner(viewController: self)
+                return
+            }
+            guard let urlString = InfoPlist.userManualURL(),
+                  let url = URL(string: urlString),
+                  UIApplication.shared.canOpenURL(url) else {
+                Log.shared.errorAndCrash("Can't open url")
+                break
+            }
+            UIApplication.shared.open(url, options: [:])
+            return
         case .account,
-             .extraKeys,
-             .resetTrust,
-             .pgpKeyImport,
-             .trustedServer,
+                .extraKeys,
+                .resetTrust,
+                .pgpKeyImport,
+                .trustedServer,
              .credits,
              .defaultAccount:
             performSegue(withIdentifier: sequeIdentifier(forRowWithIdentifier: row.identifier).rawValue,
@@ -318,6 +332,9 @@ extension SettingsTableViewController : SwipeTableViewCellDelegate {
 // MARK: - Loading views & Editability State Change Alert
 
 extension SettingsTableViewController : SettingsViewModelDelegate {
+    func showUserManual() {
+        
+    }
 
     func showFeedback(title: String, message: String) {
         UIUtils.showAlertWithOnlyCloseButton(title: title, message: message)
@@ -443,6 +460,8 @@ extension SettingsTableViewController {
             return .none // .segueDeviceGroups
         case .about:
             return .none // .segueAbout
+        case .userManual:
+            return .none
         }
     }
 

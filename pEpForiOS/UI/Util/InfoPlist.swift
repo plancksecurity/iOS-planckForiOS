@@ -27,6 +27,13 @@ struct InfoPlist {
         }
         return version
     }
+    
+    static public func userManualURL() -> String? {
+        guard let userManualURL = mainBundleInfoDictValue(forKey: "USER_MANUAL_URL") as? String else {
+            return nil
+        }
+        return userManualURL
+    }
 
     static private func mainBundleInfoDictValue(forKey key: String) -> Any? {
         guard let infoDict = infoDictMainBundle else {

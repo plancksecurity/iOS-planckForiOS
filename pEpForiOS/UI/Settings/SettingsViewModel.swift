@@ -28,6 +28,8 @@ protocol SettingsViewModelDelegate: AnyObject {
     func showFeedback(title: String, message: String)
     /// Show a feedback message to try again
     func showTryAgain(title: String, message: String)
+    /// Show user manual
+    func showUserManual()
 }
 
 /// Protocol that represents the basic data in a row.
@@ -82,6 +84,7 @@ final class SettingsViewModel {
                 .defaultAccount,
                 .pgpKeyImport,
                 .credits,
+                .userManual,
                 .extraKeys,
                 .trustedServer,
                 .resetTrust,
@@ -160,6 +163,16 @@ final class SettingsViewModel {
         handleResetAllIdentities()
     }
 
+    public func handleUserManual() {
+        DispatchQueue.main.async { [weak self] in
+            guard let me = self else {
+                Log.shared.errorAndCrash("Lost myself")
+                return
+            }
+            me.delegate?.showUserManual()
+        }
+    }
+    
     public func pgpKeyImportSettingViewModel() -> PGPKeyImportSettingViewModel {
         return PGPKeyImportSettingViewModel()
     }
@@ -257,9 +270,11 @@ extension SettingsViewModel {
         case .globalSettings:
             if appSettings.mdmIsEnabled {
                 rows.append(generateNavigationRow(type: .credits, isDangerous: false))
+                rows.append(generateNavigationRow(type: .userManual, isDangerous: false))
             } else {
                 rows.append(generateNavigationRow(type: .defaultAccount, isDangerous: false))
                 rows.append(generateNavigationRow(type: .credits, isDangerous: false))
+                rows.append(generateNavigationRow(type: .userManual, isDangerous: false))
                 rows.append(generateNavigationRow(type: .pgpKeyImport, isDangerous: false))
                 rows.append(generateSwitchRow(type: .unsecureReplyWarningEnabled,
                                               isDangerous: false,
@@ -429,6 +444,9 @@ extension SettingsViewModel {
         case .resetAccounts:
             return NSLocalizedString("Reset own keys",
                                      comment: "Settings: Cell (button) title for reset all identities")
+        case .userManual:
+            return NSLocalizedString("User Manual",
+                                     comment: "Settings: Cell (button) title to view app User Manual")
         case .credits:
             return NSLocalizedString("Credits",
                                      comment: "Settings: Cell (button) title to view app credits")
@@ -484,6 +502,7 @@ extension SettingsViewModel {
             return AppSettings.shared.defaultAccount
         case .account,
                 .credits,
+                .userManual,
                 .extraKeys,
                 .passiveMode,
                 .pEpSync,
@@ -629,6 +648,7 @@ extension SettingsViewModel {
         case extraKeys
         case tutorial
         case exportDBs
+        case userManual
 
         case groupMailboxes
         case deviceGroups
