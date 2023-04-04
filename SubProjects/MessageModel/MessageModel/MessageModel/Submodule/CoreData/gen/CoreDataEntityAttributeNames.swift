@@ -194,6 +194,7 @@ extension CdMessage {
         static let longMessage = "longMessage"
         static let longMessageFormatted = "longMessageFormatted"
         static let needsDecrypt = "needsDecrypt"
+        static let pEpComesFromEngine = "pEpComesFromEngine"
         static let pEpProtected = "pEpProtected"
         static let pEpRating = "pEpRating"
         static let received = "received"

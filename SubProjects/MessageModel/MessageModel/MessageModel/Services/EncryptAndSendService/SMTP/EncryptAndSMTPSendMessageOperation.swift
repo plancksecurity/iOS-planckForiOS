@@ -76,6 +76,21 @@ extension EncryptAndSMTPSendMessageOperation {
             return
         }
         let extraKeys = CdExtraKey.fprsOfAllExtraKeys(in: privateMOC)
+
+        guard !cdMessage.pEpComesFromEngine else {
+            backgroundQueue.addOperation { [weak self] in
+                guard let me = self else {
+                    Log.shared.errorAndCrash("Lost myself")
+                    return
+                }
+                me.privateMOC.perform {
+                    me.setOriginalRatingHeader(unencryptedCdMessage: cdMessage)
+                    me.send(pEpMessage: pEpMsg)
+                }
+            }
+            return
+        }
+        
         PEPUtils.encrypt(pEpMessage: pEpMsg,
                          encryptionFormat: cdMessage.pEpProtected ? .PEP : .none,
                          extraKeys: extraKeys,
