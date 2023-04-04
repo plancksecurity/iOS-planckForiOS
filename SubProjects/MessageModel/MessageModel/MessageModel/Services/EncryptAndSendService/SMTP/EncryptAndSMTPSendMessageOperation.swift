@@ -77,6 +77,8 @@ extension EncryptAndSMTPSendMessageOperation {
         }
         let extraKeys = CdExtraKey.fprsOfAllExtraKeys(in: privateMOC)
 
+        // If the message comes from the engine, for example, if it's a message from reset key,
+        // we don't encrypt it again.
         guard !cdMessage.pEpComesFromEngine else {
             backgroundQueue.addOperation { [weak self] in
                 guard let me = self else {
