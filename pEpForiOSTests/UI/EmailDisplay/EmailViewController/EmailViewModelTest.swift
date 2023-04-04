@@ -214,7 +214,6 @@ extension EmailViewModelTest {
 }
 
 class MockEmailViewModelDelegate: EmailViewModelDelegate {
-
     private var showQuickLookOfAttachmentExpectation: XCTestExpectation?
     private var showLoadingViewExpectation: XCTestExpectation?
     private var hideLoadingViewExpectation: XCTestExpectation?
@@ -267,6 +266,9 @@ class MockEmailViewModelDelegate: EmailViewModelDelegate {
         fulfillIfNotNil(expectation: showExternalContentExpectation)
     }
     
+    func updateNavigationBarSecurityBadge(pEpRating: MessageModel.Rating) {
+    }
+
     func updateNavigationBarSecurityBadge(pEpRating: MessageModel.Rating) {
     }
 
