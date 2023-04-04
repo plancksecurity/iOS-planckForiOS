@@ -118,7 +118,7 @@
         <attribute name="longMessage" optional="YES" attributeType="String"/>
         <attribute name="longMessageFormatted" optional="YES" attributeType="String"/>
         <attribute name="needsDecrypt" attributeType="Boolean" defaultValueString="NO" usesScalarValueType="YES"/>
-        <attribute name="pEpComesFromEngine" optional="YES" attributeType="Boolean" usesScalarValueType="YES"/>
+        <attribute name="pEpComesFromEngine" attributeType="Boolean" defaultValueString="NO" usesScalarValueType="YES"/>
         <attribute name="pEpProtected" attributeType="Boolean" defaultValueString="YES" usesScalarValueType="YES"/>
         <attribute name="pEpRating" attributeType="Integer 16" defaultValueString="0" usesScalarValueType="YES"/>
         <attribute name="received" optional="YES" attributeType="Date" usesScalarValueType="NO"/>
