@@ -303,10 +303,10 @@ extension SettingsTableViewController : SwipeTableViewCellDelegate {
             UIApplication.shared.open(url, options: [:])
             return
         case .account,
-                .extraKeys,
-                .resetTrust,
-                .pgpKeyImport,
-                .trustedServer,
+             .extraKeys,
+             .resetTrust,
+             .pgpKeyImport,
+             .trustedServer,
              .credits,
              .defaultAccount:
             performSegue(withIdentifier: sequeIdentifier(forRowWithIdentifier: row.identifier).rawValue,
