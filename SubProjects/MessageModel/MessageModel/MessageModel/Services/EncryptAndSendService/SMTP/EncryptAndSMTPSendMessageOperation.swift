@@ -68,18 +68,14 @@ extension EncryptAndSMTPSendMessageOperation {
         cdMessage.sent = Date()
         let pEpMsg = cdMessage.pEpMessage()
 
-        guard !cdMessage.isAutoConsumable else {
-            // The Engine asked us to send this message (by calling the send callback).
-            // Thus the Engine has crafted this message. Do not pass to the Engine again.
-            // Simply send out.
-            send(pEpMessage: pEpMsg)
-            return
-        }
         let extraKeys = CdExtraKey.fprsOfAllExtraKeys(in: privateMOC)
 
         // If the message comes from the engine, for example, if it's a message from reset key,
         // we don't encrypt it again.
         guard !cdMessage.pEpComesFromEngine else {
+            // The Engine asked us to send this message (by calling the send callback).
+            // Thus the Engine has crafted this message. Do not pass to the Engine again.
+            // Simply send out.
             backgroundQueue.addOperation { [weak self] in
                 guard let me = self else {
                     Log.shared.errorAndCrash("Lost myself")
