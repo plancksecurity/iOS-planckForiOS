@@ -68,14 +68,16 @@ extension EncryptAndSMTPSendMessageOperation {
         cdMessage.sent = Date()
         let pEpMsg = cdMessage.pEpMessage()
 
-        guard !cdMessage.isAutoConsumable else {
+        guard !cdMessage.pEpComesFromEngine else {
             // The Engine asked us to send this message (by calling the send callback).
             // Thus the Engine has crafted this message. Do not pass to the Engine again.
             // Simply send out.
             send(pEpMessage: pEpMsg)
             return
         }
+
         let extraKeys = CdExtraKey.fprsOfAllExtraKeys(in: privateMOC)
+        
         PEPUtils.encrypt(pEpMessage: pEpMsg,
                          encryptionFormat: cdMessage.pEpProtected ? .PEP : .none,
                          extraKeys: extraKeys,
