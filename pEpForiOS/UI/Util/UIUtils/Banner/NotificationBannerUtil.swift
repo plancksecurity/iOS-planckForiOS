@@ -56,8 +56,8 @@ class NotificationBannerUtil: NotificationBannerUtilProtocol {
                 return
             }
 #else
-            guard vc is EmailListViewController || vc is ComposeViewController else {
-                //The banner MUST NOT be shown in other VCs than Email List and Compose.
+            guard vc is EmailListViewController || vc is ComposeViewController || vc is SettingsTableViewController else {
+                //The banner MUST NOT be shown in other VCs than Email List, Compose and SettingsTableViewController.
                 return
             }
 #endif
@@ -144,6 +144,9 @@ class NotificationBannerUtil: NotificationBannerUtilProtocol {
             } completion: { finished in
                 // Then, show the UI components.
                 errorBannerView.titleLabel.isHidden = false
+                DispatchQueue.main.asyncAfter(deadline: .now() + 2) {
+                    NotificationBannerUtil.hide()
+                }
             }
         }
 #endif

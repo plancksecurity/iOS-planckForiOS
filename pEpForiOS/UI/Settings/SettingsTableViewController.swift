@@ -151,6 +151,7 @@ extension SettingsTableViewController {
         case .defaultAccount,
              .pgpKeyImport,
              .credits,
+             .userManual,
              .extraKeys,
              .tutorial,
              .exportDBs,
@@ -284,6 +285,22 @@ extension SettingsTableViewController : SwipeTableViewCellDelegate {
         case .exportDBs:
             showExportDBsAlert()
             tableView.deselectRow(at: indexPath, animated: true)
+            return
+        case .userManual:
+            tableView.deselectRow(at: indexPath, animated: true)
+            
+            if !NetworkMonitorUtil.shared.netOn {
+                //Inform the user if there is no internet connection.
+                UIUtils.showNoInternetConnectionBanner(viewController: self)
+                return
+            }
+            guard let urlString = InfoPlist.userManualURL(),
+                  let url = URL(string: urlString),
+                  UIApplication.shared.canOpenURL(url) else {
+                Log.shared.errorAndCrash("Can't open url")
+                break
+            }
+            UIApplication.shared.open(url, options: [:])
             return
         case .account,
              .extraKeys,
@@ -443,6 +460,8 @@ extension SettingsTableViewController {
             return .none // .segueDeviceGroups
         case .about:
             return .none // .segueAbout
+        case .userManual:
+            return .none
         }
     }
 

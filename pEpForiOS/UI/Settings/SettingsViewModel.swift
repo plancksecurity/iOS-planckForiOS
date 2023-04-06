@@ -82,6 +82,7 @@ final class SettingsViewModel {
                 .defaultAccount,
                 .pgpKeyImport,
                 .credits,
+                .userManual,
                 .extraKeys,
                 .trustedServer,
                 .resetTrust,
@@ -159,7 +160,7 @@ final class SettingsViewModel {
     public func handleTryAgainResetAllIdentities() {
         handleResetAllIdentities()
     }
-
+    
     public func pgpKeyImportSettingViewModel() -> PGPKeyImportSettingViewModel {
         return PGPKeyImportSettingViewModel()
     }
@@ -257,9 +258,11 @@ extension SettingsViewModel {
         case .globalSettings:
             if appSettings.mdmIsEnabled {
                 rows.append(generateNavigationRow(type: .credits, isDangerous: false))
+                rows.append(generateNavigationRow(type: .userManual, isDangerous: false))
             } else {
                 rows.append(generateNavigationRow(type: .defaultAccount, isDangerous: false))
                 rows.append(generateNavigationRow(type: .credits, isDangerous: false))
+                rows.append(generateNavigationRow(type: .userManual, isDangerous: false))
                 rows.append(generateNavigationRow(type: .pgpKeyImport, isDangerous: false))
                 rows.append(generateSwitchRow(type: .unsecureReplyWarningEnabled,
                                               isDangerous: false,
@@ -429,6 +432,9 @@ extension SettingsViewModel {
         case .resetAccounts:
             return NSLocalizedString("Reset own keys",
                                      comment: "Settings: Cell (button) title for reset all identities")
+        case .userManual:
+            return NSLocalizedString("User Manual",
+                                     comment: "Settings: Cell (button) title to view app User Manual")
         case .credits:
             return NSLocalizedString("Credits",
                                      comment: "Settings: Cell (button) title to view app credits")
@@ -484,6 +490,7 @@ extension SettingsViewModel {
             return AppSettings.shared.defaultAccount
         case .account,
                 .credits,
+                .userManual,
                 .extraKeys,
                 .passiveMode,
                 .pEpSync,
@@ -629,6 +636,7 @@ extension SettingsViewModel {
         case extraKeys
         case tutorial
         case exportDBs
+        case userManual
 
         case groupMailboxes
         case deviceGroups
