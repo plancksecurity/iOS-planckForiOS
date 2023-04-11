@@ -67,6 +67,7 @@ extension KeySyncService: PEPSendMessageDelegate {
         let cdMsg = CdMessage.from(pEpMessage: pEpMessage, context: moc)
         cdMsg.sent = Date()
         cdMsg.uuid = UUID().uuidString
+        cdMsg.pEpComesFromEngine = true
         return cdMsg
     }
 

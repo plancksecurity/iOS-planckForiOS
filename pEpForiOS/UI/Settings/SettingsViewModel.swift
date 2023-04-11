@@ -581,7 +581,7 @@ extension SettingsViewModel {
         delegate?.showLoadingView()
         Account.resetAllOwnKeys() { [weak self] result in
             guard let me = self else {
-                Log.shared.errorAndCrash("Lost myself")
+                //Valid case, the view might be dismissed. 
                 return
             }
             switch result {
