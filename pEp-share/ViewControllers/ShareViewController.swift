@@ -159,7 +159,9 @@ extension ShareViewController {
         }
 
         composeVC.viewModel = composeViewModel
-
-        navigationController?.pushViewController(composeVC, animated: false)
+        let navController = UINavigationController(rootViewController: composeVC)
+        navController.modalPresentationStyle = .fullScreen
+        present(navController, animated: false)
+        //navigationController?.pushViewController(composeVC, animated: false)
     }
 }
