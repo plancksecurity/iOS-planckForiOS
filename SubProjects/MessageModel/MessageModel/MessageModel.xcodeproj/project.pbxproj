@@ -478,6 +478,8 @@
 		43A676A2246D3A81004639FE /* KeyImportUtilProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43A676A1246D3A81004639FE /* KeyImportUtilProtocol.swift */; };
 		43A6E05C1E57725C005BEE69 /* CdKey+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43A6E05B1E57725C005BEE69 /* CdKey+Extension.swift */; };
 		43A7661A260A136600E67592 /* pEpIOSToolboxForExtensions.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 43A76619260A136600E67592 /* pEpIOSToolboxForExtensions.framework */; };
+		43A7D64C29DD9D630031FECB /* libc++.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = 43A7D64B29DD9D630031FECB /* libc++.tbd */; };
+		43A7D64D29DD9DDC0031FECB /* libc++.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = 43A7D64B29DD9D630031FECB /* libc++.tbd */; };
 		43A9818024E52FF700830603 /* Identity+pEpIdentity.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43A9817F24E52FF700830603 /* Identity+pEpIdentity.swift */; };
 		43A9818624E5382900830603 /* Color.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43A9818524E5382900830603 /* Color.swift */; };
 		43A9818824E5393300830603 /* Color+pEp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43A9818724E5393300830603 /* Color+pEp.swift */; };
@@ -1057,6 +1059,7 @@
 		43A676A1246D3A81004639FE /* KeyImportUtilProtocol.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = KeyImportUtilProtocol.swift; sourceTree = "<group>"; };
 		43A6E05B1E57725C005BEE69 /* CdKey+Extension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "CdKey+Extension.swift"; sourceTree = "<group>"; };
 		43A76619260A136600E67592 /* pEpIOSToolboxForExtensions.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = pEpIOSToolboxForExtensions.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		43A7D64B29DD9D630031FECB /* libc++.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = "libc++.tbd"; path = "Platforms/MacOSX.platform/Developer/SDKs/MacOSX13.0.sdk/usr/lib/libc++.tbd"; sourceTree = DEVELOPER_DIR; };
 		43A9817F24E52FF700830603 /* Identity+pEpIdentity.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Identity+pEpIdentity.swift"; sourceTree = "<group>"; };
 		43A9818524E5382900830603 /* Color.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Color.swift; sourceTree = "<group>"; };
 		43A9818724E5393300830603 /* Color+pEp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Color+pEp.swift"; sourceTree = "<group>"; };
@@ -1244,6 +1247,7 @@
 				434C5AA129784B04007496AF /* AppAuth.framework in Frameworks */,
 				43A7661A260A136600E67592 /* pEpIOSToolboxForExtensions.framework in Frameworks */,
 				434A6D5B25D2CB2F00179335 /* libPEPObjCAdapter_iOS.a in Frameworks */,
+				43A7D64D29DD9DDC0031FECB /* libc++.tbd in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1256,6 +1260,7 @@
 				1543DCD92579455B0041EFB5 /* libPEPObjCAdapter_iOS.a in Frameworks */,
 				43EA489D221E95E3006E8F83 /* PantomimeFramework.framework in Frameworks */,
 				B7DB7FA522147000003968DA /* pEpIOSToolbox.framework in Frameworks */,
+				43A7D64C29DD9D630031FECB /* libc++.tbd in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -2739,6 +2744,7 @@
 		B7DB7FA322147000003968DA /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				43A7D64B29DD9D630031FECB /* libc++.tbd */,
 				434C5AA029784B04007496AF /* AppAuth.framework */,
 				43CDF0A9264282F000E8E944 /* AppAuthForExtensions.framework */,
 				43A76619260A136600E67592 /* pEpIOSToolboxForExtensions.framework */,

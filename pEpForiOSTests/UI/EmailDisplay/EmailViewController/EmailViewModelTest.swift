@@ -269,9 +269,6 @@ class MockEmailViewModelDelegate: EmailViewModelDelegate {
     func updateNavigationBarSecurityBadge(pEpRating: MessageModel.Rating) {
     }
 
-    func updateNavigationBarSecurityBadge(pEpRating: MessageModel.Rating) {
-    }
-
     private func fulfillIfNotNil(expectation: XCTestExpectation?) {
         if expectation != nil {
             expectation?.fulfill()
