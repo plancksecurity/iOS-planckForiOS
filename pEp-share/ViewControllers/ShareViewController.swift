@@ -157,11 +157,10 @@ extension ShareViewController {
             Log.shared.errorAndCrash("Cannot instantiate ComposeViewController")
             return
         }
-
         composeVC.viewModel = composeViewModel
         let navController = UINavigationController(rootViewController: composeVC)
         navController.modalPresentationStyle = .fullScreen
+        navController.view.backgroundColor = .systemBackground
         present(navController, animated: false)
-        //navigationController?.pushViewController(composeVC, animated: false)
     }
 }

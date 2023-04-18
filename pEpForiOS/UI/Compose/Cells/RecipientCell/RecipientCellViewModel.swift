@@ -82,6 +82,7 @@ class RecipientCellViewModel: CellViewModel {
             Log.shared.errorAndCrash("TextViewModel not found")
             return
         }
+
         if let del = resultDelegate, !del.isPresentingConctactsPicker(), !del.isDismissing() {
             textViewModel.collapseRecipients()
         }

@@ -66,7 +66,7 @@ extension UIUtils {
         }
         UIUtils.show(alertViewController)
     }
-    
+
     /// Shows a two alert button alert configured with the values passed by parameter.
     ///
     /// - Parameters:
@@ -76,14 +76,16 @@ extension UIUtils {
     ///   - positiveButtonText: The positive  button text, will be "Ok" localized by default.
     ///   - cancelButtonAction: The cancel button callback
     ///   - positiveButtonAction: The positive callback
-    ///   - style: The style of the warning. 
+    ///   - style: The style of the warning.
+    ///   - presenter: The viewController that should be presenter
     public static func showTwoButtonAlert(withTitle title: String,
                                           message: String? = nil,
                                           cancelButtonText: String = NSLocalizedString("Cancel", comment: "Default cancel button text"),
                                           positiveButtonText: String = NSLocalizedString("OK", comment: "Default positive button text"),
                                           cancelButtonAction: (() -> Void)? = nil,
                                           positiveButtonAction: @escaping () -> Void,
-                                          style: PEPAlertViewController.AlertStyle = .default) {
+                                          style: PEPAlertViewController.AlertStyle = .default,
+                                          presenter: UIViewController? = nil) {
         guard let alertViewController = UIUtils.getAlert(withTitle: title,
                                                          message: message,
                                                          cancelButtonText: cancelButtonText,
@@ -95,7 +97,7 @@ extension UIUtils {
             Log.shared.errorAndCrash("Can't instanciate alert")
             return
         }
-        UIUtils.show(alertViewController)
+        UIUtils.show(alertViewController, presenter: presenter)
     }
 
     /// Generic method to show an alert and require information throught a textfield
@@ -154,8 +156,8 @@ extension UIUtils {
     /// Present the pep alert if possible.
     ///
     /// - Parameter alertController: The controller to present.
-    private static func show(_ alertController: PEPAlertViewController) {
-        let presenterVc = UIApplication.currentlyVisibleViewController()
+    private static func show(_ alertController: PEPAlertViewController, presenter: UIViewController? = nil) {
+        let presenterVc = presenter ?? UIApplication.currentlyVisibleViewController()
         func shouldPresent() -> Bool {
             if presenterVc is PEPAlertViewController {
                 return false
