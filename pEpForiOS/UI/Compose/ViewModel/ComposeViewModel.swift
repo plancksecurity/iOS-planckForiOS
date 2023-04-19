@@ -1148,14 +1148,18 @@ extension ComposeViewModel {
             let cancelButtonText = NSLocalizedString("NO", comment: "'No' button to confirm less secure email sent")
             let positiveButtonText =  NSLocalizedString("YES", comment: "'Yes' button to confirm less secure email sent")
 
-            delegate?.showTwoButtonAlert(withTitle: warningTitle,
-                                         message: warningMessage,
-                                         cancelButtonText: cancelButtonText,
-                                         positiveButtonText: positiveButtonText,
-                                         cancelButtonAction: { completion(false) },
-                                         positiveButtonAction: { completion(true) })
+            guard let del = delegate else {
+                Log.shared.errorAndCrash("Delegate not found")
+                return
+            }
+            del.showTwoButtonAlert(withTitle: warningTitle,
+                                   message: warningMessage,
+                                   cancelButtonText: cancelButtonText,
+                                   positiveButtonText: positiveButtonText,
+                                   cancelButtonAction: { completion(false) },
+                                   positiveButtonAction: { completion(true) })
         }
-
+        
         // Use the current outgoing rating.
         //
         // Since the use case is "Help user to avoid sending unsecure emails",

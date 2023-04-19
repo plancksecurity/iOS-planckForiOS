@@ -470,7 +470,11 @@ extension ComposeViewController: ComposeViewModelDelegate {
     }
 
     func isPresentingContactsPicker() -> Bool {
+        #if EXT_SHARE
+        return UIApplication.currentlyVisibleViewController(inNavigationStackOf: self) is CNContactPickerViewController
+        #else
         return UIApplication.currentlyVisibleViewController() is CNContactPickerViewController
+        #endif
     }
 
     /// Restore focus to the previous focused cell after closing the picker action
@@ -500,12 +504,23 @@ extension ComposeViewController: ComposeViewModelDelegate {
                             positiveButtonText: String,
                             cancelButtonAction: @escaping () -> Void,
                             positiveButtonAction: @escaping () -> Void) {
+        
+        #if EXT_SHARE
+        UIUtils.showTwoButtonAlert(withTitle: title,
+                                   message: message,
+                                   cancelButtonText: cancelButtonText,
+                                   positiveButtonText: positiveButtonText,
+                                   cancelButtonAction: cancelButtonAction,
+                                   positiveButtonAction: positiveButtonAction,
+                                   presenter: self)
+        #else
         UIUtils.showTwoButtonAlert(withTitle: title,
                                    message: message,
                                    cancelButtonText: cancelButtonText,
                                    positiveButtonText: positiveButtonText,
                                    cancelButtonAction: cancelButtonAction,
                                    positiveButtonAction: positiveButtonAction)
+        #endif
     }
 
    func dismiss() {
@@ -888,7 +903,6 @@ extension ComposeViewController {
     }
 
     private func setFocusToNextCell(currentCell: UITableViewCell) {
-
         // Finds the first next section that contains rows
         func indexOfNextSectionContainingRows(from currentSectionIndex: Int) -> Int? {
             let nextSectionIndex = currentSectionIndex + 1
@@ -946,7 +960,6 @@ extension ComposeViewController {
     }
 
     private func setFocusToPreviousCell(currentCell: UITableViewCell) {
-
         // Finds the first previous section that contains rows
         func indexOfPreviousSectionContainingRows(from currentSectionIndex: Int) -> Int? {
             let previousSectionIndex = currentSectionIndex - 1

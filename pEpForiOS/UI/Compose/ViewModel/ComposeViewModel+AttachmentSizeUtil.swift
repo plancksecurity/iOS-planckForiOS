@@ -154,6 +154,11 @@ extension ComposeViewModel {
                 }
                 should = me.inferiorLimit < me.actualAttachments.size()
             }
+            
+            #if EXT_SHARE
+            // It's scaled already.
+            return false
+            #endif
             return should
         }
 
@@ -176,13 +181,13 @@ extension ComposeViewModel {
                 }
                 switch compressionQuality {
                 case .highest:
-                    attachments = me.actualAttachments.filter{ $0.isInlined == inlined }
+                    attachments = me.actualAttachments.filter { $0.isInlined == inlined }
                 case .high:
-                    attachments = me.largeAttachments.filter{ $0.isInlined == inlined }
+                    attachments = me.largeAttachments.filter { $0.isInlined == inlined }
                 case .medium:
-                    attachments = me.mediumAttachments.filter{ $0.isInlined == inlined }
+                    attachments = me.mediumAttachments.filter { $0.isInlined == inlined }
                 case .low:
-                    attachments = me.smallAttachments.filter{ $0.isInlined == inlined }
+                    attachments = me.smallAttachments.filter { $0.isInlined == inlined }
                 }
             }
             return attachments
