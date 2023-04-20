@@ -206,7 +206,8 @@ class ComposeViewModel {
     }
     
     private func shouldQueryRedRecipients() -> Bool {
-        .red == state.rating.pEpColor()
+        let canUpdate = recipientsBannerViewModel?.canUpdate ?? false
+        return .red == state.rating.pEpColor() && canUpdate
     }
 
     /// Get the Recipients Banner ViewModel.
@@ -224,6 +225,7 @@ class ComposeViewModel {
     private let redRecipientsQueue: OperationQueue = {
         let createe = OperationQueue()
         createe.qualityOfService = .background
+        createe.maxConcurrentOperationCount = 1
         createe.name = "security.pep.composeViewModel.queueForQueryRatings"
         return createe
     }()
@@ -1304,6 +1306,7 @@ extension ComposeViewModel {
                 Log.shared.errorAndCrash("Lost myself")
                 return
             }
+            me.recipientsBannerViewModel?.canUpdate = false
             addresses.forEach { address in
                 me.state.toRecipients.removeAll(where: {$0.address == address })
                 me.state.ccRecipients.removeAll(where: {$0.address == address })
@@ -1312,9 +1315,8 @@ extension ComposeViewModel {
                 me.state.ccRecipientsHidden.removeAll(where: {$0.address == address })
                 me.state.bccRecipientsHidden.removeAll(where: {$0.address == address })
             }
-
-            me.handleRecipientsBanner()
             me.delegate?.removeRecipientsFromTextfields(addresses: addresses)
+            me.recipientsBannerViewModel?.canUpdate = true
         }
     }
 }

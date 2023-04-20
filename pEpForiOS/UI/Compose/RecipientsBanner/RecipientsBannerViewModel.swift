@@ -22,6 +22,9 @@ import pEpIOSToolbox
 /// to remove them from compose view.
 class RecipientsBannerViewModel {
 
+    /// Flag used to guarantee there are no update regarding the banner while removing unsecure recipeints
+    var canUpdate: Bool = true
+
     private var recipients: [Identity] = []
 
     private var composeViewModel: ComposeViewModel
@@ -61,7 +64,9 @@ class RecipientsBannerViewModel {
                 Log.shared.errorAndCrash("Lost myself")
                 return
             }
+            me.canUpdate = false
             me.composeViewModel.removeFromState(addresses: me.recipients.map { $0.address} )
+            me.canUpdate = true
             me.composeViewModel.delegate?.hideRecipientsBanner()
         }
     }
