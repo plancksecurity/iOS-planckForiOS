@@ -219,31 +219,30 @@ class ComposeViewModel {
         recipientsBannerViewModel = RecipientsBannerViewModel(composeViewModel: self)
         return recipientsBannerViewModel
     }
-    private var redRecipientsQueue = DispatchQueue.global(qos: .background)
+    //private var redRecipientsQueue = DispatchQueue.global(qos: .background)
 
-/*    private let redRecipientsQueue: OperationQueue = {
+    private let redRecipientsQueue: OperationQueue = {
         let createe = OperationQueue()
         createe.qualityOfService = .background
-        createe.name = "security.pep.MessageViewModel.queueForHeavyStuff"
+        createe.name = "security.pep.composeViewModel.queueForQueryRatings"
         return createe
     }()
 
-*/
     private func queryUnsecureRecipients() {
         let session = Session()
         let allRecipients = state.toRecipients + state.ccRecipients + state.bccRecipients + state.toRecipientsHidden + state.ccRecipientsHidden + state.bccRecipientsHidden
         var redRecipients = [Identity]()
-  //      redRecipientsQueue.cancelAllOperations()
-        redRecipientsQueue.async {
+        redRecipientsQueue.cancelAllOperations()
+        redRecipientsQueue.addOperation {
             let group = DispatchGroup()
-            for i in 0 ..< allRecipients.count {
-                let identity = allRecipients[i]
+
+            // Group red recipients
+            allRecipients.forEach { identity in
                 group.enter()
                 let safeIdentity = identity.safeForSession(session)
-                session.perform {
+                session.performAndWait {
                     safeIdentity.pEpRating { rating in
-                        let color = rating.pEpColor()
-                        if .red == color {
+                        if .red == rating.pEpColor() {
                             redRecipients.append(identity)
                         }
                         group.leave()
@@ -251,18 +250,29 @@ class ComposeViewModel {
                 }
             }
 
+            // Update UI
             group.notify(queue: .main) { [weak self] in
                 guard let me = self else {
+                    Log.shared.errorAndCrash("Lost myself")
                     return
                 }
-                me.recipientsBannerViewModel?.setRecipients(recipients: redRecipients.uniques)
-
+                guard let vm = me.recipientsBannerViewModel else {
+                    Log.shared.errorAndCrash("Lost recipientsBannerViewModel")
+                    return
+                }
+                
+                guard let del = me.delegate else {
+                    Log.shared.errorAndCrash("Lost delegate")
+                    return
+                }
+                vm.setRecipients(recipients: redRecipients.uniques)
                 if redRecipients.count > 0 {
-                    me.delegate?.showRecipientsBanner()
+                    del.showRecipientsBanner()
                 } else {
-                    me.delegate?.hideRecipientsBanner()
+                    del.hideRecipientsBanner()
                 }
             }
+
         }
     }
 
