@@ -29,16 +29,16 @@ class RecipientsBannerViewModel {
     /// Constructor
     ///
     /// - parameters:
-    ///   - recipients: The list of unsecure recipients
-    ///   - delegate: The delegate to communicate with the view.
-    init?(recipients: [Identity], composeViewModel: ComposeViewModel) {
-        if recipients.isEmpty {
-            return nil
-        }
+    ///   - composeViewModel: The ComposeViewModel
+    init(composeViewModel: ComposeViewModel) {
         self.recipients = recipients.uniques
         self.composeViewModel = composeViewModel
     }
 
+    func setRecipients(recipients: [Identity]) {
+        self.recipients = recipients
+    }
+ 
     /// The button title
     public var buttonTitle: String {
         let numberOfUnsecureRecipients = recipients.count
@@ -62,7 +62,7 @@ class RecipientsBannerViewModel {
                 return
             }
             me.composeViewModel.removeFromState(addresses: me.recipients.map { $0.address} )
-            me.composeViewModel.handleRecipientsBanner()
+            me.composeViewModel.delegate?.hideRecipientsBanner()
         }
     }
 }

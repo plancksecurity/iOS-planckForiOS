@@ -92,6 +92,9 @@ protocol ComposeViewModelFinalActionDelegate: AnyObject {
 }
 
 class ComposeViewModel {
+    
+    private var recipientsBannerViewModel: RecipientsBannerViewModel?
+
     private var attachmentSizeUtil: ComposeViewModel.AttachmentSizeUtil?
 
     weak var delegate: ComposeViewModelDelegate? {
@@ -197,48 +200,70 @@ class ComposeViewModel {
         if !Thread.isMainThread {
             Log.shared.errorAndCrash(message: "Unexpectedly not on the main thread")
         }
-
-        if shouldShowRecipientsBanner() {
-            delegate?.showRecipientsBanner()
-        } else {
-            delegate?.hideRecipientsBanner()
+        if shouldQueryRedRecipients() {
+            queryUnsecureRecipients()
         }
     }
-
-    /// Evaluates if email rating is Red and if there is at least a red recipient.
-    private func shouldShowRecipientsBanner() -> Bool {
-        return .red == state.rating.pEpColor() && getUnsecureRecipients().count > 0
+    
+    private func shouldQueryRedRecipients() -> Bool {
+        .red == state.rating.pEpColor()
     }
 
-    /// Get the Recipientslendar Banner ViewModel.
+    /// Get the Recipients Banner ViewModel.
     /// Or nil, if there is no recipients that should be managed (red).
     /// - Returns: The Recipients Banner ViewModel
     func getRecipientBannerViewModel() -> RecipientsBannerViewModel? {
-        return RecipientsBannerViewModel(recipients: getUnsecureRecipients(), composeViewModel: self)
+        if recipientsBannerViewModel != nil {
+            return recipientsBannerViewModel
+        }
+        recipientsBannerViewModel = RecipientsBannerViewModel(composeViewModel: self)
+        return recipientsBannerViewModel
     }
+    private var redRecipientsQueue = DispatchQueue.global(qos: .background)
 
-    /// Get the red recipients.
-    /// This evaluates TO, CC and BCC (and the 'hidden' recipients).
-    ///
-    /// - Returns: The identities of the red recipients.
-    private func getUnsecureRecipients() -> [Identity] {
+/*    private let redRecipientsQueue: OperationQueue = {
+        let createe = OperationQueue()
+        createe.qualityOfService = .background
+        createe.name = "security.pep.MessageViewModel.queueForHeavyStuff"
+        return createe
+    }()
+
+*/
+    private func queryUnsecureRecipients() {
+        let session = Session()
         let allRecipients = state.toRecipients + state.ccRecipients + state.bccRecipients + state.toRecipientsHidden + state.ccRecipientsHidden + state.bccRecipientsHidden
         var redRecipients = [Identity]()
-        let group = DispatchGroup()
-        for i in 0 ..< allRecipients.count {
-            group.enter()
-            let identity = allRecipients[i]
-            identity.pEpRating { rating in
-                let color = rating.pEpColor()
-                if .red == color {
-                    redRecipients.append(identity)
+  //      redRecipientsQueue.cancelAllOperations()
+        redRecipientsQueue.async {
+            let group = DispatchGroup()
+            for i in 0 ..< allRecipients.count {
+                let identity = allRecipients[i]
+                group.enter()
+                let safeIdentity = identity.safeForSession(session)
+                session.perform {
+                    safeIdentity.pEpRating { rating in
+                        let color = rating.pEpColor()
+                        if .red == color {
+                            redRecipients.append(identity)
+                        }
+                        group.leave()
+                    }
                 }
-                group.leave()
             }
-            group.wait()
-        }
 
-        return redRecipients
+            group.notify(queue: .main) { [weak self] in
+                guard let me = self else {
+                    return
+                }
+                me.recipientsBannerViewModel?.setRecipients(recipients: redRecipients.uniques)
+
+                if redRecipients.count > 0 {
+                    me.delegate?.showRecipientsBanner()
+                } else {
+                    me.delegate?.hideRecipientsBanner()
+                }
+            }
+        }
     }
 
 #if !EXT_SHARE
