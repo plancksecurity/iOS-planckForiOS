@@ -1306,7 +1306,6 @@ extension ComposeViewModel {
                 Log.shared.errorAndCrash("Lost myself")
                 return
             }
-            me.recipientsBannerViewModel?.canUpdate = false
             addresses.forEach { address in
                 me.state.toRecipients.removeAll(where: {$0.address == address })
                 me.state.ccRecipients.removeAll(where: {$0.address == address })
@@ -1316,7 +1315,6 @@ extension ComposeViewModel {
                 me.state.bccRecipientsHidden.removeAll(where: {$0.address == address })
             }
             me.delegate?.removeRecipientsFromTextfields(addresses: addresses)
-            me.recipientsBannerViewModel?.canUpdate = true
         }
     }
 }
