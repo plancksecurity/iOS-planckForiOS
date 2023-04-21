@@ -84,6 +84,10 @@ extension ComposeViewModel {
         weak var delegate: ComposeViewModelStateDelegate?
 
         //Recipients
+        var allRecipients: [Identity] {
+            return toRecipients + ccRecipients + bccRecipients + toRecipientsHidden + ccRecipientsHidden + bccRecipientsHidden
+        }
+
         var toRecipients = [Identity]() {
             didSet {
                 validate()

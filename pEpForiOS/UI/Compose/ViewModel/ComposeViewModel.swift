@@ -232,14 +232,20 @@ class ComposeViewModel {
 
     private func queryUnsecureRecipients() {
         let session = Session()
-        let allRecipients = state.toRecipients + state.ccRecipients + state.bccRecipients + state.toRecipientsHidden + state.ccRecipientsHidden + state.bccRecipientsHidden
         var redRecipients = [Identity]()
+        
+        // Avoid updating the UI more than what's needed.
         redRecipientsQueue.cancelAllOperations()
-        redRecipientsQueue.addOperation {
+        redRecipientsQueue.addOperation { [weak self] in
+            guard let me = self else {
+                Log.shared.errorAndCrash("Lost myself")
+                return
+            }
+            
             let group = DispatchGroup()
 
             // Group red recipients
-            allRecipients.forEach { identity in
+            me.state.allRecipients.forEach { identity in
                 group.enter()
                 let safeIdentity = identity.safeForSession(session)
                 session.performAndWait {
@@ -251,13 +257,14 @@ class ComposeViewModel {
                     }
                 }
             }
-
+            
             // Update UI
             group.notify(queue: .main) { [weak self] in
                 guard let me = self else {
                     Log.shared.errorAndCrash("Lost myself")
                     return
                 }
+
                 guard let vm = me.recipientsBannerViewModel else {
                     Log.shared.errorAndCrash("Lost recipientsBannerViewModel")
                     return
@@ -267,6 +274,7 @@ class ComposeViewModel {
                     Log.shared.errorAndCrash("Lost delegate")
                     return
                 }
+
                 vm.setRecipients(recipients: redRecipients.uniques)
                 if redRecipients.count > 0 {
                     del.showRecipientsBanner()
@@ -274,7 +282,6 @@ class ComposeViewModel {
                     del.hideRecipientsBanner()
                 }
             }
-
         }
     }
 
