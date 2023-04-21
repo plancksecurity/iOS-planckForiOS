@@ -22,8 +22,8 @@ import pEpIOSToolbox
 /// to remove them from compose view.
 class RecipientsBannerViewModel {
 
-    /// Flag used to guarantee there are no update regarding the banner while removing unsecure recipeints
-    var canUpdate: Bool = true
+    /// Flag used to guarantee there are no update on the banner while removing unsecure recipeints
+    public var canUpdate: Bool = true
 
     private var recipients: [Identity] = []
 
@@ -38,6 +38,9 @@ class RecipientsBannerViewModel {
         self.composeViewModel = composeViewModel
     }
 
+    /// Setter
+    /// - parameters:
+    ///   - recipients: The identities of the recipients
     func setRecipients(recipients: [Identity]) {
         self.recipients = recipients
     }
@@ -64,6 +67,8 @@ class RecipientsBannerViewModel {
                 Log.shared.errorAndCrash("Lost myself")
                 return
             }
+            /// When we remove recipients from the state we validate if the email is valid to be sent.
+            /// Because of that, the banner status changes and to prevent a layout issue, we stop the update on the banner until this ends. 
             me.canUpdate = false
             me.composeViewModel.removeFromState(addresses: me.recipients.map { $0.address} )
             me.canUpdate = true
