@@ -148,7 +148,7 @@ public class VerifiableAccount: VerifiableAccountProtocol {
 
         try startImapVerification()
         try startSmtpVerification()
-        triggerTimoutIn(seconds: 10)
+        triggerTimoutIn(seconds: 15)
     }
 
     /// Saves the account if possible.
@@ -232,6 +232,7 @@ extension VerifiableAccount {
                 verifiableAccountDelegate?.didEndVerification(result: .failure(error))
             case .success(()):
                 verifiableAccountDelegate?.didEndVerification(result: .success(()))
+                verifiableAccountDelegate = nil
             }
         }
     }
