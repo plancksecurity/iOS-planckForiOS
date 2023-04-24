@@ -232,8 +232,8 @@ extension VerifiableAccount {
                 verifiableAccountDelegate?.didEndVerification(result: .failure(error))
             case .success(()):
                 verifiableAccountDelegate?.didEndVerification(result: .success(()))
-                verifiableAccountDelegate = nil
             }
+            verifiableAccountDelegate = nil
         }
     }
 
