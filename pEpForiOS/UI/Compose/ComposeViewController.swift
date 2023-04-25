@@ -366,7 +366,8 @@ extension ComposeViewController: ComposeViewModelDelegate {
                 return
             }
             recipientsBannerViewController.viewModel = recipientsBannerViewModel
-            // Sometimes setting a bool inside the animation blocks fails. Theresore, we guarantee that the value is set in the completion block.
+            // Sometimes setting a bool inside the animation block fails.
+            // Therefore, we guarantee that the value is set in the completion block.
             // However the animation looks better when this is set inside the block. 
             self.recipientsBannerContainerView.isHidden = !visible
         }, completion: { _ in
