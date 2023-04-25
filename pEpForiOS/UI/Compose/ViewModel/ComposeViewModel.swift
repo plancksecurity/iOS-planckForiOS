@@ -92,6 +92,9 @@ protocol ComposeViewModelFinalActionDelegate: AnyObject {
 }
 
 class ComposeViewModel {
+    
+    private var recipientsBannerViewModel: RecipientsBannerViewModel?
+
     private var attachmentSizeUtil: ComposeViewModel.AttachmentSizeUtil?
 
     weak var delegate: ComposeViewModelDelegate? {
@@ -197,48 +200,89 @@ class ComposeViewModel {
         if !Thread.isMainThread {
             Log.shared.errorAndCrash(message: "Unexpectedly not on the main thread")
         }
-
-        if shouldShowRecipientsBanner() {
-            delegate?.showRecipientsBanner()
-        } else {
-            delegate?.hideRecipientsBanner()
+        if shouldQueryRedRecipients() {
+            queryUnsecureRecipients()
         }
     }
-
-    /// Evaluates if email rating is Red and if there is at least a red recipient.
-    private func shouldShowRecipientsBanner() -> Bool {
-        return .red == state.rating.pEpColor() && getUnsecureRecipients().count > 0
+    
+    private func shouldQueryRedRecipients() -> Bool {
+        let canUpdate = recipientsBannerViewModel?.canUpdate ?? false
+        return .red == state.rating.pEpColor() && canUpdate
     }
 
-    /// Get the Recipientslendar Banner ViewModel.
+    /// Get the Recipients Banner ViewModel.
     /// Or nil, if there is no recipients that should be managed (red).
     /// - Returns: The Recipients Banner ViewModel
     func getRecipientBannerViewModel() -> RecipientsBannerViewModel? {
-        return RecipientsBannerViewModel(recipients: getUnsecureRecipients(), composeViewModel: self)
-    }
-
-    /// Get the red recipients.
-    /// This evaluates TO, CC and BCC (and the 'hidden' recipients).
-    ///
-    /// - Returns: The identities of the red recipients.
-    private func getUnsecureRecipients() -> [Identity] {
-        let allRecipients = state.toRecipients + state.ccRecipients + state.bccRecipients + state.toRecipientsHidden + state.ccRecipientsHidden + state.bccRecipientsHidden
-        var redRecipients = [Identity]()
-        let group = DispatchGroup()
-        for i in 0 ..< allRecipients.count {
-            group.enter()
-            let identity = allRecipients[i]
-            identity.pEpRating { rating in
-                let color = rating.pEpColor()
-                if .red == color {
-                    redRecipients.append(identity)
-                }
-                group.leave()
-            }
-            group.wait()
+        if recipientsBannerViewModel != nil {
+            return recipientsBannerViewModel
         }
+        recipientsBannerViewModel = RecipientsBannerViewModel(composeViewModel: self)
+        return recipientsBannerViewModel
+    }
+    //private var redRecipientsQueue = DispatchQueue.global(qos: .background)
 
-        return redRecipients
+    private let redRecipientsQueue: OperationQueue = {
+        let createe = OperationQueue()
+        createe.qualityOfService = .background
+        createe.maxConcurrentOperationCount = 1
+        createe.name = "security.pep.composeViewModel.queueForQueryRatings"
+        return createe
+    }()
+
+    private func queryUnsecureRecipients() {
+        let session = Session()
+        var redRecipients = [Identity]()
+        
+        // Avoid updating the UI more than what's needed.
+        redRecipientsQueue.cancelAllOperations()
+        redRecipientsQueue.addOperation { [weak self] in
+            guard let me = self else {
+                Log.shared.errorAndCrash("Lost myself")
+                return
+            }
+            
+            let group = DispatchGroup()
+
+            // Group red recipients
+            me.state.allRecipients.forEach { identity in
+                group.enter()
+                let safeIdentity = identity.safeForSession(session)
+                session.performAndWait {
+                    safeIdentity.pEpRating { rating in
+                        if .red == rating.pEpColor() {
+                            redRecipients.append(identity)
+                        }
+                        group.leave()
+                    }
+                }
+            }
+            
+            // Update UI
+            group.notify(queue: .main) { [weak self] in
+                guard let me = self else {
+                    Log.shared.errorAndCrash("Lost myself")
+                    return
+                }
+
+                guard let vm = me.recipientsBannerViewModel else {
+                    Log.shared.errorAndCrash("Lost recipientsBannerViewModel")
+                    return
+                }
+                
+                guard let del = me.delegate else {
+                    Log.shared.errorAndCrash("Lost delegate")
+                    return
+                }
+
+                vm.setRecipients(recipients: redRecipients.uniques)
+                if redRecipients.count > 0 {
+                    del.showRecipientsBanner()
+                } else {
+                    del.hideRecipientsBanner()
+                }
+            }
+        }
     }
 
 #if !EXT_SHARE
@@ -1277,8 +1321,6 @@ extension ComposeViewModel {
                 me.state.ccRecipientsHidden.removeAll(where: {$0.address == address })
                 me.state.bccRecipientsHidden.removeAll(where: {$0.address == address })
             }
-
-            me.handleRecipientsBanner()
             me.delegate?.removeRecipientsFromTextfields(addresses: addresses)
         }
     }
