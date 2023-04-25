@@ -1143,9 +1143,7 @@
                                     <containerView hidden="YES" opaque="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="SBO-iF-u5f">
                                         <rect key="frame" x="0.0" y="0.0" width="414" height="50"/>
                                         <constraints>
-                                            <constraint firstAttribute="height" constant="40" identifier="BannerPreferredHeight" id="KIF-rk-9Ee">
-                                                <variation key="heightClass=regular-widthClass=compact" constant="50"/>
-                                            </constraint>
+                                            <constraint firstAttribute="height" constant="50" identifier="BannerPreferredHeight" id="KIF-rk-9Ee"/>
                                         </constraints>
                                         <connections>
                                             <segue destination="hrq-S4-HtH" kind="embed" identifier="segueRecipientsBanner" id="0xH-sQ-Obw"/>
@@ -1421,6 +1419,7 @@
                     <connections>
                         <outlet property="cancelButton" destination="ijh-vj-Bee" id="hXo-wt-WOo"/>
                         <outlet property="recipientsBannerContainerView" destination="SBO-iF-u5f" id="roH-kP-ZiP"/>
+                        <outlet property="recipientsBannerHeightConstraint" destination="KIF-rk-9Ee" id="lwL-ri-pU8"/>
                         <outlet property="sendButton" destination="d2A-SO-1Ce" id="tjo-8d-QN5"/>
                         <outlet property="tableView" destination="bP2-wr-f5G" id="lLV-EJ-UUb"/>
                         <segue destination="Dbs-KG-RkX" kind="presentation" identifier="segueTrustManagement" modalPresentationStyle="fullScreen" id="vPE-SC-TBS"/>
@@ -1698,7 +1697,7 @@
     </designables>
     <inferredMetricsTieBreakers>
         <segue reference="e2D-Sv-Lmt"/>
-        <segue reference="dpb-kq-I1f"/>
+        <segue reference="vPE-SC-TBS"/>
         <segue reference="sHh-66-AtW"/>
     </inferredMetricsTieBreakers>
     <resources>

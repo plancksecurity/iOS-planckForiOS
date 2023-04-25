@@ -29,7 +29,8 @@ class ComposeViewController: UIViewController {
     @IBOutlet weak var cancelButton: UIBarButtonItem!
     @IBOutlet var tableView: UITableView!
     @IBOutlet weak var recipientsBannerContainerView: UIView!
-
+    @IBOutlet weak var recipientsBannerHeightConstraint: NSLayoutConstraint!
+    
     private var suggestionsChildViewController: SuggestTableViewController?
 
     lazy private var mediaAttachmentPickerProvider: MediaAttachmentPickerProvider? = {
@@ -355,24 +356,24 @@ extension ComposeViewController: ComposeViewModelDelegate {
     }
 
     private func setRecipientsBanner(visible: Bool) {
-        UIView.animate(withDuration: 0.3, delay: 0) { [weak self] in
-            guard let me = self else {
-                Log.shared.errorAndCrash("Lost myself")
-                return
-            }
-            me.recipientsBannerContainerView.isHidden = !visible
-            if visible {
-                guard let recipientsBannerViewController = me.children.first(where: {$0 is RecipientsBannerViewController }) as? RecipientsBannerViewController else {
-                    Log.shared.errorAndCrash("No Banner. Unexpected")
-                    return
-                }
-                guard let recipientsBannerViewModel = me.viewModel?.getRecipientBannerViewModel() else {
-                    Log.shared.errorAndCrash("Visible but no recipients. Unexpected")
-                    return
-                }
-                recipientsBannerViewController.viewModel = recipientsBannerViewModel
-            }
+        
+        /*
+        UIView.animate(withDuration: 0.25, delay: 0.0, options: [], animations: {
+            recipientsBannerContainerView.isHidden = !visible
+
+        }, completion: {
+            
+        })
+         */
+        guard let recipientsBannerViewController = children.first(where: {$0 is RecipientsBannerViewController }) as? RecipientsBannerViewController else {
+            Log.shared.errorAndCrash("No Banner. Unexpected")
+            return
         }
+        guard let recipientsBannerViewModel = viewModel?.getRecipientBannerViewModel() else {
+            Log.shared.errorAndCrash("Visible but no recipients. Unexpected")
+            return
+        }
+        recipientsBannerViewController.viewModel = recipientsBannerViewModel
     }
 
     // MARK: - Suggestions
