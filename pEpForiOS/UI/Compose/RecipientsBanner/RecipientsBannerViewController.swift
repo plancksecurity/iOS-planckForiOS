@@ -44,7 +44,9 @@ extension RecipientsBannerViewController {
             unsecureRecipientsButton?.setTitle("", for: .normal)
             return
         }
-        unsecureRecipientsButton?.setTitle(vm.buttonTitle, for: .normal)
+        if vm.hasRecipients {
+            unsecureRecipientsButton?.setTitle(vm.buttonTitle, for: .normal)
+        }
     }
 
 }

@@ -356,24 +356,22 @@ extension ComposeViewController: ComposeViewModelDelegate {
     }
 
     private func setRecipientsBanner(visible: Bool) {
-        
-        /*
-        UIView.animate(withDuration: 0.25, delay: 0.0, options: [], animations: {
-            recipientsBannerContainerView.isHidden = !visible
-
-        }, completion: {
-            
+        UIView.animate(withDuration: 0.35, delay: 0.0, options: [], animations: { [unowned self] in
+            guard let recipientsBannerViewController = self.children.first(where: { $0 is RecipientsBannerViewController }) as? RecipientsBannerViewController else {
+                Log.shared.errorAndCrash("No Banner. Unexpected")
+                return
+            }
+            guard let recipientsBannerViewModel = self.viewModel?.getRecipientBannerViewModel() else {
+                Log.shared.errorAndCrash("Visible but no recipients. Unexpected")
+                return
+            }
+            recipientsBannerViewController.viewModel = recipientsBannerViewModel
+            // Sometimes setting a bool inside the animation blocks fails. Theresore, we guarantee that the value is set in the completion block.
+            // However the animation looks better when this is set inside the block. 
+            self.recipientsBannerContainerView.isHidden = !visible
+        }, completion: { _ in
+            self.recipientsBannerContainerView.isHidden = !visible
         })
-         */
-        guard let recipientsBannerViewController = children.first(where: {$0 is RecipientsBannerViewController }) as? RecipientsBannerViewController else {
-            Log.shared.errorAndCrash("No Banner. Unexpected")
-            return
-        }
-        guard let recipientsBannerViewModel = viewModel?.getRecipientBannerViewModel() else {
-            Log.shared.errorAndCrash("Visible but no recipients. Unexpected")
-            return
-        }
-        recipientsBannerViewController.viewModel = recipientsBannerViewModel
     }
 
     // MARK: - Suggestions

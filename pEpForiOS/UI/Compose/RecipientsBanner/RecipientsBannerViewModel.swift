@@ -28,6 +28,10 @@ class RecipientsBannerViewModel {
     private var recipients: [Identity] = []
 
     private var composeViewModel: ComposeViewModel
+    
+    var hasRecipients: Bool {
+        return recipients.count > 0
+    }
 
     /// Constructor
     ///
