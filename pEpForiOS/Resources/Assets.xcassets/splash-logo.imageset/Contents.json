@@ -1,7 +1,7 @@
 {
   "images" : [
     {
-      "filename" : "splash-logo.pdf",
+      "filename" : "splash-logo-1 1.pdf",
       "idiom" : "universal"
     },
     {
@@ -21,7 +21,7 @@
           "value" : "dark"
         }
       ],
-      "filename" : "pEpForIOS-Login-0-darkmode-logo.png",
+      "filename" : "splash-logo-dark.png",
       "idiom" : "universal"
     }
   ],

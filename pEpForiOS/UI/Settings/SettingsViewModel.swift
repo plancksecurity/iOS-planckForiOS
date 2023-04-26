@@ -471,7 +471,7 @@ extension SettingsViewModel {
         case .tutorial:
             return NSLocalizedString("Tutorial", comment: "setting row title: Tutorial")
         case .exportDBs:
-            return NSLocalizedString("Export p≡p databases to file system", comment: "setting row title: Export DBs")
+            return NSLocalizedString("Export Planck databases to file system", comment: "setting row title: Export DBs")
         case .groupMailboxes:
             return NSLocalizedString("Group Mailboxes", comment: "setting row title: Group Mailboxes")
         case .deviceGroups:

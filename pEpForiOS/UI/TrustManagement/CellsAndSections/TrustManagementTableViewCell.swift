@@ -105,8 +105,8 @@ final class TrustManagementTableViewCell: UITableViewCell {
         setupButtons()
 
         //Reset label
-        resetLabel.text = NSLocalizedString("Reset all p≡p data for this comunication partner:",
-                                            comment: "Reset all p≡p data for this comunication partner:")
+        resetLabel.text = NSLocalizedString("Reset all planck data for this comunication partner:",
+                                            comment: "Reset all planck data for this comunication partner:")
         //Image view
         partnerImageView.layer.cornerRadius = 10
         partnerImageView.layer.masksToBounds = true
