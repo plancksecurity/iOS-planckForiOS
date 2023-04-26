@@ -460,8 +460,8 @@ extension SettingsViewModel {
             return NSLocalizedString("Protect Message Subject",
                                      comment: "title for subject protection")
         case .pEpSync:
-            return NSLocalizedString("p≡p Sync",
-                                     comment: "Settings: enable/disable p≡p Sync feature")
+            return NSLocalizedString("Planck Sync",
+                                     comment: "Settings: enable/disable Planck Sync feature")
         case .usePEPFolder:
             return NSLocalizedString("Use p≡p Folder For Sync Messages",
                                      comment: "Settings: title for enable/disable usePEPFolder feature")

@@ -556,9 +556,9 @@ extension SettingsTableViewController {
     }
 
     private func showpEpSyncLeaveGroupAlert(action:  @escaping SettingsViewModel.SwitchBlock, newValue: Bool) -> PEPAlertViewController? {
-        let title = NSLocalizedString("Disable p≡p Sync",
+        let title = NSLocalizedString("Disable Planck Sync",
                                       comment: "Leave device group confirmation")
-        let comment = NSLocalizedString("If you disable p≡p Sync, your accounts on your devices will not be synchronised anymore. Are you sure you want to disable p≡p Sync?",
+        let comment = NSLocalizedString("If you disable Planck Sync, your accounts on your devices will not be synchronised anymore. Are you sure you want to disable Planck Sync?",
                                         comment: "Alert: Leave device group confirmation comment")
 
         let alert = PEPAlertViewController.fromStoryboard(title: title,
