@@ -379,7 +379,7 @@ extension SettingsTableViewController : SettingsViewModelDelegate {
     
     func showResetAllWarning(callback: @escaping SettingsViewModel.ActionBlock) {
         let title = NSLocalizedString("Reset All Identities", comment: "Settings confirm to reset all identity title alert")
-        let message = NSLocalizedString("Resetting your key pair generates new private and public keys for you that p≡p will immediately start using.\n\nResetting also removes your device from any device group.\n\nAre you sure you want to reset?", comment: "Account settings confirm to reset identity title alert")
+        let message = NSLocalizedString("Resetting your key pair generates new private and public keys for you that planck will immediately start using.\n\nResetting also removes your device from any device group.\n\nAre you sure you want to reset?", comment: "Account settings confirm to reset identity title alert")
         let cancelTitle = NSLocalizedString("Cancel", comment: "Cancel reset account identity button title")
         let resetTitle = NSLocalizedString("Yes, Reset", comment: "Reset account identity button title")
         UIUtils.showTwoButtonAlert(withTitle: title, message: message, cancelButtonText: cancelTitle, positiveButtonText: resetTitle, positiveButtonAction: {

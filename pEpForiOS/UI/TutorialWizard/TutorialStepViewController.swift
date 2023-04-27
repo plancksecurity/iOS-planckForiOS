@@ -115,9 +115,9 @@ class TutorialStepViewController: UIViewController {
 extension TutorialStepViewController {
     struct Localized {
         // Step 0
-        static let welcome = NSLocalizedString("Welcome to the p≡p Tutorial", comment: "Welcome to the p≡p Tutorial - Step 0")
+        static let welcome = NSLocalizedString("Welcome to the planck Tutorial", comment: "Welcome to the planck Tutorial - Step 0")
         static let skipTutorial = NSLocalizedString("You can close this tutorial anytime with the Skip button.", comment: "Tutorial First text")
-        static let privacyStatus = NSLocalizedString("p≡p uses a Privacy Status icon to indicate how secure your communication is.", comment: "Tutorial Second text")
+        static let privacyStatus = NSLocalizedString("planck uses a Privacy Status icon to indicate how secure your communication is.", comment: "Tutorial Second text")
         static let privacyStatusDescription = NSLocalizedString("This Privacy Status is shown as an icon the user´s avatars:", comment: "Tutorial Third text")
         static let topbar = NSLocalizedString("And in the top bar when you open or write an email:", comment: "Tutorial Fourth text")
 
