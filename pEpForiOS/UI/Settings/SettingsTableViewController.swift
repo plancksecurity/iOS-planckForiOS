@@ -357,6 +357,8 @@ extension SettingsTableViewController : SettingsViewModelDelegate {
                 Log.shared.lostMySelf()
                 return
             }
+            //Lets prevent a stack of activity indicators
+            me.hideLoadingView()
             me.activityIndicatorView = UIUtils.showActivityIndicator(viewController: self)
         }
     }
