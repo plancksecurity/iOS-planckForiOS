@@ -520,7 +520,7 @@ extension SettingsTableViewController {
 
     private func showExportDBsAlert() {
         let alertTitle = NSLocalizedString("Export Planck databases to file system", comment: "Alert view title - warning")
-        let message = NSLocalizedString("Do you really want to export Planck databases to Documents/pEp/db-export/ on your local file system?\nWarning: The databases contain confidential information like private keys.",
+        let message = NSLocalizedString("Do you really want to export Planck databases to Documents/planck/db-export/ on your local file system?\nWarning: The databases contain confidential information like private keys.",
                                         comment: "Alert view message - warning")
         let cancelButtonText = NSLocalizedString("No", comment: "No button")
         let positiveButtonText = NSLocalizedString("Yes", comment: "Yes button")
