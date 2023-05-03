@@ -364,6 +364,16 @@
       selectedLauncherIdentifier = "Xcode.DebuggerFoundation.Launcher.LLDB"
       shouldUseLaunchSchemeArgsEnv = "YES">
       <Testables>
+         <TestableReference
+            skipped = "NO">
+            <BuildableReference
+               BuildableIdentifier = "primary"
+               BlueprintIdentifier = "43980E391CBD0BCA00A7FC3C"
+               BuildableName = "planckForiOSTests.xctest"
+               BlueprintName = "planckForiOSTests"
+               ReferencedContainer = "container:planckForiOS.xcodeproj">
+            </BuildableReference>
+         </TestableReference>
       </Testables>
    </TestAction>
    <LaunchAction
