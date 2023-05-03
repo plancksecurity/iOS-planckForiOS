@@ -114,7 +114,7 @@
 	<key>OAUTH2_O365_REDIRECT_URL_SCHEME</key>
 	<string>${OAUTH2_O365_REDIRECT_URL_SCHEME}</string>
 	<key>USER_MANUAL_URL</key>
-	<string>https://userguide.pep.security/pEp_for_iOS_User_Guide.pdf</string>
+	<string>https://www.planck.security/conditions-of-use/</string>
 	<key>UIAppFonts</key>
 	<array>
 		<string>UniversLTStd.otf</string>
