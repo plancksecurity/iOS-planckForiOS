@@ -2,7 +2,7 @@
 <Workspace
    version = "1.0">
    <FileRef
-      location = "group:planckForiOS.xcodeproj">
+      location = "group:pEpForiOS.xcodeproj">
    </FileRef>
    <FileRef
       location = "group:SubProjects/MessageModel/MessageModel/MessageModel.xcodeproj">
@@ -14,7 +14,7 @@
       location = "group:../pep_for_ios_intern/pEp4iosIntern/pEp4iosIntern.xcodeproj">
    </FileRef>
    <FileRef
-      location = "container:../planckObjCWrapper/build-mac/planckObjCWrapper.xcodeproj">
+      location = "container:../pEpObjCAdapter/build-mac/pEpObjCAdapter.xcodeproj">
    </FileRef>
    <FileRef
       location = "container:../Pantomime/PantomimeFramework/PantomimeFramework.xcodeproj">
