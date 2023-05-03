@@ -2,7 +2,7 @@
 <Workspace
    version = "1.0">
    <FileRef
-      location = "group:pEpForiOS.xcodeproj">
+      location = "group:/Users/dirk/projects/planck/rename/planckForiOS/planckForiOS.xcodeproj">
    </FileRef>
    <FileRef
       location = "group:SubProjects/MessageModel/MessageModel/MessageModel.xcodeproj">

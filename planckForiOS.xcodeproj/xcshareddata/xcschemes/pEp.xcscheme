@@ -199,7 +199,7 @@
                BlueprintIdentifier = "43980E221CBD0BC900A7FC3C"
                BuildableName = "pEp.app"
                BlueprintName = "pEp"
-               ReferencedContainer = "container:pEpForiOS.xcodeproj">
+               ReferencedContainer = "container:planckForiOS.xcodeproj">
             </BuildableReference>
          </BuildActionEntry>
       </BuildActionEntries>
@@ -218,7 +218,7 @@
             BlueprintIdentifier = "43980E221CBD0BC900A7FC3C"
             BuildableName = "pEp.app"
             BlueprintName = "pEp"
-            ReferencedContainer = "container:pEpForiOS.xcodeproj">
+            ReferencedContainer = "container:planckForiOS.xcodeproj">
          </BuildableReference>
       </MacroExpansion>
       <AdditionalOptions>
@@ -291,7 +291,7 @@
                BlueprintIdentifier = "43980E391CBD0BCA00A7FC3C"
                BuildableName = "pEpForiOSTests.xctest"
                BlueprintName = "pEpForiOSTests"
-               ReferencedContainer = "container:pEpForiOS.xcodeproj">
+               ReferencedContainer = "container:planckForiOS.xcodeproj">
             </BuildableReference>
          </TestableReference>
          <TestableReference
@@ -327,7 +327,7 @@
             BlueprintIdentifier = "43980E221CBD0BC900A7FC3C"
             BuildableName = "pEp.app"
             BlueprintName = "pEp"
-            ReferencedContainer = "container:pEpForiOS.xcodeproj">
+            ReferencedContainer = "container:planckForiOS.xcodeproj">
          </BuildableReference>
       </BuildableProductRunnable>
       <CommandLineArguments>
@@ -362,7 +362,7 @@
             BlueprintIdentifier = "43980E221CBD0BC900A7FC3C"
             BuildableName = "pEp.app"
             BlueprintName = "pEp"
-            ReferencedContainer = "container:pEpForiOS.xcodeproj">
+            ReferencedContainer = "container:planckForiOS.xcodeproj">
          </BuildableReference>
       </BuildableProductRunnable>
    </ProfileAction>

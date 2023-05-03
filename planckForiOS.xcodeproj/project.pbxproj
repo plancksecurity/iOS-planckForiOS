@@ -1032,7 +1032,7 @@
 		43980E2B1CBD0BC900A7FC3C /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
 		43980E331CBD0BCA00A7FC3C /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		43980E351CBD0BCA00A7FC3C /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		43980E3A1CBD0BCA00A7FC3C /* pEpForiOSTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = pEpForiOSTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		43980E3A1CBD0BCA00A7FC3C /* planckForiOSTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = planckForiOSTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		43980E401CBD0BCA00A7FC3C /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		43980EEA1CBD24F100A7FC3C /* pEpForiOS-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "pEpForiOS-Bridging-Header.h"; sourceTree = "<group>"; };
 		439817522418ECA700C8AB84 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/NothingSelected.strings; sourceTree = "<group>"; };
@@ -2341,7 +2341,7 @@
 			isa = PBXGroup;
 			children = (
 				43980E231CBD0BC900A7FC3C /* pEp.app */,
-				43980E3A1CBD0BCA00A7FC3C /* pEpForiOSTests.xctest */,
+				43980E3A1CBD0BCA00A7FC3C /* planckForiOSTests.xctest */,
 				3A503A9C253737B20070AB6A /* pEp-share.appex */,
 			);
 			name = Products;
@@ -3172,9 +3172,9 @@
 			productReference = 43980E231CBD0BC900A7FC3C /* pEp.app */;
 			productType = "com.apple.product-type.application";
 		};
-		43980E391CBD0BCA00A7FC3C /* pEpForiOSTests */ = {
+		43980E391CBD0BCA00A7FC3C /* planckForiOSTests */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = 43980E511CBD0BCA00A7FC3C /* Build configuration list for PBXNativeTarget "pEpForiOSTests" */;
+			buildConfigurationList = 43980E511CBD0BCA00A7FC3C /* Build configuration list for PBXNativeTarget "planckForiOSTests" */;
 			buildPhases = (
 				43980E361CBD0BCA00A7FC3C /* Sources */,
 				43980E371CBD0BCA00A7FC3C /* Frameworks */,
@@ -3186,9 +3186,9 @@
 			dependencies = (
 				43980E3C1CBD0BCA00A7FC3C /* PBXTargetDependency */,
 			);
-			name = pEpForiOSTests;
+			name = planckForiOSTests;
 			productName = pEpForiOSTests;
-			productReference = 43980E3A1CBD0BCA00A7FC3C /* pEpForiOSTests.xctest */;
+			productReference = 43980E3A1CBD0BCA00A7FC3C /* planckForiOSTests.xctest */;
 			productType = "com.apple.product-type.bundle.unit-test";
 		};
 /* End PBXNativeTarget section */
@@ -3233,7 +3233,7 @@
 					};
 				};
 			};
-			buildConfigurationList = 43980E1E1CBD0BC900A7FC3C /* Build configuration list for PBXProject "pEpForiOS" */;
+			buildConfigurationList = 43980E1E1CBD0BC900A7FC3C /* Build configuration list for PBXProject "planckForiOS" */;
 			compatibilityVersion = "Xcode 3.2";
 			developmentRegion = en;
 			hasScannedForEncodings = 0;
@@ -3250,7 +3250,7 @@
 			projectRoot = "";
 			targets = (
 				43980E221CBD0BC900A7FC3C /* pEp */,
-				43980E391CBD0BCA00A7FC3C /* pEpForiOSTests */,
+				43980E391CBD0BCA00A7FC3C /* planckForiOSTests */,
 				3A503A9B253737B20070AB6A /* pEp-share */,
 			);
 		};
@@ -4528,7 +4528,7 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Debug;
 		};
-		43980E1E1CBD0BC900A7FC3C /* Build configuration list for PBXProject "pEpForiOS" */ = {
+		43980E1E1CBD0BC900A7FC3C /* Build configuration list for PBXProject "planckForiOS" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				43980E4C1CBD0BCA00A7FC3C /* Debug */,
@@ -4546,7 +4546,7 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Debug;
 		};
-		43980E511CBD0BCA00A7FC3C /* Build configuration list for PBXNativeTarget "pEpForiOSTests" */ = {
+		43980E511CBD0BCA00A7FC3C /* Build configuration list for PBXNativeTarget "planckForiOSTests" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				43980E521CBD0BCA00A7FC3C /* Debug */,
