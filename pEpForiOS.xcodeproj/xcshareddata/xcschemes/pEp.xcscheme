@@ -155,9 +155,9 @@
             <BuildableReference
                BuildableIdentifier = "primary"
                BlueprintIdentifier = "43B2ACC02923AF7700D8C6F8"
-               BuildableName = "libPEPObjCAdapter_iOS.a"
-               BlueprintName = "PEPObjCAdapter_iOS"
-               ReferencedContainer = "container:../pEpObjCAdapter/build-mac/pEpObjCAdapter.xcodeproj">
+               BuildableName = "libPlanckObjCWrapper_iOS.a"
+               BlueprintName = "PlanckObjCWrapper_iOS"
+               ReferencedContainer = "container:../planckObjCWrapper/build-mac/planckObjCWrapper.xcodeproj">
             </BuildableReference>
          </BuildActionEntry>
          <BuildActionEntry
@@ -182,9 +182,9 @@
             buildForAnalyzing = "YES">
             <BuildableReference
                BuildableIdentifier = "primary"
-               BlueprintIdentifier = "43CDF0622642799B00E8E944"
-               BuildableName = "AppAuthForExtensions.framework"
-               BlueprintName = "AppAuthForExtensions"
+               BlueprintIdentifier = "340E737B1C5D819B0076B1F6"
+               BuildableName = "libAppAuth-iOS.a"
+               BlueprintName = "AppAuth-iOS"
                ReferencedContainer = "container:../AppAuth-iOS/AppAuth.xcodeproj">
             </BuildableReference>
          </BuildActionEntry>
