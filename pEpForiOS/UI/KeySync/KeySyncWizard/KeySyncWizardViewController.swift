@@ -275,7 +275,7 @@ extension KeySyncWizardViewController {
     }
 
     private func completeTitle() -> String {
-        return NSLocalizedString("Planck Sync",
+        return NSLocalizedString("planck Sync",
                                  comment: "keySyncWizard animation view title")
     }
 

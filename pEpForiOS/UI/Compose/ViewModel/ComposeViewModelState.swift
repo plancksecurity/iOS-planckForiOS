@@ -128,7 +128,7 @@ extension ComposeViewModel {
         var bodyText = NSAttributedString(string: "") {
             didSet {
                 if defaultBodyText == nil {
-                    defaultBodyText = NSAttributedString(string: String.pepSignature) 
+                    defaultBodyText = NSAttributedString(string: String.planckSignature) 
                 }
             }
         }
