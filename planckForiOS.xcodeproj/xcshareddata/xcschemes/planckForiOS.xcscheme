@@ -360,6 +360,96 @@
                ReferencedContainer = "container:planckForiOS.xcodeproj">
             </BuildableReference>
          </TestableReference>
+         <TestableReference
+            skipped = "NO">
+            <BuildableReference
+               BuildableIdentifier = "primary"
+               BlueprintIdentifier = "B72A64D71EC0525500F71131"
+               BuildableName = "AccountSettingsAdapterTests.xctest"
+               BlueprintName = "AccountSettingsAdapterTests"
+               ReferencedContainer = "container:../libAccountSettings/xcode/AccountSettingsAdapter/AccountSettingsAdapter.xcodeproj">
+            </BuildableReference>
+         </TestableReference>
+         <TestableReference
+            skipped = "NO">
+            <BuildableReference
+               BuildableIdentifier = "primary"
+               BlueprintIdentifier = "43FBB76B1FC6D9630057A3BD"
+               BuildableName = "ldns-xcodeTests.xctest"
+               BlueprintName = "ldns-xcodeTests"
+               ReferencedContainer = "container:../ldns/xcode/ldns-xcode/ldns-xcode.xcodeproj">
+            </BuildableReference>
+         </TestableReference>
+         <TestableReference
+            skipped = "NO">
+            <BuildableReference
+               BuildableIdentifier = "primary"
+               BlueprintIdentifier = "43CB608A1DA4EB4E0015281E"
+               BuildableName = "MessageModelTests.xctest"
+               BlueprintName = "MessageModelTests"
+               ReferencedContainer = "container:SubProjects/MessageModel/MessageModel/MessageModel.xcodeproj">
+            </BuildableReference>
+         </TestableReference>
+         <TestableReference
+            skipped = "NO">
+            <BuildableReference
+               BuildableIdentifier = "primary"
+               BlueprintIdentifier = "4329CB8622391DBD007D377E"
+               BuildableName = "PantomimeFrameworkTests.xctest"
+               BlueprintName = "PantomimeFrameworkTests"
+               ReferencedContainer = "container:../Pantomime/PantomimeFramework/PantomimeFramework.xcodeproj">
+            </BuildableReference>
+         </TestableReference>
+         <TestableReference
+            skipped = "NO">
+            <BuildableReference
+               BuildableIdentifier = "primary"
+               BlueprintIdentifier = "3AE6870924FFA5ED00B416ED"
+               BuildableName = "pEp4iosInternTests.xctest"
+               BlueprintName = "pEp4iosInternTests"
+               ReferencedContainer = "container:../pep_for_ios_intern/pEp4iosIntern/pEp4iosIntern.xcodeproj">
+            </BuildableReference>
+         </TestableReference>
+         <TestableReference
+            skipped = "NO">
+            <BuildableReference
+               BuildableIdentifier = "primary"
+               BlueprintIdentifier = "B7DB7F56221315BD003968DA"
+               BuildableName = "pEpIOSToolboxTests.xctest"
+               BlueprintName = "pEpIOSToolboxTests"
+               ReferencedContainer = "container:../pep-toolbox/pEpIOSToolbox.xcodeproj">
+            </BuildableReference>
+         </TestableReference>
+         <TestableReference
+            skipped = "NO">
+            <BuildableReference
+               BuildableIdentifier = "primary"
+               BlueprintIdentifier = "4E5758BE26833D140084F02D"
+               BuildableName = "PEPObjCTypesTests_iOS.xctest"
+               BlueprintName = "PEPObjCTypesTests_iOS"
+               ReferencedContainer = "container:../planckObjCWrapper/Subprojects/PEPObjCTypes/build-mac/PEPObjCTypes.xcodeproj">
+            </BuildableReference>
+         </TestableReference>
+         <TestableReference
+            skipped = "NO">
+            <BuildableReference
+               BuildableIdentifier = "primary"
+               BlueprintIdentifier = "43312023292553A200DFD28C"
+               BuildableName = "PEPObjCTypeUtilsTests_iOS.xctest"
+               BlueprintName = "PEPObjCTypeUtilsTests_iOS"
+               ReferencedContainer = "container:../planckObjCWrapper/Subprojects/PEPObjCTypeUtils/build-mac/PEPObjCTypeUtils.xcodeproj">
+            </BuildableReference>
+         </TestableReference>
+         <TestableReference
+            skipped = "NO">
+            <BuildableReference
+               BuildableIdentifier = "primary"
+               BlueprintIdentifier = "64415E161BE94FCB00F6CBB2"
+               BuildableName = "PlanckObjCWrapperTests.xctest"
+               BlueprintName = "PlanckObjCWrapperTests"
+               ReferencedContainer = "container:../planckObjCWrapper/build-mac/planckObjCWrapper.xcodeproj">
+            </BuildableReference>
+         </TestableReference>
       </Testables>
    </TestAction>
    <LaunchAction
