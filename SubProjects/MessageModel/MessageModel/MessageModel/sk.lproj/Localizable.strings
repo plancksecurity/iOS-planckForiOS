@@ -2,7 +2,7 @@
 "None" = "Žiadne";
 
 /* pEp mail signature. Newlines will be added by app */
-"sent with p≡p" = "poslané s p≡p";
+"sent with p≡p" = "poslané s planck";
 
 /* Error description when failing to validate account fields */
 "Some fields seems not to be valid. Please check all input fields." = "Zdá sa, že niektoré polia nie sú platné. Skontrolujte všetky vstupné polia.";

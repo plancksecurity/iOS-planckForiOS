@@ -58,7 +58,7 @@ class ReplyUtilTests: XCTestCase {
 
 extension ReplyUtilTests {
     private struct Constant {
-        static let footnote = String.pepSignature
+        static let footnote = String.planckSignature
         static let subject = "This is a subject"
         static let expectedReplyPrefix = "Re: "
         static let expectedReplyPrefixForEmptySubject = ""

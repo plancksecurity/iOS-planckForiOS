@@ -2,7 +2,7 @@
 "None" = "Cap";
 
 /* pEp mail signature. Newlines will be added by app */
-"sent with p≡p" = "enviat amb p≡p";
+"sent with p≡p" = "enviat amb planck";
 
 /* Error description when failing to validate account fields */
 "Some fields seems not to be valid. Please check all input fields." = "Sembla que alguns camps no són vàlids. Comproveu tots els camps d’entrada.";

@@ -12,8 +12,8 @@ import XCTest
 
 class PEPUtilTest: XCTestCase {
 
-    let plainSignature = String.pepSignature
-    let htmlSignature = String.pEpSignatureHtml
+    let plainSignature = String.planckSignature
+    let htmlSignature = String.planckSignatureHtml
 
     func testSignatures() {
         XCTAssertNotNil(plainSignature)
@@ -50,18 +50,18 @@ class PEPUtilTest: XCTestCase {
 
     private func assertReplaceWithHref(_ testee: String, isIncluded: Bool = true) {
         if isIncluded {
-        XCTAssertTrue(testee.contains(find: String.pepSignature))
+        XCTAssertTrue(testee.contains(find: String.planckSignature))
         } else {
-            XCTAssertFalse(testee.contains(find: String.pepSignature))
+            XCTAssertFalse(testee.contains(find: String.planckSignature))
         }
-        XCTAssertFalse(testee.contains(find: String.pEpSignatureHtml))
+        XCTAssertFalse(testee.contains(find: String.planckSignatureHtml))
 
         let href = testee.replacingOccurrencesOfPepSignatureWithHtmlVersion()
         if isIncluded {
-            XCTAssertTrue(href.contains(find: String.pEpSignatureHtml))
+            XCTAssertTrue(href.contains(find: String.planckSignatureHtml))
         } else {
-            XCTAssertFalse(href.contains(find: String.pepSignature))
-            XCTAssertFalse(href.contains(find: String.pEpSignatureHtml))
+            XCTAssertFalse(href.contains(find: String.planckSignature))
+            XCTAssertFalse(href.contains(find: String.planckSignatureHtml))
         }
     }
 }
