@@ -197,8 +197,8 @@
             <BuildableReference
                BuildableIdentifier = "primary"
                BlueprintIdentifier = "43980E391CBD0BCA00A7FC3C"
-               BuildableName = "pEpForiOSTests.xctest"
-               BlueprintName = "pEpForiOSTests"
+               BuildableName = "planckForiOSTests.xctest"
+               BlueprintName = "planckForiOSTests"
                ReferencedContainer = "container:planckForiOS.xcodeproj">
             </BuildableReference>
          </TestableReference>

@@ -202,6 +202,20 @@
                ReferencedContainer = "container:planckForiOS.xcodeproj">
             </BuildableReference>
          </BuildActionEntry>
+         <BuildActionEntry
+            buildForTesting = "YES"
+            buildForRunning = "YES"
+            buildForProfiling = "YES"
+            buildForArchiving = "YES"
+            buildForAnalyzing = "YES">
+            <BuildableReference
+               BuildableIdentifier = "primary"
+               BlueprintIdentifier = "43980E391CBD0BCA00A7FC3C"
+               BuildableName = "planckForiOSTests.xctest"
+               BlueprintName = "planckForiOSTests"
+               ReferencedContainer = "container:planckForiOS.xcodeproj">
+            </BuildableReference>
+         </BuildActionEntry>
       </BuildActionEntries>
    </BuildAction>
    <TestAction
@@ -218,7 +232,7 @@
             BlueprintIdentifier = "43980E221CBD0BC900A7FC3C"
             BuildableName = "pEp.app"
             BlueprintName = "pEp"
-            ReferencedContainer = "container:planckForiOS.xcodeproj">
+            ReferencedContainer = "container:pEpForiOS.xcodeproj">
          </BuildableReference>
       </MacroExpansion>
       <AdditionalOptions>
@@ -288,16 +302,6 @@
             skipped = "NO">
             <BuildableReference
                BuildableIdentifier = "primary"
-               BlueprintIdentifier = "43980E391CBD0BCA00A7FC3C"
-               BuildableName = "pEpForiOSTests.xctest"
-               BlueprintName = "pEpForiOSTests"
-               ReferencedContainer = "container:planckForiOS.xcodeproj">
-            </BuildableReference>
-         </TestableReference>
-         <TestableReference
-            skipped = "NO">
-            <BuildableReference
-               BuildableIdentifier = "primary"
                BlueprintIdentifier = "B7DB7F56221315BD003968DA"
                BuildableName = "pEpIOSToolboxTests.xctest"
                BlueprintName = "pEpIOSToolboxTests"
@@ -320,16 +324,6 @@
       migratedStopOnEveryIssue = "YES"
       debugServiceExtension = "internal"
       allowLocationSimulation = "NO">
-      <BuildableProductRunnable
-         runnableDebuggingMode = "0">
-         <BuildableReference
-            BuildableIdentifier = "primary"
-            BlueprintIdentifier = "43980E221CBD0BC900A7FC3C"
-            BuildableName = "pEp.app"
-            BlueprintName = "pEp"
-            ReferencedContainer = "container:planckForiOS.xcodeproj">
-         </BuildableReference>
-      </BuildableProductRunnable>
       <CommandLineArguments>
          <CommandLineArgument
             argument = "-com.apple.CoreData.ConcurrencyDebug 1"
@@ -355,16 +349,15 @@
       savedToolIdentifier = ""
       useCustomWorkingDirectory = "NO"
       debugDocumentVersioning = "YES">
-      <BuildableProductRunnable
-         runnableDebuggingMode = "0">
+      <MacroExpansion>
          <BuildableReference
             BuildableIdentifier = "primary"
-            BlueprintIdentifier = "43980E221CBD0BC900A7FC3C"
-            BuildableName = "pEp.app"
-            BlueprintName = "pEp"
-            ReferencedContainer = "container:planckForiOS.xcodeproj">
+            BlueprintIdentifier = "19FF460E1B8B4D1400B43179"
+            BuildableName = "CocoaLumberjackSwift.framework"
+            BlueprintName = "CocoaLumberjackSwift"
+            ReferencedContainer = "container:../CocoaLumberjack/Lumberjack.xcodeproj">
          </BuildableReference>
-      </BuildableProductRunnable>
+      </MacroExpansion>
    </ProfileAction>
    <AnalyzeAction
       buildConfiguration = "Debug">
