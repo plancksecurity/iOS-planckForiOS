@@ -550,6 +550,7 @@
 		43C09EA32A024BE800335FDD /* libPlanckObjCWrapper_iOS.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 43C09EA22A024BE800335FDD /* libPlanckObjCWrapper_iOS.a */; };
 		43C09EA52A024C2200335FDD /* libplanckCoreV3.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 43C09EA42A024C2200335FDD /* libplanckCoreV3.a */; };
 		43C09EA72A024F2700335FDD /* libPlanckObjCWrapper_iOS.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 43C09EA62A024F2700335FDD /* libPlanckObjCWrapper_iOS.a */; };
+		43C09EA92A024F6300335FDD /* libplanckCoreV3.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 43C09EA82A024F6300335FDD /* libplanckCoreV3.a */; };
 		43C123C7223A73E100F6A9B2 /* FetchOlderImapMessagesOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43C123C2223A73E100F6A9B2 /* FetchOlderImapMessagesOperation.swift */; };
 		43C123EA223A7FCF00F6A9B2 /* QualifyServerIsLocalOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43C123DC223A7FCF00F6A9B2 /* QualifyServerIsLocalOperation.swift */; };
 		43C123EC223A7FCF00F6A9B2 /* AccountVerificationResult.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43C123DF223A7FCF00F6A9B2 /* AccountVerificationResult.swift */; };
@@ -1088,6 +1089,7 @@
 		43C09EA22A024BE800335FDD /* libPlanckObjCWrapper_iOS.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; path = libPlanckObjCWrapper_iOS.a; sourceTree = BUILT_PRODUCTS_DIR; };
 		43C09EA42A024C2200335FDD /* libplanckCoreV3.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; path = libplanckCoreV3.a; sourceTree = BUILT_PRODUCTS_DIR; };
 		43C09EA62A024F2700335FDD /* libPlanckObjCWrapper_iOS.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; path = libPlanckObjCWrapper_iOS.a; sourceTree = BUILT_PRODUCTS_DIR; };
+		43C09EA82A024F6300335FDD /* libplanckCoreV3.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; path = libplanckCoreV3.a; sourceTree = BUILT_PRODUCTS_DIR; };
 		43C123C2223A73E100F6A9B2 /* FetchOlderImapMessagesOperation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FetchOlderImapMessagesOperation.swift; sourceTree = "<group>"; };
 		43C123DC223A7FCF00F6A9B2 /* QualifyServerIsLocalOperation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = QualifyServerIsLocalOperation.swift; sourceTree = "<group>"; };
 		43C123DF223A7FCF00F6A9B2 /* AccountVerificationResult.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AccountVerificationResult.swift; sourceTree = "<group>"; };
@@ -1248,6 +1250,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				43C09EA92A024F6300335FDD /* libplanckCoreV3.a in Frameworks */,
 				43C09EA72A024F2700335FDD /* libPlanckObjCWrapper_iOS.a in Frameworks */,
 				434C5AA129784B04007496AF /* AppAuth.framework in Frameworks */,
 				43A7661A260A136600E67592 /* pEpIOSToolboxForExtensions.framework in Frameworks */,
@@ -2749,6 +2752,7 @@
 		B7DB7FA322147000003968DA /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				43C09EA82A024F6300335FDD /* libplanckCoreV3.a */,
 				43C09EA62A024F2700335FDD /* libPlanckObjCWrapper_iOS.a */,
 				43C09EA42A024C2200335FDD /* libplanckCoreV3.a */,
 				43C09EA22A024BE800335FDD /* libPlanckObjCWrapper_iOS.a */,
