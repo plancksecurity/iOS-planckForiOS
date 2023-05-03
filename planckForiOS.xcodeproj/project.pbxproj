@@ -4495,7 +4495,7 @@
 				SWIFT_COMPILATION_MODE = singlefile;
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 				SWIFT_VERSION = 5.0;
-				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/pEp.app/pEp";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/planckForiOS.app/$(BUNDLE_EXECUTABLE_FOLDER_PATH)/planckForiOS";
 			};
 			name = Debug;
 		};
@@ -4512,7 +4512,7 @@
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_COMPILATION_MODE = wholemodule;
 				SWIFT_VERSION = 5.0;
-				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/pEp.app/pEp";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/planckForiOS.app/$(BUNDLE_EXECUTABLE_FOLDER_PATH)/planckForiOS";
 			};
 			name = Release;
 		};
