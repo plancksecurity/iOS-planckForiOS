@@ -197,8 +197,8 @@
             <BuildableReference
                BuildableIdentifier = "primary"
                BlueprintIdentifier = "43980E221CBD0BC900A7FC3C"
-               BuildableName = "pEp.app"
-               BlueprintName = "pEp"
+               BuildableName = "planckForiOS.app"
+               BlueprintName = "planckForiOS"
                ReferencedContainer = "container:planckForiOS.xcodeproj">
             </BuildableReference>
          </BuildActionEntry>
@@ -226,15 +226,6 @@
       enableAddressSanitizer = "YES"
       enableASanStackUseAfterReturn = "YES"
       enableUBSanitizer = "YES">
-      <MacroExpansion>
-         <BuildableReference
-            BuildableIdentifier = "primary"
-            BlueprintIdentifier = "43980E221CBD0BC900A7FC3C"
-            BuildableName = "pEp.app"
-            BlueprintName = "pEp"
-            ReferencedContainer = "container:pEpForiOS.xcodeproj">
-         </BuildableReference>
-      </MacroExpansion>
       <AdditionalOptions>
          <AdditionalOption
             key = "NSZombieEnabled"

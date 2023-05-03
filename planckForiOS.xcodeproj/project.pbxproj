@@ -1027,7 +1027,7 @@
 		4380528A1FE3E2E800ACF729 /* OAuth2AuthorizationURLHandlerProtocol.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OAuth2AuthorizationURLHandlerProtocol.swift; sourceTree = "<group>"; };
 		4395CDED20AAC909003FC5F1 /* UIImageExtensionsTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIImageExtensionsTests.swift; sourceTree = "<group>"; };
 		4395CDEF20AAD0D6003FC5F1 /* icon_001.gif */ = {isa = PBXFileReference; lastKnownFileType = image.gif; path = icon_001.gif; sourceTree = "<group>"; };
-		43980E231CBD0BC900A7FC3C /* pEp.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = pEp.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		43980E231CBD0BC900A7FC3C /* planckForiOS.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = planckForiOS.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		43980E261CBD0BC900A7FC3C /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		43980E2B1CBD0BC900A7FC3C /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
 		43980E331CBD0BCA00A7FC3C /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
@@ -2340,7 +2340,7 @@
 		43980E241CBD0BC900A7FC3C /* Products */ = {
 			isa = PBXGroup;
 			children = (
-				43980E231CBD0BC900A7FC3C /* pEp.app */,
+				43980E231CBD0BC900A7FC3C /* planckForiOS.app */,
 				43980E3A1CBD0BCA00A7FC3C /* planckForiOSTests.xctest */,
 				3A503A9C253737B20070AB6A /* pEp-share.appex */,
 			);
@@ -3147,9 +3147,9 @@
 			productReference = 3A503A9C253737B20070AB6A /* pEp-share.appex */;
 			productType = "com.apple.product-type.app-extension";
 		};
-		43980E221CBD0BC900A7FC3C /* pEp */ = {
+		43980E221CBD0BC900A7FC3C /* planckForiOS */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = 43980E4E1CBD0BCA00A7FC3C /* Build configuration list for PBXNativeTarget "pEp" */;
+			buildConfigurationList = 43980E4E1CBD0BCA00A7FC3C /* Build configuration list for PBXNativeTarget "planckForiOS" */;
 			buildPhases = (
 				151573B31F20913C0049BB0B /* Log Start Time script */,
 				43980E1F1CBD0BC900A7FC3C /* Sources */,
@@ -3165,11 +3165,11 @@
 			dependencies = (
 				3A503AA5253737B20070AB6A /* PBXTargetDependency */,
 			);
-			name = pEp;
+			name = planckForiOS;
 			packageProductDependencies = (
 			);
 			productName = pEpForiOS;
-			productReference = 43980E231CBD0BC900A7FC3C /* pEp.app */;
+			productReference = 43980E231CBD0BC900A7FC3C /* planckForiOS.app */;
 			productType = "com.apple.product-type.application";
 		};
 		43980E391CBD0BCA00A7FC3C /* planckForiOSTests */ = {
@@ -3249,7 +3249,7 @@
 			projectDirPath = "";
 			projectRoot = "";
 			targets = (
-				43980E221CBD0BC900A7FC3C /* pEp */,
+				43980E221CBD0BC900A7FC3C /* planckForiOS */,
 				43980E391CBD0BCA00A7FC3C /* planckForiOSTests */,
 				3A503A9B253737B20070AB6A /* pEp-share */,
 			);
@@ -4010,7 +4010,7 @@
 		};
 		43980E3C1CBD0BCA00A7FC3C /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
-			target = 43980E221CBD0BC900A7FC3C /* pEp */;
+			target = 43980E221CBD0BC900A7FC3C /* planckForiOS */;
 			targetProxy = 43980E3B1CBD0BCA00A7FC3C /* PBXContainerItemProxy */;
 		};
 /* End PBXTargetDependency section */
@@ -4537,7 +4537,7 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Debug;
 		};
-		43980E4E1CBD0BCA00A7FC3C /* Build configuration list for PBXNativeTarget "pEp" */ = {
+		43980E4E1CBD0BCA00A7FC3C /* Build configuration list for PBXNativeTarget "planckForiOS" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				43980E4F1CBD0BCA00A7FC3C /* Debug */,

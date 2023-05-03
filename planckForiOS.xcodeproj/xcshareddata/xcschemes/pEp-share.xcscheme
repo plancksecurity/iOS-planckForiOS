@@ -254,8 +254,8 @@
             <BuildableReference
                BuildableIdentifier = "primary"
                BlueprintIdentifier = "43980E221CBD0BC900A7FC3C"
-               BuildableName = "pEp.app"
-               BlueprintName = "pEp"
+               BuildableName = "planckForiOS.app"
+               BlueprintName = "planckForiOS"
                ReferencedContainer = "container:planckForiOS.xcodeproj">
             </BuildableReference>
          </BuildActionEntry>
@@ -290,8 +290,8 @@
          <BuildableReference
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "43980E221CBD0BC900A7FC3C"
-            BuildableName = "pEp.app"
-            BlueprintName = "pEp"
+            BuildableName = "planckForiOS.app"
+            BlueprintName = "planckForiOS"
             ReferencedContainer = "container:planckForiOS.xcodeproj">
          </BuildableReference>
       </MacroExpansion>
@@ -308,8 +308,8 @@
          <BuildableReference
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "43980E221CBD0BC900A7FC3C"
-            BuildableName = "pEp.app"
-            BlueprintName = "pEp"
+            BuildableName = "planckForiOS.app"
+            BlueprintName = "planckForiOS"
             ReferencedContainer = "container:planckForiOS.xcodeproj">
          </BuildableReference>
       </BuildableProductRunnable>
