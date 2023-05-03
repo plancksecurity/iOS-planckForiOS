@@ -387,7 +387,7 @@ extension SettingsViewModel {
                                      comment: "Tableview section header: Global Settings")
         case .pEpSync:
             return NSLocalizedString("Sync",
-                                     comment: "Tableview section header: (p≡p) Sync")
+                                     comment: "Tableview section header: (planck) Sync")
         case .contacts:
             return NSLocalizedString("Contacts",
                                      comment: "TableView section header: Contacts")
@@ -414,7 +414,7 @@ extension SettingsViewModel {
             return NSLocalizedString("Performs a reset of the privacy settings of your account(s).",
                                      comment: "Settings accounts section, footer below Reset All cell")
         case .globalSettings:
-            return NSLocalizedString("Public key material will only be attached to a message if p≡p.",
+            return NSLocalizedString("Public key material will only be attached to a message if planck.",
                                      comment: "passive mode description")
         case .contacts:
             return NSLocalizedString("Performs a reset of the privacy settings saved for a communication partner. Could be needed for example if your communication partner cannot read your messages.",
@@ -460,10 +460,10 @@ extension SettingsViewModel {
             return NSLocalizedString("Protect Message Subject",
                                      comment: "title for subject protection")
         case .pEpSync:
-            return NSLocalizedString("p≡p Sync",
-                                     comment: "Settings: enable/disable p≡p Sync feature")
+            return NSLocalizedString("Planck Sync",
+                                     comment: "Settings: enable/disable Planck Sync feature")
         case .usePEPFolder:
-            return NSLocalizedString("Use p≡p Folder For Sync Messages",
+            return NSLocalizedString("Use planck Folder For Sync Messages",
                                      comment: "Settings: title for enable/disable usePEPFolder feature")
         case .unsecureReplyWarningEnabled:
             return NSLocalizedString("Unsecure reply warning",
@@ -471,7 +471,7 @@ extension SettingsViewModel {
         case .tutorial:
             return NSLocalizedString("Tutorial", comment: "setting row title: Tutorial")
         case .exportDBs:
-            return NSLocalizedString("Export p≡p databases to file system", comment: "setting row title: Export DBs")
+            return NSLocalizedString("Export Planck databases to file system", comment: "setting row title: Export DBs")
         case .groupMailboxes:
             return NSLocalizedString("Group Mailboxes", comment: "setting row title: Group Mailboxes")
         case .deviceGroups:

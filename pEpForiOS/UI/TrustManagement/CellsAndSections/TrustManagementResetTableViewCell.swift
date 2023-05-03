@@ -42,7 +42,7 @@ extension TrustManagementResetTableViewCell {
 
     private func setupResetButton() {
         resetButton.pEpIfyForTrust(backgroundColor: .systemGray2, textColor: .label)
-        resetLabel.text = NSLocalizedString("Reset all p≡p data for this comunication partner:",
-                                            comment: "Reset all p≡p data for this comunication partner:")
+        resetLabel.text = NSLocalizedString("Reset all planck data for this comunication partner:",
+                                            comment: "Reset all planck data for this comunication partner:")
     }
 }

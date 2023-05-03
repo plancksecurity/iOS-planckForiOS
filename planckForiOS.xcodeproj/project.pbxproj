@@ -760,7 +760,7 @@
 		15147EF6237EBE2A003989FE /* AppSettings+KeySyncDeviceGroupStateChangeNotification.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "AppSettings+KeySyncDeviceGroupStateChangeNotification.swift"; sourceTree = "<group>"; };
 		1516719F262EFDE100E99CE5 /* pEpIOSToolboxForExtensions.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = pEpIOSToolboxForExtensions.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		15175CEB205929FB00A8D9D0 /* CidHandler.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CidHandler.swift; sourceTree = "<group>"; };
-		1517DABA23FD7F88005BAE97 /* pEpForiOS-icon.pdf */ = {isa = PBXFileReference; lastKnownFileType = image.pdf; path = "pEpForiOS-icon.pdf"; sourceTree = "<group>"; };
+		1517DABA23FD7F88005BAE97 /* pEpForiOS-icon2.pdf */ = {isa = PBXFileReference; lastKnownFileType = image.pdf; path = "pEpForiOS-icon2.pdf"; sourceTree = "<group>"; };
 		151AD7AC219D74C700FC36FF /* ComposeViewModelTest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ComposeViewModelTest.swift; sourceTree = "<group>"; };
 		151C67FC2418158B00481F75 /* SFUIText-Semibold.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "SFUIText-Semibold.ttf"; sourceTree = "<group>"; };
 		151C67FD2418158B00481F75 /* SFUIText-Regular.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "SFUIText-Regular.ttf"; sourceTree = "<group>"; };
@@ -1651,7 +1651,7 @@
 			children = (
 				432E80FA2191AF5100359879 /* Fonts */,
 				15D3F53824DC0DEE007942C2 /* pEp.entitlements */,
-				1517DABA23FD7F88005BAE97 /* pEpForiOS-icon.pdf */,
+				1517DABA23FD7F88005BAE97 /* pEpForiOS-icon2.pdf */,
 				3AD0E0A023E4659F006FFED3 /* Assets.xcassets */,
 				439C62402611BFCF001893BD /* SharedAssets.xcassets */,
 			);

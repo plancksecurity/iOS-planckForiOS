@@ -26,7 +26,7 @@ extension String {
     private struct TrustManagementText {
         static let red = PEPStatusText(rating: .mistrust,
                                        title: NSLocalizedString("Mistrusted", comment: "Privacy status title"),
-                                       explanation: NSLocalizedString("This contact is mistrusted. If you rejected the Trustwords accidentally, you could reset the p≡p data.", comment: "Privacy status title"),
+                                       explanation: NSLocalizedString("This contact is mistrusted. If you rejected the Trustwords accidentally, you could reset the Planck data.", comment: "Privacy status title"),
                                        suggestion: "")
         static let yellow = PEPStatusText(rating: .reliable,
                                           title: NSLocalizedString("Secure", comment: "Privacy status title"),
@@ -145,7 +145,7 @@ extension String {
                 explanation: NSLocalizedString("This message has unreliable protection",
                                                comment: "Privacy status explanation"),
                 suggestion:
-                NSLocalizedString("This message has no reliable encryption or no signature. Ask your communication partner to upgrade their encryption solution or install p≡p.",
+                NSLocalizedString("This message has no reliable encryption or no signature. Ask your communication partner to upgrade their encryption solution or install planck.",
                                   comment: "Privacy status suggestion")),
 
          .unencrypted:
@@ -156,7 +156,7 @@ extension String {
                 explanation: NSLocalizedString("This message is unsecure.",
                                                comment: "Privacy status explanation"),
                 suggestion:
-                NSLocalizedString("Please ask your communication partner to use an encryption solution or install p≡p.",
+                NSLocalizedString("Please ask your communication partner to use an encryption solution or install planck.",
                                   comment: "Privacy status suggestion")),
          .haveNoKey:
             PEPStatusText(

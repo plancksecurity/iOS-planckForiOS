@@ -17,7 +17,7 @@ extension PEPAlertViewController {
     ///   - completion: The callback to be executed when the user interacts with the error alert view buttons.
     /// - Returns: The configured view controller.
     public static func getKeySyncErrorViewController(isNewGroup: Bool, completion: ((KeySyncErrorResponse) -> ())?) -> PEPAlertViewController? {
-        let errorTitle = NSLocalizedString("p≡p Sync", comment: "keySyncWizard animation view title")
+        let errorTitle = NSLocalizedString("Planck Sync", comment: "keySyncWizard animation view title")
         let errorMessage = NSLocalizedString("Something went wrong with syncing the devices. Please try again.",
                                              comment: "keySyncWizard error view message when syncing devices")
         let errorImage = isNewGroup ? #imageLiteral(resourceName: "pEpForiOS-icon-sync-2nd-device") : #imageLiteral(resourceName: "pEpForiOS-icon-sync-3rd-device")

@@ -14,7 +14,7 @@
 "NSCameraUsageDescription" = "Kamera verwenden";
 
 /* Privacy - Contacts Usage Description */
-"NSContactsUsageDescription" = "- p≡p ist eine App für verschlüsselte Kommunikation. Um Nachrichten\nan bereits bestehende Kontakte zu schicken, ist es notwendig, p≡p\nden Zugriff zu erlauben.\n\n- Diese Daten verlassen dieses Gerät nicht, und werden weder an p≡p\nnoch an Dritte gesendet.";
+"NSContactsUsageDescription" = "- planck ist eine App für verschlüsselte Kommunikation. Um Nachrichten\nan bereits bestehende Kontakte zu schicken, ist es notwendig, planck\nden Zugriff zu erlauben.\n\n- Diese Daten verlassen dieses Gerät nicht, und werden weder an planck\nnoch an Dritte gesendet.";
 
 /* Privacy - Photo Library Additions Usage Description */
 "NSPhotoLibraryAddUsageDescription" = "Ermöglicht es, Fotos in der Galerie zu speichern";

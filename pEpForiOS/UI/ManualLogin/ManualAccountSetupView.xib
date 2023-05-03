@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="18122" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="21507" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
     <device id="retina4_7" orientation="portrait" appearance="light"/>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="18093"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="21505"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
@@ -21,7 +21,7 @@
                             <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                             <subviews>
                                 <button opaque="NO" contentMode="scaleToFill" horizontalCompressionResistancePriority="751" verticalCompressionResistancePriority="751" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="tyq-Cq-4dU">
-                                    <rect key="frame" x="-43.5" y="246" width="45" height="29"/>
+                                    <rect key="frame" x="-51.5" y="244" width="53" height="33"/>
                                     <fontDescription key="fontDescription" style="UICTFontTextStyleBody"/>
                                     <state key="normal" title="Cancel">
                                         <color key="titleColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
@@ -34,7 +34,7 @@
                                     </connections>
                                 </button>
                                 <button opaque="NO" contentMode="scaleToFill" horizontalCompressionResistancePriority="751" verticalCompressionResistancePriority="751" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="OIj-9x-l85">
-                                    <rect key="frame" x="373.5" y="246" width="30" height="29"/>
+                                    <rect key="frame" x="373.5" y="244" width="36" height="33"/>
                                     <fontDescription key="fontDescription" style="UICTFontTextStyleBody"/>
                                     <state key="normal" title="Next">
                                         <color key="titleColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
@@ -49,7 +49,7 @@
                                 <view contentMode="scaleToFill" horizontalCompressionResistancePriority="800" translatesAutoresizingMaskIntoConstraints="NO" id="pmk-EA-JLq" userLabel="Sync View">
                                     <rect key="frame" x="513.5" y="300.5" width="129" height="31"/>
                                     <subviews>
-                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalCompressionResistancePriority="751" text="p≡p Sync" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="x8d-f7-glb">
+                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalCompressionResistancePriority="751" text="planck Sync" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="x8d-f7-glb">
                                             <rect key="frame" x="0.0" y="5.5" width="69" height="19.5"/>
                                             <fontDescription key="fontDescription" style="UICTFontTextStyleCallout"/>
                                             <color key="textColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
@@ -81,16 +81,16 @@
                                     </variation>
                                 </view>
                                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="OjY-aN-ucH" userLabel="FieldsAndTitleContainer">
-                                    <rect key="frame" x="37.5" y="96.5" width="300" height="401"/>
+                                    <rect key="frame" x="37.5" y="93" width="300" height="404.5"/>
                                     <subviews>
                                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Title" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="L3b-r5-OhD">
-                                            <rect key="frame" x="132" y="10" width="36.5" height="23"/>
+                                            <rect key="frame" x="129.5" y="10" width="41" height="26.5"/>
                                             <fontDescription key="fontDescription" style="UICTFontTextStyleTitle2"/>
                                             <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                             <nil key="highlightedColor"/>
                                         </label>
                                         <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" distribution="fillEqually" spacing="37" translatesAutoresizingMaskIntoConstraints="NO" id="9fb-qy-5Z9">
-                                            <rect key="frame" x="0.0" y="73" width="300" height="328"/>
+                                            <rect key="frame" x="0.0" y="76.5" width="300" height="328"/>
                                             <subviews>
                                                 <textField opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" borderStyle="line" textAlignment="center" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="fNB-Pm-68I" customClass="AnimatedPlaceholderTextfield" customModule="pEpForiOS" customModuleProvider="target">
                                                     <rect key="frame" x="0.0" y="0.0" width="300" height="36"/>
@@ -259,7 +259,7 @@
                                     <rect key="frame" x="37.5" y="517.5" width="300" height="125"/>
                                     <subviews>
                                         <button opaque="NO" contentMode="scaleToFill" horizontalCompressionResistancePriority="751" verticalCompressionResistancePriority="751" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="fqe-qx-IQe">
-                                            <rect key="frame" x="0.0" y="0.0" width="45" height="29"/>
+                                            <rect key="frame" x="0.0" y="0.0" width="53" height="33"/>
                                             <fontDescription key="fontDescription" style="UICTFontTextStyleBody"/>
                                             <state key="normal" title="Cancel">
                                                 <color key="titleColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
@@ -272,16 +272,16 @@
                                             </connections>
                                         </button>
                                         <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="l4d-tu-sgw" userLabel="Sync View">
-                                            <rect key="frame" x="91.5" y="94" width="117.5" height="31"/>
+                                            <rect key="frame" x="76" y="94" width="148" height="31"/>
                                             <subviews>
-                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" horizontalCompressionResistancePriority="800" text="p≡p Sync" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="48h-ZC-Qrv">
-                                                    <rect key="frame" x="0.0" y="7.5" width="57.5" height="16"/>
+                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" horizontalCompressionResistancePriority="800" text="planck Sync" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="48h-ZC-Qrv">
+                                                    <rect key="frame" x="0.0" y="6" width="88" height="19.5"/>
                                                     <fontDescription key="fontDescription" style="UICTFontTextStyleCallout"/>
                                                     <color key="textColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                                     <nil key="highlightedColor"/>
                                                 </label>
                                                 <switch opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" contentHorizontalAlignment="center" contentVerticalAlignment="center" on="YES" translatesAutoresizingMaskIntoConstraints="NO" id="AMS-vh-eXJ">
-                                                    <rect key="frame" x="68.5" y="0.0" width="51" height="31"/>
+                                                    <rect key="frame" x="99" y="0.0" width="51" height="31"/>
                                                     <connections>
                                                         <action selector="didChangePEPSyncSwitch:" destination="iN0-l3-epB" eventType="valueChanged" id="fUt-IP-bC5"/>
                                                     </connections>
@@ -297,7 +297,7 @@
                                             </constraints>
                                         </view>
                                         <button opaque="NO" contentMode="scaleToFill" horizontalCompressionResistancePriority="751" verticalCompressionResistancePriority="751" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="F0b-8v-1lY">
-                                            <rect key="frame" x="270" y="0.0" width="30" height="29"/>
+                                            <rect key="frame" x="264" y="0.0" width="36" height="33"/>
                                             <fontDescription key="fontDescription" style="UICTFontTextStyleBody"/>
                                             <state key="normal" title="Next">
                                                 <color key="titleColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
@@ -390,14 +390,14 @@
                                     <exclude reference="WQJ-Sm-ij8"/>
                                     <exclude reference="w6z-9O-3xW"/>
                                     <exclude reference="5Rf-a8-0qH"/>
+                                    <exclude reference="Cvm-Rd-7u3"/>
+                                    <exclude reference="Dct-gi-7uS"/>
+                                    <exclude reference="rr2-nI-yVR"/>
                                     <exclude reference="Ajf-gz-6yS"/>
                                     <exclude reference="AoN-5y-VNp"/>
                                     <exclude reference="LhS-J2-oV7"/>
                                     <exclude reference="YsY-cI-r96"/>
                                     <exclude reference="fQ5-AY-cH2"/>
-                                    <exclude reference="Cvm-Rd-7u3"/>
-                                    <exclude reference="Dct-gi-7uS"/>
-                                    <exclude reference="rr2-nI-yVR"/>
                                 </mask>
                             </variation>
                             <variation key="heightClass=compact">
@@ -406,10 +406,10 @@
                                 </mask>
                                 <mask key="constraints">
                                     <include reference="WQJ-Sm-ij8"/>
-                                    <include reference="YsY-cI-r96"/>
                                     <include reference="Cvm-Rd-7u3"/>
                                     <include reference="Dct-gi-7uS"/>
                                     <include reference="rr2-nI-yVR"/>
+                                    <include reference="YsY-cI-r96"/>
                                 </mask>
                             </variation>
                             <variation key="heightClass=regular">
@@ -480,19 +480,19 @@
     </objects>
     <designables>
         <designable name="0te-KR-oYr">
-            <size key="intrinsicContentSize" width="12" height="25.5"/>
+            <size key="intrinsicContentSize" width="13" height="29"/>
         </designable>
         <designable name="9dO-D4-gja">
-            <size key="intrinsicContentSize" width="12" height="25.5"/>
+            <size key="intrinsicContentSize" width="13" height="29"/>
         </designable>
         <designable name="JdZ-UE-MmU">
-            <size key="intrinsicContentSize" width="12" height="25.5"/>
+            <size key="intrinsicContentSize" width="13" height="29"/>
         </designable>
         <designable name="fNB-Pm-68I">
-            <size key="intrinsicContentSize" width="12" height="25.5"/>
+            <size key="intrinsicContentSize" width="13" height="29"/>
         </designable>
         <designable name="paP-b8-KCw">
-            <size key="intrinsicContentSize" width="12" height="25.5"/>
+            <size key="intrinsicContentSize" width="13" height="29"/>
         </designable>
     </designables>
 </document>

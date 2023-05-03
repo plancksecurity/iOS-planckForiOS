@@ -48,7 +48,7 @@ extension TutorialStep0iPhoneViewController {
             .foregroundColor: tutorialTextColor,
             .kern: 0.36
         ])
-        if let range = titleText.nsRange(of: "p≡p") {
+        if let range = titleText.nsRange(of: "planck") {
             attributedString.addAttributes([.font: titleFont, .foregroundColor: UIColor.pEpGreen], range:range)
         }
         titleLabel.attributedText = attributedString
@@ -67,7 +67,7 @@ extension TutorialStep0iPhoneViewController {
     private func setupPrivacyStatusLabel() {
         let text = Localized.privacyStatus
         let attributedText = NSMutableAttributedString(string:text)
-        if let range = text.nsRange(of: "p≡p") {
+        if let range = text.nsRange(of: "planck") {
             attributedText.addAttributes([.font: font, .foregroundColor: UIColor.pEpGreen], range: range)
             attributedText.addAttributes(textAttributes, range: NSRange(location: range.location + range.length, length: text.count - range.length))
         }

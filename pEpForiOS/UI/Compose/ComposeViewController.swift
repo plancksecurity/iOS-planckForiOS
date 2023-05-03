@@ -251,9 +251,9 @@ extension ComposeViewController {
 
     private func changeSecureStatusAction(pEpProtected: Bool) -> UIAlertAction {
         let disable = NSLocalizedString("Disable Protection",
-                                        comment: "Disable Protection button title of pEp protection toggle action sheet")
+                                        comment: "Disable Protection button title of planck protection toggle action sheet")
         let enable = NSLocalizedString("Enable Protection",
-                                       comment: "Enable Protection button title of pEp protection toggle action sheet")
+                                       comment: "Enable Protection button title of planck protection toggle action sheet")
 
         let action = UIAlertAction(title: pEpProtected ? disable : enable ,
                                    style: .default) { [weak self] (action) in
@@ -270,7 +270,7 @@ extension ComposeViewController {
     private func disableAlertAction() -> UIAlertAction {
         return UIAlertAction(
             title: NSLocalizedString("Cancel",
-                                     comment: "Cancel button title of pEp protection toggle action sheet"),
+                                     comment: "Cancel button title of planck protection toggle action sheet"),
             style: .cancel) { (action) in }
     }
 

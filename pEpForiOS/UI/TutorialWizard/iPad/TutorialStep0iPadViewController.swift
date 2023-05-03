@@ -49,7 +49,7 @@ extension TutorialStep0iPadViewController {
             .font: titleFont,
             .foregroundColor: tutorialTextColor,
         ])
-        if let range = titleText.nsRange(of: "p≡p") {
+        if let range = titleText.nsRange(of: "planck") {
             attributedString.addAttributes([.font: titleFont, .foregroundColor: UIColor.pEpGreen], range:range)
         }
         welcomeTitle.attributedText = attributedString
@@ -68,7 +68,7 @@ extension TutorialStep0iPadViewController {
     private func setupPrivacyStatus() {
         let text = Localized.privacyStatus
         let attributedText = NSMutableAttributedString(string:text)
-        if let range = text.nsRange(of: "p≡p") {
+        if let range = text.nsRange(of: "planck") {
             attributedText.addAttributes([.font: font, .foregroundColor: UIColor.pEpGreen], range: range)
             attributedText.addAttributes(textAttributes, range: NSRange(location: range.location + range.length, length: text.count - range.length))
         }

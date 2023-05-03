@@ -357,6 +357,8 @@ extension SettingsTableViewController : SettingsViewModelDelegate {
                 Log.shared.lostMySelf()
                 return
             }
+            //Lets prevent a stack of activity indicators
+            me.hideLoadingView()
             me.activityIndicatorView = UIUtils.showActivityIndicator(viewController: self)
         }
     }
@@ -379,7 +381,7 @@ extension SettingsTableViewController : SettingsViewModelDelegate {
     
     func showResetAllWarning(callback: @escaping SettingsViewModel.ActionBlock) {
         let title = NSLocalizedString("Reset All Identities", comment: "Settings confirm to reset all identity title alert")
-        let message = NSLocalizedString("Resetting your key pair generates new private and public keys for you that p≡p will immediately start using.\n\nResetting also removes your device from any device group.\n\nAre you sure you want to reset?", comment: "Account settings confirm to reset identity title alert")
+        let message = NSLocalizedString("Resetting your key pair generates new private and public keys for you that planck will immediately start using.\n\nResetting also removes your device from any device group.\n\nAre you sure you want to reset?", comment: "Account settings confirm to reset identity title alert")
         let cancelTitle = NSLocalizedString("Cancel", comment: "Cancel reset account identity button title")
         let resetTitle = NSLocalizedString("Yes, Reset", comment: "Reset account identity button title")
         UIUtils.showTwoButtonAlert(withTitle: title, message: message, cancelButtonText: cancelTitle, positiveButtonText: resetTitle, positiveButtonAction: {
@@ -389,13 +391,13 @@ extension SettingsTableViewController : SettingsViewModelDelegate {
     }
 
     func showDBExportSuccess() {
-        let alertTitle = NSLocalizedString("Export p≡p databases to file system", comment: "Alert view title - warning")
+        let alertTitle = NSLocalizedString("Export Planck databases to file system", comment: "Alert view title - warning")
         let message = NSLocalizedString("Exporting databases OK", comment: "Error message")
         UIUtils.showAlertWithOnlyPositiveButton(title: alertTitle, message: message, style: .undo, completion: nil)
     }
 
     func showDBExportFailed() {
-        let alertTitle = NSLocalizedString("Export p≡p databases to file system", comment: "Alert view title - warning")
+        let alertTitle = NSLocalizedString("Export Planck databases to file system", comment: "Alert view title - warning")
         let message = NSLocalizedString("Exporting databases failed", comment: "Error message")
         let cancelButton = NSLocalizedString("Cancel", comment: "Cancel button")
         let tryAgainButton = NSLocalizedString("Try Again", comment: "Try again button text")
@@ -519,8 +521,8 @@ extension SettingsTableViewController {
 extension SettingsTableViewController {
 
     private func showExportDBsAlert() {
-        let alertTitle = NSLocalizedString("Export p≡p databases to file system", comment: "Alert view title - warning")
-        let message = NSLocalizedString("Do you really want to export p≡p databases to Documents/pEp/db-export/ on your local file system?\nWarning: The databases contain confidential information like private keys.",
+        let alertTitle = NSLocalizedString("Export Planck databases to file system", comment: "Alert view title - warning")
+        let message = NSLocalizedString("Do you really want to export Planck databases to Documents/planck/db-export/ on your local file system?\nWarning: The databases contain confidential information like private keys.",
                                         comment: "Alert view message - warning")
         let cancelButtonText = NSLocalizedString("No", comment: "No button")
         let positiveButtonText = NSLocalizedString("Yes", comment: "Yes button")
@@ -556,9 +558,9 @@ extension SettingsTableViewController {
     }
 
     private func showpEpSyncLeaveGroupAlert(action:  @escaping SettingsViewModel.SwitchBlock, newValue: Bool) -> PEPAlertViewController? {
-        let title = NSLocalizedString("Disable p≡p Sync",
+        let title = NSLocalizedString("Disable Planck Sync",
                                       comment: "Leave device group confirmation")
-        let comment = NSLocalizedString("If you disable p≡p Sync, your accounts on your devices will not be synchronised anymore. Are you sure you want to disable p≡p Sync?",
+        let comment = NSLocalizedString("If you disable Planck Sync, your accounts on your devices will not be synchronised anymore. Are you sure you want to disable Planck Sync?",
                                         comment: "Alert: Leave device group confirmation comment")
 
         let alert = PEPAlertViewController.fromStoryboard(title: title,
