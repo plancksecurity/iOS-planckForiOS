@@ -294,20 +294,6 @@
             buildForAnalyzing = "NO">
             <BuildableReference
                BuildableIdentifier = "primary"
-               BlueprintIdentifier = "43C24DE227A15C81000E90FF"
-               BuildableName = "pEpTransportTests.xctest"
-               BlueprintName = "pEpTransportTests"
-               ReferencedContainer = "container:../libpEpTransport/build-mac/pEpTransport.xcodeproj">
-            </BuildableReference>
-         </BuildActionEntry>
-         <BuildActionEntry
-            buildForTesting = "YES"
-            buildForRunning = "NO"
-            buildForProfiling = "YES"
-            buildForArchiving = "NO"
-            buildForAnalyzing = "NO">
-            <BuildableReference
-               BuildableIdentifier = "primary"
                BlueprintIdentifier = "43312023292553A200DFD28C"
                BuildableName = "PEPObjCTypeUtilsTests_iOS.xctest"
                BlueprintName = "PEPObjCTypeUtilsTests_iOS"
