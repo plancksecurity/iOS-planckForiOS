@@ -9,9 +9,9 @@
 import PEPObjCAdapter
 
 #if EXT_SHARE
-import pEpIOSToolboxForExtensions
+import PlanckToolboxForExtensions
 #else
-import pEpIOSToolbox
+import PlanckToolbox
 #endif
 
 /// https://dev.pep.foundation/Engine/Media%20keys

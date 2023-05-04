@@ -9,7 +9,7 @@
 import XCTest
 
 @testable import MessageModel
-import pEpIOSToolbox
+import PlanckToolbox
 
 class Attachment_ExtensionTests: PersistentStoreDrivenTestBase {
     struct ContentType {

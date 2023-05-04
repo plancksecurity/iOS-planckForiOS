@@ -8,7 +8,7 @@
 
 import CoreData
 
-import pEpIOSToolbox
+import PlanckToolbox
 
 protocol QueryBasedServiceProtocol: OperationBasedServiceProtocol {
     associatedtype T: NSManagedObject

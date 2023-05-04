@@ -10,9 +10,9 @@ import Foundation
 import CoreData
 
 #if EXT_SHARE
-import pEpIOSToolboxForExtensions
+import PlanckToolboxForExtensions
 #else
-import pEpIOSToolbox
+import PlanckToolbox
 #endif
 
 /// Base for an operation that needs to open an IMAP folder to do its work.

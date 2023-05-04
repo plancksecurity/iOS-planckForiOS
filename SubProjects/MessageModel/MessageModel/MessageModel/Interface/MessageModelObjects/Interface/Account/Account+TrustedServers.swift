@@ -8,7 +8,7 @@
 
 import Foundation
 
-import pEpIOSToolbox
+import PlanckToolbox
 
 extension Account {
     /// Indicate if you should show a warning before trusting this account

@@ -8,7 +8,7 @@
 
 import UIKit
 
-import pEpIOSToolbox
+import PlanckToolbox
 
 /// Base class for PageViewControllers in pEp style.
 /// You MUST NOT use this class without subclassing

@@ -8,7 +8,7 @@
 
 import Foundation
 
-import pEpIOSToolbox
+import PlanckToolbox
 
 /// Qualifies the given server name re trusted or untrusted, depending on whether it is located
 /// network-local or not.

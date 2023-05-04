@@ -11,7 +11,7 @@ import CoreData
 
 import PantomimeFramework
 @testable import MessageModel
-import pEpIOSToolbox
+import PlanckToolbox
 
 class CdMessage_PantomimeTest: PersistentStoreDrivenTestBase {
     // MARK: - StoreCommandForFlagsToRemoved / Add

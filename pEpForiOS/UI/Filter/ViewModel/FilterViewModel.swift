@@ -8,7 +8,7 @@
 
 import Foundation
 import MessageModel
-import pEpIOSToolbox
+import PlanckToolbox
 
 public class FilterViewModel {
     private var sections: [Section] = []

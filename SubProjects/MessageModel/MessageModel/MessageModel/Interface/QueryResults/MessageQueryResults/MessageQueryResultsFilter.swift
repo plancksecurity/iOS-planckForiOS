@@ -7,8 +7,8 @@
 //
 
 import Foundation
-import pEpIOSToolbox
 
+import PlanckToolbox
 
 ///Struct that provides a interface to select which filters are enabled and how must be used.
 public struct MessageQueryResultsFilter {

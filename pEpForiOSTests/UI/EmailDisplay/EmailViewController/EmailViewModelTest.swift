@@ -10,7 +10,7 @@ import XCTest
 import QuickLook
 @testable import pEpForiOS
 @testable import MessageModel
-import pEpIOSToolbox
+import PlanckToolbox
 
 class EmailViewModelTest: XCTestCase {
     private var vm : EmailViewModel!

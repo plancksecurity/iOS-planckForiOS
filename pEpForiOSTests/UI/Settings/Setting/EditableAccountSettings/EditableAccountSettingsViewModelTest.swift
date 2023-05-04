@@ -7,7 +7,7 @@
 //
 
 import XCTest
-import pEpIOSToolbox
+import PlanckToolbox
 @testable import pEpForiOS
 @testable import MessageModel
 

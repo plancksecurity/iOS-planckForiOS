@@ -8,7 +8,7 @@
 
 import WebKit
 
-import pEpIOSToolbox
+import PlanckToolbox
 import pEp4iosIntern
 
 class CreditsViewController: UIViewController {

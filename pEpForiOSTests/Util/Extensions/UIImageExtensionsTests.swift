@@ -8,7 +8,7 @@
 
 import XCTest
 
-import pEpIOSToolbox
+import PlanckToolbox
 @testable import pEpForiOS
 
 class UIImageExtensionsTests: XCTestCase {

@@ -12,9 +12,9 @@ import PantomimeFramework
 import PEPObjCAdapter
 
 #if EXT_SHARE
-import pEpIOSToolboxForExtensions
+import PlanckToolboxForExtensions
 #else
-import pEpIOSToolbox
+import PlanckToolbox
 #endif
 
 /// Operation for storing mails in any type of IMAP folder.

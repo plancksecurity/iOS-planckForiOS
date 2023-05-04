@@ -9,7 +9,7 @@
 import XCTest
 
 @testable import MessageModel
-import pEpIOSToolbox
+import PlanckToolbox
 
 class FetchImapFolderTest: PersistentStoreDrivenTestBase {
     var a: CdAccount?

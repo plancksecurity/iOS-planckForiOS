@@ -11,7 +11,7 @@ import UIKit
 
 @testable import pEpForiOS
 @testable import MessageModel
-import pEpIOSToolbox
+import PlanckToolbox
 
 // StringHTMLExtensionTests all tests are green on date 20200313
 

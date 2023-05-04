@@ -6,12 +6,12 @@
 //  Copyright © 2020 p≡p Security S.A. All rights reserved.
 //
 
-import pEpIOSToolbox
+import PlanckToolbox
 import QuickLook
 import MessageModel
 import EventKit
 import EventKitUI
-import pEpIOSToolbox
+import PlanckToolbox
 
 protocol EmailViewControllerDelegate: AnyObject {
     func openQLPreviewController(toShowDocumentWithUrl url: URL)

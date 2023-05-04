@@ -7,7 +7,7 @@
 //
 
 import Foundation
-import pEpIOSToolbox
+import PlanckToolbox
 
 extension EmailViewModel {
 

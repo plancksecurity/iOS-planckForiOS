@@ -8,7 +8,7 @@
 
 import Foundation
 import MessageModel
-import pEpIOSToolbox
+import PlanckToolbox
 
 ///Delegate protocol to communicate to the SettingsTableViewController some special actions.
 protocol SettingsViewModelDelegate: AnyObject {

@@ -8,7 +8,7 @@
 
 import MessageModel
 
-import pEpIOSToolbox
+import PlanckToolbox
 
 protocol KeySyncUtilProtocol: AnyObject {
     static func leaveDeviceGroup(completion: @escaping ()->Void)

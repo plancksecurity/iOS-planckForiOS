@@ -9,7 +9,7 @@
 import UIKit
 
 import MessageModel // for KeySyncHandshakeData
-import pEpIOSToolbox
+import PlanckToolbox
 
 extension KeySyncWizardViewController {
 

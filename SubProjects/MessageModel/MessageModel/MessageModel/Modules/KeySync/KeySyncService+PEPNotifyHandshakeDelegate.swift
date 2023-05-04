@@ -7,7 +7,7 @@
 //
 
 import PEPObjCAdapter
-import pEpIOSToolbox
+import PlanckToolbox
 
 extension KeySyncService: PEPNotifyHandshakeDelegate {
     func notifyHandshake(_ object: UnsafeMutableRawPointer?,

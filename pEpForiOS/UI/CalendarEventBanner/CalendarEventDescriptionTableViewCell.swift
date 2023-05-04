@@ -8,7 +8,7 @@
 
 import UIKit
 
-import pEpIOSToolbox
+import PlanckToolbox
 
 protocol CalendarEventDescriptionTableViewCellDelegate: AnyObject {
     /// Communicate the view button has been pressed

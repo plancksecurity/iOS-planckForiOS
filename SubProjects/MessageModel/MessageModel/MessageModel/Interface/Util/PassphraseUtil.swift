@@ -7,7 +7,7 @@
 //
 
 import PEPObjCAdapter
-import pEpIOSToolbox
+import PlanckToolbox
 
 public protocol PassphraseUtilProtocol {
 

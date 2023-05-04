@@ -9,7 +9,7 @@
 import CoreData
 
 import PEPObjCAdapter
-import pEpIOSToolbox
+import PlanckToolbox
 
 class KeySyncService: NSObject, KeySyncServiceProtocol {
     /// The Adapter's pEp Sync service.

@@ -8,7 +8,7 @@
 
 import CoreData
 
-import pEpIOSToolbox
+import PlanckToolbox
 
 /// Makes sure a special pEp folder exists (locally and on server) to store pEp Sync messages in.
 /// It runs exactly once runs once for every `start()` call.

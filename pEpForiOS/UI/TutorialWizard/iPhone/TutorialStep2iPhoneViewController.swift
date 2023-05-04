@@ -9,7 +9,7 @@
 import Foundation
 import UIKit
 
-import pEpIOSToolbox
+import PlanckToolbox
 
 class TutorialStep2iPhoneViewController: TutorialStepViewController {
     

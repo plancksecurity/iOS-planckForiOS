@@ -8,7 +8,7 @@
 
 import CoreData
 
-import pEpIOSToolbox
+import PlanckToolbox
 import PEPObjCAdapter
 
 class DecryptMessageOperation: BaseOperation {

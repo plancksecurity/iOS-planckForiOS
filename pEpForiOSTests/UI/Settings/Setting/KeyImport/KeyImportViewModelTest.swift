@@ -10,7 +10,7 @@ import XCTest
 
 @testable import pEpForiOS
 @testable import MessageModel
-import pEpIOSToolbox
+import PlanckToolbox
 
 class KeyImportViewModelTest: XCTestCase {
     override func setUpWithError() throws {

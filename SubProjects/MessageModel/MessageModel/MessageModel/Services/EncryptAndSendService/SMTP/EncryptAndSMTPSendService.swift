@@ -8,7 +8,7 @@
 
 import CoreData
 
-import pEpIOSToolbox
+import PlanckToolbox
 
 /// Service that handles sending of messages for one SMTP supporting account.
 /// Usage:

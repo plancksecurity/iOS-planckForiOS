@@ -8,7 +8,7 @@
 
 import CoreData
 
-import pEpIOSToolbox
+import PlanckToolbox
 
 ///Syncs existing messages in one IMAP fiolder with the servers, e.g., detecting deleted ones.
 class SyncMessagesInImapFolderOperation: ImapSyncOperation {

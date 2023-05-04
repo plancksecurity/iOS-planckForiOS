@@ -7,7 +7,7 @@
 
 import Foundation
 import CoreData
-import pEpIOSToolbox
+import PlanckToolbox
 
 protocol OperationBasedServiceProtocol: ServiceProtocol {
     /// NSManagedObjectContext to work on.

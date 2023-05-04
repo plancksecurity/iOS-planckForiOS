@@ -12,7 +12,7 @@ import CoreData
 import PantomimeFramework
 import PEPObjCAdapter
 @testable import MessageModel
-import pEpIOSToolbox
+import PlanckToolbox
 
 class UseFirstHTMLPartAsBodyTest: PersistentStoreDrivenTestBase {
     let onlyContainedInBody = "This is a real HTML mail"

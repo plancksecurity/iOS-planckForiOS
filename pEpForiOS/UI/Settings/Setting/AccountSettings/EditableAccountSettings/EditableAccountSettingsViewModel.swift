@@ -8,7 +8,7 @@
 
 import Foundation
 import MessageModel
-import pEpIOSToolbox
+import PlanckToolbox
 import PantomimeFramework
 
 protocol EditableAccountSettingsDelegate: AnyObject {

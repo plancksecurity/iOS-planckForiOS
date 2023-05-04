@@ -8,7 +8,7 @@
 
 import Foundation
 import CoreData
-import pEpIOSToolbox
+import PlanckToolbox
 
 /// Provides accounts and informs it's delegate about
 /// changes (insert, update, delete) in the query's results.

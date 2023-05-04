@@ -8,7 +8,7 @@
 
 import UIKit
 import SwipeCellKit
-import pEpIOSToolbox
+import PlanckToolbox
 
 final class SettingsTableViewController: UITableViewController {
 

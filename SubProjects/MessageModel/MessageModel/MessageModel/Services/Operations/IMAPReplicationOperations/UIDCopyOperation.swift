@@ -8,7 +8,7 @@
 
 import PantomimeFramework
 import CoreData
-import pEpIOSToolbox
+import PlanckToolbox
 
 class UIDCopyOperation: ImapSyncOperation {
     private let originalMessageInfo: MessageInfoCache

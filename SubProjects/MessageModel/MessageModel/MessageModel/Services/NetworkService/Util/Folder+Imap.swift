@@ -7,9 +7,9 @@
 //
 
 #if EXT_SHARE
-import pEpIOSToolboxForExtensions
+import PlanckToolboxForExtensions
 #else
-import pEpIOSToolbox
+import PlanckToolbox
 #endif
 
 //!!!: move. Is not NetworkSevcice. Does look like interface

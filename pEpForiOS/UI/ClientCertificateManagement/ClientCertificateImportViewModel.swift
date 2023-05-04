@@ -9,7 +9,7 @@
 import Foundation
 
 import MessageModel
-import pEpIOSToolbox
+import PlanckToolbox
 
 protocol ClientCertificateImportViewModelDelegate: AnyObject {
     func dismiss()

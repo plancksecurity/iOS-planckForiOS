@@ -9,7 +9,7 @@
 import XCTest
 import CoreData
 
-import pEpIOSToolbox
+import PlanckToolbox
 
 @testable import MessageModel
 

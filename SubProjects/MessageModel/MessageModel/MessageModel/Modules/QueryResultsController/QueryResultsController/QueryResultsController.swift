@@ -8,7 +8,7 @@
 
 import CoreData
 
-import pEpIOSToolbox
+import PlanckToolbox
 
 // We must inherit from NSObject to be able to conform to NSFetchedResultsControllerDelegate
 class QueryResultsController<T: NSManagedObject>: NSObject, QueryResultsControllerProtocol,

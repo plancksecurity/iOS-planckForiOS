@@ -12,7 +12,7 @@ import CoreData
 
 @testable import MessageModel
 import PEPObjCAdapter
-import pEpIOSToolbox
+import PlanckToolbox
 
 class TestUtil {
     

@@ -9,7 +9,7 @@
 import Foundation
 import UIKit
 
-import pEpIOSToolbox
+import PlanckToolbox
 
 /// Protocol to handle keyboard hide/show events when having table view that occupes the full height.
 protocol KeyboardHandlingProtocol {

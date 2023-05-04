@@ -8,7 +8,7 @@
 
 import UIKit
 
-import pEpIOSToolbox
+import PlanckToolbox
 
 /// Enables the user to move an IMAP message to a folder of her choice
 class MoveToAccountViewController: UIViewController {

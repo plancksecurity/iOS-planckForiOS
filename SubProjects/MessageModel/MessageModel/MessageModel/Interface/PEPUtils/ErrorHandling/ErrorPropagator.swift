@@ -9,9 +9,9 @@
 import Foundation
 
 #if EXT_SHARE
-import pEpIOSToolboxForExtensions
+import PlanckToolboxForExtensions
 #else
-import pEpIOSToolbox
+import PlanckToolbox
 #endif
 
 /// Conform to this if you want to be a subscriber of ErrorPropagator.
