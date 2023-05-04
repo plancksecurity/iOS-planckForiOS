@@ -1,5 +1,5 @@
 /* pEp mail signature. Newlines will be added by app */
-"sent with p≡p" = "enviado con p≡p";
+"sent with p≡p" = "enviado con planck";
 
 /* Error description when failing to validate account fields */
 "Some fields seems not to be valid. Please check all input fields." = "Algunos campos parecen no ser válidos. Por favor verifique todos los campos de entrada.";

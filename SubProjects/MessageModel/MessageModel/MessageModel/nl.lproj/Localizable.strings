@@ -2,7 +2,7 @@
 "None" = "Geen";
 
 /* pEp mail signature. Newlines will be added by app */
-"sent with p≡p" = "verzonden met p≡p";
+"sent with p≡p" = "verzonden met planck";
 
 /* Error description when failing to validate account fields */
 "Some fields seems not to be valid. Please check all input fields." = "Sommige velden lijken niet geldig te zijn. Controleer alle invoervelden.";
