@@ -877,7 +877,7 @@
 		158A6E032305C2F5006A9ECE /* PEPUtil+EncryptionTest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "PEPUtil+EncryptionTest.swift"; sourceTree = "<group>"; };
 		158A6E0F23073DB0006A9ECE /* PEPDecryptFlags+ReUpload.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "PEPDecryptFlags+ReUpload.swift"; sourceTree = "<group>"; };
 		158A6E152307468F006A9ECE /* CdAttachment+PEPAttachment.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "CdAttachment+PEPAttachment.swift"; sourceTree = "<group>"; };
-		158BCFF12423800400E41F67 /* SecretTestData.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = SecretTestData.swift; path = ../../../../../../pEp_for_iOS_intern/SecretTestData.swift; sourceTree = "<group>"; };
+		158BCFF12423800400E41F67 /* SecretTestData.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = SecretTestData.swift; path = ../../../../../../planckForiOS_intern/SecretTestData.swift; sourceTree = "<group>"; };
 		159AB566235396E1008AB1F3 /* DeleteOutdatedAutoconsumableMessagesService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DeleteOutdatedAutoconsumableMessagesService.swift; sourceTree = "<group>"; };
 		159AB56A23539CBA008AB1F3 /* CNContactsAccessPermissionProviderProtocol.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CNContactsAccessPermissionProviderProtocol.swift; sourceTree = "<group>"; };
 		159BCEAF24C6DD2E000E4ED1 /* XCTest+SyncAdapter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "XCTest+SyncAdapter.swift"; sourceTree = "<group>"; };
