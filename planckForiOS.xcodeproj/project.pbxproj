@@ -47,7 +47,6 @@
 		15146C8C237F006F00D69495 /* KeySyncWizardViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 15146C8B237F006F00D69495 /* KeySyncWizardViewController.swift */; };
 		15146C91237F07EF00D69495 /* PEPPageViewControllerBase.swift in Sources */ = {isa = PBXBuildFile; fileRef = 15146C90237F07EF00D69495 /* PEPPageViewControllerBase.swift */; };
 		15147EF7237EBE2A003989FE /* AppSettings+KeySyncDeviceGroupStateChangeNotification.swift in Sources */ = {isa = PBXBuildFile; fileRef = 15147EF6237EBE2A003989FE /* AppSettings+KeySyncDeviceGroupStateChangeNotification.swift */; };
-		151671A3262EFDE200E99CE5 /* pEpIOSToolboxForExtensions.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 1516719F262EFDE100E99CE5 /* pEpIOSToolboxForExtensions.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		15175CEC205929FB00A8D9D0 /* CidHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = 15175CEB205929FB00A8D9D0 /* CidHandler.swift */; };
 		151AD7AD219D74C700FC36FF /* ComposeViewModelTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 151AD7AC219D74C700FC36FF /* ComposeViewModelTest.swift */; };
 		151C67FF2418158B00481F75 /* SFUIText-Semibold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 151C67FC2418158B00481F75 /* SFUIText-Semibold.ttf */; };
@@ -381,6 +380,7 @@
 		4356FFE721354A4B00804089 /* ReplyAllPossibleCheckerProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4356FFE621354A4B00804089 /* ReplyAllPossibleCheckerProtocol.swift */; };
 		4356FFEC21356CB600804089 /* ReplyAllPossibleCheckerTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4356FFEB21356CB600804089 /* ReplyAllPossibleCheckerTest.swift */; };
 		436C003B2A03D0E600C2B3DD /* PlanckToolbox.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 436C003A2A03D0E600C2B3DD /* PlanckToolbox.framework */; };
+		436C003D2A03D16400C2B3DD /* PlanckToolbox.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 436C003A2A03D0E600C2B3DD /* PlanckToolbox.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		436F1BA425028B8A004426DC /* CocoaLumberjackSwift.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 436F1BA225028B7D004426DC /* CocoaLumberjackSwift.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		4375B2EC2625855A0049A0C0 /* KeyInputView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3705096B22DC8C1800CB73D6 /* KeyInputView.swift */; };
 		437E9BA9237AFB7F00E9A847 /* UIStoryboard+Constants.swift in Sources */ = {isa = PBXBuildFile; fileRef = 437E9BA8237AFB7F00E9A847 /* UIStoryboard+Constants.swift */; };
@@ -626,7 +626,6 @@
 		B70A3C401E817CFA0036876F /* FolderViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = B70A3C3F1E817CFA0036876F /* FolderViewModel.swift */; };
 		B710526524168400007148E8 /* SwipeCellKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = B710526424168400007148E8 /* SwipeCellKit.framework */; };
 		B710526624168400007148E8 /* SwipeCellKit.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = B710526424168400007148E8 /* SwipeCellKit.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
-		B710526924168474007148E8 /* pEpIOSToolbox.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = B710526724168474007148E8 /* pEpIOSToolbox.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		B710526B24168481007148E8 /* AppAuth.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = B710526A24168481007148E8 /* AppAuth.framework */; };
 		B710526C24168481007148E8 /* AppAuth.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = B710526A24168481007148E8 /* AppAuth.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		B710526E241684AB007148E8 /* MessageModel.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = B710526D241684AB007148E8 /* MessageModel.framework */; };
@@ -706,7 +705,7 @@
 			dstPath = "";
 			dstSubfolderSpec = 10;
 			files = (
-				151671A3262EFDE200E99CE5 /* pEpIOSToolboxForExtensions.framework in Embed Frameworks */,
+				436C003D2A03D16400C2B3DD /* PlanckToolbox.framework in Embed Frameworks */,
 				436F1BA425028B8A004426DC /* CocoaLumberjackSwift.framework in Embed Frameworks */,
 				4320294D252C8E4E00986C44 /* CocoaLumberjack.framework in Embed Frameworks */,
 				B710526C24168481007148E8 /* AppAuth.framework in Embed Frameworks */,
@@ -715,7 +714,6 @@
 				43E60263262F0E8100232FE6 /* MessageModelForAppExtensions.framework in Embed Frameworks */,
 				154272B62537387000DD333E /* pEp4iosIntern.framework in Embed Frameworks */,
 				B710526F241684AB007148E8 /* MessageModel.framework in Embed Frameworks */,
-				B710526924168474007148E8 /* pEpIOSToolbox.framework in Embed Frameworks */,
 				B710526624168400007148E8 /* SwipeCellKit.framework in Embed Frameworks */,
 			);
 			name = "Embed Frameworks";
