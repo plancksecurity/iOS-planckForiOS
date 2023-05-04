@@ -415,9 +415,9 @@
             <BuildableReference
                BuildableIdentifier = "primary"
                BlueprintIdentifier = "B7DB7F56221315BD003968DA"
-               BuildableName = "pEpIOSToolboxTests.xctest"
-               BlueprintName = "pEpIOSToolboxTests"
-               ReferencedContainer = "container:../pep-toolbox/pEpIOSToolbox.xcodeproj">
+               BuildableName = "PlanckToolboxTests.xctest"
+               BlueprintName = "PlanckToolboxTests"
+               ReferencedContainer = "container:../planck-toolbox/PlanckToolbox.xcodeproj">
             </BuildableReference>
          </TestableReference>
          <TestableReference
