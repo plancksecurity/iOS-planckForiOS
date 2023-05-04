@@ -11,7 +11,7 @@ Install [MacPorts](https://www.macports.org/) for your
 
 ### Dependencies of prerequisites
 
-For building the engine, you need a working python3 environment and all dependencies:
+For building the engine, you need a working python3 environment and (build|testing) dependencies:
 
 ```
 sudo port install git
