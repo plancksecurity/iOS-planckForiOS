@@ -207,6 +207,8 @@
 		4300CF6325ECEF98003DBEB4 /* SharedData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4300CF6225ECEF98003DBEB4 /* SharedData.swift */; };
 		4300CF6725ECF4F4003DBEB4 /* ShareViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4300CF6625ECF4F4003DBEB4 /* ShareViewModel.swift */; };
 		43038EA2246D897F008FC36E /* KeyImportViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43038EA1246D897F008FC36E /* KeyImportViewController.swift */; };
+		430646C52A03DE7D00601FDC /* PlanckToolboxForExtensions.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 430646C42A03DE7D00601FDC /* PlanckToolboxForExtensions.framework */; };
+		430646C62A03DE8700601FDC /* PlanckToolboxForExtensions.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 430646C42A03DE7D00601FDC /* PlanckToolboxForExtensions.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		4307D5DA23575853004569C4 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 4307D5D823575853004569C4 /* InfoPlist.strings */; };
 		430D73651E9CBD4E00EA6FA9 /* AttachmentViewOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 430D73641E9CBD4E00EA6FA9 /* AttachmentViewOperation.swift */; };
 		4313A54C25E7C1D9001E6767 /* NothingSelected.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 433404CD2379789600E785F1 /* NothingSelected.storyboard */; };
@@ -705,6 +707,7 @@
 			dstPath = "";
 			dstSubfolderSpec = 10;
 			files = (
+				430646C62A03DE8700601FDC /* PlanckToolboxForExtensions.framework in Embed Frameworks */,
 				436C003D2A03D16400C2B3DD /* PlanckToolbox.framework in Embed Frameworks */,
 				436F1BA425028B8A004426DC /* CocoaLumberjackSwift.framework in Embed Frameworks */,
 				4320294D252C8E4E00986C44 /* CocoaLumberjack.framework in Embed Frameworks */,
@@ -925,6 +928,7 @@
 		4300CF6225ECEF98003DBEB4 /* SharedData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SharedData.swift; sourceTree = "<group>"; };
 		4300CF6625ECF4F4003DBEB4 /* ShareViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShareViewModel.swift; sourceTree = "<group>"; };
 		43038EA1246D897F008FC36E /* KeyImportViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KeyImportViewController.swift; sourceTree = "<group>"; };
+		430646C42A03DE7D00601FDC /* PlanckToolboxForExtensions.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = PlanckToolboxForExtensions.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		4307D5D923575853004569C4 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
 		4307D5DB23575853004569C4 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/FolderViews.strings; sourceTree = "<group>"; };
 		4307D5DC23575853004569C4 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/Localizable.strings; sourceTree = "<group>"; };
@@ -1290,6 +1294,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				430646C52A03DE7D00601FDC /* PlanckToolboxForExtensions.framework in Frameworks */,
 				436C003B2A03D0E600C2B3DD /* PlanckToolbox.framework in Frameworks */,
 				B710526524168400007148E8 /* SwipeCellKit.framework in Frameworks */,
 				1512133524166C95009B7C88 /* libAccountSettingsAdapter.a in Frameworks */,
@@ -2653,6 +2658,7 @@
 		495560841E7150ED0016579E /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				430646C42A03DE7D00601FDC /* PlanckToolboxForExtensions.framework */,
 				436C003A2A03D0E600C2B3DD /* PlanckToolbox.framework */,
 				5BFAE37E282185E500B003D4 /* NotificationBanner.framework */,
 				5B54428128198AFA00FF194B /* SwiftMessages.framework */,
