@@ -54,9 +54,10 @@ rustup update
 ```
 
 ### Set up Xcode
+
 You need to have an Apple ID configured in Xcode, for code signing. You can add one in the `Accounts` tab of the settings (menu `Xcode > Preferences...`).
 
-For some things, your Apple ID needs to be part of the pEp team account. Ask `#service`, if you want to be added to the team account. When you are a member of the team, the information on your Apple ID in the Xcode Preferences should have a record `Team: pEp Security SA`, `Role: Member`.
+Your Apple ID needs to be part of your development team.
 
 ### Other dependencies
 
