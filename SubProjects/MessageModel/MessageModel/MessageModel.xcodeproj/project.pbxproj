@@ -403,6 +403,8 @@
 		43648287249A3F6900DD44ED /* IOS-211-duplicated-attachments.txt in Resources */ = {isa = PBXBuildFile; fileRef = 43648286249A3F6900DD44ED /* IOS-211-duplicated-attachments.txt */; };
 		4367342F22F18462005FC567 /* CdMessagePredicateFactory+KeySync.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4367342E22F18462005FC567 /* CdMessagePredicateFactory+KeySync.swift */; };
 		4368309F22F9682A0005880D /* DeleteOldSyncMailsOperationTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4368309E22F9682A0005880D /* DeleteOldSyncMailsOperationTest.swift */; };
+		436C00372A03CF6700C2B3DD /* PlanckToolbox.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 436C00362A03CF6700C2B3DD /* PlanckToolbox.framework */; };
+		436C00392A03CF7700C2B3DD /* PlanckToolboxForExtensions.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 436C00382A03CF7700C2B3DD /* PlanckToolboxForExtensions.framework */; };
 		436C9A4824E3FC9700007A3D /* Rating.swift in Sources */ = {isa = PBXBuildFile; fileRef = 436C9A4724E3FC9700007A3D /* Rating.swift */; };
 		436C9A4A24E3FE0B00007A3D /* Rating+pEp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 436C9A4924E3FE0B00007A3D /* Rating+pEp.swift */; };
 		436FD21925DA806E00D929B3 /* Attachment+SessionAware.swift in Sources */ = {isa = PBXBuildFile; fileRef = 15E39FCB22551E990016A1C4 /* Attachment+SessionAware.swift */; };
@@ -475,7 +477,6 @@
 		43A536EA23E474EA0040715D /* ImapConnectionDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43A536E923E474EA0040715D /* ImapConnectionDelegate.swift */; };
 		43A676A2246D3A81004639FE /* KeyImportUtilProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43A676A1246D3A81004639FE /* KeyImportUtilProtocol.swift */; };
 		43A6E05C1E57725C005BEE69 /* CdKey+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43A6E05B1E57725C005BEE69 /* CdKey+Extension.swift */; };
-		43A7661A260A136600E67592 /* pEpIOSToolboxForExtensions.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 43A76619260A136600E67592 /* pEpIOSToolboxForExtensions.framework */; };
 		43A7D64C29DD9D630031FECB /* libc++.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = 43A7D64B29DD9D630031FECB /* libc++.tbd */; };
 		43A7D64D29DD9DDC0031FECB /* libc++.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = 43A7D64B29DD9D630031FECB /* libc++.tbd */; };
 		43A9818024E52FF700830603 /* Identity+pEpIdentity.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43A9817F24E52FF700830603 /* Identity+pEpIdentity.swift */; };
@@ -702,7 +703,6 @@
 		B7C1F4F02459CD5F00070DCC /* Identity+Fetching.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7C1F4EF2459CD5F00070DCC /* Identity+Fetching.swift */; };
 		B7C7E31823351092009ABFFE /* IdentityQueryResultsSearch.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7C7E31723351092009ABFFE /* IdentityQueryResultsSearch.swift */; };
 		B7C7E31A23351115009ABFFE /* IdentityQueryResults.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7C7E31923351115009ABFFE /* IdentityQueryResults.swift */; };
-		B7DB7FA522147000003968DA /* pEpIOSToolbox.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = B7DB7FA422147000003968DA /* pEpIOSToolbox.framework */; };
 		B7DFEA50225365080080A2BA /* DisplayableFolderProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7DFEA4F225365080080A2BA /* DisplayableFolderProtocol.swift */; };
 		B7E02ABF2227F49600741157 /* MessageQueryResultsSearchTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7E02ABE2227F49600741157 /* MessageQueryResultsSearchTest.swift */; };
 		B7E0514222D63B5E005FE4F9 /* Folder+RealFolder.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7E0514122D63B5E005FE4F9 /* Folder+RealFolder.swift */; };
@@ -1016,6 +1016,8 @@
 		4367342E22F18462005FC567 /* CdMessagePredicateFactory+KeySync.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "CdMessagePredicateFactory+KeySync.swift"; sourceTree = "<group>"; };
 		4368309E22F9682A0005880D /* DeleteOldSyncMailsOperationTest.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DeleteOldSyncMailsOperationTest.swift; sourceTree = "<group>"; };
 		436981B42282F8D40006FA2D /* PEPObjCAdapterFramework.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = PEPObjCAdapterFramework.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		436C00362A03CF6700C2B3DD /* PlanckToolbox.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = PlanckToolbox.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		436C00382A03CF7700C2B3DD /* PlanckToolboxForExtensions.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = PlanckToolboxForExtensions.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		436C9A4724E3FC9700007A3D /* Rating.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Rating.swift; sourceTree = "<group>"; };
 		436C9A4924E3FE0B00007A3D /* Rating+pEp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Rating+pEp.swift"; sourceTree = "<group>"; };
 		43753CC1222D247D002EE98B /* CdMessage+pEp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "CdMessage+pEp.swift"; sourceTree = "<group>"; };
@@ -1250,10 +1252,10 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				436C00392A03CF7700C2B3DD /* PlanckToolboxForExtensions.framework in Frameworks */,
 				43C09EA92A024F6300335FDD /* libplanckCoreV3.a in Frameworks */,
 				43C09EA72A024F2700335FDD /* libPlanckObjCWrapper_iOS.a in Frameworks */,
 				434C5AA129784B04007496AF /* AppAuth.framework in Frameworks */,
-				43A7661A260A136600E67592 /* pEpIOSToolboxForExtensions.framework in Frameworks */,
 				43A7D64D29DD9DDC0031FECB /* libc++.tbd in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -1262,12 +1264,12 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				436C00372A03CF6700C2B3DD /* PlanckToolbox.framework in Frameworks */,
 				43C09EA52A024C2200335FDD /* libplanckCoreV3.a in Frameworks */,
 				43C09EA32A024BE800335FDD /* libPlanckObjCWrapper_iOS.a in Frameworks */,
 				3AB50D2A2500F3B1005E2170 /* pEp4iosIntern.framework in Frameworks */,
 				43B1A39C22366D9700C387DE /* AppAuth.framework in Frameworks */,
 				43EA489D221E95E3006E8F83 /* PantomimeFramework.framework in Frameworks */,
-				B7DB7FA522147000003968DA /* pEpIOSToolbox.framework in Frameworks */,
 				43A7D64C29DD9D630031FECB /* libc++.tbd in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -2752,6 +2754,8 @@
 		B7DB7FA322147000003968DA /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				436C00382A03CF7700C2B3DD /* PlanckToolboxForExtensions.framework */,
+				436C00362A03CF6700C2B3DD /* PlanckToolbox.framework */,
 				43C09EA82A024F6300335FDD /* libplanckCoreV3.a */,
 				43C09EA62A024F2700335FDD /* libPlanckObjCWrapper_iOS.a */,
 				43C09EA42A024C2200335FDD /* libplanckCoreV3.a */,
