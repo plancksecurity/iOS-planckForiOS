@@ -845,7 +845,7 @@
 "Sent (all)" = "Gesendet (alle)";
 
 /* pEp mail signature. Newlines will be added by app */
-"sent with p≡p" = "gesendet mit p≡p";
+"sent with p≡p" = "gesendet mit planck";
 
 /* Privacy status suggestion */
 "Separately verify the content of this message with your communication partner." = "Überprüfen Sie den Inhalt dieser Nachricht separat mit Ihrem Kommunikationspartner.";

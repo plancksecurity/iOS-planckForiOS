@@ -9,23 +9,23 @@
 import UIKit
 
 extension String {
-    public static var pepSignature: String {
-        return NSLocalizedString("sent with Planck",
-                                 comment: "Planck mail signature. Newlines will be added by app")
+    public static var planckSignature: String {
+        return NSLocalizedString("sent with planck",
+                                 comment: "planck mail signature. Newlines will be added by app")
     }
 
-    public static var pEpSignatureHtml: String {
-        let pEpSignatureTrimmed = String.pepSignature.trimmed()
-        return "<a href=\"https://pep.software\" style=\"color:\(UIColor.pEpDarkGreenHex); text-decoration: none;\">\(pEpSignatureTrimmed)</a>"
+    public static var planckSignatureHtml: String {
+        let pEpSignatureTrimmed = String.planckSignature.trimmed()
+        return "<a href=\"https://planck.software\" style=\"color:\(UIColor.pEpDarkGreenHex); text-decoration: none;\">\(pEpSignatureTrimmed)</a>"
     }
 
     public func replacingOccurrencesOfPepSignatureWithHtmlVersion() -> String {
-        let pEpSignatureTrimmed = String.pepSignature.trimmed()
+        let pEpSignatureTrimmed = String.planckSignature.trimmed()
 
-        var result = replacingOccurrences(of: pEpSignatureTrimmed, with: String.pEpSignatureHtml)
+        var result = replacingOccurrences(of: pEpSignatureTrimmed, with: String.planckSignatureHtml)
 
         // The signature comes in different formats here for some reason. Search & replace all known versions
-        let strangePEPSignaturePatterns = [#"<p class=\"[\S][\S]\"><span class=\"[\S][\S]\">sent with p<\/span><span class=\"[\S][\S]\">≡<\/span><span class=\"[\S][\S]\">p<\/span><\/p>"#,
+        let strangePEPSignaturePatterns = [#"<p class=\"[\S][\S]\"><span class=\"[\S][\S]\">sent with planck<\/span><\/p>"#,
                                            #"<p class=\"p2\"><span class=\"s2\">sent with p&#x2261;p</span></p>"#]
         for strangePEPSignaturePattern in strangePEPSignaturePatterns {
             guard let strangePEPSignatureRegex = try? NSRegularExpression(pattern: strangePEPSignaturePattern,
@@ -36,7 +36,7 @@ extension String {
             result = strangePEPSignatureRegex.stringByReplacingMatches(in: result,
                                                                        options: [],
                                                                        range: result.wholeRange(),
-                                                                       withTemplate: String.pEpSignatureHtml)
+                                                                       withTemplate: String.planckSignatureHtml)
         }
         return result
     }

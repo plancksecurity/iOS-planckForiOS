@@ -16,7 +16,7 @@ import pEpIOSToolbox
 // StringHTMLExtensionTests all tests are green on date 20200313
 
 class StringHTMLExtensionTests: XCTestCase {
-    let pepSignatureTrimmed = String.pepSignature.trimmed()
+    let pepSignatureTrimmed = String.planckSignature.trimmed()
 
     func testExtractTextFromHTML() {
         var html = "<html>\r\n  <head>\r\n\r\n"

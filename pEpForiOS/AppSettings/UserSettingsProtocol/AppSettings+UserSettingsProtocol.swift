@@ -163,9 +163,9 @@ extension AppSettings: UserSettingsProtocol {
 
     public func signature(forAddress address: String?) -> String {
         guard let safeAddress = address else {
-            return String.pepSignature
+            return String.planckSignature
         }
-        return signatureAddresDictionary[safeAddress] ?? String.pepSignature
+        return signatureAddresDictionary[safeAddress] ?? String.planckSignature
     }
 
     public var verboseLogginEnabled: Bool {

@@ -460,8 +460,8 @@ extension SettingsViewModel {
             return NSLocalizedString("Protect Message Subject",
                                      comment: "title for subject protection")
         case .pEpSync:
-            return NSLocalizedString("Planck Sync",
-                                     comment: "Settings: enable/disable Planck Sync feature")
+            return NSLocalizedString("planck Sync",
+                                     comment: "Settings: enable/disable planck Sync feature")
         case .usePEPFolder:
             return NSLocalizedString("Use planck Folder For Sync Messages",
                                      comment: "Settings: title for enable/disable usePEPFolder feature")
@@ -471,7 +471,7 @@ extension SettingsViewModel {
         case .tutorial:
             return NSLocalizedString("Tutorial", comment: "setting row title: Tutorial")
         case .exportDBs:
-            return NSLocalizedString("Export Planck databases to file system", comment: "setting row title: Export DBs")
+            return NSLocalizedString("Export planck databases to file system", comment: "setting row title: Export DBs")
         case .groupMailboxes:
             return NSLocalizedString("Group Mailboxes", comment: "setting row title: Group Mailboxes")
         case .deviceGroups:

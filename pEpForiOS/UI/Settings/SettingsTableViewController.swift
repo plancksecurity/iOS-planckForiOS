@@ -391,13 +391,13 @@ extension SettingsTableViewController : SettingsViewModelDelegate {
     }
 
     func showDBExportSuccess() {
-        let alertTitle = NSLocalizedString("Export Planck databases to file system", comment: "Alert view title - warning")
+        let alertTitle = NSLocalizedString("Export planck databases to file system", comment: "Alert view title - warning")
         let message = NSLocalizedString("Exporting databases OK", comment: "Error message")
         UIUtils.showAlertWithOnlyPositiveButton(title: alertTitle, message: message, style: .undo, completion: nil)
     }
 
     func showDBExportFailed() {
-        let alertTitle = NSLocalizedString("Export Planck databases to file system", comment: "Alert view title - warning")
+        let alertTitle = NSLocalizedString("Export planck databases to file system", comment: "Alert view title - warning")
         let message = NSLocalizedString("Exporting databases failed", comment: "Error message")
         let cancelButton = NSLocalizedString("Cancel", comment: "Cancel button")
         let tryAgainButton = NSLocalizedString("Try Again", comment: "Try again button text")
@@ -521,8 +521,8 @@ extension SettingsTableViewController {
 extension SettingsTableViewController {
 
     private func showExportDBsAlert() {
-        let alertTitle = NSLocalizedString("Export Planck databases to file system", comment: "Alert view title - warning")
-        let message = NSLocalizedString("Do you really want to export Planck databases to Documents/planck/db-export/ on your local file system?\nWarning: The databases contain confidential information like private keys.",
+        let alertTitle = NSLocalizedString("Export planck databases to file system", comment: "Alert view title - warning")
+        let message = NSLocalizedString("Do you really want to export planck databases to Documents/planck/db-export/ on your local file system?\nWarning: The databases contain confidential information like private keys.",
                                         comment: "Alert view message - warning")
         let cancelButtonText = NSLocalizedString("No", comment: "No button")
         let positiveButtonText = NSLocalizedString("Yes", comment: "Yes button")
@@ -558,9 +558,9 @@ extension SettingsTableViewController {
     }
 
     private func showpEpSyncLeaveGroupAlert(action:  @escaping SettingsViewModel.SwitchBlock, newValue: Bool) -> PEPAlertViewController? {
-        let title = NSLocalizedString("Disable Planck Sync",
+        let title = NSLocalizedString("Disable planck Sync",
                                       comment: "Leave device group confirmation")
-        let comment = NSLocalizedString("If you disable Planck Sync, your accounts on your devices will not be synchronised anymore. Are you sure you want to disable Planck Sync?",
+        let comment = NSLocalizedString("If you disable planck Sync, your accounts on your devices will not be synchronised anymore. Are you sure you want to disable planck Sync?",
                                         comment: "Alert: Leave device group confirmation comment")
 
         let alert = PEPAlertViewController.fromStoryboard(title: title,

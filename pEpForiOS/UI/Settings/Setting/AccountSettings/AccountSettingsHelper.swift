@@ -45,7 +45,7 @@ public struct AccountSettingsHelper {
         case .password:
             return NSLocalizedString("Password", comment: "Password label in account settings")
         case .pepSync:
-            return NSLocalizedString("Planck Sync", comment: "Planck Sync label in account settings")
+            return NSLocalizedString("planck Sync", comment: "planck Sync label in account settings")
         case .reset:
             return NSLocalizedString("Reset", comment: "Reset label in account settings")
         case .server:

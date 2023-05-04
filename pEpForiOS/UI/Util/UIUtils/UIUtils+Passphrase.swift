@@ -28,11 +28,11 @@ extension UIUtils {
     /// Shows an alert to require a Passphrase
     static public func showPassphraseRequiredForPEPSyncAlert(completion: ((String?)->Void)? = nil) {
         let title = NSLocalizedString("Passphrase", comment: "Passphrase title")
-        let message = NSLocalizedString("Enter passphrase for Planck Sync:",
-                                        comment: "Enter passphrase alert - message - shown while Planck Sync is running")
+        let message = NSLocalizedString("Enter passphrase for planck Sync:",
+                                        comment: "Enter passphrase alert - message - shown while planck Sync is running")
         let placeholder = NSLocalizedString("Passphrase", comment: "Passphrase placeholder")
-        let cancelButtonText = NSLocalizedString("Shutdown Planck Sync",
-                                                 comment: "Enter passphrase alert - Negative button text - shown while Planck Sync is running")
+        let cancelButtonText = NSLocalizedString("Shutdown planck Sync",
+                                                 comment: "Enter passphrase alert - Negative button text - shown while planck Sync is running")
         showPassphraseInputAlert(title: title,
                                  message: message,
                                  placeholder: placeholder,

@@ -64,7 +64,7 @@ final class KeySyncHandshakeViewController: UIViewController {
 
     @IBOutlet private weak var alertTitle: UILabel! {
         didSet {
-            let titleText = NSLocalizedString("Planck Sync", comment: "keySync handshake alert title")
+            let titleText = NSLocalizedString("planck Sync", comment: "keySync handshake alert title")
             alertTitle.font = UIFont.pepFont(style: .body, weight: .semibold)
             alertTitle.attributedText = titleText.paintPEPToPEPColour()
         }

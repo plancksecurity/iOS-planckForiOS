@@ -783,7 +783,7 @@
 "Sent (all)" = "Enviados (todos)";
 
 /* pEp mail signature. Newlines will be added by app */
-"sent with p≡p" = "enviado con p≡p";
+"sent with p≡p" = "enviado con planck";
 
 /* Privacy status suggestion */
 "Separately verify the content of this message with your communication partner." = "Verifique el contenido de este mensaje con su interlocutor por separado.";
