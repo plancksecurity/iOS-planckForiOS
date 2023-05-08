@@ -96,8 +96,9 @@ git clone https://git.planck.security/iOS/Appauth-iOS.git
 git clone https://git.planck.security/iOS/common-dependency-build-helpers-4-apple-hardware.git
 git clone https://git.planck.security/iOS/CocoaLumberjack.git
 git clone https://git.planck.security/iOS/OpenSSL-for-iPhone.git
-git clone https://git.planck.security/iOS/planckForiOS_intern.git
 git clone https://git.planck.security/iOS/SwipeCellKit.git
+
+git clone https://git.planck.security/iOS/planckForiOS_intern.git
 
 ### Build Project
 
