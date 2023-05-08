@@ -54,8 +54,8 @@ final class AccountTypeSelectorViewController: UIViewController {
     }
 
     @IBAction func termsAndConditionsButtonPressed() {
-        let myUrl = "https://userguide.pep.security/pEp_for_iOS_User_Guide.pdf"
-        guard let url = URL(string: "\(myUrl)") else {
+        guard let myUrl = InfoPlist.userManualURL(),
+                let url = URL(string: "\(myUrl)") else {
             Log.shared.errorAndCrash("URL corrupted")
             return
         }
