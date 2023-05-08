@@ -79,23 +79,25 @@ In a directory of your choice, do:
 mkdir src_pEp4iOS
 cd src_pEp4iOS
 
-git clone http://pep-security.lu/gitlab/misc/changesets_script.git
-git clone https://pep-security.lu/gitlab/iOS/OpenSSL-for-iPhone.git
-git clone https://pep-security.lu/gitlab/iOS/SwipeCellKit.git/
-git clone https://pep-security.lu/gitlab/iOS/CocoaLumberjack
-git clone https://pep-security.lu/gitlab/iOS/AppAuth-iOS.git
-git clone https://pep-security.lu/gitlab/misc/ldns.git
-git clone https://gitea.pep.foundation/pEp.foundation/libAccountSettings
-git clone https://gitea.pep.foundation/buff/common-dependency-build-helpers-4-apple-hardware.git
-git clone https://gitea.pep.foundation/pEp.foundation/libetpan.git
-git clone https://gitea.pep.foundation/pEp.foundation/pEpEngine
-git clone http://pep-security.lu/gitlab/iOS/pep-toolbox.git
-git clone https://gitea.pep.foundation/pep.foundation/Pantomime.git
-git clone https://gitea.pep.foundation/pep.foundation/pEpObjCAdapter.git
-git clone https://gitea.pep.foundation/pEp.foundation/libpEpTransport.git
+git clone https://git.planck.security/iOS/pep4ios.git
 
-git clone https://pep-security.lu/gitlab/iOS/pep4ios.git
-```
+git clone https://git.planck.security/foundation/planckCoreV3.git
+git clone https://git.planck.security/foundation/libPlanckTransport.git
+git clone https://git.planck.security/foundation/planckCoreSequoiaBackend.git
+git clone https://git.planck.security/foundation/libetpan.git
+git clone https://git.planck.security/foundation/planckObjCWrapper.git
+git clone https://git.planck.security/foundation/Pantomime.git
+git clone https://git.planck.security/foundation/libAccountsettings.git
+
+git clone https://git.planck.security/misc/ldns.git
+
+git clone https://git.planck.security/iOS/planck-toolbox.git
+git clone https://git.planck.security/iOS/Appauth-iOS.git
+git clone https://git.planck.security/iOS/common-dependency-build-helpers-4-apple-hardware.git
+git clone https://git.planck.security/iOS/CocoaLumberjack.git
+git clone https://git.planck.security/iOS/OpenSSL-for-iPhone.git
+git clone https://git.planck.security/iOS/planckForiOS_intern.git
+git clone https://git.planck.security/iOS/SwipeCellKit.git
 
 ### Build Project
 
