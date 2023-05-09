@@ -8,7 +8,7 @@
 
 import UIKit
 import Foundation
-import pEpIOSToolbox
+import PlanckToolbox
 
 protocol MessageHeaderCellDelegate: AnyObject {
     func displayAllRecipients(recipientType: EmailViewModel.RecipientType)

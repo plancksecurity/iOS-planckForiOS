@@ -10,9 +10,9 @@ import UIKit
 import UniformTypeIdentifiers
 import PhotosUI
 #if EXT_SHARE
-import pEpIOSToolboxForExtensions
+import PlanckToolboxForExtensions
 #else
-import pEpIOSToolbox
+import PlanckToolbox
 #endif
 
 class MediaAttachmentPickerProvider: NSObject {

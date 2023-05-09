@@ -9,7 +9,7 @@
 import Foundation
 
 import MessageModel
-import pEpIOSToolbox
+import PlanckToolbox
 
 public protocol FolderViewModelDelegate: AnyObject {
 

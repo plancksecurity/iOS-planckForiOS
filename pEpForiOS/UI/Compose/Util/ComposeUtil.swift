@@ -8,10 +8,10 @@
 
 #if EXT_SHARE
 import MessageModelForAppExtensions
-import pEpIOSToolboxForExtensions
+import PlanckToolboxForExtensions
 #else
 import MessageModel
-import pEpIOSToolbox
+import PlanckToolbox
 #endif
 
 /// Utils for composing a message. Helps finding out values depending on the original message

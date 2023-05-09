@@ -9,7 +9,7 @@
 import UIKit
 import Foundation
 import MessageModel
-import pEpIOSToolbox
+import PlanckToolbox
 
 final class AccountSettingsViewController: UIViewController {
     @IBOutlet private var tableView: UITableView!

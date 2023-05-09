@@ -8,7 +8,7 @@
 
 import UIKit
 
-import pEpIOSToolbox
+import PlanckToolbox
 
 final class LoadingInterface {
     static weak var loadingInterface: UIView?

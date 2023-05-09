@@ -8,7 +8,7 @@
 
 import Foundation
 
-import pEpIOSToolbox
+import PlanckToolbox
 import MessageModel
 
 protocol EmailListViewModelDelegate: EmailDisplayViewModelDelegate {

@@ -7,7 +7,7 @@
 //
 
 import WebKit
-import pEpIOSToolbox
+import PlanckToolbox
 
 class CreditsWebViewController: PEPWebViewController {
 

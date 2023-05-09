@@ -10,10 +10,10 @@ import Foundation
 
 #if EXT_SHARE
 import MessageModelForAppExtensions
-import pEpIOSToolboxForExtensions
+import PlanckToolboxForExtensions
 #else
 import MessageModel
-import pEpIOSToolbox
+import PlanckToolbox
 #endif
 
 /// This VM handles the banner that appears in the compose view when the user introduces an address of a red identity

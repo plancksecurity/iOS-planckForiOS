@@ -7,7 +7,7 @@
 //
 
 import Foundation
-import pEpIOSToolbox
+import PlanckToolbox
 import MessageModel
 
 public struct AccountSettingsHelper {
