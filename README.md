@@ -75,7 +75,7 @@ popd
 mkdir src # parent directory of your choice
 cd src
 
-git clone https://git.planck.security/iOS/pep4ios.git
+git clone https://git.planck.security/iOS/planckForiOS.git
 
 git clone https://git.planck.security/foundation/planckCoreV3.git
 git clone https://git.planck.security/foundation/libPlanckTransport.git
@@ -97,7 +97,7 @@ git clone https://git.planck.security/iOS/SwipeCellKit.git
 # internal repo for configuration and test data
 git clone https://git.planck.security/iOS/planckForiOS_intern.git
 
-open pep4ios/planckForiOS.xcworkspace
+open planckForiOS/planckForiOS.xcworkspace
 ```
 
 ### Build
