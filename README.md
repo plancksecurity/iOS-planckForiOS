@@ -65,7 +65,7 @@ Clone into your home directory:
 
 ```
 pushd ~
-git clone https://gitea.pep.foundation/fdik/yml2
+git clone https://git.planck.security/foundation/yml2.git
 popd
 ```
 
