@@ -10,7 +10,7 @@ import UIKit
 
 @testable import MessageModel
 import PantomimeFramework
-import pEpIOSToolbox
+import PlanckToolbox
 
 /// Base class for test data.
 /// - Note:

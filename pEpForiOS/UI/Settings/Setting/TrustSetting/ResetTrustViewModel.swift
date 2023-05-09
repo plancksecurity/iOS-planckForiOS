@@ -9,7 +9,7 @@
 import Foundation
 
 import MessageModel
-import pEpIOSToolbox
+import PlanckToolbox
 
 /// delegate protocol to inform about incoming changes in the tableview
 protocol ResetTrustViewModelDelegate: AnyObject {

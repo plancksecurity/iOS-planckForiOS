@@ -9,7 +9,7 @@
 import Foundation
 
 import PEPObjCAdapter
-import pEpIOSToolbox
+import PlanckToolbox
 
 /// Wraps `PEPLanguage`, indicating a trustwords language.
 public struct TrustwordsLanguage {

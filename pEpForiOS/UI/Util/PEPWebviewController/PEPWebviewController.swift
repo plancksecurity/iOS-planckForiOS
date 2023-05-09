@@ -9,7 +9,7 @@
 import Foundation
 import WebKit
 
-import pEpIOSToolbox
+import PlanckToolbox
 
 class PEPWebViewController: UIViewController {
 

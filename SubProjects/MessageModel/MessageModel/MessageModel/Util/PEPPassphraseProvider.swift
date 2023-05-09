@@ -8,7 +8,7 @@
 
 import PEPObjCAdapter
 
-import pEpIOSToolbox
+import PlanckToolbox
 
 /// Pass to adapter PEPObjCAdapter.setPassphraseProvider(PEPPassphraseProviderProtocol).
 /// - see: PEPObjCAdapter.PEPPassphraseProviderProtocol docs for details.

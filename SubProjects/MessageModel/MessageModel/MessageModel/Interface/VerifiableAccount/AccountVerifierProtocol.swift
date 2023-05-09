@@ -9,9 +9,9 @@
 import Foundation
 
 #if EXT_SHARE
-import pEpIOSToolboxForExtensions
+import PlanckToolboxForExtensions
 #else
-import pEpIOSToolbox
+import PlanckToolbox
 #endif
 
 /// Wrapper around `VerifiableAccount` with some additions and changes,

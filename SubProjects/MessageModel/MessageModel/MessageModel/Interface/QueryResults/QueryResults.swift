@@ -7,7 +7,8 @@
 //
 import Foundation
 import CoreData
-import pEpIOSToolbox
+
+import PlanckToolbox
 
 public protocol QueryResultsProtocol {
     typealias CDObject = NSManagedObject

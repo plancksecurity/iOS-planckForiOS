@@ -8,7 +8,7 @@
 
 import UIKit
 
-import pEpIOSToolboxForExtensions
+import PlanckToolboxForExtensions
 
 final class ShareViewController: UIViewController {
     var vm = ShareViewModel()

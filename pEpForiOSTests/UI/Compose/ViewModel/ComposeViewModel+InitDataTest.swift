@@ -10,7 +10,7 @@ import XCTest
 
 @testable import pEpForiOS
 @testable import MessageModel
-import pEpIOSToolbox
+import PlanckToolbox
 
 class ComposeViewModel_InitDataTest: AccountDrivenTestBase {
     var inbox: Folder?

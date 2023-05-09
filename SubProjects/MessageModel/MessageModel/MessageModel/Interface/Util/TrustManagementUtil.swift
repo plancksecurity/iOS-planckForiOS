@@ -9,9 +9,9 @@
 import PEPObjCAdapter
 
 #if EXT_SHARE
-import pEpIOSToolboxForExtensions
+import PlanckToolboxForExtensions
 #else
-import pEpIOSToolbox
+import PlanckToolbox
 #endif
 
 /// This class acts as an intermediary to access different functions of the engine adapter.

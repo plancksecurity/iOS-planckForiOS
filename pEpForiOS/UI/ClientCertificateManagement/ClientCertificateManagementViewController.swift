@@ -8,7 +8,7 @@
 
 import UIKit
 import SwipeCellKit
-import pEpIOSToolbox
+import PlanckToolbox
 
 private struct Localized {
     static let importDate = NSLocalizedString("Import date",

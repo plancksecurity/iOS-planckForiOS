@@ -8,7 +8,7 @@
 
 import Foundation
 
-import pEpIOSToolbox
+import PlanckToolbox
 
 /// Updates existing Identities with CNContact.identifier if found.
 class UpdateIdentitiesAddressBookIdService: Service {

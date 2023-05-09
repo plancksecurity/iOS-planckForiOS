@@ -8,7 +8,7 @@
 
 import UIKit
 
-import pEpIOSToolbox
+import PlanckToolbox
 
 // Did not create a nested class for LoginScrollView, since its not visible from Interface builder
 

@@ -8,7 +8,7 @@
 
 import UIKit
 
-import pEpIOSToolbox
+import PlanckToolbox
 
 /// ViewController that configures the layout of the first step of the tutorial.
 /// It basically set the texts and it's properties.

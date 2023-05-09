@@ -8,7 +8,7 @@
 
 import Foundation
 import CoreData
-import pEpIOSToolbox
+import PlanckToolbox
 
 public protocol MessageQueryResultsProtocol {
     init(withFolder folder: DisplayableFolderProtocol,

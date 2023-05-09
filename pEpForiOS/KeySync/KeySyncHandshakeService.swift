@@ -7,7 +7,7 @@
 //
 
 import MessageModel
-import pEpIOSToolbox
+import PlanckToolbox
 
 class KeySyncHandshakeService {
     private weak var pEpSyncWizard: KeySyncWizardViewController?

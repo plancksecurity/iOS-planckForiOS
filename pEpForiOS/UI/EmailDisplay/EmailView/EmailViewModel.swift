@@ -9,7 +9,7 @@
 import Foundation
 import QuickLook.QLPreviewItem
 import MessageModel
-import pEpIOSToolbox
+import PlanckToolbox
 
 /// Delegate to comunicate with Email View.
 protocol EmailViewModelDelegate: AnyObject {

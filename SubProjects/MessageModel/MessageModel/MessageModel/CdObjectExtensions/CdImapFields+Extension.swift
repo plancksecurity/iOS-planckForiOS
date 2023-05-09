@@ -8,7 +8,7 @@
 
 import CoreData
 
-import pEpIOSToolbox
+import PlanckToolbox
 
 extension CdImapFields {
     func imapFlags() -> ImapFlags {

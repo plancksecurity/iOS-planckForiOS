@@ -7,7 +7,7 @@
 //
 import Foundation
 import CoreData
-import pEpIOSToolbox
+import PlanckToolbox
 
 public class IdentityQueryResults: IdentityQueryResultsProtocol {
 

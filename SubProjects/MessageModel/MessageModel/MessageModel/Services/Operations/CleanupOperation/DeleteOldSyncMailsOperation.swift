@@ -8,7 +8,7 @@
 
 import Foundation
 
-import pEpIOSToolbox
+import PlanckToolbox
 
 /// Removes (mark as deleted in IMAP terms) old autoconsumable messages.
 ///

@@ -8,7 +8,7 @@
 
 import Foundation
 
-import pEpIOSToolbox
+import PlanckToolbox
 
 protocol PGPKeyImportSettingSwitchTableViewCellDelegate: AnyObject {
     func passphraseSwitchChanged(sender: PGPKeyImportSettingSwitchTableViewCell, didChangeSwitchValue newValue: Bool, cancelCallback: (() -> Void)?)

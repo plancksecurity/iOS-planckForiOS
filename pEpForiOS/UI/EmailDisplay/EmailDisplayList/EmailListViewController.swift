@@ -9,7 +9,7 @@
 import UIKit
 
 import SwipeCellKit
-import pEpIOSToolbox
+import PlanckToolbox
 
 final class EmailListViewController: UIViewController {
 

@@ -11,7 +11,7 @@ import UIKit
 import MobileCoreServices
 
 import MessageModelForAppExtensions
-import pEpIOSToolboxForExtensions
+import PlanckToolboxForExtensions
 
 protocol ShareViewModelDelegate: AnyObject {
     /// All documents to be shared have been downloaded

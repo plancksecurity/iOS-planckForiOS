@@ -13,7 +13,7 @@
 //import UIKit
 //import MessageModel
 //import SwipeCellKit
-//import pEpIOSToolbox
+//import PlanckToolbox
 //
 //class FullMessageCell: SwipeTableViewCell,
 //    MessageViewModelConfigurable,

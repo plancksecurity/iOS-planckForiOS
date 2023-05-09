@@ -3,7 +3,7 @@
 	archiveVersion = 1;
 	classes = {
 	};
-	objectVersion = 52;
+	objectVersion = 46;
 	objects = {
 
 /* Begin PBXBuildFile section */
@@ -63,7 +63,6 @@
 		1543B69E22AAC325002B59AB /* KeySyncServiceHandshakeUIHandlerProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1543B69D22AAC325002B59AB /* KeySyncServiceHandshakeUIHandlerProtocol.swift */; };
 		1543B6A622ABDA3A002B59AB /* Identity+pEp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1543B6A522ABDA3A002B59AB /* Identity+pEp.swift */; };
 		1543B6AE22ABF368002B59AB /* DeviceGroupState.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1543B6AD22ABF368002B59AB /* DeviceGroupState.swift */; };
-		1543DCD92579455B0041EFB5 /* libPEPObjCAdapter_iOS.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 1543DCD82579455B0041EFB5 /* libPEPObjCAdapter_iOS.a */; platformFilter = ios; };
 		154660C22333927B008D2137 /* Service.swift in Sources */ = {isa = PBXBuildFile; fileRef = 154660BF2333927B008D2137 /* Service.swift */; };
 		154660C42333927B008D2137 /* BackgroundTaskManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 154660C12333927B008D2137 /* BackgroundTaskManager.swift */; };
 		154660C82333B703008D2137 /* QueryBasedService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 154660C72333B703008D2137 /* QueryBasedService.swift */; };
@@ -227,7 +226,6 @@
 		43495984239E509300CF1E12 /* CdFolder+SyncFolderMode.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43495983239E509300CF1E12 /* CdFolder+SyncFolderMode.swift */; };
 		434A6CE625D2BF1B00179335 /* MessageModelForAppExtensions.h in Headers */ = {isa = PBXBuildFile; fileRef = 434A6CE425D2BF1B00179335 /* MessageModelForAppExtensions.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		434A6CEA25D2BF1B00179335 /* MessageModelForAppExtensions.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 434A6CE225D2BF1B00179335 /* MessageModelForAppExtensions.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
-		434A6D5B25D2CB2F00179335 /* libPEPObjCAdapter_iOS.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 434A6D5A25D2CB2F00179335 /* libPEPObjCAdapter_iOS.a */; };
 		434C19E625D3E4CD00F622DB /* Account.swift in Sources */ = {isa = PBXBuildFile; fileRef = 434DC0D61DAE7407007C98B8 /* Account.swift */; };
 		434C19ED25D3E57B00F622DB /* Message.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43CB609F1DA4EBB60015281E /* Message.swift */; };
 		434C217825D6964600F622DB /* MessageModelObjectProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = 151645A52239183B009532BE /* MessageModelObjectProtocol.swift */; };
@@ -405,6 +403,8 @@
 		43648287249A3F6900DD44ED /* IOS-211-duplicated-attachments.txt in Resources */ = {isa = PBXBuildFile; fileRef = 43648286249A3F6900DD44ED /* IOS-211-duplicated-attachments.txt */; };
 		4367342F22F18462005FC567 /* CdMessagePredicateFactory+KeySync.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4367342E22F18462005FC567 /* CdMessagePredicateFactory+KeySync.swift */; };
 		4368309F22F9682A0005880D /* DeleteOldSyncMailsOperationTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4368309E22F9682A0005880D /* DeleteOldSyncMailsOperationTest.swift */; };
+		436C00372A03CF6700C2B3DD /* PlanckToolbox.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 436C00362A03CF6700C2B3DD /* PlanckToolbox.framework */; };
+		436C00392A03CF7700C2B3DD /* PlanckToolboxForExtensions.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 436C00382A03CF7700C2B3DD /* PlanckToolboxForExtensions.framework */; };
 		436C9A4824E3FC9700007A3D /* Rating.swift in Sources */ = {isa = PBXBuildFile; fileRef = 436C9A4724E3FC9700007A3D /* Rating.swift */; };
 		436C9A4A24E3FE0B00007A3D /* Rating+pEp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 436C9A4924E3FE0B00007A3D /* Rating+pEp.swift */; };
 		436FD21925DA806E00D929B3 /* Attachment+SessionAware.swift in Sources */ = {isa = PBXBuildFile; fileRef = 15E39FCB22551E990016A1C4 /* Attachment+SessionAware.swift */; };
@@ -477,7 +477,6 @@
 		43A536EA23E474EA0040715D /* ImapConnectionDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43A536E923E474EA0040715D /* ImapConnectionDelegate.swift */; };
 		43A676A2246D3A81004639FE /* KeyImportUtilProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43A676A1246D3A81004639FE /* KeyImportUtilProtocol.swift */; };
 		43A6E05C1E57725C005BEE69 /* CdKey+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43A6E05B1E57725C005BEE69 /* CdKey+Extension.swift */; };
-		43A7661A260A136600E67592 /* pEpIOSToolboxForExtensions.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 43A76619260A136600E67592 /* pEpIOSToolboxForExtensions.framework */; };
 		43A7D64C29DD9D630031FECB /* libc++.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = 43A7D64B29DD9D630031FECB /* libc++.tbd */; };
 		43A7D64D29DD9DDC0031FECB /* libc++.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = 43A7D64B29DD9D630031FECB /* libc++.tbd */; };
 		43A9818024E52FF700830603 /* Identity+pEpIdentity.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43A9817F24E52FF700830603 /* Identity+pEpIdentity.swift */; };
@@ -549,6 +548,10 @@
 		43BDDF6E25DE607B00FC0C68 /* Identity+pEp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1543B6A522ABDA3A002B59AB /* Identity+pEp.swift */; };
 		43BDDF7225DE60FB00FC0C68 /* RatingReEvaluator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1532CE7A23184130005DBC39 /* RatingReEvaluator.swift */; };
 		43BDEC6025E3FC4200FC0C68 /* Notification+KeySyncState.swift in Sources */ = {isa = PBXBuildFile; fileRef = 15C7A8892385A28B00C47364 /* Notification+KeySyncState.swift */; };
+		43C09EA32A024BE800335FDD /* libPlanckObjCWrapper_iOS.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 43C09EA22A024BE800335FDD /* libPlanckObjCWrapper_iOS.a */; };
+		43C09EA52A024C2200335FDD /* libplanckCoreV3.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 43C09EA42A024C2200335FDD /* libplanckCoreV3.a */; };
+		43C09EA72A024F2700335FDD /* libPlanckObjCWrapper_iOS.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 43C09EA62A024F2700335FDD /* libPlanckObjCWrapper_iOS.a */; };
+		43C09EA92A024F6300335FDD /* libplanckCoreV3.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 43C09EA82A024F6300335FDD /* libplanckCoreV3.a */; };
 		43C123C7223A73E100F6A9B2 /* FetchOlderImapMessagesOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43C123C2223A73E100F6A9B2 /* FetchOlderImapMessagesOperation.swift */; };
 		43C123EA223A7FCF00F6A9B2 /* QualifyServerIsLocalOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43C123DC223A7FCF00F6A9B2 /* QualifyServerIsLocalOperation.swift */; };
 		43C123EC223A7FCF00F6A9B2 /* AccountVerificationResult.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43C123DF223A7FCF00F6A9B2 /* AccountVerificationResult.swift */; };
@@ -700,7 +703,6 @@
 		B7C1F4F02459CD5F00070DCC /* Identity+Fetching.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7C1F4EF2459CD5F00070DCC /* Identity+Fetching.swift */; };
 		B7C7E31823351092009ABFFE /* IdentityQueryResultsSearch.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7C7E31723351092009ABFFE /* IdentityQueryResultsSearch.swift */; };
 		B7C7E31A23351115009ABFFE /* IdentityQueryResults.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7C7E31923351115009ABFFE /* IdentityQueryResults.swift */; };
-		B7DB7FA522147000003968DA /* pEpIOSToolbox.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = B7DB7FA422147000003968DA /* pEpIOSToolbox.framework */; };
 		B7DFEA50225365080080A2BA /* DisplayableFolderProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7DFEA4F225365080080A2BA /* DisplayableFolderProtocol.swift */; };
 		B7E02ABF2227F49600741157 /* MessageQueryResultsSearchTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7E02ABE2227F49600741157 /* MessageQueryResultsSearchTest.swift */; };
 		B7E0514222D63B5E005FE4F9 /* Folder+RealFolder.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7E0514122D63B5E005FE4F9 /* Folder+RealFolder.swift */; };
@@ -875,7 +877,7 @@
 		158A6E032305C2F5006A9ECE /* PEPUtil+EncryptionTest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "PEPUtil+EncryptionTest.swift"; sourceTree = "<group>"; };
 		158A6E0F23073DB0006A9ECE /* PEPDecryptFlags+ReUpload.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "PEPDecryptFlags+ReUpload.swift"; sourceTree = "<group>"; };
 		158A6E152307468F006A9ECE /* CdAttachment+PEPAttachment.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "CdAttachment+PEPAttachment.swift"; sourceTree = "<group>"; };
-		158BCFF12423800400E41F67 /* SecretTestData.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = SecretTestData.swift; path = ../../../../../../pEp_for_iOS_intern/SecretTestData.swift; sourceTree = "<group>"; };
+		158BCFF12423800400E41F67 /* SecretTestData.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = SecretTestData.swift; path = ../../../../../../planckForiOS_intern/SecretTestData.swift; sourceTree = "<group>"; };
 		159AB566235396E1008AB1F3 /* DeleteOutdatedAutoconsumableMessagesService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DeleteOutdatedAutoconsumableMessagesService.swift; sourceTree = "<group>"; };
 		159AB56A23539CBA008AB1F3 /* CNContactsAccessPermissionProviderProtocol.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CNContactsAccessPermissionProviderProtocol.swift; sourceTree = "<group>"; };
 		159BCEAF24C6DD2E000E4ED1 /* XCTest+SyncAdapter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "XCTest+SyncAdapter.swift"; sourceTree = "<group>"; };
@@ -885,7 +887,7 @@
 		15A3B4DC2358710A00DB9135 /* CdAccount+ReplicationServiceProvider.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "CdAccount+ReplicationServiceProvider.swift"; sourceTree = "<group>"; };
 		15A3B4E1235877F800DB9135 /* ImapReplicationService.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ImapReplicationService.swift; sourceTree = "<group>"; };
 		15A3B4E3235877F800DB9135 /* ImapConnectionCache.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ImapConnectionCache.swift; sourceTree = "<group>"; };
-		15A91EBC25BB357A00D33EAB /* system.db */ = {isa = PBXFileReference; lastKnownFileType = file; name = system.db; path = ../../../../pEpEngine/db/system.db; sourceTree = "<group>"; };
+		15A91EBC25BB357A00D33EAB /* system.db */ = {isa = PBXFileReference; lastKnownFileType = file; name = system.db; path = ../../../../planckCoreV3/db/system.db; sourceTree = "<group>"; };
 		15B854E3232D3D9400DB8FB1 /* Identity+AddessBook.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Identity+AddessBook.swift"; sourceTree = "<group>"; };
 		15BA9712229410EF00FF9DFE /* CdIdentity+Validation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "CdIdentity+Validation.swift"; sourceTree = "<group>"; };
 		15C7A8892385A28B00C47364 /* Notification+KeySyncState.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Notification+KeySyncState.swift"; sourceTree = "<group>"; };
@@ -1014,6 +1016,8 @@
 		4367342E22F18462005FC567 /* CdMessagePredicateFactory+KeySync.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "CdMessagePredicateFactory+KeySync.swift"; sourceTree = "<group>"; };
 		4368309E22F9682A0005880D /* DeleteOldSyncMailsOperationTest.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DeleteOldSyncMailsOperationTest.swift; sourceTree = "<group>"; };
 		436981B42282F8D40006FA2D /* PEPObjCAdapterFramework.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = PEPObjCAdapterFramework.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		436C00362A03CF6700C2B3DD /* PlanckToolbox.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = PlanckToolbox.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		436C00382A03CF7700C2B3DD /* PlanckToolboxForExtensions.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = PlanckToolboxForExtensions.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		436C9A4724E3FC9700007A3D /* Rating.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Rating.swift; sourceTree = "<group>"; };
 		436C9A4924E3FE0B00007A3D /* Rating+pEp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Rating+pEp.swift"; sourceTree = "<group>"; };
 		43753CC1222D247D002EE98B /* CdMessage+pEp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "CdMessage+pEp.swift"; sourceTree = "<group>"; };
@@ -1084,6 +1088,10 @@
 		43BC0E64235764D800125E01 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
 		43BC0E67235764D800125E01 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
 		43BC0E6A235764D800125E01 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/Localizable.strings; sourceTree = "<group>"; };
+		43C09EA22A024BE800335FDD /* libPlanckObjCWrapper_iOS.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; path = libPlanckObjCWrapper_iOS.a; sourceTree = BUILT_PRODUCTS_DIR; };
+		43C09EA42A024C2200335FDD /* libplanckCoreV3.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; path = libplanckCoreV3.a; sourceTree = BUILT_PRODUCTS_DIR; };
+		43C09EA62A024F2700335FDD /* libPlanckObjCWrapper_iOS.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; path = libPlanckObjCWrapper_iOS.a; sourceTree = BUILT_PRODUCTS_DIR; };
+		43C09EA82A024F6300335FDD /* libplanckCoreV3.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; path = libplanckCoreV3.a; sourceTree = BUILT_PRODUCTS_DIR; };
 		43C123C2223A73E100F6A9B2 /* FetchOlderImapMessagesOperation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FetchOlderImapMessagesOperation.swift; sourceTree = "<group>"; };
 		43C123DC223A7FCF00F6A9B2 /* QualifyServerIsLocalOperation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = QualifyServerIsLocalOperation.swift; sourceTree = "<group>"; };
 		43C123DF223A7FCF00F6A9B2 /* AccountVerificationResult.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AccountVerificationResult.swift; sourceTree = "<group>"; };
@@ -1244,9 +1252,10 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				436C00392A03CF7700C2B3DD /* PlanckToolboxForExtensions.framework in Frameworks */,
+				43C09EA92A024F6300335FDD /* libplanckCoreV3.a in Frameworks */,
+				43C09EA72A024F2700335FDD /* libPlanckObjCWrapper_iOS.a in Frameworks */,
 				434C5AA129784B04007496AF /* AppAuth.framework in Frameworks */,
-				43A7661A260A136600E67592 /* pEpIOSToolboxForExtensions.framework in Frameworks */,
-				434A6D5B25D2CB2F00179335 /* libPEPObjCAdapter_iOS.a in Frameworks */,
 				43A7D64D29DD9DDC0031FECB /* libc++.tbd in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -1255,11 +1264,12 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				436C00372A03CF6700C2B3DD /* PlanckToolbox.framework in Frameworks */,
+				43C09EA52A024C2200335FDD /* libplanckCoreV3.a in Frameworks */,
+				43C09EA32A024BE800335FDD /* libPlanckObjCWrapper_iOS.a in Frameworks */,
 				3AB50D2A2500F3B1005E2170 /* pEp4iosIntern.framework in Frameworks */,
 				43B1A39C22366D9700C387DE /* AppAuth.framework in Frameworks */,
-				1543DCD92579455B0041EFB5 /* libPEPObjCAdapter_iOS.a in Frameworks */,
 				43EA489D221E95E3006E8F83 /* PantomimeFramework.framework in Frameworks */,
-				B7DB7FA522147000003968DA /* pEpIOSToolbox.framework in Frameworks */,
 				43A7D64C29DD9D630031FECB /* libc++.tbd in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -2744,6 +2754,12 @@
 		B7DB7FA322147000003968DA /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				436C00382A03CF7700C2B3DD /* PlanckToolboxForExtensions.framework */,
+				436C00362A03CF6700C2B3DD /* PlanckToolbox.framework */,
+				43C09EA82A024F6300335FDD /* libplanckCoreV3.a */,
+				43C09EA62A024F2700335FDD /* libPlanckObjCWrapper_iOS.a */,
+				43C09EA42A024C2200335FDD /* libplanckCoreV3.a */,
+				43C09EA22A024BE800335FDD /* libPlanckObjCWrapper_iOS.a */,
 				43A7D64B29DD9D630031FECB /* libc++.tbd */,
 				434C5AA029784B04007496AF /* AppAuth.framework */,
 				43CDF0A9264282F000E8E944 /* AppAuthForExtensions.framework */,
@@ -2900,6 +2916,8 @@
 				TargetAttributes = {
 					434A6CE125D2BF1B00179335 = {
 						CreatedOnToolsVersion = 12.4;
+						DevelopmentTeam = NQLYU6MGPN;
+						ProvisioningStyle = Automatic;
 					};
 					43CB60811DA4EB4E0015281E = {
 						CreatedOnToolsVersion = 8.0;
@@ -3856,11 +3874,7 @@
 				INFOPLIST_FILE = MessageModelForAppExtensions/Info.plist;
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
 				IPHONEOS_DEPLOYMENT_TARGET = 13.0;
-				LD_RUNPATH_SEARCH_PATHS = (
-					"$(inherited)",
-					"@executable_path/Frameworks",
-					"@loader_path/Frameworks",
-				);
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
 				MTL_FAST_MATH = YES;
 				PRODUCT_BUNDLE_IDENTIFIER = security.pep.MessageModel.MessageModelForAppExtensions;
@@ -3893,11 +3907,7 @@
 				INFOPLIST_FILE = MessageModelForAppExtensions/Info.plist;
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
 				IPHONEOS_DEPLOYMENT_TARGET = 13.0;
-				LD_RUNPATH_SEARCH_PATHS = (
-					"$(inherited)",
-					"@executable_path/Frameworks",
-					"@loader_path/Frameworks",
-				);
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				MTL_FAST_MATH = YES;
 				PRODUCT_BUNDLE_IDENTIFIER = security.pep.MessageModel.MessageModelForAppExtensions;
 				PRODUCT_NAME = "$(TARGET_NAME:c99extidentifier)";
@@ -4039,8 +4049,7 @@
 				OTHER_LDFLAGS = "-ObjC";
 				OTHER_SWIFT_FLAGS = " ";
 				SDKROOT = iphoneos;
-				SWIFT_COMPILATION_MODE = wholemodule;
-				SWIFT_OPTIMIZATION_LEVEL = "-O";
+				SWIFT_OPTIMIZATION_LEVEL = "-Owholemodule";
 				TARGETED_DEVICE_FAMILY = "1,2";
 				VALIDATE_PRODUCT = YES;
 				VALID_ARCHS = "$(inherited)";
@@ -4062,11 +4071,7 @@
 				INFOPLIST_FILE = MessageModel/Info.plist;
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
 				IPHONEOS_DEPLOYMENT_TARGET = "${inherited}";
-				LD_RUNPATH_SEARCH_PATHS = (
-					"$(inherited)",
-					"@executable_path/Frameworks",
-					"@loader_path/Frameworks",
-				);
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				ONLY_ACTIVE_ARCH = "$(inherited)";
 				OTHER_SWIFT_FLAGS = "$(inherited)";
 				PRODUCT_BUNDLE_IDENTIFIER = security.pep.MessageModel;
@@ -4088,11 +4093,7 @@
 				INFOPLIST_FILE = MessageModel/Info.plist;
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
 				IPHONEOS_DEPLOYMENT_TARGET = "${inherited}";
-				LD_RUNPATH_SEARCH_PATHS = (
-					"$(inherited)",
-					"@executable_path/Frameworks",
-					"@loader_path/Frameworks",
-				);
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				ONLY_ACTIVE_ARCH = "$(inherited)";
 				OTHER_SWIFT_FLAGS = "$(inherited)";
 				PRODUCT_BUNDLE_IDENTIFIER = security.pep.MessageModel;
@@ -4108,11 +4109,7 @@
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				DEVELOPMENT_TEAM = NQLYU6MGPN;
 				INFOPLIST_FILE = MessageModelTests/Info.plist;
-				LD_RUNPATH_SEARCH_PATHS = (
-					"$(inherited)",
-					"@executable_path/Frameworks",
-					"@loader_path/Frameworks",
-				);
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				ONLY_ACTIVE_ARCH = "$(inherited)";
 				OTHER_SWIFT_FLAGS = "$(inherited)";
 				PRODUCT_BUNDLE_IDENTIFIER = "net.pep-security.apps.MessageModelTests";
@@ -4129,11 +4126,7 @@
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				DEVELOPMENT_TEAM = NQLYU6MGPN;
 				INFOPLIST_FILE = MessageModelTests/Info.plist;
-				LD_RUNPATH_SEARCH_PATHS = (
-					"$(inherited)",
-					"@executable_path/Frameworks",
-					"@loader_path/Frameworks",
-				);
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				ONLY_ACTIVE_ARCH = "$(inherited)";
 				OTHER_SWIFT_FLAGS = "$(inherited)";
 				PRODUCT_BUNDLE_IDENTIFIER = "net.pep-security.apps.MessageModelTests";
@@ -4160,10 +4153,7 @@
 				GCC_C_LANGUAGE_STANDARD = gnu11;
 				INFOPLIST_FILE = MessageModelTestApp/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
-				LD_RUNPATH_SEARCH_PATHS = (
-					"$(inherited)",
-					"@executable_path/Frameworks",
-				);
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
 				MTL_FAST_MATH = YES;
 				PRODUCT_BUNDLE_IDENTIFIER = security.MessageModelTestApp;
@@ -4189,10 +4179,7 @@
 				GCC_C_LANGUAGE_STANDARD = gnu11;
 				INFOPLIST_FILE = MessageModelTestApp/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
-				LD_RUNPATH_SEARCH_PATHS = (
-					"$(inherited)",
-					"@executable_path/Frameworks",
-				);
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				MTL_FAST_MATH = YES;
 				PRODUCT_BUNDLE_IDENTIFIER = security.MessageModelTestApp;
 				PRODUCT_NAME = "$(TARGET_NAME)";

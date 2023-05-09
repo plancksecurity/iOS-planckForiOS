@@ -10,10 +10,10 @@ import Foundation
 
 #if EXT_SHARE
 import MessageModelForAppExtensions
-import pEpIOSToolboxForExtensions
+import PlanckToolboxForExtensions
 #else
 import MessageModel
-import pEpIOSToolbox
+import PlanckToolbox
 #endif
 
 protocol TrustBannerDelegate: AnyObject {

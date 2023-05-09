@@ -9,7 +9,7 @@
 import Foundation
 
 import MessageModel
-import pEpIOSToolbox
+import PlanckToolbox
 
 public class ErrorSubscriber {
     private func errorShouldBeDisplayed(error: Error) -> Bool{

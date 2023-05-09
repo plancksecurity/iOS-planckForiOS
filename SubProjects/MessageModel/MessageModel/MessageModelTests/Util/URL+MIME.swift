@@ -8,7 +8,7 @@
 
 import XCTest
 
-import pEpIOSToolbox
+import PlanckToolbox
 import MessageModel
 
 class URL_MimeTest: XCTestCase {

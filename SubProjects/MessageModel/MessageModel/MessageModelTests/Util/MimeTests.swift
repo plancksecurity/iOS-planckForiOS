@@ -9,7 +9,7 @@
 import XCTest
 
 import PantomimeFramework
-import pEpIOSToolbox
+import PlanckToolbox
 
 class MimeTests: XCTestCase {
     func testPGPMimePantomime() {

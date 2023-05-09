@@ -7,7 +7,7 @@
 //
 
 import UIKit
-import pEpIOSToolbox
+import PlanckToolbox
 
 class MDMSettingsListViewController: PEPWebViewController {
 

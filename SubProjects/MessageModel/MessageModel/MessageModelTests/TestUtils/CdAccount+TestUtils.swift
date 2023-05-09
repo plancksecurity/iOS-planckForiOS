@@ -9,7 +9,7 @@
 import XCTest
 @testable import MessageModel
 import CoreData
-import pEpIOSToolbox
+import PlanckToolbox
 
 extension CdAccount {
     /**

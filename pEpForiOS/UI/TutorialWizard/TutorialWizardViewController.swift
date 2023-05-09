@@ -8,7 +8,7 @@
 
 import UIKit
 
-import pEpIOSToolbox
+import PlanckToolbox
 
 /// View Controller that handles the tutorial
 final class TutorialWizardViewController: PEPPageViewControllerBase {

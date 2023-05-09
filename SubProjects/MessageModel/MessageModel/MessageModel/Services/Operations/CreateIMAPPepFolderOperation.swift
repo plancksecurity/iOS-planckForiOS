@@ -13,9 +13,9 @@ import UIKit
 import CoreData
 
 #if EXT_SHARE
-import pEpIOSToolboxForExtensions
+import PlanckToolboxForExtensions
 #else
-import pEpIOSToolbox
+import PlanckToolbox
 #endif
 
 /// Checks if the pEp folder (used for pEp Sync messages) exists and tries to create it if it

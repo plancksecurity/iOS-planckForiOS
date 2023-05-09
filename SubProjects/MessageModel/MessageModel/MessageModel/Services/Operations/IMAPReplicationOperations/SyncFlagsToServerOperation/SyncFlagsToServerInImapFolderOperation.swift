@@ -9,7 +9,7 @@
 import CoreData
 
 import PantomimeFramework
-import pEpIOSToolbox
+import PlanckToolbox
 
 /// Sends (syncs) local changes of Imap flags to server.
 class SyncFlagsToServerInImapFolderOperation: ImapSyncOperation {

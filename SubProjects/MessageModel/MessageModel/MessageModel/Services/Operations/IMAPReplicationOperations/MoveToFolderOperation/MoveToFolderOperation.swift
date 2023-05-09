@@ -9,7 +9,7 @@
 import CoreData
 
 import PantomimeFramework
-import pEpIOSToolbox
+import PlanckToolbox
 
 /// Moves all messages in the given folder to targetFolder if parent != tagetfolder.
 class MoveToFolderOperation: ImapSyncOperation {

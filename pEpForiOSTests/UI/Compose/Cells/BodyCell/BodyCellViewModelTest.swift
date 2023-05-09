@@ -10,7 +10,7 @@ import XCTest
 
 @testable import pEpForiOS
 import MessageModel
-import pEpIOSToolbox
+import PlanckToolbox
 
 class BodyCellViewModelTest: XCTestCase {
     var vm: BodyCellViewModel!

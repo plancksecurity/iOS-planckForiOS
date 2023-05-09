@@ -8,7 +8,7 @@
 
 import WebKit
 import MessageModel
-import pEpIOSToolbox
+import PlanckToolbox
 
 /// WKURLSchemeHandler subclass to handle cid: URLs (images inlined in mails).
 /// Provides content from the store for a content IDs requested by a WKWebview instance.

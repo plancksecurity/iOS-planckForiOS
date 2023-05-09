@@ -10,7 +10,7 @@ import XCTest
 
 @testable import pEpForiOS
 @testable import MessageModel
-import pEpIOSToolbox
+import PlanckToolbox
 
 class ComposeViewModelTest: AccountDrivenTestBase {
     private var testDelegate: TestDelegate?

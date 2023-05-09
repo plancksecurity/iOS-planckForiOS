@@ -9,7 +9,7 @@
 import Foundation
 import UIKit
 
-import pEpIOSToolboxForExtensions
+import PlanckToolboxForExtensions
 
 /// The different data types that can be shared, together with their
 /// payload.

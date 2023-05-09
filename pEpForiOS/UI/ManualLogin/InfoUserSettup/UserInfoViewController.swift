@@ -7,7 +7,7 @@
 //
 
 import UIKit
-import pEpIOSToolbox
+import PlanckToolbox
 import MessageModel
 
 final class UserInfoViewController: UIViewController {
