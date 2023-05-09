@@ -9,7 +9,7 @@
 import UIKit
 import QuickLook
 
-import PlanckToolbox
+import pEpIOSToolbox
 
 // Represents the a list of mails showing one mail with all details in full screen.
 class EmailDetailViewController: UIViewController {

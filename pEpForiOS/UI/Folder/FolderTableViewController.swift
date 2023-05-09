@@ -7,7 +7,7 @@
 //
 
 import UIKit
-import PlanckToolbox
+import pEpIOSToolbox
 import MessageModel
 
 class FolderTableViewController: UITableViewController {

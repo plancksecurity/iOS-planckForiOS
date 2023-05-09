@@ -11,10 +11,10 @@ import UIKit
 
 #if EXT_SHARE
 import MessageModelForAppExtensions
-import PlanckToolboxForExtensions
+import pEpIOSToolboxForExtensions
 #else
 import MessageModel
-import PlanckToolbox
+import pEpIOSToolbox
 #endif
 
 protocol MediaAttachmentPickerProviderViewModelResultDelegate: AnyObject {

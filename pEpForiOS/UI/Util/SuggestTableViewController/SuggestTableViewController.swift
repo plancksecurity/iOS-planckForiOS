@@ -9,9 +9,9 @@
 import UIKit
 
 #if EXT_SHARE
-import PlanckToolboxForExtensions
+import pEpIOSToolboxForExtensions
 #else
-import PlanckToolbox
+import pEpIOSToolbox
 #endif
 
 /// Suggests a list of Identities that fit to a given sarch string

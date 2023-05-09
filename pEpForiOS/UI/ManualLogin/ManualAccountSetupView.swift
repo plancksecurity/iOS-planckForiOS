@@ -8,7 +8,7 @@
 
 import UIKit
 
-import PlanckToolbox
+import pEpIOSToolbox
 
 /// Protocol to handle ManualAccountSetupView events
 protocol ManualAccountSetupViewDelegate: AnyObject {

@@ -9,7 +9,7 @@
 import UIKit
 import MessageModel
 import SwipeCellKit
-import PlanckToolbox
+import pEpIOSToolbox
 
 final class EmailListViewCell: PEPSwipeTableViewCell, MessageViewModelConfigurable {
 

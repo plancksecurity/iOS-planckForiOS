@@ -8,7 +8,7 @@
 
 import UIKit
 
-import PlanckToolbox
+import pEpIOSToolbox
 import MessageModel
 
 final class AccountTypeSelectorViewController: UIViewController {
@@ -54,7 +54,7 @@ final class AccountTypeSelectorViewController: UIViewController {
     }
 
     @IBAction func termsAndConditionsButtonPressed() {
-        guard let myUrl = InfoPlist.userManualURL(),
+        guard let myUrl = InfoPlist.termsAndConditionsURL(),
                 let url = URL(string: "\(myUrl)") else {
             Log.shared.errorAndCrash("URL corrupted")
             return

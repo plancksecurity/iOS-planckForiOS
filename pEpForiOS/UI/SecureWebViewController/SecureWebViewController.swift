@@ -8,7 +8,7 @@
 
 import WebKit
 
-import PlanckToolbox
+import pEpIOSToolbox
 
 protocol SecureWebViewControllerDelegate: AnyObject {
     /// Called on content size changes while content is loaded.

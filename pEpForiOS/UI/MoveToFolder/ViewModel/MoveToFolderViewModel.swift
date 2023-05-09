@@ -7,7 +7,7 @@
 //
 
 import Foundation
-import PlanckToolbox
+import pEpIOSToolbox
 import MessageModel
 
 let folderTypesNotAllowedToMoveTo = [FolderType.drafts, .sent, .outbox]

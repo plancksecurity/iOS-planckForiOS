@@ -8,7 +8,7 @@
 
 import UIKit
 
-import PlanckToolbox
+import pEpIOSToolbox
 
 final class AccountSettingsSwitchTableViewCell: UITableViewCell {
 

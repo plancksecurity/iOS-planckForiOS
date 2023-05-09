@@ -88,7 +88,6 @@ extension AppSettings {
         defaults[AppSettings.keyPassiveMode] = false
         defaults[AppSettings.keyLastKnowDeviceGroupStateRawValue] = DeviceGroupState.sole.rawValue
         defaults[AppSettings.keyExtraKeysEditable] = false
-        defaults[AppSettings.keyShouldShowTutorialWizard] = true
         defaults[AppSettings.keyUserHasBeenAskedForContactAccessPermissions] = false
         defaults[AppSettings.keyUnsecureReplyWarningEnabled] = true
         defaults[AppSettings.keyAccountSignature] = [String:String]()

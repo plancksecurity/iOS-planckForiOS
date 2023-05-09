@@ -36,7 +36,6 @@ public protocol UserSettingsProtocol {
 
     var lastKnownDeviceGroupState: DeviceGroupState { get set }
 
-    var shouldShowTutorialWizard: Bool { get set }
     /// Whether or not the user has already answered the "Do you want to allow pEp app to access
     /// your contacts"
     var userHasBeenAskedForContactAccessPermissions: Bool { get set }

@@ -8,7 +8,7 @@
 
 import UIKit
 
-import PlanckToolbox
+import pEpIOSToolbox
 
 class ResetTrustViewController: UIViewController, UISearchControllerDelegate, UISearchResultsUpdating {
 

@@ -6,7 +6,7 @@
 //  Copyright © 2019 p≡p Security S.A. All rights reserved.
 //
 
-import PlanckToolbox
+import pEpIOSToolbox
 
 /// Cell that offers (only) a container to display an (Email)View in.
 class EmailDetailCollectionViewCell: UICollectionViewCell {

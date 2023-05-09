@@ -59,7 +59,7 @@ extension KeySyncHandshakeService: KeySyncServiceHandshakeHandlerProtocol {
             return
         }
 
-        // pEpSyncWizard should be presented over other pEp modals (like Login, Tutorial, etc)
+        // pEpSyncWizard should be presented over other pEp modals (like Login, etc)
         // if a pEpModal is being presented. We present pEpSyncWizard over it.
         // Else the viewController to present it
         DispatchQueue.main.async { [weak self] in

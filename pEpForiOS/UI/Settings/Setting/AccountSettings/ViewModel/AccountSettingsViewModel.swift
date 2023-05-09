@@ -8,7 +8,7 @@
 
 import Foundation
 import MessageModel
-import PlanckToolbox
+import pEpIOSToolbox
 
 ///Delegate protocol to communicate to the Account Settings View Controller
 protocol AccountSettingsViewModelDelegate: AnyObject {

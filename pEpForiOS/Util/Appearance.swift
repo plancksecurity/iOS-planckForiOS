@@ -59,18 +59,6 @@ class Appearance {
         tableViewCell.selectedBackgroundView = tableViewCellSelectedbackgroundView
     }
 
-    /// Customises a tutorial view controller's navigation bar appearance.
-    /// - Parameter viewController: UIViewController: The view controller to customize.
-    static public func customiseForTutorial(viewController: UIViewController) {
-        customiseNavigationBar(viewController: viewController) { appearance in
-            customiseForTutorial(navigationBarAppearance: appearance)
-            if #available(iOS 15, *) {
-                viewController.navigationController?.navigationBar.standardAppearance = appearance
-                viewController.navigationController?.navigationBar.scrollEdgeAppearance = appearance
-            }
-        }
-    }
-
     /// Customises a login view controller's navigation bar appearance.
     /// - Parameter viewController: UIViewController: The view controller to customize.
     public static func customiseForLogin(viewController: UIViewController) {
@@ -113,7 +101,7 @@ extension Appearance {
         return appearance
     }
 
-    /// Customises the buttons of a navigation bar appearance, for the tutorial and login view.
+    /// Customises the buttons of a navigation bar appearance, for the login view.
     /// - Parameter navigationBarAppearance: The appearance to customize.
     static private func customiseButtons(navigationBarAppearance: UINavigationBarAppearance) {
         let titleTextAttributes: [NSAttributedString.Key : Any] = [.foregroundColor: UIColor.white]
@@ -122,14 +110,6 @@ extension Appearance {
         navigationBarAppearance.titleTextAttributes = titleTextAttributes
         navigationBarAppearance.largeTitleTextAttributes = titleTextAttributes
         navigationBarAppearance.doneButtonAppearance.normal.titleTextAttributes = titleTextAttributes
-    }
-
-    /// Customises a navigation bar appearance for the tutorial view.
-    /// - Parameter navigationBarAppearance: The appearance to customize.
-    static private func customiseForTutorial(navigationBarAppearance: UINavigationBarAppearance) {
-        navigationBarAppearance.configureWithOpaqueBackground()
-        navigationBarAppearance.backgroundColor = UIColor.pEpGreen
-        customiseButtons(navigationBarAppearance: navigationBarAppearance)
     }
 
     /// Customises a navigation bar appearance for the login view.

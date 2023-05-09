@@ -5,7 +5,7 @@
 //  Copyright © 2017 pEp Security S.A. All rights reserved.
 //
 
-import PlanckToolbox
+import pEpIOSToolbox
 import MessageModel
 
 // MARK: - Unified Folder Base

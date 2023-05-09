@@ -9,7 +9,7 @@
 import UIKit
 
 import SwipeCellKit
-import PlanckToolbox
+import pEpIOSToolbox
 
 final class EmailListViewController: UIViewController {
 
@@ -182,11 +182,6 @@ final class EmailListViewController: UIViewController {
         if vm.showLoginView {
             showLoginScreen()
             return
-        }
-
-        if vm.shouldShowTutorialWizard {
-            TutorialWizardViewController.presentTutorialWizard(viewController: self)
-            vm.didShowTutorialWizard()
         }
 
         ///if we are in setup and the folder is unifiedInbox

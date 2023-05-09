@@ -8,7 +8,7 @@
 
 import Foundation
 
-import PlanckToolbox
+import pEpIOSToolbox
 import MessageModel
 
 protocol EmailListViewModelDelegate: EmailDisplayViewModelDelegate {
@@ -170,16 +170,6 @@ class EmailListViewModel: EmailDisplayViewModel {
             return !folder.folderType.isLocalFolder
         }
         return false
-    }
-
-    /// Whether or not to show the Tutorial
-    public var shouldShowTutorialWizard: Bool {
-        return AppSettings.shared.shouldShowTutorialWizard
-    }
-
-    /// Call when the tutorial has been displayed to the user
-    public func didShowTutorialWizard() {
-        AppSettings.shared.shouldShowTutorialWizard = false
     }
 
     /// Returns the descriptor for the destructive action, it could be archive or trash

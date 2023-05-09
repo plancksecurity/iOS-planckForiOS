@@ -7,7 +7,7 @@
 //
 
 import UIKit
-import PlanckToolbox
+import pEpIOSToolbox
 
 class EditSignatureViewController: UIViewController {
 

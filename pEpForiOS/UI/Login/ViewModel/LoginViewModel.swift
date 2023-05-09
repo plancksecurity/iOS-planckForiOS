@@ -9,7 +9,7 @@
 import Foundation
 
 import MessageModel
-import PlanckToolbox
+import pEpIOSToolbox
 
 final class LoginViewModel {
     weak var accountVerificationResultDelegate: AccountVerificationResultDelegate?

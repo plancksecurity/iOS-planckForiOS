@@ -7,7 +7,7 @@
 //
 
 import Foundation
-import PlanckToolbox
+import pEpIOSToolbox
 
 struct InfoPlist {
     static private var infoDictMainBundle: [String:Any]? {
@@ -33,6 +33,13 @@ struct InfoPlist {
             return nil
         }
         return userManualURL
+    }
+    
+    static public func termsAndConditionsURL() -> String? {
+        guard let termsAndConditionsURL = mainBundleInfoDictValue(forKey: "TERMS_AND_CONDITIONS_URL") as? String else {
+            return nil
+        }
+        return termsAndConditionsURL
     }
 
     static private func mainBundleInfoDictValue(forKey key: String) -> Any? {

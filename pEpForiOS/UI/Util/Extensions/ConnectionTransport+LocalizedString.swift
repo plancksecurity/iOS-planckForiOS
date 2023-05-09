@@ -9,7 +9,7 @@
 import Foundation
 
 import PantomimeFramework
-import PlanckToolbox
+import pEpIOSToolbox
 
 extension ConnectionTransport {
     public func localizedString() -> String {

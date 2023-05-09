@@ -7,7 +7,7 @@
 //
 
 import UIKit
-import PlanckToolbox
+import pEpIOSToolbox
 
 protocol FolderTableViewCellDelegate: AnyObject {
     func didTapChevronButton(cell:  UITableViewCell)

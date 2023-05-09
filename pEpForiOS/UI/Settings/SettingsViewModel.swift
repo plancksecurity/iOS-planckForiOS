@@ -8,7 +8,7 @@
 
 import Foundation
 import MessageModel
-import PlanckToolbox
+import pEpIOSToolbox
 
 ///Delegate protocol to communicate to the SettingsTableViewController some special actions.
 protocol SettingsViewModelDelegate: AnyObject {
@@ -83,10 +83,10 @@ final class SettingsViewModel {
                 .pgpKeyImport,
                 .credits,
                 .userManual,
+                .termsAndConditions,
                 .extraKeys,
                 .trustedServer,
                 .resetTrust,
-                .tutorial,
                 .exportDBs,
                 .groupMailboxes,
                 .deviceGroups,
@@ -259,10 +259,12 @@ extension SettingsViewModel {
             if appSettings.mdmIsEnabled {
                 rows.append(generateNavigationRow(type: .credits, isDangerous: false))
                 rows.append(generateNavigationRow(type: .userManual, isDangerous: false))
+                rows.append(generateNavigationRow(type: .termsAndConditions, isDangerous: false))
             } else {
                 rows.append(generateNavigationRow(type: .defaultAccount, isDangerous: false))
                 rows.append(generateNavigationRow(type: .credits, isDangerous: false))
                 rows.append(generateNavigationRow(type: .userManual, isDangerous: false))
+                rows.append(generateNavigationRow(type: .termsAndConditions, isDangerous: false))
                 rows.append(generateNavigationRow(type: .pgpKeyImport, isDangerous: false))
                 rows.append(generateSwitchRow(type: .unsecureReplyWarningEnabled,
                                               isDangerous: false,
@@ -324,8 +326,6 @@ extension SettingsViewModel {
             rows.append(generateNavigationRow(type: .resetTrust, isDangerous: true))
         case .companyFeatures:
             rows.append(generateNavigationRow(type: .extraKeys, isDangerous: false))
-        case .tutorial:
-            rows.append(generateNavigationRow(type: .tutorial, isDangerous: false))
         case .support:
             rows.append(generateNavigationRow(type: .exportDBs, isDangerous: false))
         }
@@ -394,9 +394,6 @@ extension SettingsViewModel {
         case .companyFeatures:
             return NSLocalizedString("Enterprise Features",
                                      comment: "Tableview section header: Enterprise Features")
-        case .tutorial:
-            return NSLocalizedString("Tutorial",
-                                     comment: "Tableview section header: Tutorial")
         case .support:
             return NSLocalizedString("Support",
                                      comment: "Tableview section header: Support")
@@ -408,7 +405,7 @@ extension SettingsViewModel {
     /// - Returns: The title of the footer. If the section is an account, a pepSync or the company features, it will be nil because there is no footer.
     private func sectionFooter(type: SectionType) -> String? {
         switch type {
-        case .pEpSync, .companyFeatures, .tutorial, .support:
+        case .pEpSync, .companyFeatures, .support:
             return nil
         case .accounts:
             return NSLocalizedString("Performs a reset of the privacy settings of your account(s).",
@@ -435,6 +432,9 @@ extension SettingsViewModel {
         case .userManual:
             return NSLocalizedString("User Manual",
                                      comment: "Settings: Cell (button) title to view app User Manual")
+        case .termsAndConditions:
+            return NSLocalizedString("Terms and Conditions", comment:
+                                        "Settings: Cell (button) title to view app Terms and Conditions")
         case .credits:
             return NSLocalizedString("Credits",
                                      comment: "Settings: Cell (button) title to view app credits")
@@ -468,8 +468,6 @@ extension SettingsViewModel {
         case .unsecureReplyWarningEnabled:
             return NSLocalizedString("Unsecure reply warning",
                                      comment: "setting row title: Unsecure reply warning")
-        case .tutorial:
-            return NSLocalizedString("Tutorial", comment: "setting row title: Tutorial")
         case .exportDBs:
             return NSLocalizedString("Export planck databases to file system", comment: "setting row title: Export DBs")
         case .groupMailboxes:
@@ -491,6 +489,7 @@ extension SettingsViewModel {
         case .account,
                 .credits,
                 .userManual,
+                .termsAndConditions,
                 .extraKeys,
                 .passiveMode,
                 .pEpSync,
@@ -501,7 +500,6 @@ extension SettingsViewModel {
                 .pgpKeyImport,
                 .trustedServer,
                 .unsecureReplyWarningEnabled,
-                .tutorial,
                 .exportDBs,
                 .groupMailboxes,
                 .deviceGroups,
@@ -586,7 +584,7 @@ extension SettingsViewModel {
             }
             switch result {
             case .success:
-                Log.shared.info("Success", [])
+                Log.shared.info("Success")
                 DispatchQueue.main.async {
                     me.delegate?.hideLoadingView()
                     let title = NSLocalizedString("Reset Own Key", comment: "Reset Own Key successfull title")
@@ -614,7 +612,6 @@ extension SettingsViewModel {
         case globalSettings
         case pEpSync
         case companyFeatures
-        case tutorial
         case contacts
         case support
     }
@@ -634,10 +631,9 @@ extension SettingsViewModel {
         case usePEPFolder
         case resetTrust
         case extraKeys
-        case tutorial
         case exportDBs
         case userManual
-
+        case termsAndConditions
         case groupMailboxes
         case deviceGroups
         case about

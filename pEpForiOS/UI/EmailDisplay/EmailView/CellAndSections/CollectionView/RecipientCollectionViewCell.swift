@@ -7,7 +7,7 @@
 //
 
 import Foundation
-import PlanckToolbox
+import pEpIOSToolbox
 
 class RecipientCollectionViewCell: UICollectionViewCell {
     @IBOutlet weak var recipientButton: RecipientButton!

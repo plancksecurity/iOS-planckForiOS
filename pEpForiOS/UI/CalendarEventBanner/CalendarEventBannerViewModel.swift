@@ -9,7 +9,7 @@
 import UIKit
 
 import MessageModel
-import PlanckToolbox
+import pEpIOSToolbox
 
 protocol CalendarEventBannerViewModelDelegate: AnyObject {
     /// Dismiss the banner

@@ -8,7 +8,7 @@
 
 import Foundation
 import MessageModel
-import PlanckToolbox
+import pEpIOSToolbox
 
 class MessageViewModel: CustomDebugStringConvertible {
     private static var maxBodyPreviewCharacters = 120

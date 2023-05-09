@@ -9,7 +9,7 @@
 import Foundation
 
 import MessageModel
-import PlanckToolbox
+import pEpIOSToolbox
 
 protocol KeySyncHandshakeViewModelDelegate: AnyObject {
     func showPicker(withLanguages languages: [String], selectedLanguageIndex: Int?)

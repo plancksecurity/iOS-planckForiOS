@@ -7,7 +7,7 @@
 //
 
 import MessageModel
-import PlanckToolbox
+import pEpIOSToolbox
 
 protocol EmailDetailViewModelDelegate: EmailDisplayViewModelDelegate {
 

@@ -8,7 +8,7 @@
 
 import Foundation
 
-import PlanckToolbox
+import pEpIOSToolbox
 import MessageModel
 
 protocol EmailDisplayViewModelDelegate: AnyObject {

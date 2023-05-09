@@ -9,7 +9,7 @@
 import Foundation
 
 import MessageModel
-import PlanckToolbox
+import pEpIOSToolbox
 
 protocol AccountTypeSelectorViewModelDelegate: AnyObject {
     func showMustImportClientCertificateAlert()

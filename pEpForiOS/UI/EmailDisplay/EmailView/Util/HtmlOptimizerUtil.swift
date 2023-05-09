@@ -8,7 +8,7 @@
 
 import Foundation
 
-import PlanckToolbox
+import pEpIOSToolbox
 
 protocol HtmlOptimizerUtilProtocol {
     /// Optimizes a given HTML for displaying.

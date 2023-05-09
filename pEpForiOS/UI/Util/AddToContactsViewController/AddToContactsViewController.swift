@@ -10,9 +10,9 @@ import Foundation
 import ContactsUI
 
 #if EXT_SHARE
-import PlanckToolboxForExtensions
+import pEpIOSToolboxForExtensions
 #else
-import PlanckToolbox
+import pEpIOSToolbox
 #endif
 
 /// Represents ContactsUI for "add a contact" to the system address book
