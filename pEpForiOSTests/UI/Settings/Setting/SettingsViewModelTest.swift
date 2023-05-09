@@ -32,7 +32,7 @@ class SettingsViewModelTest: AccountDrivenTestBase {
         let delegate = SettingsViewModeldelegate()
         let mock = MockRegularUsersAppSettings()
         setupViewModel(delegate: delegate, appSettings: mock)
-        XCTAssertEqual(settingsVM.count, 7)
+        XCTAssertEqual(settingsVM.count, 8)
     }
 
     func testSwitchBehaviorOnProtectMessageSubject() {
