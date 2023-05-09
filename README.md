@@ -61,8 +61,6 @@ Your Apple ID needs to be part of your development team.
 
 ### Other dependencies
 
-#### pEpEngine: [yml2](https://fdik.org/yml/toolchain)
-
 Clone into your home directory:
 
 ```
