@@ -184,11 +184,6 @@ final class EmailListViewController: UIViewController {
             return
         }
 
-        if vm.shouldShowTutorialWizard {
-            TutorialWizardViewController.presentTutorialWizard(viewController: self)
-            vm.didShowTutorialWizard()
-        }
-
         ///if we are in setup and the folder is unifiedInbox
         ///we have to reload the unifiedInbox to ensure that all the accounts are present.
         if vm.folderToShow is UnifiedInbox {

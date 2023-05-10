@@ -172,16 +172,6 @@ class EmailListViewModel: EmailDisplayViewModel {
         return false
     }
 
-    /// Whether or not to show the Tutorial
-    public var shouldShowTutorialWizard: Bool {
-        return AppSettings.shared.shouldShowTutorialWizard
-    }
-
-    /// Call when the tutorial has been displayed to the user
-    public func didShowTutorialWizard() {
-        AppSettings.shared.shouldShowTutorialWizard = false
-    }
-
     /// Returns the descriptor for the destructive action, it could be archive or trash
     /// - Parameter index: The index of the row
     /// - Returns: The descriptor to trigger the action if user taps a destructive button

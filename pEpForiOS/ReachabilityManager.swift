@@ -15,7 +15,7 @@ import PlanckToolbox
 
 
 /// Class to handle the reachability changes.
-/// The notifications comes from pEpIOSToolbox
+/// The notifications comes from PlanckToolbox
 /// It's needed to keep the shared instance alive. 
 class ReachabilityManager {
 

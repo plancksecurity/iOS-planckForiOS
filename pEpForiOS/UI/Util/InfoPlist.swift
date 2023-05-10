@@ -34,6 +34,13 @@ struct InfoPlist {
         }
         return userManualURL
     }
+    
+    static public func termsAndConditionsURL() -> String? {
+        guard let termsAndConditionsURL = mainBundleInfoDictValue(forKey: "TERMS_AND_CONDITIONS_URL") as? String else {
+            return nil
+        }
+        return termsAndConditionsURL
+    }
 
     static private func mainBundleInfoDictValue(forKey key: String) -> Any? {
         guard let infoDict = infoDictMainBundle else {

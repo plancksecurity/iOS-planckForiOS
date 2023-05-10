@@ -152,8 +152,8 @@ extension SettingsTableViewController {
              .pgpKeyImport,
              .credits,
              .userManual,
+             .termsAndConditions,
              .extraKeys,
-             .tutorial,
              .exportDBs,
              .groupMailboxes,
              .deviceGroups,
@@ -274,14 +274,10 @@ extension SettingsTableViewController : SwipeTableViewCellDelegate {
         }
         return nil
     }
-
+    
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         let row = viewModel.section(for: indexPath.section).rows[indexPath.row]
         switch row.identifier {
-        case .tutorial:
-            TutorialWizardViewController.presentTutorialWizard(viewController: self)
-            tableView.deselectRow(at: indexPath, animated: true)
-            return
         case .exportDBs:
             showExportDBsAlert()
             tableView.deselectRow(at: indexPath, animated: true)
@@ -295,6 +291,22 @@ extension SettingsTableViewController : SwipeTableViewCellDelegate {
                 return
             }
             guard let urlString = InfoPlist.userManualURL(),
+                  let url = URL(string: urlString),
+                  UIApplication.shared.canOpenURL(url) else {
+                Log.shared.errorAndCrash("Can't open url")
+                break
+            }
+            UIApplication.shared.open(url, options: [:])
+            return
+        case .termsAndConditions:
+            tableView.deselectRow(at: indexPath, animated: true)
+            
+            if !NetworkMonitorUtil.shared.netOn {
+                //Inform the user if there is no internet connection.
+                UIUtils.showNoInternetConnectionBanner(viewController: self)
+                return
+            }
+            guard let urlString = InfoPlist.termsAndConditionsURL(),
                   let url = URL(string: urlString),
                   UIApplication.shared.canOpenURL(url) else {
                 Log.shared.errorAndCrash("Can't open url")
@@ -428,7 +440,6 @@ extension SettingsTableViewController {
         case seguePgpKeyImport
         case noAccounts
         case resetTrust
-        case tutorial
         case segueGroupMailboxes
         case segueDeviceGroups
         case segueAbout
@@ -452,8 +463,6 @@ extension SettingsTableViewController {
             return .resetTrust
         case .extraKeys:
             return .segueExtraKeys
-        case .tutorial:
-            return .tutorial
         case .passiveMode, .usePEPFolder, .pEpSync, .unsecureReplyWarningEnabled, .protectMessageSubject, .resetAccounts, .exportDBs:
             return .none
         case .groupMailboxes:
@@ -463,6 +472,8 @@ extension SettingsTableViewController {
         case .about:
             return .none // .segueAbout
         case .userManual:
+            return .none
+        case .termsAndConditions:
             return .none
         }
     }
@@ -494,7 +505,6 @@ extension SettingsTableViewController {
              .resetTrust,
              .segueExtraKeys,
              .segueShowSettingTrustedServers,
-             .tutorial,
              .segueGroupMailboxes,
              .segueDeviceGroups,
              .segueAbout:

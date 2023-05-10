@@ -1,6 +1,6 @@
 //
 //  HtmlConversions.swift
-//  pEpIOSToolbox
+//  PlanckToolbox
 //
 //  Created by Adam Kowalski on 25/03/2020.
 //  Copyright © 2020 pEp Security SA. All rights reserved.

@@ -1,6 +1,6 @@
 //
 //  AnimatedPlaceholderTextfield.swift
-//  pEpIOSToolbox
+//  PlanckToolbox
 //
 //  Created by Alejandro Gelos on 04/10/2019.
 //  Copyright © 2019 pEp Security SA. All rights reserved.

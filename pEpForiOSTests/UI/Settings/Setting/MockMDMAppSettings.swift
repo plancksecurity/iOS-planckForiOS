@@ -27,8 +27,6 @@ class MDMMockAppSettings : AppSettingsProtocol {
 
     var lastKnownDeviceGroupState: DeviceGroupState = .sole
 
-    var shouldShowTutorialWizard: Bool = true
-
     var userHasBeenAskedForContactAccessPermissions: Bool = true
 
     var unsecureReplyWarningEnabled: Bool = true

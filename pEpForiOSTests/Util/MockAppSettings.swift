@@ -30,8 +30,6 @@ class MockAppSettings: AppSettingsProtocol {
 
     var lastKnownDeviceGroupState: DeviceGroupState = .grouped
 
-    var shouldShowTutorialWizard: Bool = false
-
     var userHasBeenAskedForContactAccessPermissions: Bool = false
 
     var unsecureReplyWarningEnabled: Bool = false

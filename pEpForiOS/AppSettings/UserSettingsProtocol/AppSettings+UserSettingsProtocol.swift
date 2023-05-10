@@ -26,7 +26,6 @@ extension AppSettings: UserSettingsProtocol {
     static let keyPassiveMode = "keyPassiveMode"
     static let keyLastKnowDeviceGroupStateRawValue = "keyLastKnowDeviceGroupStateRawValue"
     static let keyExtraKeysEditable = "keyExtraKeysEditable"
-    static let keyShouldShowTutorialWizard = "keyShouldShowTutorialWizard"
     static let keyUserHasBeenAskedForContactAccessPermissions = "keyUserHasBeenAskedForContactAccessPermissions"
     static let keyUnsecureReplyWarningEnabled = "keyUnsecureReplyWarningEnabled"
     static let keyAccountSignature = "keyAccountSignature"
@@ -100,16 +99,6 @@ extension AppSettings: UserSettingsProtocol {
         set {
             AppSettings.userDefaults.set(newValue, forKey: AppSettings.keyPassiveMode)
             MessageModelConfig.setPassiveModeEnabled(newValue)
-        }
-    }
-
-    public var shouldShowTutorialWizard: Bool {
-        get {
-            return AppSettings.userDefaults.bool(forKey: AppSettings.keyShouldShowTutorialWizard)
-        }
-        set {
-            AppSettings.userDefaults.set(newValue,
-                                         forKey: AppSettings.keyShouldShowTutorialWizard)
         }
     }
 
