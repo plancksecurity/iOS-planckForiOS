@@ -1,17 +1,16 @@
-AppAuth-iOS: f603232a6ecb853962e280fd60f51ebeb93feae1
-CocoaLumberjack: 606f488dd2d3fdfa3149becdfe53fdbddfdd916f
-OpenSSL-for-iPhone: 32c016ad67e4e929b5fa20613a027a6e1f416248
-Pantomime: b4429b80b2d1e13fc24058131080803269fe4353
-SwipeCellKit: d80d7cffa7d0dc14606eddf6989a16baefe2e484
-changesets_script: a611858479fa9df69cee04879ea408dee2a73133
-common-dependency-build-helpers-4-apple-hardware: f1d0d5e5bdb285af1ab03b54baa7d36da7563a3d
-ldns: 0e2de4d530006eb53af983deaea87188f1c78e1a
-libAccountSettings: b9c4bfc54d7cab91b41cc6ada997b234306d93ea
-libetpan: 507ab94fc9609432ef2d4c62770139482f1b5084
-libpEpTransport: 03b63f6d4fa83416215504a6ca5a6810db7daa8b tags/v1.0.0~1
-pEp-Translate: a7dcf934164f03523e8314dba67848fc60e6a1bb
-pEpEngine: 71d35b5dc9fe2225653162e74c3aedd5e2381ffe
-pEpObjCAdapter: 4b98050619a50e69683540e93ade14b06963e56e
-pep-toolbox: 1121e32079b889c459e899078d881aa6b8d3737a
-pep4ios: 4c928d15c2e3ab75e6f9cb774997e6ec898af393
-pep_for_ios_intern: f4064d590a986eee4142223dde08c8d6dd2237de
+ ed5dd184d3c97cb93adccee50afa86d5a2461692 Appauth-iOS (1.3.1-86-ged5dd18)
+ a2a0d74640848a812b7fa5bc0ca1b121883119dc CocoaLumberjack (heads/master)
+ 32c016ad67e4e929b5fa20613a027a6e1f416248 OpenSSL-for-iPhone (1.0.2h-107-g32c016a)
+ f07caf069337b320767a3c439eda4b6443e59be1 Pantomime (1.0-179-gf07caf0)
+ d80d7cffa7d0dc14606eddf6989a16baefe2e484 SwipeCellKit (2.0.1-108-gd80d7cf)
+ bad4eca164aaee34955a89946485568e2123460c common-dependency-build-helpers-4-apple-hardware (Release_2.1.8-158-gbad4eca)
+ 0e2de4d530006eb53af983deaea87188f1c78e1a ldns (release-1.7.0-60-g0e2de4d5)
+ b9c4bfc54d7cab91b41cc6ada997b234306d93ea libAccountsettings (tag_for_1.1.300-16-gb9c4bfc)
+ 7c9a6b5d30f3ec4be53b98880b9e7784ea9444f5 libPlanckTransport (heads/master)
+ 80ce2b5c80d4b14df59550b87f0bea1eb951f5f7 libetpan (1.6-204-g80ce2b5)
+ a9ae7d151bdf19e52fc83b338a3095226366ef47 planck-toolbox (heads/master)
++d1aee95d4fd9959a5dc69102af148d02aeb6491e planckCoreSequoiaBackend (v1.0.0)
+ 50f440696b21dd28e678fd8821f5ee54ced7298c planckCoreV3 (v3.2.1-37-g50f44069)
+ 43042143ff2be1006100e2c74fcfa31bf6b1e75d planckForiOS (v1.1.250-4870-g43042143f)
+ 257e4ee8ecfc78902aab730ecaba20fa970802ab planckForiOS_intern (heads/live_servers)
+ 0c4ecfb008246349f535151b614c8b502e7c9b00 planckObjCWrapper (PEMA-105_revise_all_module_use-173-g0c4ecfb0)
