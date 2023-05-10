@@ -203,7 +203,9 @@ extension SettingsViewModel {
             items.append(sectionForType(sectionType: .globalSettings))
         } else {
             SettingsViewModel.SectionType.allCases.forEach { (type) in
-                items.append(sectionForType(sectionType: type))
+                if type != .support {
+                    items.append(sectionForType(sectionType: type))
+                }
             }
         }
     }
@@ -263,7 +265,6 @@ extension SettingsViewModel {
                 rows.append(generateNavigationRow(type: .defaultAccount, isDangerous: false))
                 rows.append(generateNavigationRow(type: .credits, isDangerous: false))
                 rows.append(generateNavigationRow(type: .userManual, isDangerous: false))
-                rows.append(generateNavigationRow(type: .pgpKeyImport, isDangerous: false))
                 rows.append(generateSwitchRow(type: .unsecureReplyWarningEnabled,
                                               isDangerous: false,
                                               isOn: AppSettings.shared.unsecureReplyWarningEnabled) {  [weak self]
@@ -286,17 +287,6 @@ extension SettingsViewModel {
                     }
                     me.setSwtichRow(ofType: .globalSettings, withIdentifier: .protectMessageSubject, newValue: value)
                 })
-                rows.append(generateSwitchRow(type: .passiveMode,
-                                              isDangerous: false,
-                                              isOn: AppSettings.shared.passiveModeEnabled) { [weak self] (value) in
-                    AppSettings.shared.passiveModeEnabled = value
-                    guard let me = self else {
-                        Log.shared.errorAndCrash("Lost myself")
-                        return
-                    }
-                    me.setSwtichRow(ofType: .globalSettings, withIdentifier: .passiveMode, newValue: value)
-
-                })
             }
         case .pEpSync:
             rows.append(generateSwitchRow(type: .pEpSync,
@@ -310,16 +300,6 @@ extension SettingsViewModel {
                 me.setSwtichRow(ofType: .pEpSync, withIdentifier: .pEpSync, newValue: value)
 
             })
-            rows.append(generateSwitchRow(type: .usePEPFolder,
-                                          isDangerous: false,
-                                          isOn: AppSettings.shared.usePEPFolderEnabled) { [weak self] (value) in
-                AppSettings.shared.usePEPFolderEnabled = value
-                guard let me = self else {
-                    Log.shared.lostMySelf()
-                    return
-                }
-                me.setSwtichRow(ofType: .pEpSync, withIdentifier: .usePEPFolder, newValue: value)
-            })
         case .contacts:
             rows.append(generateNavigationRow(type: .resetTrust, isDangerous: true))
         case .companyFeatures:
@@ -327,7 +307,8 @@ extension SettingsViewModel {
         case .tutorial:
             rows.append(generateNavigationRow(type: .tutorial, isDangerous: false))
         case .support:
-            rows.append(generateNavigationRow(type: .exportDBs, isDangerous: false))
+            // Suppport section row will not be shown. For further info please see EFI-24
+            break
         }
         return rows
     }
@@ -616,7 +597,7 @@ extension SettingsViewModel {
         case companyFeatures
         case tutorial
         case contacts
-        case support
+        case support // This will not be shown. For further info see: EFI-24
     }
 
     /// Identifies semantically the type of row.
@@ -626,16 +607,16 @@ extension SettingsViewModel {
         case defaultAccount
         case credits
         case trustedServer
-        case pgpKeyImport
-        case passiveMode
+        case pgpKeyImport // This will not be shown. For further info see: EFI-24
+        case passiveMode  // This will not be shown. For further info see: EFI-24
         case protectMessageSubject
         case unsecureReplyWarningEnabled
-        case pEpSync
+        case pEpSync  // This will not be shown. For further info see: EFI-24
         case usePEPFolder
         case resetTrust
         case extraKeys
         case tutorial
-        case exportDBs
+        case exportDBs  // This will not be shown. For further info see: EFI-24
         case userManual
 
         case groupMailboxes
