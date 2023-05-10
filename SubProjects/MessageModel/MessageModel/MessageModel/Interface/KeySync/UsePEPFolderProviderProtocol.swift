@@ -1,5 +1,5 @@
 //
-//  UsePEPFolderProviderProtocol.swift
+//  UsePlanckFolderProviderProtocol.swift
 //  MessageModel
 //
 //  Created by Andreas Buff on 25.06.20.
@@ -8,8 +8,9 @@
 
 import Foundation
 
-/// Someone who tells us whether or not to create a pEp folder for storing pEp sync messages (or
+/// Someone who tells us whether or not to create a planck folder for storing planck sync messages (or
 /// to store it in INBOX otherwize).
-public protocol UsePEPFolderProviderProtocol {
-    var usePEPFolder: Bool { get }
+public protocol UsePlanckFolderProviderProtocol {
+
+    var usePlanckFolder: Bool { get }
 }

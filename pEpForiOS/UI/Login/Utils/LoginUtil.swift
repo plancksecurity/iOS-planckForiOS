@@ -18,7 +18,7 @@ class LoginUtil {
     /// Holding both the data of the current account in verification,
     /// and also the implementation of the verification.
     var verifiableAccount = VerifiableAccount.verifiableAccount(for: .other,
-                                                                usePEPFolderProvider: AppSettings.shared)
+                                                                usePlanckFolderProvider: AppSettings.shared)
 
     /// An OAuth2 process lives longer than the method call, so this object needs to survive.
     var currentOauth2Authorizer: OAuth2AuthorizationProtocol?

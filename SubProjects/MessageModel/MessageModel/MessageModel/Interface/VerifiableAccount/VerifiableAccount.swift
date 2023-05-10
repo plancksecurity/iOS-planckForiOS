@@ -55,7 +55,7 @@ public class VerifiableAccount: VerifiableAccountProtocol {
 
     /// Someone who tells us whether or not to create a pEp folder for storing sync messages for
     /// synced accounts.
-    private let usePEPFolderProvider: UsePEPFolderProviderProtocol?
+    private let usePlanckFolderProvider: UsePlanckFolderProviderProtocol?
 
     public var originalImapPassword: String?
     public var originalSmtpPassword: String?
@@ -108,7 +108,7 @@ public class VerifiableAccount: VerifiableAccountProtocol {
          manuallyTrustedImapServer: Bool = false,
          keySyncEnable: Bool = true,
          containsCompleteServerInfo: Bool = false,
-         usePEPFolderProvider: UsePEPFolderProviderProtocol? = nil,
+         usePlanckFolderProvider: UsePlanckFolderProviderProtocol? = nil,
          originalImapPassword: String? = nil,
          originalSmtpPassword: String? = nil) {
         self.verifiableAccountDelegate = verifiableAccountDelegate
@@ -130,7 +130,7 @@ public class VerifiableAccount: VerifiableAccountProtocol {
         self.isManuallyTrustedImapServer = manuallyTrustedImapServer
         self.keySyncEnable = keySyncEnable
         self.containsCompleteServerInfo = containsCompleteServerInfo
-        self.usePEPFolderProvider = usePEPFolderProvider
+        self.usePlanckFolderProvider = usePlanckFolderProvider
         self.originalImapPassword = originalImapPassword
         self.originalSmtpPassword = originalSmtpPassword
     }
@@ -164,11 +164,11 @@ public class VerifiableAccount: VerifiableAccountProtocol {
                     Log.shared.lostMySelf()
                     return
                 }
-                let alsoCreatePEPFolder = me.keySyncEnable && (me.usePEPFolderProvider?.usePEPFolder ?? false)
+                let alsoCreatePlanckFolder = me.keySyncEnable && (me.usePlanckFolderProvider?.usePlanckFolder ?? false)
                 me.prepareAccountForSavingService.prepareAccount(cdAccount: cdAccount,
-                                                          pEpSyncEnable: me.keySyncEnable,
-                                                          alsoCreatePEPFolder: alsoCreatePEPFolder,
-                                                          context: moc) { success in
+                                                                 planckSyncEnable: me.keySyncEnable,
+                                                                 alsoCreatePEPFolder: alsoCreatePlanckFolder,
+                                                                 context: moc) { success in
                     DispatchQueue.main.async {
                         if success {
                             // The account has been successfully verified and prepared.
@@ -569,7 +569,7 @@ extension VerifiableAccount {
     /// to find out if server data is still missing or not.
     /// - Parameter type: The account type
     public static func verifiableAccount(for type: AccountType,
-                                         usePEPFolderProvider: UsePEPFolderProviderProtocol? = nil,
+                                         usePlanckFolderProvider: UsePlanckFolderProviderProtocol? = nil,
                                          originalImapPassword: String? = nil,
                                          originalSmtpPassword: String? = nil) -> VerifiableAccountProtocol {
         var account =  VerifiableAccount(verifiableAccountDelegate: nil,
@@ -591,7 +591,7 @@ extension VerifiableAccount {
                                          manuallyTrustedImapServer: false,
                                          keySyncEnable: true,
                                          containsCompleteServerInfo: false,
-                                         usePEPFolderProvider: usePEPFolderProvider,
+                                         usePlanckFolderProvider: usePlanckFolderProvider,
                                          originalImapPassword: originalImapPassword,
                                          originalSmtpPassword: originalSmtpPassword)
 
@@ -616,7 +616,7 @@ extension VerifiableAccount {
                                         manuallyTrustedImapServer: false,
                                         keySyncEnable: true,
                                         containsCompleteServerInfo: true,
-                                        usePEPFolderProvider: usePEPFolderProvider)
+                                        usePlanckFolderProvider: usePlanckFolderProvider)
         case .o365:
             account = VerifiableAccount(verifiableAccountDelegate: nil,
                                         address: nil,
@@ -637,7 +637,7 @@ extension VerifiableAccount {
                                         manuallyTrustedImapServer: false,
                                         keySyncEnable: true,
                                         containsCompleteServerInfo: true,
-                                        usePEPFolderProvider: usePEPFolderProvider)
+                                        usePlanckFolderProvider: usePlanckFolderProvider)
         case .icloud:
             account =  VerifiableAccount(verifiableAccountDelegate: nil,
                                          address: nil,
@@ -658,7 +658,7 @@ extension VerifiableAccount {
                                          manuallyTrustedImapServer: false,
                                          keySyncEnable: true,
                                          containsCompleteServerInfo: true,
-                                         usePEPFolderProvider: usePEPFolderProvider)
+                                         usePlanckFolderProvider: usePlanckFolderProvider)
         case .outlook:
             account =  VerifiableAccount(verifiableAccountDelegate: nil,
                                          address: nil,
@@ -679,7 +679,7 @@ extension VerifiableAccount {
                                          manuallyTrustedImapServer: false,
                                          keySyncEnable: true,
                                          containsCompleteServerInfo: true,
-                                         usePEPFolderProvider: usePEPFolderProvider)
+                                         usePlanckFolderProvider: usePlanckFolderProvider)
         case .other, .clientCertificate:
             break
         }

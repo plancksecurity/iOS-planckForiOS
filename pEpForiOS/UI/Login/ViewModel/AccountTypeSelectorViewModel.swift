@@ -48,7 +48,7 @@ class AccountTypeSelectorViewModel {
     }
     public func handleDiDChooseOAuth(viewController : UIViewController) {
         loginUtil.verifiableAccount = VerifiableAccount.verifiableAccount(for: chosenAccountType,
-                                                                           usePEPFolderProvider: AppSettings.shared)
+                                                                          usePlanckFolderProvider: AppSettings.shared)
         loginUtil.loginWithOAuth2(viewController: viewController)
 
 
@@ -95,7 +95,7 @@ class AccountTypeSelectorViewModel {
 
 extension AccountTypeSelectorViewModel {
     private func verifiableAccountForCoosenAccountType() -> VerifiableAccountProtocol {
-        return VerifiableAccount.verifiableAccount(for: chosenAccountType, usePEPFolderProvider: AppSettings.shared)
+        return VerifiableAccount.verifiableAccount(for: chosenAccountType, usePlanckFolderProvider: AppSettings.shared)
     }
 }
 

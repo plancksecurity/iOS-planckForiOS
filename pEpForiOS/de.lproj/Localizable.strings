@@ -274,7 +274,7 @@
 "Display Name" = "Anzeigename";
 
 /* Alert view message - warning */
-"Do you really want to export p≡p databases to Documents/pEp/db-export/ on your local file system?\nWarning: The databases contain confidential information like private keys." = "Wollen Sie wirklich p≡p Datenbanken nach Dokumente/pEp/db-export/ in Ihrem lokalen Dateisystem exportieren?\nWarnung: Die Datenbanken enthalten vertrauliche Informationen, wie z.B. private Schlüssel.";
+"Do you really want to export p≡p databases to Documents/planck/db-export/ on your local file system?\nWarning: The databases contain confidential information like private keys." = "Wollen Sie wirklich p≡p Datenbanken nach Dokumente/planck/db-export/ in Ihrem lokalen Dateisystem exportieren?\nWarnung: Die Datenbanken enthalten vertrauliche Informationen, wie z.B. private Schlüssel.";
 
 /* Name of Drafts folder (showing draft messages, of one account) */
 "Drafts" = "Entwürfe";

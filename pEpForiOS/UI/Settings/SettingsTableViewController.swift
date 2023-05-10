@@ -172,7 +172,7 @@ extension SettingsTableViewController {
         case .passiveMode,
              .protectMessageSubject,
              .pEpSync,
-             .usePEPFolder,
+             .usePlanckFolder,
              .unsecureReplyWarningEnabled:
             guard let row = row as? SettingsViewModel.SwitchRow else {
                 Log.shared.errorAndCrash(message: "Row doesn't match the expected type")
@@ -331,7 +331,7 @@ extension SettingsTableViewController : SwipeTableViewCellDelegate {
             tableView.deselectRow(at: indexPath, animated: true)
         case .passiveMode,
              .pEpSync,
-             .usePEPFolder,
+             .usePlanckFolder,
              .protectMessageSubject,
              .unsecureReplyWarningEnabled,
              .groupMailboxes,
@@ -463,7 +463,7 @@ extension SettingsTableViewController {
             return .resetTrust
         case .extraKeys:
             return .segueExtraKeys
-        case .passiveMode, .usePEPFolder, .pEpSync, .unsecureReplyWarningEnabled, .protectMessageSubject, .resetAccounts, .exportDBs:
+        case .passiveMode, .usePlanckFolder, .pEpSync, .unsecureReplyWarningEnabled, .protectMessageSubject, .resetAccounts, .exportDBs:
             return .none
         case .groupMailboxes:
             return .none // .segueGroupMailboxes

@@ -27,7 +27,7 @@ class KeySyncService: NSObject, KeySyncServiceProtocol {
     weak private var keySyncStateProvider: KeySyncStateProvider?
     private(set) var handshakeHandler: KeySyncServiceHandshakeHandlerProtocol?
     let passphraseProvider: PassphraseProviderProtocol
-    let usePEPFolderProvider: UsePEPFolderProviderProtocol
+    let usePlanckFolderProvider: UsePlanckFolderProviderProtocol
     weak private(set) var fastPollingDelegate: PollingDelegate?
     let outgoingRatingService: OutgoingRatingServiceProtocol
 
@@ -37,13 +37,13 @@ class KeySyncService: NSObject, KeySyncServiceProtocol {
                   keySyncStateProvider: KeySyncStateProvider,
                   fastPollingDelegate: PollingDelegate? = nil,
                   passphraseProvider: PassphraseProviderProtocol,
-                  usePEPFolderProvider: UsePEPFolderProviderProtocol,
+                  usePlanckFolderProvider: UsePlanckFolderProviderProtocol,
                   outgoingRatingService: OutgoingRatingServiceProtocol) {
         self.handshakeHandler = keySyncServiceHandshakeHandler
         self.keySyncStateProvider = keySyncStateProvider
         self.fastPollingDelegate = fastPollingDelegate
         self.passphraseProvider = passphraseProvider
-        self.usePEPFolderProvider = usePEPFolderProvider
+        self.usePlanckFolderProvider = usePlanckFolderProvider
         self.outgoingRatingService = outgoingRatingService
         let moc: NSManagedObjectContext = Stack.shared.changePropagatorContext
         self.moc = moc

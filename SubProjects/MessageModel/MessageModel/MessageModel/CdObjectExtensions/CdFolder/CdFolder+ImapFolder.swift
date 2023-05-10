@@ -54,7 +54,7 @@ extension CdFolder {
     /// (derived by splitting the complete folder name by the folder separator)
     static func isPEPSync(folderComponents: [String]) -> Bool {
         return folderComponents.count == 2 && folderComponents[0].isInboxFolderName() &&
-            folderComponents[1] == CdFolder.pEpSyncFolderName
+            folderComponents[1] == CdFolder.planckSyncFolderName
     }
 
     @discardableResult

@@ -97,7 +97,7 @@ final class SettingsViewModel {
         case    .passiveMode,
                 .protectMessageSubject,
                 .pEpSync,
-                .usePEPFolder,
+                .usePlanckFolder,
                 .unsecureReplyWarningEnabled:
             return "switchOptionCell"
         }
@@ -442,9 +442,9 @@ extension SettingsViewModel {
         case .pEpSync:
             return NSLocalizedString("planck Sync",
                                      comment: "Settings: enable/disable planck Sync feature")
-        case .usePEPFolder:
+        case .usePlanckFolder:
             return NSLocalizedString("Use planck Folder For Sync Messages",
-                                     comment: "Settings: title for enable/disable usePEPFolder feature")
+                                     comment: "Settings: title for enable/disable usePlanckFolder feature")
         case .unsecureReplyWarningEnabled:
             return NSLocalizedString("Unsecure reply warning",
                                      comment: "setting row title: Unsecure reply warning")
@@ -473,7 +473,7 @@ extension SettingsViewModel {
                 .extraKeys,
                 .passiveMode,
                 .pEpSync,
-                .usePEPFolder,
+                .usePlanckFolder,
                 .protectMessageSubject,
                 .resetAccounts,
                 .resetTrust,
@@ -608,7 +608,7 @@ extension SettingsViewModel {
         case protectMessageSubject
         case unsecureReplyWarningEnabled
         case pEpSync  // This will not be shown. For further info see: EFI-24
-        case usePEPFolder
+        case usePlanckFolder
         case resetTrust
         case extraKeys
         case exportDBs  // This will not be shown. For further info see: EFI-24

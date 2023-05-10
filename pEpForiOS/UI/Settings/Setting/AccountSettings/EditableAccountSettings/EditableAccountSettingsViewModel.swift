@@ -169,7 +169,7 @@ class EditableAccountSettingsViewModel {
 
     /// - Returns: The Client Certificate Management View Model.
     public func clientCertificateManagementViewModel() -> ClientCertificateManagementViewModel {
-        let verifiableAccount = VerifiableAccount.verifiableAccount(for: .clientCertificate, usePEPFolderProvider: AppSettings.shared)
+        let verifiableAccount = VerifiableAccount.verifiableAccount(for: .clientCertificate, usePlanckFolderProvider: AppSettings.shared)
         let clientCertificateManagementViewModel = ClientCertificateManagementViewModel(verifiableAccount: verifiableAccount, shouldHideCancelButton: false)
         clientCertificateManagementViewModel.accountToUpdate = account
         return clientCertificateManagementViewModel

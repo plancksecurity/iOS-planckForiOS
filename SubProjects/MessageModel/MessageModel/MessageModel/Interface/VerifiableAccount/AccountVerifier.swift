@@ -97,7 +97,7 @@ extension AccountVerifier: AccountVerifierProtocol {
                                          loginNameSMTP: smtpServer.loginName,
                                          serverSMTP: smtpServer.hostName,
                                          portSMTP: smtpServer.port,
-                                         usePEPFolderProvider: self)
+                                         usePlanckFolderProvider: self)
 
         // Keep it alive
         self.verifiableAccount = verifier
@@ -151,10 +151,10 @@ extension AccountVerifier: VerifiableAccountDelegate {
     }
 }
 
-// MARK: - UsePEPFolderProviderProtocol
+// MARK: - usePlanckFolderProviderProtocol
 
-extension AccountVerifier: UsePEPFolderProviderProtocol {
-    public var usePEPFolder: Bool {
+extension AccountVerifier: UsePlanckFolderProviderProtocol {
+    public var usePlanckFolder: Bool {
         return shouldUsePEPFolder ?? false
     }
 }
