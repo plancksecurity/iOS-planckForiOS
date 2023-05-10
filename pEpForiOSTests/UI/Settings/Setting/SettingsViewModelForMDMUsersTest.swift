@@ -33,7 +33,7 @@ class SettingsViewModelForMDMUsersTest: AccountDrivenTestBase {
         let delegate = SettingsViewModeldelegate()
         let mock = MockRegularUsersAppSettings()
         setupViewModel(delegate: delegate, appSettings: mock)
-        XCTAssertEqual(settingsVM.count, 6)
+        XCTAssertEqual(settingsVM.count, 5)
     }
 
     func testNumberOfRowsForSectionInFirstPositionWith1Account() {
