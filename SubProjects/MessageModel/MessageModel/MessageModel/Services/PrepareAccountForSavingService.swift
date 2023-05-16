@@ -24,11 +24,11 @@ class PrepareAccountForSavingService {
     typealias Success = Bool
 
     func prepareAccount(cdAccount: CdAccount,
-                        pEpSyncEnable: Bool,
+                        planckSyncEnable: Bool,
                         alsoCreatePEPFolder: Bool,
                         context: NSManagedObjectContext,
                         completion: @escaping (Success)->()) {
-        cdAccount.pEpSyncEnabled = pEpSyncEnable
+        cdAccount.pEpSyncEnabled = planckSyncEnable
         // Generate Key
         guard let cdIdentity = cdAccount.identity else {
             Log.shared.errorAndCrash(message: "Impossible to get the identity")
@@ -37,7 +37,7 @@ class PrepareAccountForSavingService {
         }
         KeyGeneratorService.generateKey(cdIdentity: cdIdentity,
                                         context: context,
-                                        pEpSyncEnabled: pEpSyncEnable) { [weak self] (success) in
+                                        pEpSyncEnabled: planckSyncEnable) { [weak self] (success) in
             guard let me = self else {
                 Log.shared.lostMySelf()
                 return

@@ -58,7 +58,7 @@ public final class MessageModelService {
                 cnContactsAccessPermissionProvider: CNContactsAccessPermissionProviderProtocol,
                 keySyncServiceHandshakeHandler: KeySyncServiceHandshakeHandlerProtocol? = nil,
                 keySyncStateProvider: KeySyncStateProvider,
-                usePEPFolderProvider: UsePEPFolderProviderProtocol,
+                usePlanckFolderProvider: UsePlanckFolderProviderProtocol,
                 passphraseProvider: PassphraseProviderProtocol,
                 encryptionErrorDelegate: EncryptionErrorDelegate,
                 outgoingRatingService: OutgoingRatingServiceProtocol) {
@@ -72,7 +72,7 @@ public final class MessageModelService {
                       cnContactsAccessPermissionProvider: cnContactsAccessPermissionProvider,
                       keySyncServiceHandshakeHandler: keySyncServiceHandshakeHandler,
                       keySyncStateProvider: keySyncStateProvider,
-                      usePEPFolderProvider: usePEPFolderProvider,
+                      usePlanckFolderProvider: usePlanckFolderProvider,
                       passphraseProvider: passphraseProvider,
                       encryptionErrorDelegate: encryptionErrorDelegate,
                       outgoingRatingService: outgoingRatingService)
@@ -106,7 +106,7 @@ extension MessageModelService {
                                cnContactsAccessPermissionProvider: CNContactsAccessPermissionProviderProtocol,
                                keySyncServiceHandshakeHandler: KeySyncServiceHandshakeHandlerProtocol? = nil,
                                keySyncStateProvider: KeySyncStateProvider,
-                               usePEPFolderProvider: UsePEPFolderProviderProtocol,
+                               usePlanckFolderProvider: UsePlanckFolderProviderProtocol,
                                passphraseProvider: PassphraseProviderProtocol,
                                encryptionErrorDelegate: EncryptionErrorDelegate,
                                outgoingRatingService: OutgoingRatingServiceProtocol) {
@@ -132,10 +132,10 @@ extension MessageModelService {
                                             keySyncStateProvider: keySyncStateProvider,
                                             fastPollingDelegate: replicationService,
                                             passphraseProvider: passphraseProvider,
-                                            usePEPFolderProvider: usePEPFolderProvider,
+                                            usePlanckFolderProvider: usePlanckFolderProvider,
                                             outgoingRatingService: outgoingRatingService)
         let createPEPFolderService = CreatePepIMAPFolderService(backgroundTaskManager: backgroundTaskManager,
-                                                                usePEPFolderProviderProtocol: usePEPFolderProvider)
+                                                                usePlanckFolderProviderProtocol: usePlanckFolderProvider)
         runtimeServices = [decryptService,
                            encryptAndSendService,
                            replicationService,

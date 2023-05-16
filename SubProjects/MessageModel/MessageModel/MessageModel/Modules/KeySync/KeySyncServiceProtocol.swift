@@ -21,6 +21,6 @@ protocol KeySyncServiceProtocol: ServiceProtocol {
          keySyncStateProvider: KeySyncStateProvider,
          fastPollingDelegate: PollingDelegate?,
          passphraseProvider: PassphraseProviderProtocol,
-         usePEPFolderProvider: UsePEPFolderProviderProtocol,
+         usePlanckFolderProvider: UsePlanckFolderProviderProtocol,
          outgoingRatingService: OutgoingRatingServiceProtocol)
 }

@@ -1,5 +1,5 @@
 //
-//  AppSettings+UsePEPFolderProvider.swift
+//  AppSettings+usePlanckFolderProvider.swift
 //  pEp
 //
 //  Created by Andreas Buff on 25.06.20.
@@ -8,8 +8,8 @@
 
 import MessageModel
 
-extension AppSettings: UsePEPFolderProviderProtocol {
-    public var usePEPFolder: Bool {
+extension AppSettings: UsePlanckFolderProviderProtocol {
+    public var usePlanckFolder: Bool {
         return usePEPFolderEnabled
     }
 }

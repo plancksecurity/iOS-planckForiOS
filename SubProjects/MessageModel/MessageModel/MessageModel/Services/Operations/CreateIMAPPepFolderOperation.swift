@@ -96,13 +96,13 @@ class CreateIMAPPepFolderOperation: ImapSyncOperation {
                 handle(error: BackgroundError.ImapError.invalidAccount)
                 return nil
         }
-        let pEpFolderName = inboxName + seperator + CdFolder.pEpSyncFolderName
+        let pEpFolderName = inboxName + seperator + CdFolder.planckSyncFolderName
         return pEpFolderName
     }
 
-    /// Creates local pEpSync folder.
+    /// Creates local planckSync folder.
     /// - note: MUST be called on privateMoc
-    private func createLocalPEPFolder() {
+    private func createLocalPlanckFolder() {
         guard
             let cdAccount = imapConnection.cdAccount(moc: privateMOC),
             let inbox = CdFolder.by(folderType: .inbox, account: cdAccount, context: privateMOC),
@@ -132,7 +132,7 @@ extension CreateIMAPPepFolderOperation {
                 return
             }
             me.privateMOC.performAndWait {
-                me.createLocalPEPFolder()
+                me.createLocalPlanckFolder()
                 me.savecontext()
                 me.waitForBackgroundTasksAndFinish()
             }

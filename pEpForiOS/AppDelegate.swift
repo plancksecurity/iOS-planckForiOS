@@ -64,7 +64,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
                                                   cnContactsAccessPermissionProvider: AppSettings.shared,
                                                   keySyncServiceHandshakeHandler: KeySyncHandshakeService(),
                                                   keySyncStateProvider: AppSettings.shared,
-                                                  usePEPFolderProvider: AppSettings.shared,
+                                                  usePlanckFolderProvider: AppSettings.shared,
                                                   passphraseProvider: userInputProvider,
                                                   encryptionErrorDelegate: encryptionErrorHandler,
                                                   outgoingRatingService: OutgoingRatingChangeService())

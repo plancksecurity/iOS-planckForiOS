@@ -13,16 +13,16 @@ import PlanckToolbox
 /// Makes sure a special pEp folder exists (locally and on server) to store pEp Sync messages in.
 /// It runs exactly once runs once for every `start()` call.
 class CreatePepIMAPFolderService: OperationBasedService {
-    private let usePEPFolderProvider: UsePEPFolderProviderProtocol
+    private let usePlanckFolderProvider: UsePlanckFolderProviderProtocol
 
     required init(backgroundTaskManager: BackgroundTaskManagerProtocol? = nil,
-                  usePEPFolderProviderProtocol: UsePEPFolderProviderProtocol) {
-        self.usePEPFolderProvider = usePEPFolderProviderProtocol
+                  usePlanckFolderProviderProtocol: UsePlanckFolderProviderProtocol) {
+        self.usePlanckFolderProvider = usePlanckFolderProviderProtocol
         super.init(useSerialQueue: true, runOnce: true, backgroundTaskManager: backgroundTaskManager)
     }
 
     override func operations() -> [Operation] {
-        guard usePEPFolderProvider.usePEPFolder else {
+        guard usePlanckFolderProvider.usePlanckFolder else {
             // we are not supposed to (create and) use pEp folder for sync messages.
             // Nothing to do.
             return []
