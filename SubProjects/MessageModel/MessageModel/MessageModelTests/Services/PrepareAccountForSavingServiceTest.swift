@@ -21,7 +21,7 @@ class PrepareAccountForSavingServiceTest: PersistentStoreDrivenTestBase {
         privateMoc.performAndWait {
             let testee = SecretTestData().createWorkingCdAccount(context: privateMoc, number: 0)
             accountPreparationService.prepareAccount(cdAccount: testee,
-                                                     pEpSyncEnable: true,
+                                                     planckSyncEnable: true,
                                                      alsoCreatePEPFolder: false,
                                                      context: privateMoc) {
                 success in
@@ -40,7 +40,7 @@ class PrepareAccountForSavingServiceTest: PersistentStoreDrivenTestBase {
         privateMoc.performAndWait {
             let testee = SecretTestData().createImapTimeOutCdAccount(context: privateMoc)
             accountPreparationService.prepareAccount(cdAccount: testee,
-                                                     pEpSyncEnable: true,
+                                                     planckSyncEnable: true,
                                                      alsoCreatePEPFolder: false,
                                                      context: moc) {
                 success in
@@ -63,7 +63,7 @@ class PrepareAccountForSavingServiceTest: PersistentStoreDrivenTestBase {
                 return
             }
             accountPreparationService.prepareAccount(cdAccount: testacc,
-                                                     pEpSyncEnable: true,
+                                                     planckSyncEnable: true,
                                                      alsoCreatePEPFolder: false,
                                                      context: privateMoc) {
                 success in
@@ -101,7 +101,7 @@ class PrepareAccountForSavingServiceTest: PersistentStoreDrivenTestBase {
                 return
             }
             accountPreparationService.prepareAccount(cdAccount: testacc,
-                                                     pEpSyncEnable: true,
+                                                     planckSyncEnable: true,
                                                      alsoCreatePEPFolder: false,
                                                      context: privateMoc) {
                 success in
