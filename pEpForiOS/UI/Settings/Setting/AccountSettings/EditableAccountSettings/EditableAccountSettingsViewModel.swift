@@ -230,6 +230,12 @@ extension EditableAccountSettingsViewModel {
 
     // MARK: -  Sections
 
+    private func generateAllSections() {
+        AccountSettingsViewModel.SectionType.allCases.forEach { (type) in
+            sections.append(generateSection(type: type))
+        }
+    }
+
     /// Generates and retrieves a section
     /// - Parameter type: The type of the section to generate.
     /// - Returns: The generated section.
@@ -243,9 +249,7 @@ extension EditableAccountSettingsViewModel {
         if appSettings.mdmIsEnabled {
             generateSectionsForMDM()
         } else {
-            AccountSettingsViewModel.SectionType.allCases.forEach { (type) in
-                sections.append(generateSection(type: type))
-            }
+            sections.append(generateSection(type: .account))
         }
     }
 
@@ -340,6 +344,10 @@ extension EditableAccountSettingsViewModel {
             let nameRow = getDisplayRow(type: .name, value: name)
             rows.append(nameRow)
 
+            let passwordRow = getDisplayRow(type: .password, value: "")
+            rows.append(passwordRow)
+
+            /*
             // email
             let emailRow = getDisplayRow(type: .email, value: account.user.address)
             rows.append(emailRow)
@@ -353,6 +361,7 @@ extension EditableAccountSettingsViewModel {
                     me.delegate?.showEditCertificate()
                 }))
             }
+             */
         case .imap:
             guard let imapServer = account.imapServer else {
                 Log.shared.errorAndCrash("Account without IMAP server")

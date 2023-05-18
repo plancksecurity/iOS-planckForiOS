@@ -277,15 +277,19 @@ extension AccountSettingsViewModel {
         }
     }
 
+    private func generateAllSections() {
+        SectionType.allCases.forEach { (type) in
+            sections.append(generateSection(type: type))
+        }
+    }
+
     /// This method generates the sections of the account settings view.
     /// Must be called once, at the initialization.
     private func generateSections() {
         if appSettings.mdmIsEnabled {
             sections.append(generateSection(type: .account))
         } else {
-            SectionType.allCases.forEach { (type) in
-                sections.append(generateSection(type: type))
-            }
+            sections.append(generateSection(type: .account))
         }
     }
 
@@ -350,6 +354,32 @@ extension AccountSettingsViewModel {
         }
     }
 
+    private func getincludeInUnifiedFolderRow() -> SwitchRow {
+        return SwitchRow(type: .includeInUnified,
+                         title: rowTitle(for: .includeInUnified),
+                         isOn: includeInUnifiedFolders,
+                         action: { [weak self] (isIncludedInUnifiedFolders) in
+            guard let me = self else {
+                Log.shared.lostMySelf()
+                return
+            }
+            me.handleUnifiedFolderSwitchChanged(to: isIncludedInUnifiedFolders)
+        }, cellIdentifier: AccountSettingsHelper.CellsIdentifiers.switchCell)
+    }
+
+    private func getPlanckSyncRow() -> SwitchRow {
+        return SwitchRow(type: .pepSync,
+                         title: rowTitle(for: .pepSync),
+                         isOn: true,
+                         action: { [weak self] (enable) in
+            guard let me = self else {
+                // Valid case. We might have been dismissed.
+                return
+            }
+            me.pEpSync(enable: enable)
+        }, cellIdentifier: AccountSettingsHelper.CellsIdentifiers.switchCell)
+    }
+
     /// This method generates all the rows for the section type passed
     /// - Parameter type: The type of the section to generate the rows.
     /// - Returns: An array with the settings rows. Every setting row must conform the SettingsRowProtocol.
@@ -381,38 +411,19 @@ extension AccountSettingsViewModel {
             
             let signature = account.signature
             let signatureRow = getDisplayRow(type: .signature, value: signature)
-            
             rows.append(signatureRow)
 
             // Include in Unified Folders
-            let includeInUnifiedFolderRow = SwitchRow(type: .includeInUnified,
-                                                      title: rowTitle(for: .includeInUnified),
-                                                      isOn: includeInUnifiedFolders,
-                                                      action: { [weak self] (isIncludedInUnifiedFolders) in
-                                                        guard let me = self else {
-                                                            Log.shared.lostMySelf()
-                                                            return
-                                                        }
-                                                        me.handleUnifiedFolderSwitchChanged(to: isIncludedInUnifiedFolders)
-                                                      }, cellIdentifier: AccountSettingsHelper.CellsIdentifiers.switchCell)
-            rows.append(includeInUnifiedFolderRow)
+            // let includeInUnifiedFolderRow = getincludeInUnifiedFolderRow()
+            //rows.append(includeInUnifiedFolderRow)
 
             // pepSync
-            let pepSyncRow = SwitchRow(type: .pepSync,
-                                      title: rowTitle(for: .pepSync),
-                                      isOn: true,
-                action: { [weak self] (enable) in
-                    guard let me = self else {
-                        // Valid case. We might have been dismissed.
-                        return
-                    }
-                    me.pEpSync(enable: enable)
-                }, cellIdentifier: AccountSettingsHelper.CellsIdentifiers.switchCell)
-            rows.append(pepSyncRow)
+            // let pepSyncRow = getPlanckSyncRow()
+            //rows.append(pepSyncRow)
 
             // reset
-            let resetRow = ActionRow(type: .reset, title: rowTitle(for: .reset), cellIdentifier: AccountSettingsHelper.CellsIdentifiers.dangerousCell)
-            rows.append(resetRow)
+            //let resetRow = ActionRow(type: .reset, title: rowTitle(for: .reset), cellIdentifier: AccountSettingsHelper.CellsIdentifiers.dangerousCell)
+            //rows.append(resetRow)
 
         case .imap:
             guard let imapServer = account.imapServer else {
