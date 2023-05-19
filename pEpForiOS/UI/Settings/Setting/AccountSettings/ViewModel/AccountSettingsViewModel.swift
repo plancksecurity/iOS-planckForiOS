@@ -287,11 +287,7 @@ extension AccountSettingsViewModel {
     /// This method generates the sections of the account settings view.
     /// Must be called once, at the initialization.
     private func generateSections() {
-        if appSettings.mdmIsEnabled {
-            sections.append(generateSection(type: .account))
-        } else {
-            generateAllSections()
-        }
+        sections.append(generateSection(type: .account))
     }
 
     /// Generates and retrieves a section

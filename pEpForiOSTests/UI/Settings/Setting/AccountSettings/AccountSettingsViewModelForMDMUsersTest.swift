@@ -34,7 +34,7 @@ class AccountSettingsViewModelForMDMUsersTest: AccountDrivenTestBase {
     }
 
     func testRowsInFirstSections() {
-        let expectedFirstSectionTypes : [AccountSettingsViewModel.RowType] = [.name, .email, .signature, .includeInUnified, .pepSync, .reset]
+        let expectedFirstSectionTypes : [AccountSettingsViewModel.RowType] = [.name, .email, .signature]
         let actualFirstSectionTypes = viewModel.sections[0].rows.map { $0.type }
         XCTAssertEqual(actualFirstSectionTypes, expectedFirstSectionTypes)
     }

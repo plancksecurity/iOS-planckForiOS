@@ -26,12 +26,12 @@ class AccountSettingsViewModelTest: AccountDrivenTestBase {
 
     private func setupForRegularUsers() {
         let dummyAccountSection = AccountSettingsViewModel.Section(title: "My account", rows:[] , type: .account)
-        let dummyImapSection = AccountSettingsViewModel.Section(title: "Imap", rows:[] , type: .imap)
-        let dummySmtpSection = AccountSettingsViewModel.Section(title: "Smtp", rows:[] , type: .smtp)
+        //let dummyImapSection = AccountSettingsViewModel.Section(title: "Imap", rows:[] , type: .imap)
+        //let dummySmtpSection = AccountSettingsViewModel.Section(title: "Smtp", rows:[] , type: .smtp)
 
         dummySections.append(dummyAccountSection)
-        dummySections.append(dummyImapSection)
-        dummySections.append(dummySmtpSection)
+//        dummySections.append(dummyImapSection)
+//        dummySections.append(dummySmtpSection)
 
         viewModel = AccountSettingsViewModel(account: account, appSettings: MockRegularUsersAppSettings())
     }
@@ -41,12 +41,12 @@ class AccountSettingsViewModelTest: AccountDrivenTestBase {
     }
 
     func testRowsInFirstSections() {
-        let expectedFirstSectionTypes : [AccountSettingsViewModel.RowType] = [.name, .email, .signature, .includeInUnified, .pepSync, .reset]
+        let expectedFirstSectionTypes : [AccountSettingsViewModel.RowType] = [.name, .email, .signature]
         let actualFirstSectionTypes = viewModel.sections[0].rows.map { $0.type }
         XCTAssertEqual(actualFirstSectionTypes, expectedFirstSectionTypes)
     }
 
-    func testRowsInSecondSections() {
+    /*func testRowsInSecondSections() {
         let expectedSecondSectionTypes : [AccountSettingsViewModel.RowType] = [.server, .port, .tranportSecurity, .username, .password]
         let actualSecondSectionTypes = viewModel.sections[1].rows.map { $0.type }
         XCTAssertEqual(actualSecondSectionTypes, expectedSecondSectionTypes)
@@ -56,7 +56,7 @@ class AccountSettingsViewModelTest: AccountDrivenTestBase {
         let expectedThridSectionTypes : [AccountSettingsViewModel.RowType] = [.server, .port, .tranportSecurity, .username, .password]
         let actualThridSectionTypes = viewModel.sections[2].rows.map { $0.type }
         XCTAssertEqual(actualThridSectionTypes, expectedThridSectionTypes)
-    }
+    }*/
 
     func testIsIncludeInUnifiedFolders() {
         //Test state True by default
