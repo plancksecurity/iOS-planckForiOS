@@ -173,7 +173,6 @@ extension AccountSettingsViewController : UITableViewDataSource {
             }
             dequeuedCell.configure(with: row, for: traitCollection)
             return dequeuedCell
-
         case .name,
              .email,
              .server,

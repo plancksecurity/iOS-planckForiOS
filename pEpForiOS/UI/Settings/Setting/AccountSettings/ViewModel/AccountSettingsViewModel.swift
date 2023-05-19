@@ -277,16 +277,16 @@ extension AccountSettingsViewModel {
         }
     }
 
+    private func generateAllSections() {
+        SectionType.allCases.forEach { (type) in
+            sections.append(generateSection(type: type))
+        }
+    }
+
     /// This method generates the sections of the account settings view.
     /// Must be called once, at the initialization.
     private func generateSections() {
-        if appSettings.mdmIsEnabled {
-            sections.append(generateSection(type: .account))
-        } else {
-            SectionType.allCases.forEach { (type) in
-                sections.append(generateSection(type: type))
-            }
-        }
+        sections.append(generateSection(type: .account))
     }
 
     /// Generates and retrieves a section
@@ -332,22 +332,46 @@ extension AccountSettingsViewModel {
         case .port:
             return NSLocalizedString("Port", comment: "Port label in account settings")
         case .tranportSecurity:
-            return NSLocalizedString("Transport Security",
-                                     comment: "Transport security label in account settings")
+            return NSLocalizedString("Transport Security", comment: "Transport security label in account settings")
         case .username:
             return NSLocalizedString("Username", comment: "User name label in account settings")
         case .oauth2Reauth:
-            return NSLocalizedString("OAuth2 Reauthorization",
-                                     comment: "OAuth2 Reauthorization label in account settings")
+            return NSLocalizedString("OAuth2 Reauthorization", comment: "OAuth2 Reauthorization label in account settings")
         case .includeInUnified:
-            return NSLocalizedString("Include in Unified Folders",
-                                     comment: "Include in Unified Folders label in account settings")
+            return NSLocalizedString("Include in Unified Folders", comment: "Include in Unified Folders label in account settings")
         case .signature:
             return NSLocalizedString("Signature", comment: "Signature label in account settings")
         case .certificate:
             Log.shared.errorAndCrash("Invalid row type for AccountSettings")
             return ""
         }
+    }
+
+    private func getIncludeInUnifiedFolderRow() -> SwitchRow {
+        // Include in Unified Folders
+        return SwitchRow(type: .includeInUnified,
+                         title: rowTitle(for: .includeInUnified),
+                         isOn: includeInUnifiedFolders,
+                         action: { [weak self] (isIncludedInUnifiedFolders) in
+            guard let me = self else {
+                Log.shared.lostMySelf()
+                return
+            }
+            me.handleUnifiedFolderSwitchChanged(to: isIncludedInUnifiedFolders)
+        }, cellIdentifier: AccountSettingsHelper.CellsIdentifiers.switchCell)
+    }
+
+    private func getPlanckSync() -> SwitchRow {
+        return SwitchRow(type: .pepSync,
+                         title: rowTitle(for: .pepSync),
+                         isOn: true,
+                         action: { [weak self] (enable) in
+            guard let me = self else {
+                // Valid case. We might have been dismissed.
+                return
+            }
+            me.pEpSync(enable: enable)
+        }, cellIdentifier: AccountSettingsHelper.CellsIdentifiers.switchCell)
     }
 
     /// This method generates all the rows for the section type passed
@@ -383,37 +407,6 @@ extension AccountSettingsViewModel {
             let signatureRow = getDisplayRow(type: .signature, value: signature)
             
             rows.append(signatureRow)
-
-            // Include in Unified Folders
-            let includeInUnifiedFolderRow = SwitchRow(type: .includeInUnified,
-                                                      title: rowTitle(for: .includeInUnified),
-                                                      isOn: includeInUnifiedFolders,
-                                                      action: { [weak self] (isIncludedInUnifiedFolders) in
-                                                        guard let me = self else {
-                                                            Log.shared.lostMySelf()
-                                                            return
-                                                        }
-                                                        me.handleUnifiedFolderSwitchChanged(to: isIncludedInUnifiedFolders)
-                                                      }, cellIdentifier: AccountSettingsHelper.CellsIdentifiers.switchCell)
-            rows.append(includeInUnifiedFolderRow)
-
-            // pepSync
-            let pepSyncRow = SwitchRow(type: .pepSync,
-                                      title: rowTitle(for: .pepSync),
-                                      isOn: true,
-                action: { [weak self] (enable) in
-                    guard let me = self else {
-                        // Valid case. We might have been dismissed.
-                        return
-                    }
-                    me.pEpSync(enable: enable)
-                }, cellIdentifier: AccountSettingsHelper.CellsIdentifiers.switchCell)
-            rows.append(pepSyncRow)
-
-            // reset
-            let resetRow = ActionRow(type: .reset, title: rowTitle(for: .reset), cellIdentifier: AccountSettingsHelper.CellsIdentifiers.dangerousCell)
-            rows.append(resetRow)
-
         case .imap:
             guard let imapServer = account.imapServer else {
                 Log.shared.errorAndCrash("Account without IMAP server")
