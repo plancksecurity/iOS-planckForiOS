@@ -440,7 +440,7 @@ extension EditableAccountSettingsViewModel {
         // Our current implementation is improvable: right now we use data from the sections to validate.
         // When MDM is deployed, there are sections that are not shown, that are ´hidden´.
         // If it's the case, we get the data to validate from the hidden sections.
-        if  !hiddenSections.isEmpty, sectionIndex != 0 { //appSettings.mdmIsEnabled
+        if  !hiddenSections.isEmpty, sectionIndex != 0 {
             guard let displayRow = hiddenSections[sectionIndex].rows.filter({$0.type == rowType}).first as? AccountSettingsViewModel.DisplayRow,
                   !displayRow.text.isEmpty else {
                 return nil
