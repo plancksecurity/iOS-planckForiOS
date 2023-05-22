@@ -26,13 +26,7 @@ class AccountSettingsViewModelTest: AccountDrivenTestBase {
 
     private func setupForRegularUsers() {
         let dummyAccountSection = AccountSettingsViewModel.Section(title: "My account", rows:[] , type: .account)
-        //let dummyImapSection = AccountSettingsViewModel.Section(title: "Imap", rows:[] , type: .imap)
-        //let dummySmtpSection = AccountSettingsViewModel.Section(title: "Smtp", rows:[] , type: .smtp)
-
         dummySections.append(dummyAccountSection)
-//        dummySections.append(dummyImapSection)
-//        dummySections.append(dummySmtpSection)
-
         viewModel = AccountSettingsViewModel(account: account, appSettings: MockRegularUsersAppSettings())
     }
 
