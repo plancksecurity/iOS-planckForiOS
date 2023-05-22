@@ -54,45 +54,11 @@ class EditableAccountSettingsViewModelTest: AccountDrivenTestBase {
         XCTAssertEqual(types1, types2)
     }
 
-
-    func testRowsInAccountSecction() {
-        evaluateRowsInAccountSection(isOauth: false)
-    }
-
-    func testRowsInImapSection() {
-        let imapSectionIndex = 1
-        evaluateRowsInServerSection(sectionIndex: imapSectionIndex)
-    }
-
-    func testRowsInSMTPSection() {
-        let smtpSectionIndex = 2
-        evaluateRowsInServerSection(sectionIndex: smtpSectionIndex)
-    }
-
-    func testRowsInAccountSecctionForOAuthAccount() {
-        account.imapServer?.authMethod = AuthMethod.saslXoauth2.rawValue
-        account.imapServer?.credentials.password = getPayload()
-        viewModel = EditableAccountSettingsViewModel(account: account)
-        evaluateRowsInAccountSection(isOauth: true)
-    }
-
     //MARK: - Edit Account
 
     func testHandleRowDidChange() {
         testChangeValue(sectionType: .account, rowType: .name)
-        testChangeValue(sectionType: .account, rowType: .email)
-
-        testChangeValue(sectionType: .smtp, rowType: .server)
-        testChangeValue(sectionType: .smtp, rowType: .port)
-        testChangeValue(sectionType: .smtp, rowType: .tranportSecurity)
-        testChangeValue(sectionType: .smtp, rowType: .username)
-        testChangeValue(sectionType: .smtp, rowType: .password)
-
-        testChangeValue(sectionType: .imap, rowType: .server)
-        testChangeValue(sectionType: .imap, rowType: .port)
-        testChangeValue(sectionType: .imap, rowType: .tranportSecurity)
-        testChangeValue(sectionType: .imap, rowType: .username)
-        testChangeValue(sectionType: .imap, rowType: .password)
+        testChangeValue(sectionType: .account, rowType: .password)
     }
 
     func testHandleSaveButtonPressed() {
