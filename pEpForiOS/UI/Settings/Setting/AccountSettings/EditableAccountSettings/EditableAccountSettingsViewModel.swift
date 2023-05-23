@@ -416,18 +416,20 @@ extension EditableAccountSettingsViewModel {
             throw AccountSettingsUserInputError.invalidInputAccountName(localizedMessage: msg)
         }
         let emailAddress = account.user.address
+        let newPassword = rowValue(sectionType: .account, rowType: .password)
+
         return (userName: userName,
                 emailAddress: emailAddress,
                 imapServer: imapServer,
                 imapPort: imapPort,
                 imapTranportSecurity: imapTransportSecurity,
                 imapUsername: imapUsername,
-                imapPassword: imapPassword,
+                imapPassword: newPassword ?? imapPassword,
                 smtpServer: smtpServer,
                 smtpPort: smtpPort,
                 smtpTranportSecurity: smtpTransportSecurity,
                 smtpUsername: smtpUsername,
-                smtpPassword: smtpPassword
+                smtpPassword: newPassword ?? smtpPassword
         )
     }
 
