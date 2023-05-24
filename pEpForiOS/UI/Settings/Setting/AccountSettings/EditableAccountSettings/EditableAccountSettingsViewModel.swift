@@ -239,14 +239,14 @@ extension EditableAccountSettingsViewModel {
         return AccountSettingsViewModel.Section(title: title, rows: rows, type: type)
     }
 
-    private func generateSections() {
-        if appSettings.mdmIsEnabled {
-            generateSectionsForMDM()
-        } else {
-            AccountSettingsViewModel.SectionType.allCases.forEach { (type) in
-                sections.append(generateSection(type: type))
-            }
+    private func generateAllSections() {
+        AccountSettingsViewModel.SectionType.allCases.forEach { (type) in
+            sections.append(generateSection(type: type))
         }
+    }
+
+    private func generateSections() {
+        generateSectionsForMDM()
     }
 
     /// In MDM, we show less data to the user.
@@ -340,10 +340,6 @@ extension EditableAccountSettingsViewModel {
             let nameRow = getDisplayRow(type: .name, value: name)
             rows.append(nameRow)
 
-            // email
-            let emailRow = getDisplayRow(type: .email, value: account.user.address)
-            rows.append(emailRow)
-
             if accountSettingsHelper.hasClientCertificate {
                 rows.append(getActionRow(type : .certificate, value: accountSettingsHelper.certificateDescription, action: { [weak self] in
                     guard let me = self else {
@@ -352,6 +348,9 @@ extension EditableAccountSettingsViewModel {
                     }
                     me.delegate?.showEditCertificate()
                 }))
+            } else {
+                let emailPasswordRow = getDisplayRow(type: .password, value: account.imapServer?.credentials.password ?? "password")
+                rows.append(emailPasswordRow)
             }
         case .imap:
             guard let imapServer = account.imapServer else {
@@ -416,12 +415,8 @@ extension EditableAccountSettingsViewModel {
             let msg = NSLocalizedString("Account name must not be empty.", comment: "Empty account name message")
             throw AccountSettingsUserInputError.invalidInputAccountName(localizedMessage: msg)
         }
-
-        guard let emailAddress = rowValue(sectionType: .account, rowType: .email) else {
-            Log.shared.errorAndCrash("Email address not found. Is not editable.")
-            let msg = NSLocalizedString("Email address must not be empty.", comment: "Email address missing message")
-            throw AccountSettingsUserInputError.invalidInputEmailAddress(localizedMessage: msg)
-        }
+        let emailAddress = account.user.address
+        let newPassword = rowValue(sectionType: .account, rowType: .password)
 
         return (userName: userName,
                 emailAddress: emailAddress,
@@ -429,12 +424,12 @@ extension EditableAccountSettingsViewModel {
                 imapPort: imapPort,
                 imapTranportSecurity: imapTransportSecurity,
                 imapUsername: imapUsername,
-                imapPassword: imapPassword,
+                imapPassword: newPassword ?? imapPassword,
                 smtpServer: smtpServer,
                 smtpPort: smtpPort,
                 smtpTranportSecurity: smtpTransportSecurity,
                 smtpUsername: smtpUsername,
-                smtpPassword: smtpPassword
+                smtpPassword: newPassword ?? smtpPassword
         )
     }
 
@@ -447,7 +442,7 @@ extension EditableAccountSettingsViewModel {
         // Our current implementation is improvable: right now we use data from the sections to validate.
         // When MDM is deployed, there are sections that are not shown, that are ´hidden´.
         // If it's the case, we get the data to validate from the hidden sections.
-        if appSettings.mdmIsEnabled, sectionIndex != 0 {
+        if  !hiddenSections.isEmpty, sectionIndex != 0 {
             guard let displayRow = hiddenSections[sectionIndex].rows.filter({$0.type == rowType}).first as? AccountSettingsViewModel.DisplayRow,
                   !displayRow.text.isEmpty else {
                 return nil
@@ -539,5 +534,14 @@ extension EditableAccountSettingsViewModel {
                 return Server.Transport.allCases[option].asString()
             }
         }
+    }
+}
+
+// MARK: - Just in case
+
+extension EditableAccountSettingsViewModel {
+
+    private func getEmailRow() -> AccountSettingsViewModel.DisplayRow {
+        return getDisplayRow(type: .email, value: account.user.address)
     }
 }

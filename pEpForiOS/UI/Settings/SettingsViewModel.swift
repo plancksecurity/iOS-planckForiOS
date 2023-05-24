@@ -249,6 +249,9 @@ extension SettingsViewModel {
         var rows = [SettingsRowProtocol]()
         switch type {
         case .accounts:
+            if !appSettings.mdmIsEnabled {
+                addAccountRows()
+            }
             rows.append(generateActionRow(type: .resetAccounts, isDangerous: true) { [weak self] in
                 guard let me = self else {
                     Log.shared.lostMySelf()
