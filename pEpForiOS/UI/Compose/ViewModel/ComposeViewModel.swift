@@ -265,16 +265,17 @@ class ComposeViewModel {
                     return
                 }
 
+                guard let del = me.delegate else {
+                    // This can happen, especially if there is a lot of encryption/decryption
+                    // going on in the background.
+                    return
+                }
+
                 guard let vm = me.recipientsBannerViewModel else {
                     Log.shared.errorAndCrash("Lost recipientsBannerViewModel")
                     return
                 }
                 
-                guard let del = me.delegate else {
-                    Log.shared.errorAndCrash("Lost delegate")
-                    return
-                }
-
                 vm.setRecipients(recipients: redRecipients.uniques)
                 if redRecipients.count > 0 {
                     del.showRecipientsBanner()
