@@ -43,7 +43,7 @@ class SettingsViewModelTest: AccountDrivenTestBase {
         let delegate = SettingsViewModeldelegate()
         setupViewModel(delegate: delegate, appSettings: MockRegularUsersAppSettings())
         let globalSettingsSectionIndex = 1
-        let protectRowIndex = 5
+        let protectRowIndex = 4
         let indexPath = IndexPath(row: 0, section: globalSettingsSectionIndex)
         let globalSettingsSection = settingsVM.section(for: indexPath)
         if let passiveModeRow = globalSettingsSection.rows[protectRowIndex] as? SettingsViewModel.ActionRow,
