@@ -30,5 +30,6 @@ class UIStrings {
     static let displayNameTextField = "Display Name TextField"
     static let manualConfigButton = "Manual Config button"
     
+    static let composeButton = "Compose Button"
     
 }

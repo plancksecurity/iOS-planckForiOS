@@ -461,6 +461,7 @@
 		48DD51312A24CC2500A2C65F /* planckForiOSUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 48DD51302A24CC2500A2C65F /* planckForiOSUITests.swift */; };
 		48DD513B2A24CCCF00A2C65F /* UIStrings.swift in Sources */ = {isa = PBXBuildFile; fileRef = 48DD513A2A24CCCF00A2C65F /* UIStrings.swift */; };
 		48DD513D2A24CD7900A2C65F /* onboardAccount.swift in Sources */ = {isa = PBXBuildFile; fileRef = 48DD513C2A24CD7900A2C65F /* onboardAccount.swift */; };
+		48DD513F2A24D32800A2C65F /* composeNewMessage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 48DD513E2A24D32800A2C65F /* composeNewMessage.swift */; };
 		4902244F20E50488000E8D7C /* ThreadNavigationDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4902244E20E50488000E8D7C /* ThreadNavigationDelegate.swift */; };
 		490CEBA72100EAD500E8579C /* SelfDismissable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 490CEBA62100EAD500E8579C /* SelfDismissable.swift */; };
 		491116BD216E0DF4005A42D2 /* MessageViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 491116BC216E0DF4005A42D2 /* MessageViewModelTests.swift */; };
@@ -1093,6 +1094,7 @@
 		48DD51302A24CC2500A2C65F /* planckForiOSUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = planckForiOSUITests.swift; sourceTree = "<group>"; };
 		48DD513A2A24CCCF00A2C65F /* UIStrings.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIStrings.swift; sourceTree = "<group>"; };
 		48DD513C2A24CD7900A2C65F /* onboardAccount.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = onboardAccount.swift; sourceTree = "<group>"; };
+		48DD513E2A24D32800A2C65F /* composeNewMessage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = composeNewMessage.swift; sourceTree = "<group>"; };
 		4902244E20E50488000E8D7C /* ThreadNavigationDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ThreadNavigationDelegate.swift; sourceTree = "<group>"; };
 		490CEBA62100EAD500E8579C /* SelfDismissable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SelfDismissable.swift; sourceTree = "<group>"; };
 		491116BC216E0DF4005A42D2 /* MessageViewModelTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MessageViewModelTests.swift; sourceTree = "<group>"; };
@@ -2598,6 +2600,7 @@
 				48DD51392A24CCA100A2C65F /* Common */,
 				48DD51302A24CC2500A2C65F /* planckForiOSUITests.swift */,
 				48DD513C2A24CD7900A2C65F /* onboardAccount.swift */,
+				48DD513E2A24D32800A2C65F /* composeNewMessage.swift */,
 			);
 			path = planckForiOSUITests;
 			sourceTree = "<group>";
@@ -4000,6 +4003,7 @@
 				48DD513D2A24CD7900A2C65F /* onboardAccount.swift in Sources */,
 				48DD513B2A24CCCF00A2C65F /* UIStrings.swift in Sources */,
 				48DD51312A24CC2500A2C65F /* planckForiOSUITests.swift in Sources */,
+				48DD513F2A24D32800A2C65F /* composeNewMessage.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
