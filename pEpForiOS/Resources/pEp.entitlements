@@ -7,10 +7,12 @@
 	<key>com.apple.security.application-groups</key>
 	<array>
 		<string>group.security.planck.email.app</string>
+		<string>group.security.pep.pep4ios</string>
 	</array>
 	<key>keychain-access-groups</key>
 	<array>
 		<string>$(AppIdentifierPrefix)security.pep.keychain</string>
+		<string>$(AppIdentifierPrefix)security.planck.keychain</string>
 	</array>
 </dict>
 </plist>
