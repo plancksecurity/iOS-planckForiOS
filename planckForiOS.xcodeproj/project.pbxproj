@@ -458,6 +458,9 @@
 		43ED53791CC77F95006AB156 /* UserInfoViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43ED536E1CC77F95006AB156 /* UserInfoViewController.swift */; };
 		43EEE4092908049500D30254 /* MDMSettingsUtil.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43EEE4082908049500D30254 /* MDMSettingsUtil.swift */; };
 		43FC02121F4D913D00273304 /* NSHTML_2017-08-09 15_40_53 +0000.html in Resources */ = {isa = PBXBuildFile; fileRef = 43FC02111F4D913D00273304 /* NSHTML_2017-08-09 15_40_53 +0000.html */; };
+		48DD51312A24CC2500A2C65F /* planckForiOSUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 48DD51302A24CC2500A2C65F /* planckForiOSUITests.swift */; };
+		48DD513B2A24CCCF00A2C65F /* UIStrings.swift in Sources */ = {isa = PBXBuildFile; fileRef = 48DD513A2A24CCCF00A2C65F /* UIStrings.swift */; };
+		48DD513D2A24CD7900A2C65F /* onboardAccount.swift in Sources */ = {isa = PBXBuildFile; fileRef = 48DD513C2A24CD7900A2C65F /* onboardAccount.swift */; };
 		4902244F20E50488000E8D7C /* ThreadNavigationDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4902244E20E50488000E8D7C /* ThreadNavigationDelegate.swift */; };
 		490CEBA72100EAD500E8579C /* SelfDismissable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 490CEBA62100EAD500E8579C /* SelfDismissable.swift */; };
 		491116BD216E0DF4005A42D2 /* MessageViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 491116BC216E0DF4005A42D2 /* MessageViewModelTests.swift */; };
@@ -671,6 +674,13 @@
 			proxyType = 1;
 			remoteGlobalIDString = 43980E221CBD0BC900A7FC3C;
 			remoteInfo = pEpForiOS;
+		};
+		48DD51342A24CC2500A2C65F /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 43980E1B1CBD0BC900A7FC3C /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 43980E221CBD0BC900A7FC3C;
+			remoteInfo = planckForiOS;
 		};
 /* End PBXContainerItemProxy section */
 
@@ -1079,6 +1089,10 @@
 		43ED536E1CC77F95006AB156 /* UserInfoViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UserInfoViewController.swift; sourceTree = "<group>"; };
 		43EEE4082908049500D30254 /* MDMSettingsUtil.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MDMSettingsUtil.swift; sourceTree = "<group>"; };
 		43FC02111F4D913D00273304 /* NSHTML_2017-08-09 15_40_53 +0000.html */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.html; path = "NSHTML_2017-08-09 15_40_53 +0000.html"; sourceTree = "<group>"; };
+		48DD512E2A24CC2500A2C65F /* planckForiOSUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = planckForiOSUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		48DD51302A24CC2500A2C65F /* planckForiOSUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = planckForiOSUITests.swift; sourceTree = "<group>"; };
+		48DD513A2A24CCCF00A2C65F /* UIStrings.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIStrings.swift; sourceTree = "<group>"; };
+		48DD513C2A24CD7900A2C65F /* onboardAccount.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = onboardAccount.swift; sourceTree = "<group>"; };
 		4902244E20E50488000E8D7C /* ThreadNavigationDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ThreadNavigationDelegate.swift; sourceTree = "<group>"; };
 		490CEBA62100EAD500E8579C /* SelfDismissable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SelfDismissable.swift; sourceTree = "<group>"; };
 		491116BC216E0DF4005A42D2 /* MessageViewModelTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MessageViewModelTests.swift; sourceTree = "<group>"; };
@@ -1280,6 +1294,13 @@
 			buildActionMask = 2147483647;
 			files = (
 				159E1F1322BD074F007D711F /* PantomimeFramework.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		48DD512B2A24CC2500A2C65F /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -2291,6 +2312,7 @@
 				43980E251CBD0BC900A7FC3C /* pEpForiOS */,
 				43980E3D1CBD0BCA00A7FC3C /* pEpForiOSTests */,
 				3A503A9D253737B20070AB6A /* pEp-share */,
+				48DD512F2A24CC2500A2C65F /* planckForiOSUITests */,
 				43980E241CBD0BC900A7FC3C /* Products */,
 				495560841E7150ED0016579E /* Frameworks */,
 				5B0B33A624B3483B00CABD0B /* Recovered References */,
@@ -2303,6 +2325,7 @@
 				43980E231CBD0BC900A7FC3C /* planckForiOS.app */,
 				43980E3A1CBD0BCA00A7FC3C /* planckForiOSTests.xctest */,
 				3A503A9C253737B20070AB6A /* pEp-share.appex */,
+				48DD512E2A24CC2500A2C65F /* planckForiOSUITests.xctest */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -2567,6 +2590,24 @@
 				43ED53661CC77F95006AB156 /* IMAPSettingsViewController.swift */,
 			);
 			path = ImapSetup;
+			sourceTree = "<group>";
+		};
+		48DD512F2A24CC2500A2C65F /* planckForiOSUITests */ = {
+			isa = PBXGroup;
+			children = (
+				48DD51392A24CCA100A2C65F /* Common */,
+				48DD51302A24CC2500A2C65F /* planckForiOSUITests.swift */,
+				48DD513C2A24CD7900A2C65F /* onboardAccount.swift */,
+			);
+			path = planckForiOSUITests;
+			sourceTree = "<group>";
+		};
+		48DD51392A24CCA100A2C65F /* Common */ = {
+			isa = PBXGroup;
+			children = (
+				48DD513A2A24CCCF00A2C65F /* UIStrings.swift */,
+			);
+			path = Common;
 			sourceTree = "<group>";
 		};
 		4918EBF91E783C70006207FC /* Models */ = {
@@ -3126,13 +3167,31 @@
 			productReference = 43980E3A1CBD0BCA00A7FC3C /* planckForiOSTests.xctest */;
 			productType = "com.apple.product-type.bundle.unit-test";
 		};
+		48DD512D2A24CC2500A2C65F /* planckForiOSUITests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 48DD51382A24CC2500A2C65F /* Build configuration list for PBXNativeTarget "planckForiOSUITests" */;
+			buildPhases = (
+				48DD512A2A24CC2500A2C65F /* Sources */,
+				48DD512B2A24CC2500A2C65F /* Frameworks */,
+				48DD512C2A24CC2500A2C65F /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				48DD51352A24CC2500A2C65F /* PBXTargetDependency */,
+			);
+			name = planckForiOSUITests;
+			productName = planckForiOSUITests;
+			productReference = 48DD512E2A24CC2500A2C65F /* planckForiOSUITests.xctest */;
+			productType = "com.apple.product-type.bundle.ui-testing";
+		};
 /* End PBXNativeTarget section */
 
 /* Begin PBXProject section */
 		43980E1B1CBD0BC900A7FC3C /* Project object */ = {
 			isa = PBXProject;
 			attributes = {
-				LastSwiftUpdateCheck = 1200;
+				LastSwiftUpdateCheck = 1420;
 				LastUpgradeCheck = 1110;
 				ORGANIZATIONNAME = "p≡p Security S.A.";
 				TargetAttributes = {
@@ -3166,6 +3225,12 @@
 						LastSwiftMigration = 1020;
 						TestTargetID = 43980E221CBD0BC900A7FC3C;
 					};
+					48DD512D2A24CC2500A2C65F = {
+						CreatedOnToolsVersion = 14.2;
+						DevelopmentTeam = 52744ZM656;
+						ProvisioningStyle = Automatic;
+						TestTargetID = 43980E221CBD0BC900A7FC3C;
+					};
 				};
 			};
 			buildConfigurationList = 43980E1E1CBD0BC900A7FC3C /* Build configuration list for PBXProject "planckForiOS" */;
@@ -3187,6 +3252,7 @@
 				43980E221CBD0BC900A7FC3C /* planckForiOS */,
 				43980E391CBD0BCA00A7FC3C /* planckForiOSTests */,
 				3A503A9B253737B20070AB6A /* pEp-share */,
+				48DD512D2A24CC2500A2C65F /* planckForiOSUITests */,
 			);
 		};
 /* End PBXProject section */
@@ -3271,6 +3337,13 @@
 				1512132824166AD9009B7C88 /* large-animated-gif.gif in Resources */,
 				43FC02121F4D913D00273304 /* NSHTML_2017-08-09 15_40_53 +0000.html in Resources */,
 				1512132724166AD9009B7C88 /* small-animated-gif.gif in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		48DD512C2A24CC2500A2C65F /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -3920,6 +3993,16 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		48DD512A2A24CC2500A2C65F /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				48DD513D2A24CD7900A2C65F /* onboardAccount.swift in Sources */,
+				48DD513B2A24CCCF00A2C65F /* UIStrings.swift in Sources */,
+				48DD51312A24CC2500A2C65F /* planckForiOSUITests.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 /* End PBXSourcesBuildPhase section */
 
 /* Begin PBXTargetDependency section */
@@ -3932,6 +4015,11 @@
 			isa = PBXTargetDependency;
 			target = 43980E221CBD0BC900A7FC3C /* planckForiOS */;
 			targetProxy = 43980E3B1CBD0BCA00A7FC3C /* PBXContainerItemProxy */;
+		};
+		48DD51352A24CC2500A2C65F /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 43980E221CBD0BC900A7FC3C /* planckForiOS */;
+			targetProxy = 48DD51342A24CC2500A2C65F /* PBXContainerItemProxy */;
 		};
 /* End PBXTargetDependency section */
 
@@ -4416,6 +4504,60 @@
 			};
 			name = Release;
 		};
+		48DD51362A24CC2500A2C65F /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++20";
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = 52744ZM656;
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				GENERATE_INFOPLIST_FILE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 16.2;
+				MARKETING_VERSION = 1.0;
+				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
+				MTL_FAST_MATH = YES;
+				PRODUCT_BUNDLE_IDENTIFIER = pep.security.planckForiOSUITests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = DEBUG;
+				SWIFT_EMIT_LOC_STRINGS = NO;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_TARGET_NAME = planckForiOS;
+			};
+			name = Debug;
+		};
+		48DD51372A24CC2500A2C65F /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++20";
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = NQLYU6MGPN;
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				GENERATE_INFOPLIST_FILE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 16.2;
+				MARKETING_VERSION = 1.0;
+				MTL_FAST_MATH = YES;
+				PRODUCT_BUNDLE_IDENTIFIER = pep.security.planckForiOSUITests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_EMIT_LOC_STRINGS = NO;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_TARGET_NAME = planckForiOS;
+			};
+			name = Release;
+		};
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
@@ -4451,6 +4593,15 @@
 			buildConfigurations = (
 				43980E521CBD0BCA00A7FC3C /* Debug */,
 				43980E531CBD0BCA00A7FC3C /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Debug;
+		};
+		48DD51382A24CC2500A2C65F /* Build configuration list for PBXNativeTarget "planckForiOSUITests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				48DD51362A24CC2500A2C65F /* Debug */,
+				48DD51372A24CC2500A2C65F /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Debug;

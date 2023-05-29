@@ -450,6 +450,17 @@
                ReferencedContainer = "container:../planckObjCWrapper/build-mac/planckObjCWrapper.xcodeproj">
             </BuildableReference>
          </TestableReference>
+         <TestableReference
+            skipped = "NO"
+            parallelizable = "YES">
+            <BuildableReference
+               BuildableIdentifier = "primary"
+               BlueprintIdentifier = "48DD512D2A24CC2500A2C65F"
+               BuildableName = "planckForiOSUITests.xctest"
+               BlueprintName = "planckForiOSUITests"
+               ReferencedContainer = "container:planckForiOS.xcodeproj">
+            </BuildableReference>
+         </TestableReference>
       </Testables>
    </TestAction>
    <LaunchAction
