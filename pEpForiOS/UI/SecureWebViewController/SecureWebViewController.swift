@@ -100,6 +100,9 @@ class SecureWebViewController: UIViewController {
 
     // MARK: - API
     
+    // webViewWebContentProcessDidTerminate is called on iOS 16.2 due an webkit error: Specified target process does not exist.
+    // Does not happen in other iOS versions, so let's keep this until we deprecate iOS 16.
+    // If there is no error, this is not called.
     func webViewWebContentProcessDidTerminate(_ webView: WKWebView) {
         display(html: processedHtml, showExternalContent: showExternalContent)
     }
