@@ -265,7 +265,9 @@ extension SettingsViewModel {
                 rows.append(generateNavigationRow(type: .userManual, isDangerous: false))
                 rows.append(generateNavigationRow(type: .termsAndConditions, isDangerous: false))
             } else {
-                rows.append(generateNavigationRow(type: .defaultAccount, isDangerous: false))
+                if Account.all().count > 1 {
+                    rows.append(generateNavigationRow(type: .defaultAccount, isDangerous: false))
+                }
                 rows.append(generateNavigationRow(type: .credits, isDangerous: false))
                 rows.append(generateNavigationRow(type: .userManual, isDangerous: false))
                 rows.append(generateNavigationRow(type: .termsAndConditions, isDangerous: false))
@@ -363,8 +365,12 @@ extension SettingsViewModel {
     private func sectionTitle(type: SectionType) -> String {
         switch type {
         case .accounts:
-            return NSLocalizedString("Accounts",
-                                     comment: "Tableview section  header: Accounts")
+            if Account.all().count > 1 {
+                return NSLocalizedString("Accounts",
+                                         comment: "Tableview section header: Accounts")
+            }
+            return NSLocalizedString("Account",
+                                     comment: "Tableview section header: Account")
         case .globalSettings:
             return NSLocalizedString("Global Settings",
                                      comment: "Tableview section header: Global Settings")

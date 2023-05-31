@@ -33,7 +33,9 @@ class SecureWebViewController: UIViewController {
             return _scrollingEnabled
         }
     }
-
+    
+    private var processedHtml : String = ""
+    private var showExternalContent: Bool = false
 
     weak public var delegate: SecureWebViewControllerDelegate?
     weak public var urlClickHandler: SecureWebViewUrlClickHandlerProtocol?
@@ -97,6 +99,13 @@ class SecureWebViewController: UIViewController {
     }
 
     // MARK: - API
+    
+    // webViewWebContentProcessDidTerminate is called on iOS 16.2 due an webkit error: Specified target process does not exist.
+    // Does not happen in other iOS versions, so let's keep this until we deprecate iOS 16.
+    // If there is no error, this is not called.
+    func webViewWebContentProcessDidTerminate(_ webView: WKWebView) {
+        display(html: processedHtml, showExternalContent: showExternalContent)
+    }
 
     public func display(html: String, showExternalContent: Bool) {
         setupBlocklist() { [weak self] in
@@ -104,11 +113,13 @@ class SecureWebViewController: UIViewController {
                 Log.shared.lostMySelf()
                 return
             }
+            me.showExternalContent = showExternalContent
             if showExternalContent {
                 me.webView.configuration.userContentController.removeAllContentRuleLists()
             }
             me.htmlOptimizer.optimizeForDislaying(html: html) { processedHtml in
-                me.webView.loadHTMLString(processedHtml, baseURL: nil)
+                me.processedHtml = processedHtml
+                me.webView.loadHTMLString(processedHtml, baseURL: Bundle.main.bundleURL)
             }
         }
     }
