@@ -2,10 +2,6 @@
 <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
 <plist version="1.0">
 <dict>
-	<key>MDM_ENABLED</key>
-	<string>$(MDM_ENABLED)</string>
-	<key>IS_ENTERPRISE</key>
-	<string>$(IS_ENTERPRISE)</string>
 	<key>BGTaskSchedulerPermittedIdentifiers</key>
 	<array>
 		<string>security.pep.pep4ios.backgroundtaskschedulerid.backgroundfetch</string>
@@ -82,6 +78,8 @@
 	</array>
 	<key>CFBundleVersion</key>
 	<string>$(CURRENT_PROJECT_VERSION)</string>
+	<key>IS_ENTERPRISE</key>
+	<string>$(IS_ENTERPRISE)</string>
 	<key>ITSAppUsesNonExemptEncryption</key>
 	<true/>
 	<key>ITSEncryptionExportComplianceCode</key>
@@ -90,6 +88,8 @@
 	<true/>
 	<key>LSSupportsOpeningDocumentsInPlace</key>
 	<true/>
+	<key>MDM_ENABLED</key>
+	<string>$(MDM_ENABLED)</string>
 	<key>NSCalendarsUsageDescription</key>
 	<string>Enables you to add events to your calendar</string>
 	<key>NSCameraUsageDescription</key>
@@ -113,8 +113,6 @@
 	<string>${OAUTH2_O365_CLIENT_ID}</string>
 	<key>OAUTH2_O365_REDIRECT_URL_SCHEME</key>
 	<string>${OAUTH2_O365_REDIRECT_URL_SCHEME}</string>
-	<key>USER_MANUAL_URL</key>
-	<string>https://userguide.planck.security/planck_for_iOS_User_Guide.pdf</string>
 	<key>TERMS_AND_CONDITIONS_URL</key>
 	<string>https://www.planck.security/conditions-of-use/</string>
 	<key>UIAppFonts</key>
@@ -144,6 +142,8 @@
 		<string>UIInterfaceOrientationLandscapeLeft</string>
 		<string>UIInterfaceOrientationLandscapeRight</string>
 	</array>
+	<key>USER_MANUAL_URL</key>
+	<string>https://userguide.planck.security/planck_for_iOS_User_Guide.pdf</string>
 	<key>UTExportedTypeDeclarations</key>
 	<array>
 		<dict>
