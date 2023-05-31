@@ -597,11 +597,14 @@ extension ComposeViewController: SegueHandlerType {
                     Log.shared.errorAndCrash("Missing VCs")
                     return
             }
-            guard let vm = viewModel else {
-                Log.shared.errorAndCrash("No vm")
-                return
+
+            /// Extremely rare case.
+            if viewModel == nil {
+                viewModel = ComposeViewModel()
             }
-            guard let recipientsViewModel = vm.getRecipientBannerViewModel()  else {
+
+            guard let vm = viewModel,
+                    let recipientsViewModel = vm.getRecipientBannerViewModel()  else {
                 Log.shared.error("Message not found")
                 return
             }
