@@ -598,7 +598,8 @@ extension ComposeViewController: SegueHandlerType {
                     return
             }
 
-            /// Extremely rare case.
+            // Rare case: viewModel might be nil when the user swipe left and select “reply”, just when another email arrives.
+            // Otherwise we would use our regular guard let
             if viewModel == nil {
                 viewModel = ComposeViewModel()
             }
