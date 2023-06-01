@@ -95,7 +95,7 @@ extension UIViewController {
                 accessibilityIdentifier = AccessibilityIdentifier.secure
             } else if rating.isGreen() {
                 accessibilityIdentifier = AccessibilityIdentifier.secureAndTrusted
-            } else if rating.isRed() {
+            } else if rating.isRed() || rating.isNoColor() {
                 accessibilityIdentifier = AccessibilityIdentifier.mistrusted
             }
 

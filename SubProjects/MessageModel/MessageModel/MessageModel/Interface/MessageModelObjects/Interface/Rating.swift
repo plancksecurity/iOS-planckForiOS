@@ -49,7 +49,7 @@ extension Rating {
             return true
         } else if rating.isYellow() && (!isGreen() && !isYellow()) {
             return true
-        } else if rating.isNoColor() && isRed() {
+        } else if rating.isNoColor() || rating.isRed() && isRed() || isNoColor() {
             return true
         }
         
