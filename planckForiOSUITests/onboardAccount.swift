@@ -29,9 +29,9 @@ final class onboardAccount: XCTestCase {
             app.launch()
         }
         
-        func AppTerminate(){
-            app.terminate()
-        }
+//        func AppTerminate(){
+//            app.terminate()
+//        }
     
         func testLoginFunctionality(){
             
