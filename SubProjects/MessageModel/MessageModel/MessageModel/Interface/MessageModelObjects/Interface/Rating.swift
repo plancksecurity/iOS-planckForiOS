@@ -29,6 +29,7 @@ public enum Rating {
 }
 
 extension Rating {
+
     /// The `PEPRating`s that indicates a message could not be decrypted.
     /// Use for later decryption attemp, e.g. after syncing keys with another device.
     private static let undecryptableRatings: [Rating] = [.cannotDecrypt, .haveNoKey]
@@ -39,20 +40,16 @@ extension Rating {
         return Int(pEpRating().rawValue)
     }
 
-    public func pEpColor() -> Color {
-        return Color(pEpColor: pEpRating().pEpColor())
-    }
-
     /// Compares the pEp colors for this and a given rating.
     /// - Parameter rating: rating to compare pEp color with
     /// - returns:  true if the pEp color represents a less secure communication channel than the given one.
     ///             false otherwize.
     public func hasLessSecurePepColor(than rating: Rating) -> Bool {
-        if rating.pEpColor() == .green && pEpColor() != .green {
+        if rating.isGreen() && !isGreen() {
             return true
-        } else if rating.pEpColor() == .yellow && (pEpColor() != .green && pEpColor() != .yellow) {
+        } else if rating.isYellow() && (!isGreen() && !isYellow()) {
             return true
-        } else if rating.pEpColor() == .noColor && ![.noColor, .green,  .yellow].contains(pEpColor()) {
+        } else if rating.isNoColor() && isRed() {
             return true
         }
         

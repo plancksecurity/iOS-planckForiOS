@@ -706,6 +706,8 @@
 		B7F6F479234CD662003DF84A /* IdentityQueryResultsProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7F6F478234CD662003DF84A /* IdentityQueryResultsProtocol.swift */; };
 		B7F6F47C234CDB4A003DF84A /* QueryResultsDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7F6F47B234CDB4A003DF84A /* QueryResultsDelegate.swift */; };
 		B7FD55D92338D01F00C9FC55 /* IdentityQueryResultsTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7FD55D82338D01F00C9FC55 /* IdentityQueryResultsTest.swift */; };
+		F779D5FB2A2877260069381E /* Rating+Colors.swift in Sources */ = {isa = PBXBuildFile; fileRef = F779D5FA2A2877260069381E /* Rating+Colors.swift */; };
+		F779D5FC2A2877260069381E /* Rating+Colors.swift in Sources */ = {isa = PBXBuildFile; fileRef = F779D5FA2A2877260069381E /* Rating+Colors.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -1238,6 +1240,7 @@
 		B7F6F478234CD662003DF84A /* IdentityQueryResultsProtocol.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IdentityQueryResultsProtocol.swift; sourceTree = "<group>"; };
 		B7F6F47B234CDB4A003DF84A /* QueryResultsDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QueryResultsDelegate.swift; sourceTree = "<group>"; };
 		B7FD55D82338D01F00C9FC55 /* IdentityQueryResultsTest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IdentityQueryResultsTest.swift; sourceTree = "<group>"; };
+		F779D5FA2A2877260069381E /* Rating+Colors.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Rating+Colors.swift"; sourceTree = "<group>"; };
 		F7FFFAF929DC22AE00A6DC49 /* 1.1.274.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = 1.1.274.xcdatamodel; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -1358,6 +1361,7 @@
 				43E9BC611DB5181800AD2352 /* FolderType.swift */,
 				439CACEC2562CEB10043077E /* FolderType+FolderName.swift */,
 				436C9A4724E3FC9700007A3D /* Rating.swift */,
+				F779D5FA2A2877260069381E /* Rating+Colors.swift */,
 				43A9818524E5382900830603 /* Color.swift */,
 				43062B8F24ED3DB700489258 /* TrustwordsLanguage.swift */,
 				43062B9924ED6EB400489258 /* LeaveDeviceGroupService.swift */,
@@ -3151,6 +3155,7 @@
 				434C22E725D6A0DB00F622DB /* CdAttachment+Clone.swift in Sources */,
 				434C24AF25D6D37A00F622DB /* CdFolder+Pantomime.swift in Sources */,
 				4389100B25F7D0D500BB2576 /* LoginSmtpOperation.swift in Sources */,
+				F779D5FC2A2877260069381E /* Rating+Colors.swift in Sources */,
 				434C21D225D698DE00F622DB /* String+InboxFolderName.swift in Sources */,
 				434C219625D6973500F622DB /* CdServer.swift in Sources */,
 				434C236E25D6BFE100F622DB /* ConnectInfo.swift in Sources */,
@@ -3489,6 +3494,7 @@
 				43E3A255224E473B004CAC84 /* CdMessage+Fake.swift in Sources */,
 				15466130233B3F9A008D2137 /* CdMessage+ReDecrypt.swift in Sources */,
 				43D7565123AB9F2F000F915F /* BaseImapFolderOperation.swift in Sources */,
+				F779D5FB2A2877260069381E /* Rating+Colors.swift in Sources */,
 				43E3A246224E2DBA004CAC84 /* CdImapFlags+Clone.swift in Sources */,
 				1543B69C22AAC2A4002B59AB /* KeySyncService+PEPNotifyHandshakeDelegate.swift in Sources */,
 				370DB3D12281795000BC929A /* ContentTypeUtils.swift in Sources */,

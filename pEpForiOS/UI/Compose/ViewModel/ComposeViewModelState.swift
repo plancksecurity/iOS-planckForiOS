@@ -221,8 +221,7 @@ extension ComposeViewModel.ComposeViewModelState {
         if isForceUnprotectedDueToBccSet {
             return false
         }
-        let outgoingRatingColor = rating.pEpColor()
-        return outgoingRatingColor == .yellow || outgoingRatingColor == .green
+        return rating.isYellow() || rating.isGreen()
     }
 }
 

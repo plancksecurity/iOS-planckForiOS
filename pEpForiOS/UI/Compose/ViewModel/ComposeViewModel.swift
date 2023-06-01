@@ -207,7 +207,7 @@ class ComposeViewModel {
     
     private func shouldQueryRedRecipients() -> Bool {
         let canUpdate = recipientsBannerViewModel?.canUpdate ?? false
-        return .red == state.rating.pEpColor() && canUpdate
+        return state.rating.isRed() && canUpdate
     }
 
     /// Get the Recipients Banner ViewModel.
@@ -250,7 +250,7 @@ class ComposeViewModel {
                 let safeIdentity = identity.safeForSession(session)
                 session.performAndWait {
                     safeIdentity.pEpRating { rating in
-                        if .red == rating.pEpColor() {
+                        if rating.isRed() {
                             redRecipients.append(identity)
                         }
                         group.leave()

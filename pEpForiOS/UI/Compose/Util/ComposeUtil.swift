@@ -52,22 +52,23 @@ struct ComposeUtil {
 
                 // When a user us replying to an email,
                 // the recipients are sorted by rating in order to have the non secure recipients first
-                var identitiesAndColors = [Identity:Color]()
+                var identitiesAndRating = [Identity:Rating]()
+
                 let group = DispatchGroup()
                 for i in 0 ..< result.count {
                     let identity = result[i]
                     group.enter()
                     identity.pEpRating { rating in
-                        identitiesAndColors = [identity: rating.pEpColor()]
+                        identitiesAndRating = [identity: rating]
                         group.leave()
                     }
                 }
 
                 // Rating requests are complete
                 group.notify(queue: .main) {
-                    let red = identitiesAndColors.filter { $0.value == .red }.map { $0.key }
-                    let noColor = identitiesAndColors.filter { $0.value == .noColor }.map { $0.key }
-                    let green = identitiesAndColors.filter { $0.value == .green }.map { $0.key }
+                    let red = identitiesAndRating.filter { $0.value.isRed() }.map { $0.key }
+                    let noColor = identitiesAndRating.filter { $0.value.isNoColor() }.map { $0.key }
+                    let green = identitiesAndRating.filter { $0.value.isGreen() }.map { $0.key }
                     result = red + noColor + green
                 }
             }

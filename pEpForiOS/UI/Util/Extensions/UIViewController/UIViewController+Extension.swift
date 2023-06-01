@@ -78,7 +78,7 @@ extension UIViewController {
     }
 
     private func navigationItemTitleView(pEpRating: Rating?, pEpProtection: Bool = true) -> UIView? {
-        if let color = pEpRating?.pEpColor(),
+        if let rating = pEpRating,
            let image = pEpRating?.statusIconForMessage(enabled: pEpProtection, withText: true) {
 
             // according to apple's design guidelines ('Hit Targets'):
@@ -87,17 +87,16 @@ extension UIViewController {
 
             let imageView = UIImageView(image: image)
 
-            var accessibilityIdentifier: String
+            var accessibilityIdentifier: String = AccessibilityIdentifier.unknownTrust
 
-            switch color {
-                case .noColor:
-                    accessibilityIdentifier = AccessibilityIdentifier.unknownTrust
-                case .yellow:
-                    accessibilityIdentifier = AccessibilityIdentifier.secure
-                case .green:
-                    accessibilityIdentifier = AccessibilityIdentifier.secureAndTrusted
-                case .red:
-                    accessibilityIdentifier = AccessibilityIdentifier.mistrusted
+            if rating.isNoColor() {
+                accessibilityIdentifier = AccessibilityIdentifier.unknownTrust
+            } else if rating.isYellow() {
+                accessibilityIdentifier = AccessibilityIdentifier.secure
+            } else if rating.isGreen() {
+                accessibilityIdentifier = AccessibilityIdentifier.secureAndTrusted
+            } else if rating.isRed() {
+                accessibilityIdentifier = AccessibilityIdentifier.mistrusted
             }
 
             imageView.accessibilityIdentifier = accessibilityIdentifier
