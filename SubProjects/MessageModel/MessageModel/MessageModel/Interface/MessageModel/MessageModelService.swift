@@ -38,8 +38,6 @@ public final class MessageModelService {
 
     private let backgroundTaskManager = BackgroundTaskManager()
 
-    private var migrateKeychainService: MigrateKeychainService?
-
     /// Holds all Services that:
     /// * are supposed to be started whenever the app is started or comming to foreground
     /// * are supposed to finish running tasks and not to restart when app goes to background
@@ -111,13 +109,8 @@ extension MessageModelService {
                                encryptionErrorDelegate: EncryptionErrorDelegate,
                                outgoingRatingService: OutgoingRatingServiceProtocol) {
         //###
-        // Servcies that run only once when the app starts
-        if let bundleIdentifier = Bundle.main.bundleIdentifier {
-            migrateKeychainService = MigrateKeychainService(keychainGroupSource: "\(kTeamId).\(bundleIdentifier)",
-                                                             keychainGroupTarget: "\(kTeamId).\(kSharedKeychain)")
-        } else {
-            Log.shared.errorAndCrash(message: "No bundle identifier -> no MigrateKeychainService!")
-        }
+        // Services that run only once when the app starts
+        // (none at the moment)
 
         //###
         // Servcies that run while the app is running (Send, decrypt, replicate, ...)
@@ -159,22 +152,10 @@ extension MessageModelService {
 extension MessageModelService: ServiceProtocol {
 
     public func start() {
-        DispatchQueue.global(qos: .userInitiated).async { [weak self] in
-            guard let me = self else {
-                Log.shared.errorAndCrash("Lost myself")
-                return
-            }
-            guard let keyChainMigrationService = me.migrateKeychainService else {
-                me.runtimeServices.forEach { $0.start() }
-                return
-            }
-            // Forward service calls
-            keyChainMigrationService.completionBlock = {
-                // Start services that potetionally use the key chain after migration.
-                me.runtimeServices.forEach { $0.start() }
-            }
-            keyChainMigrationService.start()
-        }
+        // Kick off services that run once on app start here,
+        // before the runtime services start.
+
+        runtimeServices.forEach { $0.start() }
     }
 
     public func finish() {

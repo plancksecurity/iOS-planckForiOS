@@ -21,6 +21,7 @@ final class LoginViewModel {
     var isAccountPEPSyncEnable = true {
         didSet {
             loginUtil.verifiableAccount.keySyncEnable = isAccountPEPSyncEnable
+            AppSettings.shared.keySyncEnabled = isAccountPEPSyncEnable
         }
     }
 
