@@ -487,9 +487,6 @@
 		43AB6A0F2248D228008E40CC /* CdAccount+NonOptionalConvenienceAccessors.swift.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43AB6A0E2248D228008E40CC /* CdAccount+NonOptionalConvenienceAccessors.swift.swift */; };
 		43AB6A112248D2E2008E40CC /* CdIdentity+NonOptionalConvenienceAccessors.swift.swift.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43AB6A102248D2E2008E40CC /* CdIdentity+NonOptionalConvenienceAccessors.swift.swift.swift */; };
 		43AB6A152248EDC5008E40CC /* FolderInfoCache.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43AB6A142248EDC5008E40CC /* FolderInfoCache.swift */; };
-		43ACAA1926089D290013AE20 /* MigrateKeychainService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43ACAA1826089D290013AE20 /* MigrateKeychainService.swift */; };
-		43ACAA5026089FF30013AE20 /* MigrateKeychainOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43ACAA4F26089FF30013AE20 /* MigrateKeychainOperation.swift */; };
-		43ACAA852608A5620013AE20 /* MigrateKeychainServiceTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43ACAA842608A5620013AE20 /* MigrateKeychainServiceTest.swift */; };
 		43B1A39C22366D9700C387DE /* AppAuth.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 43B1A39B22366D9700C387DE /* AppAuth.framework */; };
 		43B1B10C221ED15000DB26AB /* CoreDataPantomimeAdapter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43B1B10B221ED15000DB26AB /* CoreDataPantomimeAdapter.swift */; };
 		43B22710242362D9007EB91E /* CdAccount+ProviderSpecific.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43B2270F242362D9007EB91E /* CdAccount+ProviderSpecific.swift */; };
@@ -1072,9 +1069,6 @@
 		43AB6A0E2248D228008E40CC /* CdAccount+NonOptionalConvenienceAccessors.swift.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "CdAccount+NonOptionalConvenienceAccessors.swift.swift"; sourceTree = "<group>"; };
 		43AB6A102248D2E2008E40CC /* CdIdentity+NonOptionalConvenienceAccessors.swift.swift.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "CdIdentity+NonOptionalConvenienceAccessors.swift.swift.swift"; sourceTree = "<group>"; };
 		43AB6A142248EDC5008E40CC /* FolderInfoCache.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FolderInfoCache.swift; sourceTree = "<group>"; };
-		43ACAA1826089D290013AE20 /* MigrateKeychainService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MigrateKeychainService.swift; sourceTree = "<group>"; };
-		43ACAA4F26089FF30013AE20 /* MigrateKeychainOperation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MigrateKeychainOperation.swift; sourceTree = "<group>"; };
-		43ACAA842608A5620013AE20 /* MigrateKeychainServiceTest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MigrateKeychainServiceTest.swift; sourceTree = "<group>"; };
 		43B1A39B22366D9700C387DE /* AppAuth.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = AppAuth.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		43B1B10B221ED15000DB26AB /* CoreDataPantomimeAdapter.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CoreDataPantomimeAdapter.swift; sourceTree = "<group>"; };
 		43B2270F242362D9007EB91E /* CdAccount+ProviderSpecific.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "CdAccount+ProviderSpecific.swift"; sourceTree = "<group>"; };
@@ -1760,7 +1754,6 @@
 			isa = PBXGroup;
 			children = (
 				5B65440128CF266B0064E1C7 /* OutgoingRatingServiceProtocol.swift */,
-				43ACAA1726089D060013AE20 /* MigrateKeychainService */,
 				15326E3024A4DF0A00EA8C9B /* CreatePEPFolderService */,
 				154660BE2333927B008D2137 /* Utils */,
 				159AB565235396A2008AB1F3 /* CleanupServcies */,
@@ -2326,7 +2319,6 @@
 		439B16B022802D3800201DE5 /* Services */ = {
 			isa = PBXGroup;
 			children = (
-				43ACAA832608A5380013AE20 /* MigrateKeychainService */,
 				152E3C9E231BE34100C1420B /* BackgroundTaskManagerTest.swift */,
 				439B16B122802D3800201DE5 /* VerifiableAccountTest.swift */,
 				431F1BD5285C8EBC00B1D12E /* AccountVerifierTest.swift */,
@@ -2375,23 +2367,6 @@
 				43D47A51225C767B00E97C5B /* ServerCredentialsInfoCache.swift */,
 			);
 			path = ModelCache;
-			sourceTree = "<group>";
-		};
-		43ACAA1726089D060013AE20 /* MigrateKeychainService */ = {
-			isa = PBXGroup;
-			children = (
-				43ACAA1826089D290013AE20 /* MigrateKeychainService.swift */,
-				43ACAA4F26089FF30013AE20 /* MigrateKeychainOperation.swift */,
-			);
-			path = MigrateKeychainService;
-			sourceTree = "<group>";
-		};
-		43ACAA832608A5380013AE20 /* MigrateKeychainService */ = {
-			isa = PBXGroup;
-			children = (
-				43ACAA842608A5620013AE20 /* MigrateKeychainServiceTest.swift */,
-			);
-			path = MigrateKeychainService;
 			sourceTree = "<group>";
 		};
 		43C123D3223A7FCF00F6A9B2 /* Network */ = {
@@ -3484,7 +3459,6 @@
 				0A62F9A329BA0CC700AE1B91 /* OIDAuthState+JWT.swift in Sources */,
 				43EA4863221E9518006E8F83 /* CdAccount+Extension.swift in Sources */,
 				43EA4854221E9518006E8F83 /* ConnectInfo.swift in Sources */,
-				43ACAA5026089FF30013AE20 /* MigrateKeychainOperation.swift in Sources */,
 				158A5E3D23526631002277A6 /* AppendMailsOperation.swift in Sources */,
 				5BD4466324F7DA5F00422594 /* AccountQueryResults.swift in Sources */,
 				155A0719260A16A000FF2754 /* Accoount+KeyReset.swift in Sources */,
@@ -3578,7 +3552,6 @@
 				43EA4894221E9518006E8F83 /* ImapSyncOperationError.swift in Sources */,
 				43EA4856221E9518006E8F83 /* CdMessage+Pantomime.swift in Sources */,
 				435F5122221FF80F006EB11F /* SmtpSendError.swift in Sources */,
-				43ACAA1926089D290013AE20 /* MigrateKeychainService.swift in Sources */,
 				43EA4874221E9518006E8F83 /* AppendMailsToFolderOperation.swift in Sources */,
 				434DC0E61DAE8BE7007C98B8 /* MutableOrderedSet.swift in Sources */,
 				B7DFEA50225365080080A2BA /* DisplayableFolderProtocol.swift in Sources */,
@@ -3747,7 +3720,6 @@
 				4355E4D1233C9B63005772D5 /* CdMessageFromPantomimeTest.swift in Sources */,
 				4383344423FD78BB004CC422 /* ClientCertificateUtilTest.swift in Sources */,
 				43F86BA424503E61008961DA /* KeyChainTest.swift in Sources */,
-				43ACAA852608A5620013AE20 /* MigrateKeychainServiceTest.swift in Sources */,
 				43CB60911DA4EB4E0015281E /* IdentityTest.swift in Sources */,
 				490FF8051E795B3900BC15F9 /* TestUtil.swift in Sources */,
 				43B2271224236602007EB91E /* CdAccount+ProviderSpecificTest.swift in Sources */,

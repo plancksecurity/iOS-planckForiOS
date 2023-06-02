@@ -16,7 +16,7 @@ extension String {
 
     public static var planckSignatureHtml: String {
         let pEpSignatureTrimmed = String.planckSignature.trimmed()
-        return "<a href=\"https://planck.software\" style=\"color:\(UIColor.pEpDarkGreenHex); text-decoration: none;\">\(pEpSignatureTrimmed)</a>"
+        return "<a href=\"https://planck.security\" style=\"color:\(UIColor.pEpDarkGreenHex); text-decoration: none;\">\(pEpSignatureTrimmed)</a>"
     }
 
     public func replacingOccurrencesOfPepSignatureWithHtmlVersion() -> String {
