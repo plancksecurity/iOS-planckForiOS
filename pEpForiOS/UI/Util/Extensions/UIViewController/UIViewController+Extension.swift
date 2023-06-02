@@ -89,13 +89,13 @@ extension UIViewController {
 
             var accessibilityIdentifier: String = AccessibilityIdentifier.unknownTrust
 
-            if rating.isNoColor() {
+            if rating.isNotTrusted() {
                 accessibilityIdentifier = AccessibilityIdentifier.unknownTrust
-            } else if rating.isYellow() {
+            } else if rating.isReliable() {
                 accessibilityIdentifier = AccessibilityIdentifier.secure
-            } else if rating.isGreen() {
+            } else if rating.isTrusted() {
                 accessibilityIdentifier = AccessibilityIdentifier.secureAndTrusted
-            } else if rating.isRed() || rating.isNoColor() {
+            } else if rating.isRisky() || rating.isNotTrusted() {
                 accessibilityIdentifier = AccessibilityIdentifier.mistrusted
             }
 

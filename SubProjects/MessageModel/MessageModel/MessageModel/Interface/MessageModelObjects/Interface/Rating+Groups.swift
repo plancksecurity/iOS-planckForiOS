@@ -11,19 +11,19 @@ import PEPObjCAdapter
 
 extension Rating {
 
-    public func isGreen() -> Bool {
+    public func isTrusted() -> Bool {
         return [Rating.trusted, Rating.trustedAndAnonymized, Rating.fullyAnonymous].contains(self)
     }
 
-    public func isYellow() -> Bool {
+    public func isReliable() -> Bool {
         return [Rating.reliable].contains(self)
     }
     
-    public func isRed() -> Bool {
+    public func isRisky() -> Bool {
         return [Rating.mistrust, .underAttack].contains(self)
     }
     
-    public func isNoColor() -> Bool {
+    public func isNotTrusted() -> Bool {
         return [Rating.cannotDecrypt, .haveNoKey, .unencrypted, .unreliable, .mediaKeyEncryption, .b0rken].contains(self)
     }
 }

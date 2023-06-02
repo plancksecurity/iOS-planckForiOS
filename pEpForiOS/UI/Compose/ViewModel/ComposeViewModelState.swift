@@ -221,7 +221,7 @@ extension ComposeViewModel.ComposeViewModelState {
         if isForceUnprotectedDueToBccSet {
             return false
         }
-        return rating.isYellow() || rating.isGreen()
+        return rating.isReliable() || rating.isTrusted()
     }
 }
 
