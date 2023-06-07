@@ -29,9 +29,9 @@ final class composeNewMessage: XCTestCase {
             app.launch()
         }
         
-        func AppTerminate(){
-            app.terminate()
-        }
+//        func AppTerminate(){
+//            app.terminate()
+//        }
     
     func testComposeNewMessage() {
         AppLaunch()
@@ -42,7 +42,33 @@ final class composeNewMessage: XCTestCase {
         
         // let toTextField = app.textFields
         
-        Thread.sleep(forTimeInterval: 20)
-        print("Compose Opened")
+        let tapTo = app.staticTexts["To:"]
+        _=tapTo.waitForExistence(timeout: 2)
+        tapTo.tap()
+        
+        app.typeText("qa@sq.pep.security")
+  
+        
+      
+        
+        let tablesQuery = app.tables
+        
+        tablesQuery/*@START_MENU_TOKEN@*/.staticTexts["Cc/Bcc:"]/*[[".cells.staticTexts[\"Cc\/Bcc:\"]",".staticTexts[\"Cc\/Bcc:\"]"],[[[-1,1],[-1,0]]],[0]]@END_MENU_TOKEN@*/.tap()
+       
+        app.tables.cells.containing(.staticText, identifier:"Subject:").children(matching: .textView).element.tap()
+        app.typeText("This is my Subject")
+        
+        
+        app.tables.cells.containing(.textView, identifier:"Email Text View").children(matching: .textView).element.tap()
+        app.typeText("This is email body, and I am writing my first message.")
+        
+        app.buttons["Send"].tap()
+        
+        app.buttons["YES"].tap()
+                        
+        Thread.sleep(forTimeInterval: 10)
+        
+        
+       
     }
 }

@@ -29,9 +29,6 @@ final class onboardAccount: XCTestCase {
             app.launch()
         }
         
-//        func AppTerminate(){
-//            app.terminate()
-//        }
     
         func testLoginFunctionality(){
             
@@ -62,7 +59,7 @@ final class onboardAccount: XCTestCase {
             _=tapLogIn.waitForExistence(timeout: 5)
             tapLogIn.tap()
             
-            Thread.sleep(forTimeInterval: 20)
+            Thread.sleep(forTimeInterval: 10)
             let okButton = app.buttons[UIStrings.okButton]
             
             if okButton.exists {
@@ -96,7 +93,7 @@ final class onboardAccount: XCTestCase {
                     finishButton.tap()
                     
                     
-                    Thread.sleep(forTimeInterval: 20)
+                    Thread.sleep(forTimeInterval: 10)
                     
                     // Or locate the label by its label text
                     let label = app.staticTexts[UIStrings.inboxLable]

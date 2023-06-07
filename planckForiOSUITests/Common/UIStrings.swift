@@ -31,5 +31,6 @@ class UIStrings {
     static let manualConfigButton = "Manual Config button"
     
     static let composeButton = "Compose Button"
+    static let sendButton = "Send Button"
     
 }
