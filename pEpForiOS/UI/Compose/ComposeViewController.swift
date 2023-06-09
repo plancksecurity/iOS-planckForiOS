@@ -596,11 +596,15 @@ extension ComposeViewController: SegueHandlerType {
                     Log.shared.errorAndCrash("Missing VCs")
                     return
             }
-            guard let vm = viewModel else {
-                Log.shared.errorAndCrash("No vm")
-                return
+
+            // Rare case: viewModel might be nil when the user swipe left and select “reply”, just when another email arrives.
+            // Otherwise we would use our regular guard let
+            if viewModel == nil {
+                viewModel = ComposeViewModel()
             }
-            guard let recipientsViewModel = vm.getRecipientBannerViewModel()  else {
+
+            guard let vm = viewModel,
+                    let recipientsViewModel = vm.getRecipientBannerViewModel()  else {
                 Log.shared.error("Message not found")
                 return
             }
