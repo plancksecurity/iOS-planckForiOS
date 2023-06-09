@@ -207,7 +207,7 @@ class ComposeViewModel {
     
     private func shouldQueryRedRecipients() -> Bool {
         let canUpdate = recipientsBannerViewModel?.canUpdate ?? false
-        return state.rating.isRisky() || state.rating.isNotTrusted()  && canUpdate
+        return state.rating.isDangerous() || state.rating.isUnreliable()  && canUpdate
     }
 
     /// Get the Recipients Banner ViewModel.
@@ -250,7 +250,7 @@ class ComposeViewModel {
                 let safeIdentity = identity.safeForSession(session)
                 session.performAndWait {
                     safeIdentity.pEpRating { rating in
-                        if rating.isRisky() || rating.isNotTrusted() {
+                        if rating.isDangerous() || rating.isUnreliable() {
                             redRecipients.append(identity)
                         }
                         group.leave()
@@ -1289,7 +1289,7 @@ extension ComposeViewModel {
                                             comment: "Confirm less secure answer message alert body")
             }
 
-            if pEpRating.hasLessSecurePepColor(than: originalRating) {
+            if pEpRating.isLessSecure(than: originalRating) {
                 // Forwarded mesasge is less secure than original message. Warn the user.
                 me.delegate?.showTwoButtonAlert(withTitle: title,
                                                 message: message,

@@ -40,19 +40,18 @@ extension Rating {
         return Int(pEpRating().rawValue)
     }
 
-    /// Compares the pEp colors for this and a given rating.
-    /// - Parameter rating: rating to compare pEp color with
-    /// - returns:  true if the pEp color represents a less secure communication channel than the given one.
+    /// Compares the ratings for this and a given rating.
+    /// - Parameter rating: the rating to compare
+    /// - returns:  true if the rating represents a less secure communication channel than the given one.
     ///             false otherwize.
-    public func hasLessSecurePepColor(than rating: Rating) -> Bool {
+    public func isLessSecure(than rating: Rating) -> Bool {
         if rating.isTrusted() && !isTrusted() {
             return true
         } else if rating.isReliable() && (!isTrusted() && !isReliable()) {
             return true
-        } else if rating.isNotTrusted() || rating.isRisky() && isRisky() || isNotTrusted() {
+        } else if rating.isUnreliable() || rating.isDangerous() && isDangerous() || isUnreliable() {
             return true
         }
-        
         return false
     }
 
