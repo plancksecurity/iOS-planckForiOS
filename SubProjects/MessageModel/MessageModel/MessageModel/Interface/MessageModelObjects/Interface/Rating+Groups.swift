@@ -26,4 +26,8 @@ extension Rating {
     public func isUnreliable() -> Bool {
         return [.cannotDecrypt, .haveNoKey, .unencrypted, .unreliable, .mediaKeyEncryption, .b0rken].contains(self)
     }
+    
+    public func isUndefined() -> Bool {
+        return [.undefined].contains(self)
+    }
 }

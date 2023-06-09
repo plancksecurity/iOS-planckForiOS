@@ -49,7 +49,7 @@ extension Rating {
             return true
         } else if rating.isReliable() && (!isTrusted() && !isReliable()) {
             return true
-        } else if rating.isUnreliable() || rating.isDangerous() && isDangerous() || isUnreliable() {
+        } else if rating.isUnreliable() || rating.isDangerous() && isDangerous() || isUndefined() {
             return true
         }
         return false
