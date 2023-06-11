@@ -7,7 +7,7 @@
 //
 
 import Foundation
-class commonFunc {
+class CommonFunctions {
     func generateRandomBot() -> String {
         let letters = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789"
         let randomString = String((0..<5).map { _ in letters.randomElement()! })
