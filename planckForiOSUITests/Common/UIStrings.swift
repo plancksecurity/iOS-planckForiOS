@@ -13,6 +13,8 @@ class UIStrings {
     
     //Default Email Id, password, server details and port details
     
+    // Main Screen to select option for login and login details screen
+    
     static let emailAddress = "ana@planck.dev"
     static let emailPassword = "orang3paella"
     static let serverName = "planck.dev"
@@ -22,15 +24,29 @@ class UIStrings {
     static let nextButton = "Next"
     static let serverTextfield = "password"
     static let finishButton = "Finish"
-    static let inboxLable = "Inbox"
-    
     static let signInWithPassword = "Sign in with Password"
     static let emailAddressTextfield = "Email Address TextField"
     static let emailPasswordTextfield = "Password TextField"
     static let displayNameTextField = "Display Name TextField"
     static let manualConfigButton = "Manual Config button"
     
+
+    
+    // Inbox screen
+    static let inboxLable = "Inbox"
+    
+    //Compose New Messaeg Screen
+    
     static let composeButton = "Compose Button"
     static let sendButton = "Send Button"
+    static let to = "To:"
+    //static let ccbcc = "Cc\Bcc:"
+    static let subject = "Subject:"
+    static let subjectText = "This is My Subject"
+    static let emailTextView = "Email Text View"
+    static let emailBody = "This is email body, and I am writing my first message"
+    
+    static let sendText = "Send"
+    static let yesText = "YES"
     
 }

@@ -656,6 +656,7 @@
 		B7DFEA56225397AB0080A2BA /* Folder+LocalizedName.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7DFEA55225397AB0080A2BA /* Folder+LocalizedName.swift */; };
 		B7F4A793212DDFC500507B76 /* EmailListViewModelTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7F4A792212DDFC500507B76 /* EmailListViewModelTest.swift */; };
 		B7F676BD227C4B26007E5E3A /* MessageQueryResultsFilter+FilterButtonTitle.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7F676BC227C4B26007E5E3A /* MessageQueryResultsFilter+FilterButtonTitle.swift */; };
+		CD5458BD2A34850C0065C375 /* commonFunc.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD5458BC2A34850C0065C375 /* commonFunc.swift */; };
 		F70AE5BF29B72E9900D0CC48 /* TrustBannerViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = F70AE5BE29B72E9900D0CC48 /* TrustBannerViewModel.swift */; };
 		F70AE5C129B7394900D0CC48 /* TrustBannerViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F70AE5C029B7394900D0CC48 /* TrustBannerViewController.swift */; };
 		F73E4F72217F238300CCFFED /* FolderSectionViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = F73E4F71217F238300CCFFED /* FolderSectionViewModelTests.swift */; };
@@ -1261,6 +1262,7 @@
 		B7DFEA55225397AB0080A2BA /* Folder+LocalizedName.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Folder+LocalizedName.swift"; sourceTree = "<group>"; };
 		B7F4A792212DDFC500507B76 /* EmailListViewModelTest.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EmailListViewModelTest.swift; sourceTree = "<group>"; };
 		B7F676BC227C4B26007E5E3A /* MessageQueryResultsFilter+FilterButtonTitle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "MessageQueryResultsFilter+FilterButtonTitle.swift"; sourceTree = "<group>"; };
+		CD5458BC2A34850C0065C375 /* commonFunc.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = commonFunc.swift; sourceTree = "<group>"; };
 		F70AE5BE29B72E9900D0CC48 /* TrustBannerViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TrustBannerViewModel.swift; sourceTree = "<group>"; };
 		F70AE5C029B7394900D0CC48 /* TrustBannerViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TrustBannerViewController.swift; sourceTree = "<group>"; };
 		F73E4F71217F238300CCFFED /* FolderSectionViewModelTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FolderSectionViewModelTests.swift; sourceTree = "<group>"; };
@@ -2612,6 +2614,7 @@
 			isa = PBXGroup;
 			children = (
 				48DD513A2A24CCCF00A2C65F /* UIStrings.swift */,
+				CD5458BC2A34850C0065C375 /* commonFunc.swift */,
 			);
 			path = Common;
 			sourceTree = "<group>";
@@ -4005,6 +4008,7 @@
 			files = (
 				48DD513D2A24CD7900A2C65F /* onboardAccount.swift in Sources */,
 				48DD513B2A24CCCF00A2C65F /* UIStrings.swift in Sources */,
+				CD5458BD2A34850C0065C375 /* commonFunc.swift in Sources */,
 				48DD51312A24CC2500A2C65F /* planckForiOSUITests.swift in Sources */,
 				48DD513F2A24D32800A2C65F /* composeNewMessage.swift in Sources */,
 				488AB1B22A2FF73E00B15809 /* instalAndLaunchPlanck.swift in Sources */,

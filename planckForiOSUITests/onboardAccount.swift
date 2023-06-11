@@ -28,6 +28,10 @@ final class onboardAccount: XCTestCase {
         func AppLaunch(){
             app.launch()
         }
+    
+    func AppTerminate(){
+        app.terminate()
+    }
         
     
         func testLoginFunctionality(){
@@ -126,7 +130,7 @@ final class onboardAccount: XCTestCase {
             
             //print(tapOther)
             
-            //testAppTerminate()
+            AppTerminate()
         }
 
 }
