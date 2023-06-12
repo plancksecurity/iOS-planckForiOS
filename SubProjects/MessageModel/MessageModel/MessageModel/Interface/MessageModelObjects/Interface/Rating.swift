@@ -49,10 +49,12 @@ extension Rating {
             return true
         } else if rating.isReliable() && (!isTrusted() && !isReliable()) {
             return true
-        } else if rating.isUnreliable() || rating.isDangerous() && isDangerous() || isUndefined() {
-            return true
+        } else {
+            let isTheRatingUnreliable = rating.isUnreliable()
+            let isTheRatingDangerous = rating.isDangerous()
+            let isSelfRatingUndefinedOrDangerous = isUndefined() || isDangerous()
+            return isTheRatingUnreliable || isTheRatingDangerous || isSelfRatingUndefinedOrDangerous
         }
-        return false
     }
 
     /** Does the given pEp rating mean the user is under attack? */
