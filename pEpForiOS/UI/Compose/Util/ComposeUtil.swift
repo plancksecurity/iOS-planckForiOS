@@ -66,10 +66,10 @@ struct ComposeUtil {
 
                 // Rating requests are complete
                 group.notify(queue: .main) {
-                    let red = identitiesAndRating.filter { $0.value.isDangerous() }.map { $0.key }
-                    let noColor = identitiesAndRating.filter { $0.value.isUnreliable() }.map { $0.key }
-                    let green = identitiesAndRating.filter { $0.value.isTrusted() }.map { $0.key }
-                    result = red + noColor + green
+                    let dangerous = identitiesAndRating.filter { $0.value.isDangerous() }.map { $0.key }
+                    let unreliable = identitiesAndRating.filter { $0.value.isUnreliable() }.map { $0.key }
+                    let trusted = identitiesAndRating.filter { $0.value.isTrusted() }.map { $0.key }
+                    result = dangerous + unreliable + trusted
                 }
             }
         case .normal:
