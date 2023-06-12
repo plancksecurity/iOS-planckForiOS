@@ -372,17 +372,8 @@ extension TrustManagementViewController {
             cell.partnerImageView.image = image
             updateSizeGroup.leave()
         }
-        updateSizeGroup.enter()
-        row.privacyStatusImage { (image) in
-            cell.privacyStatusImageView.image = image
-            updateSizeGroup.leave()
-        }
         cell.partnerNameLabel.text = row.name
-        updateSizeGroup.enter()
-        row.privacyStatusName { (name) in
-            cell.privacyStatusLabel.text = name
-            updateSizeGroup.leave()
-        }
+
         updateSizeGroup.enter()
         row.description { (description) in
             cell.descriptionLabel.text = description

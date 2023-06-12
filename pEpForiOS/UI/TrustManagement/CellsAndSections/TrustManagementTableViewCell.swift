@@ -87,6 +87,8 @@ final class TrustManagementTableViewCell: UITableViewCell {
 
     /// Setup the view with the row data.
     private func setupView() {
+        privacyStatusImageView.isHidden = true
+        privacyStatusLabel.isHidden = true
         removeGestureRecognizers()
 
         let gesture = UITapGestureRecognizer(target: self, action: #selector(trustwordsLabelPressed))
