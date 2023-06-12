@@ -49,4 +49,5 @@ class UIStrings {
     static let sendText = "Send"
     static let yesText = "YES"
     
+    static let to = "To:"
 }
