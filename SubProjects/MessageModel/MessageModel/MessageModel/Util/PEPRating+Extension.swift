@@ -17,12 +17,6 @@ import PlanckToolbox
 import PEPObjCAdapter
 
 extension PEPRating {
-    func pEpColor() -> PEPColor {
-        return PEPUtils.pEpColor(pEpRating: self)
-    }
-}
-
-extension PEPRating {
     /**
      - Note: TODO: Strong candidate for getting moved into the app.
      */
