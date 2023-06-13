@@ -34,7 +34,7 @@ extension Attachment {
                     Log.shared.errorAndCrash("No data")
                     return
                 }
-                let tmpDir =  FileManager.default.temporaryDirectory
+                let tmpDir = FileManager.default.temporaryDirectory
 
                 let fileName = (safeAttachment.fileName ?? defaultFilename).extractFileNameOrCid()
                 var url = tmpDir.appendingPathComponent(fileName)

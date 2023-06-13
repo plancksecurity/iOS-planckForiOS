@@ -155,6 +155,7 @@ extension SettingsTableViewController {
              .termsAndConditions,
              .extraKeys,
              .exportDBs,
+             .auditLoggin,
              .groupMailboxes,
              .deviceGroups,
              .about:
@@ -320,9 +321,11 @@ extension SettingsTableViewController : SwipeTableViewCellDelegate {
              .pgpKeyImport,
              .trustedServer,
              .credits,
-             .defaultAccount:
-            performSegue(withIdentifier: sequeIdentifier(forRowWithIdentifier: row.identifier).rawValue,
-                         sender: indexPath)
+             .defaultAccount,
+             .auditLoggin:
+            let identifier = sequeIdentifier(forRowWithIdentifier: row.identifier).rawValue
+            performSegue(withIdentifier: identifier, sender: indexPath)
+            tableView.deselectRow(at: indexPath, animated: true)
         case .resetAccounts:
             guard let row = viewModel.section(for: indexPath).rows[indexPath.row] as? SettingsViewModel.ActionRow, let action = row.action else {
                 return
@@ -443,6 +446,7 @@ extension SettingsTableViewController {
         case segueGroupMailboxes
         case segueDeviceGroups
         case segueAbout
+        case segueAuditLoggin
         /// Use for cells that do not segue, like switch cells
         case none
     }
@@ -475,6 +479,8 @@ extension SettingsTableViewController {
             return .none
         case .termsAndConditions:
             return .none
+        case .auditLoggin:
+            return .segueAuditLoggin
         }
     }
 
@@ -485,7 +491,6 @@ extension SettingsTableViewController {
             else {
                 Log.shared.errorAndCrash("No SegueIdentifier")
                 return
-
         }
 
         switch segueIdentifyer {
@@ -518,6 +523,12 @@ extension SettingsTableViewController {
                 return
             }
             destination.viewModel = viewModel.pgpKeyImportSettingViewModel()
+        case .segueAuditLoggin:
+            guard let destination = segue.destination as? AuditLogginViewController else {
+                Log.shared.errorAndCrash("No DVC")
+                return
+            }
+            destination.viewModel = viewModel.auditLoginViewModel()
         case .none:
             // It's all rows that never segue anywhere (e.g. SwitchRow). Thus this should never be called.
             Log.shared.errorAndCrash("Must not be called (prepares for segue for rows that are not supposed to segue anywhere).")

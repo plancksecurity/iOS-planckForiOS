@@ -8,6 +8,7 @@
 
 import Foundation
 import CoreData
+import PEPObjCAdapter
 
 #if EXT_SHARE
 import PlanckToolboxForExtensions
@@ -194,6 +195,13 @@ public class Message: MessageModelObjectProtocol, ManagedObjectWrapperProtocol {
         set { //!!!: should not be set-able. 
             cdObject.pEpRating = Int16(newValue)
         }
+    }
+    
+    public var pEpRatingDescription: String {
+        guard let value = PEPRating(rawValue: Int32(cdObject.pEpRating)) else {
+            return "N/A"
+        }
+        return value.asString()
     }
 
     ///Shadows the `uuid`.

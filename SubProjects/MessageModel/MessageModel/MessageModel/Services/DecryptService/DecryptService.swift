@@ -38,7 +38,7 @@ class DecryptService: QueryBasedService<CdMessage> {
 
             for cdMessageToDecrypt in cdMessagesToDecrypt {
                 let decryptOP = DecryptMessageOperation(cdMessageToDecryptObjectId: cdMessageToDecrypt.objectID,
-                                                        errorContainer: errorPropagator)
+                                                        errorContainer: me.errorPropagator)
                 createes.append(decryptOP)
             }
         }

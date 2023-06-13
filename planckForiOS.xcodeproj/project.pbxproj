@@ -655,6 +655,9 @@
 		F70AE5C129B7394900D0CC48 /* TrustBannerViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F70AE5C029B7394900D0CC48 /* TrustBannerViewController.swift */; };
 		F73E4F72217F238300CCFFED /* FolderSectionViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = F73E4F71217F238300CCFFED /* FolderSectionViewModelTests.swift */; };
 		F73E4F7A2180744700CCFFED /* FolderCellViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = F73E4F792180744700CCFFED /* FolderCellViewModelTests.swift */; };
+		F779D6012A2F28E60069381E /* AuditLogginViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F779D6002A2F28E60069381E /* AuditLogginViewController.swift */; };
+		F779D6032A2F29130069381E /* AuditLoginViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = F779D6022A2F29130069381E /* AuditLoginViewModel.swift */; };
+		F779D6052A2F4DF60069381E /* AuditLogginTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = F779D6042A2F4DF60069381E /* AuditLogginTableViewCell.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -1247,6 +1250,9 @@
 		F70AE5C029B7394900D0CC48 /* TrustBannerViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TrustBannerViewController.swift; sourceTree = "<group>"; };
 		F73E4F71217F238300CCFFED /* FolderSectionViewModelTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FolderSectionViewModelTests.swift; sourceTree = "<group>"; };
 		F73E4F792180744700CCFFED /* FolderCellViewModelTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FolderCellViewModelTests.swift; sourceTree = "<group>"; };
+		F779D6002A2F28E60069381E /* AuditLogginViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuditLogginViewController.swift; sourceTree = "<group>"; };
+		F779D6022A2F29130069381E /* AuditLoginViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuditLoginViewModel.swift; sourceTree = "<group>"; };
+		F779D6042A2F4DF60069381E /* AuditLogginTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuditLogginTableViewCell.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -1736,6 +1742,7 @@
 		15874BAF2127493E00A3A4A6 /* Setting */ = {
 			isa = PBXGroup;
 			children = (
+				F779D5FF2A2F28C40069381E /* AuditLoggin */,
 				15FE1F741FE122B200CC2D97 /* Credits */,
 				431E68B1246C266800B3A977 /* KeyImport */,
 				1579348B246D490700E2D8D2 /* PGPKeyImport */,
@@ -3062,6 +3069,16 @@
 			path = Folder;
 			sourceTree = "<group>";
 		};
+		F779D5FF2A2F28C40069381E /* AuditLoggin */ = {
+			isa = PBXGroup;
+			children = (
+				F779D6002A2F28E60069381E /* AuditLogginViewController.swift */,
+				F779D6042A2F4DF60069381E /* AuditLogginTableViewCell.swift */,
+				F779D6022A2F29130069381E /* AuditLoginViewModel.swift */,
+			);
+			path = AuditLoggin;
+			sourceTree = "<group>";
+		};
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
@@ -3519,6 +3536,7 @@
 				150DF6D02052A13700A9DCF7 /* SecureWebViewController.swift in Sources */,
 				375BA08A238BFC4100BBFE7C /* ManualAccountSetupContainerView.swift in Sources */,
 				B764D0222451A21E001C4BCA /* ErrorSubscriber.swift in Sources */,
+				F779D6032A2F29130069381E /* AuditLoginViewModel.swift in Sources */,
 				5BC0F93826A9953D0089760D /* UIUtils+SystemSettings.swift in Sources */,
 				4351C2D71F4441190053381F /* node.c in Sources */,
 				434C1AA625D40F3B00F622DB /* UIUtils+DraftsPreview.swift in Sources */,
@@ -3528,6 +3546,7 @@
 				1521B78D241BDAD3000EAE57 /* UIUtils+Settings.swift in Sources */,
 				43269D6C2552B744001E18C6 /* VerifiableAccountValidationError+LocalizedError.swift in Sources */,
 				B7DFEA56225397AB0080A2BA /* Folder+LocalizedName.swift in Sources */,
+				F779D6012A2F28E60069381E /* AuditLogginViewController.swift in Sources */,
 				5BF7538F2979907E00E4113B /* EnterpriseSettingsProtocol.swift in Sources */,
 				4351C2D51F4441190053381F /* latex.c in Sources */,
 				B74F37CD24ADD2B00083501B /* EmailViewController.swift in Sources */,
@@ -3758,6 +3777,7 @@
 				438052871FE3E1B100ACF729 /* OAuth2AuthorizationFactoryProtocol.swift in Sources */,
 				4356FFE52135448600804089 /* ReplyAllPossibleChecker.swift in Sources */,
 				15146C8A237EE77A00D69495 /* SettingsInternalError.swift in Sources */,
+				F779D6052A2F4DF60069381E /* AuditLogginTableViewCell.swift in Sources */,
 				15255B031F825CD100A2CFC9 /* IdentityImageTool.swift in Sources */,
 				152A39D121905C3E00D9F8E4 /* AttachmentViewModel.swift in Sources */,
 				5BF753922979917600E4113B /* AppSettings+EnterpriseSettingsProtocol.swift in Sources */,

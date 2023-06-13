@@ -38,6 +38,8 @@ extension AppSettings: MDMSettingsProtocol {
     static let keyMediaKeys = "pep_media_keys"
     static let keyEchoProtocolEnabled = "pep_enable_echo_protocol"
 
+    static let keyAuditLogginMaxFileSize = "auditLogginMaxFileSize"
+
     //Not used
     static let keyDebugLoggingEnabled = "debug_logging"
     static let keyAccountDisplayCount = "account_display_count"
@@ -48,6 +50,15 @@ extension AppSettings: MDMSettingsProtocol {
     public var mdmIsEnabled: Bool {
         get {
             return MDMUtil.isEnabled()
+        }
+    }
+    
+    public var mdmAuditLogginMaxFileSize: Double {
+        get {
+            guard let auditLogginMaxFileSize = mdmDictionary[AppSettings.keyAuditLogginMaxFileSize] as? Double else {
+                return 1
+            }
+            return auditLogginMaxFileSize
         }
     }
 
