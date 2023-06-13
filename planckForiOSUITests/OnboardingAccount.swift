@@ -10,54 +10,49 @@ import XCTest
 
 final class OnboaringdAccount: XCTestCase {
 
-    let app = XCUIApplication()
-        
-    func appLaunch(){
-            app.launch()
-        }
+    let common = CommonFunctions()
     
-    func appTerminate(){
-            app.terminate()
-    }
+
         
     
     func testLoginFunctionality(){
-            
-        appLaunch() // Launch the App
         
-        let tapOther = app.staticTexts[UIStrings.signInWithPassword]
+        
+        common.appLaunch() // Launch the App
+        
+        let tapOther = common.app.staticTexts[UIStrings.signInWithPassword]
         _=tapOther.waitForExistence(timeout: 10)
         tapOther.tap()
         
-        let tapEmail = app.textFields[UIStrings.emailAddressTextfield]
+        let tapEmail = common.app.textFields[UIStrings.emailAddressTextfield]
         _=tapEmail.waitForExistence(timeout: 5)
         tapEmail.tap()
         tapEmail.typeText(UIStrings.emailAddress)
         
-        let tapPassword = app.scrollViews.otherElements.secureTextFields[UIStrings.emailPasswordTextfield]
+        let tapPassword = common.app.scrollViews.otherElements.secureTextFields[UIStrings.emailPasswordTextfield]
         _=tapPassword.waitForExistence(timeout: 5)
         tapPassword.tap()
         tapPassword.typeText(UIStrings.emailPassword)
         
         
-        let tapDisplayName = app.scrollViews.otherElements.textFields[UIStrings.displayNameTextField]
+        let tapDisplayName = common.app.scrollViews.otherElements.textFields[UIStrings.displayNameTextField]
         _=tapDisplayName.waitForExistence(timeout: 5)
         tapDisplayName.tap()
         tapDisplayName.typeText(UIStrings.displayName)
         
         
-        let tapLogIn = app.scrollViews.otherElements.buttons[UIStrings.logIn]
+        let tapLogIn = common.app.scrollViews.otherElements.buttons[UIStrings.logIn]
         _=tapLogIn.waitForExistence(timeout: 5)
         tapLogIn.tap()
         
         Thread.sleep(forTimeInterval: 10)
-        let okButton = app.buttons[UIStrings.okButton]
+        let okButton = common.app.buttons[UIStrings.okButton]
         
         if okButton.exists {
             okButton.tap()
             manualSetup()
         }   else {
-            let label = app.staticTexts[UIStrings.inboxLable]
+            let label = common.app.staticTexts[UIStrings.inboxLable]
             
             // Perform actions on the label
             if label.exists {
@@ -80,29 +75,29 @@ final class OnboaringdAccount: XCTestCase {
     func manualSetup() {
         
         // Manual Account Setup
-        let manualSetupButton = app.buttons[UIStrings.manualConfigButton]
+        let manualSetupButton = common.app.buttons[UIStrings.manualConfigButton]
         if manualSetupButton.exists {
             manualSetupButton.tap()
-            let nextButton = app.buttons[UIStrings.nextButton]
+            let nextButton = common.app.buttons[UIStrings.nextButton]
             _=nextButton.waitForExistence(timeout: 5)
             nextButton.tap()
             
-            let tapServer = app.textFields[UIStrings.serverTextfield]
+            let tapServer = common.app.textFields[UIStrings.serverTextfield]
             _=tapServer.waitForExistence(timeout: 5)
             tapServer.tap()
             tapServer.typeText(UIStrings.serverName)
             
-            let secondNextButton = app.buttons[UIStrings.nextButton]
+            let secondNextButton = common.app.buttons[UIStrings.nextButton]
             _=secondNextButton.waitForExistence(timeout: 5)
             secondNextButton.tap()
             
             
-            let secondTapServer = app.textFields[UIStrings.serverTextfield]
+            let secondTapServer = common.app.textFields[UIStrings.serverTextfield]
             _=secondTapServer.waitForExistence(timeout: 5)
             secondTapServer.tap()
             secondTapServer.typeText(UIStrings.serverName)
             
-            let finishButton = app.buttons[UIStrings.finishButton]
+            let finishButton = common.app.buttons[UIStrings.finishButton]
             _=finishButton.waitForExistence(timeout: 5)
             finishButton.tap()
             
@@ -110,7 +105,7 @@ final class OnboaringdAccount: XCTestCase {
             Thread.sleep(forTimeInterval: 10)
             
             // Or locate the label by its label text
-            let label = app.staticTexts[UIStrings.inboxLable]
+            let label = common.app.staticTexts[UIStrings.inboxLable]
             
             // Perform actions on the label
             if label.exists {
