@@ -111,9 +111,9 @@ extension EncryptAndSMTPSendMessageOperation {
                     if !cdMessage.isFakeMessage && !cdMessage.isAutoConsumable {
                         // Audit Log on encryption
                         let subject = encryptedMessageToSend.shortMessage ?? ""
-                        let senderId = encryptedMessageToSend.from?.userID ?? "N/A"
-                        let newRating = Int16(me.blockingGetOutgoingMessageRating(for: cdMessage).rawValue)
-                        me.auditLogginProtocol?.log(subject: subject, senderId: senderId, rating: newRating.description)
+                        let senderId = encryptedMessageToSend.from?.address ?? "N/A"
+                        let newRating = Rating(pEpRating: me.blockingGetOutgoingMessageRating(for: cdMessage)).toString()
+                        me.auditLogginProtocol?.log(subject: subject, senderId: senderId, rating: newRating)
                     }
                 }
             }

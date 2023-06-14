@@ -175,6 +175,7 @@ extension FileExportUtil {
             }
             try data.write(to: fileUrl)
             Log.shared.info("CSV successfully saved")
+            NSLog("\n\n\n\n\n \(fileUrl.absoluteString) \n\n\n\n\n")
         } catch {
             Log.shared.errorAndCrash(error: error)
         }

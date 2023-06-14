@@ -86,14 +86,19 @@ extension DecryptMessageOperation {
             
             // Audit Log on decryption
             let subject = pEpDecryptedMsg.shortMessage ?? ""
-            let senderId = pEpDecryptedMsg.from?.userID ?? "N/A"
-            let rating = "\(rating.rawValue)"
+            let senderId = pEpDecryptedMsg.from?.address ?? "N/A"
+            
+            guard let pEpRating = PEPRating(rawValue: rating.rawValue) else {
+                group.leave()
+                return
+            }
+            let newRating = Rating(pEpRating:pEpRating).toString()
             if !msg.isAutoConsumable && !msg.isFakeMessage {
                 guard let me = self else {
                     Log.shared.errorAndCrash("Lost myself")
                     return
                 }
-                me.auditLogginProtocol?.log(subject: subject, senderId: senderId, rating: rating)
+                me.auditLogginProtocol?.log(subject: subject, senderId: senderId, rating: newRating)
             }
             group.leave()
         }
