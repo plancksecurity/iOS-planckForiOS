@@ -61,14 +61,6 @@ extension DecryptMessageOperation {
             return
         }
 
-        // Audit Log on decryption
-        let subject = msg.shortMessage ?? ""
-        let senderId = msg.from?.userID ?? "N/A"
-        let rating = cdMessageToDecrypt.pEpRating.description
-        if !msg.isAutoConsumable {
-            auditLogginProtocol?.log(subject: subject, senderId: senderId, rating: rating)
-        }
-
         var inOutFlags = cdMessageToDecrypt.isOnTrustedServer ? PEPDecryptFlags.none : .untrustedServer
         var inOutMessage = cdMessageToDecrypt.pEpMessage()
         var fprsOfExtraKeys = CdExtraKey.fprsOfAllExtraKeys(in: moc)
@@ -84,13 +76,25 @@ extension DecryptMessageOperation {
         PEPSession().decryptMessage(inOutMessage, flags: inOutFlags, extraKeys: fprsOfExtraKeys, errorCallback: { (error) in
             nsError = error as NSError
             group.leave()
-        }) { (pEpSourceMessage, pEpDecryptedMsg, keyList, rating, decryptFlags, isFormerlyEncryptedReuploadedMessage) in
+        }) { [weak self] (pEpSourceMessage, pEpDecryptedMsg, keyList, rating, decryptFlags, isFormerlyEncryptedReuploadedMessage) in
             inOutMessage = pEpSourceMessage
             pEpDecryptedMessage = pEpDecryptedMsg
             fprsOfExtraKeys = keyList
             decryptedRating = rating
             inOutFlags = decryptFlags
             isAFormerlyEncryptedReuploadedMessage = isFormerlyEncryptedReuploadedMessage
+            
+            // Audit Log on decryption
+            let subject = pEpDecryptedMsg.shortMessage ?? ""
+            let senderId = pEpDecryptedMsg.from?.userID ?? "N/A"
+            let rating = "\(rating.rawValue)"
+            if !msg.isAutoConsumable && !msg.isFakeMessage {
+                guard let me = self else {
+                    Log.shared.errorAndCrash("Lost myself")
+                    return
+                }
+                me.auditLogginProtocol?.log(subject: subject, senderId: senderId, rating: rating)
+            }
             group.leave()
         }
         group.wait()

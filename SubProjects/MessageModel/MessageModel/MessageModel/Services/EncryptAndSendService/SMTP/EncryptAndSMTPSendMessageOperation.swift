@@ -82,11 +82,6 @@ extension EncryptAndSMTPSendMessageOperation {
 
         let extraKeys = CdExtraKey.fprsOfAllExtraKeys(in: privateMOC)
 
-        // Audit Log on encryption
-        let subject = pEpMsg.shortMessage ?? ""
-        let senderId = pEpMsg.from?.userID ?? "N/A"
-        let rating = cdMessage.pEpRating.description
-        auditLogginProtocol?.log(subject: subject, senderId: senderId, rating: rating)
 
         PEPUtils.encrypt(pEpMessage: pEpMsg,
                          encryptionFormat: cdMessage.pEpProtected ? .PEP : .none,
@@ -112,6 +107,14 @@ extension EncryptAndSMTPSendMessageOperation {
                 me.privateMOC.perform {
                     me.setOriginalRatingHeader(unencryptedCdMessage: cdMessage)
                     me.send(pEpMessage: encryptedMessageToSend)
+
+                    if !cdMessage.isFakeMessage && !cdMessage.isAutoConsumable {
+                        // Audit Log on encryption
+                        let subject = encryptedMessageToSend.shortMessage ?? ""
+                        let senderId = encryptedMessageToSend.from?.userID ?? "N/A"
+                        let newRating = Int16(me.blockingGetOutgoingMessageRating(for: cdMessage).rawValue)
+                        me.auditLogginProtocol?.log(subject: subject, senderId: senderId, rating: newRating.description)
+                    }
                 }
             }
         }
