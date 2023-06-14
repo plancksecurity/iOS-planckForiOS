@@ -8,7 +8,9 @@
 
 import Foundation
 
-
+/// Protocol that communicates MM with PlanckForiOS
+/// The events to log happen in MM.
+/// There are values we need from PlanckForiOS.
 public protocol AuditLogginProtocol: AnyObject {
 
     /// Save the audit log.
