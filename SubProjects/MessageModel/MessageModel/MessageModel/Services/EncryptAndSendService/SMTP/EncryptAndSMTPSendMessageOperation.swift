@@ -81,8 +81,6 @@ extension EncryptAndSMTPSendMessageOperation {
         }
 
         let extraKeys = CdExtraKey.fprsOfAllExtraKeys(in: privateMOC)
-
-
         PEPUtils.encrypt(pEpMessage: pEpMsg,
                          encryptionFormat: cdMessage.pEpProtected ? .PEP : .none,
                          extraKeys: extraKeys,
