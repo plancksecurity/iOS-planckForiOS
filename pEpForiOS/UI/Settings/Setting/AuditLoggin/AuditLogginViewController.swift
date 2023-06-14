@@ -38,7 +38,7 @@ class AuditLogginViewController: UIViewController {
             Log.shared.errorAndCrash("No VM")
             return
         }
-        AppSettings.shared.auditLogginSize = vm.currentaAditLogginSize
+        AppSettings.shared.auditLogginSize = vm.currentAuditLogginSize
         navigationController?.popViewController(animated: true)
     }
 }

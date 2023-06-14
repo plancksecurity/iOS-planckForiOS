@@ -67,7 +67,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
                                                   usePlanckFolderProvider: AppSettings.shared,
                                                   passphraseProvider: userInputProvider,
                                                   encryptionErrorDelegate: encryptionErrorHandler,
-                                                  outgoingRatingService: OutgoingRatingChangeService())
+                                                  outgoingRatingService: OutgoingRatingChangeService(),
+                                                  auditLogginProtocol: AuditLogginService.shared)
     }
 
     /// Start observing the appSettings

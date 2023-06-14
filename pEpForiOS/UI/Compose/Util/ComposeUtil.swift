@@ -243,18 +243,6 @@ struct ComposeUtil {
             message.replaceAttachments(with: inlinedAttachments + nonInlinedAttachments)
             result = message
         }
-#if !EXT_SHARE
-        if let message = result {
-            let subject = message.shortMessage ?? ""
-            let senderId = message.from?.userID ?? "N/A"
-            let maxLogSize = MDMUtil.isEnabled() ? AppSettings.shared.mdmAuditLogginMaxFileSize : AppSettings.shared.auditLogginSize
-            let rating = message.pEpRatingDescription
-            AuditLogUtil.shared.log(subject: subject,
-                                    senderId: senderId,
-                                    rating: rating,
-                                    maxLogSize: maxLogSize)
-        }
-#endif
 
         return result
     }

@@ -655,6 +655,7 @@
 		F70AE5C129B7394900D0CC48 /* TrustBannerViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F70AE5C029B7394900D0CC48 /* TrustBannerViewController.swift */; };
 		F73E4F72217F238300CCFFED /* FolderSectionViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = F73E4F71217F238300CCFFED /* FolderSectionViewModelTests.swift */; };
 		F73E4F7A2180744700CCFFED /* FolderCellViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = F73E4F792180744700CCFFED /* FolderCellViewModelTests.swift */; };
+		F75D01D22A39ABEA00805DEF /* AuditLogginService.swift in Sources */ = {isa = PBXBuildFile; fileRef = F75D01D12A39ABEA00805DEF /* AuditLogginService.swift */; };
 		F779D6012A2F28E60069381E /* AuditLogginViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F779D6002A2F28E60069381E /* AuditLogginViewController.swift */; };
 		F779D6032A2F29130069381E /* AuditLoginViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = F779D6022A2F29130069381E /* AuditLoginViewModel.swift */; };
 		F779D6052A2F4DF60069381E /* AuditLogginTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = F779D6042A2F4DF60069381E /* AuditLogginTableViewCell.swift */; };
@@ -1250,6 +1251,7 @@
 		F70AE5C029B7394900D0CC48 /* TrustBannerViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TrustBannerViewController.swift; sourceTree = "<group>"; };
 		F73E4F71217F238300CCFFED /* FolderSectionViewModelTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FolderSectionViewModelTests.swift; sourceTree = "<group>"; };
 		F73E4F792180744700CCFFED /* FolderCellViewModelTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FolderCellViewModelTests.swift; sourceTree = "<group>"; };
+		F75D01D12A39ABEA00805DEF /* AuditLogginService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuditLogginService.swift; sourceTree = "<group>"; };
 		F779D6002A2F28E60069381E /* AuditLogginViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuditLogginViewController.swift; sourceTree = "<group>"; };
 		F779D6022A2F29130069381E /* AuditLoginViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuditLoginViewModel.swift; sourceTree = "<group>"; };
 		F779D6042A2F4DF60069381E /* AuditLogginTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuditLogginTableViewCell.swift; sourceTree = "<group>"; };
@@ -2323,6 +2325,7 @@
 				43E58EB21CBF8301008AA7A7 /* Models */,
 				43ED53611CC77F95006AB156 /* UI */,
 				43980EDE1CBD24B000A7FC3C /* Util */,
+				F75D01D42A39ABF300805DEF /* AuditLogginService */,
 				1543B6A022AACA2B002B59AB /* KeySync */,
 				5BEF9A8B28C8D1F90073A3B4 /* OutgoingRatingChange */,
 				43B10C7E1EC2EE65003E849F /* cpp */,
@@ -3069,6 +3072,14 @@
 			path = Folder;
 			sourceTree = "<group>";
 		};
+		F75D01D42A39ABF300805DEF /* AuditLogginService */ = {
+			isa = PBXGroup;
+			children = (
+				F75D01D12A39ABEA00805DEF /* AuditLogginService.swift */,
+			);
+			path = AuditLogginService;
+			sourceTree = "<group>";
+		};
 		F779D5FF2A2F28C40069381E /* AuditLoggin */ = {
 			isa = PBXGroup;
 			children = (
@@ -3711,6 +3722,7 @@
 				B7CE922E24E3FC7600B5A874 /* EditSignatureViewController.swift in Sources */,
 				5B102FAB2652A1F400A758D2 /* MessageHeaderCell.swift in Sources */,
 				5BBE80CF24B733C0008DE0E5 /* AccountSettingsTableViewCell.swift in Sources */,
+				F75D01D22A39ABEA00805DEF /* AuditLogginService.swift in Sources */,
 				A1B50A841CD26FF100B1A997 /* Constants.swift in Sources */,
 				5B21989A28BDFAE600668445 /* MDMSettingsProtocol.swift in Sources */,
 				5BF90036262F2517005B08D4 /* NSNotificationName+Settings.swift in Sources */,

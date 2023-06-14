@@ -15,10 +15,13 @@ class DecryptMessageOperation: BaseOperation {
     private let moc: NSManagedObjectContext
     private let cdMessageToDecryptObjectId: NSManagedObjectID
     private var processedCdMessaage: CdMessage?
+    weak private var auditLogginProtocol: AuditLogginProtocol?
 
     init(parentName: String = #file + " - " + #function,
          cdMessageToDecryptObjectId: NSManagedObjectID,
-         errorContainer: ErrorContainerProtocol = ErrorPropagator()) {
+         errorContainer: ErrorContainerProtocol = ErrorPropagator(),
+         auditLogginProtocol: AuditLogginProtocol? = nil) {
+        self.auditLogginProtocol = auditLogginProtocol
         self.cdMessageToDecryptObjectId = cdMessageToDecryptObjectId
         moc = Stack.shared.newPrivateConcurrentContext
         super.init(parentName: parentName, errorContainer: errorContainer)
@@ -57,6 +60,13 @@ extension DecryptMessageOperation {
             /// Valid case, the message or the account is already deleted.
             return
         }
+
+        // Audit Log on decryption
+        let subject = msg.shortMessage ?? ""
+        let senderId = msg.from?.userID ?? "N/A"
+        let rating = cdMessageToDecrypt.pEpRating.description
+        auditLogginProtocol?.log(subject: subject, senderId: senderId, rating: rating)
+        
         var inOutFlags = cdMessageToDecrypt.isOnTrustedServer ? PEPDecryptFlags.none : .untrustedServer
         var inOutMessage = cdMessageToDecrypt.pEpMessage()
         var fprsOfExtraKeys = CdExtraKey.fprsOfAllExtraKeys(in: moc)

@@ -22,6 +22,7 @@ class EncryptAndSMTPSendMessageOperation: ConcurrentBaseOperation {
     private var cdMessage: CdMessage? = nil
     private let cdMessageToSendObjectId: NSManagedObjectID
     weak private var encryptionErrorDelegate: EncryptionErrorDelegate?
+    weak private var auditLogginProtocol: AuditLogginProtocol?
 
     // MARK: - API
 
@@ -29,10 +30,13 @@ class EncryptAndSMTPSendMessageOperation: ConcurrentBaseOperation {
          cdMessageToSendObjectId: NSManagedObjectID,
          smtpConnection: SmtpConnectionProtocol,
          errorContainer: ErrorContainerProtocol = ErrorPropagator(),
-         encryptionErrorDelegate: EncryptionErrorDelegate? = nil) {
+         encryptionErrorDelegate: EncryptionErrorDelegate? = nil,
+         auditLogginProtocol: AuditLogginProtocol? = nil) {
+        
         self.cdMessageToSendObjectId = cdMessageToSendObjectId
         self.smtpConnection = smtpConnection
         self.encryptionErrorDelegate = encryptionErrorDelegate
+        self.auditLogginProtocol = auditLogginProtocol
         super.init(parentName: parentName, errorContainer: errorContainer)
     }
 
@@ -77,6 +81,12 @@ extension EncryptAndSMTPSendMessageOperation {
         }
 
         let extraKeys = CdExtraKey.fprsOfAllExtraKeys(in: privateMOC)
+
+        // Audit Log on encryption
+        let subject = pEpMsg.shortMessage ?? ""
+        let senderId = pEpMsg.from?.userID ?? "N/A"
+        let rating = cdMessage.pEpRating.description
+        auditLogginProtocol?.log(subject: subject, senderId: senderId, rating: rating)
 
         PEPUtils.encrypt(pEpMessage: pEpMsg,
                          encryptionFormat: cdMessage.pEpProtected ? .PEP : .none,
@@ -156,7 +166,7 @@ extension EncryptAndSMTPSendMessageOperation {
                 // Backgound: this may cause showing yellow or green for a message that could not
                 // be encrypted!
                 // See IOS-2823
-                cdMessage.pEpRating = Int16(blockingGetOutgoingMessageRating(for: cdMessage).rawValue)
+                cdMessage.pEpRating = Int16(me.blockingGetOutgoingMessageRating(for: cdMessage).rawValue)
             }
 
             cdMessage.createFakeMessage(context: me.privateMOC)

@@ -60,10 +60,10 @@ class AuditLoginViewModel {
         AppSettings.shared.auditLogginSize = size
     }
     
-    public var currentaAditLogginSize : Double = 1
+    public var currentAuditLogginSize : Double = 1
 
     public func shouldEnableSaveButton(newValue : Double) -> Bool {
-        currentaAditLogginSize = newValue
+        currentAuditLogginSize = newValue
         return newValue >= 1 && newValue <= 5
     }
     
