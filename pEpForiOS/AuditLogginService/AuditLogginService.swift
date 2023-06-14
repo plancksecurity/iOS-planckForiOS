@@ -17,8 +17,8 @@ class AuditLogginService: AuditLogginProtocol {
     
     static public let shared = AuditLogginService()
 
-    func log(subject: String, senderId: String, rating: String) {
+    func log(timestamp: String, subject: String, senderId: String, rating: String) {
         let maxLogSize = MDMUtil.isEnabled() ? AppSettings.shared.mdmAuditLogginMaxFileSize : AppSettings.shared.auditLogginSize
-        AuditLogUtil.shared.log(subject: subject, senderId: senderId, rating: rating, maxLogSize: maxLogSize)
+        AuditLogUtil.shared.log(timestamp: timestamp, subject: subject, senderId: senderId, rating: rating, maxLogSize: maxLogSize)
     }
 }

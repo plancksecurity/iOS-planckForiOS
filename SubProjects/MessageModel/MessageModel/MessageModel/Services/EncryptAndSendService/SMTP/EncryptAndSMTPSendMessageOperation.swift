@@ -111,7 +111,8 @@ extension EncryptAndSMTPSendMessageOperation {
                         let subject = encryptedMessageToSend.shortMessage ?? ""
                         let senderId = encryptedMessageToSend.from?.address ?? "N/A"
                         let newRating = Rating(pEpRating: me.blockingGetOutgoingMessageRating(for: cdMessage)).toString()
-                        me.auditLogginProtocol?.log(subject: subject, senderId: senderId, rating: newRating)
+                        let timestamp = String(describing: encryptedMessageToSend.sentDate?.timeIntervalSince1970)
+                        me.auditLogginProtocol?.log(timestamp: timestamp, subject: subject, senderId: senderId, rating: newRating)
                     }
                 }
             }

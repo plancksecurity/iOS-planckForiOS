@@ -11,7 +11,7 @@ import Foundation
 public protocol AuditLogUtilProtocol: AnyObject {
     
     /// Save the log. If the file exceeds the limit size, the first entry of the log file will be deleted.
-    func log(subject: String, senderId: String, rating: String, maxLogSize: Double)
+    func log(timestamp: String, subject: String, senderId: String, rating: String, maxLogSize: Double)
 }
 
 public class AuditLogUtil: NSObject, AuditLogUtilProtocol {
@@ -34,13 +34,13 @@ public class AuditLogUtil: NSObject, AuditLogUtilProtocol {
         self.fileExportUtil = fileExportUtil
     }
 
-    public func log(subject: String, senderId: String, rating: String, maxLogSize: Double) {
+    public func log(timestamp: String, subject: String, senderId: String, rating: String, maxLogSize: Double) {
         savingLogsQueue.addOperation { [weak self] in
             guard let me = self else {
                 //Valid case, nothing to do.
                 return
             }
-            let auditLog = AuditLog(subject: subject, senderId: senderId, rating: rating)
+            let auditLog = AuditLog(timestamp: timestamp, subject: subject, senderId: senderId, rating: rating)
             me.fileExportUtil.save(auditLog: auditLog, maxLogSize: maxLogSize)
         }
     }

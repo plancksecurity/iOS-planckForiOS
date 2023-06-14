@@ -8,7 +8,6 @@
 
 import Foundation
 import PlanckToolbox
-import pEp4iosIntern
 
 public struct AuditLog {
     
@@ -16,18 +15,6 @@ public struct AuditLog {
     var subject: String
     var senderId: String
     var rating: String
-    
-    public init(subject: String, senderId: String, rating: String) {
-        self.timestamp = String(Date().timeIntervalSince1970)
-        self.subject = subject
-        self.senderId = senderId
-        self.rating = rating
-    }
-
-    public init(timestamp: String, subject: String, senderId: String, rating: String) {
-        self.init(subject: subject, senderId: senderId, rating: rating)
-        self.timestamp = timestamp
-    }
 
     public var entry: String {
         return "\(timestamp), \(subject), \(senderId), \(rating)"

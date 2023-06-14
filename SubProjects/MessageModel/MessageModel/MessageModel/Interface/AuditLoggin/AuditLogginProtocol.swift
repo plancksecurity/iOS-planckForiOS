@@ -14,5 +14,5 @@ import Foundation
 public protocol AuditLogginProtocol: AnyObject {
 
     /// Save the audit log.
-    func log(subject: String, senderId: String, rating: String)
+    func log(timestamp: String, subject: String, senderId: String, rating: String)
 }
