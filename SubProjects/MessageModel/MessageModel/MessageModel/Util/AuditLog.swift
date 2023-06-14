@@ -30,6 +30,6 @@ public struct AuditLog {
     }
 
     public var entry: String {
-        return "\(timestamp), \(subject), \(senderId), \(rating) \n"
+        return "\(timestamp), \(subject), \(senderId), \(rating)"
     }
 }

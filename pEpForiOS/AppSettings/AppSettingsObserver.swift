@@ -50,6 +50,8 @@ class AppSettingsObserver {
         //Make sure we have same values for MDM-less.
         AppSettings.shared.usePEPFolderEnabled = AppSettings.shared.mdmPEPSyncFolderEnabled
 
+        AppSettings.shared.auditLogginSize = AppSettings.shared.mdmAuditLogginMaxFileSize
+
         // In MDM, we have mdmPEPSyncAccountEnabled and additionally mdmPEPSyncNewDevicesEnabled.
         // In non-mdm, keySyncEnabled is both in one.
         AppSettings.shared.keySyncEnabled = AppSettings.shared.mdmPEPSyncAccountEnabled && AppSettings.shared.mdmPEPSyncNewDevicesEnabled

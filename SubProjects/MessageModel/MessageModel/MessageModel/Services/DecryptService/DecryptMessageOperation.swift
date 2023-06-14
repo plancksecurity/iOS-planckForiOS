@@ -65,8 +65,10 @@ extension DecryptMessageOperation {
         let subject = msg.shortMessage ?? ""
         let senderId = msg.from?.userID ?? "N/A"
         let rating = cdMessageToDecrypt.pEpRating.description
-        auditLogginProtocol?.log(subject: subject, senderId: senderId, rating: rating)
-        
+        if !msg.isAutoConsumable {
+            auditLogginProtocol?.log(subject: subject, senderId: senderId, rating: rating)
+        }
+
         var inOutFlags = cdMessageToDecrypt.isOnTrustedServer ? PEPDecryptFlags.none : .untrustedServer
         var inOutMessage = cdMessageToDecrypt.pEpMessage()
         var fprsOfExtraKeys = CdExtraKey.fprsOfAllExtraKeys(in: moc)
