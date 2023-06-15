@@ -10,13 +10,16 @@ import Foundation
 import PlanckToolbox
 
 public struct AuditLog {
-    
+    // Timestamp of the moment where the message was rated
     var timestamp: String
+    // Email subject
     var subject: String
+    // The email address
     var senderId: String
+    // The email rating
     var rating: String
-
-    public var entry: String {
+    // The CSV entry
+    var entry: String {
         return "\(timestamp), \(subject), \(senderId), \(rating)"
     }
 }
