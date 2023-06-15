@@ -98,7 +98,7 @@ extension DecryptMessageOperation {
                     Log.shared.errorAndCrash("Lost myself")
                     return
                 }
-                let timestamp = String(describing: pEpDecryptedMsg.sentDate?.timeIntervalSince1970)
+                let timestamp = String(describing: Date().timeIntervalSince1970)
                 me.auditLogginProtocol?.log(timestamp: timestamp, subject: subject, senderId: senderId, rating: newRating)
             }
             group.leave()

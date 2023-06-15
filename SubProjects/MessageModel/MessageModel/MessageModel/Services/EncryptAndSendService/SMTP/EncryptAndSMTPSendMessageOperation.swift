@@ -105,13 +105,12 @@ extension EncryptAndSMTPSendMessageOperation {
                 me.privateMOC.perform {
                     me.setOriginalRatingHeader(unencryptedCdMessage: cdMessage)
                     me.send(pEpMessage: encryptedMessageToSend)
-
                     if !cdMessage.isFakeMessage && !cdMessage.isAutoConsumable {
                         // Audit Log on encryption
                         let subject = encryptedMessageToSend.shortMessage ?? ""
                         let senderId = encryptedMessageToSend.from?.address ?? "N/A"
                         let newRating = Rating(pEpRating: me.blockingGetOutgoingMessageRating(for: cdMessage)).toString()
-                        let timestamp = String(describing: encryptedMessageToSend.sentDate?.timeIntervalSince1970)
+                        let timestamp = String(describing: Date().timeIntervalSince1970)
                         me.auditLogginProtocol?.log(timestamp: timestamp, subject: subject, senderId: senderId, rating: newRating)
                     }
                 }
