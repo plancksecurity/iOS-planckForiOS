@@ -38,7 +38,7 @@ final class KeySyncHandshakeViewModel {
 
     weak var delegate: KeySyncHandshakeViewModelDelegate?
     var fullTrustWords = false //Internal since testing
-    private var languageCode = Locale.current.languageCode ?? "en"
+    private var languageCode: String = Locale.current.languageCode == "de" ? "de" : "en"
 
     /// The email address of the account this is doing the key sync
     private var email: String?
