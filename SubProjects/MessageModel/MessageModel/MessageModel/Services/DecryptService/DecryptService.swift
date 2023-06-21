@@ -12,14 +12,14 @@ import PlanckToolbox
 
 class DecryptService: QueryBasedService<CdMessage> {
 
-    weak private var auditLogginProtocol: AuditLogginProtocol?
+    weak private var auditLoggingProtocol: AuditLoggingProtocol?
 
     ///   see Service.init for docs
     required init(backgroundTaskManager: BackgroundTaskManagerProtocol? = nil,
                   errorPropagator: ErrorPropagator?,
-                  auditLogginProtocol: AuditLogginProtocol? = nil) {
+                  auditLoggingProtocol: AuditLoggingProtocol? = nil) {
 
-        self.auditLogginProtocol = auditLogginProtocol
+        self.auditLoggingProtocol = auditLoggingProtocol
 
         // Should run concurrently. serial == true as the Engine can not deal with concurrent calls
         // to the same function.
@@ -45,7 +45,7 @@ class DecryptService: QueryBasedService<CdMessage> {
             for cdMessageToDecrypt in cdMessagesToDecrypt {
                 let decryptOP = DecryptMessageOperation(cdMessageToDecryptObjectId: cdMessageToDecrypt.objectID,
                                                         errorContainer: me.errorPropagator,
-                                                        auditLogginProtocol: me.auditLogginProtocol)
+                                                        auditLoggingProtocol: me.auditLoggingProtocol)
                 createes.append(decryptOP)
             }
         }

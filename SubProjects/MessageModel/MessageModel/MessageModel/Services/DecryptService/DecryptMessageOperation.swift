@@ -15,13 +15,13 @@ class DecryptMessageOperation: BaseOperation {
     private let moc: NSManagedObjectContext
     private let cdMessageToDecryptObjectId: NSManagedObjectID
     private var processedCdMessaage: CdMessage?
-    weak private var auditLogginProtocol: AuditLogginProtocol?
+    weak private var auditLoggingProtocol: AuditLoggingProtocol?
 
     init(parentName: String = #file + " - " + #function,
          cdMessageToDecryptObjectId: NSManagedObjectID,
          errorContainer: ErrorContainerProtocol = ErrorPropagator(),
-         auditLogginProtocol: AuditLogginProtocol? = nil) {
-        self.auditLogginProtocol = auditLogginProtocol
+         auditLoggingProtocol: AuditLoggingProtocol? = nil) {
+        self.auditLoggingProtocol = auditLoggingProtocol
         self.cdMessageToDecryptObjectId = cdMessageToDecryptObjectId
         moc = Stack.shared.newPrivateConcurrentContext
         super.init(parentName: parentName, errorContainer: errorContainer)
@@ -76,7 +76,7 @@ extension DecryptMessageOperation {
         PEPSession().decryptMessage(inOutMessage, flags: inOutFlags, extraKeys: fprsOfExtraKeys, errorCallback: { (error) in
             nsError = error as NSError
             group.leave()
-        }) { [weak self] (pEpSourceMessage, pEpDecryptedMsg, keyList, rating, decryptFlags, isFormerlyEncryptedReuploadedMessage) in
+        }) { (pEpSourceMessage, pEpDecryptedMsg, keyList, rating, decryptFlags, isFormerlyEncryptedReuploadedMessage) in
             inOutMessage = pEpSourceMessage
             pEpDecryptedMessage = pEpDecryptedMsg
             fprsOfExtraKeys = keyList
@@ -85,21 +85,18 @@ extension DecryptMessageOperation {
             isAFormerlyEncryptedReuploadedMessage = isFormerlyEncryptedReuploadedMessage
             
             // Audit Log on decryption
-            let subject = pEpDecryptedMsg.shortMessage ?? ""
             let senderId = pEpDecryptedMsg.from?.address ?? "N/A"
-            
+
+            let timestamp = String(describing: Date().timeIntervalSince1970)
             guard let pEpRating = PEPRating(rawValue: rating.rawValue) else {
+                Log.shared.errorAndCrash("Invalid rating")
+                self.auditLoggingProtocol?.log(senderId: senderId, rating: "N/A")
                 group.leave()
                 return
             }
             let newRating = Rating(pEpRating:pEpRating).toString()
             if !msg.isAutoConsumable && !msg.isFakeMessage {
-                guard let me = self else {
-                    Log.shared.errorAndCrash("Lost myself")
-                    return
-                }
-                let timestamp = String(describing: Date().timeIntervalSince1970)
-                me.auditLogginProtocol?.log(timestamp: timestamp, subject: subject, senderId: senderId, rating: newRating)
+                self.auditLoggingProtocol?.log(senderId: senderId, rating: newRating)
             }
             group.leave()
         }

@@ -91,7 +91,7 @@ final class SettingsViewModel {
                 .groupMailboxes,
                 .deviceGroups,
                 .about,
-                .auditLoggin:
+                .auditLogging:
             return "SettingsCell"
         case .resetAccounts:
             return "SettingsActionCell"
@@ -166,8 +166,8 @@ final class SettingsViewModel {
         return PGPKeyImportSettingViewModel()
     }
 
-    public func auditLoginViewModel() -> AuditLoginViewModel {
-        return AuditLoginViewModel()
+    public func auditLoggingViewModel() -> AuditLoggingViewModel {
+        return AuditLoggingViewModel()
     }
     
     /// Handle export databases pressed
@@ -276,7 +276,7 @@ extension SettingsViewModel {
                 rows.append(generateNavigationRow(type: .credits, isDangerous: false))
                 rows.append(generateNavigationRow(type: .userManual, isDangerous: false))
                 rows.append(generateNavigationRow(type: .termsAndConditions, isDangerous: false))
-                rows.append(generateNavigationRow(type: .auditLoggin, isDangerous: false))
+                rows.append(generateNavigationRow(type: .auditLogging, isDangerous: false))
                 rows.append(generateSwitchRow(type: .unsecureReplyWarningEnabled,
                                               isDangerous: false,
                                               isOn: AppSettings.shared.unsecureReplyWarningEnabled) {  [weak self]
@@ -471,7 +471,7 @@ extension SettingsViewModel {
             return NSLocalizedString("Device Groups", comment: "setting row title: Device Groups")
         case .about:
             return NSLocalizedString("About", comment: "setting row title: About")
-        case .auditLoggin:
+        case .auditLogging:
             return NSLocalizedString("Audit Loggin", comment: "setting row title: Audit Loggin")
         }
     }
@@ -501,7 +501,7 @@ extension SettingsViewModel {
                 .groupMailboxes,
                 .deviceGroups,
                 .about,
-                .auditLoggin:
+                .auditLogging:
             return nil
         }
     }
@@ -630,7 +630,7 @@ extension SettingsViewModel {
         case resetTrust
         case extraKeys
         case exportDBs  // This will not be shown. For further info see: EFI-24
-        case auditLoggin
+        case auditLogging
         case userManual
         case termsAndConditions
         case groupMailboxes

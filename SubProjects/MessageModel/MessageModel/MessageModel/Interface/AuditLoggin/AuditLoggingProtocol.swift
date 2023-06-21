@@ -1,5 +1,5 @@
 //
-//  AuditLogginProtocol.swift
+//  AuditLoggingProtocol.swift
 //  MessageModel
 //
 //  Created by Martin Brude on 14/6/23.
@@ -11,8 +11,8 @@ import Foundation
 /// Protocol that communicates MM with PlanckForiOS
 /// The events to log happen in MM.
 /// There are values we need from PlanckForiOS.
-public protocol AuditLogginProtocol: AnyObject {
+public protocol AuditLoggingProtocol: AnyObject {
 
     /// Save the audit log.
-    func log(timestamp: String, subject: String, senderId: String, rating: String)
+    func log(senderId: String, rating: String)
 }

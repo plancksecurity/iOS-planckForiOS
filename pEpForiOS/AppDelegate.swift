@@ -68,7 +68,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
                                                   passphraseProvider: userInputProvider,
                                                   encryptionErrorDelegate: encryptionErrorHandler,
                                                   outgoingRatingService: OutgoingRatingChangeService(),
-                                                  auditLogginProtocol: AuditLogginService.shared)
+                                                  auditLoggingProtocol: AuditLoggingService.shared)
     }
 
     /// Start observing the appSettings
@@ -123,7 +123,6 @@ extension AppDelegate {
             result = handleUrlTheOSHasBroughtUsToForgroundFor(openedToOpenFile)
         }
         self.reachabilityManager = ReachabilityManager.shared
-
         return result
     }
 
@@ -184,6 +183,7 @@ extension AppDelegate {
         messageModelService?.stop()
         // Make sure we do not permanently disable auto locking
         UIApplication.shared.enableAutoLockingDevice()
+        AuditLoggingUtil.shared.logEvent(maxLogTime: AppSettings.shared.auditLoggingTime, auditLoggerEvent: .stop)
     }
 
     func application(_ application: UIApplication,

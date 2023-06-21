@@ -92,7 +92,7 @@ extension AppSettings {
         defaults[AppSettings.keyUnsecureReplyWarningEnabled] = true
         defaults[AppSettings.keyAccountSignature] = [String:String]()
         defaults[AppSettings.keyVerboseLogginEnabled] = false
-        defaults[AppSettings.keyAuditLoggingSize] = 1 // 1 MB is the default size. 
+        defaults[AppSettings.keyAuditLogginggTime] = 30 // 30 days is the default time
 
         // TODO:
         // The languages restriction to English (en) and German (de) is clearly not the default.

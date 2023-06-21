@@ -1,5 +1,5 @@
 //
-//  AuditLogginService.swift
+//  AuditLoggingService.swift
 //  planckForiOS
 //
 //  Created by Martin Brude on 14/6/23.
@@ -13,12 +13,19 @@ import MessageModelForAppExtensions
 import MessageModel
 #endif
 
-class AuditLogginService: AuditLogginProtocol {
-    
-    static public let shared = AuditLogginService()
+class AuditLoggingService: AuditLoggingProtocol {
 
-    func log(timestamp: String, subject: String, senderId: String, rating: String) {
-        let maxLogSize = MDMUtil.isEnabled() ? AppSettings.shared.mdmAuditLogginMaxFileSize : AppSettings.shared.auditLogginSize
-        AuditLogUtil.shared.log(timestamp: timestamp, subject: subject, senderId: senderId, rating: rating, maxLogSize: maxLogSize)
+    static public let shared = AuditLoggingService()
+    
+    init() {
+        AuditLoggingService.log(event: .start)
+    }
+
+    func log(senderId: String, rating: String) {
+        AuditLoggingUtil.shared.log(senderId: senderId, rating: rating, maxLogTime: AppSettings.shared.auditLoggingTime)
+    }
+
+    static func log(event: AuditLoggerEvent) {
+        AuditLoggingUtil.shared.logEvent(maxLogTime: AppSettings.shared.auditLoggingTime, auditLoggerEvent: event)
     }
 }

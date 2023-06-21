@@ -22,7 +22,7 @@ class EncryptAndSMTPSendMessageOperation: ConcurrentBaseOperation {
     private var cdMessage: CdMessage? = nil
     private let cdMessageToSendObjectId: NSManagedObjectID
     weak private var encryptionErrorDelegate: EncryptionErrorDelegate?
-    weak private var auditLogginProtocol: AuditLogginProtocol?
+    weak private var auditLoggingProtocol: AuditLoggingProtocol?
 
     // MARK: - API
 
@@ -31,12 +31,12 @@ class EncryptAndSMTPSendMessageOperation: ConcurrentBaseOperation {
          smtpConnection: SmtpConnectionProtocol,
          errorContainer: ErrorContainerProtocol = ErrorPropagator(),
          encryptionErrorDelegate: EncryptionErrorDelegate? = nil,
-         auditLogginProtocol: AuditLogginProtocol? = nil) {
+         auditLoggingProtocol: AuditLoggingProtocol? = nil) {
         
         self.cdMessageToSendObjectId = cdMessageToSendObjectId
         self.smtpConnection = smtpConnection
         self.encryptionErrorDelegate = encryptionErrorDelegate
-        self.auditLogginProtocol = auditLogginProtocol
+        self.auditLoggingProtocol = auditLoggingProtocol
         super.init(parentName: parentName, errorContainer: errorContainer)
     }
 
@@ -107,11 +107,9 @@ extension EncryptAndSMTPSendMessageOperation {
                     me.send(pEpMessage: encryptedMessageToSend)
                     if !cdMessage.isFakeMessage && !cdMessage.isAutoConsumable {
                         // Audit Log on encryption
-                        let subject = encryptedMessageToSend.shortMessage ?? ""
                         let senderId = encryptedMessageToSend.from?.address ?? "N/A"
                         let newRating = Rating(pEpRating: me.blockingGetOutgoingMessageRating(for: cdMessage)).toString()
-                        let timestamp = String(describing: Date().timeIntervalSince1970)
-                        me.auditLogginProtocol?.log(timestamp: timestamp, subject: subject, senderId: senderId, rating: newRating)
+                        me.auditLoggingProtocol?.log(senderId: senderId, rating: newRating)
                     }
                 }
             }

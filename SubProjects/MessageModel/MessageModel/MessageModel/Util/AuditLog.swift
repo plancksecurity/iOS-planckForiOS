@@ -9,17 +9,21 @@
 import Foundation
 import PlanckToolbox
 
-public struct AuditLog {
-    // Timestamp of the moment where the message was rated
-    var timestamp: String
-    // Email subject
-    var subject: String
-    // The email address
-    var senderId: String
-    // The email rating
-    var rating: String
-    // The CSV entry
-    var entry: String {
-        return "\(timestamp), \(subject), \(senderId), \(rating)"
+// Represents an entry
+public struct EventLog {
+    
+    init(_ content: [String]) {
+        self.content = content
     }
+
+    public private(set) var content: [String] = []
+    
+    mutating func add(_ newContent: String...) {
+        content.append(contentsOf: newContent)
+    }
+    
+    var entry: String {
+        return content.map { $0 } .joined(separator: ", ")
+    }
+
 }

@@ -14,7 +14,7 @@ protocol SendServiceProvider {
     func sendService(backgroundTaskManager: BackgroundTaskManagerProtocol?,
                      encryptionErrorDelegate: EncryptionErrorDelegate?,
                      errorPropagator: ErrorContainerProtocol,
-                     auditLogginProtocol: AuditLogginProtocol?) -> SendServiceProtocol?
+                     auditLoggingProtocol: AuditLoggingProtocol?) -> SendServiceProtocol?
 }
 
 /// Service that sends all messages to be send after starting it. It creates and manages one
@@ -25,13 +25,13 @@ protocol SendServiceProvider {
 /// * optionally `stop()` or `finish()`
 class EncryptAndSendService: PerAccountService {
     weak private var encryptionErrorDelegate: EncryptionErrorDelegate?
-    weak private var auditLogginProtocol: AuditLogginProtocol?
+    weak private var auditLoggingProtocol: AuditLoggingProtocol?
 
     required init(backgroundTaskManager: BackgroundTaskManagerProtocol? = nil,
                   encryptionErrorDelegate: EncryptionErrorDelegate? = nil,
                   errorPropagator: ErrorPropagator?,
-                  auditLogginProtocol: AuditLogginProtocol? = nil) {
-        self.auditLogginProtocol = auditLogginProtocol
+                  auditLoggingProtocol: AuditLoggingProtocol? = nil) {
+        self.auditLoggingProtocol = auditLoggingProtocol
         self.encryptionErrorDelegate = encryptionErrorDelegate
         super.init(backgroundTaskManager: backgroundTaskManager, errorPropagator: errorPropagator)
     }
@@ -45,17 +45,17 @@ class EncryptAndSendService: PerAccountService {
                        backgroundTaskManager: backgroundTaskManager,
                        encryptionErrorDelegate: encryptionErrorDelegate,
                        errorPropagator: errorPropagator,
-                       auditLogginProtocol: self.auditLogginProtocol)
+                       auditLoggingProtocol: self.auditLoggingProtocol)
     }
 
     func service(for cdAccount: CdAccount,
                  backgroundTaskManager: BackgroundTaskManagerProtocol,
                  encryptionErrorDelegate: EncryptionErrorDelegate? = nil,
                  errorPropagator: ErrorContainerProtocol,
-                 auditLogginProtocol: AuditLogginProtocol? = nil) -> ServiceProtocol? {
+                 auditLoggingProtocol: AuditLoggingProtocol? = nil) -> ServiceProtocol? {
         return cdAccount.sendService(backgroundTaskManager: backgroundTaskManager,
                                      encryptionErrorDelegate: encryptionErrorDelegate,
                                      errorPropagator: errorPropagator,
-                                     auditLogginProtocol: auditLogginProtocol)
+                                     auditLoggingProtocol: auditLoggingProtocol)
     }
 }

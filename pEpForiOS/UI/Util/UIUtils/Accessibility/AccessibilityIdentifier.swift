@@ -50,7 +50,6 @@ class AccessibilityIdentifier {
     static let showHideFoldersButton = "Show / Hide Folders Button"
     static let doneButton = "Done Button"
 
-
     // MARK: - Trust
 
     static let secureAndTrusted = "Secure and Trusted"

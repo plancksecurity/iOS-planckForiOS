@@ -2,7 +2,6 @@
 <document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="21701" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES" initialViewController="cPx-YX-3ty">
     <device id="retina5_5" orientation="portrait" appearance="light"/>
     <dependencies>
-        <deployment identifier="iOS"/>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="21678"/>
         <capability name="System colors in document resources" minToolsVersion="11.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
@@ -257,7 +256,7 @@
                         <segue destination="wka-er-mvR" kind="showDetail" identifier="segueShowSettingTrustedServers" id="i5L-Ua-Oj4"/>
                         <segue destination="Wos-ka-014" kind="showDetail" identifier="seguePgpKeyImport" id="e9p-en-4pb"/>
                         <segue destination="wd6-ee-alb" kind="showDetail" identifier="segueEditAccount" id="3qB-AE-EiK"/>
-                        <segue destination="XK0-ao-ycS" kind="showDetail" identifier="segueAuditLoggin" id="VJc-8q-Ny8"/>
+                        <segue destination="XK0-ao-ycS" kind="showDetail" identifier="segueAuditLogging" id="VJc-8q-Ny8"/>
                     </connections>
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="BPe-Zm-lKR" userLabel="First Responder" sceneMemberID="firstResponder"/>
@@ -365,10 +364,10 @@
             </objects>
             <point key="canvasLocation" x="207" y="-2068"/>
         </scene>
-        <!--Audit Loggin View Controller-->
+        <!--Audit Logging View Controller-->
         <scene sceneID="bUV-F2-UBT">
             <objects>
-                <viewController storyboardIdentifier="AuditLogginViewController" useStoryboardIdentifierAsRestorationIdentifier="YES" id="XK0-ao-ycS" customClass="AuditLogginViewController" customModule="pEpForiOS" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="AuditLoggingViewController" useStoryboardIdentifierAsRestorationIdentifier="YES" id="XK0-ao-ycS" customClass="AuditLoggingViewController" customModule="pEpForiOS" customModuleProvider="target" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="S5b-LK-EJN"/>
                         <viewControllerLayoutGuide type="bottom" id="XEb-Qc-mCw"/>
@@ -381,7 +380,7 @@
                                 <rect key="frame" x="0.0" y="64" width="414" height="672"/>
                                 <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                                 <prototypes>
-                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" restorationIdentifier="AuditLogginMaxSizeCellId" preservesSuperviewLayoutMargins="YES" selectionStyle="none" indentationWidth="10" reuseIdentifier="AuditLogginMaxSizeCellId" id="dxi-4V-dYs" userLabel="Audit Loggin Table View Cell" customClass="AuditLogginTableViewCell" customModule="pEpForiOS" customModuleProvider="target">
+                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" restorationIdentifier="AuditLoggingMaxTimeCellId" preservesSuperviewLayoutMargins="YES" selectionStyle="none" indentationWidth="10" reuseIdentifier="AuditLoggingMaxTimeCellId" id="dxi-4V-dYs" userLabel="Audit Loggin Table View Cell" customClass="AuditLoggingTableViewCell" customModule="pEpForiOS" customModuleProvider="target">
                                         <rect key="frame" x="0.0" y="50" width="414" height="42"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="dxi-4V-dYs" id="IXp-4l-eUH">

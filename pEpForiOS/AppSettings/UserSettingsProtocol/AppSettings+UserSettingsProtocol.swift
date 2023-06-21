@@ -34,7 +34,7 @@ extension AppSettings: UserSettingsProtocol {
     static let keyFolderViewAccountCollapsedState = "keyFolderViewAccountCollapsedState-162844EB-1F32-4F66-8F92-9B77664523F1"
     static let keyAcceptedLanguagesCodes = "acceptedLanguagesCodes"
 
-    static let keyAuditLoggingSize = "keyAuditLogSize"
+    static let keyAuditLogginggTime = "keyAuditLogTime"
 
     /// This structure keeps the collapsing state of folders and accounts.
     /// [AccountAddress: [ key: isCollapsedStatus ] ]
@@ -55,13 +55,13 @@ extension AppSettings: UserSettingsProtocol {
         }
     }
     
-    //Size in MB of the audit loggin file. 
-    public var auditLogginSize: Double {
+    // Time in days of the audit loggin file.
+    public var auditLoggingTime: Int {
         get {
-            return AppSettings.userDefaults.double(forKey: AppSettings.keyAuditLoggingSize)
+            return AppSettings.userDefaults.integer(forKey: AppSettings.keyAuditLogginggTime)
         }
         set {
-            AppSettings.userDefaults.set(newValue, forKey: AppSettings.keyAuditLoggingSize)
+            AppSettings.userDefaults.set(newValue, forKey: AppSettings.keyAuditLogginggTime)
         }
     }
     

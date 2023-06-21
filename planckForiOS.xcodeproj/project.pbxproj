@@ -658,7 +658,7 @@
 		F75D01D22A39ABEA00805DEF /* AuditLogginService.swift in Sources */ = {isa = PBXBuildFile; fileRef = F75D01D12A39ABEA00805DEF /* AuditLogginService.swift */; };
 		F779D6012A2F28E60069381E /* AuditLogginViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F779D6002A2F28E60069381E /* AuditLogginViewController.swift */; };
 		F779D6032A2F29130069381E /* AuditLoginViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = F779D6022A2F29130069381E /* AuditLoginViewModel.swift */; };
-		F779D6052A2F4DF60069381E /* AuditLogginTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = F779D6042A2F4DF60069381E /* AuditLogginTableViewCell.swift */; };
+		F779D6052A2F4DF60069381E /* AuditLoggingTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = F779D6042A2F4DF60069381E /* AuditLoggingTableViewCell.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -1254,7 +1254,7 @@
 		F75D01D12A39ABEA00805DEF /* AuditLogginService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuditLogginService.swift; sourceTree = "<group>"; };
 		F779D6002A2F28E60069381E /* AuditLogginViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuditLogginViewController.swift; sourceTree = "<group>"; };
 		F779D6022A2F29130069381E /* AuditLoginViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuditLoginViewModel.swift; sourceTree = "<group>"; };
-		F779D6042A2F4DF60069381E /* AuditLogginTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuditLogginTableViewCell.swift; sourceTree = "<group>"; };
+		F779D6042A2F4DF60069381E /* AuditLoggingTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuditLoggingTableViewCell.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -3084,7 +3084,7 @@
 			isa = PBXGroup;
 			children = (
 				F779D6002A2F28E60069381E /* AuditLogginViewController.swift */,
-				F779D6042A2F4DF60069381E /* AuditLogginTableViewCell.swift */,
+				F779D6042A2F4DF60069381E /* AuditLoggingTableViewCell.swift */,
 				F779D6022A2F29130069381E /* AuditLoginViewModel.swift */,
 			);
 			path = AuditLoggin;
@@ -3789,7 +3789,7 @@
 				438052871FE3E1B100ACF729 /* OAuth2AuthorizationFactoryProtocol.swift in Sources */,
 				4356FFE52135448600804089 /* ReplyAllPossibleChecker.swift in Sources */,
 				15146C8A237EE77A00D69495 /* SettingsInternalError.swift in Sources */,
-				F779D6052A2F4DF60069381E /* AuditLogginTableViewCell.swift in Sources */,
+				F779D6052A2F4DF60069381E /* AuditLoggingTableViewCell.swift in Sources */,
 				15255B031F825CD100A2CFC9 /* IdentityImageTool.swift in Sources */,
 				152A39D121905C3E00D9F8E4 /* AttachmentViewModel.swift in Sources */,
 				5BF753922979917600E4113B /* AppSettings+EnterpriseSettingsProtocol.swift in Sources */,

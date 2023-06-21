@@ -60,7 +60,7 @@ public final class MessageModelService {
                 passphraseProvider: PassphraseProviderProtocol,
                 encryptionErrorDelegate: EncryptionErrorDelegate,
                 outgoingRatingService: OutgoingRatingServiceProtocol,
-                auditLogginProtocol: AuditLogginProtocol?) {
+                auditLoggingProtocol: AuditLoggingProtocol?) {
         // Mega ugly, MUST go away. Fix with Stack update.
         // Touch Stack once to assure it sets up the mainContext on the main queue
         let _ = Stack.shared
@@ -75,7 +75,7 @@ public final class MessageModelService {
                       passphraseProvider: passphraseProvider,
                       encryptionErrorDelegate: encryptionErrorDelegate,
                       outgoingRatingService: outgoingRatingService,
-                      auditLogginProtocol: auditLogginProtocol)
+                      auditLoggingProtocol: auditLoggingProtocol)
     }
 }
 
@@ -110,7 +110,7 @@ extension MessageModelService {
                                passphraseProvider: PassphraseProviderProtocol,
                                encryptionErrorDelegate: EncryptionErrorDelegate,
                                outgoingRatingService: OutgoingRatingServiceProtocol,
-                               auditLogginProtocol: AuditLogginProtocol?) {
+                               auditLoggingProtocol: AuditLoggingProtocol?) {
         //###
         // Services that run only once when the app starts
         // (none at the moment)
@@ -119,11 +119,11 @@ extension MessageModelService {
         // Servcies that run while the app is running (Send, decrypt, replicate, ...)
         let decryptService = DecryptService(backgroundTaskManager: backgroundTaskManager,
                                             errorPropagator: errorPropagator,
-                                            auditLogginProtocol: auditLogginProtocol)
+                                            auditLoggingProtocol: auditLoggingProtocol)
         let encryptAndSendService = EncryptAndSendService(backgroundTaskManager: backgroundTaskManager,
                                                           encryptionErrorDelegate: encryptionErrorDelegate,
                                                           errorPropagator: errorPropagator,
-                                                          auditLogginProtocol: auditLogginProtocol)
+                                                          auditLoggingProtocol: auditLoggingProtocol)
         let replicationService = ReplicationService(backgroundTaskManager: backgroundTaskManager,
                                                        errorPropagator: errorPropagator)
         let keySyncService = KeySyncService(keySyncServiceHandshakeHandler: keySyncServiceHandshakeHandler,

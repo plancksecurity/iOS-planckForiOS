@@ -1,5 +1,5 @@
 //
-//  AuditLoginViewModel.swift
+//  AuditLoggingViewModel.swift
 //  planckForiOS
 //
 //  Created by Martin Brude on 6/6/23.
@@ -9,10 +9,10 @@
 import Foundation
 import PlanckToolbox
 
-extension AuditLoginViewModel {
+extension AuditLoggingViewModel {
 
     public enum RowType {
-        case maxSize
+        case maxTime
     }
 
     public struct Row {
@@ -30,9 +30,8 @@ extension AuditLoginViewModel {
     }
 }
 
-class AuditLoginViewModel {
-
-    public var size: Double = 1
+class AuditLoggingViewModel {
+    public var currentAuditLoggingTime : Int = 30
 
     public private(set) var sections = [Section]()
 
@@ -49,29 +48,29 @@ class AuditLoginViewModel {
         }
         setupSections()
     }
-    
+
     public var placeholder: String {
-        return String(AppSettings.shared.auditLogginSize)
+        let format = NSLocalizedString("%1$@ days.", comment: "Days that the audit logging will register")
+        let result = String.localizedStringWithFormat(format, String(AppSettings.shared.auditLoggingTime))
+        return result
     }
 
-    // The size of the audit log can be adjusted,
-    // a default value of 1MB can be defined through config/MDM settings
-    public func saveAuditLogSize() {
-        AppSettings.shared.auditLogginSize = size
+    // The time frame of the audit log can be adjusted,
+    // a default value of 30 days can be defined through config/MDM settings
+    public func saveAuditLogTime() {
+        AppSettings.shared.auditLoggingTime = currentAuditLoggingTime
     }
-    
-    public var currentAuditLogginSize : Double = 1
 
-    public func shouldEnableSaveButton(newValue : Double) -> Bool {
-        currentAuditLogginSize = newValue
-        return newValue >= 1 && newValue <= 5
+    public func shouldEnableSaveButton(newValue : Int) -> Bool {
+        currentAuditLoggingTime = newValue
+        return newValue >= 0
     }
-    
+
     private func setupSections() {
-        let title = NSLocalizedString("Audit Loggin file max size", comment: "AuditLogin Setting -  Audit Loggin file max size")
-        let row = Row(type: .maxSize, title: title)
-        let maxSizeRow = Section(rows: [row])
-        sections = [maxSizeRow]
+        let title = NSLocalizedString("Audit Loggin file max time", comment: "AuditLogging Setting -  Audit Loggin file max time")
+        let row = Row(type: .maxTime, title: title)
+        let maxTimeRow = Section(rows: [row])
+        sections = [maxTimeRow]
     }
 }
 

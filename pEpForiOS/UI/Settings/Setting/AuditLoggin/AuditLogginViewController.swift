@@ -1,5 +1,5 @@
 //
-//  AuditLogginViewController.swift
+//  AuditLoggingViewController.swift
 //  planckForiOS
 //
 //  Created by Martin Brude on 6/6/23.
@@ -9,13 +9,13 @@
 import UIKit
 import PlanckToolbox
 
-class AuditLogginViewController: UIViewController {
+class AuditLoggingViewController: UIViewController {
 
 
     @IBOutlet private weak var tableView: UITableView!
-    static private let maxSizeCellId = "AuditLogginMaxSizeCellId"
+    static private let maxTimeCellId = "AuditLoggingMaxTimeCellId"
 
-    public var viewModel: AuditLoginViewModel?
+    public var viewModel: AuditLoggingViewModel?
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -38,12 +38,12 @@ class AuditLogginViewController: UIViewController {
             Log.shared.errorAndCrash("No VM")
             return
         }
-        AppSettings.shared.auditLogginSize = vm.currentAuditLogginSize
+        AppSettings.shared.auditLoggingTime = vm.currentAuditLoggingTime
         navigationController?.popViewController(animated: true)
     }
 }
 
-extension AuditLogginViewController: UITableViewDelegate {
+extension AuditLoggingViewController: UITableViewDelegate {
 
     func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
         guard let headerView = tableView.dequeueReusableHeaderFooterView(withIdentifier: PEPHeaderView.reuseIdentifier) as? PEPHeaderView else {
@@ -51,12 +51,12 @@ extension AuditLogginViewController: UITableViewDelegate {
             return nil
         }
 
-        headerView.title = NSLocalizedString("The size of the audit log can be adjusted, the default and minimum value is 1MB. The maximum value is 5MB.", comment: "Header text")
+        headerView.title = NSLocalizedString("The audit log time frame can be adjusted, the default value is 30 days.", comment: "Header text")
         return headerView
     }
 }
 
-extension AuditLogginViewController: UITableViewDataSource {
+extension AuditLoggingViewController: UITableViewDataSource {
 
     func numberOfSections(in tableView: UITableView) -> Int {
         guard let vm = viewModel else {
@@ -81,10 +81,10 @@ extension AuditLogginViewController: UITableViewDataSource {
         }
         let row = vm.sections[indexPath.section].rows[indexPath.row]
         switch row.type {
-        case .maxSize:
-            guard let cell = tableView.dequeueReusableCell(withIdentifier: AuditLogginViewController.maxSizeCellId) as? AuditLogginTableViewCell else {
-                Log.shared.errorAndCrash("AuditLogginViewController not found")
-                return AuditLogginTableViewCell()
+        case .maxTime:
+            guard let cell = tableView.dequeueReusableCell(withIdentifier: AuditLoggingViewController.maxTimeCellId) as? AuditLoggingTableViewCell else {
+                Log.shared.errorAndCrash("AuditLoggingViewController not found")
+                return AuditLoggingTableViewCell()
             }
             cell.config(viewModel: vm)
             cell.delegate = self
@@ -93,8 +93,8 @@ extension AuditLogginViewController: UITableViewDataSource {
     }
 }
 
-extension AuditLogginViewController: AuditLogginDelegate {
-    func auditLogginValueDidChange(newValue: Double) {
+extension AuditLoggingViewController: AuditLoggingDelegate {
+    func auditLoggingValueDidChange(newValue: Int) {
         guard let vm = viewModel else {
             Log.shared.errorAndCrash("No VM")
             return

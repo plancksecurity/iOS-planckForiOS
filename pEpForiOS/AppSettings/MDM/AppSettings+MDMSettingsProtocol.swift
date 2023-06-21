@@ -38,7 +38,7 @@ extension AppSettings: MDMSettingsProtocol {
     static let keyMediaKeys = "pep_media_keys"
     static let keyEchoProtocolEnabled = "pep_enable_echo_protocol"
 
-    static let keyAuditLogginMaxFileSize = "auditLogginMaxFileSize"
+    static let keyAuditLoggingMaxFileTime = "auditLoggingMaxFileTime"
 
     //Not used
     static let keyDebugLoggingEnabled = "debug_logging"
@@ -53,12 +53,12 @@ extension AppSettings: MDMSettingsProtocol {
         }
     }
     
-    public var mdmAuditLogginMaxFileSize: Double {
+    public var mdmAuditLoggingMaxFileTime: Int {
         get {
-            guard let auditLogginMaxFileSize = mdmDictionary[AppSettings.keyAuditLogginMaxFileSize] as? Double else {
+            guard let auditLoggingMaxFileTime = mdmDictionary[AppSettings.keyAuditLoggingMaxFileTime] as? Int else {
                 return 1
             }
-            return auditLogginMaxFileSize
+            return auditLoggingMaxFileTime
         }
     }
 

@@ -155,7 +155,7 @@ extension SettingsTableViewController {
              .termsAndConditions,
              .extraKeys,
              .exportDBs,
-             .auditLoggin,
+             .auditLogging,
              .groupMailboxes,
              .deviceGroups,
              .about:
@@ -322,7 +322,7 @@ extension SettingsTableViewController : SwipeTableViewCellDelegate {
              .trustedServer,
              .credits,
              .defaultAccount,
-             .auditLoggin:
+             .auditLogging:
             let identifier = sequeIdentifier(forRowWithIdentifier: row.identifier).rawValue
             performSegue(withIdentifier: identifier, sender: indexPath)
             tableView.deselectRow(at: indexPath, animated: true)
@@ -446,7 +446,7 @@ extension SettingsTableViewController {
         case segueGroupMailboxes
         case segueDeviceGroups
         case segueAbout
-        case segueAuditLoggin
+        case segueAuditLogging
         /// Use for cells that do not segue, like switch cells
         case none
     }
@@ -479,8 +479,8 @@ extension SettingsTableViewController {
             return .none
         case .termsAndConditions:
             return .none
-        case .auditLoggin:
-            return .segueAuditLoggin
+        case .auditLogging:
+            return .segueAuditLogging
         }
     }
 
@@ -523,12 +523,12 @@ extension SettingsTableViewController {
                 return
             }
             destination.viewModel = viewModel.pgpKeyImportSettingViewModel()
-        case .segueAuditLoggin:
-            guard let destination = segue.destination as? AuditLogginViewController else {
+        case .segueAuditLogging:
+            guard let destination = segue.destination as? AuditLoggingViewController else {
                 Log.shared.errorAndCrash("No DVC")
                 return
             }
-            destination.viewModel = viewModel.auditLoginViewModel()
+            destination.viewModel = viewModel.auditLoggingViewModel()
         case .none:
             // It's all rows that never segue anywhere (e.g. SwitchRow). Thus this should never be called.
             Log.shared.errorAndCrash("Must not be called (prepares for segue for rows that are not supposed to segue anywhere).")
