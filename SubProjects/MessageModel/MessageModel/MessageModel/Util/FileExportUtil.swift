@@ -80,15 +80,15 @@ public class FileExportUtil: NSObject, FileExportUtilProtocol {
 // MARK: - Audit Loggin
 
 extension FileExportUtil {
-    
+
     public func save(auditEventLog: EventLog, maxLogTime: Int) {
         // 1. Check if the CSV file already exists.
-        let csvExists = csvExists()
+        let csvFileAlreadyExists = csvFileAlreadyExists()
 
         // 2. Craft the CVS.
         // - if it exists already, add a row.
         // - Otherwise, create it with the given row.
-        guard let csv = createCSV(auditEventLog: auditEventLog, fileAlreadyExists: csvExists, maxLogTime: maxLogTime) else {
+        guard let csv = createCSV(auditEventLog: auditEventLog, csvFileAlreadyExists: csvFileAlreadyExists, maxLogTime: maxLogTime) else {
             Log.shared.error("CSV not saved. Probably filepath not found")
             return
         }
@@ -97,11 +97,11 @@ extension FileExportUtil {
         do {
             guard let data = csv.data(using: .utf8),
                   let fileUrl = auditLoggingFilePath else {
-                Log.shared.errorAndCrash("Can't save cvs")
+                Log.shared.errorAndCrash("Can't save CSV file")
                 return
             }
             try data.write(to: fileUrl)
-            Log.shared.info("CSV successfully saved")
+            Log.shared.info("CSV file successfully saved")
         } catch {
             Log.shared.errorAndCrash(error: error)
         }
@@ -112,7 +112,7 @@ extension FileExportUtil {
 
 extension FileExportUtil {
 
-    private func csvExists() -> Bool {
+    private func csvFileAlreadyExists() -> Bool {
         do {
             let fileManager = FileManager.default
             guard let auditLoggingDestinationDirectoryURL = getAuditLoggingDestinationDirectoryURL() else {
@@ -144,10 +144,10 @@ extension FileExportUtil {
         }
     }
 
-    private func createCSV(auditEventLog: EventLog, fileAlreadyExists: Bool, maxLogTime: Int) -> String? {
+    private func createCSV(auditEventLog: EventLog, csvFileAlreadyExists: Bool, maxLogTime: Int) -> String? {
         var logs = [EventLog]()
         do {
-            if !fileAlreadyExists {
+            if !csvFileAlreadyExists {
                 return auditEventLog.entry
             } else {
                 guard let filePath = auditLoggingFilePath else {
@@ -179,7 +179,7 @@ extension FileExportUtil {
                 }
 
                 // All entries means: previous entries + current entry.
-                let previousEntries: [String] = logs.compactMap { $0.entry }
+                let previousEntries: [String] = logs.compactMap { $0.entry.trimmed() }
                 var allEntries = previousEntries
                 allEntries.append(auditEventLog.entry)
                 return allEntries.joined(separator: newLine)
