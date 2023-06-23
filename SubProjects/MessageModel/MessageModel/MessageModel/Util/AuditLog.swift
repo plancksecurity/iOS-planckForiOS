@@ -12,11 +12,11 @@ import PlanckToolbox
 // Represents an entry
 public struct EventLog {
     
+    private var content: [String] = []
+
     init(_ content: [String]) {
         self.content = content
     }
-
-    public private(set) var content: [String] = []
     
     mutating func add(_ newContent: String...) {
         content.append(contentsOf: newContent)
