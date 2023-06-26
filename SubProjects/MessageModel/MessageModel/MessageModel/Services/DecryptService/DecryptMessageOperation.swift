@@ -15,13 +15,13 @@ class DecryptMessageOperation: BaseOperation {
     private let moc: NSManagedObjectContext
     private let cdMessageToDecryptObjectId: NSManagedObjectID
     private var processedCdMessaage: CdMessage?
-    weak private var auditLoggingProtocol: AuditLoggingProtocol?
+    weak private var auditLogger: AuditLoggingProtocol?
 
     init(parentName: String = #file + " - " + #function,
          cdMessageToDecryptObjectId: NSManagedObjectID,
          errorContainer: ErrorContainerProtocol = ErrorPropagator(),
-         auditLoggingProtocol: AuditLoggingProtocol? = nil) {
-        self.auditLoggingProtocol = auditLoggingProtocol
+         auditLogger: AuditLoggingProtocol? = nil) {
+        self.auditLogger = auditLogger
         self.cdMessageToDecryptObjectId = cdMessageToDecryptObjectId
         moc = Stack.shared.newPrivateConcurrentContext
         super.init(parentName: parentName, errorContainer: errorContainer)
@@ -87,16 +87,14 @@ extension DecryptMessageOperation {
             // Audit Log on decryption
             let senderId = pEpDecryptedMsg.from?.address ?? "N/A"
 
-            let timestamp = String(describing: Date().timeIntervalSince1970)
-            guard let pEpRating = PEPRating(rawValue: rating.rawValue) else {
+            guard let rating = PEPRating(rawValue: rating.rawValue) else {
                 Log.shared.errorAndCrash("Invalid rating")
-                self.auditLoggingProtocol?.log(senderId: senderId, rating: "N/A")
+                self.auditLogger?.log(senderId: senderId, rating: "N/A")
                 group.leave()
                 return
             }
-            let newRating = Rating(pEpRating:pEpRating).toString()
             if !msg.isAutoConsumable && !msg.isFakeMessage {
-                self.auditLoggingProtocol?.log(senderId: senderId, rating: newRating)
+                self.auditLogger?.log(senderId: senderId, rating: Rating(pEpRating:rating).toString())
             }
             group.leave()
         }

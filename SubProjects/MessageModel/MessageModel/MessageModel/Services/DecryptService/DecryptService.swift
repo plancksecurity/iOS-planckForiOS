@@ -41,11 +41,10 @@ class DecryptService: QueryBasedService<CdMessage> {
                 return
             }
             let cdMessagesToDecrypt = me.results
-
             for cdMessageToDecrypt in cdMessagesToDecrypt {
                 let decryptOP = DecryptMessageOperation(cdMessageToDecryptObjectId: cdMessageToDecrypt.objectID,
                                                         errorContainer: me.errorPropagator,
-                                                        auditLoggingProtocol: me.auditLogger)
+                                                        auditLogger: me.auditLogger)
                 createes.append(decryptOP)
             }
         }
