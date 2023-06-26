@@ -17,7 +17,7 @@ extension CdAccount: SendServiceProvider {
     func sendService(backgroundTaskManager: BackgroundTaskManagerProtocol? = nil,
                      encryptionErrorDelegate: EncryptionErrorDelegate? = nil,
                      errorPropagator: ErrorContainerProtocol,
-                     auditLoggingProtocol: AuditLoggingProtocol? = nil) -> SendServiceProtocol? {
+                     auditLogger: AuditLoggingProtocol? = nil) -> SendServiceProtocol? {
         // Currently we do support SMTP only. When you are about to implement other protocols
         // (e.g. Acitve Sync), this var MUST return the appropriate service for the protocol.
         if let _ = server(type: .smtp) {
@@ -25,7 +25,7 @@ extension CdAccount: SendServiceProvider {
                                              cdAccount: self,
                                              encryptionErrorDelegate: encryptionErrorDelegate,
                                              errorPropagator: errorPropagator,
-                                             auditLoggingProtocol: auditLoggingProtocol)
+                                             auditLogger: auditLogger)
         } else {
             Log.shared.errorAndCrash("Send protocol yet unsupported. If the account does not use SMTP for sending, add impl here.")
         }

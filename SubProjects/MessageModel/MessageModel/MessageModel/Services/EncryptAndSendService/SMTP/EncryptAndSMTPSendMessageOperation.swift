@@ -22,7 +22,7 @@ class EncryptAndSMTPSendMessageOperation: ConcurrentBaseOperation {
     private var cdMessage: CdMessage? = nil
     private let cdMessageToSendObjectId: NSManagedObjectID
     weak private var encryptionErrorDelegate: EncryptionErrorDelegate?
-    weak private var auditLoggingProtocol: AuditLoggingProtocol?
+    weak private var auditLogger: AuditLoggingProtocol?
 
     // MARK: - API
 
@@ -31,12 +31,12 @@ class EncryptAndSMTPSendMessageOperation: ConcurrentBaseOperation {
          smtpConnection: SmtpConnectionProtocol,
          errorContainer: ErrorContainerProtocol = ErrorPropagator(),
          encryptionErrorDelegate: EncryptionErrorDelegate? = nil,
-         auditLoggingProtocol: AuditLoggingProtocol? = nil) {
+         auditLogger: AuditLoggingProtocol? = nil) {
         
         self.cdMessageToSendObjectId = cdMessageToSendObjectId
         self.smtpConnection = smtpConnection
         self.encryptionErrorDelegate = encryptionErrorDelegate
-        self.auditLoggingProtocol = auditLoggingProtocol
+        self.auditLogger = auditLogger
         super.init(parentName: parentName, errorContainer: errorContainer)
     }
 
@@ -108,8 +108,8 @@ extension EncryptAndSMTPSendMessageOperation {
                     if !cdMessage.isFakeMessage && !cdMessage.isAutoConsumable {
                         // Audit Log on encryption
                         let senderId = encryptedMessageToSend.from?.address ?? "N/A"
-                        let newRating = Rating(pEpRating: me.blockingGetOutgoingMessageRating(for: cdMessage)).toString()
-                        me.auditLoggingProtocol?.log(senderId: senderId, rating: newRating)
+                        let rating = Rating(pEpRating: me.blockingGetOutgoingMessageRating(for: cdMessage)).toString()
+                        me.auditLogger?.log(senderId: senderId, rating: rating)
                     }
                 }
             }

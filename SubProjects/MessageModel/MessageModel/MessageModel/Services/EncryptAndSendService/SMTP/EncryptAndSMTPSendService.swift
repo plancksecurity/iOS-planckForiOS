@@ -17,7 +17,7 @@ import PlanckToolbox
 /// * optionally `stop()` or `finish()`
 class EncryptAndSMTPSendService: QueryBasedService<CdMessage>, SendServiceProtocol {
     weak private var encryptionErrorDelegate: EncryptionErrorDelegate?
-    weak private var auditLoggingProtocol: AuditLoggingProtocol?
+    weak private var auditLogger: AuditLoggingProtocol?
 
     /// Creates a ready to go SMTP Encrypt and Send Service
     ///
@@ -30,10 +30,10 @@ class EncryptAndSMTPSendService: QueryBasedService<CdMessage>, SendServiceProtoc
          cdAccount: CdAccount,
          encryptionErrorDelegate: EncryptionErrorDelegate? = nil,
          errorPropagator: ErrorContainerProtocol?,
-         auditLoggingProtocol: AuditLoggingProtocol? = nil) {
+         auditLogger: AuditLoggingProtocol? = nil) {
         let predicate = CdMessage.PredicateFactory.outgoingMails(in: cdAccount)
         self.encryptionErrorDelegate = encryptionErrorDelegate
-        self.auditLoggingProtocol = auditLoggingProtocol
+        self.auditLogger = auditLogger
 
         super.init(useSerialQueue: true,
                    backgroundTaskManager: backgroundTaskManager,
@@ -80,7 +80,7 @@ class EncryptAndSMTPSendService: QueryBasedService<CdMessage>, SendServiceProtoc
                                                                 smtpConnection: smtpConnection,
                                                                 errorContainer: me.errorPropagator,
                                                                 encryptionErrorDelegate: me.encryptionErrorDelegate,
-                                                                auditLoggingProtocol: me.auditLoggingProtocol)
+                                                                auditLogger: me.auditLogger)
                 createes.append(sendOp)
             }
             // Add error handler

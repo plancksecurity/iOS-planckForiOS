@@ -68,7 +68,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
                                                   passphraseProvider: userInputProvider,
                                                   encryptionErrorDelegate: encryptionErrorHandler,
                                                   outgoingRatingService: OutgoingRatingChangeService(),
-                                                  auditLoggingProtocol: AuditLoggingService.shared)
+                                                  auditLogger: AuditLoggingService.shared)
     }
 
     /// Start observing the appSettings
