@@ -93,7 +93,7 @@ extension DecryptMessageOperation {
                 group.leave()
                 return
             }
-            if !msg.isAutoConsumable && !msg.isFakeMessage {
+            if msg.isLoggable {
                 self.auditLogger?.log(senderId: senderId, rating: Rating(pEpRating:rating).toString())
             }
             group.leave()

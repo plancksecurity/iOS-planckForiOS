@@ -11,4 +11,8 @@ extension CdMessage {
     var isFakeMessage: Bool {
         return uid == CdMessage.uidFakeResponsivenes
     }
+    
+    var isLoggable: Bool {
+        !isFakeMessage && !isAutoConsumable
+    }
 }

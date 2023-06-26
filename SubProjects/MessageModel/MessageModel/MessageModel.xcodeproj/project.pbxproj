@@ -710,7 +710,7 @@
 		F75D01D52A39B41900805DEF /* AuditLoggingProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = F75D01CF2A39A9C400805DEF /* AuditLoggingProtocol.swift */; };
 		F779D5FB2A2877260069381E /* Rating+Groups.swift in Sources */ = {isa = PBXBuildFile; fileRef = F779D5FA2A2877260069381E /* Rating+Groups.swift */; };
 		F779D5FC2A2877260069381E /* Rating+Groups.swift in Sources */ = {isa = PBXBuildFile; fileRef = F779D5FA2A2877260069381E /* Rating+Groups.swift */; };
-		F7EBF8C32A3323440050A40E /* AuditLog.swift in Sources */ = {isa = PBXBuildFile; fileRef = F7EBF8C22A3323440050A40E /* AuditLog.swift */; };
+		F7EBF8C32A3323440050A40E /* EventLog.swift in Sources */ = {isa = PBXBuildFile; fileRef = F7EBF8C22A3323440050A40E /* EventLog.swift */; };
 		F7EBF8DD2A3709560050A40E /* AuditLoggingUtil.swift in Sources */ = {isa = PBXBuildFile; fileRef = F7EBF8DC2A3709560050A40E /* AuditLoggingUtil.swift */; };
 /* End PBXBuildFile section */
 
@@ -1246,7 +1246,7 @@
 		B7FD55D82338D01F00C9FC55 /* IdentityQueryResultsTest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IdentityQueryResultsTest.swift; sourceTree = "<group>"; };
 		F75D01CF2A39A9C400805DEF /* AuditLoggingProtocol.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuditLoggingProtocol.swift; sourceTree = "<group>"; };
 		F779D5FA2A2877260069381E /* Rating+Groups.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Rating+Groups.swift"; sourceTree = "<group>"; };
-		F7EBF8C22A3323440050A40E /* AuditLog.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuditLog.swift; sourceTree = "<group>"; };
+		F7EBF8C22A3323440050A40E /* EventLog.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EventLog.swift; sourceTree = "<group>"; };
 		F7EBF8DC2A3709560050A40E /* AuditLoggingUtil.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuditLoggingUtil.swift; sourceTree = "<group>"; };
 		F7FFFAF929DC22AE00A6DC49 /* 1.1.274.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = 1.1.274.xcdatamodel; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -2473,7 +2473,7 @@
 				493B6D041E70589800364D60 /* SystemUtils.swift */,
 				5B1A010E27901DF000EE5838 /* FileExportUtil.swift */,
 				F7EBF8DC2A3709560050A40E /* AuditLoggingUtil.swift */,
-				F7EBF8C22A3323440050A40E /* AuditLog.swift */,
+				F7EBF8C22A3323440050A40E /* EventLog.swift */,
 				435C0CBF222939A10025C6B5 /* PEPRating+Extension.swift */,
 				1587D166204DA3C2002C2157 /* KeyChain+Extensions.swift */,
 				430CDA4C2293FBB300AAC37F /* Attachment+ContentDispositionType+PEPContentDisposition.swift */,
@@ -3606,7 +3606,7 @@
 				15F274FD233CB0410069C1E0 /* SendServiceProtocol.swift in Sources */,
 				1546612C233A77F2008D2137 /* Message+ReDecrypt.swift in Sources */,
 				158A6E162307468F006A9ECE /* CdAttachment+PEPAttachment.swift in Sources */,
-				F7EBF8C32A3323440050A40E /* AuditLog.swift in Sources */,
+				F7EBF8C32A3323440050A40E /* EventLog.swift in Sources */,
 				43EA4882221E9518006E8F83 /* FetchNumberOfNewMailsOperation.swift in Sources */,
 				435F5120221FF750006EB11F /* PEPUtil+Internal.swift in Sources */,
 				439B16AB22802B6B00201DE5 /* VerifiableAccountSMTP.swift in Sources */,

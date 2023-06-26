@@ -1,5 +1,5 @@
 //
-//  AuditLog.swift
+//  EventLog.swift
 //  MessageModel
 //
 //  Created by Martin Brude on 9/6/23.

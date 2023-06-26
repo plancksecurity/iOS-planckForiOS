@@ -7,6 +7,7 @@
 //
 
 import Foundation
+import PlanckToolbox
 
 public protocol AuditLoggingUtilProtocol: AnyObject {
     
@@ -42,16 +43,14 @@ public class AuditLoggingUtil: NSObject, AuditLoggingUtilProtocol {
     /// Logs starts and stops events
     public func logEvent(maxLogTime: Int, auditLoggerEvent: AuditLoggerEvent) {
         savingLogsQueue.addOperation {
-            let timestamp = String(describing: Date().timeIntervalSince1970)
-            let log = EventLog([timestamp, auditLoggerEvent.rawValue])
+            let log = EventLog([Date.timestamp, auditLoggerEvent.rawValue])
             self.fileExportUtil.save(auditEventLog: log, maxLogTime: maxLogTime)
         }
     }
 
     public func log(senderId: String, rating: String, maxLogTime: Int) {
         savingLogsQueue.addOperation {
-            let timestamp = String(describing: Date().timeIntervalSince1970)
-            let log = EventLog([timestamp, senderId, rating])
+            let log = EventLog([Date.timestamp, senderId, rating])
             self.fileExportUtil.save(auditEventLog: log, maxLogTime: maxLogTime)
         }
     }

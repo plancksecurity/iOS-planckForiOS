@@ -105,7 +105,7 @@ extension EncryptAndSMTPSendMessageOperation {
                 me.privateMOC.perform {
                     me.setOriginalRatingHeader(unencryptedCdMessage: cdMessage)
                     me.send(pEpMessage: encryptedMessageToSend)
-                    if !cdMessage.isFakeMessage && !cdMessage.isAutoConsumable {
+                    if cdMessage.isLoggable {
                         // Audit Log on encryption
                         let senderId = encryptedMessageToSend.from?.address ?? "N/A"
                         let rating = Rating(pEpRating: me.blockingGetOutgoingMessageRating(for: cdMessage)).toString()
