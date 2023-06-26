@@ -44,7 +44,7 @@ class AuditLoggingViewModel {
 
     init() {
         if MDMUtil.isEnabled() {
-            Log.shared.errorAndCrash("If MDM is enabled. The file max size must be configured through MDM")
+            Log.shared.errorAndCrash("If MDM is enabled. The file max time must be configured through MDM")
         }
         setupSections()
     }
