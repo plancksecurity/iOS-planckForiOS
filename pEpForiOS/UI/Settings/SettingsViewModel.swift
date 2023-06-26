@@ -472,7 +472,7 @@ extension SettingsViewModel {
         case .about:
             return NSLocalizedString("About", comment: "setting row title: About")
         case .auditLogging:
-            return NSLocalizedString("Audit Loggin", comment: "setting row title: Audit Loggin")
+            return NSLocalizedString("Audit Logging", comment: "setting row title: Audit Logging")
         }
     }
 

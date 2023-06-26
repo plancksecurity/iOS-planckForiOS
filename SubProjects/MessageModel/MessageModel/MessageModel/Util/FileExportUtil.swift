@@ -116,7 +116,7 @@ extension FileExportUtil {
         do {
             let fileManager = FileManager.default
             guard let auditLoggingDestinationDirectoryURL = getAuditLoggingDestinationDirectoryURL() else {
-                Log.shared.errorAndCrash("Audit loggin Destination Directory URL not found")
+                Log.shared.errorAndCrash("Audit logging Destination Directory URL not found")
                 return false
             }
 

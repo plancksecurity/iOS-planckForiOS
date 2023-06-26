@@ -24,8 +24,8 @@ class AuditLoggingViewController: UIViewController {
         tableView.backgroundColor = .clear
         view.backgroundColor = UIColor.systemGroupedBackground
         UIHelper.variableContentHeight(tableView)
-        title = NSLocalizedString("Audit Loggin", comment: "Audit Loggin Title")
-        let saveButton = UIBarButtonItem(title: NSLocalizedString("Save", comment: "Save - Right bar button item in Audit Loggin view"),
+        title = NSLocalizedString("Audit Logging", comment: "Audit Logging Title")
+        let saveButton = UIBarButtonItem(title: NSLocalizedString("Save", comment: "Save - Right bar button item in Audit Logging view"),
                                          style: .plain,
                                          target: self,
                                          action: #selector(saveButtonPressed))

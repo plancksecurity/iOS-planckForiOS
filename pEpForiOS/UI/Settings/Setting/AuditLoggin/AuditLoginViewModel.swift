@@ -67,7 +67,7 @@ class AuditLoggingViewModel {
     }
 
     private func setupSections() {
-        let title = NSLocalizedString("Audit Loggin file max time", comment: "AuditLogging Setting -  Audit Loggin file max time")
+        let title = NSLocalizedString("Audit Logging file max time", comment: "AuditLogging Setting -  Audit Logging file max time")
         let row = Row(type: .maxTime, title: title)
         let maxTimeRow = Section(rows: [row])
         sections = [maxTimeRow]
