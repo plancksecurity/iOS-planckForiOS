@@ -56,7 +56,7 @@ extension AppSettings: MDMSettingsProtocol {
     public var mdmAuditLoggingMaxFileTime: Int {
         get {
             guard let auditLoggingMaxFileTime = mdmDictionary[AppSettings.keyAuditLoggingMaxFileTime] as? Int else {
-                return 1
+                return 30
             }
             return auditLoggingMaxFileTime
         }
