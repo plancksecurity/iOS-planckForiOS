@@ -87,6 +87,7 @@ final class TrustManagementTableViewCell: UITableViewCell {
 
     /// Setup the view with the row data.
     private func setupView() {
+        bringSubviewToFront(languageButton)
         privacyStatusImageView.isHidden = true
         privacyStatusLabel.isHidden = true
         removeGestureRecognizers()
