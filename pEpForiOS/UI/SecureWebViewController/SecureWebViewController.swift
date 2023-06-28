@@ -104,7 +104,7 @@ class SecureWebViewController: UIViewController {
     // Does not happen in other iOS versions, so let's keep this until we deprecate iOS 16.
     // If there is no error, this is not called.
     func webViewWebContentProcessDidTerminate(_ webView: WKWebView) {
-        display(html: processedHtml, showExternalContent: showExternalContent)
+        //display(html: processedHtml, showExternalContent: showExternalContent)
     }
 
     public func display(html: String, showExternalContent: Bool) {

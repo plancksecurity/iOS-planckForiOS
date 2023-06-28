@@ -139,7 +139,6 @@ class EmailViewController: UIViewController {
         }
     }
 
-
     @objc func copyToClip() {
         guard let vm = viewModel else {
             Log.shared.errorAndCrash("VM not found")

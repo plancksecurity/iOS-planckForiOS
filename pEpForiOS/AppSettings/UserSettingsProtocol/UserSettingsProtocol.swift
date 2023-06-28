@@ -36,7 +36,7 @@ public protocol UserSettingsProtocol {
 
     var lastKnownDeviceGroupState: DeviceGroupState { get set }
 
-    /// Whether or not the user has already answered the "Do you want to allow pEp app to access
+    /// Whether or not the user has already answered the "Do you want to allow planck app to access
     /// your contacts"
     var userHasBeenAskedForContactAccessPermissions: Bool { get set }
     /// Whether or not to warn the user in case a forwarded message is less secure as the forwarded
