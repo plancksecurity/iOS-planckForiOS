@@ -495,7 +495,7 @@ final class TrustManagementViewModel {
         }
     }
 
-    ///MARK: - Private
+    // MARK: - Private
 
     /// Re-computes the messages rating, saves the message and informs the delegate about a possible data change.
     /// This must be called after every trust state change. The curently processed message might
