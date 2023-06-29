@@ -392,8 +392,9 @@ extension TrustManagementViewController {
 
             if identifier == me.onlyMasterCellIdentifier {
                 if rowColor == .yellow {
+                    cell.languageButton.isHidden = row.trustwords == nil
                     cell.trustwordsLabel.text = row.trustwords
-                    cell.trustwordsStackView.isHidden = false
+                    cell.trustwordsStackView.isHidden = row.trustwords == nil
                     cell.trustwordsButtonsContainer.isHidden = false
 
                     cell.ownFingerprintTitleLabel.text = row.ownTitle

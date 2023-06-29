@@ -96,6 +96,7 @@ extension SettingsViewModelTest {
 }
 
 class MockFileExportUtil : FileExportUtilProtocol {
+    func save(auditEventLog: EventLog, maxLogTime: Int) { }
 
     private var exportDBsexpectation: XCTestExpectation?
 
