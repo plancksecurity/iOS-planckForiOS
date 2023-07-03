@@ -30,6 +30,14 @@ class KeySyncUtil {
 
 extension KeySyncUtil: KeySyncUtilProtocol {
 
+    static func allowSyncForOneMinute(completion: @escaping () -> Void) {
+        enableKeySync()
+        DispatchQueue.main.asyncAfter(deadline: .now() + 60) {
+            disableKeySync()
+            completion()
+        }
+    }
+    
     static func leaveDeviceGroup(completion: @escaping ()->Void) {
         LeaveDeviceGroupService.leaveDeviceGroup({ (error: Error) in
             Log.shared.errorAndCrash(error: error)

@@ -388,8 +388,8 @@ extension LoginViewController {
             return
         }
 
-        var title = displayError.title
-        var message = displayError.errorDescription
+        let title = displayError.title
+        let message = displayError.errorDescription
 
         UIUtils.showAlertWithOnlyPositiveButton(title: title, message: message) { [weak self] in
             guard let me = self else {

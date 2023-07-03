@@ -119,12 +119,22 @@ final class SettingsViewModel {
     public func noAccounts() -> Bool {
         return Account.all().count <= 0
     }
-    
-    public func allowKeySyncWizard() {
+
+    public func handlePlanckSyncPressed() {
+        delegate?.showLoadingView()
+        KeySyncUtil.allowSyncForOneMinute { [weak self] in
+            guard let me = self else {
+                return
+            }
+            me.delegate?.hideLoadingView()
+        }
+    }
+
+    private func allowKeySyncWizard() {
         KeySyncUtil.enableKeySync()
     }
     
-    public func disallowKeySyncWizard() {
+    private func disallowKeySyncWizard() {
         KeySyncUtil.disableKeySync()
     }
 

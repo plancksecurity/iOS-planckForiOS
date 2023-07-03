@@ -281,23 +281,13 @@ extension SettingsTableViewController : SwipeTableViewCellDelegate {
         switch row.identifier {
         case .planckSync:
             tableView.deselectRow(at: indexPath, animated: true)
-
-            // Basically we allow key sync for 60 seconds.
-            showLoadingView()
-            viewModel.allowKeySyncWizard()
-            /*
-            viewModel.allowKeySyncWizard()
-
-            let oneMinute = 60.0
-            DispatchQueue.main.asyncAfter(deadline: .now() + oneMinute) { [weak self] in
-                guard let me = self else {
-                    return
-                }
-                me.viewModel.disallowKeySyncWizard()
-                me.hideLoadingView()
+            if !NetworkMonitorUtil.shared.netOn {
+                //Inform the user if there is no internet connection.
+                UIUtils.showNoInternetConnectionBanner(viewController: self)
+                return
             }
+            viewModel.handlePlanckSyncPressed()
             return
-             */
         case .exportDBs:
             showExportDBsAlert()
             tableView.deselectRow(at: indexPath, animated: true)
@@ -390,9 +380,11 @@ extension SettingsTableViewController : SettingsViewModelDelegate {
                 Log.shared.lostMySelf()
                 return
             }
+            
             //Lets prevent a stack of activity indicators
-            me.hideLoadingView()
-            me.activityIndicatorView = UIUtils.showActivityIndicator(viewController: self)
+            me.activityIndicatorView?.stopAnimating()
+            me.activityIndicatorView?.removeFromSuperview()
+            me.activityIndicatorView = UIUtils.showActivityIndicator(viewController: me)
         }
     }
 
