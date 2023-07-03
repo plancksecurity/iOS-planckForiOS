@@ -10,6 +10,7 @@ import MessageModel
 import PlanckToolbox
 
 class KeySyncHandshakeService {
+
     private weak var pEpSyncWizard: KeySyncWizardViewController?
 
     init() {
@@ -53,14 +54,20 @@ extension KeySyncHandshakeService: KeySyncServiceHandshakeHandlerProtocol {
 
     public func showHandshake(keySyncHandshakeData: KeySyncHandshakeData,
                               completion: ((KeySyncHandshakeResult) -> ())? = nil) {
+
+        guard KeySyncUtil.isKeySyncEnabled else {
+            // Valid case: nothing to do. 
+            return
+        }
+
         guard let _ = keySyncHandshakeData.fingerprintLocal,
               let  _ = keySyncHandshakeData.fingerprintOther else {
             Log.shared.errorAndCrash("Missing FPRs")
             return
         }
 
-        // pEpSyncWizard should be presented over other pEp modals (like Login, etc)
-        // if a pEpModal is being presented. We present pEpSyncWizard over it.
+        // planckSyncWizard should be presented over other pEp modals (like Login, etc)
+        // if a planckModal is being presented. We present pEpSyncWizard over it.
         // Else the viewController to present it
         DispatchQueue.main.async { [weak self] in
             guard let me = self else {

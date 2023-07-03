@@ -158,7 +158,8 @@ extension SettingsTableViewController {
              .auditLogging,
              .groupMailboxes,
              .deviceGroups,
-             .about:
+             .about,
+             .planckSync:
             guard let row = row as? SettingsViewModel.NavigationRow else {
                 Log.shared.errorAndCrash(message: "Row doesn't match the expected type")
                 return UITableViewCell()
@@ -172,7 +173,6 @@ extension SettingsTableViewController {
             return dequeuedCell
         case .passiveMode,
              .protectMessageSubject,
-             .pEpSync,
              .usePlanckFolder,
              .unsecureReplyWarningEnabled:
             guard let row = row as? SettingsViewModel.SwitchRow else {
@@ -279,6 +279,25 @@ extension SettingsTableViewController : SwipeTableViewCellDelegate {
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         let row = viewModel.section(for: indexPath.section).rows[indexPath.row]
         switch row.identifier {
+        case .planckSync:
+            tableView.deselectRow(at: indexPath, animated: true)
+
+            // Basically we allow key sync for 60 seconds.
+            showLoadingView()
+            viewModel.allowKeySyncWizard()
+            /*
+            viewModel.allowKeySyncWizard()
+
+            let oneMinute = 60.0
+            DispatchQueue.main.asyncAfter(deadline: .now() + oneMinute) { [weak self] in
+                guard let me = self else {
+                    return
+                }
+                me.viewModel.disallowKeySyncWizard()
+                me.hideLoadingView()
+            }
+            return
+             */
         case .exportDBs:
             showExportDBsAlert()
             tableView.deselectRow(at: indexPath, animated: true)
@@ -333,7 +352,6 @@ extension SettingsTableViewController : SwipeTableViewCellDelegate {
             viewModel.handleResetAllIdentitiesPressed(action:action)
             tableView.deselectRow(at: indexPath, animated: true)
         case .passiveMode,
-             .pEpSync,
              .usePlanckFolder,
              .protectMessageSubject,
              .unsecureReplyWarningEnabled,
@@ -467,7 +485,7 @@ extension SettingsTableViewController {
             return .resetTrust
         case .extraKeys:
             return .segueExtraKeys
-        case .passiveMode, .usePlanckFolder, .pEpSync, .unsecureReplyWarningEnabled, .protectMessageSubject, .resetAccounts, .exportDBs:
+        case .passiveMode, .usePlanckFolder, .unsecureReplyWarningEnabled, .protectMessageSubject, .resetAccounts, .exportDBs:
             return .none
         case .groupMailboxes:
             return .none // .segueGroupMailboxes
@@ -481,6 +499,8 @@ extension SettingsTableViewController {
             return .none
         case .auditLogging:
             return .segueAuditLogging
+        case .planckSync:
+            return .none
         }
     }
 
@@ -627,7 +647,7 @@ extension SettingsTableViewController: SwitchCellDelegate {
             return
         }
 
-        if row.identifier == SettingsViewModel.RowIdentifier.pEpSync {
+        if row.identifier == SettingsViewModel.RowIdentifier.planckSync {
             if viewModel.isGrouped() {
                 guard let alertToShow = showpEpSyncLeaveGroupAlert(action: row.action,
                                                                    newValue: newValue) else {
