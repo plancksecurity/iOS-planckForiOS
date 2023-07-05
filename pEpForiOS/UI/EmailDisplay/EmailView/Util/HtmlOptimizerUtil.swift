@@ -110,7 +110,7 @@ extension HtmlOptimizerUtil {
               """
         let styleLinkStyle = """
         a:link {
-        color:\(UIColor.pEpDarkGreenHex);
+        color:\(UIColor.primaryHex);
         text-decoration: underline;
         word-break: break-all; !important;
         }

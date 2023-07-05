@@ -1,7 +1,7 @@
 {
   "images" : [
     {
-      "filename" : "splashscreen 1.pdf",
+      "filename" : "background_gardient 1.pdf",
       "idiom" : "universal"
     },
     {
@@ -11,7 +11,7 @@
           "value" : "light"
         }
       ],
-      "filename" : "splashscreen.pdf",
+      "filename" : "background_gardient.pdf",
       "idiom" : "universal"
     },
     {

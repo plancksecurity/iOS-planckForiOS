@@ -106,18 +106,18 @@ extension PEPAlertViewController {
     public var primaryColor: UIColor {
         switch alertStyle {
         case .default:
-            return .label
+            return .primary
         case .warn:
             return .pEpRed
         case .undo:
-            return .label
+            return .primary
         }
     }
 
     public var secondaryColor: UIColor {
         switch alertStyle {
         case .default, .warn, .undo:
-            return .label
+            return .secondaryLabel
         }
     }
 }
@@ -140,7 +140,7 @@ extension PEPAlertViewController {
         alertMessage.font = UIFont.pepFont(style: .footnote, weight: .regular)
         alertTitle.font = UIFont.pepFont(style: .body, weight: .semibold)
         if paintPEPInTitle {
-            alertTitle.attributedText = title?.paintPEPToPEPColour()
+            alertTitle.attributedText = title?.paintPlanckToPlanckColour()
         } else {
             alertTitle.text = title
         }
