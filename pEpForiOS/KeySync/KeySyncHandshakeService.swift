@@ -54,12 +54,6 @@ extension KeySyncHandshakeService: KeySyncServiceHandshakeHandlerProtocol {
 
     public func showHandshake(keySyncHandshakeData: KeySyncHandshakeData,
                               completion: ((KeySyncHandshakeResult) -> ())? = nil) {
-
-        guard KeySyncUtil.isKeySyncEnabled else {
-            // Valid case: nothing to do. 
-            return
-        }
-
         guard let _ = keySyncHandshakeData.fingerprintLocal,
               let  _ = keySyncHandshakeData.fingerprintOther else {
             Log.shared.errorAndCrash("Missing FPRs")
