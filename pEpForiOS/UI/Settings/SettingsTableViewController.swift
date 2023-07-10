@@ -398,6 +398,11 @@ extension SettingsTableViewController : SettingsViewModelDelegate {
             me.activityIndicatorView?.removeFromSuperview()
         }
     }
+    
+    func informReinitFailed() {
+        let errorMessage = NSLocalizedString("Something went wrong, please try again", comment: "Something went wrong, please try again")
+        NotificationBannerUtil.show(errorMessage: errorMessage)
+    }
 
     func showExtraKeyEditabilityStateChangeAlert(newValue: String) {
         let title = NSLocalizedString("Extra Keys Editable", comment: "Extra Keys Editable")

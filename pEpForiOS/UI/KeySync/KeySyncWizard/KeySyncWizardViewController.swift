@@ -204,12 +204,11 @@ extension KeySyncWizardViewController {
             let animationImages = isNewGroup
                 ? [#imageLiteral(resourceName: "pEpForiOS-icon-sync-2nd-device-syncing"), #imageLiteral(resourceName: "pEpForiOS-icon-sync-2nd-device-synced")]
                 : [#imageLiteral(resourceName: "pEpForiOS-icon-sync-3rd-device-syncing"), #imageLiteral(resourceName: "pEpForiOS-icon-sync-3rd-device-synced")]
-
             let pepAlertViewController =
                 PEPAlertViewController.fromStoryboard(title: animationTitle,
                                                       message: animationMessage,
                                                       paintPEPInTitle: true,
-                                                      image: animationImages,
+                                                      image: animationImages),
                                                       viewModel: PEPAlertViewModel(alertType: .pEpSyncWizard))
 
             let animationCanceButtonlTitle = NSLocalizedString("Cancel",

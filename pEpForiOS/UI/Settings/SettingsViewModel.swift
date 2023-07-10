@@ -16,6 +16,9 @@ protocol SettingsViewModelDelegate: AnyObject {
     func showLoadingView()
     /// Hides the loading
     func hideLoadingView()
+    
+    func informReinitFailed()
+
     /// Shows an alert to indicate if the extra key is editable
     func showExtraKeyEditabilityStateChangeAlert(newValue: String)
     /// Shows an alert to confirm the reset all identities.
@@ -122,19 +125,27 @@ final class SettingsViewModel {
 
     public func handlePlanckSyncPressed() {
         delegate?.showLoadingView()
-        KeySyncUtil.syncReinit { [weak self] error in
-            guard let me = self else {
-                // Valid case. The view might dismissed
-                return
+        KeySyncUtil.syncReinit { error in
+            DispatchQueue.main.async { [weak self] in
+                guard let me = self else {
+                    Log.shared.lostMySelf()
+                    return
+                }
+                guard let me = self else {
+                    // Valid case. The view might dismissed
+                    return
+                }
+                me.delegate?.hideLoadingView()
+                me.delegate?.informReinitFailed()
             }
-            me.delegate?.hideLoadingView()
-
-        } successCallback: { [weak self] in
-            guard let me = self else {
-                // Valid case. The view might dismissed
-                return
+        } successCallback: {
+            DispatchQueue.main.async { [weak self] in
+                guard let me = self else {
+                    // Valid case. The view might dismissed
+                    return
+                }
+                me.delegate?.hideLoadingView()
             }
-            me.delegate?.hideLoadingView()
         }
     }
 
