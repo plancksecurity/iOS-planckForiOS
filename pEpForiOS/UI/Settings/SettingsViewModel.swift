@@ -320,19 +320,6 @@ extension SettingsViewModel {
             }
         case .planckSync:
             rows.append(generateNavigationRow(type: .planckSync, isDangerous: false))
-
-            /*
-            rows.append(generateSwitchRow(type: .planckSync,
-                                          isDangerous: false,
-                                          isOn: keySyncStatus) { [weak self] (value) in
-                guard let me = self else {
-                    Log.shared.lostMySelf()
-                    return
-                }
-                me.setPEPSyncEnabled(to: value)
-                me.setSwtichRow(ofType: .pEpSync, withIdentifier: .planckSync, newValue: value)
-            })
-             */
         case .contacts:
             rows.append(generateNavigationRow(type: .resetTrust, isDangerous: true))
         case .companyFeatures:
