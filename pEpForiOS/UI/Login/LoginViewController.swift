@@ -447,18 +447,18 @@ extension LoginViewController {
     }
 
     private func configureAnimatedTextFields() {
-        user.textColorWithText = .pEpGreen
+        user.textColorWithText = .primary
         user.placeholder = NSLocalizedString("Display Name",
                                              comment: "Display Name TextField Placeholder in Login Screen")
         user.accessibilityIdentifier = AccessibilityIdentifier.displayNameTextField
 
-        password.textColorWithText = .pEpGreen
+        password.textColorWithText = .primary
         password.placeholder = NSLocalizedString("Password",
                                                  comment: "Password TextField Placeholder in Login Screen")
         password.accessibilityIdentifier = AccessibilityIdentifier.passwordTextField
 
 
-        emailAddress.textColorWithText = .pEpGreen
+        emailAddress.textColorWithText = .primary
         emailAddress.placeholder = NSLocalizedString("Email Address",
                                                      comment: "Email TextField Placeholder in Login Screen")
         emailAddress.accessibilityIdentifier = AccessibilityIdentifier.emailAddressTextField
@@ -524,6 +524,7 @@ extension LoginViewController {
 
         loginButton.isEnabled = !isCurrentlyVerifying
         manualConfigButton.isEnabled = !isCurrentlyVerifying
+        pEpSyncSwitch.onTintColor = .primary
     }
 
     private func isLandscape() -> Bool {

@@ -77,6 +77,7 @@ final class UserInfoViewController: UIViewController {
         setupView.fourthTextField.set(text: verifiableAccount.userName, animated: animated)
         setupView.pEpSyncSwitch.isOn = verifiableAccount.keySyncEnable
         setupView.nextRightButton.isEnabled = verifiableAccount.isValidUser
+        view.backgroundColor = UITraitCollection.current.userInterfaceStyle == .dark ? .systemBackground : .primary
     }
 }
 
@@ -253,4 +254,21 @@ extension UserInfoViewController {
         let displayNamePlaceholder = NSLocalizedString("Display Name", comment: "Display Name placeholder for manual account setup")
         setupView.fourthTextField.placeholder = displayNamePlaceholder
     }
+    
+    override func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
+        super.traitCollectionDidChange(previousTraitCollection)
+        guard let thePreviousTraitCollection = previousTraitCollection else {
+            // Valid case: optional value from Apple.
+            return
+        }
+
+        if thePreviousTraitCollection.hasDifferentColorAppearance(comparedTo: traitCollection) {
+            view.backgroundColor = UITraitCollection.current.userInterfaceStyle == .dark ? .systemBackground : UIColor.primary
+            manualAccountSetupContainerView.backgroundColor = view.backgroundColor
+            manualAccountSetupContainerView.setupView?.backgroundColor = view.backgroundColor
+            view.layoutSubviews()
+            view.layoutIfNeeded()
+        }
+    }
 }
+

@@ -205,7 +205,7 @@ final class EmailListViewController: UIViewController {
             return
         }
         if UITraitCollection.current.userInterfaceStyle == .light {
-            refreshController.tintColor = UIColor.pEpGreen
+            refreshController.tintColor = UIColor.primary
         }
 
         refreshController.addTarget(self, action: #selector(refreshView), for: .valueChanged)
@@ -340,7 +340,7 @@ final class EmailListViewController: UIViewController {
         }
         let editButtonDisabled = vm.rowCount == 0
         editButton.isEnabled = editButtonDisabled ? false : true
-        editButton.tintColor = editButtonDisabled ? .clear: .pEpGreen
+        editButton.tintColor = editButtonDisabled ? .clear: .primary
     }
 
     private func showEditToolbar() {

@@ -23,7 +23,7 @@ public struct EventLog {
     }
     
     var entry: String {
-        return content.map { $0 } .joined(separator: ", ")
+        return content.joined(separator: ",")
     }
 
 }

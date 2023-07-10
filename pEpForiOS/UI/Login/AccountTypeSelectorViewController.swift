@@ -23,12 +23,12 @@ final class AccountTypeSelectorViewController: UIViewController {
     
     private var attrs = [
         NSAttributedString.Key.font : UIFont.pepFont(style: .callout, weight: .regular),
-        NSAttributedString.Key.foregroundColor : UIColor.white,
+        NSAttributedString.Key.foregroundColor : UITraitCollection.current.userInterfaceStyle == .light ? UIColor.secondary : .white,
         NSAttributedString.Key.underlineStyle : 1] as [NSAttributedString.Key : Any]
 
     private var highlightedAttrs = [
         NSAttributedString.Key.font : UIFont.pepFont(style: .callout, weight: .regular),
-        NSAttributedString.Key.foregroundColor : UIColor.pEpGreen,
+        NSAttributedString.Key.foregroundColor : UIColor.selected,
         NSAttributedString.Key.underlineStyle : 1] as [NSAttributedString.Key : Any]
 
     var attributedString = NSMutableAttributedString(string:"")
@@ -147,8 +147,8 @@ extension AccountTypeSelectorViewController {
             }
         }
     }
-
 }
+
 // MARK: - AccountTypeSelectorViewModelDelegate
 
 extension AccountTypeSelectorViewController: AccountTypeSelectorViewModelDelegate {
@@ -202,7 +202,7 @@ extension AccountTypeSelectorViewController: SegueHandlerType {
         case showLogin
         case clientCertManagementSegue
     }
-    
+
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         switch segueIdentifier(for: segue) {
         case .showLogin:

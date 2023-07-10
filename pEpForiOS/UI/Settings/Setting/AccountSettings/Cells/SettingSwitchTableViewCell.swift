@@ -1,5 +1,5 @@
 //
-//  SettingBaseViewController.swift
+//  SettingSwitchTableViewCell.swift
 //  pEp
 //
 //  Created by Andreas Buff on 19.02.18.
@@ -16,10 +16,16 @@ protocol SwitchCellDelegate: AnyObject {
 class SettingSwitchTableViewCell: UITableViewCell {
     
     @IBOutlet weak var switchItem : UISwitch!
+    
     /// Short description shown to the user in front of the switch.
     @IBOutlet weak var switchDescription: UILabel!
 
     weak var delegate: SwitchCellDelegate?
+    
+    override func awakeFromNib() {
+        super.awakeFromNib()
+        switchItem.onTintColor = .primary
+    }
 
     @IBAction func switchChanged(_ sender: Any) {
         delegate?.switchSettingCell(self, didChangeSwitchStateTo: switchItem.isOn)

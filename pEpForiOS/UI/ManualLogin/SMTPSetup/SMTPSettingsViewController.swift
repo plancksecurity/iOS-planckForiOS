@@ -219,6 +219,7 @@ extension SMTPSettingsViewController: SMTPSettingsDelegate {
 
         vm.handleLoading()
         navigationItem.rightBarButtonItem?.isEnabled = !vm.isCurrentlyVerifying
+        view.backgroundColor = UITraitCollection.current.userInterfaceStyle == .dark ? .systemBackground : .primary
     }
 
     func hideKeyboard() {
@@ -328,5 +329,21 @@ extension SMTPSettingsViewController {
 
         let transportSecurityPlaceholder = NSLocalizedString("Transport Security", comment: "TransportSecurity placeholder for manual account SMTP setup")
         setupView.fifthTextField.placeholder = transportSecurityPlaceholder
+    }
+    
+    override func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
+        super.traitCollectionDidChange(previousTraitCollection)
+        guard let thePreviousTraitCollection = previousTraitCollection else {
+            // Valid case: optional value from Apple.
+            return
+        }
+
+        if thePreviousTraitCollection.hasDifferentColorAppearance(comparedTo: traitCollection) {
+            view.backgroundColor = UITraitCollection.current.userInterfaceStyle == .dark ? .systemBackground : UIColor.primary
+            manualAccountSetupContainerView.backgroundColor = view.backgroundColor
+            manualAccountSetupContainerView.setupView?.backgroundColor = view.backgroundColor
+            view.layoutSubviews()
+            view.layoutIfNeeded()
+        }
     }
 }
