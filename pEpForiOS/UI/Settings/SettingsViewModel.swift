@@ -16,9 +16,8 @@ protocol SettingsViewModelDelegate: AnyObject {
     func showLoadingView()
     /// Hides the loading
     func hideLoadingView()
-    
+    /// Informs that reinit sync failed
     func informReinitFailed()
-
     /// Shows an alert to indicate if the extra key is editable
     func showExtraKeyEditabilityStateChangeAlert(newValue: String)
     /// Shows an alert to confirm the reset all identities.

@@ -208,7 +208,7 @@ extension KeySyncWizardViewController {
                 PEPAlertViewController.fromStoryboard(title: animationTitle,
                                                       message: animationMessage,
                                                       paintPEPInTitle: true,
-                                                      image: animationImages),
+                                                      image: animationImages,
                                                       viewModel: PEPAlertViewModel(alertType: .pEpSyncWizard))
 
             let animationCanceButtonlTitle = NSLocalizedString("Cancel",
