@@ -122,20 +122,20 @@ final class SettingsViewModel {
 
     public func handlePlanckSyncPressed() {
         delegate?.showLoadingView()
-        KeySyncUtil.allowSyncForOneMinute { [weak self] in
+        KeySyncUtil.syncReinit { [weak self] error in
             guard let me = self else {
+                // Valid case. The view might dismissed
+                return
+            }
+            me.delegate?.hideLoadingView()
+
+        } successCallback: { [weak self] in
+            guard let me = self else {
+                // Valid case. The view might dismissed
                 return
             }
             me.delegate?.hideLoadingView()
         }
-    }
-
-    private func allowKeySyncWizard() {
-        KeySyncUtil.enableKeySync()
-    }
-    
-    private func disallowKeySyncWizard() {
-        KeySyncUtil.disableKeySync()
     }
 
     /// Wrapper method to know if the device is in a group.

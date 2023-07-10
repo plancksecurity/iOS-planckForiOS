@@ -7,7 +7,7 @@
 //
 
 import MessageModel
-
+import PEPObjCAdapter
 import PlanckToolbox
 
 protocol KeySyncUtilProtocol: AnyObject {
@@ -30,14 +30,10 @@ class KeySyncUtil {
 
 extension KeySyncUtil: KeySyncUtilProtocol {
 
-    static func allowSyncForOneMinute(completion: @escaping () -> Void) {
-        enableKeySync()
-        DispatchQueue.main.asyncAfter(deadline: .now() + 60) {
-            disableKeySync()
-            completion()
-        }
+    static func syncReinit(errorCallback: @escaping (Error) -> Void, successCallback: @escaping () -> Void) {
+        PEPSession().syncReinit(errorCallback, successCallback: successCallback)
     }
-    
+
     static func leaveDeviceGroup(completion: @escaping ()->Void) {
         LeaveDeviceGroupService.leaveDeviceGroup({ (error: Error) in
             Log.shared.errorAndCrash(error: error)
