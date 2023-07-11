@@ -21,7 +21,7 @@ extension UIUtils {
         activityIndicator.startAnimating()
         activityIndicator.translatesAutoresizingMaskIntoConstraints = false
         var presenterVc = UIApplication.currentlyVisibleViewController()
-        if presenterVc is PEPAlertViewController, let vc = viewController {
+        if presenterVc is PlanckAlertViewController, let vc = viewController {
             presenterVc = vc
         }
 

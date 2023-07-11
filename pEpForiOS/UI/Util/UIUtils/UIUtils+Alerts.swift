@@ -18,7 +18,6 @@ import PlanckToolbox
 
 extension UIUtils {
 
-
     /// Shows an alert with "Close" button only.
     ///
     /// - Parameters:
@@ -27,7 +26,7 @@ extension UIUtils {
     ///   - completion: called when "OK" has been pressed
     public static func showAlertWithOnlyCloseButton(title: String,
                                                     message: String?,
-                                                    style: PEPAlertViewController.AlertStyle = .default,
+                                                    style: PlanckAlertViewController.AlertStyle = .default,
                                                     completion: (()->Void)? = nil) {
         guard let alertViewController = UIUtils.getAlert(withTitle: title,
                                                          message: message,
@@ -52,7 +51,7 @@ extension UIUtils {
     ///   - completion: called when "OK" has been pressed
     public static func showAlertWithOnlyPositiveButton(title: String,
                                                        message: String?,
-                                                       style: PEPAlertViewController.AlertStyle = .default,
+                                                       style: PlanckAlertViewController.AlertStyle = .default,
                                                        completion: (()->Void)? = nil) {
         guard let alertViewController = UIUtils.getAlert(withTitle: title,
                                                          message: message,
@@ -84,7 +83,7 @@ extension UIUtils {
                                           positiveButtonText: String = NSLocalizedString("OK", comment: "Default positive button text"),
                                           cancelButtonAction: (() -> Void)? = nil,
                                           positiveButtonAction: @escaping () -> Void,
-                                          style: PEPAlertViewController.AlertStyle = .default,
+                                          style: PlanckAlertViewController.AlertStyle = .default,
                                           presenter: UIViewController? = nil) {
         guard let alertViewController = UIUtils.getAlert(withTitle: title,
                                                          message: message,
@@ -156,10 +155,10 @@ extension UIUtils {
     /// Present the pep alert if possible.
     ///
     /// - Parameter alertController: The controller to present.
-    private static func show(_ alertController: PEPAlertViewController, presenter: UIViewController? = nil) {
+    private static func show(_ alertController: PlanckAlertViewController, presenter: UIViewController? = nil) {
         let presenterVc = presenter ?? UIApplication.currentlyVisibleViewController()
         func shouldPresent() -> Bool {
-            if presenterVc is PEPAlertViewController {
+            if presenterVc is PlanckAlertViewController {
                 return false
             }
             return true
@@ -188,28 +187,28 @@ extension UIUtils {
                                  positiveButtonText: String = NSLocalizedString("OK", comment: "Default positive button text"),
                                  cancelButtonAction: (() -> Void)? = nil,
                                  positiveButtonAction: @escaping () -> Void,
-                                 style: PEPAlertViewController.AlertStyle,
-                                 numberOfButtons: NumberOfButtons) -> PEPAlertViewController? {
-        guard let pepAlertViewController = PEPAlertViewController.fromStoryboard(title: title, message: message, paintPEPInTitle: true) else {
-            Log.shared.errorAndCrash("Fail to init PEPAlertViewController")
+                                 style: PlanckAlertViewController.AlertStyle,
+                                 numberOfButtons: NumberOfButtons) -> PlanckAlertViewController? {
+        guard let planckAlertViewController = PlanckAlertViewController.fromStoryboard(title: title, message: message, paintPEPInTitle: true) else {
+            Log.shared.errorAndCrash("Fail to init PlanckAlertViewController")
             return nil
         }
-        pepAlertViewController.alertStyle = style
-        let positiveAction = PEPUIAlertAction(title: positiveButtonText, style: pepAlertViewController.primaryColor) { _ in
+        planckAlertViewController.alertStyle = style
+        let positiveAction = PlanckUIAlertAction(title: positiveButtonText, style: planckAlertViewController.primaryColor) { _ in
             positiveButtonAction()
-            pepAlertViewController.dismiss()
+            planckAlertViewController.dismiss()
         }
         if numberOfButtons == .two {
-            let cancelAction = PEPUIAlertAction(title: cancelButtonText, style: pepAlertViewController.secondaryColor) { _ in
+            let cancelAction = PlanckUIAlertAction(title: cancelButtonText, style: planckAlertViewController.secondaryColor) { _ in
                 cancelButtonAction?()
-                pepAlertViewController.dismiss()
+                planckAlertViewController.dismiss()
             }
-            pepAlertViewController.add(action: cancelAction)
+            planckAlertViewController.add(action: cancelAction)
         }
-        pepAlertViewController.add(action: positiveAction)
-        pepAlertViewController.modalPresentationStyle = .overFullScreen
-        pepAlertViewController.modalTransitionStyle = .crossDissolve
-        return pepAlertViewController
+        planckAlertViewController.add(action: positiveAction)
+        planckAlertViewController.modalPresentationStyle = .overFullScreen
+        planckAlertViewController.modalTransitionStyle = .crossDissolve
+        return planckAlertViewController
     }
 }
 

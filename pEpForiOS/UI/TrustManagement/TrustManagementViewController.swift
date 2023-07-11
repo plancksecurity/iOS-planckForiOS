@@ -62,7 +62,7 @@ class TrustManagementViewController: UIViewController {
                                    positiveButtonAction: { [weak vm] in
                                     vm?.handleShakeMotionDidEnd()
                                    },
-                                   style: PEPAlertViewController.AlertStyle.undo)
+                                   style: PlanckAlertViewController.AlertStyle.undo)
     }
 
     override func viewWillTransition(to size: CGSize, with coordinator: UIViewControllerTransitionCoordinator) {
@@ -545,6 +545,6 @@ extension TrustManagementViewController {
             }
 
         },
-        style: PEPAlertViewController.AlertStyle.warn)
+        style: PlanckAlertViewController.AlertStyle.warn)
     }
 }

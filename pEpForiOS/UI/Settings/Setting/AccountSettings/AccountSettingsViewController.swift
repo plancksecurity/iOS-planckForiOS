@@ -283,7 +283,7 @@ extension AccountSettingsViewController {
             }
             me.dismiss(animated: true)
             me.viewModel?.handleResetIdentity()
-        }, style: PEPAlertViewController.AlertStyle.warn)
+        }, style: PlanckAlertViewController.AlertStyle.warn)
     }
 }
 

@@ -417,7 +417,7 @@ extension SettingsTableViewController : SettingsViewModelDelegate {
         UIUtils.showTwoButtonAlert(withTitle: title, message: message, cancelButtonText: cancelTitle, positiveButtonText: resetTitle, positiveButtonAction: {
             callback()
         },
-        style: PEPAlertViewController.AlertStyle.warn)
+        style: PlanckAlertViewController.AlertStyle.warn)
     }
 
     func showDBExportSuccess() {
@@ -595,20 +595,20 @@ extension SettingsTableViewController {
         return alert
     }
 
-    private func showpEpSyncLeaveGroupAlert(action:  @escaping SettingsViewModel.SwitchBlock, newValue: Bool) -> PEPAlertViewController? {
+    private func showpEpSyncLeaveGroupAlert(action:  @escaping SettingsViewModel.SwitchBlock, newValue: Bool) -> PlanckAlertViewController? {
         let title = NSLocalizedString("Disable planck Sync",
                                       comment: "Leave device group confirmation")
         let comment = NSLocalizedString("If you disable planck Sync, your accounts on your devices will not be synchronised anymore. Are you sure you want to disable planck Sync?",
                                         comment: "Alert: Leave device group confirmation comment")
 
-        let alert = PEPAlertViewController.fromStoryboard(title: title,
+        let alert = PlanckAlertViewController.fromStoryboard(title: title,
                                                           message: comment,
                                                           paintPEPInTitle: false,
-                                                          viewModel: PEPAlertViewModel(alertType: .pEpSyncWizard))
+                                                          viewModel: PlanckAlertViewModel(alertType: .planckSyncWizard))
         var style: UIColor = .pEpDarkText
         style = .label
         let cancelActionTitle = NSLocalizedString("Cancel", comment: "keysync alert leave device group cancel")
-        let cancelAction = PEPUIAlertAction(title: cancelActionTitle, style: style) { [weak self] _ in
+        let cancelAction = PlanckUIAlertAction(title: cancelActionTitle, style: style) { [weak self] _ in
             guard let me = self else {
                 Log.shared.lostMySelf()
                 return
@@ -618,9 +618,9 @@ extension SettingsTableViewController {
             alert?.dismiss()
         }
         alert?.add(action: cancelAction)
-
+        
         let disableActionTitle = NSLocalizedString("Disable", comment: "keysync alert leave device group disable")
-        let disableAction = PEPUIAlertAction(title: disableActionTitle, style: style) { _ in
+        let disableAction = PlanckUIAlertAction(title: disableActionTitle, style: style) { _ in
             action(newValue)
             alert?.dismiss()
         }
