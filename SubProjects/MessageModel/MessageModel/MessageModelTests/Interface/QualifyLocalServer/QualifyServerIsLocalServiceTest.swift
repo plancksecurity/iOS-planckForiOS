@@ -14,7 +14,7 @@ class QualifyServerIsLocalServiceTest: XCTestCase {
 
     func testServerQualification() {
         XCTAssertEqual(isLocalServer(serverName: "localhost"), true)
-        XCTAssertEqual(isLocalServer(serverName: "peptest.ch"), false)
+        XCTAssertEqual(isLocalServer(serverName: "planck.dev"), false)
     }
 }
 
