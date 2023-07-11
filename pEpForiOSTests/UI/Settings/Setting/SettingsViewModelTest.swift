@@ -113,6 +113,9 @@ class MockFileExportUtil : FileExportUtilProtocol {
 // MARK: - delegate mocks
 
 class SettingsViewModeldelegate: SettingsViewModelDelegate {
+    func informReinitFailed() {
+        XCTFail()
+    }
     
     func showLoadingView() {
         XCTFail()
