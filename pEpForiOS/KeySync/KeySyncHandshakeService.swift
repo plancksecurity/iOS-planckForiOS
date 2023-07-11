@@ -60,8 +60,8 @@ extension KeySyncHandshakeService: KeySyncServiceHandshakeHandlerProtocol {
             return
         }
 
-        // planckSyncWizard should be presented over other pEp modals (like Login, etc)
-        // if a planckModal is being presented. We present pEpSyncWizard over it.
+        // planckSyncWizard should be presented over other planck modals (like Login, etc)
+        // if a planckModal is being presented. We present planckSyncWizard over it.
         // Else the viewController to present it
         DispatchQueue.main.async { [weak self] in
             guard let me = self else {
