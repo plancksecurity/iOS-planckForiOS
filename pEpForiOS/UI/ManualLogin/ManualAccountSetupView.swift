@@ -63,15 +63,18 @@ final class ManualAccountSetupView: UIView {
     }
 
     override func awakeFromNib() {
+        super.awakeFromNib()
         setUpTextFieldsColor()
         hideSpecificDeviceButton()
         updateTextFeildsDelegates()
         scrollView.dynamicHeightScrollViewDelegate = self
+        backgroundColor = UITraitCollection.current.userInterfaceStyle == .dark ? .systemBackground : .primary
 
         NotificationCenter.default.addObserver(self,
                                                selector: #selector(hideSpecificDeviceButton),
                                                name: UIDevice.orientationDidChangeNotification,
                                                object: nil)
+        pEpSyncSwitch.onTintColor = .primary
     }
 
     static func loadViewFromNib() -> ManualAccountSetupView? {
@@ -135,7 +138,7 @@ extension ManualAccountSetupView: DynamicHeightScrollViewDelegate {
 extension ManualAccountSetupView {
     private func setUpTextFieldsColor() {
         textFields().forEach { textField in
-            textField.textColorWithText = .pEpGreen
+            textField.textColorWithText = .primary
         }
     }
 

@@ -103,7 +103,7 @@ extension PGPKeyImportSettingViewModel {
                                            value: "https://pep.security/docs/ios.html#pgp-key-import",
                                            range: linkRange)
             pgpKeyImportSectionHeaderTitle.addAttribute(NSAttributedString.Key.foregroundColor,
-                                           value: UIColor.pEpGreen,
+                                           value: UIColor.primary,
                                            range: linkRange)
 
             return pgpKeyImportSectionHeaderTitle
@@ -116,7 +116,7 @@ extension PGPKeyImportSettingViewModel {
         let pgpKeyImportRow = Row(type: .pgpKeyImport,
                                   title: pgpKeyImportRowTitle,
                                   isEnabled: !isGrouped(),
-                                  titleFontColor: .pEpGreen)
+                                  titleFontColor: .primary)
 
         // Passphrase
         let usePassphraseForNewKeys = NSLocalizedString("Use a passphrase for new keys",

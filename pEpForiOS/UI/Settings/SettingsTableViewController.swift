@@ -158,7 +158,8 @@ extension SettingsTableViewController {
              .auditLogging,
              .groupMailboxes,
              .deviceGroups,
-             .about:
+             .about,
+             .planckSync:
             guard let row = row as? SettingsViewModel.NavigationRow else {
                 Log.shared.errorAndCrash(message: "Row doesn't match the expected type")
                 return UITableViewCell()
@@ -172,7 +173,6 @@ extension SettingsTableViewController {
             return dequeuedCell
         case .passiveMode,
              .protectMessageSubject,
-             .pEpSync,
              .usePlanckFolder,
              .unsecureReplyWarningEnabled:
             guard let row = row as? SettingsViewModel.SwitchRow else {
@@ -279,6 +279,15 @@ extension SettingsTableViewController : SwipeTableViewCellDelegate {
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         let row = viewModel.section(for: indexPath.section).rows[indexPath.row]
         switch row.identifier {
+        case .planckSync:
+            tableView.deselectRow(at: indexPath, animated: true)
+            if !NetworkMonitorUtil.shared.netOn {
+                //Inform the user if there is no internet connection.
+                UIUtils.showNoInternetConnectionBanner(viewController: self)
+                return
+            }
+            viewModel.handlePlanckSyncPressed()
+            return
         case .exportDBs:
             showExportDBsAlert()
             tableView.deselectRow(at: indexPath, animated: true)
@@ -333,7 +342,6 @@ extension SettingsTableViewController : SwipeTableViewCellDelegate {
             viewModel.handleResetAllIdentitiesPressed(action:action)
             tableView.deselectRow(at: indexPath, animated: true)
         case .passiveMode,
-             .pEpSync,
              .usePlanckFolder,
              .protectMessageSubject,
              .unsecureReplyWarningEnabled,
@@ -372,9 +380,11 @@ extension SettingsTableViewController : SettingsViewModelDelegate {
                 Log.shared.lostMySelf()
                 return
             }
+            
             //Lets prevent a stack of activity indicators
-            me.hideLoadingView()
-            me.activityIndicatorView = UIUtils.showActivityIndicator(viewController: self)
+            me.activityIndicatorView?.stopAnimating()
+            me.activityIndicatorView?.removeFromSuperview()
+            me.activityIndicatorView = UIUtils.showActivityIndicator(viewController: me)
         }
     }
 
@@ -387,6 +397,11 @@ extension SettingsTableViewController : SettingsViewModelDelegate {
             }
             me.activityIndicatorView?.removeFromSuperview()
         }
+    }
+    
+    func informReinitFailed() {
+        let errorMessage = NSLocalizedString("Something went wrong, please try again", comment: "Something went wrong, please try again")
+        NotificationBannerUtil.show(errorMessage: errorMessage)
     }
 
     func showExtraKeyEditabilityStateChangeAlert(newValue: String) {
@@ -402,7 +417,7 @@ extension SettingsTableViewController : SettingsViewModelDelegate {
         UIUtils.showTwoButtonAlert(withTitle: title, message: message, cancelButtonText: cancelTitle, positiveButtonText: resetTitle, positiveButtonAction: {
             callback()
         },
-        style: PEPAlertViewController.AlertStyle.warn)
+        style: PlanckAlertViewController.AlertStyle.warn)
     }
 
     func showDBExportSuccess() {
@@ -467,7 +482,7 @@ extension SettingsTableViewController {
             return .resetTrust
         case .extraKeys:
             return .segueExtraKeys
-        case .passiveMode, .usePlanckFolder, .pEpSync, .unsecureReplyWarningEnabled, .protectMessageSubject, .resetAccounts, .exportDBs:
+        case .passiveMode, .usePlanckFolder, .unsecureReplyWarningEnabled, .protectMessageSubject, .resetAccounts, .exportDBs:
             return .none
         case .groupMailboxes:
             return .none // .segueGroupMailboxes
@@ -481,6 +496,8 @@ extension SettingsTableViewController {
             return .none
         case .auditLogging:
             return .segueAuditLogging
+        case .planckSync:
+            return .none
         }
     }
 
@@ -578,20 +595,20 @@ extension SettingsTableViewController {
         return alert
     }
 
-    private func showpEpSyncLeaveGroupAlert(action:  @escaping SettingsViewModel.SwitchBlock, newValue: Bool) -> PEPAlertViewController? {
+    private func showpEpSyncLeaveGroupAlert(action:  @escaping SettingsViewModel.SwitchBlock, newValue: Bool) -> PlanckAlertViewController? {
         let title = NSLocalizedString("Disable planck Sync",
                                       comment: "Leave device group confirmation")
         let comment = NSLocalizedString("If you disable planck Sync, your accounts on your devices will not be synchronised anymore. Are you sure you want to disable planck Sync?",
                                         comment: "Alert: Leave device group confirmation comment")
 
-        let alert = PEPAlertViewController.fromStoryboard(title: title,
+        let alert = PlanckAlertViewController.fromStoryboard(title: title,
                                                           message: comment,
                                                           paintPEPInTitle: false,
-                                                          viewModel: PEPAlertViewModel(alertType: .pEpSyncWizard))
+                                                          viewModel: PlanckAlertViewModel(alertType: .planckSyncWizard))
         var style: UIColor = .pEpDarkText
         style = .label
         let cancelActionTitle = NSLocalizedString("Cancel", comment: "keysync alert leave device group cancel")
-        let cancelAction = PEPUIAlertAction(title: cancelActionTitle, style: style) { [weak self] _ in
+        let cancelAction = PlanckUIAlertAction(title: cancelActionTitle, style: style) { [weak self] _ in
             guard let me = self else {
                 Log.shared.lostMySelf()
                 return
@@ -601,9 +618,9 @@ extension SettingsTableViewController {
             alert?.dismiss()
         }
         alert?.add(action: cancelAction)
-
+        
         let disableActionTitle = NSLocalizedString("Disable", comment: "keysync alert leave device group disable")
-        let disableAction = PEPUIAlertAction(title: disableActionTitle, style: style) { _ in
+        let disableAction = PlanckUIAlertAction(title: disableActionTitle, style: style) { _ in
             action(newValue)
             alert?.dismiss()
         }
@@ -627,7 +644,7 @@ extension SettingsTableViewController: SwitchCellDelegate {
             return
         }
 
-        if row.identifier == SettingsViewModel.RowIdentifier.pEpSync {
+        if row.identifier == SettingsViewModel.RowIdentifier.planckSync {
             if viewModel.isGrouped() {
                 guard let alertToShow = showpEpSyncLeaveGroupAlert(action: row.action,
                                                                    newValue: newValue) else {

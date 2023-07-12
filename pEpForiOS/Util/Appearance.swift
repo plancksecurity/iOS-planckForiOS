@@ -16,7 +16,7 @@ class Appearance {
     /// textviews, textfields and searchbars.
     public static func setup() {
         // Still needed for iOS 13 for button bar items.
-        UINavigationBar.appearance().tintColor = .pEpGreen
+        UINavigationBar.appearance().tintColor = .primary
 
         // iOS 13 ignores the navigation bar tint color in some cases,
         // therefore we use the new appearance API to customise explicitly.
@@ -24,36 +24,36 @@ class Appearance {
         normalNavigationBar.standardAppearance = navigationBarAppearanceDefault(color: UIColor.label)
         normalNavigationBar.scrollEdgeAppearance = normalNavigationBar.standardAppearance
 
-        UIToolbar.appearance().backgroundColor = .pEpGreen
-        UIToolbar.appearance().barTintColor = .pEpGreen
+        UIToolbar.appearance().backgroundColor = .primary
+        UIToolbar.appearance().barTintColor = .primary
         UIToolbar.appearance().tintColor = .white
         if #available(iOS 15.0, *) {
             let appearance = UIToolbarAppearance()
             appearance.configureWithOpaqueBackground()
-            appearance.backgroundColor = .pEpGreen
+            appearance.backgroundColor = .primary
             UIToolbar.appearance().standardAppearance = appearance
             UIToolbar.appearance().scrollEdgeAppearance = UIToolbar.appearance().standardAppearance
         }
 
-        UITextView.appearance().tintColor = .pEpGreen
-        UITextField.appearance().tintColor = .pEpGreen
+        UITextView.appearance().tintColor = .primary
+        UITextField.appearance().tintColor = .primary
 
         UISearchBar.appearance().barTintColor = .white
-        UISearchBar.appearance().tintColor = .pEpGreen
+        UISearchBar.appearance().tintColor = .primary
 
-        setAlertControllerTintColor(.pEpGreen)
+        setAlertControllerTintColor(.primary)
 
         Appearance.configureSelectedBackgroundViewForPep(tableViewCell: UITableViewCell.appearance())
 
         UITextField.appearance(whenContainedInInstancesOf: [UISearchBar.self]).backgroundColor = UIColor.systemBackground
-        UITextField.appearance(whenContainedInInstancesOf: [UISearchBar.self]).tintColor = UIColor.pEpGreen
+        UITextField.appearance(whenContainedInInstancesOf: [UISearchBar.self]).tintColor = UIColor.primary
         UISearchBar.appearance().backgroundColor = UIColor.systemBackground
     }
 
     /// Configure the background view of the table view cells.
     /// - Parameter tableViewCell: The cell to set the background view.
     public static func configureSelectedBackgroundViewForPep(tableViewCell: UITableViewCell) {
-        let backgroundColor = UITraitCollection.current.userInterfaceStyle == .dark ? UIColor.systemGray5 : UIColor.pEpGreen.withAlphaComponent(0.2)
+        let backgroundColor = UITraitCollection.current.userInterfaceStyle == .dark ? UIColor.systemGray5 : UIColor.primary.withAlphaComponent(0.2)
         let tableViewCellSelectedbackgroundView = UIView()
         tableViewCellSelectedbackgroundView.backgroundColor = backgroundColor
         tableViewCell.selectedBackgroundView = tableViewCellSelectedbackgroundView
@@ -72,7 +72,7 @@ class Appearance {
 
 extension Appearance {
 
-    private static func setAlertControllerTintColor(_ color: UIColor = .pEpGreen) {
+    private static func setAlertControllerTintColor(_ color: UIColor = .primary) {
         let view = UIView.appearance(whenContainedInInstancesOf: [UIAlertController.self])
         view.tintColor = color
     }
@@ -89,7 +89,7 @@ extension Appearance {
         let font = UIFont.pepFont(style: .headline, weight: .medium)
         let titleTextAttributes: [NSAttributedString.Key : Any] = [.foregroundColor: color,
                                                                    .font: font]
-        let buttonsAttributes: [NSAttributedString.Key : Any] = [.foregroundColor: UIColor.pEpGreen]
+        let buttonsAttributes: [NSAttributedString.Key : Any] = [.foregroundColor: UIColor.primary]
         appearance.buttonAppearance.normal.titleTextAttributes = buttonsAttributes
         appearance.titleTextAttributes = titleTextAttributes
         appearance.largeTitleTextAttributes = titleTextAttributes

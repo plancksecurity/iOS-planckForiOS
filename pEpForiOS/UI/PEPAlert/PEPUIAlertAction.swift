@@ -1,5 +1,5 @@
 //
-//  PEPUIAlertAction.swift
+//  PlanckUIAlertAction.swift
 //  pEp
 //
 //  Created by Alejandro Gelos on 22/08/2019.
@@ -8,23 +8,23 @@
 
 import UIKit
 
-final class PEPUIAlertAction {
+final class PlanckUIAlertAction {
 
-    private var handler: ((PEPUIAlertAction) -> Void)?
+    private var handler: ((PlanckUIAlertAction) -> Void)?
 
     let style: UIColor
     let title: String?
 
     init(title: String?,
          style: UIColor,
-         handler: ((PEPUIAlertAction) -> Void)? = nil) {
+         handler: ((PlanckUIAlertAction) -> Void)? = nil) {
 
         self.title = title
         self.style = style
         self.handler = handler
     }
 
-    /// Execute PEPUIAlertAction block
+    /// Execute PlanckUIAlertAction block
     func execute() {
         handler?(self)
     }

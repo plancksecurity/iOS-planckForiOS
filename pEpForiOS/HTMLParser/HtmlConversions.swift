@@ -22,7 +22,7 @@ import PlanckToolbox
 /// tricks for display pretty vertical lines instead of ">" grather than mark
 public class HtmlConversions {
 
-    private static let verticalLine = NSAttributedString(string: " ", attributes: [NSAttributedString.Key.backgroundColor : UIColor.pEpGreen])
+    private static let verticalLine = NSAttributedString(string: " ", attributes: [NSAttributedString.Key.backgroundColor : UIColor.primary])
     private static let spaceForVerticalLine = NSAttributedString(string: " ", attributes: [NSAttributedString.Key.backgroundColor : UIColor.clear])
 
     public init() { }

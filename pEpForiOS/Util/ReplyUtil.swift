@@ -62,7 +62,7 @@ public struct ReplyUtil {
     /// - returns: html with vertical lines injected.
     public static func htmlWithVerticalLinesForBlockQuotesInjected(html: String) -> String {
         let searchTerm = "<blockquote type=\"cite\""
-        let replace = "<blockquote type=\"cite\" style=\"border-left: 3px solid \(UIColor.pEpGreenHex); padding-left: 8px; margin-left:0px;\""
+        let replace = "<blockquote type=\"cite\" style=\"border-left: 3px solid \(UIColor.primaryHex); padding-left: 8px; margin-left:0px;\""
         return html
             .replacingOccurrences(of: searchTerm,
                                   with: replace)

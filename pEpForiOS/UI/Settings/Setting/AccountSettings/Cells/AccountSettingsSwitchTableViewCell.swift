@@ -33,7 +33,7 @@ final class AccountSettingsSwitchTableViewCell: UITableViewCell {
         }
         switchItem.isOn = row.isOn
         switchItem.isUserInteractionEnabled = isGrayedOut
-        switchItem.onTintColor = isGrayedOut ? UIColor.pEpGreen : UIColor.pEpGreyBackground
+        switchItem.onTintColor = isGrayedOut ? UIColor.primary : UIColor.secondary
     }
 
     /// Configure the cell with the row
@@ -47,7 +47,7 @@ final class AccountSettingsSwitchTableViewCell: UITableViewCell {
             titleLabel.textColor = UIColor.label
         }
         switchItem.isOn = row.isOn
-        switchItem.onTintColor = .pEpGreen
+        switchItem.onTintColor = .primary
     }
 
     @IBAction func switchChanged(_ sender: UISwitch) {

@@ -293,6 +293,7 @@ extension IMAPSettingsViewController {
         setupView.pEpSyncSwitch.isOn = verifiableAccount.keySyncEnable
         setupView.nextButton.isEnabled = verifiableAccount.isValidUser
         setupView.nextRightButton.isEnabled = verifiableAccount.isValidUser
+        view.backgroundColor = UITraitCollection.current.userInterfaceStyle == .dark ? .systemBackground : .primary
     }
 
     private func setUpContainerView() {
@@ -302,6 +303,22 @@ extension IMAPSettingsViewController {
         }
         if UIDevice.current.userInterfaceIdiom == .pad {
             setupView.scrollView.isScrollEnabled = false
+        }
+        
+    }
+    
+    override func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
+        super.traitCollectionDidChange(previousTraitCollection)
+        guard let thePreviousTraitCollection = previousTraitCollection else {
+            // Valid case: optional value from Apple.
+            return
+        }
+        if thePreviousTraitCollection.hasDifferentColorAppearance(comparedTo: traitCollection) {
+            view.backgroundColor = UITraitCollection.current.userInterfaceStyle == .dark ? .systemBackground : UIColor.primary
+            manualAccountSetupContainerView.backgroundColor = view.backgroundColor
+            manualAccountSetupContainerView.setupView?.backgroundColor = view.backgroundColor
+            view.layoutSubviews()
+            view.layoutIfNeeded()
         }
     }
 }

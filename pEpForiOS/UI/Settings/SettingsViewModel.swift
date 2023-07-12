@@ -16,6 +16,8 @@ protocol SettingsViewModelDelegate: AnyObject {
     func showLoadingView()
     /// Hides the loading
     func hideLoadingView()
+    /// Informs that reinit sync failed
+    func informReinitFailed()
     /// Shows an alert to indicate if the extra key is editable
     func showExtraKeyEditabilityStateChangeAlert(newValue: String)
     /// Shows an alert to confirm the reset all identities.
@@ -91,13 +93,13 @@ final class SettingsViewModel {
                 .groupMailboxes,
                 .deviceGroups,
                 .about,
-                .auditLogging:
+                .auditLogging,
+                .planckSync:
             return "SettingsCell"
         case .resetAccounts:
             return "SettingsActionCell"
         case    .passiveMode,
                 .protectMessageSubject,
-                .pEpSync,
                 .usePlanckFolder,
                 .unsecureReplyWarningEnabled:
             return "switchOptionCell"
@@ -119,7 +121,33 @@ final class SettingsViewModel {
     public func noAccounts() -> Bool {
         return Account.all().count <= 0
     }
-    
+
+    public func handlePlanckSyncPressed() {
+        delegate?.showLoadingView()
+        KeySyncUtil.syncReinit { error in
+            DispatchQueue.main.async { [weak self] in
+                guard let me = self else {
+                    Log.shared.lostMySelf()
+                    return
+                }
+                guard let me = self else {
+                    // Valid case. The view might dismissed
+                    return
+                }
+                me.delegate?.hideLoadingView()
+                me.delegate?.informReinitFailed()
+            }
+        } successCallback: {
+            DispatchQueue.main.async { [weak self] in
+                guard let me = self else {
+                    // Valid case. The view might dismissed
+                    return
+                }
+                me.delegate?.hideLoadingView()
+            }
+        }
+    }
+
     /// Wrapper method to know if the device is in a group.
     /// Returns: True if it is in a group.
     public func isGrouped() -> Bool {
@@ -300,18 +328,8 @@ extension SettingsViewModel {
                     me.setSwtichRow(ofType: .globalSettings, withIdentifier: .protectMessageSubject, newValue: value)
                 })
             }
-        case .pEpSync:
-            rows.append(generateSwitchRow(type: .pEpSync,
-                                          isDangerous: false,
-                                          isOn: keySyncStatus) { [weak self] (value) in
-                guard let me = self else {
-                    Log.shared.lostMySelf()
-                    return
-                }
-                me.setPEPSyncEnabled(to: value)
-                me.setSwtichRow(ofType: .pEpSync, withIdentifier: .pEpSync, newValue: value)
-
-            })
+        case .planckSync:
+            rows.append(generateNavigationRow(type: .planckSync, isDangerous: false))
         case .contacts:
             rows.append(generateNavigationRow(type: .resetTrust, isDangerous: true))
         case .companyFeatures:
@@ -380,7 +398,7 @@ extension SettingsViewModel {
         case .globalSettings:
             return NSLocalizedString("Global Settings",
                                      comment: "Tableview section header: Global Settings")
-        case .pEpSync:
+        case .planckSync:
             return NSLocalizedString("Sync",
                                      comment: "Tableview section header: (planck) Sync")
         case .contacts:
@@ -400,7 +418,7 @@ extension SettingsViewModel {
     /// - Returns: The title of the footer. If the section is an account, a pepSync or the company features, it will be nil because there is no footer.
     private func sectionFooter(type: SectionType) -> String? {
         switch type {
-        case .pEpSync, .companyFeatures, .support:
+        case .planckSync, .companyFeatures, .support:
             return nil
         case .accounts:
             return NSLocalizedString("Performs a reset of the privacy settings of your account(s).",
@@ -454,9 +472,9 @@ extension SettingsViewModel {
         case .protectMessageSubject:
             return NSLocalizedString("Protect Message Subject",
                                      comment: "title for subject protection")
-        case .pEpSync:
+        case .planckSync:
             return NSLocalizedString("planck Sync",
-                                     comment: "Settings: enable/disable planck Sync feature")
+                                     comment: "Settings: open planck sync wizard feature")
         case .usePlanckFolder:
             return NSLocalizedString("Use planck Folder For Sync Messages",
                                      comment: "Settings: title for enable/disable usePlanckFolder feature")
@@ -489,7 +507,7 @@ extension SettingsViewModel {
                 .termsAndConditions,
                 .extraKeys,
                 .passiveMode,
-                .pEpSync,
+                .planckSync,
                 .usePlanckFolder,
                 .protectMessageSubject,
                 .resetAccounts,
@@ -608,7 +626,7 @@ extension SettingsViewModel {
     public enum SectionType : String, CaseIterable {
         case accounts
         case globalSettings
-        case pEpSync
+        case planckSync
         case companyFeatures
         case contacts
         case support // This will not be shown. For further info see: EFI-24
@@ -625,7 +643,7 @@ extension SettingsViewModel {
         case passiveMode  // This will not be shown. For further info see: EFI-24
         case protectMessageSubject
         case unsecureReplyWarningEnabled
-        case pEpSync  // This will not be shown. For further info see: EFI-24
+        case planckSync  // This will not be shown. For further info see: EFI-24
         case usePlanckFolder
         case resetTrust
         case extraKeys

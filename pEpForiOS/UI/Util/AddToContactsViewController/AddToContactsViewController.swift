@@ -50,7 +50,7 @@ class AddToContactsViewController: UIViewController {
         contactVC.contactStore = CNContactStore()
         contactVC.delegate = self
         contactVC.allowsActions = false
-        contactVC.view.tintColor = UIColor.pEpDarkGreen
+        contactVC.view.tintColor = UIColor.primary
 
         addChild(contactVC)
         view.addSubview(contactVC.view)

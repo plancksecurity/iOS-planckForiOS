@@ -37,7 +37,6 @@ final class AccountSettingsViewController: UIViewController {
                                                selector: #selector(pEpMDMSettingsChanged),
                                                name: .pEpMDMSettingsChanged,
                                                object: nil)
-
         guard let vm = viewModel else {
             Log.shared.errorAndCrash("VM not found")
             return
@@ -196,6 +195,7 @@ extension AccountSettingsViewController : UITableViewDataSource {
             }
             dequeuedCell.configure(with: row, isGrayedOut : !vm.isPEPSyncGrayedOut())
             dequeuedCell.switchItem.isOn = vm.isKeySyncEnabled()
+            dequeuedCell.switchItem.onTintColor = .primary
             
             return dequeuedCell
         case .reset:
@@ -283,7 +283,7 @@ extension AccountSettingsViewController {
             }
             me.dismiss(animated: true)
             me.viewModel?.handleResetIdentity()
-        }, style: PEPAlertViewController.AlertStyle.warn)
+        }, style: PlanckAlertViewController.AlertStyle.warn)
     }
 }
 

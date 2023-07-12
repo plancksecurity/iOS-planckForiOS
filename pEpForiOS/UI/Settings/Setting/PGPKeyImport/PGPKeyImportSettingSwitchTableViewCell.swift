@@ -17,6 +17,12 @@ protocol PGPKeyImportSettingSwitchTableViewCellDelegate: AnyObject {
 class PGPKeyImportSettingSwitchTableViewCell: UITableViewCell {
     @IBOutlet weak var titleLabel: UILabel!
     @IBOutlet weak var passphraseSwitch: UISwitch!
+    
+    override func awakeFromNib() {
+        super.awakeFromNib()
+        passphraseSwitch.onTintColor = .primary
+    }
+
     weak var delegate: PGPKeyImportSettingSwitchTableViewCellDelegate?
 
     @IBAction func usePassphraseSwitchChanged(_ sender: UISwitch) {

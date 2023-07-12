@@ -66,7 +66,7 @@ final class KeySyncHandshakeViewController: UIViewController {
         didSet {
             let titleText = NSLocalizedString("planck Sync", comment: "keySync handshake alert title")
             alertTitle.font = UIFont.pepFont(style: .body, weight: .semibold)
-            alertTitle.attributedText = titleText.paintPEPToPEPColour()
+            alertTitle.attributedText = titleText.paintPlanckToPlanckColour()
         }
     }
 
@@ -80,7 +80,7 @@ final class KeySyncHandshakeViewController: UIViewController {
     @IBOutlet private weak var accept: UIButton! {
         didSet {
             setFont(button: accept)
-            accept.setTitleColor(.pEpGreen, for: .normal)
+            accept.setTitleColor(.primary, for: .normal)
             accept.setTitle(NSLocalizedString("Confirm",
                                               comment: "accept hand shake confirm button"), for: .normal)
             accept.backgroundColor = .systemGray6

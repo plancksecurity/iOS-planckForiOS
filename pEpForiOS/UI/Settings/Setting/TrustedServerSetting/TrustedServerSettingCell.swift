@@ -14,10 +14,14 @@ protocol TrustedServerSettingCellDelegate: AnyObject {
 
 class TrustedServerSettingCell: UITableViewCell {
    static let storyboardId = "TrustedServerSettingCell"
-    
+    @IBOutlet weak var onOfSwitch: UISwitch!
     @IBOutlet weak var stackView: UIStackView!
     @IBOutlet weak var address: UILabel!
-    @IBOutlet weak var onOfSwitch: UISwitch!
+
+    override func awakeFromNib() {
+        super.awakeFromNib()
+        onOfSwitch.onTintColor = .primary
+    }
 
     weak var delegate: TrustedServerSettingCellDelegate?
 

@@ -83,7 +83,7 @@ extension KeySyncWizardViewController {
         guard
             let wizardVC = storyboard.instantiateViewController(
                 withIdentifier: storyboardId) as? KeySyncWizardViewController else {
-                    Log.shared.errorAndCrash("Fail to instantiateViewController PEPAlertViewController")
+                    Log.shared.errorAndCrash("Fail to instantiateViewController PlanckAlertViewController")
                     return nil
         }
         wizardVC.isScrollEnable = false
@@ -120,7 +120,7 @@ extension KeySyncWizardViewController {
 
     private func introView(isNewGroup: Bool,
                            pageCompletion: @escaping (Action) -> Void)
-    -> PEPAlertViewController? {
+    -> PlanckAlertViewController? {
 
 
         let keySyncIntroTitle = completeTitle()
@@ -128,31 +128,30 @@ extension KeySyncWizardViewController {
         let keySyncIntroImage = isNewGroup ? #imageLiteral(resourceName: "pEpForiOS-icon-sync-2nd-device") : #imageLiteral(resourceName: "pEpForiOS-icon-sync-3rd-device")
 
         guard let introView =
-                PEPAlertViewController.fromStoryboard(title: keySyncIntroTitle,
+                PlanckAlertViewController.fromStoryboard(title: keySyncIntroTitle,
                                                       message: keySyncIntroMessage,
                                                       paintPEPInTitle: true,
                                                       image: [keySyncIntroImage],
-                                                      viewModel: PEPAlertViewModel(alertType: .pEpSyncWizard)) else {
+                                                      viewModel: PlanckAlertViewModel(alertType: .planckSyncWizard)) else {
             return nil
         }
 
         let notNowButtonTitle = NSLocalizedString("Not Now",
                                                   comment: "keySyncWizard intro view Not Now button title")
-        let introNotNowAction = PEPUIAlertAction(title: notNowButtonTitle,
-                                                 style: .pEpGreyText,
-                                                 handler: { [weak self] alert in
-                                                    pageCompletion(.cancel)
-                                                    self?.dismiss()
-                                                 })
-
+        let introNotNowAction = PlanckUIAlertAction(title: notNowButtonTitle,
+                                                    style: .pEpGreyText,
+                                                    handler: { [weak self] alert in
+            pageCompletion(.cancel)
+            self?.dismiss()
+        })
+        
         let nextButtonTitle = NSLocalizedString("Next",
                                                 comment: "keySyncWizard intro view Next button title")
-        let introNextAction = PEPUIAlertAction(title: nextButtonTitle,
-                                               style: style,
-                                               handler: { [weak self] alert in
-                                                self?.goToNextView()
-                                               })
-
+        let introNextAction = PlanckUIAlertAction(title: nextButtonTitle,
+                                                  style: style,
+                                                  handler: { [weak self] alert in
+            self?.goToNextView()
+        })
 
         introView.add(action: introNotNowAction)
         introView.add(action: introNextAction)
@@ -194,7 +193,7 @@ extension KeySyncWizardViewController {
     }
 
     private func animationView(isNewGroup: Bool, pageCompletion: @escaping (Action) -> Void)
-        -> PEPAlertViewController? {
+        -> PlanckAlertViewController? {
 
             let message = NSLocalizedString("Please give us a moment while we sync your devices. This can take a minute or more.",
                                             comment: "keySyncWizard animation view message while we sync your devices")
@@ -204,58 +203,57 @@ extension KeySyncWizardViewController {
             let animationImages = isNewGroup
                 ? [#imageLiteral(resourceName: "pEpForiOS-icon-sync-2nd-device-syncing"), #imageLiteral(resourceName: "pEpForiOS-icon-sync-2nd-device-synced")]
                 : [#imageLiteral(resourceName: "pEpForiOS-icon-sync-3rd-device-syncing"), #imageLiteral(resourceName: "pEpForiOS-icon-sync-3rd-device-synced")]
-
-            let pepAlertViewController =
-                PEPAlertViewController.fromStoryboard(title: animationTitle,
+            let PlanckAlertViewController =
+                PlanckAlertViewController.fromStoryboard(title: animationTitle,
                                                       message: animationMessage,
                                                       paintPEPInTitle: true,
                                                       image: animationImages,
-                                                      viewModel: PEPAlertViewModel(alertType: .pEpSyncWizard))
+                                                      viewModel: PlanckAlertViewModel(alertType: .planckSyncWizard))
 
             let animationCanceButtonlTitle = NSLocalizedString("Cancel",
-                                                              comment: "keySyncWizard animation view cancel button title")
-            let animationCancelAction = PEPUIAlertAction(title: animationCanceButtonlTitle,
-                                                        style: style,
-                                                        handler: { [weak self] alert in
-                                                            pageCompletion(.cancel)
-                                                            self?.dismiss()
+                                                               comment: "keySyncWizard animation view cancel button title")
+            let animationCancelAction = PlanckUIAlertAction(title: animationCanceButtonlTitle,
+                                                            style: style,
+                                                            handler: { [weak self] alert in
+                pageCompletion(.cancel)
+                self?.dismiss()
             })
-            pepAlertViewController?.add(action: animationCancelAction)
-            return pepAlertViewController
+            PlanckAlertViewController?.add(action: animationCancelAction)
+            return PlanckAlertViewController
     }
 
     private func completionView(isNewGroup: Bool,
-                                pageCompletion: @escaping (Action) -> Void) -> PEPAlertViewController? {
+                                pageCompletion: @escaping (Action) -> Void) -> PlanckAlertViewController? {
         let completionTitle = completeTitle()
         let completionMessage = completeMessage(isNewGroup: isNewGroup)
         let completionImage = completeImage(isNewGroup: isNewGroup)
 
-        let pepAlertViewController =
-            PEPAlertViewController.fromStoryboard(title: completionTitle,
+        let planckAlertViewController =
+            PlanckAlertViewController.fromStoryboard(title: completionTitle,
                                                   message: completionMessage,
                                                   paintPEPInTitle: true,
                                                   image: [completionImage],
-                                                  viewModel: PEPAlertViewModel(alertType: .pEpSyncWizard))
+                                                  viewModel: PlanckAlertViewModel(alertType: .planckSyncWizard))
 
         let completionLeaveTitle = NSLocalizedString("Leave",
-                                                      comment: "keySyncWizard completion view leave button title")
-        let completionLeaveAction = PEPUIAlertAction(title: completionLeaveTitle,
-                                                      style: .pEpGreyText,
-                                                      handler: { [weak self] alert in
-                                                        self?.leaveDeviceGroup()
-                                                        self?.dismiss()
+                                                     comment: "keySyncWizard completion view leave button title")
+        let completionLeaveAction = PlanckUIAlertAction(title: completionLeaveTitle,
+                                                        style: .pEpGreyText,
+                                                        handler: { [weak self] alert in
+            self?.leaveDeviceGroup()
+            self?.dismiss()
         })
 
         let completionOKTitle = NSLocalizedString("OK",
-                                                   comment: "keySyncWizard completion view OK button title")
-        let completionOKlAction = PEPUIAlertAction(title: completionOKTitle,
-                                                   style: style,
-                                                   handler: { [weak self] alert in
-                                                    self?.dismiss()
+                                                  comment: "keySyncWizard completion view OK button title")
+        let completionOKlAction = PlanckUIAlertAction(title: completionOKTitle,
+                                                      style: style,
+                                                      handler: { [weak self] alert in
+            self?.dismiss()
         })
-        pepAlertViewController?.add(action: completionLeaveAction)
-        pepAlertViewController?.add(action: completionOKlAction)
-        return pepAlertViewController
+        planckAlertViewController?.add(action: completionLeaveAction)
+        planckAlertViewController?.add(action: completionOKlAction)
+        return planckAlertViewController
     }
 
     private func leaveDeviceGroup() {
