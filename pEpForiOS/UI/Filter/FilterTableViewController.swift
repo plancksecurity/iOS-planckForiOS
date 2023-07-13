@@ -93,7 +93,7 @@ class FilterTableViewController: UITableViewController {
             let cellvm = model[indexPath.section][indexPath.row]
             cell.textLabel?.text = cellvm.title
             cell.imageView?.image = cellvm.icon
-            cell.tintColor = UIColor.primary
+            cell.tintColor = UITraitCollection.current.userInterfaceStyle == .dark ? UIColor.primaryDarkMode : UIColor.primaryLightMode
             cell.accessoryType = (cellvm.state) ? .checkmark : .none
             cell.selectionStyle = .none
         }

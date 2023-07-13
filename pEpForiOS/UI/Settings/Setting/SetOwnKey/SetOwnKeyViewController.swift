@@ -81,7 +81,8 @@ class SetOwnKeyViewController: UIViewController {
     // MARK: - Private
 
     private func convertTopEp(button: UIButton) {
-        button.setTitleColor(.primary, for: .normal)
+        let primary = UITraitCollection.current.userInterfaceStyle == .dark ? UIColor.primaryDarkMode : UIColor.primaryLightMode
+        button.setTitleColor(primary, for: .normal)
         button.backgroundColor = .clear
     }
 }

@@ -108,9 +108,10 @@ extension HtmlOptimizerUtil {
                       height: auto;
                   }
               """
+        let hex = UITraitCollection.current.userInterfaceStyle == .dark ? UIColor.primaryHexDarkMode : UIColor.primaryHexLightMode
         let styleLinkStyle = """
         a:link {
-        color:\(UIColor.primaryHex);
+        color:\(hex);
         text-decoration: underline;
         word-break: break-all; !important;
         }

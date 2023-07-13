@@ -106,11 +106,11 @@ extension PlanckAlertViewController {
     public var primaryColor: UIColor {
         switch alertStyle {
         case .default:
-            return .primary
+            return UITraitCollection.current.userInterfaceStyle == .dark ? UIColor.primaryDarkMode : UIColor.primaryLightMode
         case .warn:
             return .pEpRed
         case .undo:
-            return .primary
+            return UITraitCollection.current.userInterfaceStyle == .dark ? UIColor.primaryDarkMode : UIColor.primaryLightMode
         }
     }
 

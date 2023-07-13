@@ -530,7 +530,7 @@ extension ComposeViewController: ComposeViewModelDelegate {
                              callback: @escaping (JPEGQuality) -> ()?) {
 
         let alertSheet = UIUtils.actionSheet(title: title)
-        alertSheet.view.tintColor = UIColor.primary
+        alertSheet.view.tintColor = UITraitCollection.current.userInterfaceStyle == .dark ? UIColor.primaryDarkMode : UIColor.primaryLightMode
         let lowAction = UIAlertAction(title: smallTitle, style: .default) { (action) in
             callback(.low)
         }

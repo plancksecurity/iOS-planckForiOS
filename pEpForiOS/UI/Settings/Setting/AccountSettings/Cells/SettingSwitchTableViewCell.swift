@@ -24,7 +24,7 @@ class SettingSwitchTableViewCell: UITableViewCell {
     
     override func awakeFromNib() {
         super.awakeFromNib()
-        switchItem.onTintColor = .primary
+        switchItem.onTintColor = UITraitCollection.current.userInterfaceStyle == .dark ? .primaryDarkMode : .primaryLightMode
     }
 
     @IBAction func switchChanged(_ sender: Any) {

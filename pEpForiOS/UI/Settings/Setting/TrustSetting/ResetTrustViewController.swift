@@ -43,7 +43,7 @@ class ResetTrustViewController: UIViewController, UISearchControllerDelegate, UI
         // searchBar configuration
         configureSearchBar()
         //set the index color
-        tableView.sectionIndexColor = UIColor.primary
+        tableView.sectionIndexColor = UITraitCollection.current.userInterfaceStyle == .dark ? UIColor.primaryDarkMode : UIColor.primaryLightMode
 
         title = NSLocalizedString("Contacts", comment: "ResetTrustView title")
         if #available(iOS 11.0, *) {

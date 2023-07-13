@@ -24,7 +24,7 @@ class CreditsViewController: UIViewController {
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         verboseLoggingSwitch.isOn = AppSettings.shared.verboseLogginEnabled
-        verboseLoggingSwitch.onTintColor = .primary
+        verboseLoggingSwitch.onTintColor = UITraitCollection.current.userInterfaceStyle == .dark ? .primaryDarkMode : .primaryLightMode
     }
 
     @IBAction public func switchedVerboseLoggingEnabled(_ sender: UISwitch) {

@@ -107,14 +107,14 @@ extension ExtraKeysSettingViewController {
 
         // FPR input field
         fpr.layer.borderWidth = 5.0
-        fpr.layer.borderColor = UIColor.primary.cgColor
+        fpr.layer.borderColor = UITraitCollection.current.userInterfaceStyle == .dark ? UIColor.primaryDarkMode.cgColor : UIColor.primaryLightMode.cgColor
         fpr.backgroundColor = UIColor.pEpLightBackground
         if UITraitCollection.current.userInterfaceStyle == .dark {
             fpr.backgroundColor = UIColor.tertiarySystemBackground
         }
 
         // add button
-        addExtraKeyButton.tintColor = UIColor.primary
+        addExtraKeyButton.tintColor = UITraitCollection.current.userInterfaceStyle == .dark ? UIColor.primaryDarkMode : UIColor.primaryLightMode
 
         showNavigationBar()
     }

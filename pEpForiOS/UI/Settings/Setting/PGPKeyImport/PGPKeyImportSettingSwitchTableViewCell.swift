@@ -20,7 +20,7 @@ class PGPKeyImportSettingSwitchTableViewCell: UITableViewCell {
     
     override func awakeFromNib() {
         super.awakeFromNib()
-        passphraseSwitch.onTintColor = .primary
+        passphraseSwitch.onTintColor = UITraitCollection.current.userInterfaceStyle == .dark ? .primaryDarkMode : .primaryLightMode
     }
 
     weak var delegate: PGPKeyImportSettingSwitchTableViewCellDelegate?

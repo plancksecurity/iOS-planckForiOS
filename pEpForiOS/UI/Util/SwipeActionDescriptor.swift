@@ -70,6 +70,8 @@ enum SwipeActionDescriptor {
     }
 
     var color: UIColor {
+        let primary = UITraitCollection.current.userInterfaceStyle == .dark ? UIColor.primaryDarkMode : UIColor.primaryLightMode
+
         switch self {
         case .read: return #colorLiteral(red: 0, green: 0.4784313725, blue: 1, alpha: 1)
         case .reply: return #colorLiteral(red: 0.2980392157, green: 0.8509803922, blue: 0.3921568627, alpha: 1)
@@ -78,7 +80,7 @@ enum SwipeActionDescriptor {
         case .flag: return #colorLiteral(red: 1, green: 0.5803921569, blue: 0, alpha: 1)
         case .unflag: return #colorLiteral(red: 1, green: 0.5803921569, blue: 0, alpha: 1)
         case .trash: return #colorLiteral(red: 1, green: 0.2352941176, blue: 0.1882352941, alpha: 1)
-        case .archive: return .primary
+        case .archive: return primary
         }
     }
 }
