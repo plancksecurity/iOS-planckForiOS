@@ -1256,7 +1256,7 @@ extension ComposeViewModel {
             return
         }
 
-        var originalRating: Rating? = nil //!!!: BUFF: AFAIU originalRating MUST NOT taken be into account any more since IOS-2414
+        var originalRating: Rating? = nil //!!!: BUFF: AFAIU originalRating MUST NOT be taken into account any more since IOS-2414
         let group = DispatchGroup()
         group.enter()
         originalMessage.pEpRating { (rating) in
