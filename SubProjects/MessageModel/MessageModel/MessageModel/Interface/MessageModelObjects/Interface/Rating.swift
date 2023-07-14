@@ -42,22 +42,30 @@ extension Rating {
 
     /// Compares the ratings for this and a given rating.
     /// - Parameter rating: the rating to compare
-    /// - returns:  true if the rating represents a less secure communication channel than the given one.
+    /// - returns:  true if the rating represents a less secure communication channel than the given one
     ///             false otherwize.
-    public func isLessSecure(than rating: Rating) -> Bool {
-        if rating.isTrusted() && !isTrusted() {
+    public func isLessSecure(than originalRating: Rating) -> Bool {
+        if isTrusted() {
+            return false
+        }
+        if self == originalRating {
+            return false
+        }
+        if isReliable() && originalRating.isTrusted() {
+           return true
+        }
+        if !isTrusted() && originalRating.isTrusted() {
             return true
-        } else if rating.isReliable() && (!isTrusted() && !isReliable()) {
+        } else if (!isTrusted() && !isReliable() && originalRating.isReliable()) {
             return true
         } else {
-            let isTheRatingUnreliable = rating.isUnreliable()
-            let isTheRatingDangerous = rating.isDangerous()
+            let isTheOriginalRatingUnreliableOrDangerous = originalRating.isUnreliable() || originalRating.isDangerous()
             let isSelfRatingUndefinedOrDangerous = isUndefined() || isDangerous()
-            return isTheRatingUnreliable || isTheRatingDangerous || isSelfRatingUndefinedOrDangerous
+            return isTheOriginalRatingUnreliableOrDangerous && isSelfRatingUndefinedOrDangerous
         }
     }
 
-    /** Does the given pEp rating mean the user is under attack? */
+    /** Does the given planck rating mean the user is under attack? */
     public func isUnderAttack() -> Bool {
         switch self {
         case .undefined,
