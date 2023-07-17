@@ -114,7 +114,7 @@ extension ExtraKeysSettingViewController {
         }
 
         // add button
-        addExtraKeyButton.tintColor = UITraitCollection.current.userInterfaceStyle == .dark ? UIColor.primaryDarkMode : UIColor.primaryLightMode
+        addExtraKeyButton.tintColor = UIColor.primary()
 
         showNavigationBar()
     }

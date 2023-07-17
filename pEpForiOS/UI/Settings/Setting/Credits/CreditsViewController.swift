@@ -24,10 +24,22 @@ class CreditsViewController: UIViewController {
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         verboseLoggingSwitch.isOn = AppSettings.shared.verboseLogginEnabled
-        verboseLoggingSwitch.onTintColor = UITraitCollection.current.userInterfaceStyle == .dark ? .primaryDarkMode : .primaryLightMode
+        verboseLoggingSwitch.onTintColor = UIColor.primary()
     }
 
     @IBAction public func switchedVerboseLoggingEnabled(_ sender: UISwitch) {
         viewModel.handleVerboseLoggingSwitchChange(newValue: sender.isOn)
+    }
+    
+    override func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
+        super.traitCollectionDidChange(previousTraitCollection)
+        guard let thePreviousTraitCollection = previousTraitCollection else {
+            // Valid case: optional value from Apple.
+            return
+        }
+
+        if thePreviousTraitCollection.hasDifferentColorAppearance(comparedTo: traitCollection) {
+            verboseLoggingSwitch.onTintColor = UIColor.primary()
+        }
     }
 }

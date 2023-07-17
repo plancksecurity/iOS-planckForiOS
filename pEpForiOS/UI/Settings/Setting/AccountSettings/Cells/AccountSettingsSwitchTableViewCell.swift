@@ -33,7 +33,7 @@ final class AccountSettingsSwitchTableViewCell: UITableViewCell {
         }
         switchItem.isOn = row.isOn
         switchItem.isUserInteractionEnabled = isGrayedOut
-        let primary = UITraitCollection.current.userInterfaceStyle == .dark ? UIColor.primaryDarkMode : UIColor.primaryLightMode
+        let primary = UIColor.primary()
         switchItem.onTintColor = isGrayedOut ? primary : UIColor.secondary
     }
 
@@ -48,7 +48,7 @@ final class AccountSettingsSwitchTableViewCell: UITableViewCell {
             titleLabel.textColor = UIColor.label
         }
         switchItem.isOn = row.isOn
-        switchItem.onTintColor = UITraitCollection.current.userInterfaceStyle == .dark ? .primaryDarkMode : .primaryLightMode
+        switchItem.onTintColor = UIColor.primary()
     }
 
     @IBAction func switchChanged(_ sender: UISwitch) {

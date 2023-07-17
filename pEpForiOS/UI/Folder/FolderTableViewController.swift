@@ -102,7 +102,7 @@ class FolderTableViewController: UITableViewController {
         tableView.estimatedSectionHeaderHeight = 80.0
         tableView.sectionHeaderHeight = UITableView.automaticDimension
         refreshControl = UIRefreshControl()
-        refreshControl?.tintColor = UITraitCollection.current.userInterfaceStyle == .dark ? UIColor.primaryDarkMode : UIColor.primaryLightMode
+        refreshControl?.tintColor = UIColor.primary()
         tableView.refreshControl = refreshControl
         refreshControl?.addTarget(self, action: #selector(pullToRefresh), for: .valueChanged)
         let item = UIBarButtonItem.getPEPButton(
@@ -201,7 +201,7 @@ class FolderTableViewController: UITableViewController {
         cell.unreadMailsLabel.font = UIFont.pepFont(style: .body, weight: .regular)
         let numUnreadMails = fcvm.numUnreadMails
         cell.unreadMailsLabel.text = numUnreadMails > 0 ? String(numUnreadMails) : ""
-        let iconTintColor : UIColor = UITraitCollection.current.userInterfaceStyle == .dark ? .primaryDarkMode : .primaryLightMode
+        let iconTintColor : UIColor = UIColor.primary()
         let img = fcvm.image?.withTintColor(iconTintColor)
         cell.iconImageView.image = img
         cell.separatorImageView.isHidden = fcvm.shouldHideSeparator()

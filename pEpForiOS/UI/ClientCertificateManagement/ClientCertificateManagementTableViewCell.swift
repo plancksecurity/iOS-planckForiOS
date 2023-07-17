@@ -33,8 +33,8 @@ final class ClientCertificateManagementTableViewCell: PEPSwipeTableViewCell {
 extension ClientCertificateManagementTableViewCell {
     private func setupStyle() {
         titleLabel?.font = .pepFont(style: .title2, weight: .regular)
-        titleLabel?.textColor = UITraitCollection.current.userInterfaceStyle == .dark ? .primaryDarkMode : .primaryLightMode
+        titleLabel?.textColor = UIColor.primary()
         dateLabel?.font = .pepFont(style: .footnote, weight: .regular)
-        dateLabel?.textColor = UITraitCollection.current.userInterfaceStyle == .dark ? .primaryDarkMode : .primaryLightMode
+        dateLabel?.textColor = UIColor.primary()
     }
 }

@@ -24,7 +24,7 @@ public class HtmlConversions {
 
     private static var color: UIColor {
         get {
-            return UITraitCollection.current.userInterfaceStyle == .dark ? UIColor.primaryDarkMode : UIColor.primaryLightMode
+            return UIColor.primary()
         }
     }
 

@@ -205,7 +205,7 @@ final class EmailListViewController: UIViewController {
             return
         }
         if UITraitCollection.current.userInterfaceStyle == .light {
-            refreshController.tintColor = UITraitCollection.current.userInterfaceStyle == .dark ? UIColor.primaryDarkMode : UIColor.primaryLightMode
+            refreshController.tintColor = UIColor.primary()
         }
 
         refreshController.addTarget(self, action: #selector(refreshView), for: .valueChanged)
@@ -338,7 +338,7 @@ final class EmailListViewController: UIViewController {
             Log.shared.errorAndCrash(message: "editButton in navigation is not initialized!")
             return
         }
-        let primary = UITraitCollection.current.userInterfaceStyle == .dark ? UIColor.primaryDarkMode : UIColor.primaryLightMode
+        let primary = UIColor.primary()
         let editButtonDisabled = vm.rowCount == 0
         editButton.isEnabled = editButtonDisabled ? false : true
         editButton.tintColor = editButtonDisabled ? .clear: primary

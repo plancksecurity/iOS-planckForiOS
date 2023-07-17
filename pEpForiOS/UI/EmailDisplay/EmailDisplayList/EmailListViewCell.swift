@@ -176,7 +176,7 @@ extension EmailListViewCell {
         clear()
         summaryLabel.text = nil
         contactImageView.image = EmailListViewCell.emptyContactImage
-        tintColor = UITraitCollection.current.userInterfaceStyle == .dark ? UIColor.primaryDarkMode : UIColor.primaryLightMode
+        tintColor = UIColor.primary()
     }
 
     private func setFlagged() {

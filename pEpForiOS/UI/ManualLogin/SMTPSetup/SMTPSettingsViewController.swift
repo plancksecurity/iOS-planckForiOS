@@ -219,7 +219,7 @@ extension SMTPSettingsViewController: SMTPSettingsDelegate {
 
         vm.handleLoading()
         navigationItem.rightBarButtonItem?.isEnabled = !vm.isCurrentlyVerifying
-        let primary = UITraitCollection.current.userInterfaceStyle == .dark ? UIColor.primaryDarkMode : UIColor.primaryLightMode
+        let primary = UIColor.primary()
         view.backgroundColor = UITraitCollection.current.userInterfaceStyle == .dark ? .systemBackground : primary
     }
 

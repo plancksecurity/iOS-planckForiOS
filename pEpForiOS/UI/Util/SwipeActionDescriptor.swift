@@ -70,7 +70,7 @@ enum SwipeActionDescriptor {
     }
 
     var color: UIColor {
-        let primary = UITraitCollection.current.userInterfaceStyle == .dark ? UIColor.primaryDarkMode : UIColor.primaryLightMode
+        let primary = UIColor.primary()
 
         switch self {
         case .read: return #colorLiteral(red: 0, green: 0.4784313725, blue: 1, alpha: 1)

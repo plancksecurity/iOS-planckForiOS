@@ -293,7 +293,7 @@ extension IMAPSettingsViewController {
         setupView.pEpSyncSwitch.isOn = verifiableAccount.keySyncEnable
         setupView.nextButton.isEnabled = verifiableAccount.isValidUser
         setupView.nextRightButton.isEnabled = verifiableAccount.isValidUser
-        let primary = UITraitCollection.current.userInterfaceStyle == .dark ? UIColor.primaryDarkMode : UIColor.primaryLightMode
+        let primary = UIColor.primary()
         view.backgroundColor = UITraitCollection.current.userInterfaceStyle == .dark ? .systemBackground : primary
     }
 
@@ -315,7 +315,7 @@ extension IMAPSettingsViewController {
             return
         }
         if thePreviousTraitCollection.hasDifferentColorAppearance(comparedTo: traitCollection) {
-            let primary = UITraitCollection.current.userInterfaceStyle == .dark ? UIColor.primaryDarkMode : UIColor.primaryLightMode
+            let primary = UIColor.primary()
             view.backgroundColor = UITraitCollection.current.userInterfaceStyle == .dark ? .systemBackground : primary
             manualAccountSetupContainerView.backgroundColor = view.backgroundColor
             manualAccountSetupContainerView.setupView?.backgroundColor = view.backgroundColor

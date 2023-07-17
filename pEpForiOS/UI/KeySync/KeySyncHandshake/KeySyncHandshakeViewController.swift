@@ -80,7 +80,7 @@ final class KeySyncHandshakeViewController: UIViewController {
     @IBOutlet private weak var accept: UIButton! {
         didSet {
             setFont(button: accept)
-            let primary = UITraitCollection.current.userInterfaceStyle == .dark ? UIColor.primaryDarkMode : UIColor.primaryLightMode
+            let primary = UIColor.primary()
             accept.setTitleColor(primary, for: .normal)
             accept.setTitle(NSLocalizedString("Confirm",
                                               comment: "accept hand shake confirm button"), for: .normal)

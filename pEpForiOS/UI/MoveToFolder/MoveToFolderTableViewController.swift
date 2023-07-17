@@ -34,7 +34,7 @@ class MoveToFolderTableViewController: UITableViewController {
     override func tableView(_ tableView: UITableView,
                             cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: cellId, for: indexPath)
-        let primary = UITraitCollection.current.userInterfaceStyle == .dark ? UIColor.primaryDarkMode : UIColor.primaryLightMode
+        let primary = UIColor.primary()
         if let vm = viewModel?[indexPath.row] {
             cell.textLabel?.text = vm.title
             let icon = vm.icon.withTintColor(primary)

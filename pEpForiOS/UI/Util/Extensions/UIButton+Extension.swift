@@ -33,7 +33,7 @@ extension UIButton {
 
     public func convertToLoginButton(placeholder: String) {
         backgroundColor = UIColor.clear
-        tintColor = UITraitCollection.current.userInterfaceStyle == .dark ? UIColor.primaryDarkMode : UIColor.primaryLightMode
+        tintColor = UIColor.primary()
         setTitle(placeholder, for: .normal)
     }
 
@@ -43,10 +43,10 @@ extension UIButton {
         let buttonLeft = UIButton(type: UIButton.ButtonType.custom)
         buttonLeft.setImage(tintedimage, for: .normal)
         buttonLeft.imageView?.contentMode = .scaleToFill
-        buttonLeft.imageView?.tintColor = UITraitCollection.current.userInterfaceStyle == .dark ? UIColor.primaryDarkMode : UIColor.primaryLightMode
+        buttonLeft.imageView?.tintColor = UIColor.primary()
         buttonLeft.setTitle(text, for: .normal)
-        buttonLeft.tintColor = UITraitCollection.current.userInterfaceStyle == .dark ? UIColor.primaryDarkMode : UIColor.primaryLightMode
-        let color = UITraitCollection.current.userInterfaceStyle == .dark ? UIColor.primaryDarkMode : UIColor.primaryLightMode
+        buttonLeft.tintColor = UIColor.primary()
+        let color = UIColor.primary()
         buttonLeft.setTitleColor(color, for: .normal)
         buttonLeft.accessibilityIdentifier = AccessibilityIdentifier.backButton
         return buttonLeft

@@ -99,7 +99,7 @@ extension PGPKeyImportSettingViewModel {
             let linkString = NSLocalizedString("here",
                                                comment: "PGPKeyImportSettingViewModel - part of pgpKeyImportTitle that should link to support page (... click _here_ for info ...)")
             let linkRange = pgpKeyImportSectionHeaderTitle.mutableString.range(of: linkString)
-            let primary = UITraitCollection.current.userInterfaceStyle == .dark ? UIColor.primaryDarkMode : UIColor.primaryLightMode
+            let primary = UIColor.primary()
             pgpKeyImportSectionHeaderTitle.addAttribute(NSAttributedString.Key.link,
                                            value: "https://pep.security/docs/ios.html#pgp-key-import",
                                            range: linkRange)
@@ -112,7 +112,7 @@ extension PGPKeyImportSettingViewModel {
     }
 
     private func setupSections() {
-        let primary = UITraitCollection.current.userInterfaceStyle == .dark ? UIColor.primaryDarkMode : UIColor.primaryLightMode
+        let primary = UIColor.primary()
         let pgpKeyImportRowTitle = NSLocalizedString("PGP Key Import",
                                                      comment: "PGPKeyImportSetting pgpKeyImportRowTitle")
         let pgpKeyImportRow = Row(type: .pgpKeyImport,
