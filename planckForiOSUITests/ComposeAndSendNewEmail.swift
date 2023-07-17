@@ -37,6 +37,9 @@ final class ComposeAndSendNewEmail: XCTestCase {
         _=tablesQuery.element.waitForExistence(timeout: 3)
         tablesQuery/*@START_MENU_TOKEN@*/.staticTexts["Cc/Bcc:"]/*[[".cells.staticTexts[\"Cc\/Bcc:\"]",".staticTexts[\"Cc\/Bcc:\"]"],[[[-1,1],[-1,0]]],[0]]@END_MENU_TOKEN@*/.tap()
        
+        // Write the code to match the images privacy status
+        
+        
         common.app.tables.cells.containing(.staticText, identifier:UIStrings.subject).children(matching: .textView).element.tap()
         common.app.typeText(UIStrings.subjectText)
         
@@ -61,6 +64,9 @@ final class ComposeAndSendNewEmail: XCTestCase {
         common.appTerminate() // App Close
         
     }
+    
+    
+    
     
    
 }

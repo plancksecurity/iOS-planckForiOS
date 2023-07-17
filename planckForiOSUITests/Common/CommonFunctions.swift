@@ -23,6 +23,6 @@ class CommonFunctions {
     func generateRandomBot() -> String {
         let letters = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789"
         let randomString = String((0..<5).map { _ in letters.randomElement()! })
-        return randomString + "@sq.planck.security"
+        return randomString + "@demo.planck.dev"
     }
 }
