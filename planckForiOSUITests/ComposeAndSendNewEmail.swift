@@ -8,9 +8,9 @@
 
 import XCTest
 
-final class ComposeAndSendNewEmail: XCTestCase {
+final class Test03ComposeAndSendNewEmail: XCTestCase {
 
-    func testComposeAndSendNewEmail() {
+    func test03ComposeAndSendNewEmail() {
         
         let common = CommonFunctions()
         

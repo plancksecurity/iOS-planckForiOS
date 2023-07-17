@@ -7,11 +7,11 @@
 //
 import XCTest
 
-final class LaunchAndTerminatePlanck: XCTestCase {
+final class Test01LaunchAndTerminatePlanck: XCTestCase {
 
     let common = CommonFunctions()
     
-    func testAppLaunchAndTerminate() {
+    func test01AppLaunchAndTerminate() {
         common.appLaunch()
         Thread.sleep(forTimeInterval: 10)
         common.appTerminate()

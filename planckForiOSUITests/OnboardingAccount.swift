@@ -8,14 +8,14 @@
 
 import XCTest
 
-final class OnboaringdAccount: XCTestCase {
+final class Test02OnboaringdAccount: XCTestCase {
 
     let common = CommonFunctions()
     
 
         
     
-    func testLoginFunctionality(){
+    func test02LoginFunctionality(){
         
         
         common.appLaunch() // Launch the App
