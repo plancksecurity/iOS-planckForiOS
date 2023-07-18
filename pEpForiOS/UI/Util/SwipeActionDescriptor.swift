@@ -78,7 +78,7 @@ enum SwipeActionDescriptor {
         case .flag: return #colorLiteral(red: 1, green: 0.5803921569, blue: 0, alpha: 1)
         case .unflag: return #colorLiteral(red: 1, green: 0.5803921569, blue: 0, alpha: 1)
         case .trash: return #colorLiteral(red: 1, green: 0.2352941176, blue: 0.1882352941, alpha: 1)
-        case .archive: return UIColor.blue
+        case .archive: return .primary
         }
     }
 }

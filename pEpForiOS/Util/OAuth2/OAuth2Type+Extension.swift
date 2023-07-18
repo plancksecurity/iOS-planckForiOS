@@ -25,6 +25,7 @@ extension OAuth2Type {
                 scopes: [
                     "https://outlook.office.com/IMAP.AccessAsUser.All",
                     "https://outlook.office.com/SMTP.Send",
+                    "offline_access",
                     OIDScopeOpenID,
                     OIDScopeEmail,
                     OIDScopeProfile],

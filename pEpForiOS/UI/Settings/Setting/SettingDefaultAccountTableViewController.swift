@@ -48,7 +48,7 @@ class SettingDefaultAccountTableViewController: UITableViewController {
         let address = allAccounts[indexPath.row].user.address
         cell.textLabel?.font = UIFont.pepFont(style: .body, weight: .regular)
         cell.textLabel?.text = address
-        cell.tintColor = UIColor.pEpGreen
+        cell.tintColor = UIColor.primary
         if let defaultAccountAddress = AppSettings.shared.defaultAccount,
             defaultAccountAddress == address {
             cell.accessoryType = .checkmark

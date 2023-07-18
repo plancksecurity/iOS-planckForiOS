@@ -29,7 +29,7 @@ class SimpleOperationsTest: PersistentStoreDrivenTestBase {
 
     func testQualifyServerOperation() {
         XCTAssertEqual(isLocalServer(serverName: "localhost"), true)
-        XCTAssertEqual(isLocalServer(serverName: "peptest.ch"), false)
+        XCTAssertEqual(isLocalServer(serverName: "planck.dev"), false)
     }
 
     func isLocalServer(serverName: String) -> Bool? {

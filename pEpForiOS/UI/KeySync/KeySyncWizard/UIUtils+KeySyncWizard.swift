@@ -37,7 +37,7 @@ extension UIUtils {
     ///   - completion: The callback to be executed when the user interacts with the error alert view buttons.
     public static func showKeySyncErrorView(isNewGroup: Bool, error: Error?, completion: ((KeySyncErrorResponse) -> ())? = nil) {
         DispatchQueue.main.async {
-            let keySyncErrorViewController = PEPAlertViewController.getKeySyncErrorViewController(isNewGroup: isNewGroup) { (action) in
+            let keySyncErrorViewController = PlanckAlertViewController.getKeySyncErrorViewController(isNewGroup: isNewGroup) { (action) in
                 switch action {
                 case .tryAgain:
                     completion?(.tryAgain)
@@ -71,8 +71,8 @@ extension UIUtils {
         //  - Do not show another pEp Sync Error alert view.
         //  - Dismiss and present a KeySync wizard if needed.
         //
-        if currentlyShownViewController is PEPAlertViewController {
-            if viewControllerToPresent is PEPAlertViewController {
+        if currentlyShownViewController is PlanckAlertViewController {
+            if viewControllerToPresent is PlanckAlertViewController {
                 return nil
             } else if viewControllerToPresent is KeySyncWizardViewController {
                 dismissCurrentlyVisibleViewController(andPresent: viewControllerToPresent)

@@ -1,5 +1,5 @@
 //
-//  PEPAlertViewController.swift
+//  PlanckAlertViewController.swift
 //  pEp
 //
 //  Created by Alejandro Gelos on 22/08/2019.
@@ -14,7 +14,7 @@ import PlanckToolboxForExtensions
 import PlanckToolbox
 #endif
 
-final class PEPAlertViewController: UIViewController {
+final class PlanckAlertViewController: UIViewController {
     public var alertStyle: AlertStyle = .default
     @IBOutlet weak var alertTitle: UILabel!
     @IBOutlet weak var alertMessage: UILabel!
@@ -25,16 +25,17 @@ final class PEPAlertViewController: UIViewController {
     @IBOutlet weak private var alertImageViewHeightConstraint: NSLayoutConstraint!
     @IBOutlet weak private var alertTitleTopViewHeightConstraint: NSLayoutConstraint!
     
-    private var viewModel: PEPAlertViewModelProtocol
+    private var viewModel: PlanckAlertViewModelProtocol
     private var titleString: String?
     private var message: String?
     private var paintPEPInTitle = false
     private var images: [UIImage]?
-    private var action = [PEPUIAlertAction]()
-    static let storyboardId = "PEPAlertViewController"
+    private var action = [PlanckUIAlertAction]()
+    static let storyboardId = "PlanckAlertViewController"
     public var style : AlertStyle = .default
+
     required init?(coder aDecoder: NSCoder) {
-        viewModel = PEPAlertViewModel()
+        viewModel = PlanckAlertViewModel()
         super.init(coder: aDecoder)
     }
 
@@ -55,39 +56,38 @@ final class PEPAlertViewController: UIViewController {
     }
 
     static func fromStoryboard(title: String? = nil,
-                     message: String? = nil,
-                     paintPEPInTitle: Bool = false,
-                     image: [UIImage]? = nil,
-                     viewModel: PEPAlertViewModelProtocol = PEPAlertViewModel())
-        -> PEPAlertViewController? {
+                               message: String? = nil,
+                               paintPEPInTitle: Bool = false,
+                               image: [UIImage]? = nil,
+                               viewModel: PlanckAlertViewModelProtocol = PlanckAlertViewModel()) -> PlanckAlertViewController? {
         let storyboard = UIStoryboard(name: Constants.reusableStoryboard, bundle: .main)
-        guard let pEpAlertViewController = storyboard.instantiateViewController(
-                withIdentifier: PEPAlertViewController.storyboardId) as? PEPAlertViewController else {
-            Log.shared.errorAndCrash("Fail to instantiateViewController PEPAlertViewController")
+        guard let planckAlertViewController = storyboard.instantiateViewController(
+            withIdentifier: PlanckAlertViewController.storyboardId) as? PlanckAlertViewController else {
+            Log.shared.errorAndCrash("Fail to instantiateViewController PlanckAlertViewController")
             return nil
         }
-        pEpAlertViewController.viewModel = viewModel
-        pEpAlertViewController.viewModel.delegate = pEpAlertViewController
-
-        pEpAlertViewController.titleString = title
-        pEpAlertViewController.paintPEPInTitle = paintPEPInTitle
-        pEpAlertViewController.message = message
-        pEpAlertViewController.images = image
-
-        pEpAlertViewController.modalPresentationStyle = .overFullScreen
-        pEpAlertViewController.modalTransitionStyle = .crossDissolve
-
-        return pEpAlertViewController
+        planckAlertViewController.viewModel = viewModel
+        planckAlertViewController.viewModel.delegate = planckAlertViewController
+        
+        planckAlertViewController.titleString = title
+        planckAlertViewController.paintPEPInTitle = paintPEPInTitle
+        planckAlertViewController.message = message
+        planckAlertViewController.images = image
+        
+        planckAlertViewController.modalPresentationStyle = .overFullScreen
+        planckAlertViewController.modalTransitionStyle = .crossDissolve
+        
+        return planckAlertViewController
     }
 
-    func add(action: PEPUIAlertAction) {
+    func add(action: PlanckUIAlertAction) {
         self.action.append(action)
     }
 }
 
-// MARK: - PEPAlertViewModelDelegate
+// MARK: - PlanckAlertViewModelDelegate
 
-extension PEPAlertViewController: PEPAlertViewModelDelegate {
+extension PlanckAlertViewController: PlanckAlertViewModelDelegate {
     func dismiss() {
         dismiss(animated: true, completion: nil)
     }
@@ -95,7 +95,7 @@ extension PEPAlertViewController: PEPAlertViewModelDelegate {
 
 // MARK: - AlertStyle
 
-extension PEPAlertViewController {
+extension PlanckAlertViewController {
 
     public enum AlertStyle : Int {
         case `default` = 0
@@ -106,25 +106,25 @@ extension PEPAlertViewController {
     public var primaryColor: UIColor {
         switch alertStyle {
         case .default:
-            return .label
+            return .primary
         case .warn:
             return .pEpRed
         case .undo:
-            return .label
+            return .primary
         }
     }
 
     public var secondaryColor: UIColor {
         switch alertStyle {
         case .default, .warn, .undo:
-            return .label
+            return .secondaryLabel
         }
     }
 }
 
 // MARK: - Private
 
-extension PEPAlertViewController {
+extension PlanckAlertViewController {
 
     private struct ConstantsValues {
         static let alertTitleTopViewHeight: CGFloat = 0 // Set empty not important view invisible (in this case)
@@ -140,7 +140,7 @@ extension PEPAlertViewController {
         alertMessage.font = UIFont.pepFont(style: .footnote, weight: .regular)
         alertTitle.font = UIFont.pepFont(style: .body, weight: .semibold)
         if paintPEPInTitle {
-            alertTitle.attributedText = title?.paintPEPToPEPColour()
+            alertTitle.attributedText = title?.paintPlanckToPlanckColour()
         } else {
             alertTitle.text = title
         }
@@ -156,28 +156,28 @@ extension PEPAlertViewController {
         alertImageView.startAnimating()
     }
 
-    private func setUp(alertType style: PEPAlertViewModel.AlertType) {
+    private func setUp(alertType style: PlanckAlertViewModel.AlertType) {
         switch style {
-        case .pEpSyncWizard:
+        case .planckSyncWizard:
             alertImageView.contentMode = .scaleAspectFit
             alertTitleTopViewHeightConstraint.constant = ConstantsValues.alertTitleTopViewHeight
             alertImageViewHeightConstraint.constant = ConstantsValues.alertImageViewHeight
-        case .pEpDefault:
+        case .planckDefault:
             break
         }
     }
 
-    private func setUp(alertButton: UIButton, style: PEPAlertViewModel.AlertType) {
+    private func setUp(alertButton: UIButton, style: PlanckAlertViewModel.AlertType) {
         switch style {
-        case .pEpSyncWizard:
+        case .planckSyncWizard:
             alertButton.titleLabel?.font = UIFont.pepFont(style: .body, weight: .semibold)
-        case .pEpDefault:
+        case .planckDefault:
             alertButton.titleLabel?.font = UIFont.pepFont(style: .callout, weight: .semibold)
             break
         }
     }
 
-    private func setUp(actions: [PEPUIAlertAction]) {
+    private func setUp(actions: [PlanckUIAlertAction]) {
         actions.forEach { action in
             let button = UIButton(type: .system)
 
@@ -201,7 +201,7 @@ extension PEPAlertViewController {
 
 // MARK: - Trait Collection
 
-extension PEPAlertViewController {
+extension PlanckAlertViewController {
 
     override func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
         super.traitCollectionDidChange(previousTraitCollection)

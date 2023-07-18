@@ -140,13 +140,13 @@ extension KeySyncService {
                 PEPSession().deliver(result.pEpSyncHandshakeResult(),
                                      identitiesSharing: [me, partner],
                                      errorCallback: { (error: Error) in
-                                        if error.isPassphraseError {
-                                            Log.shared.error("Error delivering handshake result: %@", error.localizedDescription)
-                                        } else {
-                                            Log.shared.errorAndCrash("%@", error.localizedDescription)
-                                        }}) {
-                    // Caller doesn't care about the result
-                }
+                    if error.isPassphraseError {
+                        Log.shared.error("Error delivering handshake result: %@", error.localizedDescription)
+                    } else {
+                        Log.shared.errorAndCrash("%@", error.localizedDescription)
+                    }}) {
+                        // Caller doesn't care about the result
+                    }
             }
         }
     }

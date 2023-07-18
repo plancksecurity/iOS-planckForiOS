@@ -62,7 +62,7 @@ class TrustManagementViewController: UIViewController {
                                    positiveButtonAction: { [weak vm] in
                                     vm?.handleShakeMotionDidEnd()
                                    },
-                                   style: PEPAlertViewController.AlertStyle.undo)
+                                   style: PlanckAlertViewController.AlertStyle.undo)
     }
 
     override func viewWillTransition(to size: CGSize, with coordinator: UIViewControllerTransitionCoordinator) {
@@ -372,17 +372,8 @@ extension TrustManagementViewController {
             cell.partnerImageView.image = image
             updateSizeGroup.leave()
         }
-        updateSizeGroup.enter()
-        row.privacyStatusImage { (image) in
-            cell.privacyStatusImageView.image = image
-            updateSizeGroup.leave()
-        }
         cell.partnerNameLabel.text = row.name
-        updateSizeGroup.enter()
-        row.privacyStatusName { (name) in
-            cell.privacyStatusLabel.text = name
-            updateSizeGroup.leave()
-        }
+
         updateSizeGroup.enter()
         row.description { (description) in
             cell.descriptionLabel.text = description
@@ -401,8 +392,9 @@ extension TrustManagementViewController {
 
             if identifier == me.onlyMasterCellIdentifier {
                 if rowColor == .yellow {
+                    cell.languageButton.isHidden = row.trustwords == nil
                     cell.trustwordsLabel.text = row.trustwords
-                    cell.trustwordsStackView.isHidden = false
+                    cell.trustwordsStackView.isHidden = row.trustwords == nil
                     cell.trustwordsButtonsContainer.isHidden = false
 
                     cell.ownFingerprintTitleLabel.text = row.ownTitle
@@ -553,6 +545,6 @@ extension TrustManagementViewController {
             }
 
         },
-        style: PEPAlertViewController.AlertStyle.warn)
+        style: PlanckAlertViewController.AlertStyle.warn)
     }
 }

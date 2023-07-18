@@ -224,8 +224,7 @@ extension ComposeViewController {
         }
 
         // Toggle privacy status on long press for trusted and reliable
-        let pEpColor = pEpRating.pEpColor()
-        if pEpColor == .green || pEpColor == .yellow {
+        if pEpRating.isTrusted() || pEpRating.isReliable() {
             let tapGestureRecognizerToggleProtection = UILongPressGestureRecognizer(
                 target: self,
                 action: #selector(showPepActions))
@@ -531,7 +530,7 @@ extension ComposeViewController: ComposeViewModelDelegate {
                              callback: @escaping (JPEGQuality) -> ()?) {
 
         let alertSheet = UIUtils.actionSheet(title: title)
-        alertSheet.view.tintColor = UIColor.pEpDarkGreen
+        alertSheet.view.tintColor = UIColor.primary
         let lowAction = UIAlertAction(title: smallTitle, style: .default) { (action) in
             callback(.low)
         }

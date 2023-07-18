@@ -17,6 +17,7 @@ import PlanckToolbox
 /// * optionally `stop()` or `finish()`
 class EncryptAndSMTPSendService: QueryBasedService<CdMessage>, SendServiceProtocol {
     weak private var encryptionErrorDelegate: EncryptionErrorDelegate?
+    weak private var auditLogger: AuditLoggingProtocol?
 
     /// Creates a ready to go SMTP Encrypt and Send Service
     ///
@@ -28,9 +29,12 @@ class EncryptAndSMTPSendService: QueryBasedService<CdMessage>, SendServiceProtoc
     init(backgroundTaskManager: BackgroundTaskManagerProtocol? = nil,
          cdAccount: CdAccount,
          encryptionErrorDelegate: EncryptionErrorDelegate? = nil,
-         errorPropagator: ErrorContainerProtocol?) {
+         errorPropagator: ErrorContainerProtocol?,
+         auditLogger: AuditLoggingProtocol? = nil) {
         let predicate = CdMessage.PredicateFactory.outgoingMails(in: cdAccount)
         self.encryptionErrorDelegate = encryptionErrorDelegate
+        self.auditLogger = auditLogger
+
         super.init(useSerialQueue: true,
                    backgroundTaskManager: backgroundTaskManager,
                    predicate: predicate,
@@ -58,10 +62,10 @@ class EncryptAndSMTPSendService: QueryBasedService<CdMessage>, SendServiceProtoc
             guard
                 let cdAccount = cdMessagesToSend.first?.parent?.account,
                 let smtpConnectInfo = cdAccount.smtpConnectInfo else {
-                    Log.shared.error("%@ - No account", "\(type(of: self))")
-                    let reportErrorAndWaitOp = errorHandlerOp(error: BackgroundError.SmtpError.invalidAccount)
-                    createes.append(reportErrorAndWaitOp)
-                    return
+                Log.shared.error("%@ - No account", "\(type(of: self))")
+                let reportErrorAndWaitOp = me.errorHandlerOp(error: BackgroundError.SmtpError.invalidAccount)
+                createes.append(reportErrorAndWaitOp)
+                return
             }
             let smtpConnection = SmtpConnection(connectInfo: smtpConnectInfo)
 
@@ -75,11 +79,12 @@ class EncryptAndSMTPSendService: QueryBasedService<CdMessage>, SendServiceProtoc
                 let sendOp = EncryptAndSMTPSendMessageOperation(cdMessageToSendObjectId: cdMsg.objectID,
                                                                 smtpConnection: smtpConnection,
                                                                 errorContainer: me.errorPropagator,
-                                                                encryptionErrorDelegate: encryptionErrorDelegate)
+                                                                encryptionErrorDelegate: me.encryptionErrorDelegate,
+                                                                auditLogger: me.auditLogger)
                 createes.append(sendOp)
             }
             // Add error handler
-            createes.append(errorHandlerOp())
+            createes.append(me.errorHandlerOp())
         }
         return createes
     }

@@ -22,6 +22,7 @@ class EncryptAndSMTPSendMessageOperation: ConcurrentBaseOperation {
     private var cdMessage: CdMessage? = nil
     private let cdMessageToSendObjectId: NSManagedObjectID
     weak private var encryptionErrorDelegate: EncryptionErrorDelegate?
+    weak private var auditLogger: AuditLoggingProtocol?
 
     // MARK: - API
 
@@ -29,10 +30,13 @@ class EncryptAndSMTPSendMessageOperation: ConcurrentBaseOperation {
          cdMessageToSendObjectId: NSManagedObjectID,
          smtpConnection: SmtpConnectionProtocol,
          errorContainer: ErrorContainerProtocol = ErrorPropagator(),
-         encryptionErrorDelegate: EncryptionErrorDelegate? = nil) {
+         encryptionErrorDelegate: EncryptionErrorDelegate? = nil,
+         auditLogger: AuditLoggingProtocol? = nil) {
+        
         self.cdMessageToSendObjectId = cdMessageToSendObjectId
         self.smtpConnection = smtpConnection
         self.encryptionErrorDelegate = encryptionErrorDelegate
+        self.auditLogger = auditLogger
         super.init(parentName: parentName, errorContainer: errorContainer)
     }
 
@@ -77,7 +81,6 @@ extension EncryptAndSMTPSendMessageOperation {
         }
 
         let extraKeys = CdExtraKey.fprsOfAllExtraKeys(in: privateMOC)
-        
         PEPUtils.encrypt(pEpMessage: pEpMsg,
                          encryptionFormat: cdMessage.pEpProtected ? .PEP : .none,
                          extraKeys: extraKeys,
@@ -102,6 +105,12 @@ extension EncryptAndSMTPSendMessageOperation {
                 me.privateMOC.perform {
                     me.setOriginalRatingHeader(unencryptedCdMessage: cdMessage)
                     me.send(pEpMessage: encryptedMessageToSend)
+                    if cdMessage.isLoggable {
+                        // Audit Log on encryption
+                        let senderId = encryptedMessageToSend.from?.address ?? "N/A"
+                        let rating = Rating(pEpRating: me.blockingGetOutgoingMessageRating(for: cdMessage)).toString()
+                        me.auditLogger?.log(senderId: senderId, rating: rating)
+                    }
                 }
             }
         }
@@ -156,7 +165,7 @@ extension EncryptAndSMTPSendMessageOperation {
                 // Backgound: this may cause showing yellow or green for a message that could not
                 // be encrypted!
                 // See IOS-2823
-                cdMessage.pEpRating = Int16(blockingGetOutgoingMessageRating(for: cdMessage).rawValue)
+                cdMessage.pEpRating = Int16(me.blockingGetOutgoingMessageRating(for: cdMessage).rawValue)
             }
 
             cdMessage.createFakeMessage(context: me.privateMOC)

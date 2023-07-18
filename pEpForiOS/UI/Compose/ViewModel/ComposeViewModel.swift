@@ -207,7 +207,7 @@ class ComposeViewModel {
     
     private func shouldQueryRedRecipients() -> Bool {
         let canUpdate = recipientsBannerViewModel?.canUpdate ?? false
-        return .red == state.rating.pEpColor() && canUpdate
+        return state.rating.isDangerous() || state.rating.isUnreliable()  && canUpdate
     }
 
     /// Get the Recipients Banner ViewModel.
@@ -250,7 +250,7 @@ class ComposeViewModel {
                 let safeIdentity = identity.safeForSession(session)
                 session.performAndWait {
                     safeIdentity.pEpRating { rating in
-                        if .red == rating.pEpColor() {
+                        if rating.isDangerous() || rating.isUnreliable() {
                             redRecipients.append(identity)
                         }
                         group.leave()
@@ -1241,7 +1241,7 @@ extension ComposeViewModel {
     }
 
     /// When forwarding/answering a previously decrypted message and the pEpRating is considered as
-    /// less secure as the original message's pEp rating, warn the user.
+    /// less secure as the original message's planck rating, warn the user.
     private func showAlertFordwardingLessSecureIfRequired(forState state: ComposeViewModelState,
                                                           completion: @escaping (Accepted) -> ()) {
         guard AppSettings.shared.unsecureReplyWarningEnabled else {
@@ -1256,7 +1256,7 @@ extension ComposeViewModel {
             return
         }
 
-        var originalRating: Rating? = nil //!!!: BUFF: AFAIU originalRating MUST NOT taken be taken into account any more since IOS-2414
+        var originalRating: Rating? = nil //!!!: BUFF: AFAIU originalRating MUST NOT be taken into account any more since IOS-2414
         let group = DispatchGroup()
         group.enter()
         originalMessage.pEpRating { (rating) in
@@ -1274,22 +1274,23 @@ extension ComposeViewModel {
                 completion(false)
                 return
             }
-            let pEpRating = state.rating
-            let title: String
-            let message: String
-            if data.composeMode == .forward {
-                title = NSLocalizedString("Confirm Forward",
-                                          comment: "Confirm less secure forwarding message alert title")
-                message = NSLocalizedString("You are about to forward a secure message as unsecure. If you choose to proceed, confidential information might be leaked putting you and your communication partners at risk. Are you sure you want to continue?",
-                                            comment: "Confirm less secure forwarding message alert body")
-            } else {
-                title = NSLocalizedString("Confirm Answer",
-                                          comment: "Confirm less secure answering message alert title")
-                message = NSLocalizedString("You are about to answer a secure message as unsecure. If you choose to proceed, confidential information might be leaked putting you and your communication partners at risk. Are you sure you want to continue?",
-                                            comment: "Confirm less secure answer message alert body")
-            }
 
-            if pEpRating.hasLessSecurePepColor(than: originalRating) {
+            if state.rating.isLessSecure(than: originalRating) {
+
+                let title: String
+                let message: String
+                if data.composeMode == .forward {
+                    title = NSLocalizedString("Confirm Forward",
+                                              comment: "Confirm less secure forwarding message alert title")
+                    message = NSLocalizedString("You are about to forward a secure message as unsecure. If you choose to proceed, confidential information might be leaked putting you and your communication partners at risk. Are you sure you want to continue?",
+                                                comment: "Confirm less secure forwarding message alert body")
+                } else {
+                    title = NSLocalizedString("Confirm Answer",
+                                              comment: "Confirm less secure answering message alert title")
+                    message = NSLocalizedString("You are about to answer a secure message as unsecure. If you choose to proceed, confidential information might be leaked putting you and your communication partners at risk. Are you sure you want to continue?",
+                                                comment: "Confirm less secure answer message alert body")
+                }
+
                 // Forwarded mesasge is less secure than original message. Warn the user.
                 me.delegate?.showTwoButtonAlert(withTitle: title,
                                                 message: message,

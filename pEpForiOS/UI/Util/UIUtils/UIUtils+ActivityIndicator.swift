@@ -11,7 +11,7 @@ import PlanckToolbox
 // MARK: - UIUtils+ActivityIndicator
 
 extension UIUtils {
-
+    
     /// Show simple UIActivityIndicatorView in midle of current view
     ///
     /// - Returns: UIActivityIndicatorView. Useful to hold for removing from super view
@@ -21,9 +21,10 @@ extension UIUtils {
         activityIndicator.startAnimating()
         activityIndicator.translatesAutoresizingMaskIntoConstraints = false
         var presenterVc = UIApplication.currentlyVisibleViewController()
-        if presenterVc is PEPAlertViewController, let vc = viewController {
+        if presenterVc is PlanckAlertViewController, let vc = viewController {
             presenterVc = vc
         }
+
         let view: UIView = presenterVc.view
         view.addSubview(activityIndicator)
         NSLayoutConstraint(item: activityIndicator,
@@ -41,7 +42,6 @@ extension UIUtils {
                            attribute: .centerY,
                            multiplier: 1,
                            constant: 0).isActive = true
-
         return activityIndicator
     }
 }

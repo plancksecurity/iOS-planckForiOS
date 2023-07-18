@@ -17,7 +17,7 @@
                         <viewControllerLayoutGuide type="bottom" id="02b-aC-FFK"/>
                     </layoutGuides>
                     <view key="view" contentMode="scaleToFill" id="FFU-eh-fPY">
-                        <rect key="frame" x="0.0" y="0.0" width="414" height="630"/>
+                        <rect key="frame" x="0.0" y="0.0" width="414" height="610"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                     </view>
@@ -56,6 +56,7 @@
                                     </label>
                                     <switch opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" contentHorizontalAlignment="center" contentVerticalAlignment="center" on="YES" translatesAutoresizingMaskIntoConstraints="NO" id="rWL-mw-ch6">
                                         <rect key="frame" x="357" y="15.666666666666629" width="51" height="31"/>
+                                        <color key="tintColor" red="0.52941176469999995" green="0.21960784310000001" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                         <connections>
                                             <action selector="switchedVerboseLoggingEnabled:" destination="9LH-QE-79O" eventType="valueChanged" id="VGh-WC-epy"/>
                                         </connections>
@@ -257,6 +258,7 @@
                         <segue destination="wka-er-mvR" kind="showDetail" identifier="segueShowSettingTrustedServers" id="i5L-Ua-Oj4"/>
                         <segue destination="Wos-ka-014" kind="showDetail" identifier="seguePgpKeyImport" id="e9p-en-4pb"/>
                         <segue destination="wd6-ee-alb" kind="showDetail" identifier="segueEditAccount" id="3qB-AE-EiK"/>
+                        <segue destination="XK0-ao-ycS" kind="showDetail" identifier="segueAuditLogging" id="VJc-8q-Ny8"/>
                     </connections>
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="BPe-Zm-lKR" userLabel="First Responder" sceneMemberID="firstResponder"/>
@@ -363,6 +365,72 @@
                 <placeholder placeholderIdentifier="IBFirstResponder" id="LCO-IG-Rwh" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="207" y="-2068"/>
+        </scene>
+        <!--Audit Logging View Controller-->
+        <scene sceneID="bUV-F2-UBT">
+            <objects>
+                <viewController storyboardIdentifier="AuditLoggingViewController" useStoryboardIdentifierAsRestorationIdentifier="YES" id="XK0-ao-ycS" customClass="AuditLoggingViewController" customModule="pEpForiOS" customModuleProvider="target" sceneMemberID="viewController">
+                    <layoutGuides>
+                        <viewControllerLayoutGuide type="top" id="S5b-LK-EJN"/>
+                        <viewControllerLayoutGuide type="bottom" id="XEb-Qc-mCw"/>
+                    </layoutGuides>
+                    <view key="view" contentMode="scaleToFill" id="AQt-rf-FYc">
+                        <rect key="frame" x="0.0" y="0.0" width="414" height="736"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="none" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="-1" estimatedSectionHeaderHeight="-1" sectionFooterHeight="-1" estimatedSectionFooterHeight="-1" translatesAutoresizingMaskIntoConstraints="NO" id="d5x-q0-ArK">
+                                <rect key="frame" x="0.0" y="64" width="414" height="672"/>
+                                <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+                                <prototypes>
+                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" restorationIdentifier="AuditLoggingMaxTimeCellId" preservesSuperviewLayoutMargins="YES" selectionStyle="none" indentationWidth="10" reuseIdentifier="AuditLoggingMaxTimeCellId" id="dxi-4V-dYs" userLabel="Audit Logging Table View Cell" customClass="AuditLoggingTableViewCell" customModule="pEpForiOS" customModuleProvider="target">
+                                        <rect key="frame" x="0.0" y="50" width="414" height="42"/>
+                                        <autoresizingMask key="autoresizingMask"/>
+                                        <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="dxi-4V-dYs" id="IXp-4l-eUH">
+                                            <rect key="frame" x="0.0" y="0.0" width="414" height="42"/>
+                                            <autoresizingMask key="autoresizingMask"/>
+                                            <subviews>
+                                                <textField opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="248" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="bve-bC-mTm" customClass="ConfigurableCaretTextField" customModule="PlanckToolbox">
+                                                    <rect key="frame" x="20" y="4" width="374" height="34"/>
+                                                    <fontDescription key="fontDescription" style="UICTFontTextStyleBody"/>
+                                                    <textInputTraits key="textInputTraits" keyboardType="numberPad"/>
+                                                </textField>
+                                            </subviews>
+                                            <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                            <constraints>
+                                                <constraint firstItem="bve-bC-mTm" firstAttribute="top" secondItem="IXp-4l-eUH" secondAttribute="top" constant="4" id="9Ds-TF-MfS"/>
+                                                <constraint firstAttribute="trailing" secondItem="bve-bC-mTm" secondAttribute="trailing" constant="20" symbolic="YES" id="wgS-YC-RkT"/>
+                                                <constraint firstItem="bve-bC-mTm" firstAttribute="leading" secondItem="IXp-4l-eUH" secondAttribute="leading" constant="20" symbolic="YES" id="yDc-Bc-zcd"/>
+                                                <constraint firstAttribute="bottom" secondItem="bve-bC-mTm" secondAttribute="bottom" constant="4" id="yba-FI-3sf"/>
+                                            </constraints>
+                                        </tableViewCellContentView>
+                                        <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                        <connections>
+                                            <outlet property="textField" destination="bve-bC-mTm" id="1vQ-fe-JvA"/>
+                                        </connections>
+                                    </tableViewCell>
+                                </prototypes>
+                                <connections>
+                                    <outlet property="dataSource" destination="XK0-ao-ycS" id="GSU-ch-4hZ"/>
+                                    <outlet property="delegate" destination="XK0-ao-ycS" id="MhX-1u-rKl"/>
+                                </connections>
+                            </tableView>
+                        </subviews>
+                        <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+                        <constraints>
+                            <constraint firstItem="XEb-Qc-mCw" firstAttribute="top" secondItem="d5x-q0-ArK" secondAttribute="bottom" id="CMh-v0-FsI"/>
+                            <constraint firstItem="d5x-q0-ArK" firstAttribute="top" secondItem="S5b-LK-EJN" secondAttribute="bottom" id="Heo-Bi-Dra"/>
+                            <constraint firstItem="d5x-q0-ArK" firstAttribute="leading" secondItem="AQt-rf-FYc" secondAttribute="leading" id="LJf-ow-SqY"/>
+                            <constraint firstAttribute="trailing" secondItem="d5x-q0-ArK" secondAttribute="trailing" id="TKw-D7-7CN"/>
+                        </constraints>
+                    </view>
+                    <splitViewDetailSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
+                    <connections>
+                        <outlet property="tableView" destination="d5x-q0-ArK" id="Nuc-33-g1k"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="Ukn-kH-pLr" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="-2088.4057971014495" y="-2078.804347826087"/>
         </scene>
         <!--Reset Trust View Controller-->
         <scene sceneID="lLJ-n0-lb9">
@@ -893,6 +961,7 @@
                                             <subviews>
                                                 <switch opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" horizontalCompressionResistancePriority="1000" contentHorizontalAlignment="center" contentVerticalAlignment="center" on="YES" translatesAutoresizingMaskIntoConstraints="NO" id="2l1-6r-wkF">
                                                     <rect key="frame" x="345" y="7" width="51" height="31"/>
+                                                    <color key="tintColor" red="0.52941176469999995" green="0.21960784310000001" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                                     <connections>
                                                         <action selector="switchChanged:" destination="bzn-F3-9sV" eventType="valueChanged" id="PLL-04-CZL"/>
                                                     </connections>

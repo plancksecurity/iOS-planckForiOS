@@ -29,6 +29,7 @@ public enum Rating {
 }
 
 extension Rating {
+
     /// The `PEPRating`s that indicates a message could not be decrypted.
     /// Use for later decryption attemp, e.g. after syncing keys with another device.
     private static let undecryptableRatings: [Rating] = [.cannotDecrypt, .haveNoKey]
@@ -39,27 +40,32 @@ extension Rating {
         return Int(pEpRating().rawValue)
     }
 
-    public func pEpColor() -> Color {
-        return Color(pEpColor: pEpRating().pEpColor())
-    }
-
-    /// Compares the pEp colors for this and a given rating.
-    /// - Parameter rating: rating to compare pEp color with
-    /// - returns:  true if the pEp color represents a less secure communication channel than the given one.
+    /// Compares the ratings for this and a given rating.
+    /// - Parameter rating: the rating to compare
+    /// - returns:  true if the rating represents a less secure communication channel than the given one
     ///             false otherwize.
-    public func hasLessSecurePepColor(than rating: Rating) -> Bool {
-        if rating.pEpColor() == .green && pEpColor() != .green {
-            return true
-        } else if rating.pEpColor() == .yellow && (pEpColor() != .green && pEpColor() != .yellow) {
-            return true
-        } else if rating.pEpColor() == .noColor && ![.noColor, .green,  .yellow].contains(pEpColor()) {
-            return true
+    public func isLessSecure(than originalRating: Rating) -> Bool {
+        if isTrusted() {
+            return false
         }
-        
-        return false
+        if self == originalRating {
+            return false
+        }
+        if isReliable() && originalRating.isTrusted() {
+           return true
+        }
+        if !isTrusted() && originalRating.isTrusted() {
+            return true
+        } else if (!isTrusted() && !isReliable() && originalRating.isReliable()) {
+            return true
+        } else {
+            let isTheOriginalRatingUnreliableOrDangerous = originalRating.isUnreliable() || originalRating.isDangerous()
+            let isSelfRatingUndefinedOrDangerous = isUndefined() || isDangerous()
+            return isTheOriginalRatingUnreliableOrDangerous && isSelfRatingUndefinedOrDangerous
+        }
     }
 
-    /** Does the given pEp rating mean the user is under attack? */
+    /** Does the given planck rating mean the user is under attack? */
     public func isUnderAttack() -> Bool {
         switch self {
         case .undefined,

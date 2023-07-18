@@ -15,10 +15,13 @@ class DecryptMessageOperation: BaseOperation {
     private let moc: NSManagedObjectContext
     private let cdMessageToDecryptObjectId: NSManagedObjectID
     private var processedCdMessaage: CdMessage?
+    weak private var auditLogger: AuditLoggingProtocol?
 
     init(parentName: String = #file + " - " + #function,
          cdMessageToDecryptObjectId: NSManagedObjectID,
-         errorContainer: ErrorContainerProtocol = ErrorPropagator()) {
+         errorContainer: ErrorContainerProtocol = ErrorPropagator(),
+         auditLogger: AuditLoggingProtocol? = nil) {
+        self.auditLogger = auditLogger
         self.cdMessageToDecryptObjectId = cdMessageToDecryptObjectId
         moc = Stack.shared.newPrivateConcurrentContext
         super.init(parentName: parentName, errorContainer: errorContainer)
@@ -57,6 +60,7 @@ extension DecryptMessageOperation {
             /// Valid case, the message or the account is already deleted.
             return
         }
+
         var inOutFlags = cdMessageToDecrypt.isOnTrustedServer ? PEPDecryptFlags.none : .untrustedServer
         var inOutMessage = cdMessageToDecrypt.pEpMessage()
         var fprsOfExtraKeys = CdExtraKey.fprsOfAllExtraKeys(in: moc)
@@ -79,6 +83,19 @@ extension DecryptMessageOperation {
             decryptedRating = rating
             inOutFlags = decryptFlags
             isAFormerlyEncryptedReuploadedMessage = isFormerlyEncryptedReuploadedMessage
+            
+            // Audit Log on decryption
+            let senderId = pEpDecryptedMsg.from?.address ?? "N/A"
+
+            guard let rating = PEPRating(rawValue: rating.rawValue) else {
+                Log.shared.errorAndCrash("Invalid rating")
+                self.auditLogger?.log(senderId: senderId, rating: "N/A")
+                group.leave()
+                return
+            }
+            if msg.isLoggable {
+                self.auditLogger?.log(senderId: senderId, rating: Rating(pEpRating:rating).toString())
+            }
             group.leave()
         }
         group.wait()

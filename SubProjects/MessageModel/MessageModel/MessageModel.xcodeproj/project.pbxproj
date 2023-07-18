@@ -706,6 +706,12 @@
 		B7F6F479234CD662003DF84A /* IdentityQueryResultsProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7F6F478234CD662003DF84A /* IdentityQueryResultsProtocol.swift */; };
 		B7F6F47C234CDB4A003DF84A /* QueryResultsDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7F6F47B234CDB4A003DF84A /* QueryResultsDelegate.swift */; };
 		B7FD55D92338D01F00C9FC55 /* IdentityQueryResultsTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7FD55D82338D01F00C9FC55 /* IdentityQueryResultsTest.swift */; };
+		F75D01D02A39A9C400805DEF /* AuditLoggingProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = F75D01CF2A39A9C400805DEF /* AuditLoggingProtocol.swift */; };
+		F75D01D52A39B41900805DEF /* AuditLoggingProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = F75D01CF2A39A9C400805DEF /* AuditLoggingProtocol.swift */; };
+		F779D5FB2A2877260069381E /* Rating+Groups.swift in Sources */ = {isa = PBXBuildFile; fileRef = F779D5FA2A2877260069381E /* Rating+Groups.swift */; };
+		F779D5FC2A2877260069381E /* Rating+Groups.swift in Sources */ = {isa = PBXBuildFile; fileRef = F779D5FA2A2877260069381E /* Rating+Groups.swift */; };
+		F7EBF8C32A3323440050A40E /* EventLog.swift in Sources */ = {isa = PBXBuildFile; fileRef = F7EBF8C22A3323440050A40E /* EventLog.swift */; };
+		F7EBF8DD2A3709560050A40E /* AuditLoggingUtil.swift in Sources */ = {isa = PBXBuildFile; fileRef = F7EBF8DC2A3709560050A40E /* AuditLoggingUtil.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -1238,6 +1244,10 @@
 		B7F6F478234CD662003DF84A /* IdentityQueryResultsProtocol.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IdentityQueryResultsProtocol.swift; sourceTree = "<group>"; };
 		B7F6F47B234CDB4A003DF84A /* QueryResultsDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QueryResultsDelegate.swift; sourceTree = "<group>"; };
 		B7FD55D82338D01F00C9FC55 /* IdentityQueryResultsTest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IdentityQueryResultsTest.swift; sourceTree = "<group>"; };
+		F75D01CF2A39A9C400805DEF /* AuditLoggingProtocol.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuditLoggingProtocol.swift; sourceTree = "<group>"; };
+		F779D5FA2A2877260069381E /* Rating+Groups.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Rating+Groups.swift"; sourceTree = "<group>"; };
+		F7EBF8C22A3323440050A40E /* EventLog.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EventLog.swift; sourceTree = "<group>"; };
+		F7EBF8DC2A3709560050A40E /* AuditLoggingUtil.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuditLoggingUtil.swift; sourceTree = "<group>"; };
 		F7FFFAF929DC22AE00A6DC49 /* 1.1.274.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = 1.1.274.xcdatamodel; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -1298,6 +1308,7 @@
 		15175E4C221D59DD00C91DB8 /* Interface */ = {
 			isa = PBXGroup;
 			children = (
+				F75D01CE2A39A9AD00805DEF /* AuditLoggin */,
 				155E5B36264921420051A65E /* DecisionProviders */,
 				5B88A19E2406C1A4003240B8 /* Util */,
 				B7F6F47A234CDB2C003DF84A /* QueryResults */,
@@ -1358,6 +1369,7 @@
 				43E9BC611DB5181800AD2352 /* FolderType.swift */,
 				439CACEC2562CEB10043077E /* FolderType+FolderName.swift */,
 				436C9A4724E3FC9700007A3D /* Rating.swift */,
+				F779D5FA2A2877260069381E /* Rating+Groups.swift */,
 				43A9818524E5382900830603 /* Color.swift */,
 				43062B8F24ED3DB700489258 /* TrustwordsLanguage.swift */,
 				43062B9924ED6EB400489258 /* LeaveDeviceGroupService.swift */,
@@ -2460,6 +2472,8 @@
 				43E74C6B1E38B38C00A2F7A6 /* ImapFlagsUtility.swift */,
 				493B6D041E70589800364D60 /* SystemUtils.swift */,
 				5B1A010E27901DF000EE5838 /* FileExportUtil.swift */,
+				F7EBF8DC2A3709560050A40E /* AuditLoggingUtil.swift */,
+				F7EBF8C22A3323440050A40E /* EventLog.swift */,
 				435C0CBF222939A10025C6B5 /* PEPRating+Extension.swift */,
 				1587D166204DA3C2002C2157 /* KeyChain+Extensions.swift */,
 				430CDA4C2293FBB300AAC37F /* Attachment+ContentDispositionType+PEPContentDisposition.swift */,
@@ -2776,6 +2790,14 @@
 				B7FD55D82338D01F00C9FC55 /* IdentityQueryResultsTest.swift */,
 			);
 			path = IdentityQueryResultsTest;
+			sourceTree = "<group>";
+		};
+		F75D01CE2A39A9AD00805DEF /* AuditLoggin */ = {
+			isa = PBXGroup;
+			children = (
+				F75D01CF2A39A9C400805DEF /* AuditLoggingProtocol.swift */,
+			);
+			path = AuditLoggin;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -3128,6 +3150,7 @@
 				5B65440328CF26D50064E1C7 /* OutgoingRatingServiceProtocol.swift in Sources */,
 				436FD2B025DA8C1C00D929B3 /* CdClientCertificate+PredicateFactory.swift in Sources */,
 				434C22EF25D6A10F00F622DB /* FetchOlderImapMessagesService.swift in Sources */,
+				F75D01D52A39B41900805DEF /* AuditLoggingProtocol.swift in Sources */,
 				43BDDDA625DD4D7E00FC0C68 /* PrepareAccountForSavingService.swift in Sources */,
 				434C21A425D6978000F622DB /* CdAccount+PredicateFactory.swift in Sources */,
 				5B65440628CF38350064E1C7 /* MediaKeysUtil.swift in Sources */,
@@ -3151,6 +3174,7 @@
 				434C22E725D6A0DB00F622DB /* CdAttachment+Clone.swift in Sources */,
 				434C24AF25D6D37A00F622DB /* CdFolder+Pantomime.swift in Sources */,
 				4389100B25F7D0D500BB2576 /* LoginSmtpOperation.swift in Sources */,
+				F779D5FC2A2877260069381E /* Rating+Groups.swift in Sources */,
 				434C21D225D698DE00F622DB /* String+InboxFolderName.swift in Sources */,
 				434C219625D6973500F622DB /* CdServer.swift in Sources */,
 				434C236E25D6BFE100F622DB /* ConnectInfo.swift in Sources */,
@@ -3426,6 +3450,7 @@
 				43E3A248224E2F02004CAC84 /* CdImapFields+Clone.swift in Sources */,
 				43EA4868221E9518006E8F83 /* Message+pEp_Internal.swift in Sources */,
 				43CB60A51DA4EBB60015281E /* Folder.swift in Sources */,
+				F75D01D02A39A9C400805DEF /* AuditLoggingProtocol.swift in Sources */,
 				151645B6223AA169009532BE /* Server+Tranport.swift in Sources */,
 				433E743F225B77BA00B84CD9 /* CdServerCredentials+NonOptionalConvenienceAccessors.swift.swift in Sources */,
 				B7789CCA22243DC800AB08F4 /* MessageQueryResultsFilter.swift in Sources */,
@@ -3455,6 +3480,7 @@
 				155E5B38264921630051A65E /* EncryptionErrorDelegate.swift in Sources */,
 				43E74C6C1E38B38C00A2F7A6 /* ImapFlagsUtility.swift in Sources */,
 				434DC0E21DAE7A49007C98B8 /* Identity.swift in Sources */,
+				F7EBF8DD2A3709560050A40E /* AuditLoggingUtil.swift in Sources */,
 				154660E223392004008D2137 /* DecryptMessageOperation.swift in Sources */,
 				0A62F9A329BA0CC700AE1B91 /* OIDAuthState+JWT.swift in Sources */,
 				43EA4863221E9518006E8F83 /* CdAccount+Extension.swift in Sources */,
@@ -3489,6 +3515,7 @@
 				43E3A255224E473B004CAC84 /* CdMessage+Fake.swift in Sources */,
 				15466130233B3F9A008D2137 /* CdMessage+ReDecrypt.swift in Sources */,
 				43D7565123AB9F2F000F915F /* BaseImapFolderOperation.swift in Sources */,
+				F779D5FB2A2877260069381E /* Rating+Groups.swift in Sources */,
 				43E3A246224E2DBA004CAC84 /* CdImapFlags+Clone.swift in Sources */,
 				1543B69C22AAC2A4002B59AB /* KeySyncService+PEPNotifyHandshakeDelegate.swift in Sources */,
 				370DB3D12281795000BC929A /* ContentTypeUtils.swift in Sources */,
@@ -3579,6 +3606,7 @@
 				15F274FD233CB0410069C1E0 /* SendServiceProtocol.swift in Sources */,
 				1546612C233A77F2008D2137 /* Message+ReDecrypt.swift in Sources */,
 				158A6E162307468F006A9ECE /* CdAttachment+PEPAttachment.swift in Sources */,
+				F7EBF8C32A3323440050A40E /* EventLog.swift in Sources */,
 				43EA4882221E9518006E8F83 /* FetchNumberOfNewMailsOperation.swift in Sources */,
 				435F5120221FF750006EB11F /* PEPUtil+Internal.swift in Sources */,
 				439B16AB22802B6B00201DE5 /* VerifiableAccountSMTP.swift in Sources */,

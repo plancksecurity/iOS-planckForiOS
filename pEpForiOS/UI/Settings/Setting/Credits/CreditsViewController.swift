@@ -13,12 +13,18 @@ import pEp4iosIntern
 
 class CreditsViewController: UIViewController {
     @IBOutlet public weak var verboseLoggingSwitch: UISwitch!
-
+    
     private var viewModel = CreditsViewModel()
+    
+    override func viewDidLoad() {
+        super.viewDidLoad()
+        title = NSLocalizedString("Credits", comment: "Credits - title")
+    }
 
-    override public func viewWillAppear(_ animated: Bool) {
+    override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         verboseLoggingSwitch.isOn = AppSettings.shared.verboseLogginEnabled
+        verboseLoggingSwitch.onTintColor = .primary
     }
 
     @IBAction public func switchedVerboseLoggingEnabled(_ sender: UISwitch) {

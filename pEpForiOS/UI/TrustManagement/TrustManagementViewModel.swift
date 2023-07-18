@@ -495,7 +495,7 @@ final class TrustManagementViewModel {
         }
     }
 
-    ///MARK: - Private
+    // MARK: - Private
 
     /// Re-computes the messages rating, saves the message and informs the delegate about a possible data change.
     /// This must be called after every trust state change. The curently processed message might
@@ -530,12 +530,11 @@ final class TrustManagementViewModel {
 
             for combination in combinations{
                 let backupLanguage = "en"
-                let language =
-                combination.partnerIdentity.language ?? Locale.current.languageCode ?? backupLanguage
-
+                let language = combination.partnerIdentity.language
+                let trustwordsLanguage = ["en", "de"].contains(language) ? language : backupLanguage
                 rowsLoadedGroup.enter()
 
-                let row = Row(language: language,
+                let row = Row(language: trustwordsLanguage ?? backupLanguage,
                               handshakeCombination: combination,
                               trustManagementUtil: me.trustManagementUtil) {
                                 rowsLoadedGroup.leave()

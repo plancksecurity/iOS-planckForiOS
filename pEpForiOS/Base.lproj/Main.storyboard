@@ -233,7 +233,7 @@
                                         <collectionViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" id="tKR-Vh-qyF">
                                             <rect key="frame" x="0.0" y="0.0" width="375" height="651"/>
                                             <autoresizingMask key="autoresizingMask"/>
-                                            <color key="backgroundColor" systemColor="systemGreenColor"/>
+                                            <color key="backgroundColor" red="0.52941176470588236" green="0.2196078431372549" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                         </collectionViewCellContentView>
                                         <size key="customSize" width="375" height="651"/>
                                     </collectionViewCell>
@@ -909,7 +909,7 @@
                                                     <subviews>
                                                         <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" horizontalCompressionResistancePriority="1000" verticalCompressionResistancePriority="1000" image="icon-settings" translatesAutoresizingMaskIntoConstraints="NO" id="HmY-vb-MJR" userLabel="ImageView">
                                                             <rect key="frame" x="8" y="8" width="398" height="84"/>
-                                                            <color key="tintColor" red="0.01176470588" green="0.66666666669999997" blue="0.29411764709999999" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
+                                                            <color key="tintColor" red="0.52941176470588236" green="0.2196078431372549" blue="1" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
                                                         </imageView>
                                                     </subviews>
                                                     <constraints>
@@ -1017,7 +1017,7 @@
                                         <subviews>
                                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="kwH-Mw-szw" customClass="RoundedCornersButton" customModule="PlanckToolbox">
                                                 <rect key="frame" x="132.66666666666666" y="10" width="148.99999999999997" height="30"/>
-                                                <color key="backgroundColor" red="0.011764705882352941" green="0.66666666666666663" blue="0.29411764705882354" alpha="1" colorSpace="calibratedRGB"/>
+                                                <color key="backgroundColor" red="0.52941176470588236" green="0.2196078431372549" blue="1" alpha="1" colorSpace="calibratedRGB"/>
                                                 <constraints>
                                                     <constraint firstAttribute="height" constant="30" id="Ygf-Qy-kFc"/>
                                                 </constraints>
@@ -1186,7 +1186,7 @@
                                                                     <constraints>
                                                                         <constraint firstAttribute="width" constant="46" id="AR5-1t-jfD"/>
                                                                     </constraints>
-                                                                    <color key="tintColor" red="0.0064750583839999999" green="0.7039813399" blue="0.30714368819999999" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                                                    <color key="tintColor" red="0.69803921568627447" green="0.51372549019607838" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                                                     <connections>
                                                                         <action selector="addContactTapped:" destination="V4J-8v-XeC" eventType="touchUpInside" id="Sp8-ah-41W"/>
                                                                     </connections>
@@ -1449,7 +1449,7 @@
                                         <color key="backgroundColor" systemColor="systemGray6Color"/>
                                     </backgroundConfiguration>
                                     <fontDescription key="titleFontDescription" style="UICTFontTextStyleFootnote"/>
-                                    <color key="baseForegroundColor" systemColor="systemRedColor"/>
+                                    <color key="baseForegroundColor" red="1" green="0.23137254901960785" blue="0.18823529411764706" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                 </buttonConfiguration>
                                 <connections>
                                     <action selector="unsecureRecipientsButtonPressed" destination="hrq-S4-HtH" eventType="touchUpInside" id="c9R-kb-G33"/>
@@ -1663,7 +1663,7 @@
                                         <color key="backgroundColor" systemColor="systemGray6Color"/>
                                     </backgroundConfiguration>
                                     <fontDescription key="titleFontDescription" style="UICTFontTextStyleFootnote"/>
-                                    <color key="baseForegroundColor" red="0.011764705882352941" green="0.66666666666666663" blue="0.29411764705882354" alpha="1" colorSpace="calibratedRGB"/>
+                                    <color key="baseForegroundColor" red="0.69803921568627447" green="0.51372549019607838" blue="1" alpha="1" colorSpace="calibratedRGB"/>
                                 </buttonConfiguration>
                                 <connections>
                                     <action selector="trustButtonPressed" destination="Htz-xH-eMI" eventType="touchUpInside" id="4k4-zb-1LM"/>
@@ -1741,9 +1741,6 @@
         </systemColor>
         <systemColor name="systemGrayColor">
             <color red="0.55686274509803924" green="0.55686274509803924" blue="0.57647058823529407" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-        </systemColor>
-        <systemColor name="systemGreenColor">
-            <color red="0.20392156862745098" green="0.7803921568627451" blue="0.34901960784313724" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
         </systemColor>
         <systemColor name="systemRedColor">
             <color red="1" green="0.23137254901960785" blue="0.18823529411764706" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>

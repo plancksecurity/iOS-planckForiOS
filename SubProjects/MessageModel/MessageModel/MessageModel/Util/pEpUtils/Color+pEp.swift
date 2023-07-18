@@ -10,7 +10,9 @@ import Foundation
 
 import PEPObjCAdapter
 
+
 extension Color {
+
     init(pEpColor: PEPColor) {
         switch pEpColor {
         case .noColor:
@@ -21,19 +23,6 @@ extension Color {
             self = .green
         case .red:
             self = .red
-        }
-    }
-
-    func pEpColor() -> PEPColor {
-        switch self {
-        case .noColor:
-            return .red
-        case .yellow:
-            return .yellow
-        case .green:
-            return .green
-        case .red:
-            return .red
         }
     }
 }

@@ -17,6 +17,7 @@ extension  PEPUtils {
                         extraKeys: [String]? = nil,
                         errorCallback: @escaping (_ error:Error) -> Void,
                         successCallback: @escaping (_ srcMsg:PEPMessage, _ destMsg:PEPMessage) -> Void) {
+        
         if let ident = forSelf {
             PEPSession().encryptMessage(pEpMessage,
                                         forSelf: ident,

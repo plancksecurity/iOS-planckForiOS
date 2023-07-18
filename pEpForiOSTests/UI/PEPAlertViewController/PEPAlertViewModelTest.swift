@@ -1,5 +1,5 @@
 //
-//  PEPAlertViewModelTest.swift
+//  PlanckAlertViewModelTest.swift
 //  pEpForiOSTests
 //
 //  Created by Alejandro Gelos on 23/08/2019.
@@ -9,12 +9,12 @@
 import XCTest
 @testable import pEpForiOS
 
-class PEPAlertViewModelTest: XCTestCase {
+class PlanckAlertViewModelTest: XCTestCase {
 
-    private var viewModel: PEPAlertViewModel?
+    private var viewModel: PlanckAlertViewModel?
 
     override func setUp() {
-        viewModel = PEPAlertViewModel()
+        viewModel = PlanckAlertViewModel()
     }
 
     override func tearDown() {
@@ -32,7 +32,7 @@ class PEPAlertViewModelTest: XCTestCase {
 
         // WHEN
         for i in 0...2 {
-            let action = PEPUIAlertAction(title: String(i), style: .pEpRed)
+            let action = PlanckUIAlertAction(title: String(i), style: .pEpRed)
             viewModel.add(action: action)
         }
         actual.actionsCount = viewModel.alertActionsCount
@@ -52,7 +52,7 @@ class PEPAlertViewModelTest: XCTestCase {
         let expected = State(calledAcctions: [0, 1, 2], actionsCount: 3)
 
         for i in 0...2 {
-            let action = PEPUIAlertAction(title: String(i), style: .pEpRed) { _ in
+            let action = PlanckUIAlertAction(title: String(i), style: .pEpRed) { _ in
                 actual.calledAcctions.append(i)
             }
             viewModel.add(action: action)
@@ -70,7 +70,7 @@ class PEPAlertViewModelTest: XCTestCase {
 }
 
 
-extension PEPAlertViewModelTest {
+extension PlanckAlertViewModelTest {
     private func assertExpectations(actual: State, expected: State) {
         XCTAssertEqual(actual.calledAcctions, expected.calledAcctions)
         XCTAssertEqual(actual.actionsCount, expected.actionsCount)
@@ -81,7 +81,7 @@ extension PEPAlertViewModelTest {
 
 // MARK: - State
 
-extension PEPAlertViewModelTest {
+extension PlanckAlertViewModelTest {
     struct State: Equatable {
         var calledAcctions: [Int]
         var actionsCount: Int

@@ -845,13 +845,13 @@ extension EmailDetailViewController {
             let downButton = UIButton(frame: nextPrevButtonSize)
             let downImage = UIImage(named: "chevron-icon-down")?.withRenderingMode(.alwaysTemplate)
             downButton.setBackgroundImage(downImage, for: .normal)
-            downButton.tintColor = thereIsANextMessageToShow ? UIColor.pEpGreen : UIColor.pEpGray
+            downButton.tintColor = thereIsANextMessageToShow ? UIColor.primary : UIColor.pEpGray
             downButton.addTarget(self, action: #selector(showNextIfAny), for: .touchUpInside)
 
             let upButton = UIButton(frame: nextPrevButtonSize)
             let upImage = UIImage(named: "chevron-icon-up")?.withRenderingMode(.alwaysTemplate)
             upButton.setBackgroundImage(upImage, for: .normal)
-            upButton.tintColor = thereIsAPreviousMessageToShow ? UIColor.pEpGreen : UIColor.pEpGray
+            upButton.tintColor = thereIsAPreviousMessageToShow ? UIColor.primary : UIColor.pEpGray
 
             upButton.addTarget(self, action: #selector(showPreviousIfAny), for: .touchUpInside)
             upButton.isEnabled = thereIsAPreviousMessageToShow
@@ -893,7 +893,7 @@ extension EmailDetailViewController {
             let flagFrame = CGRect(x: 0, y: 0, width: 14, height: 24)
             let flagButton = UIButton(frame: flagFrame)
             flagButton.setBackgroundImage(tintedimage, for: .normal)
-            flagButton.imageView?.tintColor = UIColor.pEpGreen
+            flagButton.imageView?.tintColor = UIColor.primary
             flagButton.addTarget(self, action: #selector(flagButtonPressed(_:)), for: .touchUpInside)
             let flagBarButtonItem = UIBarButtonItem(customView: flagButton)
             flagBarButtonItem.accessibilityIdentifier = AccessibilityIdentifier.flagButton

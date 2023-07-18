@@ -19,7 +19,6 @@
 		0038494A20D25576008000EA /* ProfilePictureComposerProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0038494920D25576008000EA /* ProfilePictureComposerProtocol.swift */; };
 		0038494C20D2587F008000EA /* PepPictureComposer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0038494B20D2587F008000EA /* PepPictureComposer.swift */; };
 		005A21FB20CAA5F50082D19F /* ThreadedEmailViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 005A21FA20CAA5F50082D19F /* ThreadedEmailViewModel.swift */; };
-		00A12CAE20D3D9AC00B82BE3 /* FullMessageCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 00A12CAD20D3D9AC00B82BE3 /* FullMessageCell.swift */; };
 		00AEB2F620DBA7DA00DA185A /* NeedsRefreshDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 00AEB2F520DBA7DA00DA185A /* NeedsRefreshDelegate.swift */; };
 		00BEC89720B85FD300A36E60 /* NothingSelectedViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 00BEC89620B85FD300A36E60 /* NothingSelectedViewController.swift */; };
 		00D3CD3E20B58976009ABBC9 /* PEPSplitViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 00D3CD3D20B58976009ABBC9 /* PEPSplitViewController.swift */; };
@@ -178,7 +177,7 @@
 		37156E50234DD3FB00845A28 /* LoadingInterface.xib in Resources */ = {isa = PBXBuildFile; fileRef = 37156E4F234DD3FB00845A28 /* LoadingInterface.xib */; };
 		375BA08A238BFC4100BBFE7C /* ManualAccountSetupContainerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 375BA089238BFC4100BBFE7C /* ManualAccountSetupContainerView.swift */; };
 		37816542230EC72C00B967E3 /* PEPAlertViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 37816541230EC72C00B967E3 /* PEPAlertViewController.swift */; };
-		37816544230EC73900B967E3 /* PEPAlertViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 37816543230EC73900B967E3 /* PEPAlertViewModel.swift */; };
+		37816544230EC73900B967E3 /* PlanckAlertViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 37816543230EC73900B967E3 /* PlanckAlertViewModel.swift */; };
 		37816546230EE5F700B967E3 /* PEPUIAlertAction.swift in Sources */ = {isa = PBXBuildFile; fileRef = 37816545230EE5F700B967E3 /* PEPUIAlertAction.swift */; };
 		37816549231035F000B967E3 /* PEPAlertViewModelTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 37816548231035F000B967E3 /* PEPAlertViewModelTest.swift */; };
 		37A710E0233B5AA5001FEAF0 /* UIHelper+PEP.swift in Sources */ = {isa = PBXBuildFile; fileRef = 37A710DF233B5AA5001FEAF0 /* UIHelper+PEP.swift */; };
@@ -328,7 +327,7 @@
 		434C1AC025D4116D00F622DB /* SegueHandlerType.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7DB7FD1221AD332003968DA /* SegueHandlerType.swift */; };
 		434C1AC325D411B700F622DB /* UIUtils+Alerts.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1521B790241BDCD9000EAE57 /* UIUtils+Alerts.swift */; };
 		434C1AC625D411F300F622DB /* PEPAlertViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 37816541230EC72C00B967E3 /* PEPAlertViewController.swift */; };
-		434C1AC925D4121900F622DB /* PEPAlertViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 37816543230EC73900B967E3 /* PEPAlertViewModel.swift */; };
+		434C1AC925D4121900F622DB /* PlanckAlertViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 37816543230EC73900B967E3 /* PlanckAlertViewModel.swift */; };
 		434C1ACC25D4123900F622DB /* PEPUIAlertAction.swift in Sources */ = {isa = PBXBuildFile; fileRef = 37816545230EE5F700B967E3 /* PEPUIAlertAction.swift */; };
 		434C1ACF25D412B600F622DB /* TrustManagementViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5BC14AEF23EB19B5005F0AF3 /* TrustManagementViewController.swift */; };
 		434C1AD225D412F300F622DB /* TrustManagementViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5BC14ABE23E2EE78005F0AF3 /* TrustManagementViewModel.swift */; };
@@ -661,6 +660,10 @@
 		F70AE5C129B7394900D0CC48 /* TrustBannerViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F70AE5C029B7394900D0CC48 /* TrustBannerViewController.swift */; };
 		F73E4F72217F238300CCFFED /* FolderSectionViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = F73E4F71217F238300CCFFED /* FolderSectionViewModelTests.swift */; };
 		F73E4F7A2180744700CCFFED /* FolderCellViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = F73E4F792180744700CCFFED /* FolderCellViewModelTests.swift */; };
+		F75D01D22A39ABEA00805DEF /* AuditLogginService.swift in Sources */ = {isa = PBXBuildFile; fileRef = F75D01D12A39ABEA00805DEF /* AuditLogginService.swift */; };
+		F779D6012A2F28E60069381E /* AuditLogginViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F779D6002A2F28E60069381E /* AuditLogginViewController.swift */; };
+		F779D6032A2F29130069381E /* AuditLoginViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = F779D6022A2F29130069381E /* AuditLoginViewModel.swift */; };
+		F779D6052A2F4DF60069381E /* AuditLoggingTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = F779D6042A2F4DF60069381E /* AuditLoggingTableViewCell.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -734,7 +737,6 @@
 		0038494920D25576008000EA /* ProfilePictureComposerProtocol.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfilePictureComposerProtocol.swift; sourceTree = "<group>"; };
 		0038494B20D2587F008000EA /* PepPictureComposer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PepPictureComposer.swift; sourceTree = "<group>"; };
 		005A21FA20CAA5F50082D19F /* ThreadedEmailViewModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ThreadedEmailViewModel.swift; sourceTree = "<group>"; };
-		00A12CAD20D3D9AC00B82BE3 /* FullMessageCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FullMessageCell.swift; sourceTree = "<group>"; };
 		00AEB2F520DBA7DA00DA185A /* NeedsRefreshDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NeedsRefreshDelegate.swift; sourceTree = "<group>"; };
 		00BEC89620B85FD300A36E60 /* NothingSelectedViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NothingSelectedViewController.swift; sourceTree = "<group>"; };
 		00D3CD3D20B58976009ABBC9 /* PEPSplitViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PEPSplitViewController.swift; sourceTree = "<group>"; };
@@ -894,7 +896,7 @@
 		37156E4F234DD3FB00845A28 /* LoadingInterface.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = LoadingInterface.xib; sourceTree = "<group>"; };
 		375BA089238BFC4100BBFE7C /* ManualAccountSetupContainerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ManualAccountSetupContainerView.swift; sourceTree = "<group>"; };
 		37816541230EC72C00B967E3 /* PEPAlertViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PEPAlertViewController.swift; sourceTree = "<group>"; };
-		37816543230EC73900B967E3 /* PEPAlertViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PEPAlertViewModel.swift; sourceTree = "<group>"; };
+		37816543230EC73900B967E3 /* PlanckAlertViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlanckAlertViewModel.swift; sourceTree = "<group>"; };
 		37816545230EE5F700B967E3 /* PEPUIAlertAction.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PEPUIAlertAction.swift; sourceTree = "<group>"; };
 		37816548231035F000B967E3 /* PEPAlertViewModelTest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PEPAlertViewModelTest.swift; sourceTree = "<group>"; };
 		37A710DF233B5AA5001FEAF0 /* UIHelper+PEP.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIHelper+PEP.swift"; sourceTree = "<group>"; };
@@ -1267,6 +1269,10 @@
 		F70AE5C029B7394900D0CC48 /* TrustBannerViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TrustBannerViewController.swift; sourceTree = "<group>"; };
 		F73E4F71217F238300CCFFED /* FolderSectionViewModelTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FolderSectionViewModelTests.swift; sourceTree = "<group>"; };
 		F73E4F792180744700CCFFED /* FolderCellViewModelTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FolderCellViewModelTests.swift; sourceTree = "<group>"; };
+		F75D01D12A39ABEA00805DEF /* AuditLogginService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuditLogginService.swift; sourceTree = "<group>"; };
+		F779D6002A2F28E60069381E /* AuditLogginViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuditLogginViewController.swift; sourceTree = "<group>"; };
+		F779D6022A2F29130069381E /* AuditLoginViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuditLoginViewModel.swift; sourceTree = "<group>"; };
+		F779D6042A2F4DF60069381E /* AuditLoggingTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuditLoggingTableViewCell.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -1763,6 +1769,7 @@
 		15874BAF2127493E00A3A4A6 /* Setting */ = {
 			isa = PBXGroup;
 			children = (
+				F779D5FF2A2F28C40069381E /* AuditLoggin */,
 				15FE1F741FE122B200CC2D97 /* Credits */,
 				431E68B1246C266800B3A977 /* KeyImport */,
 				1579348B246D490700E2D8D2 /* PGPKeyImport */,
@@ -2038,7 +2045,7 @@
 			isa = PBXGroup;
 			children = (
 				37816541230EC72C00B967E3 /* PEPAlertViewController.swift */,
-				37816543230EC73900B967E3 /* PEPAlertViewModel.swift */,
+				37816543230EC73900B967E3 /* PlanckAlertViewModel.swift */,
 				37816545230EE5F700B967E3 /* PEPUIAlertAction.swift */,
 			);
 			path = PEPAlert;
@@ -2345,6 +2352,7 @@
 				43E58EB21CBF8301008AA7A7 /* Models */,
 				43ED53611CC77F95006AB156 /* UI */,
 				43980EDE1CBD24B000A7FC3C /* Util */,
+				F75D01D42A39ABF300805DEF /* AuditLogginService */,
 				1543B6A022AACA2B002B59AB /* KeySync */,
 				5BEF9A8B28C8D1F90073A3B4 /* OutgoingRatingChange */,
 				43B10C7E1EC2EE65003E849F /* cpp */,
@@ -2705,7 +2713,6 @@
 		49B2ED2A20EBBEEE005A41A3 /* Cells */ = {
 			isa = PBXGroup;
 			children = (
-				00A12CAD20D3D9AC00B82BE3 /* FullMessageCell.swift */,
 				002375D220DCDC7300663961 /* FullMessageCell+SecureWebViewControllerDelegate.swift */,
 			);
 			path = Cells;
@@ -3110,6 +3117,24 @@
 				F73E4F792180744700CCFFED /* FolderCellViewModelTests.swift */,
 			);
 			path = Folder;
+			sourceTree = "<group>";
+		};
+		F75D01D42A39ABF300805DEF /* AuditLogginService */ = {
+			isa = PBXGroup;
+			children = (
+				F75D01D12A39ABEA00805DEF /* AuditLogginService.swift */,
+			);
+			path = AuditLogginService;
+			sourceTree = "<group>";
+		};
+		F779D5FF2A2F28C40069381E /* AuditLoggin */ = {
+			isa = PBXGroup;
+			children = (
+				F779D6002A2F28E60069381E /* AuditLogginViewController.swift */,
+				F779D6042A2F4DF60069381E /* AuditLoggingTableViewCell.swift */,
+				F779D6022A2F29130069381E /* AuditLoginViewModel.swift */,
+			);
+			path = AuditLoggin;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -3517,7 +3542,7 @@
 				434C1ACC25D4123900F622DB /* PEPUIAlertAction.swift in Sources */,
 				43959CFE261C85CA00410108 /* UILayout+Extension.swift in Sources */,
 				5BD68E642837AD8000C423CF /* UIUtils+Banner.swift in Sources */,
-				434C1AC925D4121900F622DB /* PEPAlertViewModel.swift in Sources */,
+				434C1AC925D4121900F622DB /* PlanckAlertViewModel.swift in Sources */,
 				434A6C5A25D2A3B800179335 /* AttachmentViewModel.swift in Sources */,
 				434C1B7425D5123A00F622DB /* NothingSelectedViewController.swift in Sources */,
 				434C19CB25D3E13000F622DB /* DocumentAttachmentPickerViewController.swift in Sources */,
@@ -3601,6 +3626,7 @@
 				150DF6D02052A13700A9DCF7 /* SecureWebViewController.swift in Sources */,
 				375BA08A238BFC4100BBFE7C /* ManualAccountSetupContainerView.swift in Sources */,
 				B764D0222451A21E001C4BCA /* ErrorSubscriber.swift in Sources */,
+				F779D6032A2F29130069381E /* AuditLoginViewModel.swift in Sources */,
 				5BC0F93826A9953D0089760D /* UIUtils+SystemSettings.swift in Sources */,
 				4351C2D71F4441190053381F /* node.c in Sources */,
 				434C1AA625D40F3B00F622DB /* UIUtils+DraftsPreview.swift in Sources */,
@@ -3610,6 +3636,7 @@
 				1521B78D241BDAD3000EAE57 /* UIUtils+Settings.swift in Sources */,
 				43269D6C2552B744001E18C6 /* VerifiableAccountValidationError+LocalizedError.swift in Sources */,
 				B7DFEA56225397AB0080A2BA /* Folder+LocalizedName.swift in Sources */,
+				F779D6012A2F28E60069381E /* AuditLogginViewController.swift in Sources */,
 				5BF7538F2979907E00E4113B /* EnterpriseSettingsProtocol.swift in Sources */,
 				4351C2D51F4441190053381F /* latex.c in Sources */,
 				B74F37CD24ADD2B00083501B /* EmailViewController.swift in Sources */,
@@ -3629,7 +3656,6 @@
 				15F136F424B6294E00A7F810 /* UserInputProvider.swift in Sources */,
 				B7DFEA5422536D5E0080A2BA /* UnifiedFolderBase.swift in Sources */,
 				4334CF302020CFFE00B3193E /* OAuth2Type+LibAccountSettings.swift in Sources */,
-				00A12CAE20D3D9AC00B82BE3 /* FullMessageCell.swift in Sources */,
 				00EB89AB20E3A27C00CDFA0D /* ThreadViewcontroller+SizeClasses.swift in Sources */,
 				5BED35F3275F768D000DDF07 /* CalendarEventEditDelegate.swift in Sources */,
 				43257C841F50629700DDC7F0 /* HtmlToAttributedTextSaxParser.swift in Sources */,
@@ -3743,7 +3769,7 @@
 				496355B120ECEA2900AA4387 /* ThreadedEmailViewModel+EmailDisplayDelegate.swift in Sources */,
 				43D070332133DC500013B120 /* AppSettings.swift in Sources */,
 				5BFAE3772821837100B003D4 /* EKEventStoreUtil.swift in Sources */,
-				37816544230EC73900B967E3 /* PEPAlertViewModel.swift in Sources */,
+				37816544230EC73900B967E3 /* PlanckAlertViewModel.swift in Sources */,
 				5BF9E18B286F387A00C4CCF8 /* CopyableLabel.swift in Sources */,
 				43ED536F1CC77F95006AB156 /* EmailListViewCell.swift in Sources */,
 				4351C2C81F4441190053381F /* blocks.c in Sources */,
@@ -3774,6 +3800,7 @@
 				B7CE922E24E3FC7600B5A874 /* EditSignatureViewController.swift in Sources */,
 				5B102FAB2652A1F400A758D2 /* MessageHeaderCell.swift in Sources */,
 				5BBE80CF24B733C0008DE0E5 /* AccountSettingsTableViewCell.swift in Sources */,
+				F75D01D22A39ABEA00805DEF /* AuditLogginService.swift in Sources */,
 				A1B50A841CD26FF100B1A997 /* Constants.swift in Sources */,
 				5B21989A28BDFAE600668445 /* MDMSettingsProtocol.swift in Sources */,
 				5BF90036262F2517005B08D4 /* NSNotificationName+Settings.swift in Sources */,
@@ -3840,6 +3867,7 @@
 				438052871FE3E1B100ACF729 /* OAuth2AuthorizationFactoryProtocol.swift in Sources */,
 				4356FFE52135448600804089 /* ReplyAllPossibleChecker.swift in Sources */,
 				15146C8A237EE77A00D69495 /* SettingsInternalError.swift in Sources */,
+				F779D6052A2F4DF60069381E /* AuditLoggingTableViewCell.swift in Sources */,
 				15255B031F825CD100A2CFC9 /* IdentityImageTool.swift in Sources */,
 				152A39D121905C3E00D9F8E4 /* AttachmentViewModel.swift in Sources */,
 				5BF753922979917600E4113B /* AppSettings+EnterpriseSettingsProtocol.swift in Sources */,
@@ -4428,7 +4456,7 @@
 				INFOPLIST_FILE = pEpForiOS/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = "${inherited}";
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
-				MARKETING_VERSION = 3.0.4;
+				MARKETING_VERSION = 3.0.7;
 				ONLY_ACTIVE_ARCH = "$(inherited)";
 				OTHER_SWIFT_FLAGS = "-DDEBUG_LOGGING -D DEBUG $(inherited)";
 				PRODUCT_BUNDLE_IDENTIFIER = security.planck.email.app;
@@ -4469,7 +4497,7 @@
 				INFOPLIST_FILE = pEpForiOS/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = "${inherited}";
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
-				MARKETING_VERSION = 3.0.4;
+				MARKETING_VERSION = 3.0.7;
 				ONLY_ACTIVE_ARCH = "$(inherited)";
 				PRODUCT_BUNDLE_IDENTIFIER = security.planck.email.app;
 				PRODUCT_MODULE_NAME = pEpForiOS;

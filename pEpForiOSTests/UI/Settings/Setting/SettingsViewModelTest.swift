@@ -96,6 +96,7 @@ extension SettingsViewModelTest {
 }
 
 class MockFileExportUtil : FileExportUtilProtocol {
+    func save(auditEventLog: EventLog, maxLogTime: Int) { }
 
     private var exportDBsexpectation: XCTestExpectation?
 
@@ -112,6 +113,9 @@ class MockFileExportUtil : FileExportUtilProtocol {
 // MARK: - delegate mocks
 
 class SettingsViewModeldelegate: SettingsViewModelDelegate {
+    func informReinitFailed() {
+        XCTFail()
+    }
     
     func showLoadingView() {
         XCTFail()
