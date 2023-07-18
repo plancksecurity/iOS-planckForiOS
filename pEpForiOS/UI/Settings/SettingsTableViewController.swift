@@ -426,8 +426,13 @@ extension SettingsTableViewController : SettingsViewModelDelegate {
     }
     
     func informReinitFailed() {
-        let errorMessage = NSLocalizedString("Something went wrong, please try again", comment: "Something went wrong, please try again")
-        NotificationBannerUtil.show(errorMessage: errorMessage)
+        if UIApplication.currentlyVisibleViewController() is KeySyncWizardViewController {
+            // Nothing to show.
+            return
+        }
+        let errorTitle = NSLocalizedString("Device Sync cannot be started", comment: "Device Sync cannot be started")
+        let errorMessage = NSLocalizedString("The user should try again", comment: "the user should try again")
+        UIUtils.showAlertWithOnlyCloseButton(title: errorTitle, message: errorMessage)
     }
 
     func showExtraKeyEditabilityStateChangeAlert(newValue: String) {

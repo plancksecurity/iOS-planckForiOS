@@ -56,7 +56,15 @@ final class SettingsViewModel {
     /// Items to be displayed in a SettingsTableViewController
     public private(set) var items: [Section] = [Section]()
 
-    private let exportDBQueueLabel = "security.pep.SettingsViewModel.databasesIOQueue"
+    private let exportDBQueueLabel = "security.planck.SettingsViewModel.databasesIOQueue"
+
+    private let queueForSyncReinit: OperationQueue = {
+        let createe = OperationQueue()
+        createe.qualityOfService = .background
+        createe.maxConcurrentOperationCount = 1
+        createe.name = "security.planck.SettingsViewModel.queueForSyncReinit"
+        return createe
+    }()
 
     /// Number of elements in items
     public var count: Int {
@@ -125,17 +133,22 @@ final class SettingsViewModel {
     }
 
     public func handlePlanckSyncPressed() {
+        func handleFailure() {
+            appSettings.keyPlanckSyncActivityIndicatorIsOn = false
+            delegate?.informReinitFailed()
+        }
         appSettings.keyPlanckSyncActivityIndicatorIsOn = true
         KeySyncUtil.syncReinit { error in
-            DispatchQueue.main.async { [weak self] in
-                guard let me = self else {
-                    // Valid case. The view might dismissed
-                    return
-                }
-                me.delegate?.informReinitFailed()
-                me.appSettings.keyPlanckSyncActivityIndicatorIsOn = false
+            DispatchQueue.main.async {
+                handleFailure()
             }
         } successCallback: { }
+        queueForSyncReinit.cancelAllOperations()
+        queueForSyncReinit.addOperation {
+            DispatchQueue.main.asyncAfter(deadline: .now() + 120) {
+                handleFailure()
+            }
+        }
     }
 
     /// Wrapper method to know if the device is in a group.
