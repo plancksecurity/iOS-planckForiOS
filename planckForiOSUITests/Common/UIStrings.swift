@@ -15,7 +15,7 @@ class UIStrings {
     
     // Main Screen to select option for login and login details screen
     
-    static let emailAddress = "ana@planck.dev"
+    static let emailAddress = "iostest023@planck.dev"
     static let emailPassword = "orang3paella"
     static let serverName = "planck.dev"
     static let displayName = "QA Testing"
