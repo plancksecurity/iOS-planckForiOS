@@ -10,15 +10,6 @@ import Foundation
 import XCTest
 class CommonFunctions {
     
-    let app = XCUIApplication()
-    
-    func appLaunch(){
-        app.launch()
-    }
-    
-    func appTerminate(){
-        app.terminate()
-    }
     
     func generateRandomBot() -> String {
         let letters = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789"
