@@ -8,13 +8,24 @@
 import XCTest
 
 final class Test01LaunchAndTerminatePlanck: XCTestCase {
-
-    let common = CommonFunctions()
+    
+    var app: XCUIApplication!
+    
+    override func setUp() {
+        continueAfterFailure = false
+        app = XCUIApplication()
+        app.launchArguments = ["testing"]
+        app.launch()
+    }
+    
+    
+    override  func tearDown() {
+        app.terminate()
+    }
+    
     
     func test01AppLaunchAndTerminate() {
-        common.appLaunch()
         Thread.sleep(forTimeInterval: 10)
-        common.appTerminate()
     }
     
-    }
+}

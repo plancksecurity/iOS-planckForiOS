@@ -458,11 +458,11 @@
 		43ED53791CC77F95006AB156 /* UserInfoViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43ED536E1CC77F95006AB156 /* UserInfoViewController.swift */; };
 		43EEE4092908049500D30254 /* MDMSettingsUtil.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43EEE4082908049500D30254 /* MDMSettingsUtil.swift */; };
 		43FC02121F4D913D00273304 /* NSHTML_2017-08-09 15_40_53 +0000.html in Resources */ = {isa = PBXBuildFile; fileRef = 43FC02111F4D913D00273304 /* NSHTML_2017-08-09 15_40_53 +0000.html */; };
-		488AB1B22A2FF73E00B15809 /* InstalAndLaunchPlanck.swift in Sources */ = {isa = PBXBuildFile; fileRef = 488AB1B12A2FF73E00B15809 /* InstalAndLaunchPlanck.swift */; };
+		488AB1B22A2FF73E00B15809 /* Test01InstalAndLaunchPlanck.swift in Sources */ = {isa = PBXBuildFile; fileRef = 488AB1B12A2FF73E00B15809 /* Test01InstalAndLaunchPlanck.swift */; };
 		48DD51312A24CC2500A2C65F /* planckForiOSUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 48DD51302A24CC2500A2C65F /* planckForiOSUITests.swift */; };
 		48DD513B2A24CCCF00A2C65F /* UIStrings.swift in Sources */ = {isa = PBXBuildFile; fileRef = 48DD513A2A24CCCF00A2C65F /* UIStrings.swift */; };
-		48DD513D2A24CD7900A2C65F /* OnboardingAccount.swift in Sources */ = {isa = PBXBuildFile; fileRef = 48DD513C2A24CD7900A2C65F /* OnboardingAccount.swift */; };
-		48DD513F2A24D32800A2C65F /* ComposeAndSendNewEmail.swift in Sources */ = {isa = PBXBuildFile; fileRef = 48DD513E2A24D32800A2C65F /* ComposeAndSendNewEmail.swift */; };
+		48DD513D2A24CD7900A2C65F /* Test02OnboardingAccount.swift in Sources */ = {isa = PBXBuildFile; fileRef = 48DD513C2A24CD7900A2C65F /* Test02OnboardingAccount.swift */; };
+		48DD513F2A24D32800A2C65F /* Test03ComposeAndSendNewEmail.swift in Sources */ = {isa = PBXBuildFile; fileRef = 48DD513E2A24D32800A2C65F /* Test03ComposeAndSendNewEmail.swift */; };
 		4902244F20E50488000E8D7C /* ThreadNavigationDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4902244E20E50488000E8D7C /* ThreadNavigationDelegate.swift */; };
 		490CEBA72100EAD500E8579C /* SelfDismissable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 490CEBA62100EAD500E8579C /* SelfDismissable.swift */; };
 		491116BD216E0DF4005A42D2 /* MessageViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 491116BC216E0DF4005A42D2 /* MessageViewModelTests.swift */; };
@@ -1092,12 +1092,12 @@
 		43ED536E1CC77F95006AB156 /* UserInfoViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UserInfoViewController.swift; sourceTree = "<group>"; };
 		43EEE4082908049500D30254 /* MDMSettingsUtil.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MDMSettingsUtil.swift; sourceTree = "<group>"; };
 		43FC02111F4D913D00273304 /* NSHTML_2017-08-09 15_40_53 +0000.html */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.html; path = "NSHTML_2017-08-09 15_40_53 +0000.html"; sourceTree = "<group>"; };
-		488AB1B12A2FF73E00B15809 /* InstalAndLaunchPlanck.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InstalAndLaunchPlanck.swift; sourceTree = "<group>"; };
+		488AB1B12A2FF73E00B15809 /* Test01InstalAndLaunchPlanck.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Test01InstalAndLaunchPlanck.swift; sourceTree = "<group>"; };
 		48DD512E2A24CC2500A2C65F /* planckForiOSUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = planckForiOSUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		48DD51302A24CC2500A2C65F /* planckForiOSUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = planckForiOSUITests.swift; sourceTree = "<group>"; };
 		48DD513A2A24CCCF00A2C65F /* UIStrings.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIStrings.swift; sourceTree = "<group>"; };
-		48DD513C2A24CD7900A2C65F /* OnboardingAccount.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OnboardingAccount.swift; sourceTree = "<group>"; };
-		48DD513E2A24D32800A2C65F /* ComposeAndSendNewEmail.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ComposeAndSendNewEmail.swift; sourceTree = "<group>"; };
+		48DD513C2A24CD7900A2C65F /* Test02OnboardingAccount.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Test02OnboardingAccount.swift; sourceTree = "<group>"; };
+		48DD513E2A24D32800A2C65F /* Test03ComposeAndSendNewEmail.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Test03ComposeAndSendNewEmail.swift; sourceTree = "<group>"; };
 		4902244E20E50488000E8D7C /* ThreadNavigationDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ThreadNavigationDelegate.swift; sourceTree = "<group>"; };
 		490CEBA62100EAD500E8579C /* SelfDismissable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SelfDismissable.swift; sourceTree = "<group>"; };
 		491116BC216E0DF4005A42D2 /* MessageViewModelTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MessageViewModelTests.swift; sourceTree = "<group>"; };
@@ -2603,9 +2603,9 @@
 			children = (
 				48DD51392A24CCA100A2C65F /* Common */,
 				48DD51302A24CC2500A2C65F /* planckForiOSUITests.swift */,
-				488AB1B12A2FF73E00B15809 /* InstalAndLaunchPlanck.swift */,
-				48DD513C2A24CD7900A2C65F /* OnboardingAccount.swift */,
-				48DD513E2A24D32800A2C65F /* ComposeAndSendNewEmail.swift */,
+				488AB1B12A2FF73E00B15809 /* Test01InstalAndLaunchPlanck.swift */,
+				48DD513C2A24CD7900A2C65F /* Test02OnboardingAccount.swift */,
+				48DD513E2A24D32800A2C65F /* Test03ComposeAndSendNewEmail.swift */,
 			);
 			path = planckForiOSUITests;
 			sourceTree = "<group>";
@@ -4006,12 +4006,12 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				48DD513D2A24CD7900A2C65F /* OnboardingAccount.swift in Sources */,
+				48DD51312A24CC2500A2C65F /* planckForiOSUITests.swift in Sources */,
 				48DD513B2A24CCCF00A2C65F /* UIStrings.swift in Sources */,
 				CD5458BD2A34850C0065C375 /* CommonFunctions.swift in Sources */,
-				48DD51312A24CC2500A2C65F /* planckForiOSUITests.swift in Sources */,
-				48DD513F2A24D32800A2C65F /* ComposeAndSendNewEmail.swift in Sources */,
-				488AB1B22A2FF73E00B15809 /* InstalAndLaunchPlanck.swift in Sources */,
+				488AB1B22A2FF73E00B15809 /* Test01InstalAndLaunchPlanck.swift in Sources */,
+				48DD513D2A24CD7900A2C65F /* Test02OnboardingAccount.swift in Sources */,
+				48DD513F2A24D32800A2C65F /* Test03ComposeAndSendNewEmail.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
