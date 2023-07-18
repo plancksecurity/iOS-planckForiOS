@@ -149,7 +149,7 @@ extension SettingsTableViewController {
              .resetTrust,
              .planckSync:
             if let cell = dequeuedCell as? SettingsActionTableViewCell, row.identifier == .planckSync {
-                cell.activityIndicatorIsOn = AppSettings.shared.keyPlanckSyncActivityIndicator
+                cell.activityIndicatorIsOn = AppSettings.shared.keyPlanckSyncActivityIndicatorIsOn
             }
             return prepareActionCell(dequeuedCell, for: row)
         case .defaultAccount,
@@ -378,7 +378,7 @@ extension SettingsTableViewController : SettingsViewModelDelegate {
             return
         }
         if let planckSyncCell = cells.filter({$0.textLabel?.text == row.title }).first as? SettingsActionTableViewCell {
-            if AppSettings.shared.keyPlanckSyncActivityIndicator {
+            if AppSettings.shared.keyPlanckSyncActivityIndicatorIsOn {
                 planckSyncCell.startActivityIndicator()
             } else {
                 planckSyncCell.stopActivityIndicator()

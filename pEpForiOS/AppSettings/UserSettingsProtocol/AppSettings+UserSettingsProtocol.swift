@@ -47,7 +47,7 @@ extension AppSettings: UserSettingsProtocol {
     /// ["some@example.com": [ "SomeFolderName": true ] ] indicates the folder is collapsed.
     private typealias CollapsingState = [String: [String: Bool]]
 
-    public var keyPlanckSyncActivityIndicator: Bool {
+    public var keyPlanckSyncActivityIndicatorIsOn: Bool {
         get {
             return AppSettings.userDefaults.bool(forKey: AppSettings.keyPlanckSyncActivityIndicator)
         }

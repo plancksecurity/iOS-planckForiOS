@@ -125,7 +125,7 @@ final class SettingsViewModel {
     }
 
     public func handlePlanckSyncPressed() {
-        appSettings.keyPlanckSyncActivityIndicator = true
+        appSettings.keyPlanckSyncActivityIndicatorIsOn = true
         KeySyncUtil.syncReinit { error in
             DispatchQueue.main.async { [weak self] in
                 guard let me = self else {
@@ -133,7 +133,7 @@ final class SettingsViewModel {
                     return
                 }
                 me.delegate?.informReinitFailed()
-                me.appSettings.keyPlanckSyncActivityIndicator = false
+                me.appSettings.keyPlanckSyncActivityIndicatorIsOn = false
             }
         } successCallback: { }
     }

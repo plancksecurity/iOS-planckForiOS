@@ -15,7 +15,7 @@ import MessageModel
 public protocol UserSettingsProtocol {
 
     /// Indicates if planck sync activity indicator should run
-    var keyPlanckSyncActivityIndicator: Bool { get set }
+    var keyPlanckSyncActivityIndicatorIsOn: Bool { get set }
 
     /// Indicates if keySync is enabled
     var keySyncEnabled: Bool { get set }
