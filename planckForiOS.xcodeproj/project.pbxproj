@@ -658,6 +658,7 @@
 		F779D6012A2F28E60069381E /* AuditLogginViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F779D6002A2F28E60069381E /* AuditLogginViewController.swift */; };
 		F779D6032A2F29130069381E /* AuditLoginViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = F779D6022A2F29130069381E /* AuditLoginViewModel.swift */; };
 		F779D6052A2F4DF60069381E /* AuditLoggingTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = F779D6042A2F4DF60069381E /* AuditLoggingTableViewCell.swift */; };
+		F7DB9F3B2A66A3D900D2E5AB /* SettingsActionTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = F7DB9F3A2A66A3D900D2E5AB /* SettingsActionTableViewCell.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -1253,6 +1254,7 @@
 		F779D6002A2F28E60069381E /* AuditLogginViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuditLogginViewController.swift; sourceTree = "<group>"; };
 		F779D6022A2F29130069381E /* AuditLoginViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuditLoginViewModel.swift; sourceTree = "<group>"; };
 		F779D6042A2F4DF60069381E /* AuditLoggingTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuditLoggingTableViewCell.swift; sourceTree = "<group>"; };
+		F7DB9F3A2A66A3D900D2E5AB /* SettingsActionTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsActionTableViewCell.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -2773,6 +2775,7 @@
 				5BBE80C824B733BF008DE0E5 /* AccountSettingsSwitchTableViewCell.swift */,
 				5BBE80CA24B733C0008DE0E5 /* AccountSettingsTableViewCell.swift */,
 				5BBE80C924B733C0008DE0E5 /* SettingSwitchTableViewCell.swift */,
+				F7DB9F3A2A66A3D900D2E5AB /* SettingsActionTableViewCell.swift */,
 			);
 			path = Cells;
 			sourceTree = "<group>";
@@ -3734,6 +3737,7 @@
 				5BF7538C29798D5200E4113B /* EnterpriseUtil.swift in Sources */,
 				1546CBFA252B5B9F00A7AA7D /* CreditsViewModel.swift in Sources */,
 				3A085A6E23FAF4D50013C63E /* PEPHeaderView.swift in Sources */,
+				F7DB9F3B2A66A3D900D2E5AB /* SettingsActionTableViewCell.swift in Sources */,
 				15874BD12127493E00A3A4A6 /* TrustedServerSettingsViewModel.swift in Sources */,
 				4351C2DC1F4441190053381F /* xml.c in Sources */,
 				5BFBB50425D5207900F269C4 /* MessageSubjectCell.swift in Sources */,

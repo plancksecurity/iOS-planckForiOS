@@ -15,11 +15,11 @@ final class SettingsTableViewController: UITableViewController {
     static let storyboardId = "SettingsTableViewController"
     private weak var activityIndicatorView: UIActivityIndicatorView?
 
-    private lazy var viewModel = SettingsViewModel(delegate: self)
+    public private(set) lazy var viewModel = SettingsViewModel(delegate: self)
 
     override func viewDidLoad() {
         super.viewDidLoad()
-
+        registerNotifications()
         setUp()
         viewModel.delegate = self
         UIHelper.variableCellHeightsTableView(tableView)
@@ -42,6 +42,10 @@ final class SettingsTableViewController: UITableViewController {
         UIUtils.hideBanner()
     }
 
+    deinit {
+        NotificationCenter.default.removeObserver(self)
+    }
+
     // MARK: - Extra Keys
     /// Adds easter egg gesture to [en|dis]able the editability of extra keys
     private func addExtraKeysEditabilityToggleGesture() {
@@ -59,10 +63,6 @@ final class SettingsTableViewController: UITableViewController {
     @objc private func pEpMDMSettingsChanged() {
         viewModel = SettingsViewModel(delegate: self)
         tableView.reloadData()
-    }
-
-    deinit {
-        NotificationCenter.default.removeObserver(self)
     }
 }
 
@@ -146,7 +146,11 @@ extension SettingsTableViewController {
         case .account:
             return prepareSwipeTableViewCell(dequeuedCell, for: row)
         case .resetAccounts,
-             .resetTrust:
+             .resetTrust,
+             .planckSync:
+            if let cell = dequeuedCell as? SettingsActionTableViewCell, row.identifier == .planckSync {
+                cell.activityIndicatorIsOn = AppSettings.shared.keyPlanckSyncActivityIndicator
+            }
             return prepareActionCell(dequeuedCell, for: row)
         case .defaultAccount,
              .pgpKeyImport,
@@ -158,8 +162,7 @@ extension SettingsTableViewController {
              .auditLogging,
              .groupMailboxes,
              .deviceGroups,
-             .about,
-             .planckSync:
+             .about:
             guard let row = row as? SettingsViewModel.NavigationRow else {
                 Log.shared.errorAndCrash(message: "Row doesn't match the expected type")
                 return UITableViewCell()
@@ -359,6 +362,30 @@ extension SettingsTableViewController : SwipeTableViewCellDelegate {
 
 extension SettingsTableViewController : SettingsViewModelDelegate {
 
+    private func registerNotifications() {
+        NotificationCenter.default.addObserver(self,
+                                               selector: #selector(changeActivityIndicatorOnPlanckSync),
+                                               name: .planckSyncActivityIndicatorChanged,
+                                               object: nil)
+    }
+
+    @objc func changeActivityIndicatorOnPlanckSync() {
+        let cells = tableView.visibleCells.filter({$0 is SettingsActionTableViewCell })
+        let ip = IndexPath(row: 0, section: 2) // Planck Sync Index Path
+        let section = viewModel.section(for: ip) as SettingsViewModel.Section
+        guard let row = section.rows[ip.row] as? SettingsViewModel.NavigationRow else {
+            Log.shared.errorAndCrash("lost row")
+            return
+        }
+        if let planckSyncCell = cells.filter({$0.textLabel?.text == row.title }).first as? SettingsActionTableViewCell {
+            if AppSettings.shared.keyPlanckSyncActivityIndicator {
+                planckSyncCell.startActivityIndicator()
+            } else {
+                planckSyncCell.stopActivityIndicator()
+            }
+        }
+    }
+
     func showFeedback(title: String, message: String) {
         UIUtils.showAlertWithOnlyCloseButton(title: title, message: message)
     }
@@ -380,7 +407,6 @@ extension SettingsTableViewController : SettingsViewModelDelegate {
                 Log.shared.lostMySelf()
                 return
             }
-            
             //Lets prevent a stack of activity indicators
             me.activityIndicatorView?.stopAnimating()
             me.activityIndicatorView?.removeFromSuperview()

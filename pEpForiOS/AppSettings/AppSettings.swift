@@ -93,6 +93,7 @@ extension AppSettings {
         defaults[AppSettings.keyAccountSignature] = [String:String]()
         defaults[AppSettings.keyVerboseLogginEnabled] = false
         defaults[AppSettings.keyAuditLogginggTime] = 30 // 30 days is the default time
+        defaults[AppSettings.keyPlanckSyncActivityIndicator] = false
 
         // TODO:
         // The languages restriction to English (en) and German (de) is clearly not the default.

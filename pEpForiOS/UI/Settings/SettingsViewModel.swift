@@ -30,6 +30,8 @@ protocol SettingsViewModelDelegate: AnyObject {
     func showFeedback(title: String, message: String)
     /// Show a feedback message to try again
     func showTryAgain(title: String, message: String)
+    /// Change Activity Indicator on Planck Sync
+    func changeActivityIndicatorOnPlanckSync()
 }
 
 /// Protocol that represents the basic data in a row.
@@ -52,7 +54,7 @@ final class SettingsViewModel {
     typealias AlertActionBlock = (() -> ())
 
     /// Items to be displayed in a SettingsTableViewController
-    private (set) var items: [Section] = [Section]()
+    public private(set) var items: [Section] = [Section]()
 
     private let exportDBQueueLabel = "security.pep.SettingsViewModel.databasesIOQueue"
 
@@ -93,10 +95,10 @@ final class SettingsViewModel {
                 .groupMailboxes,
                 .deviceGroups,
                 .about,
-                .auditLogging,
-                .planckSync:
+                .auditLogging:
             return "SettingsCell"
-        case .resetAccounts:
+        case .resetAccounts,
+                .planckSync:
             return "SettingsActionCell"
         case    .passiveMode,
                 .protectMessageSubject,
@@ -123,29 +125,17 @@ final class SettingsViewModel {
     }
 
     public func handlePlanckSyncPressed() {
-        delegate?.showLoadingView()
+        appSettings.keyPlanckSyncActivityIndicator = true
         KeySyncUtil.syncReinit { error in
             DispatchQueue.main.async { [weak self] in
                 guard let me = self else {
-                    Log.shared.lostMySelf()
-                    return
-                }
-                guard let me = self else {
                     // Valid case. The view might dismissed
                     return
                 }
-                me.delegate?.hideLoadingView()
                 me.delegate?.informReinitFailed()
+                me.appSettings.keyPlanckSyncActivityIndicator = false
             }
-        } successCallback: {
-            DispatchQueue.main.async { [weak self] in
-                guard let me = self else {
-                    // Valid case. The view might dismissed
-                    return
-                }
-                me.delegate?.hideLoadingView()
-            }
-        }
+        } successCallback: { }
     }
 
     /// Wrapper method to know if the device is in a group.
@@ -160,6 +150,8 @@ final class SettingsViewModel {
         switch rowIdentifier {
         case .resetAccounts, .resetTrust:
             return .pEpRed
+        case .planckSync:
+            return .label
         default:
             return nil
         }

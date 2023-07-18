@@ -2,7 +2,7 @@
 "CFBundleDisplayName" = "planck";
 
 /* Bundle name */
-"CFBundleName" = "pEp";
+"CFBundleName" = "planck";
 
 /* Privacy - Camera Usage Description */
 "NSCameraUsageDescription" = "Use Camera";
