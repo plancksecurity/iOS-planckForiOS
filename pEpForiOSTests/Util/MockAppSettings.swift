@@ -12,6 +12,8 @@ import XCTest
 @testable import MessageModel
 
 class MockAppSettings: AppSettingsProtocol {
+    var keyPlanckSyncActivityIndicatorIsOn: Bool = false
+
     var acceptedLanguagesCodes: [String] = ["de", "en"]
 
     var keySyncEnabled: Bool = true
