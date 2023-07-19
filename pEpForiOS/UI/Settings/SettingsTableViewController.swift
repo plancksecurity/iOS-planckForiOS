@@ -388,13 +388,17 @@ extension SettingsTableViewController : SettingsViewModelDelegate {
     }
 
     @objc func changeActivityIndicatorOnPlanckSync() {
-        // Planck Sync Index Path
-        let indexPath = IndexPath(row: 0, section: 2)
-        if let planckSyncCell = tableView.cellForRow(at: indexPath) as? SettingsActionTableViewCell {
-            if AppSettings.shared.keyPlanckSyncActivityIndicatorIsOn {
-                planckSyncCell.startActivityIndicator()
-            } else {
-                planckSyncCell.stopActivityIndicator()
+        // Get the Planck Sync Index Path
+        if let section = viewModel.items.map({$0.type}).firstIndex(of: .planckSync) {
+            let globalSettingSection = viewModel.items[section]
+            guard let row = globalSettingSection.rows.firstIndex (where: { $0.identifier == .planckSync }) else {
+                Log.shared.errorAndCrash("Cell not found")
+                return
+            }
+            // Find the cell and update accordingly
+            let indexPath = IndexPath(row: row, section: section)
+            if let planckSyncCell = tableView.cellForRow(at: indexPath) as? SettingsActionTableViewCell {
+                planckSyncCell.activityIndicatorIsOn = AppSettings.shared.keyPlanckSyncActivityIndicatorIsOn
             }
         }
     }
