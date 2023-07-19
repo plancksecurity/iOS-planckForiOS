@@ -66,6 +66,11 @@ final class SettingsViewModel {
         return createe
     }()
 
+    public func cancelSyncReinit() {
+        appSettings.keyPlanckSyncActivityIndicatorIsOn = false
+        queueForSyncReinit.cancelAllOperations()
+    }
+
     /// Number of elements in items
     public var count: Int {
         get {

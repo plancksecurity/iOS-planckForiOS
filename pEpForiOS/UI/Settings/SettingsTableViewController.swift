@@ -41,6 +41,11 @@ final class SettingsTableViewController: UITableViewController {
                                                                    comment: "No setting has been selected yet in the settings VC"))
         UIUtils.hideBanner()
     }
+    
+    override func viewDidDisappear(_ animated: Bool) {
+        super.viewDidDisappear(animated)
+        viewModel.cancelSyncReinit()
+    }
 
     deinit {
         NotificationCenter.default.removeObserver(self)
