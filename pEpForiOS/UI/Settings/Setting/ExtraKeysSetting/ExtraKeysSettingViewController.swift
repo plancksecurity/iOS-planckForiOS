@@ -107,7 +107,7 @@ extension ExtraKeysSettingViewController {
 
         // FPR input field
         fpr.layer.borderWidth = 5.0
-        fpr.layer.borderColor = UITraitCollection.current.userInterfaceStyle == .dark ? UIColor.primaryDarkMode.cgColor : UIColor.primaryLightMode.cgColor
+        fpr.layer.borderColor = UIColor.primary().cgColor
         fpr.backgroundColor = UIColor.pEpLightBackground
         if UITraitCollection.current.userInterfaceStyle == .dark {
             fpr.backgroundColor = UIColor.tertiarySystemBackground
