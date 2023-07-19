@@ -16,7 +16,7 @@ class Appearance {
     /// textviews, textfields and searchbars.
     public static func setup() {
         // Still needed for iOS 13 for button bar items.
-        UINavigationBar.appearance().tintColor = .primary
+        UINavigationBar.appearance().tintColor = UIColor.primary()
 
         // iOS 13 ignores the navigation bar tint color in some cases,
         // therefore we use the new appearance API to customise explicitly.
@@ -24,36 +24,37 @@ class Appearance {
         normalNavigationBar.standardAppearance = navigationBarAppearanceDefault(color: UIColor.label)
         normalNavigationBar.scrollEdgeAppearance = normalNavigationBar.standardAppearance
 
-        UIToolbar.appearance().backgroundColor = .primary
-        UIToolbar.appearance().barTintColor = .primary
+        UIToolbar.appearance().backgroundColor = UIColor.primary()
+        UIToolbar.appearance().barTintColor = UIColor.primary()
         UIToolbar.appearance().tintColor = .white
         if #available(iOS 15.0, *) {
             let appearance = UIToolbarAppearance()
             appearance.configureWithOpaqueBackground()
-            appearance.backgroundColor = .primary
+            appearance.backgroundColor = UIColor.primary()
             UIToolbar.appearance().standardAppearance = appearance
             UIToolbar.appearance().scrollEdgeAppearance = UIToolbar.appearance().standardAppearance
         }
 
-        UITextView.appearance().tintColor = .primary
-        UITextField.appearance().tintColor = .primary
+        UITextView.appearance().tintColor = UIColor.primary()
+        UITextField.appearance().tintColor = UIColor.primary()
 
         UISearchBar.appearance().barTintColor = .white
-        UISearchBar.appearance().tintColor = .primary
-
-        setAlertControllerTintColor(.primary)
+        UISearchBar.appearance().tintColor = UIColor.primary()
+        let primary = UIColor.primary()
+        setAlertControllerTintColor(primary)
 
         Appearance.configureSelectedBackgroundViewForPep(tableViewCell: UITableViewCell.appearance())
 
         UITextField.appearance(whenContainedInInstancesOf: [UISearchBar.self]).backgroundColor = UIColor.systemBackground
-        UITextField.appearance(whenContainedInInstancesOf: [UISearchBar.self]).tintColor = UIColor.primary
+        UITextField.appearance(whenContainedInInstancesOf: [UISearchBar.self]).tintColor = UIColor.primary()
         UISearchBar.appearance().backgroundColor = UIColor.systemBackground
     }
 
     /// Configure the background view of the table view cells.
     /// - Parameter tableViewCell: The cell to set the background view.
     public static func configureSelectedBackgroundViewForPep(tableViewCell: UITableViewCell) {
-        let backgroundColor = UITraitCollection.current.userInterfaceStyle == .dark ? UIColor.systemGray5 : UIColor.primary.withAlphaComponent(0.2)
+        let primary = UIColor.primary()
+        let backgroundColor = UITraitCollection.current.userInterfaceStyle == .dark ? UIColor.systemGray5 : primary.withAlphaComponent(0.2)
         let tableViewCellSelectedbackgroundView = UIView()
         tableViewCellSelectedbackgroundView.backgroundColor = backgroundColor
         tableViewCell.selectedBackgroundView = tableViewCellSelectedbackgroundView
@@ -72,7 +73,7 @@ class Appearance {
 
 extension Appearance {
 
-    private static func setAlertControllerTintColor(_ color: UIColor = .primary) {
+    private static func setAlertControllerTintColor(_ color: UIColor = UIColor.primary()) {
         let view = UIView.appearance(whenContainedInInstancesOf: [UIAlertController.self])
         view.tintColor = color
     }
@@ -84,12 +85,13 @@ extension Appearance {
 
     /// Default appearance for navigation bars (iOS 13 and upwards).
     static private func navigationBarAppearanceDefault(color: UIColor) -> UINavigationBarAppearance {
+        let primary = UIColor.primary()
         let appearance = UINavigationBarAppearance()
         appearance.configureWithOpaqueBackground()
         let font = UIFont.pepFont(style: .headline, weight: .medium)
         let titleTextAttributes: [NSAttributedString.Key : Any] = [.foregroundColor: color,
                                                                    .font: font]
-        let buttonsAttributes: [NSAttributedString.Key : Any] = [.foregroundColor: UIColor.primary]
+        let buttonsAttributes: [NSAttributedString.Key : Any] = [.foregroundColor: primary]
         appearance.buttonAppearance.normal.titleTextAttributes = buttonsAttributes
         appearance.titleTextAttributes = titleTextAttributes
         appearance.largeTitleTextAttributes = titleTextAttributes

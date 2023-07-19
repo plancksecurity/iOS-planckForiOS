@@ -195,7 +195,7 @@ extension AccountSettingsViewController : UITableViewDataSource {
             }
             dequeuedCell.configure(with: row, isGrayedOut : !vm.isPEPSyncGrayedOut())
             dequeuedCell.switchItem.isOn = vm.isKeySyncEnabled()
-            dequeuedCell.switchItem.onTintColor = .primary
+            dequeuedCell.switchItem.onTintColor = UIColor.primary()
             
             return dequeuedCell
         case .reset:

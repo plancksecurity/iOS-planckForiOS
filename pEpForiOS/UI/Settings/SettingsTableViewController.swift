@@ -31,6 +31,18 @@ final class SettingsTableViewController: UITableViewController {
                                                name: .pEpMDMSettingsChanged,
                                                object: nil)
     }
+    
+    override func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
+        super.traitCollectionDidChange(previousTraitCollection)
+        guard let thePreviousTraitCollection = previousTraitCollection else {
+            // Valid case: optional value from Apple.
+            return
+        }
+
+        if thePreviousTraitCollection.hasDifferentColorAppearance(comparedTo: traitCollection) {
+            tableView.reloadData()
+        }
+    }
 
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
@@ -131,6 +143,7 @@ extension SettingsTableViewController {
         cell.delegate = self
         cell.selectionStyle = .none
         cell.switchItem.setOn(row.isOn, animated: false)
+        cell.switchItem.onTintColor = UIColor.primary()
         return cell
     }
 
@@ -691,3 +704,4 @@ extension SettingsTableViewController: SwitchCellDelegate {
         }
     }
 }
+

@@ -38,7 +38,7 @@ extension UIUtils {
     /// - Returns: An action sheet with pEp green tint color.
     public static func actionSheet(title: String? = nil, message: String? = nil) -> UIAlertController {
         let alertController = UIAlertController(title: title, message: message, preferredStyle: .actionSheet)
-        alertController.view.tintColor = .primary
+        alertController.view.tintColor = UIColor.primary()
         return alertController
     }
 
@@ -57,7 +57,7 @@ extension UIUtils {
                                                 preferredStyle: .actionSheet)
 
         setIPadAnchor(for: alertSheet, in: rect, at: view)
-        alertSheet.view.tintColor = UIColor.primary
+        alertSheet.view.tintColor = UIColor.primary()
         let newMailtitle = NSLocalizedString("New Mail Message", comment:
                                                 "UIUtils.showActionSheetWithContactOptions.button.title New Mail Message")
         alertSheet.addAction(UIAlertAction(title: newMailtitle, style: .default) { (action) in

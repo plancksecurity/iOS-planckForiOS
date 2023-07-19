@@ -24,7 +24,7 @@ class SettingSwitchTableViewCell: UITableViewCell {
     
     override func awakeFromNib() {
         super.awakeFromNib()
-        switchItem.onTintColor = .primary
+        switchItem.onTintColor = UIColor.primary()
     }
 
     @IBAction func switchChanged(_ sender: Any) {

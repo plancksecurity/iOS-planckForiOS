@@ -77,7 +77,7 @@ final class UserInfoViewController: UIViewController {
         setupView.fourthTextField.set(text: verifiableAccount.userName, animated: animated)
         setupView.pEpSyncSwitch.isOn = verifiableAccount.keySyncEnable
         setupView.nextRightButton.isEnabled = verifiableAccount.isValidUser
-        view.backgroundColor = UITraitCollection.current.userInterfaceStyle == .dark ? .systemBackground : .primary
+        view.backgroundColor = UITraitCollection.current.userInterfaceStyle == .dark ? .systemBackground : UIColor.primaryDarkMode
     }
 }
 
@@ -263,7 +263,7 @@ extension UserInfoViewController {
         }
 
         if thePreviousTraitCollection.hasDifferentColorAppearance(comparedTo: traitCollection) {
-            view.backgroundColor = UITraitCollection.current.userInterfaceStyle == .dark ? .systemBackground : UIColor.primary
+            view.backgroundColor = UITraitCollection.current.userInterfaceStyle == .dark ? .systemBackground : UIColor.primaryDarkMode
             manualAccountSetupContainerView.backgroundColor = view.backgroundColor
             manualAccountSetupContainerView.setupView?.backgroundColor = view.backgroundColor
             view.layoutSubviews()

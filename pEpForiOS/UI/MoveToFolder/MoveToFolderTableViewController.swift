@@ -34,9 +34,10 @@ class MoveToFolderTableViewController: UITableViewController {
     override func tableView(_ tableView: UITableView,
                             cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: cellId, for: indexPath)
+        let primary = UIColor.primary()
         if let vm = viewModel?[indexPath.row] {
             cell.textLabel?.text = vm.title
-            let icon = vm.icon.withTintColor(.primary)
+            let icon = vm.icon.withTintColor(primary)
             cell.imageView?.image = icon
             cell.textLabel?.font = UIFont.pepFont(style: .callout, weight: .regular)
             if !vm.isSelectable {
