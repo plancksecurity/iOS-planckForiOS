@@ -15,7 +15,7 @@ final class SettingsTableViewController: UITableViewController {
     static let storyboardId = "SettingsTableViewController"
     private weak var activityIndicatorView: UIActivityIndicatorView?
 
-    public private(set) lazy var viewModel = SettingsViewModel(delegate: self)
+    private(set) lazy var viewModel = SettingsViewModel(delegate: self)
 
     override func viewDidLoad() {
         super.viewDidLoad()
