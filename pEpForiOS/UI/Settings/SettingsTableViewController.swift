@@ -375,14 +375,9 @@ extension SettingsTableViewController : SettingsViewModelDelegate {
     }
 
     @objc func changeActivityIndicatorOnPlanckSync() {
-        let cells = tableView.visibleCells.filter({$0 is SettingsActionTableViewCell })
-        let ip = IndexPath(row: 0, section: 2) // Planck Sync Index Path
-        let section = viewModel.section(for: ip) as SettingsViewModel.Section
-        guard let row = section.rows[ip.row] as? SettingsViewModel.NavigationRow else {
-            Log.shared.errorAndCrash("lost row")
-            return
-        }
-        if let planckSyncCell = cells.filter({$0.textLabel?.text == row.title }).first as? SettingsActionTableViewCell {
+        // Planck Sync Index Path
+        let indexPath = IndexPath(row: 0, section: 2)
+        if let planckSyncCell = tableView.cellForRow(at: indexPath) as? SettingsActionTableViewCell {
             if AppSettings.shared.keyPlanckSyncActivityIndicatorIsOn {
                 planckSyncCell.startActivityIndicator()
             } else {
@@ -431,7 +426,7 @@ extension SettingsTableViewController : SettingsViewModelDelegate {
     }
     
     func informReinitFailed() {
-        if UIApplication.currentlyVisibleViewController() is KeySyncWizardViewController {
+        guard !(UIApplication.currentlyVisibleViewController() is KeySyncWizardViewController) else {
             // Nothing to show.
             return
         }

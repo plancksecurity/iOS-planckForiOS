@@ -150,7 +150,9 @@ final class SettingsViewModel {
         } successCallback: { }
         queueForSyncReinit.cancelAllOperations()
         queueForSyncReinit.addOperation {
-            DispatchQueue.main.asyncAfter(deadline: .now() + 120) {
+            //It's required to cancel the action after two minutes.
+            let twoMinutesInSeconds = 120.0
+            DispatchQueue.main.asyncAfter(deadline: .now() + twoMinutesInSeconds) {
                 handleFailure()
             }
         }
