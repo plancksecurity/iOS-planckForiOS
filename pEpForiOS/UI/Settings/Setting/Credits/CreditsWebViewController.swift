@@ -36,7 +36,7 @@ class CreditsWebViewController: PEPWebViewController {
     // MARK: - Private
 
     private func html() -> String {
-        let hex = UITraitCollection.current.userInterfaceStyle == .dark ? UIColor.primaryHexDarkMode : UIColor.primaryHexLightMode
+        let hex = UIColor.primaryHex()
         let appVersion = InfoPlist.versionDisplayString() ?? "666"
         let backgroundColor = UIColor.systemBackground
         let fontColor = UIColor.label

@@ -61,7 +61,7 @@ public struct ReplyUtil {
     /// - Parameter html: html to inject vertical lines to
     /// - returns: html with vertical lines injected.
     public static func htmlWithVerticalLinesForBlockQuotesInjected(html: String) -> String {
-        let hex = UITraitCollection.current.userInterfaceStyle == .dark ? UIColor.primaryHexDarkMode : UIColor.primaryHexLightMode
+        let hex = UIColor.primaryHex()
         let searchTerm = "<blockquote type=\"cite\""
         let replace = "<blockquote type=\"cite\" style=\"border-left: 3px solid \(hex); padding-left: 8px; margin-left:0px;\""
         return html

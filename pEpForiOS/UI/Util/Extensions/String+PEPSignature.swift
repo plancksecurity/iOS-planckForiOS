@@ -16,7 +16,7 @@ extension String {
 
     public static var planckSignatureHtml: String {
         let pEpSignatureTrimmed = String.planckSignature.trimmed()
-        let hex = UITraitCollection.current.userInterfaceStyle == .dark ? UIColor.primaryHexDarkMode : UIColor.primaryHexLightMode
+        let hex = UIColor.primaryHex()
         return "<a href=\"https://planck.security\" style=\"color:\(hex); text-decoration: none;\">\(pEpSignatureTrimmed)</a>"
     }
 

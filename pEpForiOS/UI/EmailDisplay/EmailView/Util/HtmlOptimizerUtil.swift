@@ -108,7 +108,7 @@ extension HtmlOptimizerUtil {
                       height: auto;
                   }
               """
-        let hex = UITraitCollection.current.userInterfaceStyle == .dark ? UIColor.primaryHexDarkMode : UIColor.primaryHexLightMode
+        let hex = UIColor.primaryHex()
         let styleLinkStyle = """
         a:link {
         color:\(hex);
@@ -123,9 +123,6 @@ extension HtmlOptimizerUtil {
         \(styleAutodetectLightOrDarkMode)
         \(styleBodyOptimize)
         \(styleTableOptimize)
-
-
-
         \(styleResponsiveImageSize)
         \(styleLinkStyle)
         </style>
