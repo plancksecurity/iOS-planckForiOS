@@ -15,11 +15,11 @@ final class SettingsTableViewController: UITableViewController {
     static let storyboardId = "SettingsTableViewController"
     private weak var activityIndicatorView: UIActivityIndicatorView?
 
-    private lazy var viewModel = SettingsViewModel(delegate: self)
+    private(set) lazy var viewModel = SettingsViewModel(delegate: self)
 
     override func viewDidLoad() {
         super.viewDidLoad()
-
+        registerNotifications()
         setUp()
         viewModel.delegate = self
         UIHelper.variableCellHeightsTableView(tableView)
@@ -31,6 +31,18 @@ final class SettingsTableViewController: UITableViewController {
                                                name: .pEpMDMSettingsChanged,
                                                object: nil)
     }
+    
+    override func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
+        super.traitCollectionDidChange(previousTraitCollection)
+        guard let thePreviousTraitCollection = previousTraitCollection else {
+            // Valid case: optional value from Apple.
+            return
+        }
+
+        if thePreviousTraitCollection.hasDifferentColorAppearance(comparedTo: traitCollection) {
+            tableView.reloadData()
+        }
+    }
 
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
@@ -40,6 +52,15 @@ final class SettingsTableViewController: UITableViewController {
         showEmptyDetailViewIfApplicable(message: NSLocalizedString("Please choose a setting",
                                                                    comment: "No setting has been selected yet in the settings VC"))
         UIUtils.hideBanner()
+    }
+    
+    override func viewDidDisappear(_ animated: Bool) {
+        super.viewDidDisappear(animated)
+        viewModel.cancelSyncReinit()
+    }
+
+    deinit {
+        NotificationCenter.default.removeObserver(self)
     }
 
     // MARK: - Extra Keys
@@ -59,10 +80,6 @@ final class SettingsTableViewController: UITableViewController {
     @objc private func pEpMDMSettingsChanged() {
         viewModel = SettingsViewModel(delegate: self)
         tableView.reloadData()
-    }
-
-    deinit {
-        NotificationCenter.default.removeObserver(self)
     }
 }
 
@@ -126,6 +143,7 @@ extension SettingsTableViewController {
         cell.delegate = self
         cell.selectionStyle = .none
         cell.switchItem.setOn(row.isOn, animated: false)
+        cell.switchItem.onTintColor = UIColor.primary()
         return cell
     }
 
@@ -146,7 +164,11 @@ extension SettingsTableViewController {
         case .account:
             return prepareSwipeTableViewCell(dequeuedCell, for: row)
         case .resetAccounts,
-             .resetTrust:
+             .resetTrust,
+             .planckSync:
+            if let cell = dequeuedCell as? SettingsActionTableViewCell, row.identifier == .planckSync {
+                cell.activityIndicatorIsOn = AppSettings.shared.keyPlanckSyncActivityIndicatorIsOn
+            }
             return prepareActionCell(dequeuedCell, for: row)
         case .defaultAccount,
              .pgpKeyImport,
@@ -158,8 +180,7 @@ extension SettingsTableViewController {
              .auditLogging,
              .groupMailboxes,
              .deviceGroups,
-             .about,
-             .planckSync:
+             .about:
             guard let row = row as? SettingsViewModel.NavigationRow else {
                 Log.shared.errorAndCrash(message: "Row doesn't match the expected type")
                 return UITableViewCell()
@@ -359,6 +380,29 @@ extension SettingsTableViewController : SwipeTableViewCellDelegate {
 
 extension SettingsTableViewController : SettingsViewModelDelegate {
 
+    private func registerNotifications() {
+        NotificationCenter.default.addObserver(self,
+                                               selector: #selector(changeActivityIndicatorOnPlanckSync),
+                                               name: .planckSyncActivityIndicatorChanged,
+                                               object: nil)
+    }
+
+    @objc func changeActivityIndicatorOnPlanckSync() {
+        // Get the Planck Sync Index Path
+        if let section = viewModel.items.map({$0.type}).firstIndex(of: .planckSync) {
+            let globalSettingSection = viewModel.items[section]
+            guard let row = globalSettingSection.rows.firstIndex (where: { $0.identifier == .planckSync }) else {
+                Log.shared.errorAndCrash("Cell not found")
+                return
+            }
+            // Find the cell and update accordingly
+            let indexPath = IndexPath(row: row, section: section)
+            if let planckSyncCell = tableView.cellForRow(at: indexPath) as? SettingsActionTableViewCell {
+                planckSyncCell.activityIndicatorIsOn = AppSettings.shared.keyPlanckSyncActivityIndicatorIsOn
+            }
+        }
+    }
+
     func showFeedback(title: String, message: String) {
         UIUtils.showAlertWithOnlyCloseButton(title: title, message: message)
     }
@@ -380,7 +424,6 @@ extension SettingsTableViewController : SettingsViewModelDelegate {
                 Log.shared.lostMySelf()
                 return
             }
-            
             //Lets prevent a stack of activity indicators
             me.activityIndicatorView?.stopAnimating()
             me.activityIndicatorView?.removeFromSuperview()
@@ -400,8 +443,13 @@ extension SettingsTableViewController : SettingsViewModelDelegate {
     }
     
     func informReinitFailed() {
-        let errorMessage = NSLocalizedString("Something went wrong, please try again", comment: "Something went wrong, please try again")
-        NotificationBannerUtil.show(errorMessage: errorMessage)
+        guard !(UIApplication.currentlyVisibleViewController() is KeySyncWizardViewController) else {
+            // Nothing to show.
+            return
+        }
+        let errorTitle = NSLocalizedString("Device Sync cannot be started", comment: "Device Sync cannot be started")
+        let errorMessage = NSLocalizedString("The user should try again", comment: "the user should try again")
+        UIUtils.showAlertWithOnlyCloseButton(title: errorTitle, message: errorMessage)
     }
 
     func showExtraKeyEditabilityStateChangeAlert(newValue: String) {
@@ -660,3 +708,4 @@ extension SettingsTableViewController: SwitchCellDelegate {
         }
     }
 }
+

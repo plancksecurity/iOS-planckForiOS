@@ -11,6 +11,9 @@ import Foundation
 @testable import MessageModel
 
 class MDMMockAppSettings : AppSettingsProtocol {
+
+    var keyPlanckSyncActivityIndicatorIsOn: Bool = false
+
     var keySyncEnabled: Bool = true
 
     var usePEPFolderEnabled: Bool = true

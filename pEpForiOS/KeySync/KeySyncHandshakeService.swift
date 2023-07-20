@@ -68,6 +68,7 @@ extension KeySyncHandshakeService: KeySyncServiceHandshakeHandlerProtocol {
                 Log.shared.errorAndCrash("Lost myself")
                 return
             }
+            AppSettings.shared.keyPlanckSyncActivityIndicatorIsOn = false
             me.pEpSyncWizard = UIUtils.showKeySyncWizard(keySyncHandshakeData: keySyncHandshakeData) { action in
                 switch action {
                 case .accept:

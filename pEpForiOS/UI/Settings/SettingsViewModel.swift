@@ -30,6 +30,8 @@ protocol SettingsViewModelDelegate: AnyObject {
     func showFeedback(title: String, message: String)
     /// Show a feedback message to try again
     func showTryAgain(title: String, message: String)
+    /// Change Activity Indicator on Planck Sync
+    func changeActivityIndicatorOnPlanckSync()
 }
 
 /// Protocol that represents the basic data in a row.
@@ -52,9 +54,22 @@ final class SettingsViewModel {
     typealias AlertActionBlock = (() -> ())
 
     /// Items to be displayed in a SettingsTableViewController
-    private (set) var items: [Section] = [Section]()
+    public private(set) var items: [Section] = [Section]()
 
-    private let exportDBQueueLabel = "security.pep.SettingsViewModel.databasesIOQueue"
+    private let exportDBQueueLabel = "security.planck.SettingsViewModel.databasesIOQueue"
+
+    private let queueForSyncReinit: OperationQueue = {
+        let createe = OperationQueue()
+        createe.qualityOfService = .background
+        createe.maxConcurrentOperationCount = 1
+        createe.name = "security.planck.SettingsViewModel.queueForSyncReinit"
+        return createe
+    }()
+
+    public func cancelSyncReinit() {
+        appSettings.keyPlanckSyncActivityIndicatorIsOn = false
+        queueForSyncReinit.cancelAllOperations()
+    }
 
     /// Number of elements in items
     public var count: Int {
@@ -93,10 +108,10 @@ final class SettingsViewModel {
                 .groupMailboxes,
                 .deviceGroups,
                 .about,
-                .auditLogging,
-                .planckSync:
+                .auditLogging:
             return "SettingsCell"
-        case .resetAccounts:
+        case .resetAccounts,
+                .planckSync:
             return "SettingsActionCell"
         case    .passiveMode,
                 .protectMessageSubject,
@@ -123,27 +138,22 @@ final class SettingsViewModel {
     }
 
     public func handlePlanckSyncPressed() {
-        delegate?.showLoadingView()
+        func handleFailure() {
+            appSettings.keyPlanckSyncActivityIndicatorIsOn = false
+            delegate?.informReinitFailed()
+        }
+        appSettings.keyPlanckSyncActivityIndicatorIsOn = true
         KeySyncUtil.syncReinit { error in
-            DispatchQueue.main.async { [weak self] in
-                guard let me = self else {
-                    Log.shared.lostMySelf()
-                    return
-                }
-                guard let me = self else {
-                    // Valid case. The view might dismissed
-                    return
-                }
-                me.delegate?.hideLoadingView()
-                me.delegate?.informReinitFailed()
+            DispatchQueue.main.async {
+                handleFailure()
             }
-        } successCallback: {
-            DispatchQueue.main.async { [weak self] in
-                guard let me = self else {
-                    // Valid case. The view might dismissed
-                    return
-                }
-                me.delegate?.hideLoadingView()
+        } successCallback: { }
+        queueForSyncReinit.cancelAllOperations()
+        queueForSyncReinit.addOperation {
+            //It's required to cancel the action after two minutes.
+            let twoMinutesInSeconds = 120.0
+            DispatchQueue.main.asyncAfter(deadline: .now() + twoMinutesInSeconds) {
+                handleFailure()
             }
         }
     }
@@ -160,6 +170,8 @@ final class SettingsViewModel {
         switch rowIdentifier {
         case .resetAccounts, .resetTrust:
             return .pEpRed
+        case .planckSync:
+            return .label
         default:
             return nil
         }

@@ -108,9 +108,10 @@ extension HtmlOptimizerUtil {
                       height: auto;
                   }
               """
+        let hex = UIColor.primaryHex()
         let styleLinkStyle = """
         a:link {
-        color:\(UIColor.primaryHex);
+        color:\(hex);
         text-decoration: underline;
         word-break: break-all; !important;
         }
@@ -122,9 +123,6 @@ extension HtmlOptimizerUtil {
         \(styleAutodetectLightOrDarkMode)
         \(styleBodyOptimize)
         \(styleTableOptimize)
-
-
-
         \(styleResponsiveImageSize)
         \(styleLinkStyle)
         </style>

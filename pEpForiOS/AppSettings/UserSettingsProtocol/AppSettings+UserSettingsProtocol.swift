@@ -35,6 +35,9 @@ extension AppSettings: UserSettingsProtocol {
     static let keyAcceptedLanguagesCodes = "acceptedLanguagesCodes"
 
     static let keyAuditLogginggTime = "keyAuditLogTime"
+    
+    static let keyPlanckSyncActivityIndicator = "keyPlanckSyncActivityIndicator"
+
 
     /// This structure keeps the collapsing state of folders and accounts.
     /// [AccountAddress: [ key: isCollapsedStatus ] ]
@@ -43,6 +46,19 @@ extension AppSettings: UserSettingsProtocol {
     /// ["some@example.com": [ keyFolderViewAccountCollapsedState: true ] ] indicates the account is collapsed. Do not change the key keyFolderViewAccountCollapsedState
     /// ["some@example.com": [ "SomeFolderName": true ] ] indicates the folder is collapsed.
     private typealias CollapsingState = [String: [String: Bool]]
+
+    public var keyPlanckSyncActivityIndicatorIsOn: Bool {
+        get {
+            return AppSettings.userDefaults.bool(forKey: AppSettings.keyPlanckSyncActivityIndicator)
+        }
+        set {
+            AppSettings.userDefaults.set(newValue, forKey: AppSettings.keyPlanckSyncActivityIndicator)
+            DispatchQueue.main.async {
+                // inform views that display settings related data
+                NotificationCenter.default.post(name:.planckSyncActivityIndicatorChanged, object: nil, userInfo: nil)
+            }
+        }
+    }
 
     public var keySyncEnabled: Bool {
         get {
@@ -54,7 +70,7 @@ extension AppSettings: UserSettingsProtocol {
             stateChangeHandler?(newValue)
         }
     }
-    
+
     // Time in days of the audit loggin file.
     public var auditLoggingTime: Int {
         get {

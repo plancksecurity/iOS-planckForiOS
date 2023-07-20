@@ -20,7 +20,7 @@ class TrustedServerSettingCell: UITableViewCell {
 
     override func awakeFromNib() {
         super.awakeFromNib()
-        onOfSwitch.onTintColor = .primary
+        onOfSwitch.onTintColor = UIColor.primary()
     }
 
     weak var delegate: TrustedServerSettingCellDelegate?

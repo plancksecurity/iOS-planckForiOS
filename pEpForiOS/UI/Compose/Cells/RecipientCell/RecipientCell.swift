@@ -24,7 +24,7 @@ final class RecipientCell: TextViewContainingTableViewCell {
     override func awakeFromNib() {
         super.awakeFromNib()
         setFonts()
-        addButton.tintColor = .primary
+        addButton.tintColor = UIColor.primary()
     }
 
     override func prepareForReuse() {

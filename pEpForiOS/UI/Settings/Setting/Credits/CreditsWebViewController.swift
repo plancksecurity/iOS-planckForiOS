@@ -36,6 +36,7 @@ class CreditsWebViewController: PEPWebViewController {
     // MARK: - Private
 
     private func html() -> String {
+        let hex = UIColor.primaryHex()
         let appVersion = InfoPlist.versionDisplayString() ?? "666"
         let backgroundColor = UIColor.systemBackground
         let fontColor = UIColor.label
@@ -45,7 +46,7 @@ class CreditsWebViewController: PEPWebViewController {
         let styleP = "p {color: \(fontColor.toHex());font-size: \(fontSize)px;font-family: \(fontFamily);font-weight: \(fontWeight);}"
         let styleBody = "body {background-color: \(backgroundColor.toHex()); margin-left: 0px; margin-right: 0px;}"
         let styleA = "a {color: \(fontColor.toHex());font-size: \(fontSize)px;font-family: \(fontFamily);font-weight: \(fontWeight);}"
-        let styleLink = "a:link {color:\(UIColor.primaryHex); text-decoration: underline; word-break: break-all; !important;}"
+        let styleLink = "a:link {color:\(hex); text-decoration: underline; word-break: break-all; !important;}"
         let style = "<style>\(styleP)\(styleBody)\(styleA)\(styleLink)</style>"
         let result = """
         <html>
