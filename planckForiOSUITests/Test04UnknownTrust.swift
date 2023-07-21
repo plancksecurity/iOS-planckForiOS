@@ -64,9 +64,12 @@ final class Test04UnknownTrust: XCTestCase {
         
         let unknownTrustImage = pepforiosComposeviewNavigationBar.images["Unknown Trust"]
         
-        if(unknownTrustImage.identifier == "Unknown Trust"){
+        if(unknownTrustImage.exists){
             print("Unknown Trust")
             XCTAssertTrue(true)
+        }else
+        {
+            XCTAssert(false)
         }
         
         
