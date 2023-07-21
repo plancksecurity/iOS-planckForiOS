@@ -26,7 +26,7 @@ extension CdMessage {
     ///
     /// - Returns:
     ///    * True if a "pEp-auto-consume" = "yes" header exists.
-    ///    * True if an in-reply-to with "pEp-auto-consume@pEp.foundation" exists.
+    ///    * True if an in-reply-to with "planck-auto-consume@planck.security" exists.
     ///    * False otherwise.
     var isAutoConsumable: Bool {
         for header in (optionalFields?.array as? [CdHeaderField] ?? []) {
