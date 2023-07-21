@@ -656,6 +656,7 @@
 		B7F4A793212DDFC500507B76 /* EmailListViewModelTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7F4A792212DDFC500507B76 /* EmailListViewModelTest.swift */; };
 		B7F676BD227C4B26007E5E3A /* MessageQueryResultsFilter+FilterButtonTitle.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7F676BC227C4B26007E5E3A /* MessageQueryResultsFilter+FilterButtonTitle.swift */; };
 		CD5458BD2A34850C0065C375 /* CommonFunctions.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD5458BC2A34850C0065C375 /* CommonFunctions.swift */; };
+		CDCE0A222A6AEF6A001F9F8A /* Test04UnknownTrust.swift in Sources */ = {isa = PBXBuildFile; fileRef = CDCE0A212A6AEF6A001F9F8A /* Test04UnknownTrust.swift */; };
 		F70AE5BF29B72E9900D0CC48 /* TrustBannerViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = F70AE5BE29B72E9900D0CC48 /* TrustBannerViewModel.swift */; };
 		F70AE5C129B7394900D0CC48 /* TrustBannerViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F70AE5C029B7394900D0CC48 /* TrustBannerViewController.swift */; };
 		F73E4F72217F238300CCFFED /* FolderSectionViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = F73E4F71217F238300CCFFED /* FolderSectionViewModelTests.swift */; };
@@ -1266,6 +1267,7 @@
 		B7F4A792212DDFC500507B76 /* EmailListViewModelTest.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EmailListViewModelTest.swift; sourceTree = "<group>"; };
 		B7F676BC227C4B26007E5E3A /* MessageQueryResultsFilter+FilterButtonTitle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "MessageQueryResultsFilter+FilterButtonTitle.swift"; sourceTree = "<group>"; };
 		CD5458BC2A34850C0065C375 /* CommonFunctions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CommonFunctions.swift; sourceTree = "<group>"; };
+		CDCE0A212A6AEF6A001F9F8A /* Test04UnknownTrust.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Test04UnknownTrust.swift; sourceTree = "<group>"; };
 		F70AE5BE29B72E9900D0CC48 /* TrustBannerViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TrustBannerViewModel.swift; sourceTree = "<group>"; };
 		F70AE5C029B7394900D0CC48 /* TrustBannerViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TrustBannerViewController.swift; sourceTree = "<group>"; };
 		F73E4F71217F238300CCFFED /* FolderSectionViewModelTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FolderSectionViewModelTests.swift; sourceTree = "<group>"; };
@@ -2616,6 +2618,7 @@
 				488AB1B12A2FF73E00B15809 /* Test01InstalAndLaunchPlanck.swift */,
 				48DD513C2A24CD7900A2C65F /* Test02OnboardingAccount.swift */,
 				48DD513E2A24D32800A2C65F /* Test03ComposeAndSendNewEmail.swift */,
+				CDCE0A212A6AEF6A001F9F8A /* Test04UnknownTrust.swift */,
 			);
 			path = planckForiOSUITests;
 			sourceTree = "<group>";
@@ -3264,7 +3267,7 @@
 					};
 					48DD512D2A24CC2500A2C65F = {
 						CreatedOnToolsVersion = 14.2;
-						DevelopmentTeam = 52744ZM656;
+						DevelopmentTeam = 277PWR8HXY;
 						ProvisioningStyle = Automatic;
 						TestTargetID = 43980E221CBD0BC900A7FC3C;
 					};
@@ -4039,6 +4042,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				48DD51312A24CC2500A2C65F /* planckForiOSUITests.swift in Sources */,
+				CDCE0A222A6AEF6A001F9F8A /* Test04UnknownTrust.swift in Sources */,
 				48DD513B2A24CCCF00A2C65F /* UIStrings.swift in Sources */,
 				CD5458BD2A34850C0065C375 /* CommonFunctions.swift in Sources */,
 				488AB1B22A2FF73E00B15809 /* Test01InstalAndLaunchPlanck.swift in Sources */,
@@ -4563,7 +4567,7 @@
 				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
-				DEVELOPMENT_TEAM = 52744ZM656;
+				DEVELOPMENT_TEAM = 277PWR8HXY;
 				GCC_C_LANGUAGE_STANDARD = gnu11;
 				GENERATE_INFOPLIST_FILE = YES;
 				IPHONEOS_DEPLOYMENT_TARGET = 16.0;

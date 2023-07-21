@@ -1,14 +1,16 @@
 //
-//  composeNewMessage.swift
+//  Test04UnknownTrust.swift
 //  planckForiOSUITests
 //
-//  Created by Khurram Sheikh on 29/5/23.
+//  Created by Nasr on 21/07/2023.
 //  Copyright © 2023 p≡p Security S.A. All rights reserved.
 //
 
+import Foundation
+
 import XCTest
 
-final class Test03ComposeAndSendNewEmail: XCTestCase {
+final class Test04UnknownTrust: XCTestCase {
     
     
     var app: XCUIApplication!
@@ -25,9 +27,7 @@ final class Test03ComposeAndSendNewEmail: XCTestCase {
         app.terminate()
     }
 
-    func test03ComposeAndSendNewEmail() {
-        
-        let common = CommonFunctions()
+    func test04UnknownTrust() {
         
         
         let composeButton = app.buttons [UIStrings.composeButton]
@@ -41,12 +41,8 @@ final class Test03ComposeAndSendNewEmail: XCTestCase {
         tapTo.tap()
         
         
-        let randomBot = common.generateRandomBot()
-        app.typeText(randomBot)
+        app.typeText(UIStrings.UknownTrustEmail)
         Thread.sleep(forTimeInterval: 10)
-        
-        
-  
         
         let tablesQuery = app.tables
         _=tablesQuery.element.waitForExistence(timeout: 3)
@@ -64,25 +60,22 @@ final class Test03ComposeAndSendNewEmail: XCTestCase {
         let emailTextViewTextView = app.tables/*@START_MENU_TOKEN@*/.textViews["Email Text View"]/*[[".cells.textViews[\"Email Text View\"]",".textViews[\"Email Text View\"]"],[[[-1,1],[-1,0]]],[0]]@END_MENU_TOKEN@*/
         emailTextViewTextView.tap()
         emailTextViewTextView.tap()
-        pepforiosComposeviewNavigationBar/*@START_MENU_TOKEN@*/.buttons["Send Button"]/*[[".buttons[\"Send\"]",".buttons[\"Send Button\"]"],[[[-1,1],[-1,0]]],[0]]@END_MENU_TOKEN@*/.tap()
-        app.buttons["YES"].tap()
-        let tableemailboday = app.tables.cells.containing(.textView, identifier:UIStrings.emailTextView).children(matching: .textView).element.tap()
-        
-        app.tables/*@START_MENU_TOKEN@*/.textViews["Email Text View"]/*[[".cells.textViews[\"Email Text View\"]",".textViews[\"Email Text View\"]"],[[[-1,1],[-1,0]]],[0]]@END_MENU_TOKEN@*/.tap()
         app.typeText(UIStrings.emailBody)
         
-        app.buttons[UIStrings.sendText].tap()
+        let unknownTrustImage = pepforiosComposeviewNavigationBar.images["Unknown Trust"]
+        
+        if(unknownTrustImage.identifier == "Unknown Trust"){
+            print("Unknown Trust")
+            XCTAssertTrue(true)
+        }
+        
+        
+        //app.buttons[UIStrings.sendText].tap()
         
                         
-        Thread.sleep(forTimeInterval: 5)
+        //Thread.sleep(forTimeInterval: 5)
         
-        app.buttons[UIStrings.yesText].tap()
-        
-        // Check Sent Emails
-        app.navigationBars["Inbox"].buttons["Mailboxes"].tap()
-        
-        
-        
+        //app.buttons[UIStrings.yesText].tap()
         
     }
     

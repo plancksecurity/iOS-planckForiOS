@@ -49,5 +49,7 @@ class UIStrings {
     static let sendText = "Send"
     static let yesText = "YES"
     
+    static let UknownTrustEmail = "nasr001@bot.planck.dev"
+    
   
 }
