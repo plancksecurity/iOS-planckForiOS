@@ -15,7 +15,7 @@ extension CdMessage {
     /// The value of the "in-reply-to" header used by pEp to tunnel
     /// an auto-consume tag through mail servers that eliminates
     /// custom headers.
-    static let inReplyToAutoConsume = "pEp-auto-consume@pEp.foundation"
+    static let inReplyToAutoConsume = "planck-auto-consume@planck.security"
 
     /// Determines whether a message is marked as auto-consumable or not.
     ///
