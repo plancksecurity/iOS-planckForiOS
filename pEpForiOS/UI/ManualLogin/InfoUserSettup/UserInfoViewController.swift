@@ -77,7 +77,7 @@ final class UserInfoViewController: UIViewController {
         setupView.fourthTextField.set(text: verifiableAccount.userName, animated: animated)
         setupView.pEpSyncSwitch.isOn = verifiableAccount.keySyncEnable
         setupView.nextRightButton.isEnabled = verifiableAccount.isValidUser
-        view.backgroundColor = UITraitCollection.current.userInterfaceStyle == .dark ? .systemBackground : UIColor.primaryDarkMode
+        view.backgroundColor = UITraitCollection.current.userInterfaceStyle == .dark ? .systemBackground : UIColor.primaryLightMode
     }
 }
 
