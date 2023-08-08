@@ -34,6 +34,10 @@ extension KeySyncService: PEPNotifyHandshakeDelegate {
             }
 
             fastPollingDelegate?.enableFastPolling()
+            guard theMe.fingerPrint != thePartner.fingerPrint else {
+                Log.shared.errorAndCrash(message: "Same Fingerprints are invalid")
+                return .illegalValue
+            }
             showHandshakeAndHandleResult(inBetween: theMe, and: thePartner, isNewGroup: false)
 
         case .initFormGroup:
@@ -46,6 +50,12 @@ extension KeySyncService: PEPNotifyHandshakeDelegate {
                 Log.shared.errorAndCrash(message: "Expected partner identity")
                 return .illegalValue
             }
+
+            guard theMe.fingerPrint != thePartner.fingerPrint else {
+                Log.shared.errorAndCrash(message: "Same Fingerprints are invalid")
+                return .illegalValue
+            }
+
             fastPollingDelegate?.enableFastPolling()
             showHandshakeAndHandleResult(inBetween: theMe, and: thePartner, isNewGroup: true)
 
