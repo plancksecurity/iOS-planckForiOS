@@ -381,6 +381,7 @@
 		4351723A229FD4AA00D92026 /* TestUtil+LoadData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43517239229FD4AA00D92026 /* TestUtil+LoadData.swift */; };
 		43517244229FD8EF00D92026 /* IOS-1432_message_from_outlook.txt in Resources */ = {isa = PBXBuildFile; fileRef = 43517242229FD8EF00D92026 /* IOS-1432_message_from_outlook.txt */; };
 		43517245229FD8EF00D92026 /* IOS-1432_keypair.asc in Resources */ = {isa = PBXBuildFile; fileRef = 43517243229FD8EF00D92026 /* IOS-1432_keypair.asc */; };
+		4351B6462A80DE2100BDE939 /* GroupTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4351B6452A80DE2100BDE939 /* GroupTests.swift */; };
 		4352FA271DC7A1C20081161A /* KeyChain.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4352FA261DC7A1C20081161A /* KeyChain.swift */; };
 		4355E4CF233C98C0005772D5 /* CWIMAPMessage+pEp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4355E4CE233C98C0005772D5 /* CWIMAPMessage+pEp.swift */; };
 		4355E4D1233C9B63005772D5 /* CdMessageFromPantomimeTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4355E4D0233C9B63005772D5 /* CdMessageFromPantomimeTest.swift */; };
@@ -995,6 +996,7 @@
 		43517239229FD4AA00D92026 /* TestUtil+LoadData.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "TestUtil+LoadData.swift"; sourceTree = "<group>"; };
 		43517242229FD8EF00D92026 /* IOS-1432_message_from_outlook.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = "IOS-1432_message_from_outlook.txt"; sourceTree = "<group>"; };
 		43517243229FD8EF00D92026 /* IOS-1432_keypair.asc */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = "IOS-1432_keypair.asc"; sourceTree = "<group>"; };
+		4351B6452A80DE2100BDE939 /* GroupTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GroupTests.swift; sourceTree = "<group>"; };
 		4352FA261DC7A1C20081161A /* KeyChain.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = KeyChain.swift; sourceTree = "<group>"; };
 		4355E4CE233C98C0005772D5 /* CWIMAPMessage+pEp.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "CWIMAPMessage+pEp.swift"; sourceTree = "<group>"; };
 		4355E4D0233C9B63005772D5 /* CdMessageFromPantomimeTest.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CdMessageFromPantomimeTest.swift; sourceTree = "<group>"; };
@@ -1308,6 +1310,7 @@
 		15175E4C221D59DD00C91DB8 /* Interface */ = {
 			isa = PBXGroup;
 			children = (
+				4351B6442A80DE0300BDE939 /* Group */,
 				F75D01CE2A39A9AD00805DEF /* AuditLoggin */,
 				155E5B36264921420051A65E /* DecisionProviders */,
 				5B88A19E2406C1A4003240B8 /* Util */,
@@ -2229,6 +2232,14 @@
 				434A6CE525D2BF1B00179335 /* Info.plist */,
 			);
 			path = MessageModelForAppExtensions;
+			sourceTree = "<group>";
+		};
+		4351B6442A80DE0300BDE939 /* Group */ = {
+			isa = PBXGroup;
+			children = (
+				4351B6452A80DE2100BDE939 /* GroupTests.swift */,
+			);
+			path = Group;
 			sourceTree = "<group>";
 		};
 		43598DF51DA7F74F00EAD0B7 /* CoreData */ = {
@@ -3672,6 +3683,7 @@
 				15EA8E011FA8A45E00D4084A /* CdIdentity+PredicateFactory.swift in Sources */,
 				153DDF3E25ADD43D008F645F /* FetchServiceBaseClass.swift in Sources */,
 				43123FB7225368170038D72C /* MessageInfoCache.swift in Sources */,
+				4351B6462A80DE2100BDE939 /* GroupTests.swift in Sources */,
 				5B65440828CF4D450064E1C7 /* EchoProtocolUtil.swift in Sources */,
 				43A6E05C1E57725C005BEE69 /* CdKey+Extension.swift in Sources */,
 				43495984239E509300CF1E12 /* CdFolder+SyncFolderMode.swift in Sources */,

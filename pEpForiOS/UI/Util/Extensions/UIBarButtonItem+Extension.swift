@@ -42,10 +42,10 @@ extension UIBarButtonItem {
                          accessibilityIdentifier: AccessibilityIdentifier.previousButton)
     }
 
-    private static func getButton(image: UIImage?,
-                                  action: Selector,
-                                  target: Any,
-                                  accessibilityIdentifier: String) -> UIBarButtonItem {
+    public static func getButton(image: UIImage?,
+                                 action: Selector,
+                                 target: Any,
+                                 accessibilityIdentifier: String) -> UIBarButtonItem {
         let button = UIBarButtonItem(image: image, style: .plain, target: target, action: action)
         button.accessibilityIdentifier = accessibilityIdentifier
         return button

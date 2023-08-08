@@ -10,6 +10,7 @@ import UIKit
 
 import SwipeCellKit
 import PlanckToolbox
+import MessageModel
 
 final class EmailListViewController: UIViewController {
 
@@ -492,6 +493,10 @@ final class EmailListViewController: UIViewController {
         }
         cancelToolbar()
     }
+    
+    @IBAction private func groupCreateAndInvite() {
+        GroupTests.groupCreateAndInvite()
+    }
 
     //recover the original toolbar and right button
     private func showStandardToolbar() {
@@ -512,10 +517,15 @@ final class EmailListViewController: UIViewController {
             toolbarItems = [flexibleSpace, composeBtn, flexibleSpace]
             navigationItem.rightBarButtonItem = dismissButton
         } else {
+            let createGroupButton = UIBarButtonItem.getButton(image: UIImage(systemName: "square.and.arrow.down.on.square"),
+                                                              action: #selector(groupCreateAndInvite),
+                                                              target: self,
+                                                              accessibilityIdentifier: "Create a new group")
+            
             let composeBtn = UIBarButtonItem.getComposeButton(tapAction: #selector(showCompose),
                                                               longPressAction: #selector(draftsPreviewTapped),
                                                               target: self)
-            toolbarItems = [enableFilterButton, flexibleSpace, composeBtn, flexibleSpace, settingsBarButton]
+            toolbarItems = [enableFilterButton, flexibleSpace, composeBtn, flexibleSpace, createGroupButton, flexibleSpace, settingsBarButton]
             navigationItem.rightBarButtonItem = editButton
         }
     }
