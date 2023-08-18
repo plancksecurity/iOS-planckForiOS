@@ -248,9 +248,7 @@ extension SettingsViewModel {
             items.append(sectionForType(sectionType: .globalSettings))
         } else {
             SettingsViewModel.SectionType.allCases.forEach { (type) in
-                if type != .support {
-                    items.append(sectionForType(sectionType: type))
-                }
+                items.append(sectionForType(sectionType: type))
             }
         }
     }
@@ -347,7 +345,7 @@ extension SettingsViewModel {
         case .companyFeatures:
             rows.append(generateNavigationRow(type: .extraKeys, isDangerous: false))
         case .support:
-            // Suppport section row will not be shown. For further info please see EFI-24
+            rows.append(generateNavigationRow(type: .exportDBs, isDangerous: false))
             break
         }
         return rows
