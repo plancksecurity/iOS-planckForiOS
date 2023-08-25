@@ -58,9 +58,7 @@ public class ExtraKeysUtil {
                     Log.shared.error(error: error)
                 }
             }
-            MediaAndExtraKeysImportUtil.importKeys(allFingerprints: allFingerprints,
-                                                   keys: keys,
-                                                   completion: completion)
+            MediaAndExtraKeysImportUtil.importExtraKeys(keys: keys, completion: completion)
         }
     }
 }
