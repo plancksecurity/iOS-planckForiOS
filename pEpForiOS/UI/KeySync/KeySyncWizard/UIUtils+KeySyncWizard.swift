@@ -27,6 +27,7 @@ extension UIUtils {
             Log.shared.errorAndCrash("Missing pEpSyncWizard")
             return nil
         }
+        AppSettings.shared.keySyncWizardWasShown = true
         return show(pEpSyncWizard)
     }
 

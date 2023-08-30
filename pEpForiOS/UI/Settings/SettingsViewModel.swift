@@ -138,9 +138,12 @@ final class SettingsViewModel {
     }
 
     public func handlePlanckSyncPressed() {
+        AppSettings.shared.keySyncWizardWasShown = false
         func handleFailure() {
             appSettings.keyPlanckSyncActivityIndicatorIsOn = false
-            delegate?.informReinitFailed()
+            if !AppSettings.shared.keySyncWizardWasShown {
+                delegate?.informReinitFailed()
+            }
         }
         appSettings.keyPlanckSyncActivityIndicatorIsOn = true
         KeySyncUtil.syncReinit { error in
