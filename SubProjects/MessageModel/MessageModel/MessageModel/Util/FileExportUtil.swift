@@ -43,6 +43,7 @@ public class FileExportUtil: NSObject, FileExportUtilProtocol {
                 Log.shared.errorAndCrash("Destination Directory URL not found")
                 return
             }
+
             //Check if destination directory already exists. If not, create it.
             var isDirectory:ObjCBool = true
             if !fileManager.fileExists(atPath: destinationDirectoryURL.path, isDirectory: &isDirectory) {
@@ -55,6 +56,10 @@ public class FileExportUtil: NSObject, FileExportUtilProtocol {
 
             //System DB
             if let systemDBsourcePath = getSystemDBSourceURL()?.path {
+                var isDirectory:ObjCBool = false
+                if fileManager.fileExists(atPath: systemDBDestinationPath, isDirectory: &isDirectory) {
+                    try fileManager.removeItem(atPath: systemDBDestinationPath)
+                }
                 try fileManager.copyItem(atPath: systemDBsourcePath, toPath: systemDBDestinationPath)
             }
             //.pEp folder
@@ -269,11 +274,11 @@ extension FileExportUtil {
         return appGroupURL
     }
 
-    /// - Returns: the date as string using the date format YYYYMMDD-hh-mm.
+    /// - Returns: the date as string using the date format YYYYMMDD-hh-mm-ss.
     private func getDatetimeAsString() -> String {
         let date = Date()
         let dateFormatter = DateFormatter()
-        dateFormatter.dateFormat = "YYYYMMDD-hh-mm"
+        dateFormatter.dateFormat = "YYYYMMDD-hh-mm-ss"
         return dateFormatter.string(from: date)
     }
 }
