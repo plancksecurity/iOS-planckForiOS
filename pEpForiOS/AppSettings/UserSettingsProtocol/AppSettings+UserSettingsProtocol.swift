@@ -35,7 +35,7 @@ extension AppSettings: UserSettingsProtocol {
     static let keyAcceptedLanguagesCodes = "acceptedLanguagesCodes"
 
     static let keyAuditLogginggTime = "keyAuditLogTime"
-    
+    static let keykeySyncWizardWasShown = "keykeySyncWizardWasShown"
     static let keyPlanckSyncActivityIndicator = "keyPlanckSyncActivityIndicator"
 
 
@@ -80,6 +80,17 @@ extension AppSettings: UserSettingsProtocol {
             AppSettings.userDefaults.set(newValue, forKey: AppSettings.keyAuditLogginggTime)
         }
     }
+
+    // Indicate if the keySyncWizard was shown
+    public var keySyncWizardWasShown: Bool {
+        get {
+            return AppSettings.userDefaults.bool(forKey: AppSettings.keykeySyncWizardWasShown)
+        }
+        set {
+            AppSettings.userDefaults.set(newValue, forKey: AppSettings.keykeySyncWizardWasShown)
+        }
+    }
+
     
     public var usePEPFolderEnabled: Bool {
         get {
