@@ -88,13 +88,22 @@ class MDMAccountDeploymentViewController: UIViewController, UITextFieldDelegate 
             button.isEnabled = false
             buttonVerify = button
 
+            let switchFrame = CGRect(x: 150, y: 150, width: 0, height: 0)
+            let uiSwitch = UISwitch(frame: switchFrame)
+            uiSwitch.addTarget(self, action: #selector(switchStateDidChange(_:)), for: .valueChanged)
+
             stackView.addArrangedSubview(accountLabel)
             stackView.addArrangedSubview(emailLabel)
             stackView.addArrangedSubview(passwordInput)
             stackView.addArrangedSubview(button)
+            stackView.addArrangedSubview(uiSwitch)
         }
 
         configureView()
+    }
+
+    @objc func switchStateDidChange(_ sender: UISwitch) {
+        viewModel.isOAUTH = sender.isOn
     }
 
     // MARK: - Actions

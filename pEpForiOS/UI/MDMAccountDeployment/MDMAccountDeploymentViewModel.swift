@@ -12,6 +12,9 @@ import PlanckToolbox
 import MessageModel
 
 class MDMAccountDeploymentViewModel {
+
+    var isOAUTH: Bool = false
+
     enum UIState {
         case accountData(AccountData)
         case noAccountConfiguration(String)
