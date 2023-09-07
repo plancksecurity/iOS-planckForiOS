@@ -88,6 +88,10 @@ class MDMAccountDeploymentViewController: UIViewController, UITextFieldDelegate 
             button.isEnabled = false
             buttonVerify = button
 
+            let oauthLabel = UILabel()
+            oauthLabel.text = NSLocalizedString("OAUTH", comment: "OAUTH")
+            oauthLabel.setPEPFont(style: .title1, weight: .regular)
+
             let switchFrame = CGRect(x: 150, y: 150, width: 0, height: 0)
             let uiSwitch = UISwitch(frame: switchFrame)
             uiSwitch.addTarget(self, action: #selector(switchStateDidChange(_:)), for: .valueChanged)
@@ -95,8 +99,9 @@ class MDMAccountDeploymentViewController: UIViewController, UITextFieldDelegate 
             stackView.addArrangedSubview(accountLabel)
             stackView.addArrangedSubview(emailLabel)
             stackView.addArrangedSubview(passwordInput)
-            stackView.addArrangedSubview(button)
+            stackView.addArrangedSubview(oauthLabel)
             stackView.addArrangedSubview(uiSwitch)
+            stackView.addArrangedSubview(button)
         }
 
         configureView()
