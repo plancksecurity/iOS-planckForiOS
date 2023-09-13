@@ -106,6 +106,7 @@ extension CdIdentity {
         static let addressBookID = "addressBookID"
         static let encryptionFormat = "encryptionFormat"
         static let flags = "flags"
+        static let identityFlags = "identityFlags"
         static let language = "language"
         static let majorVersion = "majorVersion"
         static let minorVersion = "minorVersion"

@@ -63,7 +63,12 @@ extension CdIdentity {
 
         let encFormatMaybe = PEPEncFormat(rawValue: encryptionFormat)
         if encFormatMaybe == nil {
-            Log.shared.errorAndCrash(message: "Unexpected PEPEncFormat value in the DB: \(encryptionFormat)")
+            Log.shared.errorAndCrash(message: "Unexpected PEPEncFormat value in the DB: \(encryptionFormat), for identity \(address)")
+        }
+
+        let identityFlagsMaybe = PEPIdentityFlags(rawValue: identityFlags)
+        if identityFlagsMaybe == nil {
+            Log.shared.errorAndCrash(message: "Unexpected PEPIdentityFlags value in the DB: \(identityFlags), for identity \(address)")
         }
 
         return PEPIdentity(address: address,
@@ -75,7 +80,8 @@ extension CdIdentity {
                            language: nil,
                            majorVersion: UInt32(bitPattern: majorVersion),
                            minorVersion: UInt32(bitPattern: minorVersion),
-                           encryptionFormat: encFormatMaybe ?? PEPEncFormat.auto)
+                           encryptionFormat: encFormatMaybe ?? PEPEncFormat.auto,
+                           identityFlags: identityFlagsMaybe ?? PEPIdentityFlags.default)
     }
 
     static func from(pEpContact: PEPIdentity?,
