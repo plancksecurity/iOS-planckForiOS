@@ -61,6 +61,11 @@ extension CdIdentity {
             return PEPIdentity(address: "none")
         }
 
+        let encFormatMaybe = PEPEncFormat(rawValue: encryptionFormat)
+        if encFormatMaybe == nil {
+            Log.shared.errorAndCrash(message: "Unexpected PEPEncFormat value in the DB: \(encryptionFormat)")
+        }
+
         return PEPIdentity(address: address,
                            userID: userID,
                            userName: userName,
@@ -69,6 +74,7 @@ extension CdIdentity {
                            isOwn: isMySelf,
                            fingerPrint: nil,
                            commType: PEPCommType.unknown,
+                           encryptionFormat: encFormatMaybe ?? PEPEncFormat.auto,
                            language: nil)
     }
 
@@ -95,6 +101,7 @@ extension CdIdentity {
         // it knows best about its special properties.
         identity.majorVersion = Int32(bitPattern: pEpC.majorVersion)
         identity.minorVersion = Int32(bitPattern: pEpC.minorVersion)
+        identity.encryptionFormat = pEpC.encryptionFormat.rawValue
 
         return identity
     }

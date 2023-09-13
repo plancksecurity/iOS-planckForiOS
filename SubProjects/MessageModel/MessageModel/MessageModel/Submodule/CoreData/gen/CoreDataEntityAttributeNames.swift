@@ -104,6 +104,7 @@ extension CdIdentity {
     struct AttributeName {
         static let address = "address"
         static let addressBookID = "addressBookID"
+        static let encryptionFormat = "encryptionFormat"
         static let flags = "flags"
         static let language = "language"
         static let majorVersion = "majorVersion"

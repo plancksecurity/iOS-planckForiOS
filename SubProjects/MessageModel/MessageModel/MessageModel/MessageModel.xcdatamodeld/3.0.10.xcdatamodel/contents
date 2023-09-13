@@ -58,6 +58,7 @@
     <entity name="CdIdentity" representedClassName="CdIdentity" syncable="YES" codeGenerationType="category">
         <attribute name="address" attributeType="String"/>
         <attribute name="addressBookID" optional="YES" attributeType="String"/>
+        <attribute name="encryptionFormat" attributeType="Integer 32" defaultValueString="255" usesScalarValueType="YES"/>
         <attribute name="flags" optional="YES" attributeType="Integer 64" defaultValueString="0" usesScalarValueType="NO"/>
         <attribute name="language" optional="YES" attributeType="String"/>
         <attribute name="majorVersion" attributeType="Integer 32" defaultValueString="3" usesScalarValueType="YES"/>
