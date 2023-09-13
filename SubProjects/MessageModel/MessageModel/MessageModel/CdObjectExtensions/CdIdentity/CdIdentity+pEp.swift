@@ -91,6 +91,11 @@ extension CdIdentity {
                                                  context: context)
         }
 
+        // Assume, since `PEPIdentity` ultimately comes from the core,
+        // it knows best about its special properties.
+        identity.majorVersion = Int32(bitPattern: pEpC.majorVersion)
+        identity.minorVersion = Int32(bitPattern: pEpC.minorVersion)
+
         return identity
     }
 
