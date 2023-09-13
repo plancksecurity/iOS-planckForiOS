@@ -60,9 +60,12 @@ extension CdIdentity {
             Log.shared.errorAndCrash("missing address: %@", self)
             return PEPIdentity(address: "none")
         }
+
         return PEPIdentity(address: address,
                            userID: userID,
                            userName: userName,
+                           majorVersion: UInt32(bitPattern: majorVersion),
+                           minorVersion: UInt32(bitPattern: minorVersion),
                            isOwn: isMySelf,
                            fingerPrint: nil,
                            commType: PEPCommType.unknown,
