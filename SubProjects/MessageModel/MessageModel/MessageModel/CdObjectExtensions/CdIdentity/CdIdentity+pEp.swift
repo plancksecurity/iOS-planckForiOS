@@ -69,13 +69,13 @@ extension CdIdentity {
         return PEPIdentity(address: address,
                            userID: userID,
                            userName: userName,
-                           majorVersion: UInt32(bitPattern: majorVersion),
-                           minorVersion: UInt32(bitPattern: minorVersion),
                            isOwn: isMySelf,
                            fingerPrint: nil,
                            commType: PEPCommType.unknown,
-                           encryptionFormat: encFormatMaybe ?? PEPEncFormat.auto,
-                           language: nil)
+                           language: nil,
+                           majorVersion: UInt32(bitPattern: majorVersion),
+                           minorVersion: UInt32(bitPattern: minorVersion),
+                           encryptionFormat: encFormatMaybe ?? PEPEncFormat.auto)
     }
 
     static func from(pEpContact: PEPIdentity?,
