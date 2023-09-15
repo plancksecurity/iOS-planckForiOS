@@ -1096,6 +1096,7 @@
 		43C123DC223A7FCF00F6A9B2 /* QualifyServerIsLocalOperation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = QualifyServerIsLocalOperation.swift; sourceTree = "<group>"; };
 		43C123DF223A7FCF00F6A9B2 /* AccountVerificationResult.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AccountVerificationResult.swift; sourceTree = "<group>"; };
 		43C12407223A9DEA00F6A9B2 /* CdAccount+pEp.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "CdAccount+pEp.swift"; sourceTree = "<group>"; };
+		43C863A62AB1990800A19B43 /* 3.0.10.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = 3.0.10.xcdatamodel; sourceTree = "<group>"; };
 		43CB60821DA4EB4E0015281E /* MessageModel.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = MessageModel.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		43CB60851DA4EB4E0015281E /* MessageModel.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = MessageModel.h; sourceTree = "<group>"; };
 		43CB60861DA4EB4E0015281E /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
@@ -4242,6 +4243,7 @@
 		1587D135204570BA002C2157 /* MessageModel.xcdatamodeld */ = {
 			isa = XCVersionGroup;
 			children = (
+				43C863A62AB1990800A19B43 /* 3.0.10.xcdatamodel */,
 				F7FFFAF929DC22AE00A6DC49 /* 1.1.274.xcdatamodel */,
 				5BD3DDA92808232000E41E0C /* 1.1.273.xcdatamodel */,
 				15D3B365272AECEE0099B81D /* 1.1.267.xcdatamodel */,
@@ -4259,7 +4261,7 @@
 				154F0A7E208512BF00C77D72 /* 0.0.32.xcdatamodel */,
 				1587D136204570BA002C2157 /* pEpForiOS.xcdatamodel */,
 			);
-			currentVersion = F7FFFAF929DC22AE00A6DC49 /* 1.1.274.xcdatamodel */;
+			currentVersion = 43C863A62AB1990800A19B43 /* 3.0.10.xcdatamodel */;
 			path = MessageModel.xcdatamodeld;
 			sourceTree = "<group>";
 			versionGroupType = wrapper.xcdatamodel;
