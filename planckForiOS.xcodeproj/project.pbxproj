@@ -658,6 +658,8 @@
 		F779D6012A2F28E60069381E /* AuditLogginViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F779D6002A2F28E60069381E /* AuditLogginViewController.swift */; };
 		F779D6032A2F29130069381E /* AuditLoginViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = F779D6022A2F29130069381E /* AuditLoginViewModel.swift */; };
 		F779D6052A2F4DF60069381E /* AuditLoggingTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = F779D6042A2F4DF60069381E /* AuditLoggingTableViewCell.swift */; };
+		F7A5098B2A9E12DD00A51EFD /* MDM_fake.plist in Resources */ = {isa = PBXBuildFile; fileRef = F7A5098A2A9E12DD00A51EFD /* MDM_fake.plist */; };
+		F7A5098D2A9E140A00A51EFD /* FakeMDM.swift in Sources */ = {isa = PBXBuildFile; fileRef = F7A5098C2A9E140A00A51EFD /* FakeMDM.swift */; };
 		F7DB9F3B2A66A3D900D2E5AB /* SettingsActionTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = F7DB9F3A2A66A3D900D2E5AB /* SettingsActionTableViewCell.swift */; };
 /* End PBXBuildFile section */
 
@@ -1254,6 +1256,8 @@
 		F779D6002A2F28E60069381E /* AuditLogginViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuditLogginViewController.swift; sourceTree = "<group>"; };
 		F779D6022A2F29130069381E /* AuditLoginViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuditLoginViewModel.swift; sourceTree = "<group>"; };
 		F779D6042A2F4DF60069381E /* AuditLoggingTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuditLoggingTableViewCell.swift; sourceTree = "<group>"; };
+		F7A5098A2A9E12DD00A51EFD /* MDM_fake.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = MDM_fake.plist; sourceTree = "<group>"; };
+		F7A5098C2A9E140A00A51EFD /* FakeMDM.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FakeMDM.swift; sourceTree = "<group>"; };
 		F7DB9F3A2A66A3D900D2E5AB /* SettingsActionTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsActionTableViewCell.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -2319,6 +2323,8 @@
 		43980E251CBD0BC900A7FC3C /* pEpForiOS */ = {
 			isa = PBXGroup;
 			children = (
+				F7A5098A2A9E12DD00A51EFD /* MDM_fake.plist */,
+				F7A5098C2A9E140A00A51EFD /* FakeMDM.swift */,
 				150B8E951FCDACBB00374438 /* Error */,
 				43800D8C1D112A0800821E34 /* HTMLParser */,
 				4351C2A01F4441190053381F /* Markdown */,
@@ -3280,6 +3286,7 @@
 				5BC60E4229505C6F001ED5B0 /* Recipients.storyboard in Resources */,
 				15D3D48C239FC14700F2EBFB /* EmailDetailCollectionViewCell.xib in Resources */,
 				151DE7DE1FC5D3E200CDC273 /* Settings.storyboard in Resources */,
+				F7A5098B2A9E12DD00A51EFD /* MDM_fake.plist in Resources */,
 				43C88FA028BCBD8D00670977 /* MDMAccountDeployment.storyboard in Resources */,
 				151C68012418158B00481F75 /* SFUIText-Medium.ttf in Resources */,
 			);
@@ -3834,6 +3841,7 @@
 				5B394E1323ED5673006A1FC0 /* TrustManagementTableViewCell.swift in Sources */,
 				15D3D48B239FC14700F2EBFB /* EmailDetailCollectionViewCell.swift in Sources */,
 				152A39E821905C3E00D9F8E4 /* RecipientCellViewModel.swift in Sources */,
+				F7A5098D2A9E140A00A51EFD /* FakeMDM.swift in Sources */,
 				152A39CE21905C3E00D9F8E4 /* ComposeHelpers.swift in Sources */,
 				43985D0A2044296D0080FA9A /* OAuthAuthorizer.swift in Sources */,
 				5BBD1D1026270319009D9D8A /* RecipientButton.swift in Sources */,

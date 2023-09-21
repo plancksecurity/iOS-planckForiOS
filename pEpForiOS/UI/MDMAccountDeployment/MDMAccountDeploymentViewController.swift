@@ -21,7 +21,7 @@ class MDMAccountDeploymentViewController: UIViewController, UITextFieldDelegate 
 
     var textFieldPassword: UITextField?
     var buttonVerify: UIButton?
-    var gmailButton: UIButton?
+    var googleButton: UIButton?
     var microsoftButton: UIButton?
 
     /// An optional label containing the last error message.
@@ -32,10 +32,6 @@ class MDMAccountDeploymentViewController: UIViewController, UITextFieldDelegate 
     override func viewDidLoad() {
         super.viewDidLoad()
         viewModel.accountTypeViewModel.delegate = self
-
-#if DEBUG
-        FakeMDM().setupDeployableAccountData()
-#endif
         setupUI()
 
         // Prevent the user to be able to "swipe down" this VC
@@ -95,12 +91,12 @@ class MDMAccountDeploymentViewController: UIViewController, UITextFieldDelegate 
             button.isEnabled = false
             buttonVerify = button
 
-            let gmailButton = UIButton(type: .system)
-            gmailButton.setTitle("Gmail", for: .normal)
-            gmailButton.addTarget(self, action: #selector(gmailButtonTapped), for: .touchUpInside)
-            gmailButton.isEnabled = true
-            gmailButton.isHidden = true
-            self.gmailButton = gmailButton
+            let googleButton = UIButton(type: .system)
+            googleButton.setTitle("Google", for: .normal)
+            googleButton.addTarget(self, action: #selector(gmailButtonTapped), for: .touchUpInside)
+            googleButton.isEnabled = true
+            googleButton.isHidden = true
+            self.googleButton = googleButton
             
             let microsoftButton = UIButton(type: .system)
             microsoftButton.setTitle("Microsoft", for: .normal)
@@ -120,7 +116,7 @@ class MDMAccountDeploymentViewController: UIViewController, UITextFieldDelegate 
             stackView.addArrangedSubview(accountLabel)
             stackView.addArrangedSubview(emailLabel)
             stackView.addArrangedSubview(passwordInput)
-            stackView.addArrangedSubview(gmailButton)
+            stackView.addArrangedSubview(googleButton)
             stackView.addArrangedSubview(microsoftButton)
             stackView.addArrangedSubview(oauthLabel)
             stackView.addArrangedSubview(uiSwitch)
@@ -133,7 +129,7 @@ class MDMAccountDeploymentViewController: UIViewController, UITextFieldDelegate 
     @objc func switchStateDidChange(_ sender: UISwitch) {
         viewModel.isOAUTH = sender.isOn
         textFieldPassword?.isHidden = sender.isOn
-        gmailButton?.isHidden = !sender.isOn
+        googleButton?.isHidden = !sender.isOn
         microsoftButton?.isHidden = !sender.isOn
     }
 

@@ -11,5 +11,5 @@
 
 #include "../../planckForiOS_intern/secret.xcconfig"
 
-MDM_ENABLED = YES
+MDM_ENABLED = NO
 IS_ENTERPRISE = YES
