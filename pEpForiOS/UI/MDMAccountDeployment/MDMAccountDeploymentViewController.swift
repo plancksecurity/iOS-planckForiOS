@@ -109,6 +109,7 @@ class MDMAccountDeploymentViewController: UIViewController, UITextFieldDelegate 
 
     @objc func switchStateDidChange(_ sender: UISwitch) {
         viewModel.isOAUTH = sender.isOn
+        textFieldPassword?.isHidden = sender.isOn
     }
 
     // MARK: - Actions
