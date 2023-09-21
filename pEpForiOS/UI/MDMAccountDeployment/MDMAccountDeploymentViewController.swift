@@ -50,7 +50,7 @@ class MDMAccountDeploymentViewController: UIViewController, UITextFieldDelegate 
         if let passwordTF = textFieldPassword {
             passwordTF.becomeFirstResponder()
         }
-     }
+    }
 
     // MARK: - Build the UI
 
