@@ -9,6 +9,7 @@
 import UIKit
 
 import PlanckToolbox
+import MessageModel
 
 class MDMAccountDeploymentViewController: UIViewController, UITextFieldDelegate {
     // MARK: - Storyboard
@@ -16,9 +17,12 @@ class MDMAccountDeploymentViewController: UIViewController, UITextFieldDelegate 
     @IBOutlet weak var stackView: UIStackView!
 
     let viewModel = MDMAccountDeploymentViewModel()
+    weak var loginDelegate: LoginViewControllerDelegate?
 
     var textFieldPassword: UITextField?
     var buttonVerify: UIButton?
+    var gmailButton: UIButton?
+    var microsoftButton: UIButton?
 
     /// An optional label containing the last error message.
     var errorLabel: UILabel?
@@ -27,7 +31,11 @@ class MDMAccountDeploymentViewController: UIViewController, UITextFieldDelegate 
 
     override func viewDidLoad() {
         super.viewDidLoad()
+        viewModel.accountTypeViewModel.delegate = self
 
+#if DEBUG
+        FakeMDM().setupDeployableAccountData()
+#endif
         setupUI()
 
         // Prevent the user to be able to "swipe down" this VC
@@ -35,7 +43,7 @@ class MDMAccountDeploymentViewController: UIViewController, UITextFieldDelegate 
 
         navigationController?.setNavigationBarHidden(true, animated: false)
     }
-
+    
     override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
         navigationController?.setNavigationBarHidden(false, animated: false)
@@ -43,11 +51,10 @@ class MDMAccountDeploymentViewController: UIViewController, UITextFieldDelegate 
 
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-
         if let passwordTF = textFieldPassword {
             passwordTF.becomeFirstResponder()
         }
-    }
+     }
 
     // MARK: - Build the UI
 
@@ -88,6 +95,20 @@ class MDMAccountDeploymentViewController: UIViewController, UITextFieldDelegate 
             button.isEnabled = false
             buttonVerify = button
 
+            let gmailButton = UIButton(type: .system)
+            gmailButton.setTitle("Gmail", for: .normal)
+            gmailButton.addTarget(self, action: #selector(gmailButtonTapped), for: .touchUpInside)
+            gmailButton.isEnabled = true
+            gmailButton.isHidden = true
+            self.gmailButton = gmailButton
+            
+            let microsoftButton = UIButton(type: .system)
+            microsoftButton.setTitle("Microsoft", for: .normal)
+            microsoftButton.addTarget(self, action: #selector(microsoftButtonTapped), for: .touchUpInside)
+            microsoftButton.isEnabled = true
+            microsoftButton.isHidden = true
+            self.microsoftButton = microsoftButton
+
             let oauthLabel = UILabel()
             oauthLabel.text = NSLocalizedString("OAUTH", comment: "OAUTH")
             oauthLabel.setPEPFont(style: .title1, weight: .regular)
@@ -99,6 +120,8 @@ class MDMAccountDeploymentViewController: UIViewController, UITextFieldDelegate 
             stackView.addArrangedSubview(accountLabel)
             stackView.addArrangedSubview(emailLabel)
             stackView.addArrangedSubview(passwordInput)
+            stackView.addArrangedSubview(gmailButton)
+            stackView.addArrangedSubview(microsoftButton)
             stackView.addArrangedSubview(oauthLabel)
             stackView.addArrangedSubview(uiSwitch)
             stackView.addArrangedSubview(button)
@@ -110,6 +133,8 @@ class MDMAccountDeploymentViewController: UIViewController, UITextFieldDelegate 
     @objc func switchStateDidChange(_ sender: UISwitch) {
         viewModel.isOAUTH = sender.isOn
         textFieldPassword?.isHidden = sender.isOn
+        gmailButton?.isHidden = !sender.isOn
+        microsoftButton?.isHidden = !sender.isOn
     }
 
     // MARK: - Actions
@@ -117,7 +142,15 @@ class MDMAccountDeploymentViewController: UIViewController, UITextFieldDelegate 
     @objc func deployButtonTapped() {
         deploy()
     }
+    
+    @objc func gmailButtonTapped() {
+        viewModel.handleDidSelect(accountType: .google, viewController: self)
+    }
 
+    @objc func microsoftButtonTapped() {
+        viewModel.handleDidSelect(accountType: .microsoft, viewController: self)
+    }
+    
     @objc func textFieldDidChange(textField: UITextField) {
         guard let verifyButton = buttonVerify else {
             // No button, nothing to do
@@ -233,5 +266,71 @@ class MDMAccountDeploymentViewController: UIViewController, UITextFieldDelegate 
 
     private func configureView() {
         view.setNeedsLayout()
+    }
+}
+
+extension MDMAccountDeploymentViewController: AccountTypeSelectorViewModelDelegate {
+    func showMustImportClientCertificateAlert() {
+        //N/A
+    }
+    
+    func showClientCertificateSeletionView() {
+        //N/A
+    }
+    
+    func didVerify(result: AccountVerificationResult) {
+        DispatchQueue.main.async { [weak self] in
+            guard let me = self else {
+                Log.shared.lostMySelf()
+                return
+            }
+            LoadingInterface.removeLoadingInterface()
+            switch result {
+            case .ok:
+                me.loginDelegate?.loginViewControllerDidCreateNewAccount(LoginViewController())
+                me.navigationController?.dismiss(animated: true)
+            case .imapError(let err):
+                print(err)
+                // me.handleLoginError(error: err, offerManualSetup: true)
+            case .smtpError(let err):
+                print(err)
+                // me.handleLoginError(error: err, offerManualSetup: true)
+            case .noImapConnectData, .noSmtpConnectData:
+                me.handleLoginError(error: LoginViewController.LoginError.noConnectData)
+            }
+        }
+    }
+
+    func handle(oauth2Error: Error) {
+        handleLoginError(error: oauth2Error)
+    }
+    
+}
+
+extension MDMAccountDeploymentViewController {
+    private func handleLoginError(error: Error) {
+        Log.shared.log(error: error)
+
+        var title = NSLocalizedString("Invalid Address",
+                                      comment: "Please enter a valid Gmail address.Fail to log in, email does not match account type")
+
+        var message: String?
+
+        switch viewModel.accountTypeViewModel.loginUtil.verifiableAccount.accountType {
+        case .gmail:
+            message = NSLocalizedString("Please enter a valid Gmail address.",
+                                        comment: "Fail to log in, email does not match account type")
+        case .o365:
+            message = NSLocalizedString("Please enter a valid Microsoft address.",
+                                        comment: "Fail to log in, email does not match account type")
+        default:
+            Log.shared.errorAndCrash("Login should not do oauth with other email address")
+        }
+        UIUtils.showAlertWithOnlyPositiveButton(title: title, message: message) { [weak self] in
+            guard self != nil else {
+                Log.shared.lostMySelf()
+                return
+            }
+        }
     }
 }

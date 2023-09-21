@@ -12,6 +12,8 @@ import PlanckToolbox
 import MessageModel
 
 class MDMAccountDeploymentViewModel {
+    
+    var accountTypeViewModel = AccountTypeSelectorViewModel()
 
     var isOAUTH: Bool = false
 
@@ -56,7 +58,7 @@ class MDMAccountDeploymentViewModel {
             return nil
         }
     }
-
+    
     /// Checks for accounts to deploy, and acts on them.
     func deployAccount(password: String,
                        deployer: MDMDeploymentProtocol = MDMDeployment(),
@@ -122,5 +124,12 @@ class MDMAccountDeploymentViewModel {
         return String.localizedStringWithFormat(NSLocalizedString("Error:\n%1$@",
                                                                   comment: "MDM Deployment Error Format"),
                                                 message)
+    }
+}
+
+extension MDMAccountDeploymentViewModel {
+
+    public func handleDidSelect(accountType: AccountType, viewController : UIViewController? = nil) {
+        accountTypeViewModel.handleDidSelect(accountType: accountType, viewController: viewController)
     }
 }
