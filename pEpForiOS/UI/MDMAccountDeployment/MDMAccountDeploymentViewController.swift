@@ -33,6 +33,9 @@ class MDMAccountDeploymentViewController: UIViewController, UITextFieldDelegate 
     override func viewDidLoad() {
         super.viewDidLoad()
         viewModel.accountTypeViewModel.delegate = self
+#if DEBUG
+        FakeMDM().setupDeployableAccountData()
+#endif
         setupUI()
 
         // Prevent the user to be able to "swipe down" this VC
@@ -51,7 +54,7 @@ class MDMAccountDeploymentViewController: UIViewController, UITextFieldDelegate 
         if let passwordTF = textFieldPassword {
             passwordTF.becomeFirstResponder()
         }
-    }
+     }
 
     // MARK: - Build the UI
 
@@ -117,6 +120,7 @@ class MDMAccountDeploymentViewController: UIViewController, UITextFieldDelegate 
             let loginSpinner = UIActivityIndicatorView(style: .medium)
             loginSpinner.hidesWhenStopped = true
             loginSpinner.isHidden = true
+            self.loginSpinner = loginSpinner
 
             stackView.addArrangedSubview(accountLabel)
             stackView.addArrangedSubview(emailLabel)
