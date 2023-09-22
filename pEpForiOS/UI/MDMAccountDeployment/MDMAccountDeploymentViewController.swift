@@ -265,6 +265,8 @@ class MDMAccountDeploymentViewController: UIViewController, UITextFieldDelegate 
     }
 }
 
+// MARK: - OAuth
+
 extension MDMAccountDeploymentViewController: AccountTypeSelectorViewModelDelegate {
     func showMustImportClientCertificateAlert() {
         //N/A
@@ -286,11 +288,9 @@ extension MDMAccountDeploymentViewController: AccountTypeSelectorViewModelDelega
                 me.loginDelegate?.loginViewControllerDidCreateNewAccount(LoginViewController())
                 me.navigationController?.dismiss(animated: true)
             case .imapError(let err):
-                print(err)
-                // me.handleLoginError(error: err, offerManualSetup: true)
+                Log.shared.error(error: err)
             case .smtpError(let err):
-                print(err)
-                // me.handleLoginError(error: err, offerManualSetup: true)
+                Log.shared.error(error: err)
             case .noImapConnectData, .noSmtpConnectData:
                 me.handleLoginError(error: LoginViewController.LoginError.noConnectData)
             }
@@ -300,8 +300,9 @@ extension MDMAccountDeploymentViewController: AccountTypeSelectorViewModelDelega
     func handle(oauth2Error: Error) {
         handleLoginError(error: oauth2Error)
     }
-    
 }
+
+// MARK: - OAuth Error handling
 
 extension MDMAccountDeploymentViewController {
     private func handleLoginError(error: Error) {
@@ -309,7 +310,6 @@ extension MDMAccountDeploymentViewController {
 
         var title = NSLocalizedString("Invalid Address",
                                       comment: "Please enter a valid Gmail address.Fail to log in, email does not match account type")
-
         var message: String?
 
         switch viewModel.accountTypeViewModel.loginUtil.verifiableAccount.accountType {
@@ -322,11 +322,6 @@ extension MDMAccountDeploymentViewController {
         default:
             Log.shared.errorAndCrash("Login should not do oauth with other email address")
         }
-        UIUtils.showAlertWithOnlyPositiveButton(title: title, message: message) { [weak self] in
-            guard self != nil else {
-                Log.shared.lostMySelf()
-                return
-            }
-        }
+        UIUtils.showAlertWithOnlyPositiveButton(title: title, message: message)
     }
 }
