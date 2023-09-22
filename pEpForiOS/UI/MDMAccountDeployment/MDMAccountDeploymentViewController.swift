@@ -23,6 +23,7 @@ class MDMAccountDeploymentViewController: UIViewController, UITextFieldDelegate 
     var buttonVerify: UIButton?
     var googleButton: UIButton?
     var microsoftButton: UIButton?
+    var loginSpinner: UIActivityIndicatorView?
 
     /// An optional label containing the last error message.
     var errorLabel: UILabel?
@@ -112,6 +113,10 @@ class MDMAccountDeploymentViewController: UIViewController, UITextFieldDelegate 
             let switchFrame = CGRect(x: 150, y: 150, width: 0, height: 0)
             let uiSwitch = UISwitch(frame: switchFrame)
             uiSwitch.addTarget(self, action: #selector(switchStateDidChange(_:)), for: .valueChanged)
+            
+            let loginSpinner = UIActivityIndicatorView(style: .medium)
+            loginSpinner.hidesWhenStopped = true
+            loginSpinner.isHidden = true
 
             stackView.addArrangedSubview(accountLabel)
             stackView.addArrangedSubview(emailLabel)
@@ -121,6 +126,7 @@ class MDMAccountDeploymentViewController: UIViewController, UITextFieldDelegate 
             stackView.addArrangedSubview(oauthLabel)
             stackView.addArrangedSubview(uiSwitch)
             stackView.addArrangedSubview(button)
+            stackView.addArrangedSubview(loginSpinner)
         }
 
         configureView()
@@ -131,6 +137,7 @@ class MDMAccountDeploymentViewController: UIViewController, UITextFieldDelegate 
         textFieldPassword?.isHidden = sender.isOn
         googleButton?.isHidden = !sender.isOn
         microsoftButton?.isHidden = !sender.isOn
+        loginSpinner?.isHidden = !sender.isOn
     }
 
     // MARK: - Actions
@@ -140,10 +147,12 @@ class MDMAccountDeploymentViewController: UIViewController, UITextFieldDelegate 
     }
     
     @objc func gmailButtonTapped() {
+        loginSpinner?.startAnimating()
         viewModel.handleDidSelect(accountType: .google, viewController: self)
     }
 
     @objc func microsoftButtonTapped() {
+        loginSpinner?.startAnimating()
         viewModel.handleDidSelect(accountType: .microsoft, viewController: self)
     }
     
@@ -282,7 +291,9 @@ extension MDMAccountDeploymentViewController: AccountTypeSelectorViewModelDelega
                 Log.shared.lostMySelf()
                 return
             }
-            LoadingInterface.removeLoadingInterface()
+            me.resignFirstResponder()
+            me.view.endEditing(true)
+            me.loginSpinner?.stopAnimating()
             switch result {
             case .ok:
                 me.loginDelegate?.loginViewControllerDidCreateNewAccount(LoginViewController())
@@ -306,9 +317,10 @@ extension MDMAccountDeploymentViewController: AccountTypeSelectorViewModelDelega
 
 extension MDMAccountDeploymentViewController {
     private func handleLoginError(error: Error) {
+        loginSpinner?.stopAnimating()
         Log.shared.log(error: error)
 
-        var title = NSLocalizedString("Invalid Address",
+        let title = NSLocalizedString("Invalid Address",
                                       comment: "Please enter a valid Gmail address.Fail to log in, email does not match account type")
         var message: String?
 
