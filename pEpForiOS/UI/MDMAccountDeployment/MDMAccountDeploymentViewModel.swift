@@ -15,8 +15,6 @@ class MDMAccountDeploymentViewModel {
     
     var accountTypeViewModel = AccountTypeSelectorViewModel()
 
-    var isOAUTH: Bool = false
-
     enum UIState {
         case accountData(AccountData)
         case noAccountConfiguration(String)
