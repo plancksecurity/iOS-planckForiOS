@@ -16,12 +16,14 @@ class MDMAccountDeploymentViewController: UIViewController, UITextFieldDelegate 
 
     @IBOutlet weak var stackView: UIStackView!
 
+    private var accountData: MDMAccountDeploymentViewModel.AccountData?
     let viewModel = MDMAccountDeploymentViewModel()
     weak var loginDelegate: LoginViewControllerDelegate?
 
     var textFieldPassword: UITextField?
     var buttonVerify: UIButton?
     var loginSpinner: UIActivityIndicatorView?
+    
 
     /// An optional label containing the last error message.
     var errorLabel: UILabel?
@@ -30,6 +32,7 @@ class MDMAccountDeploymentViewController: UIViewController, UITextFieldDelegate 
 
     override func viewDidLoad() {
         super.viewDidLoad()
+
         viewModel.accountTypeSelectorViewModel.delegate = self
         setupUI()
 
@@ -37,6 +40,13 @@ class MDMAccountDeploymentViewController: UIViewController, UITextFieldDelegate 
         isModalInPresentation = true
 
         navigationController?.setNavigationBarHidden(true, animated: false)
+    }
+    
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
+        if let accountData = accountData, let provider = accountData.oauthProvider {
+            handleOAuth(oauthProvider: provider)
+        }
     }
     
     override func viewWillDisappear(_ animated: Bool) {
@@ -67,6 +77,7 @@ class MDMAccountDeploymentViewController: UIViewController, UITextFieldDelegate 
         case .noAccountConfiguration(let errorMessage):
             setError(message: errorMessage)
         case .accountData(let accountData):
+            self.accountData = accountData
             let accountLabel = UILabel()
             accountLabel.text = accountData.accountName
             accountLabel.setPEPFont(style: .title1, weight: .regular)
@@ -101,7 +112,6 @@ class MDMAccountDeploymentViewController: UIViewController, UITextFieldDelegate 
                 textFieldPassword?.isHidden = true
                 loginSpinner.isHidden = false
                 stackView.addArrangedSubview(loginSpinner)
-                handleOAuth(oauthProvider: oauthProvider)
             } else {
                 stackView.addArrangedSubview(passwordInput)
                 stackView.addArrangedSubview(button)
@@ -114,7 +124,7 @@ class MDMAccountDeploymentViewController: UIViewController, UITextFieldDelegate 
     // MARK: - Actions
 
     func handleOAuth(oauthProvider: String) {
-        DispatchQueue.main.asyncAfter(deadline: .now() + 1, execute: { [weak self] in
+        DispatchQueue.main.asyncAfter(deadline: .now() + 2, execute: { [weak self] in
             guard let me = self else {
                 return
             }
