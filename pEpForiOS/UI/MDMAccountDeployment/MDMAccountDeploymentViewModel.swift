@@ -12,8 +12,8 @@ import PlanckToolbox
 import MessageModel
 
 class MDMAccountDeploymentViewModel {
-    
-    var accountTypeViewModel = AccountTypeSelectorViewModel()
+
+    var accountTypeSelectorViewModel = AccountTypeSelectorViewModel()
 
     enum UIState {
         case accountData(AccountData)
@@ -125,9 +125,11 @@ class MDMAccountDeploymentViewModel {
     }
 }
 
+//MARK: - OAuth
+
 extension MDMAccountDeploymentViewModel {
 
     public func handleDidSelect(accountType: AccountType, viewController : UIViewController? = nil) {
-        accountTypeViewModel.handleDidSelect(accountType: accountType, viewController: viewController)
+        accountTypeSelectorViewModel.handleDidSelect(accountType: accountType, viewController: viewController)
     }
 }

@@ -32,7 +32,7 @@ class MDMAccountDeploymentViewController: UIViewController, UITextFieldDelegate 
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        viewModel.accountTypeViewModel.delegate = self
+        viewModel.accountTypeSelectorViewModel.delegate = self
         setupUI()
 
         // Prevent the user to be able to "swipe down" this VC
@@ -324,7 +324,7 @@ extension MDMAccountDeploymentViewController {
                                       comment: "Please enter a valid Gmail address.Fail to log in, email does not match account type")
         var message: String?
 
-        switch viewModel.accountTypeViewModel.loginUtil.verifiableAccount.accountType {
+        switch viewModel.accountTypeSelectorViewModel.loginUtil.verifiableAccount.accountType {
         case .gmail:
             message = NSLocalizedString("Please enter a valid Gmail address.",
                                         comment: "Fail to log in, email does not match account type")
