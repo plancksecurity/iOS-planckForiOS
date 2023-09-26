@@ -23,6 +23,7 @@ class MDMAccountDeploymentViewModel {
     struct AccountData {
         let accountName: String
         let email: String
+        let oauthProvider: String?
     }
 
     enum Result: Equatable {
@@ -48,7 +49,7 @@ class MDMAccountDeploymentViewModel {
     func accountData() -> AccountData? {
         do {
             if let accountData = try MDMDeployment().accountToDeploy() {
-                return AccountData(accountName: accountData.accountName, email: accountData.email)
+                return AccountData(accountName: accountData.accountName, email: accountData.email, oauthProvider: accountData.oauthProvider)
             } else {
                 return nil
             }

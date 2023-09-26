@@ -21,8 +21,6 @@ class MDMAccountDeploymentViewController: UIViewController, UITextFieldDelegate 
 
     var textFieldPassword: UITextField?
     var buttonVerify: UIButton?
-    var googleButton: UIButton?
-    var microsoftButton: UIButton?
     var loginSpinner: UIActivityIndicatorView?
 
     /// An optional label containing the last error message.
@@ -92,28 +90,6 @@ class MDMAccountDeploymentViewController: UIViewController, UITextFieldDelegate 
             button.isEnabled = false
             buttonVerify = button
 
-            let googleButton = UIButton(type: .system)
-            googleButton.setTitle("Google", for: .normal)
-            googleButton.addTarget(self, action: #selector(gmailButtonTapped), for: .touchUpInside)
-            googleButton.isEnabled = true
-            googleButton.isHidden = true
-            self.googleButton = googleButton
-            
-            let microsoftButton = UIButton(type: .system)
-            microsoftButton.setTitle("Microsoft", for: .normal)
-            microsoftButton.addTarget(self, action: #selector(microsoftButtonTapped), for: .touchUpInside)
-            microsoftButton.isEnabled = true
-            microsoftButton.isHidden = true
-            self.microsoftButton = microsoftButton
-
-            let oauthLabel = UILabel()
-            oauthLabel.text = NSLocalizedString("OAUTH", comment: "OAUTH")
-            oauthLabel.setPEPFont(style: .title1, weight: .regular)
-
-            let switchFrame = CGRect(x: 150, y: 150, width: 0, height: 0)
-            let uiSwitch = UISwitch(frame: switchFrame)
-            uiSwitch.addTarget(self, action: #selector(switchStateDidChange(_:)), for: .valueChanged)
-            
             let loginSpinner = UIActivityIndicatorView(style: .medium)
             loginSpinner.hidesWhenStopped = true
             loginSpinner.isHidden = true
@@ -121,39 +97,40 @@ class MDMAccountDeploymentViewController: UIViewController, UITextFieldDelegate 
 
             stackView.addArrangedSubview(accountLabel)
             stackView.addArrangedSubview(emailLabel)
-            stackView.addArrangedSubview(passwordInput)
-            stackView.addArrangedSubview(googleButton)
-            stackView.addArrangedSubview(microsoftButton)
-            stackView.addArrangedSubview(oauthLabel)
-            stackView.addArrangedSubview(uiSwitch)
-            stackView.addArrangedSubview(button)
-            stackView.addArrangedSubview(loginSpinner)
+            if let oauthProvider = accountData.oauthProvider {
+                textFieldPassword?.isHidden = true
+                loginSpinner.isHidden = false
+                stackView.addArrangedSubview(loginSpinner)
+                handleOAuth(oauthProvider: oauthProvider)
+            } else {
+                stackView.addArrangedSubview(passwordInput)
+                stackView.addArrangedSubview(button)
+            }
         }
 
         configureView()
     }
 
-    @objc func switchStateDidChange(_ sender: UISwitch) {
-        textFieldPassword?.isHidden = sender.isOn
-        googleButton?.isHidden = !sender.isOn
-        microsoftButton?.isHidden = !sender.isOn
-        loginSpinner?.isHidden = !sender.isOn
-    }
-
     // MARK: - Actions
+
+    func handleOAuth(oauthProvider: String) {
+        DispatchQueue.main.asyncAfter(deadline: .now() + 1, execute: { [weak self] in
+            guard let me = self else {
+                return
+            }
+            me.loginSpinner?.startAnimating()
+            if oauthProvider == "MICROSOFT" {
+                me.viewModel.handleDidSelect(accountType: .microsoft, viewController: me)
+            } else if oauthProvider == "GOOGLE" {
+                me.viewModel.handleDidSelect(accountType: .google, viewController: me)
+            } else {
+                Log.shared.errorAndCrash("OAuth provider not supported")
+            }
+        })
+    }
 
     @objc func deployButtonTapped() {
         deploy()
-    }
-    
-    @objc func gmailButtonTapped() {
-        loginSpinner?.startAnimating()
-        viewModel.handleDidSelect(accountType: .google, viewController: self)
-    }
-
-    @objc func microsoftButtonTapped() {
-        loginSpinner?.startAnimating()
-        viewModel.handleDidSelect(accountType: .microsoft, viewController: self)
     }
     
     @objc func textFieldDidChange(textField: UITextField) {

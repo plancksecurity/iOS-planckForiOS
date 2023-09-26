@@ -21,6 +21,7 @@ extension MDMDeployment {
     struct AccountData {
         let accountName: String
         let email: String
+        let oauthProvider: String?
         fileprivate let imapServer: AccountVerifier.ServerData
         fileprivate let smtpServer: AccountVerifier.ServerData
     }
@@ -140,6 +141,11 @@ extension MDMDeployment: MDMDeploymentProtocol {
             throw MDMDeploymentError.malformedAccountData
         }
 
+        var oauthProvider: String?
+        if mailSettings[MDMDeployment.keyAccountOauthProvider] != nil {
+            oauthProvider = mailSettings[MDMDeployment.keyAccountOauthProvider] as? String
+        }
+
         // Make sure there is a username, falling back to the email address if needed
         let accountUsername = username ?? userAddress
 
@@ -161,6 +167,7 @@ extension MDMDeployment: MDMDeploymentProtocol {
 
         let accountData = AccountData(accountName: accountUsername,
                                       email: userAddress,
+                                      oauthProvider: oauthProvider,
                                       imapServer: imapServerData,
                                       smtpServer: smtpServerData)
 
