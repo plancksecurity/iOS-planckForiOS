@@ -32,7 +32,6 @@ class MDMAccountDeploymentViewController: UIViewController, UITextFieldDelegate 
 
     override func viewDidLoad() {
         super.viewDidLoad()
-
         viewModel.accountTypeSelectorViewModel.delegate = self
         setupUI()
 
@@ -124,19 +123,14 @@ class MDMAccountDeploymentViewController: UIViewController, UITextFieldDelegate 
     // MARK: - Actions
 
     func handleOAuth(oauthProvider: String) {
-        DispatchQueue.main.asyncAfter(deadline: .now() + 2, execute: { [weak self] in
-            guard let me = self else {
-                return
-            }
-            me.loginSpinner?.startAnimating()
-            if oauthProvider == OAuthProvider.microsoft.rawValue {
-                me.viewModel.handleDidSelect(accountType: .microsoft, viewController: me)
-            } else if oauthProvider == OAuthProvider.google.rawValue {
-                me.viewModel.handleDidSelect(accountType: .google, viewController: me)
-            } else {
-                Log.shared.errorAndCrash("OAuth provider not supported")
-            }
-        })
+        loginSpinner?.startAnimating()
+        if oauthProvider == OAuthProvider.microsoft.rawValue {
+            viewModel.handleDidSelect(accountType: .microsoft, viewController: self)
+        } else if oauthProvider == OAuthProvider.google.rawValue {
+            viewModel.handleDidSelect(accountType: .google, viewController: self)
+        } else {
+            Log.shared.errorAndCrash("OAuth provider not supported")
+        }
     }
 
     @objc func deployButtonTapped() {
