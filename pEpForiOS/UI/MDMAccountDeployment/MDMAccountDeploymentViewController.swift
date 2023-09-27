@@ -129,9 +129,9 @@ class MDMAccountDeploymentViewController: UIViewController, UITextFieldDelegate 
                 return
             }
             me.loginSpinner?.startAnimating()
-            if oauthProvider == "MICROSOFT" {
+            if oauthProvider == OAuthProvider.microsoft.rawValue {
                 me.viewModel.handleDidSelect(accountType: .microsoft, viewController: me)
-            } else if oauthProvider == "GOOGLE" {
+            } else if oauthProvider == OAuthProvider.google.rawValue {
                 me.viewModel.handleDidSelect(accountType: .google, viewController: me)
             } else {
                 Log.shared.errorAndCrash("OAuth provider not supported")
