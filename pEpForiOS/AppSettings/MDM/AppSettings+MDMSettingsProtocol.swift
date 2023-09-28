@@ -19,7 +19,7 @@ extension AppSettings: MDMSettingsProtocol {
     // MARK: - Keys
 
     static let keyPEPEnablePrivacyProtectionEnabled = "pep_enable_privacy_protection"
-    static let keyPEPExtraKeys = "pep_extra_keys"
+    static let keyPlanckExtraKeys = "planck_extra_keys"
     static let keyPEPTrustwordsEnabled = "pep_use_trustwords"
     static let keyUnsecureDeliveryWarningEnabled = "unsecure_delivery_warning"
     static let keyPEPSyncFolderEnabled = "pep_sync_folder"
@@ -80,9 +80,9 @@ extension AppSettings: MDMSettingsProtocol {
         }
     }
 
-    public var mdmPEPExtraKeys: [[String:String]] {
+    public var mdmPlanckExtraKeys: [[String:String]] {
         get {
-            guard let extraKeys = mdmDictionary[AppSettings.keyPEPExtraKeys] as? [[String:String]] else {
+            guard let extraKeys = mdmDictionary[AppSettings.keyPlanckExtraKeys] as? [[String:String]] else {
                 return []
             }
 

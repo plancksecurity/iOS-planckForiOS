@@ -26,7 +26,7 @@ public protocol MDMSettingsProtocol {
     /// Provide Extra Keys.
     ///
     /// To remove them just set an empty array.
-    var mdmPEPExtraKeys: [[String:String]] { get }
+    var mdmPlanckExtraKeys: [[String:String]] { get }
 
     /// Enable or disable the use of trustwords.
     ///
