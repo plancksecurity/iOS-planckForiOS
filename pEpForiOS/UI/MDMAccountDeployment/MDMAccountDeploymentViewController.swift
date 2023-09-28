@@ -21,6 +21,8 @@ class MDMAccountDeploymentViewController: UIViewController, UITextFieldDelegate 
 
     var textFieldPassword: UITextField?
     var buttonVerify: UIButton?
+    var oauthButton: UIButton?
+
     var loginSpinner: UIActivityIndicatorView?
 
     /// An optional label containing the last error message.
@@ -89,44 +91,47 @@ class MDMAccountDeploymentViewController: UIViewController, UITextFieldDelegate 
             button.addTarget(self, action: #selector(deployButtonTapped), for: .touchUpInside)
             button.isEnabled = false
             buttonVerify = button
-
+            
             let loginSpinner = UIActivityIndicatorView(style: .medium)
             loginSpinner.hidesWhenStopped = true
             loginSpinner.isHidden = true
             self.loginSpinner = loginSpinner
-
+            
             stackView.addArrangedSubview(accountLabel)
             stackView.addArrangedSubview(emailLabel)
+            
             if let oauthProvider = accountData.oauthProvider {
                 textFieldPassword?.isHidden = true
-                loginSpinner.isHidden = false
+                buttonVerify?.isHidden = true
+
+                let oauthButton = UIButton(type: .system)
+                oauthButton.setTitle(oauthProvider, for: .normal)
+                oauthButton.addTarget(self, action: #selector(oauthButtonTapped), for: .touchUpInside)
+                oauthButton.isEnabled = true
+                oauthButton.isHidden = false
+                self.oauthButton = oauthButton
+                stackView.addArrangedSubview(oauthButton)
                 stackView.addArrangedSubview(loginSpinner)
-                handleOAuth(oauthProvider: oauthProvider)
             } else {
                 stackView.addArrangedSubview(passwordInput)
                 stackView.addArrangedSubview(button)
             }
         }
-
         configureView()
     }
 
     // MARK: - Actions
 
-    func handleOAuth(oauthProvider: String) {
-        DispatchQueue.main.asyncAfter(deadline: .now() + 1, execute: { [weak self] in
-            guard let me = self else {
-                return
-            }
-            me.loginSpinner?.startAnimating()
-            if oauthProvider == "MICROSOFT" {
-                me.viewModel.handleDidSelect(accountType: .microsoft, viewController: me)
-            } else if oauthProvider == "GOOGLE" {
-                me.viewModel.handleDidSelect(accountType: .google, viewController: me)
-            } else {
-                Log.shared.errorAndCrash("OAuth provider not supported")
-            }
-        })
+    @objc func oauthButtonTapped() {
+        loginSpinner?.isHidden = false
+        loginSpinner?.startAnimating()
+        viewModel.handleDidSelect(accountType: .google, viewController: self)
+    }
+
+    @objc func microsoftButtonTapped() {
+        loginSpinner?.isHidden = false
+        loginSpinner?.startAnimating()
+        viewModel.handleDidSelect(accountType: .microsoft, viewController: self)
     }
 
     @objc func deployButtonTapped() {
