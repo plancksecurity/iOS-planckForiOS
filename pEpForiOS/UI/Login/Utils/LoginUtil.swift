@@ -311,4 +311,22 @@ extension LoginUtil: VerifiableAccountDelegate {
             informAccountVerificationResultDelegate(error: error)
         }
     }
+    
+    
+    func handle(error: Error) {
+        Log.shared.error(error: error)
+        let title = NSLocalizedString("Invalid Address", comment: "Please enter a valid mail address. Fail to log in, email does not match account type")
+        var message: String?
+        switch verifiableAccount.accountType {
+        case .gmail:
+            message = NSLocalizedString("Please enter a valid Gmail address.",
+                                        comment: "Fail to log in, email does not match account type")
+        case .o365:
+            message = NSLocalizedString("Please enter a valid Microsoft address.",
+                                        comment: "Fail to log in, email does not match account type")
+        case .other, .clientCertificate, .icloud, .outlook:
+            message = NSLocalizedString("Please enter valid credentials.", comment: "Fail to log in")
+        }
+        UIUtils.showAlertWithOnlyPositiveButton(title: title, message: message)
+    }
 }

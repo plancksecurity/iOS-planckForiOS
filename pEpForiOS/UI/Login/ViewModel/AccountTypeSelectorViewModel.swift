@@ -15,7 +15,7 @@ protocol AccountTypeSelectorViewModelDelegate: AnyObject {
     func showMustImportClientCertificateAlert()
     func showClientCertificateSeletionView()
     func didVerify(result: AccountVerificationResult)
-    func handle(oauth2Error: Error)
+    func handle(error: Error)
 
 }
 
@@ -115,6 +115,6 @@ extension AccountTypeSelectorViewModel : LoginProtocolResponseDelegate {
             Log.shared.errorAndCrash(message: "Delegate not found")
             return
         }
-        unwrappedDelegate.handle(oauth2Error: error)
+        unwrappedDelegate.handle(error: error)
     }
 }

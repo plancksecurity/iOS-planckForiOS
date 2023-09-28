@@ -27,8 +27,6 @@ class MDMAccountDeploymentViewController: UIViewController, UITextFieldDelegate 
 
     /// An optional label containing the last error message.
     var errorLabel: UILabel?
-    
-    var accountData: MDMAccountDeploymentViewModel.AccountData?
 
     // MARK: - Lifecycle
 
@@ -99,20 +97,19 @@ class MDMAccountDeploymentViewController: UIViewController, UITextFieldDelegate 
             loginSpinner.isHidden = true
             self.loginSpinner = loginSpinner
             
+            let oauthButton = UIButton(type: .system)
+            oauthButton.setTitle(accountData.oauthProvider, for: .normal)
+            oauthButton.addTarget(self, action: #selector(oauthButtonTapped), for: .touchUpInside)
+            oauthButton.isEnabled = true
+            oauthButton.isHidden = false
+            self.oauthButton = oauthButton
+
             stackView.addArrangedSubview(accountLabel)
             stackView.addArrangedSubview(emailLabel)
             
-            if let oauthProvider = accountData.oauthProvider {
-                self.accountData = accountData
+            if viewModel.shouldShowOauth() {
                 textFieldPassword?.isHidden = true
                 buttonVerify?.isHidden = true
-
-                let oauthButton = UIButton(type: .system)
-                oauthButton.setTitle(oauthProvider, for: .normal)
-                oauthButton.addTarget(self, action: #selector(oauthButtonTapped), for: .touchUpInside)
-                oauthButton.isEnabled = true
-                oauthButton.isHidden = false
-                self.oauthButton = oauthButton
                 stackView.addArrangedSubview(oauthButton)
                 stackView.addArrangedSubview(loginSpinner)
             } else {
@@ -128,19 +125,13 @@ class MDMAccountDeploymentViewController: UIViewController, UITextFieldDelegate 
     @objc func oauthButtonTapped() {
         loginSpinner?.isHidden = false
         loginSpinner?.startAnimating()
-        if let oauthProvider = accountData?.oauthProvider {
-            if oauthProvider == "GOOGLE" {
-                viewModel.handleDidSelect(accountType: .google, viewController: self)
-            } else if oauthProvider == "MICROSOFT" {
-                viewModel.handleDidSelect(accountType: .microsoft, viewController: self)
-            }
-        }
+        viewModel.handleDidSelect(viewController: self)
     }
 
     @objc func deployButtonTapped() {
         deploy()
     }
-    
+
     @objc func textFieldDidChange(textField: UITextField) {
         guard let verifyButton = buttonVerify else {
             // No button, nothing to do
@@ -263,13 +254,13 @@ class MDMAccountDeploymentViewController: UIViewController, UITextFieldDelegate 
 
 extension MDMAccountDeploymentViewController: AccountTypeSelectorViewModelDelegate {
     func showMustImportClientCertificateAlert() {
-        //N/A
+        Log.shared.errorAndCrash("Unexpected call to showMustImportClientCertificateAlert")
     }
     
     func showClientCertificateSeletionView() {
-        //N/A
+        Log.shared.errorAndCrash("Unexpected call to showClientCertificateSeletionView")
     }
-    
+
     func didVerify(result: AccountVerificationResult) {
         DispatchQueue.main.async { [weak self] in
             guard let me = self else {
@@ -284,41 +275,16 @@ extension MDMAccountDeploymentViewController: AccountTypeSelectorViewModelDelega
                 me.loginDelegate?.loginViewControllerDidCreateNewAccount(LoginViewController())
                 me.navigationController?.dismiss(animated: true)
             case .imapError(let err):
-                Log.shared.error(error: err)
+                me.handle(error: err)
             case .smtpError(let err):
-                Log.shared.error(error: err)
+                me.handle(error: err)
             case .noImapConnectData, .noSmtpConnectData:
-                me.handleLoginError(error: LoginViewController.LoginError.noConnectData)
+                me.handle(error: LoginViewController.LoginError.noConnectData)
             }
         }
     }
 
-    func handle(oauth2Error: Error) {
-        handleLoginError(error: oauth2Error)
-    }
-}
-
-// MARK: - OAuth Error handling
-
-extension MDMAccountDeploymentViewController {
-    private func handleLoginError(error: Error) {
-        loginSpinner?.stopAnimating()
-        Log.shared.log(error: error)
-
-        let title = NSLocalizedString("Invalid Address",
-                                      comment: "Please enter a valid Gmail address.Fail to log in, email does not match account type")
-        var message: String?
-
-        switch viewModel.accountTypeSelectorViewModel.loginUtil.verifiableAccount.accountType {
-        case .gmail:
-            message = NSLocalizedString("Please enter a valid Gmail address.",
-                                        comment: "Fail to log in, email does not match account type")
-        case .o365:
-            message = NSLocalizedString("Please enter a valid Microsoft address.",
-                                        comment: "Fail to log in, email does not match account type")
-        default:
-            Log.shared.errorAndCrash("Login should not do oauth with other email address")
-        }
-        UIUtils.showAlertWithOnlyPositiveButton(title: title, message: message)
+    func handle(error: Error) {
+        viewModel.handle(error: error)
     }
 }

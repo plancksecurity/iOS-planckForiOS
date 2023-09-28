@@ -14,6 +14,9 @@ import MessageModel
 class MDMAccountDeploymentViewModel {
 
     var accountTypeSelectorViewModel = AccountTypeSelectorViewModel()
+    private var accountType: VerifiableAccount.AccountType {
+        return accountTypeSelectorViewModel.loginUtil.verifiableAccount.accountType
+    }
 
     enum UIState {
         case accountData(AccountData)
@@ -130,7 +133,24 @@ class MDMAccountDeploymentViewModel {
 
 extension MDMAccountDeploymentViewModel {
 
-    public func handleDidSelect(accountType: AccountType, viewController : UIViewController? = nil) {
-        accountTypeSelectorViewModel.handleDidSelect(accountType: accountType, viewController: viewController)
+    public func shouldShowOauth() -> Bool {
+        guard let data = accountData() else {
+            return false
+        }
+        return data.oauthProvider != nil
+    }
+
+    public func handleDidSelect(viewController : UIViewController? = nil) {
+        if let data = accountData() {
+            if data.oauthProvider == "GOOGLE" {
+                accountTypeSelectorViewModel.handleDidSelect(accountType: .google, viewController: viewController)
+            } else if data.oauthProvider == "MICROSOFT" {
+                accountTypeSelectorViewModel.handleDidSelect(accountType: .microsoft, viewController: viewController)
+            }
+        }
+    }
+
+    public func handle(error: Error) {
+        accountTypeSelectorViewModel.loginUtil.handle(error: error)
     }
 }
