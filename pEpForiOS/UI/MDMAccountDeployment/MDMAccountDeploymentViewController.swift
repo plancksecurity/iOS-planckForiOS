@@ -27,6 +27,8 @@ class MDMAccountDeploymentViewController: UIViewController, UITextFieldDelegate 
 
     /// An optional label containing the last error message.
     var errorLabel: UILabel?
+    
+    var accountData: MDMAccountDeploymentViewModel.AccountData?
 
     // MARK: - Lifecycle
 
@@ -101,6 +103,7 @@ class MDMAccountDeploymentViewController: UIViewController, UITextFieldDelegate 
             stackView.addArrangedSubview(emailLabel)
             
             if let oauthProvider = accountData.oauthProvider {
+                self.accountData = accountData
                 textFieldPassword?.isHidden = true
                 buttonVerify?.isHidden = true
 
@@ -125,13 +128,13 @@ class MDMAccountDeploymentViewController: UIViewController, UITextFieldDelegate 
     @objc func oauthButtonTapped() {
         loginSpinner?.isHidden = false
         loginSpinner?.startAnimating()
-        viewModel.handleDidSelect(accountType: .google, viewController: self)
-    }
-
-    @objc func microsoftButtonTapped() {
-        loginSpinner?.isHidden = false
-        loginSpinner?.startAnimating()
-        viewModel.handleDidSelect(accountType: .microsoft, viewController: self)
+        if let oauthProvider = accountData?.oauthProvider {
+            if oauthProvider == "GOOGLE" {
+                viewModel.handleDidSelect(accountType: .google, viewController: self)
+            } else if oauthProvider == "MICROSOFT" {
+                viewModel.handleDidSelect(accountType: .microsoft, viewController: self)
+            }
+        }
     }
 
     @objc func deployButtonTapped() {
