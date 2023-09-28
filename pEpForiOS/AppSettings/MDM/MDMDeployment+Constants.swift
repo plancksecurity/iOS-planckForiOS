@@ -59,4 +59,7 @@ extension MDMDeployment {
 
     /// The MDM settings key for the outgoing mail server's _login_ name.
     static let keyOutgoingMailSettingsUsername = "outgoing_mail_settings_user_name"
+
+    /// The MDM settings key for OAuth provider.
+    static let keyAccountOauthProvider = "account_oauth_provider"
 }

@@ -12,6 +12,9 @@ import PlanckToolbox
 import MessageModel
 
 class MDMAccountDeploymentViewModel {
+
+    var accountTypeSelectorViewModel = AccountTypeSelectorViewModel()
+
     enum UIState {
         case accountData(AccountData)
         case noAccountConfiguration(String)
@@ -20,6 +23,7 @@ class MDMAccountDeploymentViewModel {
     struct AccountData {
         let accountName: String
         let email: String
+        let oauthProvider: String?
     }
 
     enum Result: Equatable {
@@ -45,7 +49,7 @@ class MDMAccountDeploymentViewModel {
     func accountData() -> AccountData? {
         do {
             if let accountData = try MDMDeployment().accountToDeploy() {
-                return AccountData(accountName: accountData.accountName, email: accountData.email)
+                return AccountData(accountName: accountData.accountName, email: accountData.email, oauthProvider: accountData.oauthProvider)
             } else {
                 return nil
             }
@@ -53,7 +57,7 @@ class MDMAccountDeploymentViewModel {
             return nil
         }
     }
-
+    
     /// Checks for accounts to deploy, and acts on them.
     func deployAccount(password: String,
                        deployer: MDMDeploymentProtocol = MDMDeployment(),
@@ -119,5 +123,14 @@ class MDMAccountDeploymentViewModel {
         return String.localizedStringWithFormat(NSLocalizedString("Error:\n%1$@",
                                                                   comment: "MDM Deployment Error Format"),
                                                 message)
+    }
+}
+
+//MARK: - OAuth
+
+extension MDMAccountDeploymentViewModel {
+
+    public func handleDidSelect(accountType: AccountType, viewController : UIViewController? = nil) {
+        accountTypeSelectorViewModel.handleDidSelect(accountType: accountType, viewController: viewController)
     }
 }

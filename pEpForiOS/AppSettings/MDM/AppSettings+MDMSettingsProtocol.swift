@@ -37,8 +37,8 @@ extension AppSettings: MDMSettingsProtocol {
     static let keyPEPSyncNewDevicesEnabled = "allow_pep_sync_new_devices"
     static let keyMediaKeys = "pep_media_keys"
     static let keyEchoProtocolEnabled = "pep_enable_echo_protocol"
-
     static let keyAuditLoggingMaxFileTime = "auditLoggingMaxFileTime"
+    static let keyAccountOauthProvider = "account_oauth_provider"
 
     //Not used
     static let keyDebugLoggingEnabled = "debug_logging"
@@ -53,6 +53,15 @@ extension AppSettings: MDMSettingsProtocol {
         }
     }
     
+    public var mdmAccountOauthProvider: String? {
+        get {
+            guard let oauthProvider = mdmDictionary[AppSettings.keyAccountOauthProvider] as? String else {
+                return nil
+            }
+            return oauthProvider
+        }
+    }
+
     public var mdmAuditLoggingMaxFileTime: Int {
         get {
             guard let auditLoggingMaxFileTime = mdmDictionary[AppSettings.keyAuditLoggingMaxFileTime] as? Int else {
