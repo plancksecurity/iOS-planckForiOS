@@ -43,7 +43,7 @@ class MockRegularUsersAppSettings : AppSettingsProtocol {
         return true
     }
 
-    var mdmPEPExtraKeys: [[String:String]] {
+    var mdmPlanckExtraKeys: [[String:String]] {
         return [["key":"value"]]
     }
 
