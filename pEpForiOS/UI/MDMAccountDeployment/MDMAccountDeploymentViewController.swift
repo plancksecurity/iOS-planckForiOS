@@ -16,7 +16,6 @@ class MDMAccountDeploymentViewController: UIViewController, UITextFieldDelegate 
 
     @IBOutlet weak var stackView: UIStackView!
 
-    private var accountData: MDMAccountDeploymentViewModel.AccountData?
     let viewModel = MDMAccountDeploymentViewModel()
     weak var loginDelegate: LoginViewControllerDelegate?
 
@@ -43,7 +42,7 @@ class MDMAccountDeploymentViewController: UIViewController, UITextFieldDelegate 
     
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
-        if let accountData = accountData, let provider = accountData.oauthProvider {
+        if let accountData = viewModel.accountData(), let provider = accountData.oauthProvider {
             handleOAuth(oauthProvider: provider)
         }
     }
@@ -76,7 +75,6 @@ class MDMAccountDeploymentViewController: UIViewController, UITextFieldDelegate 
         case .noAccountConfiguration(let errorMessage):
             setError(message: errorMessage)
         case .accountData(let accountData):
-            self.accountData = accountData
             let accountLabel = UILabel()
             accountLabel.text = accountData.accountName
             accountLabel.setPEPFont(style: .title1, weight: .regular)
