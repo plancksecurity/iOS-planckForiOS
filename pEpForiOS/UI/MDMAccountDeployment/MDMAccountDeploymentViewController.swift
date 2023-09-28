@@ -21,6 +21,8 @@ class MDMAccountDeploymentViewController: UIViewController, UITextFieldDelegate 
 
     var textFieldPassword: UITextField?
     var buttonVerify: UIButton?
+    var oauthButton: UIButton?
+
     var loginSpinner: UIActivityIndicatorView?
     
 
@@ -39,14 +41,7 @@ class MDMAccountDeploymentViewController: UIViewController, UITextFieldDelegate 
 
         navigationController?.setNavigationBarHidden(true, animated: false)
     }
-    
-    override func viewDidAppear(_ animated: Bool) {
-        super.viewDidAppear(animated)
-        if let accountData = viewModel.accountData(), let provider = accountData.oauthProvider {
-            handleOAuth(oauthProvider: provider)
-        }
-    }
-    
+
     override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
         navigationController?.setNavigationBarHidden(false, animated: false)
@@ -97,44 +92,47 @@ class MDMAccountDeploymentViewController: UIViewController, UITextFieldDelegate 
             button.addTarget(self, action: #selector(deployButtonTapped), for: .touchUpInside)
             button.isEnabled = false
             buttonVerify = button
-
+            
             let loginSpinner = UIActivityIndicatorView(style: .medium)
             loginSpinner.hidesWhenStopped = true
             loginSpinner.isHidden = true
             self.loginSpinner = loginSpinner
+            
+            let oauthButton = UIButton(type: .system)
+            oauthButton.setTitle(accountData.oauthProvider, for: .normal)
+            oauthButton.addTarget(self, action: #selector(oauthButtonTapped), for: .touchUpInside)
+            oauthButton.isEnabled = true
+            oauthButton.isHidden = false
+            self.oauthButton = oauthButton
 
             stackView.addArrangedSubview(accountLabel)
             stackView.addArrangedSubview(emailLabel)
-            if let oauthProvider = accountData.oauthProvider {
+            
+            if viewModel.shouldShowOauth() {
                 textFieldPassword?.isHidden = true
-                loginSpinner.isHidden = false
+                buttonVerify?.isHidden = true
+                stackView.addArrangedSubview(oauthButton)
                 stackView.addArrangedSubview(loginSpinner)
             } else {
                 stackView.addArrangedSubview(passwordInput)
                 stackView.addArrangedSubview(button)
             }
         }
-
         configureView()
     }
 
     // MARK: - Actions
 
-    func handleOAuth(oauthProvider: String) {
+    @objc func oauthButtonTapped() {
+        loginSpinner?.isHidden = false
         loginSpinner?.startAnimating()
-        if oauthProvider == OAuthProvider.microsoft.rawValue {
-            viewModel.handleDidSelect(accountType: .microsoft, viewController: self)
-        } else if oauthProvider == OAuthProvider.google.rawValue {
-            viewModel.handleDidSelect(accountType: .google, viewController: self)
-        } else {
-            Log.shared.errorAndCrash("OAuth provider not supported")
-        }
+        viewModel.handleDidSelect(viewController: self)
     }
 
     @objc func deployButtonTapped() {
         deploy()
     }
-    
+
     @objc func textFieldDidChange(textField: UITextField) {
         guard let verifyButton = buttonVerify else {
             // No button, nothing to do
@@ -257,13 +255,13 @@ class MDMAccountDeploymentViewController: UIViewController, UITextFieldDelegate 
 
 extension MDMAccountDeploymentViewController: AccountTypeSelectorViewModelDelegate {
     func showMustImportClientCertificateAlert() {
-        //N/A
+        Log.shared.errorAndCrash("Unexpected call to showMustImportClientCertificateAlert")
     }
     
     func showClientCertificateSeletionView() {
-        //N/A
+        Log.shared.errorAndCrash("Unexpected call to showClientCertificateSeletionView")
     }
-    
+
     func didVerify(result: AccountVerificationResult) {
         DispatchQueue.main.async { [weak self] in
             guard let me = self else {
@@ -278,41 +276,16 @@ extension MDMAccountDeploymentViewController: AccountTypeSelectorViewModelDelega
                 me.loginDelegate?.loginViewControllerDidCreateNewAccount(LoginViewController())
                 me.navigationController?.dismiss(animated: true)
             case .imapError(let err):
-                Log.shared.error(error: err)
+                me.handle(error: err)
             case .smtpError(let err):
-                Log.shared.error(error: err)
+                me.handle(error: err)
             case .noImapConnectData, .noSmtpConnectData:
-                me.handleLoginError(error: LoginViewController.LoginError.noConnectData)
+                me.handle(error: LoginViewController.LoginError.noConnectData)
             }
         }
     }
 
-    func handle(oauth2Error: Error) {
-        handleLoginError(error: oauth2Error)
-    }
-}
-
-// MARK: - OAuth Error handling
-
-extension MDMAccountDeploymentViewController {
-    private func handleLoginError(error: Error) {
-        loginSpinner?.stopAnimating()
-        Log.shared.log(error: error)
-
-        let title = NSLocalizedString("Invalid Address",
-                                      comment: "Please enter a valid Gmail address.Fail to log in, email does not match account type")
-        var message: String?
-
-        switch viewModel.accountTypeSelectorViewModel.loginUtil.verifiableAccount.accountType {
-        case .gmail:
-            message = NSLocalizedString("Please enter a valid Gmail address.",
-                                        comment: "Fail to log in, email does not match account type")
-        case .o365:
-            message = NSLocalizedString("Please enter a valid Microsoft address.",
-                                        comment: "Fail to log in, email does not match account type")
-        default:
-            Log.shared.errorAndCrash("Login should not do oauth with other email address")
-        }
-        UIUtils.showAlertWithOnlyPositiveButton(title: title, message: message)
+    func handle(error: Error) {
+        viewModel.handle(error: error)
     }
 }
