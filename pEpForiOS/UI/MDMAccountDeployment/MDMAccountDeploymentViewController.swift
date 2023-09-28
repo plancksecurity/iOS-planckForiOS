@@ -19,13 +19,12 @@ class MDMAccountDeploymentViewController: UIViewController, UITextFieldDelegate 
     let viewModel = MDMAccountDeploymentViewModel()
     weak var loginDelegate: LoginViewControllerDelegate?
 
+    // UI elements
     var textFieldPassword: UITextField?
     var buttonVerify: UIButton?
     var oauthButton: UIButton?
-
     var loginSpinner: UIActivityIndicatorView?
     
-
     /// An optional label containing the last error message.
     var errorLabel: UILabel?
 
