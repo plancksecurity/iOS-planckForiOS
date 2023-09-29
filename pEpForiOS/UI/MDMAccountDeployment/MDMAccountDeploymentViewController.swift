@@ -91,23 +91,22 @@ class MDMAccountDeploymentViewController: UIViewController, UITextFieldDelegate 
             button.addTarget(self, action: #selector(deployButtonTapped), for: .touchUpInside)
             button.isEnabled = false
             buttonVerify = button
-            
+
             let loginSpinner = UIActivityIndicatorView(style: .medium)
             loginSpinner.hidesWhenStopped = true
             loginSpinner.isHidden = true
             self.loginSpinner = loginSpinner
-            
-            let oauthButton = UIButton(type: .system)
-            oauthButton.setTitle(accountData.oauthProvider, for: .normal)
-            oauthButton.addTarget(self, action: #selector(oauthButtonTapped), for: .touchUpInside)
-            oauthButton.isEnabled = true
-            oauthButton.isHidden = false
-            self.oauthButton = oauthButton
 
             stackView.addArrangedSubview(accountLabel)
             stackView.addArrangedSubview(emailLabel)
-            
-            if viewModel.shouldShowOauth() {
+
+            if let oauthAccountData = accountData as? MDMAccountDeploymentViewModel.OAuthAccountData {
+                let oauthButton = UIButton(type: .system)
+                oauthButton.setTitle(oauthAccountData.oauthProvider, for: .normal)
+                oauthButton.addTarget(self, action: #selector(oauthButtonTapped), for: .touchUpInside)
+                oauthButton.isEnabled = true
+                oauthButton.isHidden = false
+                self.oauthButton = oauthButton
                 textFieldPassword?.isHidden = true
                 buttonVerify?.isHidden = true
                 stackView.addArrangedSubview(oauthButton)

@@ -28,18 +28,30 @@ class MDMAccountDeploymentViewModel {
         case noAccountConfiguration(String)
     }
 
-    struct AccountData {
-        let accountName: String
-        let email: String
-        let oauthProvider: String?
-    }
-
     enum Result: Equatable {
         /// An error ocurred during the pre-deployment
         case error(message: String)
 
         /// The pre-deployment succeeded
         case success(message: String)
+    }
+
+    class AccountData {
+        var accountName: String
+        var email: String
+
+        init(accountName: String, email: String) {
+            self.accountName = accountName
+            self.email = email
+        }
+    }
+
+    class OAuthAccountData: AccountData {
+        let oauthProvider: String
+        init(accountName: String, email: String, oauthProvider: String) {
+            self.oauthProvider = oauthProvider
+            super.init(accountName: accountName, email: email)
+        }
     }
 
     /// Strong reference in order to keep it alive
@@ -57,7 +69,10 @@ class MDMAccountDeploymentViewModel {
     func accountData() -> AccountData? {
         do {
             if let accountData = try MDMDeployment().accountToDeploy() {
-                return AccountData(accountName: accountData.accountName, email: accountData.email, oauthProvider: accountData.oauthProvider)
+                if let oauthProvider = accountData.oauthProvider {
+                    return OAuthAccountData(accountName: accountData.accountName, email: accountData.email, oauthProvider: oauthProvider)
+                }
+                return AccountData(accountName: accountData.accountName, email: accountData.email)
             } else {
                 return nil
             }
@@ -142,11 +157,11 @@ extension MDMAccountDeploymentViewModel {
         guard let data = accountData() else {
             return false
         }
-        return data.oauthProvider != nil
+        return data is OAuthAccountData
     }
 
     public func handleDidSelect(viewController : UIViewController? = nil) {
-        if let data = accountData() {
+        if let data = accountData() as? OAuthAccountData {
             if data.oauthProvider == "GOOGLE" {
                 accountTypeSelectorViewModel.handleDidSelect(accountType: .google, viewController: viewController)
             } else if data.oauthProvider == "MICROSOFT" {
