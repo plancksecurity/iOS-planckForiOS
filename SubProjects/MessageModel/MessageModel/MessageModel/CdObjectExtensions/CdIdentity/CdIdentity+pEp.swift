@@ -60,13 +60,28 @@ extension CdIdentity {
             Log.shared.errorAndCrash("missing address: %@", self)
             return PEPIdentity(address: "none")
         }
+
+        let encFormatMaybe = PEPEncFormat(rawValue: encryptionFormat)
+        if encFormatMaybe == nil {
+            Log.shared.errorAndCrash(message: "Unexpected PEPEncFormat value in the DB: \(encryptionFormat), for identity \(address)")
+        }
+
+        let identityFlagsMaybe = PEPIdentityFlags(rawValue: identityFlags)
+        if identityFlagsMaybe == nil {
+            Log.shared.errorAndCrash(message: "Unexpected PEPIdentityFlags value in the DB: \(identityFlags), for identity \(address)")
+        }
+
         return PEPIdentity(address: address,
                            userID: userID,
                            userName: userName,
                            isOwn: isMySelf,
                            fingerPrint: nil,
                            commType: PEPCommType.unknown,
-                           language: nil)
+                           language: nil,
+                           majorVersion: UInt32(bitPattern: majorVersion),
+                           minorVersion: UInt32(bitPattern: minorVersion),
+                           encryptionFormat: encFormatMaybe ?? PEPEncFormat.auto,
+                           identityFlags: identityFlagsMaybe ?? PEPIdentityFlags.default)
     }
 
     static func from(pEpContact: PEPIdentity?,
@@ -87,6 +102,12 @@ extension CdIdentity {
                                                  userName: pEpC.userName,
                                                  context: context)
         }
+
+        // Assume, since `PEPIdentity` ultimately comes from the core,
+        // it knows best about its special properties.
+        identity.majorVersion = Int32(bitPattern: pEpC.majorVersion)
+        identity.minorVersion = Int32(bitPattern: pEpC.minorVersion)
+        identity.encryptionFormat = pEpC.encryptionFormat.rawValue
 
         return identity
     }

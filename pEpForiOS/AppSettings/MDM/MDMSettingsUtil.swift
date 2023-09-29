@@ -20,7 +20,7 @@ public class MDMSettingsUtil {
         KeySyncSettingsUtil().configureKeySync(enabled: AppSettings.shared.mdmPEPSyncAccountEnabled)
         EchoProtocolUtil().enableEchoProtocol(enabled: AppSettings.shared.mdmEchoProtocolEnabled)
 
-        ExtraKeysUtil().configure(extraKeyDictionaries: AppSettings.shared.mdmPEPExtraKeys) { result1 in
+        ExtraKeysUtil().configure(extraKeyDictionaries: AppSettings.shared.mdmPlanckExtraKeys) { result1 in
             // Note that an error in result1 will influence the final result,
             // but does not impede the following code.
             MediaKeysUtil().configure(mediaKeyDictionaries: AppSettings.shared.mdmMediaKeys) { result2 in
