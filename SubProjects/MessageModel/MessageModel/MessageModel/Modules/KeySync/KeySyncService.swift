@@ -84,11 +84,6 @@ class KeySyncService: NSObject, KeySyncServiceProtocol {
                 return
             }
 
-            guard let stateProvider = me.keySyncStateProvider else {
-                Log.shared.errorAndCrash("No keySyncStateProvider")
-                return
-            }
-
             me.moc.performAndWait {
                 guard
                     let cdAccounts = try? me.qrc.getResults(),
