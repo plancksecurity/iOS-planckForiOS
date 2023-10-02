@@ -9,6 +9,7 @@
 import UIKit
 
 import PlanckToolbox
+import MessageModel
 
 class MDMAccountDeploymentViewController: UIViewController, UITextFieldDelegate {
     // MARK: - Storyboard
@@ -16,10 +17,14 @@ class MDMAccountDeploymentViewController: UIViewController, UITextFieldDelegate 
     @IBOutlet weak var stackView: UIStackView!
 
     let viewModel = MDMAccountDeploymentViewModel()
+    weak var loginDelegate: LoginViewControllerDelegate?
 
+    // UI elements
     var textFieldPassword: UITextField?
     var buttonVerify: UIButton?
-
+    var oauthButton: UIButton?
+    var loginSpinner: UIActivityIndicatorView?
+    
     /// An optional label containing the last error message.
     var errorLabel: UILabel?
 
@@ -27,7 +32,7 @@ class MDMAccountDeploymentViewController: UIViewController, UITextFieldDelegate 
 
     override func viewDidLoad() {
         super.viewDidLoad()
-
+        viewModel.accountTypeSelectorViewModel.delegate = self
         setupUI()
 
         // Prevent the user to be able to "swipe down" this VC
@@ -43,11 +48,10 @@ class MDMAccountDeploymentViewController: UIViewController, UITextFieldDelegate 
 
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-
         if let passwordTF = textFieldPassword {
             passwordTF.becomeFirstResponder()
         }
-    }
+     }
 
     // MARK: - Build the UI
 
@@ -88,16 +92,40 @@ class MDMAccountDeploymentViewController: UIViewController, UITextFieldDelegate 
             button.isEnabled = false
             buttonVerify = button
 
+            let loginSpinner = UIActivityIndicatorView(style: .medium)
+            loginSpinner.hidesWhenStopped = true
+            loginSpinner.isHidden = true
+            self.loginSpinner = loginSpinner
+
             stackView.addArrangedSubview(accountLabel)
             stackView.addArrangedSubview(emailLabel)
-            stackView.addArrangedSubview(passwordInput)
-            stackView.addArrangedSubview(button)
-        }
 
+            if let oauthAccountData = accountData as? MDMAccountDeploymentViewModel.OAuthAccountData {
+                let oauthButton = UIButton(type: .system)
+                oauthButton.setTitle(oauthAccountData.oauthProvider, for: .normal)
+                oauthButton.addTarget(self, action: #selector(oauthButtonTapped), for: .touchUpInside)
+                oauthButton.isEnabled = true
+                oauthButton.isHidden = false
+                self.oauthButton = oauthButton
+                textFieldPassword?.isHidden = true
+                buttonVerify?.isHidden = true
+                stackView.addArrangedSubview(oauthButton)
+                stackView.addArrangedSubview(loginSpinner)
+            } else {
+                stackView.addArrangedSubview(passwordInput)
+                stackView.addArrangedSubview(button)
+            }
+        }
         configureView()
     }
 
     // MARK: - Actions
+
+    @objc func oauthButtonTapped() {
+        loginSpinner?.isHidden = false
+        loginSpinner?.startAnimating()
+        viewModel.handleDidSelect(viewController: self)
+    }
 
     @objc func deployButtonTapped() {
         deploy()
@@ -218,5 +246,44 @@ class MDMAccountDeploymentViewController: UIViewController, UITextFieldDelegate 
 
     private func configureView() {
         view.setNeedsLayout()
+    }
+}
+
+// MARK: - OAuth
+
+extension MDMAccountDeploymentViewController: AccountTypeSelectorViewModelDelegate {
+    func showMustImportClientCertificateAlert() {
+        Log.shared.errorAndCrash("Unexpected call to showMustImportClientCertificateAlert")
+    }
+    
+    func showClientCertificateSeletionView() {
+        Log.shared.errorAndCrash("Unexpected call to showClientCertificateSeletionView")
+    }
+
+    func didVerify(result: AccountVerificationResult) {
+        DispatchQueue.main.async { [weak self] in
+            guard let me = self else {
+                Log.shared.lostMySelf()
+                return
+            }
+            me.resignFirstResponder()
+            me.view.endEditing(true)
+            me.loginSpinner?.stopAnimating()
+            switch result {
+            case .ok:
+                me.loginDelegate?.loginViewControllerDidCreateNewAccount(LoginViewController())
+                me.navigationController?.dismiss(animated: true)
+            case .imapError(let err):
+                me.handle(error: err)
+            case .smtpError(let err):
+                me.handle(error: err)
+            case .noImapConnectData, .noSmtpConnectData:
+                me.handle(error: LoginViewController.LoginError.noConnectData)
+            }
+        }
+    }
+
+    func handle(error: Error) {
+        viewModel.handle(error: error)
     }
 }

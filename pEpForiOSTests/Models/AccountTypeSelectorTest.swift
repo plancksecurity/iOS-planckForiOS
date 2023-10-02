@@ -80,7 +80,7 @@ class AccountTypeDelegateMockTest: AccountTypeSelectorViewModelDelegate {
 
     }
 
-    func handle(oauth2Error: Error) {
+    func handle(error: Error) {
     }
 
 }

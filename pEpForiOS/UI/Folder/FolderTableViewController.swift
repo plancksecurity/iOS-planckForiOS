@@ -276,6 +276,7 @@ extension FolderTableViewController: SegueHandlerType {
                 Log.shared.errorAndCrash("Error casting to MDMAccountDeploymentViewController")
                 return
             }
+            vc.loginDelegate = self
             navVC.modalPresentationStyle = .fullScreen
             vc.hidesBottomBarWhenPushed = true
         }

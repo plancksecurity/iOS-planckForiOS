@@ -11,15 +11,21 @@ import Foundation
 import PlanckToolbox
 import MessageModel
 
+enum OAuthProvider: String {
+    case microsoft = "MICROSOFT"
+    case google = "GOOGLE"
+}
+
 class MDMAccountDeploymentViewModel {
+
+    var accountTypeSelectorViewModel = AccountTypeSelectorViewModel()
+    private var accountType: VerifiableAccount.AccountType {
+        return accountTypeSelectorViewModel.loginUtil.verifiableAccount.accountType
+    }
+
     enum UIState {
         case accountData(AccountData)
         case noAccountConfiguration(String)
-    }
-
-    struct AccountData {
-        let accountName: String
-        let email: String
     }
 
     enum Result: Equatable {
@@ -28,6 +34,24 @@ class MDMAccountDeploymentViewModel {
 
         /// The pre-deployment succeeded
         case success(message: String)
+    }
+
+    class AccountData {
+        var accountName: String
+        var email: String
+
+        init(accountName: String, email: String) {
+            self.accountName = accountName
+            self.email = email
+        }
+    }
+
+    class OAuthAccountData: AccountData {
+        let oauthProvider: String
+        init(accountName: String, email: String, oauthProvider: String) {
+            self.oauthProvider = oauthProvider
+            super.init(accountName: accountName, email: email)
+        }
     }
 
     /// Strong reference in order to keep it alive
@@ -45,6 +69,9 @@ class MDMAccountDeploymentViewModel {
     func accountData() -> AccountData? {
         do {
             if let accountData = try MDMDeployment().accountToDeploy() {
+                if let oauthProvider = accountData.oauthProvider {
+                    return OAuthAccountData(accountName: accountData.accountName, email: accountData.email, oauthProvider: oauthProvider)
+                }
                 return AccountData(accountName: accountData.accountName, email: accountData.email)
             } else {
                 return nil
@@ -53,7 +80,7 @@ class MDMAccountDeploymentViewModel {
             return nil
         }
     }
-
+    
     /// Checks for accounts to deploy, and acts on them.
     func deployAccount(password: String,
                        deployer: MDMDeploymentProtocol = MDMDeployment(),
@@ -119,5 +146,31 @@ class MDMAccountDeploymentViewModel {
         return String.localizedStringWithFormat(NSLocalizedString("Error:\n%1$@",
                                                                   comment: "MDM Deployment Error Format"),
                                                 message)
+    }
+}
+
+//MARK: - OAuth
+
+extension MDMAccountDeploymentViewModel {
+
+    public func shouldShowOauth() -> Bool {
+        guard let data = accountData() else {
+            return false
+        }
+        return data is OAuthAccountData
+    }
+
+    public func handleDidSelect(viewController : UIViewController? = nil) {
+        if let data = accountData() as? OAuthAccountData {
+            if data.oauthProvider == "GOOGLE" {
+                accountTypeSelectorViewModel.handleDidSelect(accountType: .google, viewController: viewController)
+            } else if data.oauthProvider == "MICROSOFT" {
+                accountTypeSelectorViewModel.handleDidSelect(accountType: .microsoft, viewController: viewController)
+            }
+        }
+    }
+
+    public func handle(error: Error) {
+        accountTypeSelectorViewModel.loginUtil.handle(error: error)
     }
 }

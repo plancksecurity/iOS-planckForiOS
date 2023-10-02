@@ -124,28 +124,7 @@ extension AccountTypeSelectorViewController {
     private func handleLoginError(error: Error) {
         Log.shared.log(error: error)
         isCurrentlyVerifying = false
-
-        var title = NSLocalizedString("Invalid Address",
-                                      comment: "Please enter a valid Gmail address.Fail to log in, email does not match account type")
-
-        var message: String?
-
-        switch viewModel.loginUtil.verifiableAccount.accountType {
-        case .gmail:
-            message = NSLocalizedString("Please enter a valid Gmail address.",
-                                        comment: "Fail to log in, email does not match account type")
-        case .o365:
-            message = NSLocalizedString("Please enter a valid Microsoft address.",
-                                        comment: "Fail to log in, email does not match account type")
-        default:
-            Log.shared.errorAndCrash("Login should not do oauth with other email address")
-        }
-        UIUtils.showAlertWithOnlyPositiveButton(title: title, message: message) { [weak self] in
-            guard self != nil else {
-                Log.shared.lostMySelf()
-                return
-            }
-        }
+        viewModel.loginUtil.handle(error: error)
     }
 }
 
@@ -173,8 +152,8 @@ extension AccountTypeSelectorViewController: AccountTypeSelectorViewModelDelegat
         }
     }
 
-    func handle(oauth2Error: Error) {
-        handleLoginError(error: oauth2Error)
+    func handle(error: Error) {
+        handleLoginError(error: error)
     }
 
     func showClientCertificateSeletionView() {
