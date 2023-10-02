@@ -31,6 +31,9 @@ class KeySyncService: NSObject, KeySyncServiceProtocol {
     weak private(set) var fastPollingDelegate: PollingDelegate?
     let outgoingRatingService: OutgoingRatingServiceProtocol
 
+    /// Tracks the changes in the settings provided by `KeySyncStateProvider`.
+    var keySyncEnabled = false
+
     // MARK: - KeySyncServiceProtocol
 
     required init(keySyncServiceHandshakeHandler: KeySyncServiceHandshakeHandlerProtocol? = nil,
@@ -62,11 +65,7 @@ class KeySyncService: NSObject, KeySyncServiceProtocol {
                 Log.shared.lostMySelf()
                 return
             }
-            if enabled {
-                me.start()
-            } else {
-                me.stop()
-            }
+            me.keySyncEnabled = enabled
         }
     }
 
