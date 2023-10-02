@@ -115,10 +115,6 @@ class KeySyncService: NSObject, KeySyncServiceProtocol {
                             Log.shared.errorAndCrash(error: error)
                         }
                     } successCallback: { (_) in
-                        guard pEpSyncEnabledForCurrentAccount else {
-                            group.leave()
-                            return // continue with next account
-                        }
                         PEPSession().enableSync(for: pEpUser) { (error) in
                             defer { group.leave() }
                             if error.isPassphraseError {
