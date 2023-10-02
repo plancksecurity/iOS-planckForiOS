@@ -129,12 +129,6 @@ class KeySyncService: NSObject, KeySyncServiceProtocol {
                     }
                 }
                 group.notify(queue: DispatchQueue.main) {
-                    // spex:    in case Sync is enabled while startup the application must call start_sync(),
-                    //          otherwise it must not (default: enabled)
-                    guard stateProvider.isKeySyncEnabled else {
-                        // Do not start KeySync if the user disabled it.
-                        return
-                    }
                     let pEpSync = PEPSync(sendMessageDelegate: self, notifyHandshakeDelegate: self)
                     me.pEpSync = pEpSync
                     pEpSync.startup()
