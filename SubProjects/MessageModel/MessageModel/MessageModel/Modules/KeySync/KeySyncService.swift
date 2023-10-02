@@ -83,16 +83,12 @@ class KeySyncService: NSObject, KeySyncServiceProtocol {
                 Log.shared.errorAndCrash("Lost myself")
                 return
             }
+
             guard let stateProvider = me.keySyncStateProvider else {
                 Log.shared.errorAndCrash("No keySyncStateProvider")
                 return
             }
-            do {
-                try PEPSession().disableAllSyncChannels()
-            } catch {
-                Log.shared.errorAndCrash("disableAllSyncChannels failed with error: %@",
-                                         error.localizedDescription)
-            }
+
             me.moc.performAndWait {
                 guard
                     let cdAccounts = try? me.qrc.getResults(),
