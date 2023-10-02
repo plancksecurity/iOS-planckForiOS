@@ -40,7 +40,6 @@ extension KeySyncService: PEPNotifyHandshakeDelegate {
 
             fastPollingDelegate?.enableFastPolling()
             showHandshakeAndHandleResult(inBetween: theMe, and: thePartner, isNewGroup: false)
-            return .OK
 
         case .initFormGroup:
             if !keySyncEnabled {
@@ -57,6 +56,7 @@ extension KeySyncService: PEPNotifyHandshakeDelegate {
                 Log.shared.errorAndCrash(message: "Expected partner identity")
                 return .illegalValue
             }
+
             fastPollingDelegate?.enableFastPolling()
             showHandshakeAndHandleResult(inBetween: theMe, and: thePartner, isNewGroup: true)
 
