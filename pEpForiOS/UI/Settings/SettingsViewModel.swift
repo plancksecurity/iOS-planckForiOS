@@ -138,25 +138,31 @@ final class SettingsViewModel {
     }
 
     public func handlePlanckSyncPressed() {
+        appSettings.keySyncEnabled = true
         AppSettings.shared.keySyncWizardWasShown = false
-        func handleFailure() {
+
+        func handleFailureOrEndOfKeySyncWindow() {
             appSettings.keyPlanckSyncActivityIndicatorIsOn = false
+            appSettings.keySyncEnabled = false
             if !AppSettings.shared.keySyncWizardWasShown {
                 delegate?.informReinitFailed()
             }
         }
+
         appSettings.keyPlanckSyncActivityIndicatorIsOn = true
+
         KeySyncUtil.syncReinit { error in
             DispatchQueue.main.async {
-                handleFailure()
+                handleFailureOrEndOfKeySyncWindow()
             }
-        } successCallback: { }
+        } successCallback: {}
+
         queueForSyncReinit.cancelAllOperations()
         queueForSyncReinit.addOperation {
-            //It's required to cancel the action after two minutes.
-            let twoMinutesInSeconds = 120.0
-            DispatchQueue.main.asyncAfter(deadline: .now() + twoMinutesInSeconds) {
-                handleFailure()
+            // Length of the time window in which a key sync is allowed
+            let lengthOfKeySyncWindowInSeconds = 120.0
+            DispatchQueue.main.asyncAfter(deadline: .now() + lengthOfKeySyncWindowInSeconds) {
+                handleFailureOrEndOfKeySyncWindow()
             }
         }
     }
