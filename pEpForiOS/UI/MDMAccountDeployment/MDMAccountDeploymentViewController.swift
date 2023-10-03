@@ -100,6 +100,7 @@ class MDMAccountDeploymentViewController: UIViewController, UITextFieldDelegate 
             stackView.addArrangedSubview(accountLabel)
             stackView.addArrangedSubview(emailLabel)
 
+            /// We have different layout if the account uses OAuth.
             if let oauthAccountData = accountData as? MDMAccountDeploymentViewModel.OAuthAccountData {
                 let oauthButton = UIButton(type: .system)
                 oauthButton.setTitle(oauthAccountData.oauthProvider.toString(), for: .normal)
