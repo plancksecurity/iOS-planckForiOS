@@ -137,5 +137,9 @@ public protocol MDMSettingsProtocol {
     /// Echo allows the first message with content in an exchange to be protected.
     /// Default is true
     var mdmEchoProtocolEnabled: Bool { get }
-}
 
+    /// The OAuth Provider.
+    /// It should be "GOOGLE" or "MICROSOFT".
+    /// Default is MICROSOFT, so any other string will fall into MICROSOFT.
+    var mdmAccountOauthProvider: String? { get }
+}
