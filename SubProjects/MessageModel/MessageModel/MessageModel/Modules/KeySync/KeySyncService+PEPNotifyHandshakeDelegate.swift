@@ -23,6 +23,11 @@ extension KeySyncService: PEPNotifyHandshakeDelegate {
 
         // request show handshake dialog
         case .initAddOurDevice, .initAddOtherDevice:
+            if !keySyncEnabled {
+                // User has not indicated the wish to sync, so ignore.
+                break
+            }
+
             guard let theMe = me else {
                 Log.shared.errorAndCrash(message: "Expected own identity")
                 return .illegalValue
@@ -37,6 +42,11 @@ extension KeySyncService: PEPNotifyHandshakeDelegate {
             showHandshakeAndHandleResult(inBetween: theMe, and: thePartner, isNewGroup: false)
 
         case .initFormGroup:
+            if !keySyncEnabled {
+                // User has not indicated the wish to sync, so ignore.
+                break
+            }
+
             guard let theMe = me else {
                 Log.shared.errorAndCrash(message: "Expected own identity")
                 return .illegalValue
@@ -46,14 +56,25 @@ extension KeySyncService: PEPNotifyHandshakeDelegate {
                 Log.shared.errorAndCrash(message: "Expected partner identity")
                 return .illegalValue
             }
+
             fastPollingDelegate?.enableFastPolling()
             showHandshakeAndHandleResult(inBetween: theMe, and: thePartner, isNewGroup: true)
 
         case .timeout:
+            if !keySyncEnabled {
+                // User has not indicated the wish to sync, so ignore.
+                break
+            }
+
             fastPollingDelegate?.disableFastPolling()
             showHandshakeErrorAndHandleResult(error: KeySyncError.timeOut)
 
         case .acceptedDeviceAdded, .acceptedGroupCreated, .acceptedDeviceAccepted:
+            if !keySyncEnabled {
+                // User has not indicated the wish to sync, so ignore.
+                break
+            }
+
             fastPollingDelegate?.disableFastPolling()
             handshakeHandler?.showSuccessfullyGrouped()
             tryRedecryptYetUndecryptableMessages()
@@ -76,8 +97,13 @@ extension KeySyncService: PEPNotifyHandshakeDelegate {
             break
 
         case .stop:
-            handshakeHandler?.cancelHandshake()
-            postKeySyncDisabledByEngineNotification()
+            if keySyncEnabled {
+                // User has requested key sync, but then canceled. Handle this.
+                handshakeHandler?.cancelHandshake()
+
+                // For now, disable sync again.
+                postKeySyncDisabledByEngineNotification()
+            }
 
         case .outgoingRatingChange:
             outgoingRatingService.handleOutgoingRatingChange()

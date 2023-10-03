@@ -31,6 +31,9 @@ class KeySyncService: NSObject, KeySyncServiceProtocol {
     weak private(set) var fastPollingDelegate: PollingDelegate?
     let outgoingRatingService: OutgoingRatingServiceProtocol
 
+    /// Tracks the changes in the settings provided by `KeySyncStateProvider`.
+    var keySyncEnabled = false
+
     // MARK: - KeySyncServiceProtocol
 
     required init(keySyncServiceHandshakeHandler: KeySyncServiceHandshakeHandlerProtocol? = nil,
@@ -62,11 +65,7 @@ class KeySyncService: NSObject, KeySyncServiceProtocol {
                 Log.shared.lostMySelf()
                 return
             }
-            if enabled {
-                me.start()
-            } else {
-                me.stop()
-            }
+            me.keySyncEnabled = enabled
         }
     }
 
@@ -83,16 +82,7 @@ class KeySyncService: NSObject, KeySyncServiceProtocol {
                 Log.shared.errorAndCrash("Lost myself")
                 return
             }
-            guard let stateProvider = me.keySyncStateProvider else {
-                Log.shared.errorAndCrash("No keySyncStateProvider")
-                return
-            }
-            do {
-                try PEPSession().disableAllSyncChannels()
-            } catch {
-                Log.shared.errorAndCrash("disableAllSyncChannels failed with error: %@",
-                                         error.localizedDescription)
-            }
+
             me.moc.performAndWait {
                 guard
                     let cdAccounts = try? me.qrc.getResults(),
@@ -104,7 +94,6 @@ class KeySyncService: NSObject, KeySyncServiceProtocol {
                 let group = DispatchGroup()
                 // spex: call myself() for all accounts
                 for cdAccount in cdAccounts {
-                    let pEpSyncEnabledForCurrentAccount = cdAccount.pEpSyncEnabled
                     guard let identity = cdAccount.identity else {
                         Log.shared.errorAndCrash("Account without identity!")
                         return
@@ -119,10 +108,6 @@ class KeySyncService: NSObject, KeySyncServiceProtocol {
                             Log.shared.errorAndCrash(error: error)
                         }
                     } successCallback: { (_) in
-                        guard pEpSyncEnabledForCurrentAccount else {
-                            group.leave()
-                            return // continue with next account
-                        }
                         PEPSession().enableSync(for: pEpUser) { (error) in
                             defer { group.leave() }
                             if error.isPassphraseError {
@@ -137,12 +122,6 @@ class KeySyncService: NSObject, KeySyncServiceProtocol {
                     }
                 }
                 group.notify(queue: DispatchQueue.main) {
-                    // spex:    in case Sync is enabled while startup the application must call start_sync(),
-                    //          otherwise it must not (default: enabled)
-                    guard stateProvider.isKeySyncEnabled else {
-                        // Do not start KeySync if the user disabled it.
-                        return
-                    }
                     let pEpSync = PEPSync(sendMessageDelegate: self, notifyHandshakeDelegate: self)
                     me.pEpSync = pEpSync
                     pEpSync.startup()

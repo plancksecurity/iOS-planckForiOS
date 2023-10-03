@@ -93,6 +93,9 @@ extension KeySyncHandshakeService: KeySyncServiceHandshakeHandlerProtocol {
     }
 
     public func showSuccessfullyGrouped() {
+        // Ignore certain sync notifications again, until the user choses to sync manually.
+        AppSettings.shared.keySyncEnabled = false
+
         guard let pEpSyncWizard = pEpSyncWizard else {
             // Valid case. We might have been dismissed already.
             return
