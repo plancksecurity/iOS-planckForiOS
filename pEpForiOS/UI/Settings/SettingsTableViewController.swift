@@ -165,7 +165,8 @@ extension SettingsTableViewController {
             return prepareSwipeTableViewCell(dequeuedCell, for: row)
         case .resetAccounts,
              .resetTrust,
-             .planckSync:
+             .planckSync,
+             .leaveDeviceGroup:
             if let cell = dequeuedCell as? SettingsActionTableViewCell, row.identifier == .planckSync {
                 cell.activityIndicatorIsOn = AppSettings.shared.keyPlanckSyncActivityIndicatorIsOn
             }
@@ -300,6 +301,15 @@ extension SettingsTableViewController : SwipeTableViewCellDelegate {
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         let row = viewModel.section(for: indexPath.section).rows[indexPath.row]
         switch row.identifier {
+        case .leaveDeviceGroup:
+            tableView.deselectRow(at: indexPath, animated: true)
+            if !NetworkMonitorUtil.shared.netOn {
+                //Inform the user if there is no internet connection.
+                UIUtils.showNoInternetConnectionBanner(viewController: self)
+                return
+            }
+            viewModel.handleLeaveDeviceGroup()
+
         case .planckSync:
             tableView.deselectRow(at: indexPath, animated: true)
             if !NetworkMonitorUtil.shared.netOn {
@@ -452,6 +462,18 @@ extension SettingsTableViewController : SettingsViewModelDelegate {
         UIUtils.showAlertWithOnlyCloseButton(title: errorTitle, message: errorMessage)
     }
 
+    func leaveDeviceGroupFinished() {
+        let title = NSLocalizedString("Leave Device Group finished", comment: "Leave Device Group finished")
+        UIUtils.showAlertWithOnlyCloseButton(title: title, message: nil) {
+            DispatchQueue.main.async { [weak self] in
+                guard let me = self else {
+                    return
+                }
+                me.tableView.reloadData()
+            }
+        }
+    }
+
     func showExtraKeyEditabilityStateChangeAlert(newValue: String) {
         let title = NSLocalizedString("Extra Keys Editable", comment: "Extra Keys Editable")
         UIUtils.showAlertWithOnlyPositiveButton(title:title, message: newValue)
@@ -545,6 +567,8 @@ extension SettingsTableViewController {
         case .auditLogging:
             return .segueAuditLogging
         case .planckSync:
+            return .none
+        case .leaveDeviceGroup:
             return .none
         }
     }

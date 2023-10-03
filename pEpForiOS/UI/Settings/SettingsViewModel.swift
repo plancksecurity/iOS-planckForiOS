@@ -18,6 +18,8 @@ protocol SettingsViewModelDelegate: AnyObject {
     func hideLoadingView()
     /// Informs that reinit sync failed
     func informReinitFailed()
+    /// Informs that Leave device group request finieshed
+    func leaveDeviceGroupFinished()
     /// Shows an alert to indicate if the extra key is editable
     func showExtraKeyEditabilityStateChangeAlert(newValue: String)
     /// Shows an alert to confirm the reset all identities.
@@ -111,7 +113,7 @@ final class SettingsViewModel {
                 .auditLogging:
             return "SettingsCell"
         case .resetAccounts,
-                .planckSync:
+                .planckSync, .leaveDeviceGroup:
             return "SettingsActionCell"
         case    .passiveMode,
                 .protectMessageSubject,
@@ -135,6 +137,18 @@ final class SettingsViewModel {
     /// Returns: True if there are no accounts.
     public func noAccounts() -> Bool {
         return Account.all().count <= 0
+    }
+
+    public func handleLeaveDeviceGroup() {
+        KeySyncUtil.leaveDeviceGroup { [weak self] in
+            guard let me = self else {
+                Log.shared.errorAndCrash("Lost myself")
+                return
+            }
+            DispatchQueue.main.async {
+                me.delegate?.leaveDeviceGroupFinished()
+            }
+        }
     }
 
     public func handlePlanckSyncPressed() {
@@ -349,6 +363,9 @@ extension SettingsViewModel {
             }
         case .planckSync:
             rows.append(generateNavigationRow(type: .planckSync, isDangerous: false))
+            if appSettings.lastKnownDeviceGroupState == .grouped {
+                rows.append(generateNavigationRow(type: .leaveDeviceGroup, isDangerous: false))
+            }
         case .contacts:
             rows.append(generateNavigationRow(type: .resetTrust, isDangerous: true))
         case .companyFeatures:
@@ -494,6 +511,9 @@ extension SettingsViewModel {
         case .planckSync:
             return NSLocalizedString("planck Sync",
                                      comment: "Settings: open planck sync wizard feature")
+        case .leaveDeviceGroup:
+            return NSLocalizedString("Leave device group",
+                                     comment: "Settings: Leave device group feature")
         case .usePlanckFolder:
             return NSLocalizedString("Use planck Folder For Sync Messages",
                                      comment: "Settings: title for enable/disable usePlanckFolder feature")
@@ -527,6 +547,7 @@ extension SettingsViewModel {
                 .extraKeys,
                 .passiveMode,
                 .planckSync,
+                .leaveDeviceGroup,
                 .usePlanckFolder,
                 .protectMessageSubject,
                 .resetAccounts,
@@ -662,7 +683,8 @@ extension SettingsViewModel {
         case passiveMode  // This will not be shown. For further info see: EFI-24
         case protectMessageSubject
         case unsecureReplyWarningEnabled
-        case planckSync  // This will not be shown. For further info see: EFI-24
+        case planckSync
+        case leaveDeviceGroup
         case usePlanckFolder
         case resetTrust
         case extraKeys
