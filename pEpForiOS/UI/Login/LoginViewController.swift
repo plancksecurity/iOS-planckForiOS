@@ -158,14 +158,6 @@ final class LoginViewController: UIViewController {
                  password: pass)
     }
 
-    @IBAction func pEpSyncStateChanged(_ sender: UISwitch) {
-        guard let vm = viewModel else {
-            Log.shared.errorAndCrash("No VM")
-            return
-        }
-        vm.isAccountPEPSyncEnable = sender.isOn
-    }
-
     func firstResponderTextField() -> UITextField? {
         if emailAddress.isFirstResponder {
             return emailAddress

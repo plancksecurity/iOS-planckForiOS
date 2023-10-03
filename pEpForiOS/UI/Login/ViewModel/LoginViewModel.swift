@@ -18,13 +18,6 @@ final class LoginViewModel {
     /// Helper class to handle login logic via OAuth or manual input.
     var loginUtil: LoginUtil
 
-    var isAccountPEPSyncEnable = true {
-        didSet {
-            loginUtil.verifiableAccount.keySyncEnable = isAccountPEPSyncEnable
-            AppSettings.shared.keySyncEnabled = isAccountPEPSyncEnable
-        }
-    }
-
     let qualifyServerIsLocalService = QualifyServerIsLocalService()
 
     init(verifiableAccount: VerifiableAccountProtocol? = nil) {
