@@ -11,11 +11,6 @@ import Foundation
 import PlanckToolbox
 import MessageModel
 
-enum OAuthProvider: String {
-    case microsoft = "MICROSOFT"
-    case google = "GOOGLE"
-}
-
 class MDMAccountDeploymentViewModel {
 
     var accountTypeSelectorViewModel = AccountTypeSelectorViewModel()

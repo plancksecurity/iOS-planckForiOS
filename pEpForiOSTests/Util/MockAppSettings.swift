@@ -79,7 +79,8 @@ class MockAppSettings: AppSettingsProtocol {
     var mdmPEPSyncAccountEnabled: Bool = false
 
     var mdmPEPSyncNewDevicesEnabled: Bool = false
-
+    
+    var mdmAccountOauthProvider: String? = "MICROSOFT"
 
     var removeFolderViewCollapsedStateOfAccountWithExpectation: XCTestExpectation?
     // getters

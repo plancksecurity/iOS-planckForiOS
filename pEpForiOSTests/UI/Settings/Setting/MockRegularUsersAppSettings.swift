@@ -11,6 +11,8 @@ import Foundation
 @testable import MessageModel
 
 class MockRegularUsersAppSettings : AppSettingsProtocol {
+    var mdmAccountOauthProvider: String? = "MICROSOFT"
+    
     var keyPlanckSyncActivityIndicatorIsOn: Bool = false
 
     var mdmIsEnabled: Bool = false

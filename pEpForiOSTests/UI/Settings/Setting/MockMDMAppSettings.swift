@@ -12,6 +12,7 @@ import Foundation
 
 class MDMMockAppSettings : AppSettingsProtocol {
 
+
     var keyPlanckSyncActivityIndicatorIsOn: Bool = false
 
     var keySyncEnabled: Bool = true
@@ -114,6 +115,10 @@ class MDMMockAppSettings : AppSettingsProtocol {
 
     var mdmPEPSyncNewDevicesEnabled: Bool {
         return true
+    }
+    
+    var mdmAccountOauthProvider: String? {
+        return "MICROSOFT"
     }
 
     let mdmEchoProtocolEnabled = false
