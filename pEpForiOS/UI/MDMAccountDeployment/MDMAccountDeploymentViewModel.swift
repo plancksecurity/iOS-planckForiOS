@@ -46,9 +46,33 @@ class MDMAccountDeploymentViewModel {
         }
     }
 
+    enum OAuthProvider {
+        case microsoft
+        case google
+
+        init(provider: String) {
+            if provider == "GOOGLE" {
+                self = .google
+            } else if provider == "MICROSOFT" {
+                self = .microsoft
+            } else {
+                self = .microsoft
+            }
+        }
+
+        func toString() -> String {
+            switch self {
+            case .google:
+                return "GOOGLE"
+            case .microsoft:
+                return "MICROSOFT"
+            }
+        }
+    }
+
     class OAuthAccountData: AccountData {
-        let oauthProvider: String
-        init(accountName: String, email: String, oauthProvider: String) {
+        let oauthProvider: OAuthProvider
+        init(accountName: String, email: String, oauthProvider: OAuthProvider) {
             self.oauthProvider = oauthProvider
             super.init(accountName: accountName, email: email)
         }
@@ -70,7 +94,10 @@ class MDMAccountDeploymentViewModel {
         do {
             if let accountData = try MDMDeployment().accountToDeploy() {
                 if let oauthProvider = accountData.oauthProvider {
-                    return OAuthAccountData(accountName: accountData.accountName, email: accountData.email, oauthProvider: oauthProvider)
+                    let provider = OAuthProvider(provider: oauthProvider)
+                    return OAuthAccountData(accountName: accountData.accountName,
+                                            email: accountData.email,
+                                            oauthProvider: provider)
                 }
                 return AccountData(accountName: accountData.accountName, email: accountData.email)
             } else {
@@ -162,9 +189,9 @@ extension MDMAccountDeploymentViewModel {
 
     public func handleDidSelect(viewController : UIViewController? = nil) {
         if let data = accountData() as? OAuthAccountData {
-            if data.oauthProvider == "GOOGLE" {
+            if data.oauthProvider == .google {
                 accountTypeSelectorViewModel.handleDidSelect(accountType: .google, viewController: viewController)
-            } else if data.oauthProvider == "MICROSOFT" {
+            } else if data.oauthProvider == .microsoft {
                 accountTypeSelectorViewModel.handleDidSelect(accountType: .microsoft, viewController: viewController)
             }
         }

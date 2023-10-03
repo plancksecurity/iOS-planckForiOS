@@ -102,7 +102,7 @@ class MDMAccountDeploymentViewController: UIViewController, UITextFieldDelegate 
 
             if let oauthAccountData = accountData as? MDMAccountDeploymentViewModel.OAuthAccountData {
                 let oauthButton = UIButton(type: .system)
-                oauthButton.setTitle(oauthAccountData.oauthProvider, for: .normal)
+                oauthButton.setTitle(oauthAccountData.oauthProvider.toString(), for: .normal)
                 oauthButton.addTarget(self, action: #selector(oauthButtonTapped), for: .touchUpInside)
                 oauthButton.isEnabled = true
                 oauthButton.isHidden = false
