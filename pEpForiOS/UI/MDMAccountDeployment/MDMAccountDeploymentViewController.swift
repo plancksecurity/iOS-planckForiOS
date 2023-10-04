@@ -33,7 +33,7 @@ class MDMAccountDeploymentViewController: UIViewController, UITextFieldDelegate 
     override func viewDidLoad() {
         super.viewDidLoad()
         viewModel.accountTypeSelectorViewModel.delegate = self
-        FakeMDM().setupDeployableAccountData()
+        //FakeMDM().setupDeployableAccountData()
         setupUI()
         // Prevent the user to be able to "swipe down" this VC
         isModalInPresentation = true
