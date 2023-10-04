@@ -655,6 +655,8 @@
 		F73E4F72217F238300CCFFED /* FolderSectionViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = F73E4F71217F238300CCFFED /* FolderSectionViewModelTests.swift */; };
 		F73E4F7A2180744700CCFFED /* FolderCellViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = F73E4F792180744700CCFFED /* FolderCellViewModelTests.swift */; };
 		F75D01D22A39ABEA00805DEF /* AuditLogginService.swift in Sources */ = {isa = PBXBuildFile; fileRef = F75D01D12A39ABEA00805DEF /* AuditLogginService.swift */; };
+		F7697C552ACB1B7E00F53D91 /* MDM_fake_PASSWORD_021.plist in Resources */ = {isa = PBXBuildFile; fileRef = F7697C542ACB1B7E00F53D91 /* MDM_fake_PASSWORD_021.plist */; };
+		F7697C562ACC2D7C00F53D91 /* FakeMDM.swift in Sources */ = {isa = PBXBuildFile; fileRef = F7A5098C2A9E140A00A51EFD /* FakeMDM.swift */; };
 		F779D6012A2F28E60069381E /* AuditLogginViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F779D6002A2F28E60069381E /* AuditLogginViewController.swift */; };
 		F779D6032A2F29130069381E /* AuditLoginViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = F779D6022A2F29130069381E /* AuditLoginViewModel.swift */; };
 		F779D6052A2F4DF60069381E /* AuditLoggingTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = F779D6042A2F4DF60069381E /* AuditLoggingTableViewCell.swift */; };
@@ -1251,9 +1253,11 @@
 		F73E4F71217F238300CCFFED /* FolderSectionViewModelTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FolderSectionViewModelTests.swift; sourceTree = "<group>"; };
 		F73E4F792180744700CCFFED /* FolderCellViewModelTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FolderCellViewModelTests.swift; sourceTree = "<group>"; };
 		F75D01D12A39ABEA00805DEF /* AuditLogginService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuditLogginService.swift; sourceTree = "<group>"; };
+		F7697C542ACB1B7E00F53D91 /* MDM_fake_PASSWORD_021.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = MDM_fake_PASSWORD_021.plist; sourceTree = "<group>"; };
 		F779D6002A2F28E60069381E /* AuditLogginViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuditLogginViewController.swift; sourceTree = "<group>"; };
 		F779D6022A2F29130069381E /* AuditLoginViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuditLoginViewModel.swift; sourceTree = "<group>"; };
 		F779D6042A2F4DF60069381E /* AuditLoggingTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuditLoggingTableViewCell.swift; sourceTree = "<group>"; };
+		F7A5098C2A9E140A00A51EFD /* FakeMDM.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FakeMDM.swift; sourceTree = "<group>"; };
 		F7DB9F3A2A66A3D900D2E5AB /* SettingsActionTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsActionTableViewCell.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -2468,6 +2472,8 @@
 		43E34BE228BCB5640035D051 /* MDMAccountDeployment */ = {
 			isa = PBXGroup;
 			children = (
+				F7697C542ACB1B7E00F53D91 /* MDM_fake_PASSWORD_021.plist */,
+				F7A5098C2A9E140A00A51EFD /* FakeMDM.swift */,
 				43E34BE328BCB5640035D051 /* MDMAccountDeploymentViewController.swift */,
 				43E34BE528BCB5640035D051 /* MDMAccountDeploymentViewModel.swift */,
 			);
@@ -3271,6 +3277,7 @@
 				151C67FF2418158B00481F75 /* SFUIText-Semibold.ttf in Resources */,
 				433404CB2379789600E785F1 /* NothingSelected.storyboard in Resources */,
 				434C5AA4297855BA007496AF /* secret.xcconfig in Resources */,
+				F7697C552ACB1B7E00F53D91 /* MDM_fake_PASSWORD_021.plist in Resources */,
 				43C98AC3219C275E006418B0 /* Localizable.strings in Resources */,
 				5BFAE38A282292C400B003D4 /* ErrorBannerView.xib in Resources */,
 				3A2119E424125AC60030C3E4 /* Certificates.storyboard in Resources */,
@@ -3834,6 +3841,7 @@
 				5B394E1323ED5673006A1FC0 /* TrustManagementTableViewCell.swift in Sources */,
 				15D3D48B239FC14700F2EBFB /* EmailDetailCollectionViewCell.swift in Sources */,
 				152A39E821905C3E00D9F8E4 /* RecipientCellViewModel.swift in Sources */,
+				F7697C562ACC2D7C00F53D91 /* FakeMDM.swift in Sources */,
 				152A39CE21905C3E00D9F8E4 /* ComposeHelpers.swift in Sources */,
 				43985D0A2044296D0080FA9A /* OAuthAuthorizer.swift in Sources */,
 				5BBD1D1026270319009D9D8A /* RecipientButton.swift in Sources */,

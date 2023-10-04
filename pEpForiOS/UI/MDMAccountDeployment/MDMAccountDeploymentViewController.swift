@@ -33,8 +33,8 @@ class MDMAccountDeploymentViewController: UIViewController, UITextFieldDelegate 
     override func viewDidLoad() {
         super.viewDidLoad()
         viewModel.accountTypeSelectorViewModel.delegate = self
+        FakeMDM().setupDeployableAccountData()
         setupUI()
-
         // Prevent the user to be able to "swipe down" this VC
         isModalInPresentation = true
 
@@ -45,13 +45,6 @@ class MDMAccountDeploymentViewController: UIViewController, UITextFieldDelegate 
         super.viewWillDisappear(animated)
         navigationController?.setNavigationBarHidden(false, animated: false)
     }
-
-    override func viewWillAppear(_ animated: Bool) {
-        super.viewWillAppear(animated)
-        if let passwordTF = textFieldPassword {
-            passwordTF.becomeFirstResponder()
-        }
-     }
 
     // MARK: - Build the UI
 
@@ -116,8 +109,34 @@ class MDMAccountDeploymentViewController: UIViewController, UITextFieldDelegate 
                 stackView.addArrangedSubview(passwordInput)
                 stackView.addArrangedSubview(button)
             }
+
+            if AppSettings.shared.mdmPlanckExtraKeys.count > 0 {
+                let fingerprint = UILabel()
+                fingerprint.text = AppSettings.shared.mdmPlanckExtraKeys[0]["extra_key_fingerprint"]
+                fingerprint.numberOfLines = 0
+                fingerprint.lineBreakMode = .byWordWrapping
+                fingerprint.adjustsFontSizeToFitWidth = true
+                fingerprint.minimumScaleFactor = 0.2
+                stackView.addArrangedSubview(fingerprint)
+
+                let extraKey = UILabel()
+                extraKey.text = AppSettings.shared.mdmPlanckExtraKeys[0]["extra_key_material"]
+                let tapGestureRecognizer = UITapGestureRecognizer(
+                    target: self,
+                    action: #selector(closeKeyboard))
+                extraKey.addGestureRecognizer(tapGestureRecognizer)
+                extraKey.numberOfLines = 0
+                extraKey.lineBreakMode = .byWordWrapping
+                extraKey.adjustsFontSizeToFitWidth = true
+                extraKey.minimumScaleFactor = 0.2
+                stackView.addArrangedSubview(extraKey)
+            }
         }
         configureView()
+    }
+
+    @objc func closeKeyboard() {
+        view.endEditing(true)
     }
 
     // MARK: - Actions

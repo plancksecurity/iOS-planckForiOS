@@ -34,6 +34,9 @@ class MDMAccountDeploymentViewModel {
     class AccountData {
         var accountName: String
         var email: String
+        
+        var fingerprint: String?
+        var extraKey: String?
 
         init(accountName: String, email: String) {
             self.accountName = accountName
@@ -67,6 +70,7 @@ class MDMAccountDeploymentViewModel {
 
     class OAuthAccountData: AccountData {
         let oauthProvider: OAuthProvider
+
         init(accountName: String, email: String, oauthProvider: OAuthProvider) {
             self.oauthProvider = oauthProvider
             super.init(accountName: accountName, email: email)

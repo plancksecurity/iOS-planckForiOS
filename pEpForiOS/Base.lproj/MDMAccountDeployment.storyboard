@@ -17,19 +17,34 @@
                         <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" translatesAutoresizingMaskIntoConstraints="NO" id="TIa-mM-fH7">
-                                <rect key="frame" x="10" y="102" width="394" height="300"/>
+                            <scrollView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="HWc-G5-A1Z">
+                                <rect key="frame" x="-10" y="92" width="434" height="770"/>
+                                <subviews>
+                                    <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" translatesAutoresizingMaskIntoConstraints="NO" id="TIa-mM-fH7">
+                                        <rect key="frame" x="20" y="0.0" width="394" height="896"/>
+                                        <constraints>
+                                            <constraint firstAttribute="height" constant="896" id="Dvq-Q4-ced"/>
+                                        </constraints>
+                                    </stackView>
+                                </subviews>
                                 <constraints>
-                                    <constraint firstAttribute="height" priority="1" constant="300" id="kxT-wb-wpI"/>
+                                    <constraint firstItem="TIa-mM-fH7" firstAttribute="top" secondItem="HWc-G5-A1Z" secondAttribute="top" id="4Vh-Zk-e5T"/>
+                                    <constraint firstAttribute="bottom" secondItem="TIa-mM-fH7" secondAttribute="bottom" id="GkP-7D-Q7S"/>
+                                    <constraint firstAttribute="trailing" secondItem="TIa-mM-fH7" secondAttribute="trailing" constant="20" symbolic="YES" id="YdE-OZ-FON"/>
+                                    <constraint firstItem="TIa-mM-fH7" firstAttribute="leading" secondItem="HWc-G5-A1Z" secondAttribute="leading" constant="20" symbolic="YES" id="i3T-k1-dDI"/>
+                                    <constraint firstItem="TIa-mM-fH7" firstAttribute="width" secondItem="HWc-G5-A1Z" secondAttribute="width" multiplier="0.907834" id="zzL-4L-VJZ"/>
                                 </constraints>
-                            </stackView>
+                                <viewLayoutGuide key="contentLayoutGuide" id="ure-aj-Uh3"/>
+                                <viewLayoutGuide key="frameLayoutGuide" id="dRa-cF-8A6"/>
+                            </scrollView>
                         </subviews>
                         <viewLayoutGuide key="safeArea" id="vDu-zF-Fre"/>
                         <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                         <constraints>
-                            <constraint firstItem="TIa-mM-fH7" firstAttribute="top" secondItem="vDu-zF-Fre" secondAttribute="top" constant="10" id="5n9-oF-b8J"/>
-                            <constraint firstItem="TIa-mM-fH7" firstAttribute="trailing" secondItem="vDu-zF-Fre" secondAttribute="trailing" constant="-10" id="Kdl-hV-a2r"/>
-                            <constraint firstItem="TIa-mM-fH7" firstAttribute="leading" secondItem="vDu-zF-Fre" secondAttribute="leading" constant="10" id="Pkc-C5-6hp"/>
+                            <constraint firstItem="vDu-zF-Fre" firstAttribute="top" secondItem="HWc-G5-A1Z" secondAttribute="top" id="KFT-A8-e5x"/>
+                            <constraint firstItem="HWc-G5-A1Z" firstAttribute="trailing" secondItem="vDu-zF-Fre" secondAttribute="trailing" constant="10" id="KQH-Xb-bdM"/>
+                            <constraint firstItem="vDu-zF-Fre" firstAttribute="leading" secondItem="HWc-G5-A1Z" secondAttribute="leading" constant="10" id="qfF-yR-4vU"/>
+                            <constraint firstItem="vDu-zF-Fre" firstAttribute="bottom" secondItem="HWc-G5-A1Z" secondAttribute="bottom" id="tg2-Yo-DKF"/>
                         </constraints>
                     </view>
                     <navigationItem key="navigationItem" id="IQI-8n-fg2"/>
