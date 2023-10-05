@@ -52,7 +52,7 @@ class MDMAccountDeploymentViewController: UIViewController, UITextFieldDelegate 
         let existingArrangedViews = stackView.arrangedSubviews
         stackView.removeArrangedSubviews()
         stackView.alignment = .center
-        stackView.spacing = 10
+        stackView.spacing = 2
 
         for view in existingArrangedViews {
             view.removeFromSuperview()
@@ -64,11 +64,11 @@ class MDMAccountDeploymentViewController: UIViewController, UITextFieldDelegate 
         case .accountData(let accountData):
             let accountLabel = UILabel()
             accountLabel.text = accountData.accountName
-            accountLabel.setPEPFont(style: .title1, weight: .regular)
+            accountLabel.setPEPFont(style: .title2, weight: .regular)
 
             let emailLabel = UILabel()
             emailLabel.text = accountData.email
-            emailLabel.setPEPFont(style: .title1, weight: .regular)
+            emailLabel.setPEPFont(style: .title2, weight: .regular)
 
             let passwordInput = UITextField()
             passwordInput.placeholder = viewModel.passwordTextFieldPlaceholderText()
@@ -112,23 +112,21 @@ class MDMAccountDeploymentViewController: UIViewController, UITextFieldDelegate 
 
             if AppSettings.shared.mdmPlanckExtraKeys.count > 0 {
                 let fingerprint = UILabel()
-                fingerprint.text = AppSettings.shared.mdmPlanckExtraKeys[0]["extra_key_fingerprint"]
+                fingerprint.text = AppSettings.shared.mdmPlanckExtraKeys[0]["extra_key_fingerprint"]?.trimmed()
                 fingerprint.numberOfLines = 0
-                fingerprint.lineBreakMode = .byWordWrapping
                 fingerprint.adjustsFontSizeToFitWidth = true
-                fingerprint.minimumScaleFactor = 0.2
+                fingerprint.minimumScaleFactor = 0.1
                 stackView.addArrangedSubview(fingerprint)
 
                 let extraKey = UILabel()
-                extraKey.text = AppSettings.shared.mdmPlanckExtraKeys[0]["extra_key_material"]
+                extraKey.text = AppSettings.shared.mdmPlanckExtraKeys[0]["extra_key_material"]?.trimmed()
                 let tapGestureRecognizer = UITapGestureRecognizer(
                     target: self,
                     action: #selector(closeKeyboard))
                 extraKey.addGestureRecognizer(tapGestureRecognizer)
                 extraKey.numberOfLines = 0
-                extraKey.lineBreakMode = .byWordWrapping
                 extraKey.adjustsFontSizeToFitWidth = true
-                extraKey.minimumScaleFactor = 0.2
+                extraKey.minimumScaleFactor = 0.1
                 stackView.addArrangedSubview(extraKey)
             }
         }
