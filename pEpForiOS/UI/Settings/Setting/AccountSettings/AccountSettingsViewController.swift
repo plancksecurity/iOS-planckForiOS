@@ -34,8 +34,8 @@ final class AccountSettingsViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         NotificationCenter.default.addObserver(self,
-                                               selector: #selector(pEpMDMSettingsChanged),
-                                               name: .pEpMDMSettingsChanged,
+                                               selector: #selector(planckMDMSettingsChanged),
+                                               name: .planckMDMSettingsChanged,
                                                object: nil)
         guard let vm = viewModel else {
             Log.shared.errorAndCrash("VM not found")
@@ -85,7 +85,7 @@ final class AccountSettingsViewController: UIViewController {
         }
     }
 
-    @objc private func pEpMDMSettingsChanged() {
+    @objc private func planckMDMSettingsChanged() {
         if let vm = viewModel {
             viewModel = AccountSettingsViewModel(account: vm.account)
             tableView.reloadData()

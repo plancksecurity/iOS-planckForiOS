@@ -27,8 +27,12 @@ final class SettingsTableViewController: UITableViewController {
         addExtraKeysEditabilityToggleGesture()
         setBackButtonAccessibilityLabel()
         NotificationCenter.default.addObserver(self,
-                                               selector: #selector(pEpMDMSettingsChanged),
-                                               name: .pEpMDMSettingsChanged,
+                                               selector: #selector(planckSettingsChanged),
+                                               name: .planckMDMSettingsChanged,
+                                               object: nil)
+        NotificationCenter.default.addObserver(self,
+                                               selector: #selector(planckSettingsChanged),
+                                               name: .planckSettingsChanged,
                                                object: nil)
     }
     
@@ -77,7 +81,7 @@ final class SettingsTableViewController: UITableViewController {
         viewModel.handleExtraKeysEditabilityGestureTriggered()
     }
 
-    @objc private func pEpMDMSettingsChanged() {
+    @objc private func planckSettingsChanged() {
         viewModel = SettingsViewModel(delegate: self)
         tableView.reloadData()
     }
@@ -451,7 +455,7 @@ extension SettingsTableViewController : SettingsViewModelDelegate {
             me.activityIndicatorView?.removeFromSuperview()
         }
     }
-    
+
     func informReinitFailed() {
         guard !(UIApplication.currentlyVisibleViewController() is KeySyncWizardViewController) else {
             // Nothing to show.
@@ -463,15 +467,8 @@ extension SettingsTableViewController : SettingsViewModelDelegate {
     }
 
     func leaveDeviceGroupFinished() {
-        let title = NSLocalizedString("Leave Device Group finished", comment: "Leave Device Group finished")
-        UIUtils.showAlertWithOnlyCloseButton(title: title, message: nil) {
-            DispatchQueue.main.async { [weak self] in
-                guard let me = self else {
-                    return
-                }
-                me.tableView.reloadData()
-            }
-        }
+        let title = NSLocalizedString("Device Group abandoned", comment: "Leave Device Group finished")
+        UIUtils.showAlertWithOnlyCloseButton(title: title, message: nil)
     }
 
     func showExtraKeyEditabilityStateChangeAlert(newValue: String) {

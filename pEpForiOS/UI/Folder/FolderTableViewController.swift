@@ -26,13 +26,13 @@ class FolderTableViewController: UITableViewController {
         super.viewDidLoad()
         initialConfig()
         NotificationCenter.default.addObserver(self,
-                                               selector: #selector(pEpSettingsChanged),
-                                               name: .pEpSettingsChanged,
+                                               selector: #selector(planckSettingsChanged),
+                                               name: .planckSettingsChanged,
                                                object: nil)
 
         NotificationCenter.default.addObserver(self,
-                                               selector: #selector(pEpMDMSettingsChanged),
-                                               name: .pEpMDMSettingsChanged,
+                                               selector: #selector(planckMDMSettingsChanged),
+                                               name: .planckMDMSettingsChanged,
                                                object: nil)
 
     }
@@ -563,11 +563,11 @@ extension FolderTableViewController : FolderViewModelDelegate {
 
 extension FolderTableViewController {
 
-    @objc private func pEpSettingsChanged() {
+    @objc private func planckSettingsChanged() {
         tableView.reloadData()
     }
 
-    @objc private func pEpMDMSettingsChanged() {
+    @objc private func planckMDMSettingsChanged() {
         guard let vm = folderVM else {
             Log.shared.errorAndCrash("VM not found")
             return

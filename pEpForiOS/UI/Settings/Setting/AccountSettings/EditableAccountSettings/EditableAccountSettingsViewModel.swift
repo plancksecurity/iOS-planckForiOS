@@ -224,7 +224,7 @@ extension EditableAccountSettingsViewModel: VerifiableAccountDelegate {
 extension EditableAccountSettingsViewModel {
 
     private func postSettingsDidChanged() {
-        let name = Notification.Name.pEpSettingsChanged
+        let name = Notification.Name.planckSettingsChanged
         NotificationCenter.default.post(name:name, object: self, userInfo: nil)
     }
 

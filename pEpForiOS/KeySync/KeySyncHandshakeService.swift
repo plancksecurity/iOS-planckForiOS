@@ -92,20 +92,22 @@ extension KeySyncHandshakeService: KeySyncServiceHandshakeHandlerProtocol {
         }
     }
 
-    public func showSuccessfullyGrouped() {
+    public func handleSuccessfullyGrouped() {
+        NotificationCenter.default.post(name:.planckSettingsChanged, object: nil, userInfo: nil)
         // Ignore certain sync notifications again, until the user choses to sync manually.
         AppSettings.shared.keySyncEnabled = false
-
         guard let pEpSyncWizard = pEpSyncWizard else {
             // Valid case. We might have been dismissed already.
             return
         }
+
         let completedViewIndex = pEpSyncWizard.views.count - 1
         DispatchQueue.main.async { [weak self] in
             guard let me = self else {
                 // Valid case. We might have been dismissed already.
                 return
             }
+
             me.pEpSyncWizard?.goTo(index: completedViewIndex)
         }
     }
