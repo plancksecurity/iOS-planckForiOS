@@ -140,6 +140,7 @@ final class SettingsViewModel {
     public func handlePlanckSyncPressed() {
         appSettings.keySyncEnabled = true
         AppSettings.shared.keySyncWizardWasShown = false
+
         func handleFailureOrEndOfKeySyncWindow() {
             appSettings.keyPlanckSyncActivityIndicatorIsOn = false
             appSettings.keySyncEnabled = false
