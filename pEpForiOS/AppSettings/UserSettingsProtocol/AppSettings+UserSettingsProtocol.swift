@@ -65,8 +65,7 @@ extension AppSettings: UserSettingsProtocol {
             return AppSettings.userDefaults.bool(forKey: AppSettings.keyKeySyncEnabled)
         }
         set {
-            AppSettings.userDefaults.set(newValue,
-                                         forKey: AppSettings.keyKeySyncEnabled)
+            AppSettings.userDefaults.set(newValue, forKey: AppSettings.keyKeySyncEnabled)
             stateChangeHandler?(newValue)
         }
     }
