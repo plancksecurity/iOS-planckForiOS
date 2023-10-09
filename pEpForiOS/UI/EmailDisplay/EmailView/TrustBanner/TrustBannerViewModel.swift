@@ -85,7 +85,7 @@ struct TrustBannerViewModel {
 
     /// The button title
     public var buttonTitle: String {
-        return NSLocalizedString("Tap to establish trust with this sender.", comment: "Tap to establish trust with this sender - button title")
+        return NSLocalizedString("Tap to verify identity with this sender.", comment: "Tap to verify identity with this sender - button title")
     }
 
     /// Handle trust button was pressed.

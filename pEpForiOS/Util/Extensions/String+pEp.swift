@@ -30,11 +30,11 @@ extension String {
                                        suggestion: "")
         static let yellow = PEPStatusText(rating: .reliable,
                                           title: NSLocalizedString("Secure", comment: "Privacy status title"),
-                                          explanation: NSLocalizedString("In order to make the communication with this communication partner Secure & Trusted, you will have to compare the Trustwords below with this communication partner and ensure they match yours.", comment: "Privacy status explanation"),
+                                          explanation: NSLocalizedString("In order to make the communication with this communication partner Verified, you will have to compare the Trustwords below with this communication partner and ensure they match yours.", comment: "Privacy status explanation"),
                                           suggestion: "")
         static let green = PEPStatusText(rating: .trusted,
-                                         title: NSLocalizedString("Secure & Trusted", comment: "Privacy status title"),
-                                         explanation: NSLocalizedString("This contact is completely trusted. All communication will be the maximum level of privacy.", comment: "Privacy status explanation"),
+                                         title: NSLocalizedString("Verified", comment: "Privacy status title"),
+                                         explanation: NSLocalizedString("This contact is completely verified. All communication will be the maximum level of privacy.", comment: "Privacy status explanation"),
                                          suggestion: "")
         static let noColor = PEPStatusText(rating: .undefined,
                                          title: "",
@@ -100,7 +100,7 @@ extension String {
             PEPStatusText(
                 rating: .fullyAnonymous,
                 title:
-                NSLocalizedString("Secure & Trusted",
+                NSLocalizedString("Verified",
                                   comment: "Privacy status title"),
                 explanation:
                 NSLocalizedString("This message is secure and trusted.",
@@ -111,7 +111,7 @@ extension String {
          .trustedAndAnonymized:
             PEPStatusText(
                 rating: .trustedAndAnonymized,
-                title: NSLocalizedString("Secure & Trusted",
+                title: NSLocalizedString("Verified",
                                          comment: "Privacy status title"),
                 explanation: NSLocalizedString("This message is secure and trusted.",
                                                comment: "Privacy status explanation"),
@@ -120,7 +120,7 @@ extension String {
          .trusted:
             PEPStatusText(
                 rating: .trusted,
-                title: NSLocalizedString("Secure & Trusted",
+                title: NSLocalizedString("Verified",
                                          comment: "Privacy status title"),
                 explanation: NSLocalizedString("This message is secure and trusted.",
                                                comment: "Privacy status explanation"),

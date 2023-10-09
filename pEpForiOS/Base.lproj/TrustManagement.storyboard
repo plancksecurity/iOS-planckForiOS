@@ -2,8 +2,7 @@
 <document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="21701" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="PZt-VJ-X5t">
     <device id="retina6_12" orientation="portrait" appearance="light"/>
     <dependencies>
-        <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="21678"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="21679"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
         <capability name="Stack View standard spacing" minToolsVersion="9.0"/>
         <capability name="System colors in document resources" minToolsVersion="11.0"/>
@@ -449,10 +448,10 @@
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
                                                 <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" distribution="fillEqually" spacing="20" translatesAutoresizingMaskIntoConstraints="NO" id="C8m-ac-x3C" userLabel="OuterStackView">
-                                                    <rect key="frame" x="20" y="-980.33333333333337" width="353" height="1330.3333333333333"/>
+                                                    <rect key="frame" x="20" y="-896.33333333333337" width="353" height="1246.3333333333333"/>
                                                     <subviews>
                                                         <stackView opaque="NO" contentMode="scaleToFill" alignment="top" spacing="30" translatesAutoresizingMaskIntoConstraints="NO" id="LAe-kT-Qws" userLabel="HeaderStackView">
-                                                            <rect key="frame" x="0.0" y="0.0" width="353" height="1330.3333333333333"/>
+                                                            <rect key="frame" x="0.0" y="0.0" width="353" height="1246.3333333333333"/>
                                                             <subviews>
                                                                 <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" spacing="15" translatesAutoresizingMaskIntoConstraints="NO" id="XHH-fK-iHt" userLabel="Left Side Stack View">
                                                                     <rect key="frame" x="0.0" y="0.0" width="273" height="330"/>
@@ -571,25 +570,24 @@
                                                                     </constraints>
                                                                 </stackView>
                                                                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Yin-G4-Q1S" userLabel="RightSide">
-                                                                    <rect key="frame" x="303" y="0.0" width="42" height="1330.3333333333333"/>
+                                                                    <rect key="frame" x="303" y="0.0" width="42" height="1246.3333333333333"/>
                                                                     <subviews>
-                                                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="scaleToFill" verticalHuggingPriority="251" verticalCompressionResistancePriority="1000" textAlignment="natural" lineBreakMode="wordWrap" numberOfLines="0" baselineAdjustment="alignBaselines" minimumScaleFactor="0.5" translatesAutoresizingMaskIntoConstraints="NO" id="5xj-yI-46H" userLabel="PrivacyStatusDescription">
-                                                                            <rect key="frame" x="0.0" y="24" width="22" height="1216.3333333333333"/>
+                                                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="scaleToFill" verticalHuggingPriority="251" verticalCompressionResistancePriority="1000" text="In order to make communication Verified, you will have to compare the Trustwords bellow with your communication partner." textAlignment="natural" lineBreakMode="wordWrap" numberOfLines="0" baselineAdjustment="alignBaselines" minimumScaleFactor="0.5" translatesAutoresizingMaskIntoConstraints="NO" id="5xj-yI-46H" userLabel="PrivacyStatusDescription">
+                                                                            <rect key="frame" x="0.0" y="24" width="22" height="1132.3333333333333"/>
                                                                             <accessibility key="accessibilityConfiguration" identifier="privacyStatusDescription"/>
-                                                                            <string key="text">In order to make communication Secure &amp; Trusted, you will have to compare the Trustwords bellow with your communication partner.</string>
                                                                             <fontDescription key="fontDescription" style="UICTFontTextStyleCallout"/>
                                                                             <nil key="textColor"/>
                                                                             <nil key="highlightedColor"/>
                                                                         </label>
                                                                         <label opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" verticalHuggingPriority="251" verticalCompressionResistancePriority="751" text="OUTDISTANCE BLAH BLAH2 BLAH3 BLAH4 BLAH5" textAlignment="natural" lineBreakMode="wordWrap" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="82G-iU-EVg" userLabel="TrustwordsLabel">
-                                                                            <rect key="frame" x="0.0" y="1261" width="4" height="0.0"/>
+                                                                            <rect key="frame" x="0.0" y="1177" width="4" height="0.0"/>
                                                                             <accessibility key="accessibilityConfiguration" label="trustWordsLabel"/>
                                                                             <fontDescription key="fontDescription" style="UICTFontTextStyleBody"/>
                                                                             <nil key="textColor"/>
                                                                             <nil key="highlightedColor"/>
                                                                         </label>
                                                                         <button opaque="NO" contentMode="scaleToFill" horizontalCompressionResistancePriority="1000" verticalCompressionResistancePriority="1000" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="wordWrap" translatesAutoresizingMaskIntoConstraints="NO" id="cLm-E4-Lx2" userLabel="DeclineButton">
-                                                                            <rect key="frame" x="0.0" y="1289.3333333333335" width="0.0" height="33"/>
+                                                                            <rect key="frame" x="0.0" y="1205.3333333333335" width="0.0" height="33"/>
                                                                             <accessibility key="accessibilityConfiguration" label="wrongButton"/>
                                                                             <fontDescription key="fontDescription" style="UICTFontTextStyleHeadline"/>
                                                                             <state key="normal" title="Decline"/>
@@ -598,7 +596,7 @@
                                                                             </connections>
                                                                         </button>
                                                                         <button opaque="NO" contentMode="scaleToFill" horizontalCompressionResistancePriority="1000" verticalCompressionResistancePriority="1000" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="wordWrap" translatesAutoresizingMaskIntoConstraints="NO" id="cAK-ZW-JLu" userLabel="ConfirmButton">
-                                                                            <rect key="frame" x="22" y="1289.3333333333335" width="0.0" height="33"/>
+                                                                            <rect key="frame" x="22" y="1205.3333333333335" width="0.0" height="33"/>
                                                                             <accessibility key="accessibilityConfiguration" label="confirmButton"/>
                                                                             <fontDescription key="fontDescription" style="UICTFontTextStyleHeadline"/>
                                                                             <state key="normal" title="Confirm"/>
@@ -607,7 +605,7 @@
                                                                             </connections>
                                                                         </button>
                                                                         <button opaque="NO" contentMode="scaleAspectFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="oRh-LC-ph7" userLabel="LanguageButton">
-                                                                            <rect key="frame" x="12" y="1261" width="30" height="30"/>
+                                                                            <rect key="frame" x="12" y="1177" width="30" height="30"/>
                                                                             <constraints>
                                                                                 <constraint firstAttribute="width" constant="30" id="TB5-Sx-vGy"/>
                                                                                 <constraint firstAttribute="height" constant="30" id="k49-Sv-T7c"/>
