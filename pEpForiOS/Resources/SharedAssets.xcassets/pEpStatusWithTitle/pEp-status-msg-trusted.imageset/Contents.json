@@ -1,7 +1,7 @@
 {
   "images" : [
     {
-      "filename" : "ico_trusted_EN.pdf",
+      "filename" : "ico_verified_light_EN.pdf",
       "idiom" : "universal"
     },
     {
@@ -11,11 +11,11 @@
           "value" : "dark"
         }
       ],
-      "filename" : "ico_trusted_EN_Dark.pdf",
+      "filename" : "ico_verified_dark_EN.pdf",
       "idiom" : "universal"
     },
     {
-      "filename" : "ico_trusted_DE.pdf",
+      "filename" : "ico_verified_light_DE.pdf",
       "idiom" : "universal",
       "locale" : "de"
     },
@@ -26,12 +26,12 @@
           "value" : "dark"
         }
       ],
-      "filename" : "ico_trusted_DE_Dark.pdf",
+      "filename" : "ico_verified_dark_DE.pdf",
       "idiom" : "universal",
       "locale" : "de"
     },
     {
-      "filename" : "ico_trusted_EN 1.pdf",
+      "filename" : "ico_verified_light_EN 1.pdf",
       "idiom" : "universal",
       "locale" : "en"
     },
@@ -42,7 +42,7 @@
           "value" : "dark"
         }
       ],
-      "filename" : "ico_trusted_EN_Dark 1.pdf",
+      "filename" : "ico_verified_dark_EN 1.pdf",
       "idiom" : "universal",
       "locale" : "en"
     }
