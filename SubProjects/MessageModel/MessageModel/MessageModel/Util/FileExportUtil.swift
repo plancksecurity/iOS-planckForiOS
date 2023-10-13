@@ -9,13 +9,15 @@
 import Foundation
 import PlanckToolbox
 import pEp4iosIntern
+import PEPObjCAdapter
 
 public protocol FileExportUtilProtocol: AnyObject {
     func exportDatabases() throws
-    func save(auditEventLog: EventLog, maxLogTime: Int)
+    func save(auditEventLog: EventLog, maxLogTime: Int, errorCallback: @escaping (Error) -> Void)
 }
 
 public class FileExportUtil: NSObject, FileExportUtilProtocol {
+    
     
     // MARK: - Singleton
 
@@ -85,8 +87,13 @@ public class FileExportUtil: NSObject, FileExportUtilProtocol {
 // MARK: - Audit Loggin
 
 extension FileExportUtil {
+    
+    enum SignError: Error {
+        case emptyString
+        case filepathNotFound
+    }
 
-    public func save(auditEventLog: EventLog, maxLogTime: Int) {
+    public func save(auditEventLog: EventLog, maxLogTime: Int, errorCallback: @escaping (Error) -> Void) {
         // 1. Check if the CSV file already exists.
         let csvFileAlreadyExists = csvFileAlreadyExists()
 
@@ -95,23 +102,51 @@ extension FileExportUtil {
         // - Otherwise, create it with the given row.
         guard let csv = createCSV(auditEventLog: auditEventLog, csvFileAlreadyExists: csvFileAlreadyExists, maxLogTime: maxLogTime) else {
             Log.shared.error("CSV not saved. Probably filepath not found")
+            errorCallback(SignError.filepathNotFound)
             return
         }
 
-        // 3. Save the file in disk.
-        do {
-            guard let data = csv.data(using: .utf8),
-                  let fileUrl = auditLoggingFilePath else {
-                Log.shared.errorAndCrash("Can't save CSV file")
-                return
+        if csvFileAlreadyExists {
+            // Get rows of the content
+            var rows = csv.components(separatedBy: newLine).filter { !$0.isEmpty }
+            rows = rows.dropLast(2)
+
+            // Convert strings to EventLog (objects)
+            var logs = [EventLog]()
+            rows.forEach { row in
+                let values = row.components(separatedBy: commaSeparator)
+                let eventLog = EventLog(values)
+                logs.append(eventLog)
             }
-            try data.write(to: fileUrl)
-            Log.shared.info("CSV file successfully saved")
-        } catch {
-            Log.shared.errorAndCrash(error: error)
+
+            // All entries means: previous entries + current entry.
+            let previousEntries: [String] = logs.compactMap { $0.entry.trimmed() }
+            var allEntries = previousEntries
+            allEntries.append(auditEventLog.entry)
+            let result = allEntries.joined(separator: newLine)
+
+            signAndSave(csv: result, errorCallback: errorCallback)
+
+        } else {
+            signAndSave(csv: csv, errorCallback: errorCallback)
         }
     }
+    
+    private func signAndSave(csv: String, errorCallback: @escaping (Error) -> Void) {
+        getSignature(text: csv) { error in
+            errorCallback(error)
+        } successCallback: { [weak self] signature in
+            guard let me = self else {
+                Log.shared.error(error: "Lost Myself")
+                return
+            }
+            me.save(csv: csv, signature: signature)
+        }
+
+    }
 }
+
+
 
 // MARK: - Private - Audit Loggin
 
@@ -167,7 +202,7 @@ extension FileExportUtil {
 
                 // Get rows of the content
                 let rows = content.components(separatedBy: newLine).filter { !$0.isEmpty }
-                
+
                 // Convert strings to EventLog (objects)
                 rows.forEach { row in
                     let values = row.components(separatedBy: commaSeparator)
@@ -280,5 +315,46 @@ extension FileExportUtil {
         let dateFormatter = DateFormatter()
         dateFormatter.dateFormat = "YYYYMMDD-hh-mm-ss"
         return dateFormatter.string(from: date)
+    }
+}
+
+extension FileExportUtil {
+
+    private func getSignature(text: String, errorCallback: @escaping (Error) -> Void, successCallback: @escaping (String) -> Void) {
+        guard !text.isEmpty else {
+            Log.shared.errorAndCrash("Invalid argument: an empty string can't be signed")
+            errorCallback(SignError.emptyString)
+            return
+        }
+        PEPSession().signText(text) { error in
+            errorCallback(error)
+        } successCallback: { signature in
+            successCallback(signature)
+        }
+    }
+    
+    private func save(csv: String, signature: String) {
+        // 3. Append the signature at the end of the file.
+        var signedCSV = csv
+        signedCSV.append(newLine)
+        signedCSV.append(signature)
+
+        // 4. Save the file in disk.
+        saveInDisk(csv: signedCSV)
+    }
+    
+    private func saveInDisk(csv: String) {
+        do {
+            guard let data = csv.data(using: .utf8),
+                  let fileUrl = auditLoggingFilePath else {
+                Log.shared.errorAndCrash("Can't save CSV file")
+                return
+            }
+            try data.write(to: fileUrl)
+            Log.shared.info("CSV file successfully saved")
+        } catch {
+            Log.shared.errorAndCrash(error: error)
+        }
+
     }
 }
