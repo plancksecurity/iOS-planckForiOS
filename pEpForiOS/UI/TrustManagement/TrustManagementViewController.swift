@@ -84,6 +84,7 @@ class TrustManagementViewController: UIViewController {
 extension TrustManagementViewController {
 
     private func setup() {
+        title = NSLocalizedString("Verify Identity", comment: "Verify Identity - title")
         registerForNotifications()
         setLeftBarButton()
         setBackgroundColor()
