@@ -8,7 +8,6 @@
 
 import Foundation
 import PlanckToolbox
-import PEPObjCAdapter
 
 public protocol AuditLoggingUtilProtocol: AnyObject {
     
