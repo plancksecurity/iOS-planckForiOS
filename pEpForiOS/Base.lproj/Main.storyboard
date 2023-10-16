@@ -3,7 +3,7 @@
     <device id="retina5_5" orientation="portrait" appearance="light"/>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="21678"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="21679"/>
         <capability name="System colors in document resources" minToolsVersion="11.0"/>
         <capability name="collection view cell content view" minToolsVersion="11.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
@@ -1658,7 +1658,7 @@
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="87V-sS-PPH" userLabel="Trust button">
                                 <rect key="frame" x="0.0" y="0.0" width="414" height="34"/>
                                 <state key="normal" title="Button"/>
-                                <buttonConfiguration key="configuration" style="plain" title="Tap to establish trust with this sender.">
+                                <buttonConfiguration key="configuration" style="plain" title="Tap to verify identity with this sender.">
                                     <backgroundConfiguration key="background">
                                         <color key="backgroundColor" systemColor="systemGray6Color"/>
                                     </backgroundConfiguration>
@@ -1708,7 +1708,7 @@
         <image name="compose" width="28" height="28"/>
         <image name="doc" catalog="system" width="115" height="128"/>
         <image name="empty-avatar" width="150" height="150"/>
-        <image name="icon-settings" width="49" height="20"/>
+        <image name="icon-settings" width="25" height="24"/>
         <image name="pEpForiOS-icon-delete" width="16" height="24"/>
         <image name="pEpForiOS-icon-movetofolder" width="29" height="24"/>
         <image name="pEpForiOS-icon-reply" width="31" height="24"/>
