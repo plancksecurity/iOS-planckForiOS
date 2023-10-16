@@ -40,7 +40,6 @@ public class FileExportUtil: NSObject, FileExportUtilProtocol {
         return createe
     }()
 
-    
     /// Export databases
     ///
     /// - Throws: throws an error in cases of failure.
@@ -116,10 +115,13 @@ extension FileExportUtil {
         }
 
         var result = csv
+        /*
         if csvFileAlreadyExists {
             // Get rows of the content
             var rows = csv.components(separatedBy: newLine).filter { !$0.isEmpty }
-            rows = rows.dropLast(2)
+            // The signature is the last line in the file, so we have to remove it.
+            let signature = rows.last()
+            rows = rows.dropLast()
 
             // Convert strings to EventLog (objects)
             var logs = [EventLog]()
@@ -135,9 +137,10 @@ extension FileExportUtil {
             allEntries.append(auditEventLog.entry)
             result = allEntries.joined(separator: newLine)
         }
+         */
         signAndSave(csv: result, errorCallback: errorCallback)
     }
-    
+
     private func signAndSave(csv: String, errorCallback: @escaping (Error) -> Void) {
         auditLogQueue.addOperation { [weak self] in
             guard let me = self else {
