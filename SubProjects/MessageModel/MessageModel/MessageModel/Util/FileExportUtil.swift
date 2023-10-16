@@ -32,6 +32,15 @@ public class FileExportUtil: NSObject, FileExportUtilProtocol {
     private let newLine = "\n"
     private var auditLoggingFilePath: URL?
     
+    private let auditLogQueue: OperationQueue = {
+        let createe = OperationQueue()
+        createe.name = "FileExportUtil-AuditLogQueue)"
+        createe.qualityOfService = .userInteractive
+        createe.maxConcurrentOperationCount = 1
+        return createe
+    }()
+
+    
     /// Export databases
     ///
     /// - Throws: throws an error in cases of failure.
@@ -130,20 +139,23 @@ extension FileExportUtil {
     }
     
     private func signAndSave(csv: String, errorCallback: @escaping (Error) -> Void) {
-        let group = DispatchGroup()
-        group.enter()
-        getSignature(text: csv) { error in
-            errorCallback(error)
-            group.leave()
-        } successCallback: { [weak self] signature in
+        auditLogQueue.addOperation { [weak self] in
             guard let me = self else {
                 Log.shared.error(error: "Lost Myself")
                 return
             }
-            me.save(csv: csv, signature: signature)
-            group.leave()
+            let group = DispatchGroup()
+            group.enter()
+            me.getSignature(text: csv) { error in
+                errorCallback(error)
+                group.leave()
+            } successCallback: { signature in
+                me.save(csv: csv, signature: signature)
+                group.leave()
+            }
+            group.wait()
+
         }
-        group.wait()
     }
 }
 
