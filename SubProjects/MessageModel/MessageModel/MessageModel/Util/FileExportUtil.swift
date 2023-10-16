@@ -106,6 +106,7 @@ extension FileExportUtil {
             return
         }
 
+        var result = csv
         if csvFileAlreadyExists {
             // Get rows of the content
             var rows = csv.components(separatedBy: newLine).filter { !$0.isEmpty }
@@ -123,26 +124,26 @@ extension FileExportUtil {
             let previousEntries: [String] = logs.compactMap { $0.entry.trimmed() }
             var allEntries = previousEntries
             allEntries.append(auditEventLog.entry)
-            let result = allEntries.joined(separator: newLine)
-
-            signAndSave(csv: result, errorCallback: errorCallback)
-
-        } else {
-            signAndSave(csv: csv, errorCallback: errorCallback)
+            result = allEntries.joined(separator: newLine)
         }
+        signAndSave(csv: result, errorCallback: errorCallback)
     }
     
     private func signAndSave(csv: String, errorCallback: @escaping (Error) -> Void) {
+        let group = DispatchGroup()
+        group.enter()
         getSignature(text: csv) { error in
             errorCallback(error)
+            group.leave()
         } successCallback: { [weak self] signature in
             guard let me = self else {
                 Log.shared.error(error: "Lost Myself")
                 return
             }
             me.save(csv: csv, signature: signature)
+            group.leave()
         }
-
+        group.wait()
     }
 }
 
