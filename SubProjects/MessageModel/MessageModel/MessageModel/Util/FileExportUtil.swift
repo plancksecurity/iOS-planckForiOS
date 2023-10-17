@@ -21,9 +21,9 @@ public class FileExportUtil: NSObject, FileExportUtilProtocol {
     // MARK: - Singleton
     
     static public let shared = FileExportUtil()
-    
+
     private override init() { }
-    
+
     private let planckFolderName = "planck"
     private let auditLogginggFileName = "auditLoggingg"
     private let csvExtension = "csv"
@@ -109,7 +109,7 @@ extension FileExportUtil {
         case emptyString
         case filepathNotFound
     }
-    
+
     public func save(auditEventLog: EventLog, maxLogTime: Int, errorCallback: @escaping (Error) -> Void) {
         auditLogQueue.addOperation { [weak self] in
             guard let me = self else {
@@ -216,21 +216,21 @@ extension FileExportUtil {
                 
                 // Convert to string, so it's readable and parseable.
                 let content = String(decoding: data, as: UTF8.self)
-                var base = beginPGP
+                var signature = beginPGP
                 var components: [String] = content.components(separatedBy: beginPGP)
-                if let signature = components.last {
-                    base.append(signature)
-                    components.removeLast()
+                if let signatureSuffix = components.last {
+                    signature.append(signatureSuffix) // Complete Signature
+                    components.removeLast() // Components of CSV, without the signature.
                 }
-                
+
                 // Get rows of the content
                 let rows = components.joined().components(separatedBy: newLine).filter { !$0.isEmpty }
-                
+
                 // Convert strings to EventLog (objects)
                 rows.forEach { row in
                     let values = row.components(separatedBy: commaSeparator)
                     let eventLog = EventLog(values)
-                    
+
                     // Get the date and evaluate if the entry should be included into the CSV file.
                     if let timestamp = values.first, let timeResult = Double(timestamp) {
                         let date = Date(timeIntervalSince1970: timeResult)
@@ -242,7 +242,7 @@ extension FileExportUtil {
                 }
                 var allEntries = getAllEntries(auditEventLog: auditEventLog, logs: logs)
                 allEntries.append(newLine)
-                allEntries.append(base)
+                allEntries.append(signature)
                 return allEntries
             }
         } catch {
