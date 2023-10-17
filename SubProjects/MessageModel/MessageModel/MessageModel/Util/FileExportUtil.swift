@@ -30,7 +30,9 @@ public class FileExportUtil: NSObject, FileExportUtilProtocol {
     private let commaSeparator = ","
     private let newLine = "\n"
     private var auditLoggingFilePath: URL?
-    
+    private let beginPGP = "-----BEGIN PGP MESSAGE----"
+    private let endPGP = "-----END PGP MESSAGE----"
+
     private let auditLogQueue: OperationQueue = {
         let createe = OperationQueue()
         createe.name = "security.planck.auditLoggging.fileExportUtil.queueForSavingLogs"
@@ -38,7 +40,15 @@ public class FileExportUtil: NSObject, FileExportUtilProtocol {
         createe.maxConcurrentOperationCount = 1
         return createe
     }()
-    
+
+    private let auditLogSignQueue: OperationQueue = {
+        let createe = OperationQueue()
+        createe.name = "security.planck.auditLoggging.fileExportUtil.signQueueForSavingLogs"
+        createe.qualityOfService = .userInteractive
+        createe.maxConcurrentOperationCount = 1
+        return createe
+    }()
+
     /// Export databases
     ///
     /// - Throws: throws an error in cases of failure.
@@ -120,6 +130,7 @@ extension FileExportUtil {
                 errorCallback(SignError.filepathNotFound)
                 return
             }
+
             // 3. If the file already exists, it already has a signature: Validate it.
             // If signature is valid, the file is persisted.
             // Otherwise, the user is notified.
@@ -196,7 +207,7 @@ extension FileExportUtil {
             return false
         }
     }
-    
+
     private func createCSV(auditEventLog: EventLog, csvFileAlreadyExists: Bool, maxLogTime: Int) -> String? {
         var logs = [EventLog]()
         do {
@@ -212,8 +223,8 @@ extension FileExportUtil {
                 
                 // Convert to string, so it's readable and parseable.
                 let content = String(decoding: data, as: UTF8.self)
-                var base = "-----BEGIN PGP MESSAGE----"
-                var components: [String] = content.components(separatedBy: base)
+                var base = beginPGP
+                var components: [String] = content.components(separatedBy: beginPGP)
                 if let signature = components.last {
                     base.append(signature)
                     components.removeLast()
@@ -266,20 +277,9 @@ extension FileExportUtil {
         }
         return docUrl
     }
-    
-    
-    private func appendSignatureAndSave(csv: String, signature: String) {
-        // Append the signature at the end of the file.
-        var signedCSV = csv
-        signedCSV.append(newLine)
-        signedCSV.append(signature)
-        
-        // Save the file in disk.
-        saveInDisk(csv: signedCSV)
-    }
-    
+
     private func signAndSave(csv: String, errorCallback: @escaping (Error) -> Void) {
-        auditLogQueue.addOperation { [weak self] in
+        auditLogSignQueue.addOperation { [weak self] in
             guard let me = self else {
                 Log.shared.error(error: "Lost Myself")
                 return
@@ -301,6 +301,16 @@ extension FileExportUtil {
             group.wait()
         }
     }
+
+    private func appendSignatureAndSave(csv: String, signature: String) {
+        // Append the signature at the end of the file.
+        var signedCSV = csv
+        signedCSV.append(newLine)
+        signedCSV.append(signature)
+        
+        // Save the file in disk.
+        saveInDisk(csv: signedCSV)
+    }
     
     private func saveInDisk(csv: String) {
         do {
@@ -317,17 +327,12 @@ extension FileExportUtil {
     }
     
     // MARK: - Signature
-    
     private func getSignatureFrom(csv: String) -> String {
-        let begin = "-----BEGIN PGP MESSAGE----"
-        let end = "-----END PGP MESSAGE----"
-        let startSkip = begin.count
-        let endSkip = end.count
-        let startIndex = csv.index(csv.startIndex, offsetBy: startSkip)
-        let endIndex = csv.index(csv.endIndex, offsetBy: -endSkip)
-        let range = startIndex..<endIndex
-        let substring = String(csv[range])
-        return begin + substring + end
+        guard let result = csv.slice(from: beginPGP, to: endPGP) else {
+            Log.shared.errorAndCrash("CSV does not contain signature")
+            return ""
+        }
+        return beginPGP + result + endPGP
     }
     
     private func removeSignatureFrom(csv: String, signature: String) -> String {
