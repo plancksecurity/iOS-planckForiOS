@@ -114,54 +114,48 @@ extension FileExportUtil {
             return
         }
 
-        /*
+        // 3. If the file already exists, it already has a signature: Validate it.
+        // If signature is valid, the file is persisted.
+        // Otherwise, the user is notified.
         if csvFileAlreadyExists {
-            // Get rows of the content
-            var rows = csv.components(separatedBy: newLine).filter { !$0.isEmpty }
-            // The signature is the last line in the file, so we have to remove it.
-            let signature = rows.last()
-            rows = rows.dropLast()
+            auditLogQueue.addOperation { [weak self] in
+                var resultatCSV = csv
+                guard let me = self else {
+                    Log.shared.errorAndCrash("Lost myself")
+                    return
+                }
+                let signature = me.getSignatureFrom(csv: resultatCSV)
+                let csvWithoutSignature = me.removeSignatureFrom(csv: resultatCSV, signature: signature)
 
-            // Convert strings to EventLog (objects)
-            var logs = [EventLog]()
-            rows.forEach { row in
-                let values = row.components(separatedBy: commaSeparator)
-                let eventLog = EventLog(values)
-                logs.append(eventLog)
+                // Verify the signature
+                let group = DispatchGroup()
+                group.enter()
+                PEPSession().verifyText(csvWithoutSignature, signature: signature) { error in
+                    // Verification failed, inform the user.
+                    resultatCSV = ""
+                    errorCallback(error)
+                    group.leave()
+                } successCallback: { success in
+                    // Verification succed, persist.
+                    // Get rows of the content
+                    let rows = csvWithoutSignature.components(separatedBy: me.newLine).filter { !$0.isEmpty }
+
+                    // Convert strings to EventLog (objects)
+                    var logs = [EventLog]()
+                    rows.forEach { row in
+                        let values = row.components(separatedBy: me.commaSeparator)
+                        let eventLog = EventLog(values)
+                        logs.append(eventLog)
+                    }
+                    resultatCSV = me.getAllEntries(auditEventLog: auditEventLog, logs: logs)
+                    group.leave()
+                }
+                group.wait()
             }
-
-            // All entries means: previous entries + current entry.
-            let previousEntries: [String] = logs.compactMap { $0.entry.trimmed() }
-            var allEntries = previousEntries
-            allEntries.append(auditEventLog.entry)
-            csv = allEntries.joined(separator: newLine)
         }
-         */
         signAndSave(csv: csv, errorCallback: errorCallback)
     }
-
-    private func signAndSave(csv: String, errorCallback: @escaping (Error) -> Void) {
-        auditLogQueue.addOperation { [weak self] in
-            guard let me = self else {
-                Log.shared.error(error: "Lost Myself")
-                return
-            }
-            let group = DispatchGroup()
-            group.enter()
-            me.getSignature(text: csv) { error in
-                errorCallback(error)
-                group.leave()
-            } successCallback: { signature in
-                me.save(csv: csv, signature: signature)
-                group.leave()
-            }
-            group.wait()
-
-        }
-    }
 }
-
-
 
 // MARK: - Private - Audit Loggin
 
@@ -232,18 +226,22 @@ extension FileExportUtil {
                         }
                     }
                 }
-
-                // All entries means: previous entries + current entry.
-                let previousEntries: [String] = logs.compactMap { $0.entry.trimmed() }
-                var allEntries = previousEntries
-                allEntries.append(auditEventLog.entry)
-                return allEntries.joined(separator: newLine)
+                return getAllEntries(auditEventLog: auditEventLog, logs: logs)
             }
         } catch {
             Log.shared.errorAndCrash("Something went wrong while creating the CVS")
         }
         Log.shared.errorAndCrash("Something went wrong while creating the CVS")
         return ""
+    }
+    
+    // All entries mean: previous entries + current entry.
+    private func getAllEntries(auditEventLog: EventLog, logs: [EventLog]) -> String {
+        // All entries mean: previous entries + current entry.
+        let previousEntries: [String] = logs.compactMap { $0.entry.trimmed() }
+        var allEntries = previousEntries
+        allEntries.append(auditEventLog.entry)
+        return allEntries.joined(separator: newLine)
     }
 
     /// - Returns: The destination directory url.
@@ -254,6 +252,72 @@ extension FileExportUtil {
             return nil
         }
         return docUrl
+    }
+        
+
+    private func appendSignatureAndSave(csv: String, signature: String) {
+        // 3. Append the signature at the end of the file.
+        var signedCSV = csv
+        signedCSV.append(newLine)
+        signedCSV.append(signature)
+
+        // 4. Save the file in disk.
+        saveInDisk(csv: signedCSV)
+    }
+
+    private func signAndSave(csv: String, errorCallback: @escaping (Error) -> Void) {
+        auditLogQueue.addOperation { [weak self] in
+            guard let me = self else {
+                Log.shared.error(error: "Lost Myself")
+                return
+            }
+            guard !csv.isEmpty else {
+                Log.shared.errorAndCrash("Invalid argument: an empty string can't be signed")
+                errorCallback(SignError.emptyString)
+                return
+            }
+            let group = DispatchGroup()
+            group.enter()
+            PEPSession().signText(csv) { error in
+                errorCallback(error)
+                group.leave()
+            } successCallback: { signature in
+                me.appendSignatureAndSave(csv: csv, signature: signature)
+                group.leave()
+            }
+            group.wait()
+        }
+    }
+
+    private func saveInDisk(csv: String) {
+        do {
+            guard let data = csv.data(using: .utf8),
+                  let fileUrl = auditLoggingFilePath else {
+                Log.shared.errorAndCrash("Can't save CSV file")
+                return
+            }
+            try data.write(to: fileUrl)
+            Log.shared.info("CSV file successfully saved")
+        } catch {
+            Log.shared.errorAndCrash(error: error)
+        }
+    }
+
+    // MARK: - Signature
+
+    private func getSignatureFrom(csv: String) -> String {
+        // Get rows of the content
+        let rows = csv.components(separatedBy: newLine).filter { !$0.isEmpty }
+        // The signature is the last line in the file, so we have to remove it.
+        guard let signature: String = rows.last else {
+            Log.shared.errorAndCrash("Signature not found")
+            return ""
+        }
+        return signature
+    }
+    
+    private func removeSignatureFrom(csv: String, signature: String) -> String {
+        return csv.removeFirstOccurrence(of: signature)
     }
 }
 
@@ -330,46 +394,5 @@ extension FileExportUtil {
         let dateFormatter = DateFormatter()
         dateFormatter.dateFormat = "YYYYMMDD-hh-mm-ss"
         return dateFormatter.string(from: date)
-    }
-}
-
-extension FileExportUtil {
-
-    private func getSignature(text: String, errorCallback: @escaping (Error) -> Void, successCallback: @escaping (String) -> Void) {
-        guard !text.isEmpty else {
-            Log.shared.errorAndCrash("Invalid argument: an empty string can't be signed")
-            errorCallback(SignError.emptyString)
-            return
-        }
-        PEPSession().signText(text) { error in
-            errorCallback(error)
-        } successCallback: { signature in
-            successCallback(signature)
-        }
-    }
-    
-    private func save(csv: String, signature: String) {
-        // 3. Append the signature at the end of the file.
-        var signedCSV = csv
-        signedCSV.append(newLine)
-        signedCSV.append(signature)
-
-        // 4. Save the file in disk.
-        saveInDisk(csv: signedCSV)
-    }
-    
-    private func saveInDisk(csv: String) {
-        do {
-            guard let data = csv.data(using: .utf8),
-                  let fileUrl = auditLoggingFilePath else {
-                Log.shared.errorAndCrash("Can't save CSV file")
-                return
-            }
-            try data.write(to: fileUrl)
-            Log.shared.info("CSV file successfully saved")
-        } catch {
-            Log.shared.errorAndCrash(error: error)
-        }
-
     }
 }
