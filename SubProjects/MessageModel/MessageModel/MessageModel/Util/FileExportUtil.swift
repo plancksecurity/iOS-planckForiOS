@@ -34,7 +34,7 @@ public class FileExportUtil: NSObject, FileExportUtilProtocol {
     
     private let auditLogQueue: OperationQueue = {
         let createe = OperationQueue()
-        createe.name = "FileExportUtil-AuditLogQueue)"
+        createe.name = "FileExportUtil-AuditLogQueue"
         createe.qualityOfService = .userInteractive
         createe.maxConcurrentOperationCount = 1
         return createe
