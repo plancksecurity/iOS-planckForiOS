@@ -108,13 +108,12 @@ extension FileExportUtil {
         // 2. Craft the CVS.
         // - if it exists already, add a row.
         // - Otherwise, create it with the given row.
-        guard let csv = createCSV(auditEventLog: auditEventLog, csvFileAlreadyExists: csvFileAlreadyExists, maxLogTime: maxLogTime) else {
+        guard var csv = createCSV(auditEventLog: auditEventLog, csvFileAlreadyExists: csvFileAlreadyExists, maxLogTime: maxLogTime) else {
             Log.shared.error("CSV not saved. Probably filepath not found")
             errorCallback(SignError.filepathNotFound)
             return
         }
 
-        var result = csv
         /*
         if csvFileAlreadyExists {
             // Get rows of the content
@@ -135,10 +134,10 @@ extension FileExportUtil {
             let previousEntries: [String] = logs.compactMap { $0.entry.trimmed() }
             var allEntries = previousEntries
             allEntries.append(auditEventLog.entry)
-            result = allEntries.joined(separator: newLine)
+            csv = allEntries.joined(separator: newLine)
         }
          */
-        signAndSave(csv: result, errorCallback: errorCallback)
+        signAndSave(csv: csv, errorCallback: errorCallback)
     }
 
     private func signAndSave(csv: String, errorCallback: @escaping (Error) -> Void) {
