@@ -112,25 +112,20 @@ extension FileExportUtil {
     
     public func save(auditEventLog: EventLog, maxLogTime: Int, errorCallback: @escaping (Error) -> Void) {
         auditLogQueue.addOperation { [weak self] in
-            let group = DispatchGroup()
-            group.enter()
             guard let me = self else {
                 Log.shared.errorAndCrash("Lost myself")
                 return
             }
-            
             // 1. Check if the CSV file already exists.
             let csvFileAlreadyExists = me.csvFileAlreadyExists()
-            
             // 2. Craft the CVS.
-            // - if it exists already, add a row.
+            // - if it already exists, add a row.
             // - Otherwise, create it with the given row.
             guard var csv = me.createCSV(auditEventLog: auditEventLog, csvFileAlreadyExists: csvFileAlreadyExists, maxLogTime: maxLogTime) else {
                 Log.shared.error("CSV not saved. Probably filepath not found")
                 errorCallback(SignError.filepathNotFound)
                 return
             }
-
             // 3. If the file already exists, it already has a signature: Validate it.
             // If signature is valid, the file is persisted.
             // Otherwise, the user is notified.
@@ -143,17 +138,15 @@ extension FileExportUtil {
                 }
                 let signature = me.getSignatureFrom(csv: resultantCSV)
                 let csvWithoutSignature = me.removeSignatureFrom(csv: resultantCSV, signature: signature)
-                
+
+                let group = DispatchGroup()
+                group.enter()
                 PEPSession().verifyText(csvWithoutSignature, signature: signature) { error in
                     // Verification failed, inform the user.
                     defer { group.leave() }
                     errorCallback(error)
                 } successCallback: { success in
-                    // Verification succed, persist.
-                    // Get rows of the content
                     let rows = csvWithoutSignature.components(separatedBy: me.newLine).filter { !$0.isEmpty }
-                    
-                    // Convert strings to EventLog (objects)
                     var logs = [EventLog]()
                     rows.forEach { row in
                         let values = row.components(separatedBy: me.commaSeparator)
