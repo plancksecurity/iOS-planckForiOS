@@ -121,7 +121,7 @@ extension FileExportUtil {
             // 2. Craft the CVS.
             // - if it already exists, add a row.
             // - Otherwise, create it with the given row.
-            guard var csv = me.createCSV(auditEventLog: auditEventLog, csvFileAlreadyExists: csvFileAlreadyExists, maxLogTime: maxLogTime) else {
+            guard let csv = me.createCSV(auditEventLog: auditEventLog, csvFileAlreadyExists: csvFileAlreadyExists, maxLogTime: maxLogTime) else {
                 Log.shared.error("CSV not saved. Probably filepath not found")
                 errorCallback(SignError.filepathNotFound)
                 return
@@ -320,6 +320,7 @@ extension FileExportUtil {
     }
     
     // MARK: - Signature
+
     private func getSignatureFrom(csv: String) -> String {
         guard let result = csv.slice(from: beginPGP, to: endPGP) else {
             Log.shared.errorAndCrash("CSV does not contain signature")
