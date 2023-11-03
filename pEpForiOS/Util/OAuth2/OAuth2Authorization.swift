@@ -32,7 +32,7 @@ class OAuth2Authorization: OAuth2AuthorizationProtocol {
             scopes: oauth2Configuration.scopes,
             redirectURL: oauth2Configuration.redirectURL,
             responseType: OIDResponseTypeCode,
-            additionalParameters: nil)
+            additionalParameters: ["prompt": "login"])
 
         userAgentSession = OIDAuthState.authState(byPresenting: request,
                                                   presenting: viewController) { [weak self] authState, error in
