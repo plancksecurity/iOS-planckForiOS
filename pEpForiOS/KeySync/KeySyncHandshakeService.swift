@@ -43,6 +43,7 @@ extension KeySyncHandshakeService {
         DispatchQueue.main.async {
             guard !wizard.isCurrentlyShowingSuccessfullyGroupedView else {
                 // We want to dismiss any wizard view but the SuccessfullyGrouped one.
+                NotificationCenter.default.post(name:.planckSettingsChanged, object: nil, userInfo: nil)
                 return
             }
             wizard.dismiss()

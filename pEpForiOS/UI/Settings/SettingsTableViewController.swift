@@ -468,7 +468,14 @@ extension SettingsTableViewController : SettingsViewModelDelegate {
 
     func leaveDeviceGroupFinished() {
         let title = NSLocalizedString("Device Group abandoned", comment: "Leave Device Group finished")
-        UIUtils.showAlertWithOnlyCloseButton(title: title, message: nil)
+        UIUtils.showAlertWithOnlyCloseButton(title: title, message: nil) {
+            DispatchQueue.main.async { [weak self] in
+                guard let me = self else {
+                    return
+                }
+                me.tableView.reloadData()
+            }
+        }
     }
 
     func showExtraKeyEditabilityStateChangeAlert(newValue: String) {

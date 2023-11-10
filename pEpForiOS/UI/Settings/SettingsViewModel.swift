@@ -145,6 +145,8 @@ final class SettingsViewModel {
                 Log.shared.errorAndCrash("Lost myself")
                 return
             }
+            me.items = []
+            me.generateSections()
             DispatchQueue.main.async {
                 me.delegate?.leaveDeviceGroupFinished()
             }
