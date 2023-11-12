@@ -16,16 +16,20 @@ import MessageModel
 class AuditLoggingService: AuditLoggingProtocol {
 
     static public let shared = AuditLoggingService()
-    
+
     init() {
         AuditLoggingService.log(event: .start)
     }
 
     func log(senderId: String, rating: String) {
-        AuditLoggingUtil.shared.log(senderId: senderId, rating: rating, maxLogTime: AppSettings.shared.auditLoggingTime)
+        AuditLoggingUtil.shared.log(senderId: senderId, rating: rating, maxLogTime: AppSettings.shared.auditLoggingTime) { error in
+            UIUtils.show(error: error)
+        }
     }
 
     static func log(event: AuditLoggerEvent) {
-        AuditLoggingUtil.shared.logEvent(maxLogTime: AppSettings.shared.auditLoggingTime, auditLoggerEvent: event)
+        AuditLoggingUtil.shared.logEvent(maxLogTime: AppSettings.shared.auditLoggingTime, auditLoggerEvent: event) { error in
+            UIUtils.show(error: error)
+        }
     }
 }

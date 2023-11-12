@@ -16,7 +16,6 @@ protocol AccountTypeSelectorViewModelDelegate: AnyObject {
     func showClientCertificateSeletionView()
     func didVerify(result: AccountVerificationResult)
     func handle(error: Error)
-
 }
 
 class AccountTypeSelectorViewModel {

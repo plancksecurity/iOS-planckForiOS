@@ -12,7 +12,7 @@ import PlanckToolbox
 public protocol AuditLoggingUtilProtocol: AnyObject {
     
     /// Save the log. If the file exceeds the time bound, the entries of the first day will be deleted.
-    func log(senderId: String, rating: String, maxLogTime: Int)
+    func log(senderId: String, rating: String, maxLogTime: Int, errorCallback: @escaping (Error) -> Void)
 }
 
 public enum AuditLoggerEvent: String {
@@ -41,17 +41,17 @@ public class AuditLoggingUtil: NSObject, AuditLoggingUtilProtocol {
     }
     
     /// Logs starts and stops events
-    public func logEvent(maxLogTime: Int, auditLoggerEvent: AuditLoggerEvent) {
+    public func logEvent(maxLogTime: Int, auditLoggerEvent: AuditLoggerEvent, errorCallback: @escaping (Error) -> Void) {
         savingLogsQueue.addOperation {
             let log = EventLog([Date.timestamp, auditLoggerEvent.rawValue])
-            self.fileExportUtil.save(auditEventLog: log, maxLogTime: maxLogTime)
+            self.fileExportUtil.save(auditEventLog: log, maxLogTime: maxLogTime, errorCallback: errorCallback)
         }
     }
 
-    public func log(senderId: String, rating: String, maxLogTime: Int) {
+    public func log(senderId: String, rating: String, maxLogTime: Int, errorCallback: @escaping (Error) -> Void) {
         savingLogsQueue.addOperation {
             let log = EventLog([Date.timestamp, senderId, rating])
-            self.fileExportUtil.save(auditEventLog: log, maxLogTime: maxLogTime)
+            self.fileExportUtil.save(auditEventLog: log, maxLogTime: maxLogTime, errorCallback: errorCallback)
         }
     }
 }
