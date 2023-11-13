@@ -145,8 +145,10 @@ final class SettingsViewModel {
                 Log.shared.errorAndCrash("Lost myself")
                 return
             }
+            // The Leave Device Group cell is removed.
             me.items = []
             me.generateSections()
+            // Update the UI
             DispatchQueue.main.async {
                 me.delegate?.leaveDeviceGroupFinished()
             }
