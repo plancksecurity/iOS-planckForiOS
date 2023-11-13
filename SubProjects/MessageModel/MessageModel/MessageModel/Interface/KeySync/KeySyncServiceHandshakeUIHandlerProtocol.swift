@@ -18,7 +18,7 @@ public protocol KeySyncServiceHandshakeHandlerProtocol: AnyObject {
 
     func cancelHandshake()
 
-    func showSuccessfullyGrouped()
+    func handleSuccessfullyGrouped()
 
     func showError(error: Error?, completion: ((KeySyncErrorResponse) -> ())?)
 }

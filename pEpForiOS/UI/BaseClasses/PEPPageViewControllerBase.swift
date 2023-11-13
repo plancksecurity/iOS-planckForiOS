@@ -92,7 +92,7 @@ class PEPPageViewControllerBase: UIPageViewController {
         }
     }
 
-    func isLast() -> Bool{
+    func isLast() -> Bool {
         guard nextView() != nil else {
             return true
         }

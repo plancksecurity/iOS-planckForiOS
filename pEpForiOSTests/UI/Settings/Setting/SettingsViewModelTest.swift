@@ -152,5 +152,8 @@ class SettingsViewModeldelegate: SettingsViewModelDelegate {
     func showTryAgain(title: String, message: String) {
         XCTFail()
     }
+    func leaveDeviceGroupFinished() {
+        XCTFail()
+    }
 
 }

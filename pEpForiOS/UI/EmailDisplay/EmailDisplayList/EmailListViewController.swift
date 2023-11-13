@@ -1564,8 +1564,8 @@ extension EmailListViewController {
 
     private func registerNotifications() {
         NotificationCenter.default.addObserver(self,
-                                               selector: #selector(pEpSettingsChanged),
-                                               name: .pEpSettingsChanged,
+                                               selector: #selector(planckSettingsChanged),
+                                               name: .planckSettingsChanged,
                                                object: nil)
     }
 
@@ -1582,7 +1582,7 @@ extension EmailListViewController {
 
 extension EmailListViewController {
 
-    @objc func pEpSettingsChanged() {
+    @objc func planckSettingsChanged() {
         tableView.reloadData()
     }
 }
