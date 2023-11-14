@@ -27,8 +27,12 @@ final class SettingsTableViewController: UITableViewController {
         addExtraKeysEditabilityToggleGesture()
         setBackButtonAccessibilityLabel()
         NotificationCenter.default.addObserver(self,
-                                               selector: #selector(pEpMDMSettingsChanged),
-                                               name: .pEpMDMSettingsChanged,
+                                               selector: #selector(planckSettingsChanged),
+                                               name: .planckMDMSettingsChanged,
+                                               object: nil)
+        NotificationCenter.default.addObserver(self,
+                                               selector: #selector(planckSettingsChanged),
+                                               name: .planckSettingsChanged,
                                                object: nil)
     }
     
@@ -77,7 +81,7 @@ final class SettingsTableViewController: UITableViewController {
         viewModel.handleExtraKeysEditabilityGestureTriggered()
     }
 
-    @objc private func pEpMDMSettingsChanged() {
+    @objc private func planckSettingsChanged() {
         viewModel = SettingsViewModel(delegate: self)
         tableView.reloadData()
     }
@@ -165,7 +169,8 @@ extension SettingsTableViewController {
             return prepareSwipeTableViewCell(dequeuedCell, for: row)
         case .resetAccounts,
              .resetTrust,
-             .planckSync:
+             .planckSync,
+             .leaveDeviceGroup:
             if let cell = dequeuedCell as? SettingsActionTableViewCell, row.identifier == .planckSync {
                 cell.activityIndicatorIsOn = AppSettings.shared.keyPlanckSyncActivityIndicatorIsOn
             }
@@ -300,6 +305,15 @@ extension SettingsTableViewController : SwipeTableViewCellDelegate {
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         let row = viewModel.section(for: indexPath.section).rows[indexPath.row]
         switch row.identifier {
+        case .leaveDeviceGroup:
+            tableView.deselectRow(at: indexPath, animated: true)
+            if !NetworkMonitorUtil.shared.netOn {
+                //Inform the user if there is no internet connection.
+                UIUtils.showNoInternetConnectionBanner(viewController: self)
+                return
+            }
+            viewModel.handleLeaveDeviceGroup()
+
         case .planckSync:
             tableView.deselectRow(at: indexPath, animated: true)
             if !NetworkMonitorUtil.shared.netOn {
@@ -441,7 +455,7 @@ extension SettingsTableViewController : SettingsViewModelDelegate {
             me.activityIndicatorView?.removeFromSuperview()
         }
     }
-    
+
     func informReinitFailed() {
         guard !(UIApplication.currentlyVisibleViewController() is KeySyncWizardViewController) else {
             // Nothing to show.
@@ -450,6 +464,18 @@ extension SettingsTableViewController : SettingsViewModelDelegate {
         let errorTitle = NSLocalizedString("Device Sync cannot be started", comment: "Device Sync cannot be started")
         let errorMessage = NSLocalizedString("The user should try again", comment: "the user should try again")
         UIUtils.showAlertWithOnlyCloseButton(title: errorTitle, message: errorMessage)
+    }
+
+    func leaveDeviceGroupFinished() {
+        let title = NSLocalizedString("Device Group abandoned", comment: "Leave Device Group finished")
+        UIUtils.showAlertWithOnlyCloseButton(title: title, message: nil) {
+            DispatchQueue.main.async { [weak self] in
+                guard let me = self else {
+                    return
+                }
+                me.tableView.reloadData()
+            }
+        }
     }
 
     func showExtraKeyEditabilityStateChangeAlert(newValue: String) {
@@ -545,6 +571,8 @@ extension SettingsTableViewController {
         case .auditLogging:
             return .segueAuditLogging
         case .planckSync:
+            return .none
+        case .leaveDeviceGroup:
             return .none
         }
     }

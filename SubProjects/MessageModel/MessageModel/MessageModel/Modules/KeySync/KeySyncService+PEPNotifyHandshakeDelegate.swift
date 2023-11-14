@@ -76,7 +76,7 @@ extension KeySyncService: PEPNotifyHandshakeDelegate {
             }
 
             fastPollingDelegate?.disableFastPolling()
-            handshakeHandler?.showSuccessfullyGrouped()
+            handshakeHandler?.handleSuccessfullyGrouped()
             tryRedecryptYetUndecryptableMessages()
 
         case .passphraseRequired:

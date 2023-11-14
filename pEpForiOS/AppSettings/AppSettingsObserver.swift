@@ -61,7 +61,7 @@ class AppSettingsObserver {
         MDMSettingsUtil().configure { _ in
             DispatchQueue.main.async {
                 // inform views that display settings related data
-                NotificationCenter.default.post(name:.pEpMDMSettingsChanged, object: mdm, userInfo: nil)
+                NotificationCenter.default.post(name:.planckMDMSettingsChanged, object: mdm, userInfo: nil)
             }
         }
     }

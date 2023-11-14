@@ -70,8 +70,8 @@ class EmailViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         NotificationCenter.default.addObserver(self,
-                                               selector: #selector(pEpSettingsChanged),
-                                               name: .pEpSettingsChanged,
+                                               selector: #selector(planckSettingsChanged),
+                                               name: .planckSettingsChanged,
                                                object: nil)
         NotificationCenter.default.addObserver(self,
                                                selector: #selector(copyToClip),
@@ -365,7 +365,7 @@ This may affect the privacy status of the message.
 
 extension EmailViewController {
 
-    @objc func pEpSettingsChanged() {
+    @objc func planckSettingsChanged() {
         guard let vm = viewModel else {
             Log.shared.errorAndCrash("VM not found")
             return
