@@ -126,26 +126,25 @@ extension FileExportUtil {
                 errorCallback(SignError.filepathNotFound)
                 return
             }
+            
+            let group = DispatchGroup()
+
             // 3. If the file already exists, it already has a signature: Validate it.
             // If signature is valid, the file is persisted.
             // Otherwise, the user is notified.
             if csvFileAlreadyExists {
                 // Verify the signature
                 var resultantCSV = csv
-                guard let me = self else {
-                    Log.shared.errorAndCrash("Lost myself")
-                    return
-                }
                 let signature = me.getSignatureFrom(csv: resultantCSV)
                 let csvWithoutSignature = me.removeSignatureFrom(csv: resultantCSV, signature: signature)
 
-                let group = DispatchGroup()
                 group.enter()
                 PEPSession().verifyText(csvWithoutSignature, signature: signature) { error in
                     // Verification failed, inform the user.
                     defer { group.leave() }
                     errorCallback(error)
                 } successCallback: { success in
+                    // The signature is valid.
                     let rows = csvWithoutSignature.components(separatedBy: me.newLine).filter { !$0.isEmpty }
                     var logs = [EventLog]()
                     rows.forEach { row in
@@ -154,12 +153,39 @@ extension FileExportUtil {
                         logs.append(eventLog)
                     }
                     resultantCSV = me.getAllEntries(auditEventLog: auditEventLog, logs: logs)
-                    me.signAndSave(csv: resultantCSV, errorCallback: errorCallback)
+
+                    guard !csv.isEmpty else {
+                        Log.shared.errorAndCrash("Invalid argument: an empty string can't be signed")
+                        errorCallback(SignError.emptyString)
+                        return
+                    }
+                    group.enter()
+                    PEPSession().signText(csv) { error in
+                        defer { group.leave() }
+                        errorCallback(error)
+                    } successCallback: { signature in
+                        me.appendSignatureAndSave(csv: csv, signature: signature)
+                        group.leave()
+                    }
+                    group.wait()
+                }
+            } else {
+                // Sign and Save
+                guard !csv.isEmpty else {
+                    Log.shared.errorAndCrash("Invalid argument: an empty string can't be signed")
+                    errorCallback(SignError.emptyString)
+                    return
+                }
+                group.enter()
+                PEPSession().signText(csv) { error in
+                    defer { group.leave() }
+                    errorCallback(error)
+                } successCallback: { signature in
+                    me.appendSignatureAndSave(csv: csv, signature: signature)
                     group.leave()
                 }
                 group.wait()
-            } else {
-                me.signAndSave(csv: csv, errorCallback: errorCallback)
+
             }
         }
     }
@@ -194,7 +220,6 @@ extension FileExportUtil {
             } else {
                 return fileManager.fileExists(atPath: url.path)
             }
-            
         } catch {
             Log.shared.errorAndCrash(error: error)
             return false
@@ -297,9 +322,9 @@ extension FileExportUtil {
 
     private func appendSignatureAndSave(csv: String, signature: String) {
         // Append the signature at the end of the file.
-        var signedCSV = csv
+        var signedCSV = signature
         signedCSV.append(newLine)
-        signedCSV.append(signature)
+        signedCSV.append(csv)
         
         // Save the file in disk.
         saveInDisk(csv: signedCSV)
@@ -328,7 +353,7 @@ extension FileExportUtil {
         }
         return beginPGP + result + endPGP
     }
-    
+
     private func removeSignatureFrom(csv: String, signature: String) -> String {
         return csv.removeFirstOccurrence(of: signature)
     }
