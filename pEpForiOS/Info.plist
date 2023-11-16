@@ -96,7 +96,7 @@
 	<string>Use Camera</string>
 	<key>NSContactsUsageDescription</key>
 	<string>- planck is an app for encrypted emails. To make it possible to send
-     emails to already stored contacts it is necessary to allow p≡p to
+     emails to already stored contacts it is necessary to allow planck to
      use them.
 
 - Contact data never will leave the mobile device and will not be

@@ -70,7 +70,7 @@ extension HtmlOptimizerUtil {
         //        let scaleToFitHtml =
         //        "<meta name=\"viewport\" content=\"width=\(screenWidth), shrink-to-fit=YES\"/>"
         let scaleToFitHtml =
-        "<meta name=\"viewport\" content=\"width=\(screenWidth)\", initial-scale=1.0/>"
+        "<meta name=\"viewport\" content=\"width=\(screenWidth)\">"
 
         // Build HTML tweak
 
@@ -89,10 +89,7 @@ extension HtmlOptimizerUtil {
 
         let styleBodyOptimize = """
         body {
-        font-family: "San Francisco" !important;
-        font-size: \(minimumFontSize);
-        max-width: 100% !important;
-        min-width: 100% !important;
+        font-family: "San Francisco" !important; font-size: \(minimumFontSize) px; max-width: 100% !important; min-width: 100% !important;
         }
         """
 
@@ -119,7 +116,7 @@ extension HtmlOptimizerUtil {
 
         let tweak = """
         \(scaleToFitHtml)
-        <style>
+        <style type="text/css">
         \(styleAutodetectLightOrDarkMode)
         \(styleBodyOptimize)
         \(styleTableOptimize)

@@ -139,7 +139,6 @@ class EmailViewController: UIViewController {
         }
     }
 
-
     @objc func copyToClip() {
         guard let vm = viewModel else {
             Log.shared.errorAndCrash("VM not found")
@@ -273,6 +272,13 @@ extension EmailViewController: UITableViewDelegate {
 // MARK: - SecureWebViewControllerDelegate
 
 extension EmailViewController: SecureWebViewControllerDelegate {
+    func didFailLoading() {
+        if let bodyCell = tableView.visibleCells.filter({$0 is MessageBodyCell}).first,
+        let indexPath = tableView.indexPath(for: bodyCell) {
+            tableView.reloadRows(at: [indexPath], with: .automatic)
+        }
+    }
+
     func didFinishLoading() {
         tableView.updateSize()
     }

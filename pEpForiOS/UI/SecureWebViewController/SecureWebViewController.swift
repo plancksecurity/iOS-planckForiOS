@@ -13,6 +13,8 @@ import PlanckToolbox
 protocol SecureWebViewControllerDelegate: AnyObject {
     /// Called on content size changes while content is loaded.
     func didFinishLoading()
+    /// Called on loading failures.
+    func didFailLoading()
 }
 
 /// Webview that does not:
@@ -97,14 +99,14 @@ class SecureWebViewController: UIViewController {
         webView.scrollView.isUserInteractionEnabled = userInteractionEnabled
         view = webView
     }
-
+    
     // MARK: - API
     
     // webViewWebContentProcessDidTerminate is called on iOS 16.2 due an webkit error: Specified target process does not exist.
     // Does not happen in other iOS versions, so let's keep this until we deprecate iOS 16.
     // If there is no error, this is not called.
     func webViewWebContentProcessDidTerminate(_ webView: WKWebView) {
-        display(html: processedHtml, showExternalContent: showExternalContent)
+        delegate?.didFailLoading()
     }
 
     public func display(html: String, showExternalContent: Bool) {
