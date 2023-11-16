@@ -31,7 +31,7 @@ public class FileExportUtil: NSObject, FileExportUtilProtocol {
     private let newLine = "\n"
     private var auditLoggingFilePath: URL?
     private let beginPGP = "-----BEGIN PGP MESSAGE----"
-    private let endPGP = "-----END PGP MESSAGE----"
+    private let endPGP = "-----END PGP MESSAGE-----\n"
 
     private let auditLogQueue: OperationQueue = {
         let createe = OperationQueue()
@@ -106,22 +106,38 @@ public class FileExportUtil: NSObject, FileExportUtilProtocol {
 extension FileExportUtil {
     
     enum SignError: Error {
+        case signatureNotVerified
         case emptyString
         case filepathNotFound
     }
-
+    
+    private func getCSVContent() -> String? {
+        guard let filePath = auditLoggingFilePath else {
+            Log.shared.errorAndCrash("File path not found")
+            return nil
+        }
+        do {
+            // Get the content of the file as data.
+            let data = try Data(contentsOf: filePath)
+            
+            // Convert to string, so it's readable and parseable.
+            return String(decoding: data, as: UTF8.self)
+        } catch {
+            Log.shared.errorAndCrash(error: error)
+            return nil
+        }
+    }
+    
     public func save(auditEventLog: EventLog, maxLogTime: Int, errorCallback: @escaping (Error) -> Void) {
         auditLogQueue.addOperation { [weak self] in
             guard let me = self else {
                 Log.shared.errorAndCrash("Lost myself")
                 return
             }
-            // 1. Check if the CSV file already exists.
-            let csvFileAlreadyExists = me.csvFileAlreadyExists()
-            // 2. Craft the CVS.
+            // 1. Craft the CVS.
             // - if it already exists, add a row.
             // - Otherwise, create it with the given row.
-            guard let csv = me.createCSV(auditEventLog: auditEventLog, csvFileAlreadyExists: csvFileAlreadyExists, maxLogTime: maxLogTime) else {
+            guard let newCsv = me.createCSV(auditEventLog: auditEventLog, maxLogTime: maxLogTime) else {
                 Log.shared.error("CSV not saved. Probably filepath not found")
                 errorCallback(SignError.filepathNotFound)
                 return
@@ -132,20 +148,25 @@ extension FileExportUtil {
             // 3. If the file already exists, it already has a signature: Validate it.
             // If signature is valid, the file is persisted.
             // Otherwise, the user is notified.
-            if csvFileAlreadyExists {
+            if let previousCsvContent = me.getCSVContent() {
                 // Verify the signature
-                var resultantCSV = csv
-                let signature = me.getSignatureFrom(csv: resultantCSV)
-                let csvWithoutSignature = me.removeSignatureFrom(csv: resultantCSV, signature: signature)
-
+                var resultantCSV = newCsv
+                let signature = me.extractSignatureFrom(csv: resultantCSV)
+                var previousCsvWithoutSignature = me.removeSignatureFrom(csv: previousCsvContent, signature: signature)
                 group.enter()
-                PEPSession().verifyText(csvWithoutSignature, signature: signature) { error in
+                PEPSession().verifyText(previousCsvWithoutSignature, signature: signature) { error in
                     // Verification failed, inform the user.
                     defer { group.leave() }
                     errorCallback(error)
                 } successCallback: { success in
+                    guard success else {
+                        Log.shared.errorAndCrash("The signature was not verified")
+                        errorCallback(SignError.signatureNotVerified)
+                        return
+                    }
+                    
                     // The signature is valid.
-                    let rows = csvWithoutSignature.components(separatedBy: me.newLine).filter { !$0.isEmpty }
+                    let rows = previousCsvWithoutSignature.components(separatedBy: me.newLine).filter { !$0.isEmpty }
                     var logs = [EventLog]()
                     rows.forEach { row in
                         let values = row.components(separatedBy: me.commaSeparator)
@@ -154,34 +175,34 @@ extension FileExportUtil {
                     }
                     resultantCSV = me.getAllEntries(auditEventLog: auditEventLog, logs: logs)
 
-                    guard !csv.isEmpty else {
+                    guard !newCsv.isEmpty else {
                         Log.shared.errorAndCrash("Invalid argument: an empty string can't be signed")
                         errorCallback(SignError.emptyString)
                         return
                     }
                     group.enter()
-                    PEPSession().signText(csv) { error in
+                    PEPSession().signText(newCsv) { error in
                         defer { group.leave() }
                         errorCallback(error)
                     } successCallback: { signature in
-                        me.appendSignatureAndSave(csv: csv, signature: signature)
+                        me.appendSignatureAndSave(csv: newCsv, signature: signature)
                         group.leave()
                     }
                     group.wait()
                 }
             } else {
                 // Sign and Save
-                guard !csv.isEmpty else {
+                guard !newCsv.isEmpty else {
                     Log.shared.errorAndCrash("Invalid argument: an empty string can't be signed")
                     errorCallback(SignError.emptyString)
                     return
                 }
                 group.enter()
-                PEPSession().signText(csv) { error in
+                PEPSession().signText(newCsv) { error in
                     defer { group.leave() }
                     errorCallback(error)
                 } successCallback: { signature in
-                    me.appendSignatureAndSave(csv: csv, signature: signature)
+                    me.appendSignatureAndSave(csv: newCsv, signature: signature)
                     group.leave()
                 }
                 group.wait()
@@ -226,55 +247,42 @@ extension FileExportUtil {
         }
     }
 
-    private func createCSV(auditEventLog: EventLog, csvFileAlreadyExists: Bool, maxLogTime: Int) -> String? {
+    private func createCSV(auditEventLog: EventLog, maxLogTime: Int) -> String? {
         var logs = [EventLog]()
         do {
-            if !csvFileAlreadyExists {
+            guard let content = getCSVContent() else {
                 return auditEventLog.entry
-            } else {
-                guard let filePath = auditLoggingFilePath else {
-                    Log.shared.errorAndCrash("File path not found")
-                    return nil
-                }
-                // Get the content of the file as data.
-                let data = try Data(contentsOf: filePath)
+            }
+            var signature = beginPGP
+            var components: [String] = content.components(separatedBy: beginPGP)
+            if let signatureSuffix = components.last {
+                signature.append(signatureSuffix) // Complete Signature
+                components.removeLast() // Components of CSV, without the signature.
+            }
+            
+            // Get rows of the content
+            let rows = components.joined().components(separatedBy: newLine).filter { !$0.isEmpty }
+            
+            // Convert strings to EventLog (objects)
+            rows.forEach { row in
+                let values = row.components(separatedBy: commaSeparator)
+                let eventLog = EventLog(values)
                 
-                // Convert to string, so it's readable and parseable.
-                let content = String(decoding: data, as: UTF8.self)
-                var signature = beginPGP
-                var components: [String] = content.components(separatedBy: beginPGP)
-                if let signatureSuffix = components.last {
-                    signature.append(signatureSuffix) // Complete Signature
-                    components.removeLast() // Components of CSV, without the signature.
-                }
-
-                // Get rows of the content
-                let rows = components.joined().components(separatedBy: newLine).filter { !$0.isEmpty }
-
-                // Convert strings to EventLog (objects)
-                rows.forEach { row in
-                    let values = row.components(separatedBy: commaSeparator)
-                    let eventLog = EventLog(values)
-
-                    // Get the date and evaluate if the entry should be included into the CSV file.
-                    if let timestamp = values.first, let timeResult = Double(timestamp) {
-                        let date = Date(timeIntervalSince1970: timeResult)
-                        if let days = Calendar.current.dateComponents([.day], from: date, to: Date()).day,
-                           days <= maxLogTime {
-                            logs.append(eventLog)
-                        }
+                // Get the date and evaluate if the entry should be included into the CSV file.
+                if let timestamp = values.first, let timeResult = Double(timestamp) {
+                    let date = Date(timeIntervalSince1970: timeResult)
+                    if let days = Calendar.current.dateComponents([.day], from: date, to: Date()).day,
+                       days <= maxLogTime {
+                        logs.append(eventLog)
                     }
                 }
-                var allEntries = getAllEntries(auditEventLog: auditEventLog, logs: logs)
-                allEntries.append(newLine)
-                allEntries.append(signature)
-                return allEntries
             }
-        } catch {
-            Log.shared.errorAndCrash("Something went wrong while creating the CVS")
+            
+            var resultantEntries = signature
+            let newEntries = getAllEntries(auditEventLog: auditEventLog, logs: logs)
+            resultantEntries.append(newEntries)
+            return resultantEntries
         }
-        Log.shared.errorAndCrash("Something went wrong while creating the CVS")
-        return ""
     }
     
     // All entries mean: previous entries + current entry.
@@ -321,9 +329,8 @@ extension FileExportUtil {
     }
 
     private func appendSignatureAndSave(csv: String, signature: String) {
-        // Append the signature at the end of the file.
+        // Append the signature at the begining of the file.
         var signedCSV = signature
-        signedCSV.append(newLine)
         signedCSV.append(csv)
         
         // Save the file in disk.
@@ -346,7 +353,7 @@ extension FileExportUtil {
     
     // MARK: - Signature
 
-    private func getSignatureFrom(csv: String) -> String {
+    private func extractSignatureFrom(csv: String) -> String {
         guard let result = csv.slice(from: beginPGP, to: endPGP) else {
             Log.shared.errorAndCrash("CSV does not contain signature")
             return ""
