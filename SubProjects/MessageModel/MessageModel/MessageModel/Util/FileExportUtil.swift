@@ -25,7 +25,7 @@ public class FileExportUtil: NSObject, FileExportUtilProtocol {
     private override init() { }
 
     private let planckFolderName = "planck"
-    private let auditLogginggFileName = "auditLoggingg"
+    private let auditLoggingFileName = "auditLogging"
     private let csvExtension = "csv"
     private let commaSeparator = ","
     private let newLine = "\n"
@@ -104,13 +104,13 @@ public class FileExportUtil: NSObject, FileExportUtilProtocol {
 // MARK: - Audit Loggin
 
 extension FileExportUtil {
-
+    
     enum SignError: Error {
         case signatureNotVerified
         case emptyString
         case filepathNotFound
     }
-
+    
     public func save(auditEventLog: EventLog, maxLogTime: Int, errorCallback: @escaping (Error) -> Void) {
         func validateNotEmpty(csv: String) {
             guard !csv.isEmpty else {
@@ -125,24 +125,22 @@ extension FileExportUtil {
                 Log.shared.errorAndCrash("Lost myself")
                 return
             }
-            // 1. Craft the new CVS.
-            // - if it already exists, add a row.
-            // - Otherwise, create it with the given row.
-            guard var newCsv = me.createCSV(auditEventLog: auditEventLog, maxLogTime: maxLogTime) else {
-                Log.shared.errorAndCrash("CSV not saved. Probably filepath not found")
-                errorCallback(SignError.filepathNotFound)
-                return
-            }
-
             let group = DispatchGroup()
-
-            // 2. If the file already exists, it already has a signature: verify it.
-            // If signature is valid, the file will be persisted.
+            var newCsv: String
+            
+            // If the file already exists, it has a signature. Let's verify it.
+            // If the signature is valid, the file will be persisted.
             // Otherwise, something went wrong, and the user will be notified.
             if let previousCsvContent = me.getCSVContent() {
+                
+                // Craft the new CVS.
+                // - if it already exists, add a row.
+                // - Otherwise, create it with the given row.
+                newCsv = me.createCSV(auditEventLog: auditEventLog, maxLogTime: maxLogTime)
+                
                 // Verify the signature
                 let signature = me.extractSignatureFrom(csv: newCsv)
-                var previousCsvVersionWithoutSignature = me.removeSignatureFrom(csv: previousCsvContent, signature: signature)
+                let previousCsvVersionWithoutSignature = me.removeSignatureFrom(csv: previousCsvContent, signature: signature)
                 group.enter()
                 PEPSession().verifyText(previousCsvVersionWithoutSignature, signature: signature) { error in
                     // Verification failed, inform the user.
@@ -155,12 +153,12 @@ extension FileExportUtil {
                         return
                     }
                     // The signature is valid.
-                    var previousLogs = me.getLogs(previousCsvVersionWithoutSignature: previousCsvVersionWithoutSignature)
-
+                    let previousLogs = me.getLogs(previousCsvVersionWithoutSignature: previousCsvVersionWithoutSignature)
+                    
                     // This is the new CSV to sign and save.
                     let resultantCSV = me.getAllEntries(auditEventLog: auditEventLog, logs: previousLogs)
                     validateNotEmpty(csv: resultantCSV)
-
+                    
                     group.enter()
                     PEPSession().signText(resultantCSV) { error in
                         defer { group.leave() }
@@ -171,7 +169,9 @@ extension FileExportUtil {
                     }
                     group.wait()
                 }
-            } else {
+            }
+            else {
+                newCsv = me.createCSV(auditEventLog: auditEventLog, maxLogTime: maxLogTime)
                 // The file does not exist yet.
                 validateNotEmpty(csv: newCsv)
                 group.enter()
@@ -194,37 +194,21 @@ extension FileExportUtil {
 extension FileExportUtil {
     
     private func csvFileAlreadyExists() -> Bool {
-        do {
-            let fileManager = FileManager.default
-            guard let auditLoggingDestinationDirectoryURL = getAuditLoggingDestinationDirectoryURL() else {
-                Log.shared.errorAndCrash("Audit logging Destination Directory URL not found")
-                return false
-            }
-            
-            // Check if destination directory already exists. If not, create it.
-            var isDirectory: ObjCBool = true
-            if !fileManager.fileExists(atPath: auditLoggingDestinationDirectoryURL.path, isDirectory: &isDirectory) {
-                try FileManager.default.createDirectory(at: auditLoggingDestinationDirectoryURL, withIntermediateDirectories: true)
-            }
-            
-            var url = auditLoggingDestinationDirectoryURL.appendingPathComponent(auditLogginggFileName)
-            url = url.appendingPathExtension(csvExtension)
-            // Keep the file url
-            auditLoggingFilePath = url
-            
-            // Check if the file already exists.
-            if #available(iOS 16.0, *) {
-                return fileManager.fileExists(atPath: url.path())
-            } else {
-                return fileManager.fileExists(atPath: url.path)
-            }
-        } catch {
-            Log.shared.errorAndCrash(error: error)
+        setPathIfNeeded()
+        guard let url = auditLoggingFilePath else {
+            Log.shared.errorAndCrash("No Path")
             return false
+        }
+        
+        // Check if the file already exists.
+        if #available(iOS 16.0, *) {
+            return FileManager.default.fileExists(atPath: url.path())
+        } else {
+            return FileManager.default.fileExists(atPath: url.path)
         }
     }
 
-    private func createCSV(auditEventLog: EventLog, maxLogTime: Int) -> String? {
+    private func createCSV(auditEventLog: EventLog, maxLogTime: Int) -> String {
         var logs = [EventLog]()
         do {
             guard let content = getCSVContent() else {
@@ -262,19 +246,48 @@ extension FileExportUtil {
         }
     }
     
-    private func getCSVContent() -> String? {
-        guard let filePath = auditLoggingFilePath else {
-            Log.shared.errorAndCrash("File path not found")
-            return nil
-        }
+    
+    private func setPathIfNeeded() {
         do {
+            guard auditLoggingFilePath == nil else {
+                return
+            }
+            let fileManager = FileManager.default
+            guard let auditLoggingDestinationDirectoryURL = getAuditLoggingDestinationDirectoryURL() else {
+                Log.shared.errorAndCrash("Audit logging Destination Directory URL not found")
+                return
+            }
+            
+            // Check if destination directory already exists. If not, create it.
+            var isDirectory: ObjCBool = true
+            if !fileManager.fileExists(atPath: auditLoggingDestinationDirectoryURL.path, isDirectory: &isDirectory) {
+                try FileManager.default.createDirectory(at: auditLoggingDestinationDirectoryURL, withIntermediateDirectories: true)
+            }
+            
+            var url = auditLoggingDestinationDirectoryURL.appendingPathComponent(auditLoggingFileName)
+            url = url.appendingPathExtension(csvExtension)
+            // Keep the file url
+            auditLoggingFilePath = url
+        } catch {
+            Log.shared.errorAndCrash(error: error)
+            return
+        }
+    }
+    
+    private func getCSVContent() -> String? {
+        setPathIfNeeded()
+        do {
+            guard let path = auditLoggingFilePath else {
+                Log.shared.errorAndCrash("Something really wrong happend")
+                return nil
+            }
             // Get the content of the file as data.
-            let data = try Data(contentsOf: filePath)
+            let data = try Data(contentsOf: path)
 
             // Convert to string, so it's readable and parseable.
             return String(decoding: data, as: UTF8.self)
         } catch {
-            Log.shared.errorAndCrash(error: error)
+            // No such file or directory
             return nil
         }
     }
