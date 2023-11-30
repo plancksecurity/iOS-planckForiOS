@@ -145,7 +145,6 @@ extension FileExportUtil {
                         errorCallback(SignError.signatureNotVerified)
                         return
                     }
-                    group.leave()
 
                     // The signature is valid.
                     let previousLogs = me.getLogs(csvVersionWithoutSignature: previousCsvVersionWithoutSignature)
@@ -154,7 +153,6 @@ extension FileExportUtil {
                     let resultantCSV = me.getAllEntries(auditEventLog: auditEventLog, logs: previousLogs)
 
                     // Sign the text
-                    group.enter()
                     PEPSession().signText(resultantCSV) { error in
                         defer { group.leave() }
                         errorCallback(error)
