@@ -130,14 +130,14 @@ extension FileExportUtil {
             
             // If the file already exists, it has a signature. Let's verify it.
             // If the signature is valid, the file will be persisted.
-            // Otherwise, something went wrong, and the user will be notified.
+            // Otherwise, something went wrong, and the user will be notified through the errorCallback.
             if let previousCsvContent = me.getCSVContent() {
-                
+
                 // Craft the new CVS.
                 // - if it already exists, add a row.
                 // - Otherwise, create it with the given row.
                 newCsv = me.createCSV(auditEventLog: auditEventLog, maxLogTime: maxLogTime)
-                
+
                 // Verify the signature
                 let signature = me.extractSignatureFrom(csv: newCsv)
                 let previousCsvVersionWithoutSignature = me.removeSignatureFrom(csv: previousCsvContent, signature: signature)
@@ -148,31 +148,34 @@ extension FileExportUtil {
                     errorCallback(error)
                 } successCallback: { success in
                     guard success else {
-                        Log.shared.errorAndCrash("The signature was not verified")
+                        // The verification process finished but the verification fails.
+                        // The file might be tampered.
                         errorCallback(SignError.signatureNotVerified)
                         return
                     }
+
                     // The signature is valid.
                     let previousLogs = me.getLogs(previousCsvVersionWithoutSignature: previousCsvVersionWithoutSignature)
-                    
+
                     // This is the new CSV to sign and save.
                     let resultantCSV = me.getAllEntries(auditEventLog: auditEventLog, logs: previousLogs)
                     validateNotEmpty(csv: resultantCSV)
-                    
+
+                    // Sign the text
                     group.enter()
                     PEPSession().signText(resultantCSV) { error in
                         defer { group.leave() }
                         errorCallback(error)
                     } successCallback: { signature in
-                        me.appendSignatureAndSave(csv: resultantCSV, signature: signature)
+                        me.appendSignatureAndSave(csv: resultantCSV, signature: signature, errorCallback: errorCallback)
                         group.leave()
                     }
                     group.wait()
                 }
-            }
-            else {
+            } else {
+                // The file does not exist yet. Let's create it!
                 newCsv = me.createCSV(auditEventLog: auditEventLog, maxLogTime: maxLogTime)
-                // The file does not exist yet.
+                // It must not be empty
                 validateNotEmpty(csv: newCsv)
                 group.enter()
                 // Sign and save.
@@ -180,7 +183,7 @@ extension FileExportUtil {
                     defer { group.leave() }
                     errorCallback(error)
                 } successCallback: { signature in
-                    me.appendSignatureAndSave(csv: newCsv, signature: signature)
+                    me.appendSignatureAndSave(csv: newCsv, signature: signature, errorCallback: errorCallback)
                     group.leave()
                 }
                 group.wait()
@@ -275,13 +278,15 @@ extension FileExportUtil {
     }
     
     private func getCSVContent() -> String? {
+        // Set the path where the audit logging file is, if exists, stored.
         setPathIfNeeded()
         do {
             guard let path = auditLoggingFilePath else {
                 Log.shared.errorAndCrash("Something really wrong happend")
                 return nil
             }
-            // Get the content of the file as data.
+            // If the path exists, the file may or may not exist.
+            // Try to get the content of the file as data.
             let data = try Data(contentsOf: path)
 
             // Convert to string, so it's readable and parseable.
@@ -339,23 +344,22 @@ extension FileExportUtil {
                 defer { group.leave() }
                 errorCallback(error)
             } successCallback: { signature in
-                me.appendSignatureAndSave(csv: csv, signature: signature)
+                me.appendSignatureAndSave(csv: csv, signature: signature, errorCallback: errorCallback)
                 group.leave()
             }
             group.wait()
         }
     }
 
-    private func appendSignatureAndSave(csv: String, signature: String) {
-        // Append the signature at the begining of the file.
+    private func appendSignatureAndSave(csv: String, signature: String, errorCallback: @escaping (Error) -> Void) {
+        // Prepend the signature to the file
         var signedCSV = signature
         signedCSV.append(csv)
-        
         // Save the file in disk.
-        saveInDisk(csv: signedCSV)
+        saveInDisk(csv: signedCSV, errorCallback: errorCallback)
     }
-    
-    private func saveInDisk(csv: String) {
+
+    private func saveInDisk(csv: String, errorCallback: @escaping (Error) -> Void) {
         do {
             guard let data = csv.data(using: .utf8),
                   let fileUrl = auditLoggingFilePath else {
@@ -365,10 +369,11 @@ extension FileExportUtil {
             try data.write(to: fileUrl)
             Log.shared.info("CSV file successfully saved")
         } catch {
+            errorCallback(error)
             Log.shared.errorAndCrash(error: error)
         }
     }
-    
+
     // MARK: - Signature
 
     private func extractSignatureFrom(csv: String) -> String {
