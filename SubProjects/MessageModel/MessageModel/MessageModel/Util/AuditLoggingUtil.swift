@@ -11,8 +11,13 @@ import PlanckToolbox
 
 public protocol AuditLoggingUtilProtocol: AnyObject {
     
-    /// Save the log. If the file exceeds the time bound, the entries of the first day will be deleted.
+    /// Save the log. 
+    /// If the file exceeds the time bound, we will keep only the entries of the last days according to the max log time passed.
     func log(senderId: String, rating: String, maxLogTime: Int, errorCallback: @escaping (Error) -> Void)
+    
+    /// Save the event log (start, stop).
+    /// If the file exceeds the time bound, we will keep only the entries of the last days according to the max log time passed.
+    func logEvent(maxLogTime: Int, auditLoggerEvent: AuditLoggerEvent, errorCallback: @escaping (Error) -> Void)
 }
 
 public enum AuditLoggerEvent: String {
@@ -21,14 +26,6 @@ public enum AuditLoggerEvent: String {
 }
 
 public class AuditLoggingUtil: NSObject, AuditLoggingUtilProtocol {
-    
-    private let savingLogsQueue: OperationQueue = {
-        let createe = OperationQueue()
-        createe.qualityOfService = .background
-        createe.maxConcurrentOperationCount = 1
-        createe.name = "security.planck.auditLoggging.queueForSavingLogs"
-        return createe
-    }()
 
     private var fileExportUtil: FileExportUtilProtocol
     
@@ -40,15 +37,16 @@ public class AuditLoggingUtil: NSObject, AuditLoggingUtilProtocol {
         self.fileExportUtil = fileExportUtil
     }
     
-    /// Logs starts and stops events
+    /// Log `Start` and `Stop` events
     public func logEvent(maxLogTime: Int, auditLoggerEvent: AuditLoggerEvent, errorCallback: @escaping (Error) -> Void) {
         let log = EventLog([Date.timestamp, auditLoggerEvent.rawValue])
-        addLogOperation(log: log, maxLogTime: maxLogTime, errorCallback: errorCallback)
+        save(log: log, maxLogTime: maxLogTime, errorCallback: errorCallback)
     }
 
+    /// Log ratings
     public func log(senderId: String, rating: String, maxLogTime: Int, errorCallback: @escaping (Error) -> Void) {
         let log = EventLog([Date.timestamp, senderId, rating])
-        addLogOperation(log: log, maxLogTime: maxLogTime, errorCallback: errorCallback)
+        save(log: log, maxLogTime: maxLogTime, errorCallback: errorCallback)
     }
 }
 
@@ -56,12 +54,7 @@ public class AuditLoggingUtil: NSObject, AuditLoggingUtilProtocol {
 
 extension AuditLoggingUtil {
 
-    private func addLogOperation(log: EventLog, maxLogTime: Int, errorCallback: @escaping (Error) -> Void) {
-        savingLogsQueue.addOperation { [weak self] in
-            guard let me = self else {
-                return
-            }
-            me.fileExportUtil.save(auditEventLog: log, maxLogTime: maxLogTime, errorCallback: errorCallback)
-        }
+    private func save(log: EventLog, maxLogTime: Int, errorCallback: @escaping (Error) -> Void) {
+        fileExportUtil.save(auditEventLog: log, maxLogTime: maxLogTime, errorCallback: errorCallback)
     }
 }

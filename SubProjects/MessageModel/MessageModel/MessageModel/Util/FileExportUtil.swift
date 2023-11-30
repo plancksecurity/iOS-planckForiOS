@@ -123,7 +123,7 @@ extension FileExportUtil {
             // If the file already exists, it has a signature. Let's verify it.
             // If the signature is valid, the file will be persisted.
             // Otherwise, something went wrong, and the user will be notified through the errorCallback.
-            if let previousCsvContent = me.getCSVContent() {
+            if let persistedCsvContent = me.getCSVContent() {
 
                 // Craft the new CVS.
                 // - if it already exists, add a row.
@@ -132,7 +132,7 @@ extension FileExportUtil {
 
                 // Verify the signature
                 let signature = me.extractSignatureFrom(csv: newCsv)
-                let previousCsvVersionWithoutSignature = me.removeSignatureFrom(csv: previousCsvContent, signature: signature)
+                let previousCsvVersionWithoutSignature = me.removeSignatureFrom(csv: persistedCsvContent, signature: signature)
                 group.enter()
                 PEPSession().verifyText(previousCsvVersionWithoutSignature, signature: signature) { error in
                     // Verification failed, inform the user.
@@ -145,13 +145,13 @@ extension FileExportUtil {
                         errorCallback(SignError.signatureNotVerified)
                         return
                     }
+                    group.leave()
 
                     // The signature is valid.
                     let previousLogs = me.getLogs(csvVersionWithoutSignature: previousCsvVersionWithoutSignature)
 
                     // This is the new CSV to sign and save.
                     let resultantCSV = me.getAllEntries(auditEventLog: auditEventLog, logs: previousLogs)
-                    validateNotEmpty(csv: resultantCSV)
 
                     // Sign the text
                     group.enter()
@@ -191,10 +191,10 @@ extension FileExportUtil {
     private func csvFileAlreadyExists() -> Bool {
         setPathIfNeeded()
         guard let url = auditLoggingFilePath else {
-            Log.shared.errorAndCrash("No Path")
+            Log.shared.errorAndCrash("No Path. Should not happened.")
             return false
         }
-        
+
         // Check if the file already exists.
         if #available(iOS 16.0, *) {
             return FileManager.default.fileExists(atPath: url.path())
@@ -209,15 +209,11 @@ extension FileExportUtil {
             guard let content = getCSVContent() else {
                 return auditEventLog.entry
             }
-            var signature = beginPGP
-            var components: [String] = content.components(separatedBy: beginPGP)
-            if let signatureSuffix = components.last {
-                signature.append(signatureSuffix) // Complete Signature
-                components.removeLast() // Components of CSV, without the signature.
-            }
-            
+            var signature = extractSignatureFrom(csv: content)
+            let contentWithoutSignature = removeSignatureFrom(csv: content, signature: signature)
+        
             // Get rows of the content
-            let rows = components.joined().components(separatedBy: newLine).filter { !$0.isEmpty }
+            let rows = contentWithoutSignature.components(separatedBy: newLine).filter { !$0.isEmpty }
             
             // Convert strings to EventLog (objects)
             rows.forEach { row in
@@ -240,7 +236,6 @@ extension FileExportUtil {
             return resultantEntries
         }
     }
-    
     
     private func setPathIfNeeded() {
         do {
@@ -369,12 +364,13 @@ extension FileExportUtil {
 
     // MARK: - Signature
 
+    /// Return the signature:
     private func extractSignatureFrom(csv: String) -> String {
-        guard let result = csv.slice(from: beginPGP, to: endPGP) else {
+        guard let signatureContent = csv.slice(from: beginPGP, to: endPGP) else {
             Log.shared.errorAndCrash("CSV does not contain signature")
             return ""
         }
-        return beginPGP + result + endPGP
+        return beginPGP + signatureContent + endPGP
     }
 
     private func removeSignatureFrom(csv: String, signature: String) -> String {
@@ -382,7 +378,7 @@ extension FileExportUtil {
     }
 }
 
-//MARK: - Private Databases
+// MARK: - Private Databases
 
 extension FileExportUtil {
     
