@@ -35,15 +35,7 @@ public class FileExportUtil: NSObject, FileExportUtilProtocol {
 
     private let auditLogQueue: OperationQueue = {
         let createe = OperationQueue()
-        createe.name = "security.planck.auditLoggging.fileExportUtil.queueForSavingLogs"
-        createe.qualityOfService = .userInteractive
-        createe.maxConcurrentOperationCount = 1
-        return createe
-    }()
-
-    private let auditLogSignQueue: OperationQueue = {
-        let createe = OperationQueue()
-        createe.name = "security.planck.auditLoggging.fileExportUtil.signQueueForSavingLogs"
+        createe.name = "security.planck.auditLogging.fileExportUtil.queueForSavingLogs"
         createe.qualityOfService = .userInteractive
         createe.maxConcurrentOperationCount = 1
         return createe
@@ -155,7 +147,7 @@ extension FileExportUtil {
                     }
 
                     // The signature is valid.
-                    let previousLogs = me.getLogs(previousCsvVersionWithoutSignature: previousCsvVersionWithoutSignature)
+                    let previousLogs = me.getLogs(csvVersionWithoutSignature: previousCsvVersionWithoutSignature)
 
                     // This is the new CSV to sign and save.
                     let resultantCSV = me.getAllEntries(auditEventLog: auditEventLog, logs: previousLogs)
@@ -297,8 +289,9 @@ extension FileExportUtil {
         }
     }
 
-    private func getLogs(previousCsvVersionWithoutSignature: String) -> [EventLog] {
-        let rows = previousCsvVersionWithoutSignature.components(separatedBy: newLine).filter { !$0.isEmpty }
+    /// Convert the content of the CVS to Event Logs.
+    private func getLogs(csvVersionWithoutSignature: String) -> [EventLog] {
+        let rows = csvVersionWithoutSignature.components(separatedBy: newLine).filter { !$0.isEmpty }
         var previousLogs = [EventLog]()
         rows.forEach { row in
             let values = row.components(separatedBy: commaSeparator)
@@ -308,7 +301,7 @@ extension FileExportUtil {
         return previousLogs
     }
 
-    // All entries mean: previous entries + current entry.
+    /// All entries mean: previous entries + current entry.
     private func getAllEntries(auditEventLog: EventLog, logs: [EventLog]) -> String {
         // All entries mean: previous entries + current entry.
         let previousEntries: [String] = logs.compactMap { $0.entry.trimmed() }
@@ -316,7 +309,7 @@ extension FileExportUtil {
         allEntries.append(auditEventLog.entry)
         return allEntries.joined(separator: newLine)
     }
-    
+
     /// - Returns: The destination directory url.
     private func getAuditLoggingDestinationDirectoryURL() -> URL? {
         let documentsUrl = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask).first
@@ -328,7 +321,7 @@ extension FileExportUtil {
     }
 
     private func signAndSave(csv: String, errorCallback: @escaping (Error) -> Void) {
-        auditLogSignQueue.addOperation { [weak self] in
+        auditLogQueue.addOperation { [weak self] in
             guard let me = self else {
                 Log.shared.error(error: "Lost Myself")
                 return

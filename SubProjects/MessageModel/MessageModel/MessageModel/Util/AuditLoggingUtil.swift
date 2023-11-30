@@ -42,16 +42,26 @@ public class AuditLoggingUtil: NSObject, AuditLoggingUtilProtocol {
     
     /// Logs starts and stops events
     public func logEvent(maxLogTime: Int, auditLoggerEvent: AuditLoggerEvent, errorCallback: @escaping (Error) -> Void) {
-        savingLogsQueue.addOperation {
-            let log = EventLog([Date.timestamp, auditLoggerEvent.rawValue])
-            self.fileExportUtil.save(auditEventLog: log, maxLogTime: maxLogTime, errorCallback: errorCallback)
-        }
+        let log = EventLog([Date.timestamp, auditLoggerEvent.rawValue])
+        addLogOperation(log: log, maxLogTime: maxLogTime, errorCallback: errorCallback)
     }
 
     public func log(senderId: String, rating: String, maxLogTime: Int, errorCallback: @escaping (Error) -> Void) {
-        savingLogsQueue.addOperation {
-            let log = EventLog([Date.timestamp, senderId, rating])
-            self.fileExportUtil.save(auditEventLog: log, maxLogTime: maxLogTime, errorCallback: errorCallback)
+        let log = EventLog([Date.timestamp, senderId, rating])
+        addLogOperation(log: log, maxLogTime: maxLogTime, errorCallback: errorCallback)
+    }
+}
+
+// MARK: - Private
+
+extension AuditLoggingUtil {
+
+    private func addLogOperation(log: EventLog, maxLogTime: Int, errorCallback: @escaping (Error) -> Void) {
+        savingLogsQueue.addOperation { [weak self] in
+            guard let me = self else {
+                return
+            }
+            me.fileExportUtil.save(auditEventLog: log, maxLogTime: maxLogTime, errorCallback: errorCallback)
         }
     }
 }
