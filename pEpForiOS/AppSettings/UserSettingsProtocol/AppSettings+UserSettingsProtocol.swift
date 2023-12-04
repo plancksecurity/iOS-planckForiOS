@@ -34,7 +34,7 @@ extension AppSettings: UserSettingsProtocol {
     static let keyFolderViewAccountCollapsedState = "keyFolderViewAccountCollapsedState-162844EB-1F32-4F66-8F92-9B77664523F1"
     static let keyAcceptedLanguagesCodes = "acceptedLanguagesCodes"
 
-    static let keyAuditLogginggTime = "keyAuditLogTime"
+    static let keyAuditLoggingTime = "keyAuditLogTime"
     static let keyKeySyncWizardWasShown = "keyKeySyncWizardWasShown"
     static let keyPlanckSyncActivityIndicator = "keyPlanckSyncActivityIndicator"
 
@@ -73,10 +73,10 @@ extension AppSettings: UserSettingsProtocol {
     // Time in days of the audit loggin file.
     public var auditLoggingTime: Int {
         get {
-            return AppSettings.userDefaults.integer(forKey: AppSettings.keyAuditLogginggTime)
+            return AppSettings.userDefaults.integer(forKey: AppSettings.keyAuditLoggingTime)
         }
         set {
-            AppSettings.userDefaults.set(newValue, forKey: AppSettings.keyAuditLogginggTime)
+            AppSettings.userDefaults.set(newValue, forKey: AppSettings.keyAuditLoggingTime)
         }
     }
 

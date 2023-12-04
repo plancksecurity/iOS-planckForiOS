@@ -93,7 +93,7 @@ public class FileExportUtil: NSObject, FileExportUtilProtocol {
     }
 }
 
-// MARK: - Audit Loggin
+// MARK: - Audit Logging
 
 extension FileExportUtil {
     
@@ -103,7 +103,9 @@ extension FileExportUtil {
         case filepathNotFound
     }
     
-    public func save(auditEventLog: EventLog, maxLogTime: Int, errorCallback: @escaping (Error) -> Void) {
+    public func save(auditEventLog: EventLog, 
+                     maxLogTime: Int,
+                     errorCallback: @escaping (Error) -> Void) {
         func validateNotEmpty(csv: String) {
             guard !csv.isEmpty else {
                 Log.shared.errorAndCrash("Invalid argument: an empty string can't be signed")
@@ -311,30 +313,6 @@ extension FileExportUtil {
             return nil
         }
         return docUrl
-    }
-
-    private func signAndSave(csv: String, errorCallback: @escaping (Error) -> Void) {
-        auditLogQueue.addOperation { [weak self] in
-            guard let me = self else {
-                Log.shared.error(error: "Lost Myself")
-                return
-            }
-            guard !csv.isEmpty else {
-                Log.shared.errorAndCrash("Invalid argument: an empty string can't be signed")
-                errorCallback(SignError.emptyString)
-                return
-            }
-            let group = DispatchGroup()
-            group.enter()
-            PEPSession().signText(csv) { error in
-                defer { group.leave() }
-                errorCallback(error)
-            } successCallback: { signature in
-                me.appendSignatureAndSave(csv: csv, signature: signature, errorCallback: errorCallback)
-                group.leave()
-            }
-            group.wait()
-        }
     }
 
     private func appendSignatureAndSave(csv: String, signature: String, errorCallback: @escaping (Error) -> Void) {
