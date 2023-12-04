@@ -113,72 +113,80 @@ extension FileExportUtil {
                 return
             }
         }
-        
+
         auditLogQueue.addOperation { [weak self] in
             guard let me = self else {
                 Log.shared.errorAndCrash("Lost myself")
                 return
             }
-            let group = DispatchGroup()
             var newCsv: String
             
             // If the file already exists, it has a signature. Let's verify it.
             // If the signature is valid, the file will be persisted.
             // Otherwise, something went wrong, and the user will be notified through the errorCallback.
-            if let persistedCsvContent = me.getCSVContent() {
 
-                // Craft the new CVS.
-                // - if it already exists, add a row.
-                // - Otherwise, create it with the given row.
-                newCsv = me.createCSV(auditEventLog: auditEventLog, maxLogTime: maxLogTime)
+            // The persistedCsvContent is the content of the file that is already persisted, as it is, including the rows and the signature.
+            if let persistedCsvContent = me.getPersistedCSVContent() {
+                let verifyTextGroup = DispatchGroup()
+
+                // Craft the new CVS, that means add a row.
+                newCsv = me.createCSV(auditEventLog: auditEventLog,
+                                      maxLogTime: maxLogTime,
+                                      persistedCSVContent: persistedCsvContent)
 
                 // Verify the signature
-                let signature = me.extractSignatureFrom(csv: newCsv)
-                let previousCsvVersionWithoutSignature = me.removeSignatureFrom(csv: persistedCsvContent, signature: signature)
-                group.enter()
-                PEPSession().verifyText(previousCsvVersionWithoutSignature, signature: signature) { error in
-                    // Verification failed, inform the user.
-                    defer { group.leave() }
+                let signatureToVerify = me.extractSignatureFrom(csv: persistedCsvContent)
+                let persistedCsvVersionWithoutSignature = me.removeSignatureFrom(csv: persistedCsvContent, signature: signatureToVerify)
+                verifyTextGroup.enter()
+                PEPSession().verifyText(persistedCsvVersionWithoutSignature, signature: signatureToVerify) { error in
+                    // Verification failed, that is, an error ocurred.
+                    // Inform the user.
                     errorCallback(error)
+                    verifyTextGroup.leave()
                 } successCallback: { success in
                     guard success else {
                         // The verification process finished but the verification fails.
                         // The file might be tampered.
                         errorCallback(SignError.signatureNotVerified)
+                        verifyTextGroup.leave()
                         return
                     }
 
                     // The signature is valid.
-                    let previousLogs = me.getLogs(csvVersionWithoutSignature: previousCsvVersionWithoutSignature)
+                    // Extract the logs of the persisted version of the CSV.
+                    let persistedLogs = me.getLogs(csvVersionWithoutSignature: persistedCsvVersionWithoutSignature)
+                    verifyTextGroup.leave()
 
-                    // This is the new CSV to sign and save.
-                    let resultantCSV = me.getAllEntries(auditEventLog: auditEventLog, logs: previousLogs)
-
-                    // Sign the text
+                    let signTextGroup = DispatchGroup()
+                    // This is the new CSV (content already persisted + new content) to sign and save.
+                    let resultantCSV = me.getAllEntries(auditEventLog: auditEventLog, logs: persistedLogs)
+                    // Sign the text is:
+                    // obtain the signature, prepend it, and persist the compounded file.
+                    signTextGroup.enter()
                     PEPSession().signText(resultantCSV) { error in
-                        defer { group.leave() }
                         errorCallback(error)
+                        signTextGroup.leave()
                     } successCallback: { signature in
-                        me.appendSignatureAndSave(csv: resultantCSV, signature: signature, errorCallback: errorCallback)
-                        group.leave()
+                        me.prependSignatureAndSave(csv: resultantCSV, signature: signature, errorCallback: errorCallback)
+                        signTextGroup.leave()
                     }
-                    group.wait()
                 }
             } else {
+                let signTextGroup = DispatchGroup()
                 // The file does not exist yet. Let's create it!
-                newCsv = me.createCSV(auditEventLog: auditEventLog, maxLogTime: maxLogTime)
+                newCsv = me.createCSV(auditEventLog: auditEventLog, maxLogTime: maxLogTime, persistedCSVContent: nil)
                 // It must not be empty
                 validateNotEmpty(csv: newCsv)
-                group.enter()
+                signTextGroup.enter()
                 // Sign and save.
                 PEPSession().signText(newCsv) { error in
-                    defer { group.leave() }
                     errorCallback(error)
+                    signTextGroup.leave()
                 } successCallback: { signature in
-                    me.appendSignatureAndSave(csv: newCsv, signature: signature, errorCallback: errorCallback)
-                    group.leave()
+                    me.prependSignatureAndSave(csv: newCsv, signature: signature, errorCallback: errorCallback)
+                    signTextGroup.leave()
                 }
-                group.wait()
+                signTextGroup.wait()
             }
         }
     }
@@ -203,13 +211,13 @@ extension FileExportUtil {
         }
     }
 
-    private func createCSV(auditEventLog: EventLog, maxLogTime: Int) -> String {
+    private func createCSV(auditEventLog: EventLog, maxLogTime: Int, persistedCSVContent: String?) -> String {
         var logs = [EventLog]()
         do {
-            guard let content = getCSVContent() else {
+            guard let content = persistedCSVContent else {
                 return auditEventLog.entry
             }
-            var signature = extractSignatureFrom(csv: content)
+            let signature = extractSignatureFrom(csv: content)
             let contentWithoutSignature = removeSignatureFrom(csv: content, signature: signature)
         
             // Get rows of the content
@@ -237,6 +245,7 @@ extension FileExportUtil {
         }
     }
     
+    // Set the audit Logging File Path if not set.
     private func setPathIfNeeded() {
         do {
             guard auditLoggingFilePath == nil else {
@@ -264,7 +273,7 @@ extension FileExportUtil {
         }
     }
     
-    private func getCSVContent() -> String? {
+    private func getPersistedCSVContent() -> String? {
         // Set the path where the audit logging file is, if exists, stored.
         setPathIfNeeded()
         do {
@@ -315,7 +324,7 @@ extension FileExportUtil {
         return docUrl
     }
 
-    private func appendSignatureAndSave(csv: String, signature: String, errorCallback: @escaping (Error) -> Void) {
+    private func prependSignatureAndSave(csv: String, signature: String, errorCallback: @escaping (Error) -> Void) {
         // Prepend the signature to the file
         var signedCSV = signature
         signedCSV.append(csv)
