@@ -307,7 +307,7 @@ struct DisplayUserError: LocalizedError {
     // MARK: OAuth2AuthorizationError
 
     static private func type(forError error: OAuth2AuthorizationError) -> ErrorType {
-        switch error {
+        switch error.type {
         case .inconsistentAuthorizationResult:
             return .internalError
         }
