@@ -1,4 +1,4 @@
- ed5dd184d3c97cb93adccee50afa86d5a2461692 Appauth-iOS (0.94.0-163-ged5dd18)
+ ed5dd184d3c97cb93adccee50afa86d5a2461692 Appauth-iOS (1.3.1-86-ged5dd18)
  a2a0d74640848a812b7fa5bc0ca1b121883119dc CocoaLumberjack (v3.1.1)
  32c016ad67e4e929b5fa20613a027a6e1f416248 OpenSSL-for-iPhone (1.0.2h-107-g32c016a)
  f07caf069337b320767a3c439eda4b6443e59be1 Pantomime (v3.1.1)
@@ -12,6 +12,6 @@
  5480767621dbc9a9ffbdd0b3d713ce3bd0a08738 planck-toolbox (v3.1.1)
  1e0885fe812356d03d93cbd8e4d3dcd031c78b40 planckCoreSequoiaBackend (v1.1.0-51-g1e0885f)
  0befeb69c55d35d7d813f6e7cff9f8b8598af970 planckCoreV3 (v3.3.0-RC3-542-g0befeb69)
-+d69255b23cead573a26cbec806c5fa4961c14f59 planckForiOS (v1.1.250-5140-gd69255b23)
+ 68703385770492081e535bf40b1bef17970bbba7 planckForiOS (v1.1.250-5143-g687033857)
  b68cf3a6c3a39e78ff28d8749eb1821ad0baefa6 planckForiOS_intern (v3.1.1)
  955b2029eef7ebddd089873d4af621cefe7971fa planckObjCWrapper (v3.1.1)
