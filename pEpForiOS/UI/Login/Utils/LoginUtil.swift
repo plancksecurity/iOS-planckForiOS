@@ -315,7 +315,7 @@ extension LoginUtil: VerifiableAccountDelegate {
     
     func handle(error: Error) {
         Log.shared.error(error: error)
-        let title = NSLocalizedString("Invalid Address", comment: "Please enter a valid mail address. Fail to log in, email does not match account type")
+        var title = NSLocalizedString("Invalid Address", comment: "Please enter a valid mail address. Fail to log in, email does not match account type")
         var message: String?
         switch verifiableAccount.accountType {
         case .gmail:
@@ -326,6 +326,10 @@ extension LoginUtil: VerifiableAccountDelegate {
                                         comment: "Fail to log in, email does not match account type")
         case .other, .clientCertificate, .icloud, .outlook:
             message = NSLocalizedString("Please enter valid credentials.", comment: "Fail to log in")
+        }
+        if let error = error as? OAuth2AuthorizationError {
+            message = error.errorMessage
+            title = NSLocalizedString("OAuth error", comment:"OAuth error")
         }
         UIUtils.showAlertWithOnlyPositiveButton(title: title, message: message)
     }
