@@ -13,7 +13,7 @@ import PEPObjCAdapter
 
 public protocol FileExportUtilProtocol: AnyObject {
     func exportDatabases() throws
-    func save(auditEventLog: EventLog, maxLogTime: Int, errorCallback: @escaping (Error) -> Void)
+    func save(auditEventLog: EventLog, maxNumberOfDays: Int, errorCallback: @escaping (Error) -> Void)
 }
 
 public class FileExportUtil: NSObject, FileExportUtilProtocol {
@@ -104,7 +104,7 @@ extension FileExportUtil {
     }
     
     public func save(auditEventLog: EventLog, 
-                     maxLogTime: Int,
+                     maxNumberOfDays: Int,
                      errorCallback: @escaping (Error) -> Void) {
         func validateNotEmpty(csv: String) {
             guard !csv.isEmpty else {
@@ -131,7 +131,7 @@ extension FileExportUtil {
 
                 // Craft the new CVS, that means add a row.
                 newCsv = me.createCSV(auditEventLog: auditEventLog,
-                                      maxLogTime: maxLogTime,
+                                      maxNumberOfDays: maxNumberOfDays,
                                       persistedCSVContent: persistedCsvContent)
 
                 // Verify the signature
@@ -174,7 +174,7 @@ extension FileExportUtil {
             } else {
                 let signTextGroup = DispatchGroup()
                 // The file does not exist yet. Let's create it!
-                newCsv = me.createCSV(auditEventLog: auditEventLog, maxLogTime: maxLogTime, persistedCSVContent: nil)
+                newCsv = me.createCSV(auditEventLog: auditEventLog, maxNumberOfDays: maxNumberOfDays, persistedCSVContent: nil)
                 // It must not be empty
                 validateNotEmpty(csv: newCsv)
                 signTextGroup.enter()
@@ -211,7 +211,7 @@ extension FileExportUtil {
         }
     }
 
-    private func createCSV(auditEventLog: EventLog, maxLogTime: Int, persistedCSVContent: String?) -> String {
+    private func createCSV(auditEventLog: EventLog, maxNumberOfDays: Int, persistedCSVContent: String?) -> String {
         var logs = [EventLog]()
         do {
             guard let content = persistedCSVContent else {
@@ -232,7 +232,7 @@ extension FileExportUtil {
                 if let timestamp = values.first, let timeResult = Double(timestamp) {
                     let date = Date(timeIntervalSince1970: timeResult)
                     if let days = Calendar.current.dateComponents([.day], from: date, to: Date()).day,
-                       days <= maxLogTime {
+                       days <= maxNumberOfDays {
                         logs.append(eventLog)
                     }
                 }

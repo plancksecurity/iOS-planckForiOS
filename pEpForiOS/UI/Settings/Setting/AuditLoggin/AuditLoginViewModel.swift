@@ -31,7 +31,7 @@ extension AuditLoggingViewModel {
 }
 
 class AuditLoggingViewModel {
-    public var currentAuditLoggingTime : Int = 30
+    public var currentAuditLoggingMaxNumberOfDays : Int = 30
 
     public private(set) var sections = [Section]()
 
@@ -51,23 +51,23 @@ class AuditLoggingViewModel {
 
     public var placeholder: String {
         let format = NSLocalizedString("%1$@ days.", comment: "Days that the audit logging will register")
-        let result = String.localizedStringWithFormat(format, String(AppSettings.shared.auditLoggingTime))
+        let result = String.localizedStringWithFormat(format, String(AppSettings.shared.auditLoggingMaxNumberOfDays))
         return result
     }
 
     // The time frame of the audit log can be adjusted,
     // a default value of 30 days can be defined through config/MDM settings
     public func saveAuditLogTime() {
-        AppSettings.shared.auditLoggingTime = currentAuditLoggingTime
+        AppSettings.shared.auditLoggingMaxNumberOfDays = currentAuditLoggingMaxNumberOfDays
     }
 
     public func shouldEnableSaveButton(newValue : Int) -> Bool {
-        currentAuditLoggingTime = newValue
+        currentAuditLoggingMaxNumberOfDays = newValue
         return newValue >= 0
     }
 
     private func setupSections() {
-        let title = NSLocalizedString("Audit Logging file max time", comment: "AuditLogging Setting -  Audit Logging file max time")
+        let title = NSLocalizedString("Audit Logging file max number of days", comment: "AuditLogging Setting -  Audit Logging file max number of days")
         let row = Row(type: .maxTime, title: title)
         let maxTimeRow = Section(rows: [row])
         sections = [maxTimeRow]

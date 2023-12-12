@@ -22,13 +22,13 @@ class AuditLoggingService: AuditLoggingProtocol {
     }
 
     func log(senderId: String, rating: String) {
-        AuditLoggingUtil.shared.log(senderId: senderId, rating: rating, maxLogTime: AppSettings.shared.auditLoggingTime) { error in
+        AuditLoggingUtil.shared.log(maxNumberOfDays: AppSettings.shared.auditLoggingMaxNumberOfDays, senderId: senderId, rating: rating) { error in
             UIUtils.show(error: error)
         }
     }
 
-    static func log(event: AuditLoggerEvent) {
-        AuditLoggingUtil.shared.logEvent(maxLogTime: AppSettings.shared.auditLoggingTime, auditLoggerEvent: event) { error in
+    static func log(event: AuditLoggerStartStopEvent) {
+        AuditLoggingUtil.shared.logEvent(maxNumberOfDays: AppSettings.shared.auditLoggingMaxNumberOfDays, auditLoggerEvent: event) { error in
             UIUtils.show(error: error)
         }
     }

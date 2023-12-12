@@ -92,7 +92,7 @@ extension AppSettings {
         defaults[AppSettings.keyUnsecureReplyWarningEnabled] = true
         defaults[AppSettings.keyAccountSignature] = [String:String]()
         defaults[AppSettings.keyVerboseLogginEnabled] = false
-        defaults[AppSettings.keyAuditLoggingTime] = 30 // 30 days is the default time
+        defaults[AppSettings.keyAuditLoggingMaxNumberOfDays] = 30 // 30 days is the default time
         defaults[AppSettings.keyPlanckSyncActivityIndicator] = false
 
         // TODO:
