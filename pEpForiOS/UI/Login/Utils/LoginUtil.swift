@@ -329,7 +329,7 @@ extension LoginUtil: VerifiableAccountDelegate {
         }
         if let error = error as? OAuth2AuthorizationError {
             message = error.errorMessage
-            title = NSLocalizedString("OAuth error", comment:"OAuth error")
+            title = NSLocalizedString("OAuth Error", comment:"OAuth Error")
         }
         UIUtils.showAlertWithOnlyPositiveButton(title: title, message: message)
     }

@@ -7,10 +7,11 @@
 //
 
 import Foundation
+
 import MessageModel
 
 // We might want to distinguish error types.
-enum OAuthErrorType: String {
+enum OAuthErrorType {
     case inconsistentAuthorizationResult
 }
 
@@ -30,41 +31,41 @@ struct OAuth2AuthorizationError: LocalizedError {
         self.errorMessage = OAuth2AuthorizationError.getErrorMessage(code: code)
     }
 
+    // Error messages are taken from documentation in OIDError.h
+    // @see https://github.com/openid/AppAuth-iOS/blob/1.6.0/Source/AppAuthCore/OIDError.h
     static private func getErrorMessage(code: Int) -> String {
-        var message = ""
         switch code {
         case OIDErrorCode.invalidDiscoveryDocument.rawValue:
-            message = NSLocalizedString("A problem parsing an OpenID Connect Service Discovery document.", comment: "")
+            return NSLocalizedString("A problem parsing an OpenID Connect Service Discovery document.", comment: "")
         case OIDErrorCode.userCanceledAuthorizationFlow.rawValue:
-            message = NSLocalizedString("The user manually canceled the OAuth authorization code flow.", comment: "")
+            return NSLocalizedString("The user manually canceled the OAuth authorization code flow.", comment: "")
         case OIDErrorCode.programCanceledAuthorizationFlow.rawValue:
-            message = NSLocalizedString("An OAuth authorization flow was programmatically cancelled.", comment: "")
+            return NSLocalizedString("An OAuth authorization flow was programmatically cancelled.", comment: "")
         case OIDErrorCode.networkError.rawValue:
-            message = NSLocalizedString("A network error or server error occurred", comment: "")
+            return NSLocalizedString("A network error or server error occurred", comment: "")
         case OIDErrorCode.serverError.rawValue:
-            message = NSLocalizedString("A server error occurred", comment: "")
+            return NSLocalizedString("A server error occurred", comment: "")
         case OIDErrorCode.jsonDeserializationError.rawValue:
-            message = NSLocalizedString("A problem occurred deserializing the response/JSON", comment: "")
+            return NSLocalizedString("A problem occurred deserializing the response/JSON", comment: "")
         case OIDErrorCode.tokenResponseConstructionError.rawValue:
-            message = NSLocalizedString("A problem occurred constructing the token response from the JSON.", comment: "")
+            return NSLocalizedString("A problem occurred constructing the token response from the JSON.", comment: "")
         case OIDErrorCode.safariOpenError.rawValue:
-            message = NSLocalizedString("UIApplication.openURL: returned NO when attempting to open the authorization request in mobile Safari.", comment: "")
+            return NSLocalizedString("UIApplication.openURL: returned NO when attempting to open the authorization request in mobile Safari.", comment: "")
         case OIDErrorCode.browserOpenError.rawValue:
-            message = NSLocalizedString("NSWorkspace.openURL returned NO when attempting to open the authorization request in the default browser", comment: "")
+            return NSLocalizedString("NSWorkspace.openURL returned NO when attempting to open the authorization request in the default browser", comment: "")
         case OIDErrorCode.tokenRefreshError.rawValue:
-            message = NSLocalizedString("A problem when trying to refresh the tokens ocurred", comment: "")
+            return NSLocalizedString("A problem when trying to refresh the tokens ocurred", comment: "")
         case OIDErrorCode.registrationResponseConstructionError.rawValue:
-            message = NSLocalizedString("A problem occurred constructing the registration response from the JSON", comment: "")
+            return NSLocalizedString("A problem occurred constructing the registration response from the JSON", comment: "")
         case OIDErrorCode.jsonSerializationError.rawValue:
-            message = NSLocalizedString("A problem occurred deserializing the response/JSON", comment: "")
+            return NSLocalizedString("A problem occurred deserializing the response/JSON", comment: "")
         case OIDErrorCode.idTokenParsingError.rawValue:
-            message = NSLocalizedString("The ID Token did not parse.", comment: "")
+            return NSLocalizedString("The ID Token did not parse.", comment: "")
         case OIDErrorCode.idTokenFailedValidationError.rawValue:
-            message = NSLocalizedString("The ID Token did not pass validation (e.g. issuer, audience checks).", comment: "")
+            return NSLocalizedString("The ID Token did not pass validation (e.g. issuer, audience checks).", comment: "")
         default:
-            message = "Unknown error occurred"
+            return NSLocalizedString("Unknown error occurred", comment: "")
         }
-        return message
     }
 }
 
