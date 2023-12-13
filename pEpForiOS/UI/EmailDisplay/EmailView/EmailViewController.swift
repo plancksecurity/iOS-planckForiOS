@@ -456,7 +456,10 @@ extension EmailViewController: TrustmanagementRatingChangedDelegate {
 }
 
 extension EmailViewController: TrustBannerDelegate {
- 
+    func presentVerificationTrustView() {
+        
+    }
+    
     func presentTrustManagementView() {
         performSegue(withIdentifier: .segueTrustManagementView, sender: self)
     }

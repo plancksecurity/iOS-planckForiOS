@@ -20,6 +20,9 @@ protocol TrustBannerDelegate: AnyObject {
 
     /// Presents the trust management view
     func presentTrustManagementView()
+
+    /// Presents the Trust Verification view
+    func presentVerificationTrustView()
 }
 
 struct TrustBannerViewModel {
@@ -50,11 +53,13 @@ struct TrustBannerViewModel {
             return false
         }
 
+        /*
         // Only should show the trust banner when there is one sender and one recipient and the message is “secure” (reliable).
 
         guard message.pEpRatingInt == Rating.reliable.toInt() else {
             return false
         }
+        */
         
         guard message.from != nil else {
             //From does not exist. The banner must be hidden.
@@ -95,7 +100,16 @@ struct TrustBannerViewModel {
                 Log.shared.errorAndCrash("Delegate not found")
                 return
             }
-            del.presentTrustManagementView()
+            guard let msg = message else {
+                Log.shared.errorAndCrash("Message not found")
+                return
+            }
+            let messageRating = msg.pEpRatingInt
+            if messageRating == Rating.reliable.toInt() {
+                del.presentTrustManagementView()
+            } else if [Rating.trusted.toInt(), Rating.trustedAndAnonymized.toInt()].contains(messageRating) {
+                del.presentVerificationTrustView()
+            }
         }
     }
 }
