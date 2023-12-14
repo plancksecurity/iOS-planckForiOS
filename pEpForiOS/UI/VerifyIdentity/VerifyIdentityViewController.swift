@@ -11,7 +11,8 @@ import PlanckToolbox
 
 class VerifyIdentityViewController: UIViewController {
 
-    private let viewModel = VerifyIdentityViewModel()
+    public var viewModel: VerifyIdentityViewModel?
+    public var trustManagementViewModel: TrustManagementViewModel?
 
     static let storyboardId = "VerifyIdentityViewController"
 
@@ -41,11 +42,16 @@ class VerifyIdentityViewController: UIViewController {
 
 extension VerifyIdentityViewController {
     private func setStaticTexts() {
-        verifyIdentityTitleLabel.text = viewModel.title
-        messageLabel.text = viewModel.message
-        trustwordsTitleLabel.text = viewModel.trustwordsTitle
+        guard let vm = viewModel else {
+            Log.shared.errorAndCrash("VM not found")
+            return
+        }
+        
+        verifyIdentityTitleLabel.text = vm.title
+        messageLabel.text = vm.messageText
+        trustwordsTitleLabel.text = vm.trustwordsTitle
         closeButton.setPEPFont(style: .body, weight: .regular)
         closeButton.setTitleColor(UIColor.planckLightPurpleText, for: [.normal])
-        closeButton.setTitle(viewModel.closeButtonTitle, for: [.normal])
+        closeButton.setTitle(vm.closeButtonTitle, for: [.normal])
     }
 }

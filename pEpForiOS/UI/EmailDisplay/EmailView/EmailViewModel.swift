@@ -119,7 +119,11 @@ class EmailViewModel {
                                         protectionStateChangeDelegate: protectionStateChangeDelegate,
                                         ratingDelegate: ratingDelegate)
     }
-                
+
+    func getVerificationTrustViewModel() -> VerifyIdentityViewModel {
+        return VerifyIdentityViewModel(message: message)
+    }
+
     // Indicates if the External Content View has to be shown.
     public var shouldShowExternalContentView: Bool {
         guard let body = htmlBody else {

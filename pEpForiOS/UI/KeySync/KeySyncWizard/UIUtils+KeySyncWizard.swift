@@ -55,7 +55,7 @@ extension UIUtils {
     }
 }
 
-
+// MARK: - Verify Identity
 
 extension UIUtils {
 

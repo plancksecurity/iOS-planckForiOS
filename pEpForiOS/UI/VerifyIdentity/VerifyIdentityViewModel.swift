@@ -7,14 +7,24 @@
 //
 
 import Foundation
+import MessageModel
 
 struct VerifyIdentityViewModel {
+
+    private var trustManagementUtil : TrustManagementUtilProtocol
+
+    private var message: Message
+    
+    init(message: Message, trustManagementUtil: TrustManagementUtilProtocol? = nil) {
+        self.message = message
+        self.trustManagementUtil = trustManagementUtil ?? TrustManagementUtil()
+    }
     
     public var title: String {
         return NSLocalizedString("Verify Identity", comment: "Verify Identity - Modal view title")
     }
 
-    public var message: String {
+    public var messageText: String {
         return NSLocalizedString("Ask your partner in person or over the phone: What are your Trustwords? Then compare the to the correct answer shown below", comment: "Instructions to verify Identity")
     }
     

@@ -657,6 +657,7 @@
 		F73E4F7A2180744700CCFFED /* FolderCellViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = F73E4F792180744700CCFFED /* FolderCellViewModelTests.swift */; };
 		F75D01D22A39ABEA00805DEF /* AuditLogginService.swift in Sources */ = {isa = PBXBuildFile; fileRef = F75D01D12A39ABEA00805DEF /* AuditLogginService.swift */; };
 		F7644C922B2B4451007D8E5C /* VerifyIdentityViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = F7644C912B2B4451007D8E5C /* VerifyIdentityViewModel.swift */; };
+		F7644C942B2B5550007D8E5C /* FingerprintUtil.swift in Sources */ = {isa = PBXBuildFile; fileRef = F7644C932B2B5550007D8E5C /* FingerprintUtil.swift */; };
 		F779D6012A2F28E60069381E /* AuditLogginViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F779D6002A2F28E60069381E /* AuditLogginViewController.swift */; };
 		F779D6032A2F29130069381E /* AuditLoginViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = F779D6022A2F29130069381E /* AuditLoginViewModel.swift */; };
 		F779D6052A2F4DF60069381E /* AuditLoggingTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = F779D6042A2F4DF60069381E /* AuditLoggingTableViewCell.swift */; };
@@ -1255,6 +1256,7 @@
 		F73E4F792180744700CCFFED /* FolderCellViewModelTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FolderCellViewModelTests.swift; sourceTree = "<group>"; };
 		F75D01D12A39ABEA00805DEF /* AuditLogginService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuditLogginService.swift; sourceTree = "<group>"; };
 		F7644C912B2B4451007D8E5C /* VerifyIdentityViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VerifyIdentityViewModel.swift; sourceTree = "<group>"; };
+		F7644C932B2B5550007D8E5C /* FingerprintUtil.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FingerprintUtil.swift; sourceTree = "<group>"; };
 		F779D6002A2F28E60069381E /* AuditLogginViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuditLogginViewController.swift; sourceTree = "<group>"; };
 		F779D6022A2F29130069381E /* AuditLoginViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuditLoginViewModel.swift; sourceTree = "<group>"; };
 		F779D6042A2F4DF60069381E /* AuditLoggingTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuditLoggingTableViewCell.swift; sourceTree = "<group>"; };
@@ -2293,6 +2295,7 @@
 				B70D32A6205BCC120094A92A /* CellsAndSections */,
 				5BC14AEF23EB19B5005F0AF3 /* TrustManagementViewController.swift */,
 				5BC14ABE23E2EE78005F0AF3 /* TrustManagementViewModel.swift */,
+				F7644C932B2B5550007D8E5C /* FingerprintUtil.swift */,
 			);
 			path = TrustManagement;
 			sourceTree = "<group>";
@@ -3549,6 +3552,7 @@
 				1543B6A822ABDAAE002B59AB /* Identity+pEp.swift in Sources */,
 				1546CBF6252B53CC00A7AA7D /* CreditsWebViewController.swift in Sources */,
 				152A39D821905C3E00D9F8E4 /* BodyCellViewModel.swift in Sources */,
+				F7644C942B2B5550007D8E5C /* FingerprintUtil.swift in Sources */,
 				B7C7E3142334E7A1009ABFFE /* ResetTrustViewModel.swift in Sources */,
 				3A928C86242259E300FEFA4C /* HtmlTagParser.swift in Sources */,
 				B72C7BAC2395198D0013B12E /* AccountTypeSelectorViewModel.swift in Sources */,

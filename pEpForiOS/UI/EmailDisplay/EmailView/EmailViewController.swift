@@ -463,6 +463,9 @@ extension EmailViewController: TrustBannerDelegate {
                 Log.shared.errorAndCrash("Fail to instantiateViewController VerifyIdentityViewController")
                 return
         }
+        vc.viewModel = viewModel?.getVerificationTrustViewModel()
+        vc.trustManagementViewModel = viewModel?.getTrustManagementViewModel()
+
         UIUtils.showVerifyIdentity(viewContorller: vc)
     }
     
