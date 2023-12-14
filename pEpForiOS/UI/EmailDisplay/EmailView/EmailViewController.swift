@@ -457,7 +457,13 @@ extension EmailViewController: TrustmanagementRatingChangedDelegate {
 
 extension EmailViewController: TrustBannerDelegate {
     func presentVerificationTrustView() {
-        
+        let storyboard = UIStoryboard(name: Constants.reusableStoryboard, bundle: .main)
+        guard let vc = storyboard.instantiateViewController(
+            withIdentifier: VerifyIdentityViewController.storyboardId) as? VerifyIdentityViewController else {
+                Log.shared.errorAndCrash("Fail to instantiateViewController VerifyIdentityViewController")
+                return
+        }
+        UIUtils.showVerifyIdentity(viewContorller: vc)
     }
     
     func presentTrustManagementView() {

@@ -107,7 +107,7 @@ struct TrustBannerViewModel {
             let messageRating = msg.pEpRatingInt
             if messageRating == Rating.reliable.toInt() {
                 del.presentTrustManagementView()
-            } else if [Rating.trusted.toInt(), Rating.trustedAndAnonymized.toInt()].contains(messageRating) {
+            } else {
                 del.presentVerificationTrustView()
             }
         }

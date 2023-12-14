@@ -55,6 +55,19 @@ extension UIUtils {
     }
 }
 
+
+
+extension UIUtils {
+
+    static public func showVerifyIdentity(viewContorller: VerifyIdentityViewController) {
+        DispatchQueue.main.async {
+            viewContorller.modalPresentationStyle = .overFullScreen
+            show(viewContorller)
+        }
+    }
+}
+
+
 // MARK: - Private
 
 extension UIUtils {
