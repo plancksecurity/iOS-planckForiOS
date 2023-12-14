@@ -536,7 +536,7 @@
                                                             <constraint firstAttribute="width" secondItem="5uL-b4-FcI" secondAttribute="height" multiplier="1:1" id="3nL-Im-w77"/>
                                                         </constraints>
                                                         <inset key="imageEdgeInsets" minX="5" minY="5" maxX="5" maxY="5"/>
-                                                        <state key="normal" image="pEpForiOS-icon-languagechange"/>
+                                                        <state key="normal" image="ico_language"/>
                                                         <connections>
                                                             <action selector="trustwordsLanguageButtonPressed" destination="sT5-gb-80O" eventType="touchUpInside" id="s4s-1Q-uZB"/>
                                                         </connections>
@@ -642,6 +642,9 @@
                                                                 <state key="normal" title="Close">
                                                                     <color key="titleColor" red="0.52941176469999995" green="0.21960784310000001" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                                                 </state>
+                                                                <connections>
+                                                                    <action selector="closeButtonPressed" destination="sT5-gb-80O" eventType="touchUpInside" id="qZo-v5-7NW"/>
+                                                                </connections>
                                                             </button>
                                                         </subviews>
                                                         <color key="backgroundColor" systemColor="separatorColor"/>
@@ -713,6 +716,7 @@
                         </constraints>
                     </view>
                     <connections>
+                        <outlet property="closeButton" destination="YwS-bS-AZe" id="CZr-Mu-5xY"/>
                         <outlet property="messageLabel" destination="Fnc-l3-k6s" id="zWS-l7-9fA"/>
                         <outlet property="otherDeviceFingerprints" destination="hG8-4i-GCa" id="TbO-lt-jr8"/>
                         <outlet property="otherDeviceUsernameLabel" destination="UMJ-wf-2yl" id="XQG-8B-M6G"/>
@@ -730,6 +734,7 @@
         </scene>
     </scenes>
     <resources>
+        <image name="ico_language" width="24" height="24"/>
         <image name="pEpForiOS-icon-languagechange" width="100" height="100"/>
         <systemColor name="secondarySystemBackgroundColor">
             <color red="0.94901960780000005" green="0.94901960780000005" blue="0.96862745100000003" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>

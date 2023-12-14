@@ -7,65 +7,45 @@
 //
 
 import UIKit
+import PlanckToolbox
 
 class VerifyIdentityViewController: UIViewController {
 
+    private let viewModel = VerifyIdentityViewModel()
+
     static let storyboardId = "VerifyIdentityViewController"
 
-    @IBOutlet weak var verifyIdentityTitleLabel: UILabel!
-    @IBOutlet weak var messageLabel: UILabel!
-    @IBOutlet weak var trustwordsTitleLabel: UILabel!
-    @IBOutlet weak var trustwordsLabel: UILabel!
-    @IBOutlet weak var ownDeviceFingerprintsLabel: UILabel!
-    @IBOutlet weak var ownDeviceUsernameLabel: UILabel!
-    @IBOutlet weak var otherDeviceFingerprints: UILabel!
-    @IBOutlet weak var otherDeviceUsernameLabel: UILabel!
-
+    @IBOutlet private weak var verifyIdentityTitleLabel: UILabel!
+    @IBOutlet private weak var messageLabel: UILabel!
+    @IBOutlet private weak var trustwordsTitleLabel: UILabel!
+    @IBOutlet private weak var trustwordsLabel: UILabel!
+    @IBOutlet private weak var ownDeviceFingerprintsLabel: UILabel!
+    @IBOutlet private weak var ownDeviceUsernameLabel: UILabel!
+    @IBOutlet private weak var otherDeviceFingerprints: UILabel!
+    @IBOutlet private weak var otherDeviceUsernameLabel: UILabel!
+    @IBOutlet private weak var closeButton: UIButton!
+    
     override func viewDidLoad() {
         super.viewDidLoad()
+        setStaticTexts()
     }
     
+    @IBAction func closeButtonPressed() {
+        dismiss(animated: true)
+    }
+
     @IBAction func trustwordsLanguageButtonPressed() {
         
     }
 }
 
-struct VerifyIdentityViewModel {
-    
-    public var title: String {
-        return NSLocalizedString("Verify Identity", comment: "Verify Identity - Modal view title")
+extension VerifyIdentityViewController {
+    private func setStaticTexts() {
+        verifyIdentityTitleLabel.text = viewModel.title
+        messageLabel.text = viewModel.message
+        trustwordsTitleLabel.text = viewModel.trustwordsTitle
+        closeButton.setPEPFont(style: .body, weight: .regular)
+        closeButton.setTitleColor(UIColor.planckLightPurpleText, for: [.normal])
+        closeButton.setTitle(viewModel.closeButtonTitle, for: [.normal])
     }
-
-    public var message: String {
-        return NSLocalizedString("Ask your partner in person or over the phone: What are your Trustwords? Then compare the to the correct answer shown below", comment: "Instructions to verify Identity")
-    }
-    
-    public var trustwordsTitle: String {
-        return NSLocalizedString("Trustwords", comment: "Trustwords")
-    }
-
-    public var fingerprintsTitle: String {
-        return NSLocalizedString("Fingerprints", comment: "Fingerprints")
-    }
-    
-    public var closeButtonTitle: String {
-        return NSLocalizedString("Close", comment: "Close button title")
-    }
-    
-    var ownDeviceUsername: String {
-        return ""
-    }
-
-    var ownDeviceTrustwords: String {
-        return ""
-    }
-    
-    var otherDeviceTrustwords: String {
-        return ""
-    }
-
-    var otherDeviceUsername: String {
-        return ""
-    }
-
 }
