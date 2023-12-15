@@ -516,13 +516,13 @@
                                                 </constraints>
                                             </view>
                                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="1000" horizontalCompressionResistancePriority="1000" verticalCompressionResistancePriority="1000" text="Ask your partner in person or over the phone: What are your Trustwords? Then compare to the correct answer shown below" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontForContentSizeCategory="YES" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Fnc-l3-k6s">
-                                                <rect key="frame" x="20" y="48" width="260" height="72"/>
+                                                <rect key="frame" x="20" y="48" width="260" height="52"/>
                                                 <fontDescription key="fontDescription" type="system" pointSize="15"/>
                                                 <nil key="textColor"/>
                                                 <nil key="highlightedColor"/>
                                             </label>
                                             <view contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" translatesAutoresizingMaskIntoConstraints="NO" id="v4z-vl-hjd" userLabel="Trustwords Language button Container">
-                                                <rect key="frame" x="20" y="128" width="260" height="30"/>
+                                                <rect key="frame" x="20" y="108" width="260" height="30"/>
                                                 <subviews>
                                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Trustwords" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="mSa-p4-S9y">
                                                         <rect key="frame" x="0.0" y="6.5" width="79" height="17"/>
@@ -553,10 +553,10 @@
                                                 </constraints>
                                             </view>
                                             <view contentMode="scaleToFill" verticalHuggingPriority="1000" verticalCompressionResistancePriority="1000" translatesAutoresizingMaskIntoConstraints="NO" id="lGs-Zv-bTF">
-                                                <rect key="frame" x="12" y="166" width="276" height="30"/>
+                                                <rect key="frame" x="12" y="146" width="276" height="50"/>
                                                 <subviews>
-                                                    <label opaque="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="MOUNT GLOOMY RIGHTEOUS SPAIN NOSTALGIA" lineBreakMode="tailTruncation" numberOfLines="0" minimumFontSize="7" translatesAutoresizingMaskIntoConstraints="NO" id="del-U0-Iuc">
-                                                        <rect key="frame" x="8" y="0.0" width="260" height="33.5"/>
+                                                    <label opaque="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="MOUNT GLOOMY RIGHTEOUS SPAIN NOSTALGIA THING SPACE CAR TREE CUP DESK" lineBreakMode="tailTruncation" numberOfLines="0" minimumFontSize="7" translatesAutoresizingMaskIntoConstraints="NO" id="del-U0-Iuc">
+                                                        <rect key="frame" x="8" y="0.0" width="260" height="50"/>
                                                         <gestureRecognizers/>
                                                         <fontDescription key="fontDescription" type="system" weight="medium" pointSize="14"/>
                                                         <nil key="textColor"/>
@@ -569,6 +569,7 @@
                                                 <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                                 <constraints>
                                                     <constraint firstItem="del-U0-Iuc" firstAttribute="top" secondItem="lGs-Zv-bTF" secondAttribute="top" id="MXt-nN-LI7"/>
+                                                    <constraint firstAttribute="bottom" secondItem="del-U0-Iuc" secondAttribute="bottom" id="PEq-PT-D6T"/>
                                                     <constraint firstAttribute="trailing" secondItem="del-U0-Iuc" secondAttribute="trailing" constant="8" id="tfL-MQ-Yvw"/>
                                                     <constraint firstItem="del-U0-Iuc" firstAttribute="leading" secondItem="lGs-Zv-bTF" secondAttribute="leading" constant="8" id="x5n-Qp-OMh"/>
                                                 </constraints>

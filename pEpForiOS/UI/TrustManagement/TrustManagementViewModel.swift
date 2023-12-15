@@ -450,13 +450,15 @@ final class TrustManagementViewModel {
     ///   - indexPath: The index path of the row
     ///   - language: The chosen language
     public func handleDidSelect(language: String, forRowAt indexPath: IndexPath) {
-        rows[indexPath.row].setLanguage(newLang: language) { [weak self] in
-            guard let me = self else {
-                // Valid case. We might have been dismissed already.
-                // Do nothing.
-                return
+        rows[indexPath.row].setLanguage(newLang: language) {
+            DispatchQueue.main.async { [weak self] in
+                guard let me = self else {
+                    // Valid case. We might have been dismissed already.
+                    // Do nothing.
+                    return
+                }
+                me.delegate?.dataChanged(forRowAt: indexPath)
             }
-            me.delegate?.dataChanged(forRowAt: indexPath)
         }
     }
     

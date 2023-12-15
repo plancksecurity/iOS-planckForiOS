@@ -121,7 +121,7 @@ class EmailViewModel {
     }
 
     func getVerificationTrustViewModel() -> VerifyIdentityViewModel {
-        return VerifyIdentityViewModel(message: message)
+        return VerifyIdentityViewModel()
     }
 
     // Indicates if the External Content View has to be shown.

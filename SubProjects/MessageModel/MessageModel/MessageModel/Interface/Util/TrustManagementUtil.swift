@@ -48,9 +48,14 @@ extension TrustManagementUtil : TrustManagementUtilProtocol {
         }) { langs in
             if let acceptedLanguages = acceptedLanguages, !acceptedLanguages.isEmpty {
                 let filteredLanguages = langs.filter({acceptedLanguages.contains($0.code)})
-                completion(filteredLanguages.map { $0.code })
+                DispatchQueue.main.async {
+                    completion(filteredLanguages.map { $0.code })
+                }
             } else {
-                completion(langs.map { $0.code })
+                DispatchQueue.main.async {
+                    completion(langs.map { $0.code })
+                }
+                
             }
         }
     }
