@@ -39,21 +39,5 @@ struct VerifyIdentityViewModel {
     public var closeButtonTitle: String {
         return NSLocalizedString("Close", comment: "Close button title")
     }
-    
-    var ownDeviceUsername: String {
-        return ""
-    }
-
-    var ownDeviceTrustwords: String {
-        return ""
-    }
-    
-    var otherDeviceTrustwords: String {
-        return ""
-    }
-
-    var otherDeviceUsername: String {
-        return ""
-    }
 
 }
