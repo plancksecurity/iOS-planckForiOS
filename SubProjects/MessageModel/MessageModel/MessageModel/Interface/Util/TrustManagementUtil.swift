@@ -255,6 +255,7 @@ extension TrustManagementUtil : TrustManagementUtilProtocol {
     }
 
     public func handshakeCombinations(identities: [Identity],
+                                      shouldAllowHandshakeActions: Bool = true,
                                       completion: @escaping ([HandshakeCombination]) -> Void) {
         let ownIdentities = identities.filter { $0.isMySelf }
         let partnerIdenties = identities.filter { !$0.isMySelf }
@@ -275,12 +276,16 @@ extension TrustManagementUtil : TrustManagementUtilProtocol {
             var handshakableIdentities = [Identity]()
             let groupHandshakeAction = DispatchGroup()
             for partnerIdentity in partnerIdenties {
-                groupHandshakeAction.enter()
-                partnerIdentity.cdObject.canInvokeHandshakeAction { (canInvoke) in
-                    if canInvoke {
-                        handshakableIdentities.append(partnerIdentity)
+                if shouldAllowHandshakeActions {
+                    groupHandshakeAction.enter()
+                    partnerIdentity.cdObject.canInvokeHandshakeAction { (canInvoke) in
+                        if canInvoke {
+                            handshakableIdentities.append(partnerIdentity)
+                        }
+                        groupHandshakeAction.leave()
                     }
-                    groupHandshakeAction.leave()
+                } else {
+                    handshakableIdentities.append(partnerIdentity)
                 }
             }
             groupHandshakeAction.notify(queue: DispatchQueue.main) {
@@ -300,6 +305,7 @@ extension TrustManagementUtil : TrustManagementUtilProtocol {
     }
 
     public func handshakeCombinations(message: Message,
+                                      shouldAllowHandshakeActions: Bool = true,
                                       completion: @escaping ([HandshakeCombination])->Void) {
         message.session.perform { [weak self] in
             guard let me = self else {
@@ -314,7 +320,7 @@ extension TrustManagementUtil : TrustManagementUtilProtocol {
             }
             let to = Set(message.to.allObjects.filter { !$0.isMySelf }) // I am in with `me` already
             let identities = [accountUser, from] + Array(to)
-            me.handshakeCombinations(identities: identities, completion: completion)
+            me.handshakeCombinations(identities: identities, shouldAllowHandshakeActions: shouldAllowHandshakeActions, completion: completion)
         }
     }
 }

@@ -112,10 +112,13 @@ class EmailViewModel {
     }
 
     /// - Returns: The Trust Management ViewModel
-    func getTrustManagementViewModel(protectionStateChangeDelegate: TrustmanagementProtectionStateChangeDelegate? = nil, ratingDelegate: TrustmanagementRatingChangedDelegate? = nil) -> TrustManagementViewModel {
+    func getTrustManagementViewModel(protectionStateChangeDelegate: TrustmanagementProtectionStateChangeDelegate? = nil, 
+                                     ratingDelegate: TrustmanagementRatingChangedDelegate? = nil,
+                                     shouldAllowHandshakeActions: Bool = true) -> TrustManagementViewModel {
         return TrustManagementViewModel(message: message,
                                         pEpProtectionModifyable: true,
                                         persistRatingChangesForMessage: true,
+                                        shouldAllowHandshakeActions: shouldAllowHandshakeActions,
                                         protectionStateChangeDelegate: protectionStateChangeDelegate,
                                         ratingDelegate: ratingDelegate)
     }

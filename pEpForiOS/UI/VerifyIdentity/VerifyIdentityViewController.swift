@@ -41,7 +41,6 @@ class VerifyIdentityViewController: UIViewController {
         let tap = UITapGestureRecognizer(target: self, action: #selector(toogle))
         trustwordsLabel.isUserInteractionEnabled = true
         trustwordsLabel.addGestureRecognizer(tap)
-
     }
     
     @objc func toogle() {
@@ -88,8 +87,8 @@ class VerifyIdentityViewController: UIViewController {
             cancelAction.accessibilityIdentifier = AccessibilityIdentifier.cancelButton
             alertController.addAction(cancelAction)
             //Ipad behavior.
-            //alertController.popoverPresentationController?.sourceView = languageButton
-            //alertController.popoverPresentationController?.sourceRect = languageButton.bounds
+            alertController.popoverPresentationController?.sourceView = me.trustwordsLabel
+            alertController.popoverPresentationController?.sourceRect = me.trustwordsLabel.bounds
             me.present(alertController, animated: true, completion: nil)
         }
     }
@@ -122,7 +121,6 @@ extension VerifyIdentityViewController: TrustManagementViewModelDelegate {
         }
 
         guard let row = vm.rows.first else {
-            Log.shared.errorAndCrash("Row not found")
             return
         }
         trustwordsLabel.text = row.trustwords

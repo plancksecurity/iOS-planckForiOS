@@ -492,10 +492,10 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="bXA-jN-br9" userLabel="Container" customClass="KeyInputView" customModule="pEpForiOS" customModuleProvider="target">
-                                <rect key="frame" x="37.5" y="128.5" width="300" height="430"/>
+                                <rect key="frame" x="37.5" y="127.5" width="300" height="432"/>
                                 <subviews>
                                     <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" alignment="center" spacing="8" translatesAutoresizingMaskIntoConstraints="NO" id="inG-LR-uGD">
-                                        <rect key="frame" x="0.0" y="12" width="300" height="418"/>
+                                        <rect key="frame" x="0.0" y="12" width="300" height="420"/>
                                         <subviews>
                                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="1kz-AL-jdJ" userLabel="Title container view">
                                                 <rect key="frame" x="12" y="0.0" width="276" height="20.5"/>
@@ -512,6 +512,7 @@
                                                     <constraint firstItem="vug-2K-Z1c" firstAttribute="leading" relation="greaterThanOrEqual" secondItem="1kz-AL-jdJ" secondAttribute="leading" constant="8" id="7Lm-eV-GZV"/>
                                                     <constraint firstItem="vug-2K-Z1c" firstAttribute="centerX" secondItem="1kz-AL-jdJ" secondAttribute="centerX" id="Bhb-6e-b6D"/>
                                                     <constraint firstAttribute="bottom" secondItem="vug-2K-Z1c" secondAttribute="bottom" id="RCz-ju-lC2"/>
+                                                    <constraint firstAttribute="height" constant="20.5" id="WbW-KF-0Q6"/>
                                                 </constraints>
                                             </view>
                                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="1000" horizontalCompressionResistancePriority="1000" verticalCompressionResistancePriority="1000" text="Ask your partner in person or over the phone: What are your Trustwords? Then compare to the correct answer shown below" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontForContentSizeCategory="YES" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Fnc-l3-k6s">
@@ -543,7 +544,7 @@
                                                     </button>
                                                 </subviews>
                                                 <constraints>
-                                                    <constraint firstItem="mSa-p4-S9y" firstAttribute="top" secondItem="v4z-vl-hjd" secondAttribute="top" constant="6.5" id="643-JQ-n5b"/>
+                                                    <constraint firstItem="mSa-p4-S9y" firstAttribute="centerY" secondItem="v4z-vl-hjd" secondAttribute="centerY" id="6jF-Pa-6dX"/>
                                                     <constraint firstAttribute="trailing" secondItem="5uL-b4-FcI" secondAttribute="trailing" id="A2b-g3-a0Q"/>
                                                     <constraint firstItem="5uL-b4-FcI" firstAttribute="height" secondItem="v4z-vl-hjd" secondAttribute="height" id="LSb-BM-08P"/>
                                                     <constraint firstItem="mSa-p4-S9y" firstAttribute="leading" secondItem="v4z-vl-hjd" secondAttribute="leading" id="Rr6-8e-UOQ"/>
@@ -574,37 +575,37 @@
                                                 </constraints>
                                             </view>
                                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="pBp-p2-ggt" userLabel="Other Device Container">
-                                                <rect key="frame" x="20" y="204.5" width="260" height="159.5"/>
+                                                <rect key="frame" x="20" y="204.5" width="260" height="161.5"/>
                                                 <subviews>
                                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" verticalCompressionResistancePriority="1000" text="Fingerprints" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontForContentSizeCategory="YES" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="U6D-LO-smC" userLabel="Fingerprints Title Label">
-                                                        <rect key="frame" x="0.0" y="0.0" width="85" height="30"/>
+                                                        <rect key="frame" x="0.0" y="0.0" width="85" height="24"/>
                                                         <constraints>
-                                                            <constraint firstAttribute="height" constant="30" id="oe8-QU-bT8"/>
+                                                            <constraint firstAttribute="height" constant="24" id="oe8-QU-bT8"/>
                                                         </constraints>
                                                         <fontDescription key="fontDescription" type="boldSystem" pointSize="14"/>
                                                         <nil key="textColor"/>
                                                         <nil key="highlightedColor"/>
                                                     </label>
                                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="252" verticalCompressionResistancePriority="1000" text="B787  8D1A C48D E573 5F92 509F 635D AB1B  B749" lineBreakMode="wordWrap" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontForContentSizeCategory="YES" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="IRo-9p-rDF" userLabel="Own Device Fingerprint">
-                                                        <rect key="frame" x="0.0" y="55" width="236" height="33.5"/>
+                                                        <rect key="frame" x="0.0" y="49" width="236" height="33.5"/>
                                                         <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                                         <nil key="textColor"/>
                                                         <nil key="highlightedColor"/>
                                                     </label>
                                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="252" verticalCompressionResistancePriority="1000" text="Rick Deckward" lineBreakMode="wordWrap" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontForContentSizeCategory="YES" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="alJ-ZR-xF1" userLabel="Own Device Fingerprint">
-                                                        <rect key="frame" x="0.0" y="34" width="239.5" height="17"/>
+                                                        <rect key="frame" x="0.0" y="28" width="239.5" height="17"/>
                                                         <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                                         <nil key="textColor"/>
                                                         <nil key="highlightedColor"/>
                                                     </label>
                                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="252" verticalCompressionResistancePriority="1000" text="Nick" lineBreakMode="wordWrap" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontForContentSizeCategory="YES" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="UMJ-wf-2yl" userLabel="Other Device Username">
-                                                        <rect key="frame" x="0.0" y="100.5" width="29" height="17"/>
+                                                        <rect key="frame" x="0.0" y="90.5" width="29" height="17"/>
                                                         <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                                         <nil key="textColor"/>
                                                         <nil key="highlightedColor"/>
                                                     </label>
                                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="252" verticalCompressionResistancePriority="1000" text="B787  8D1A C48D E573 5F92 509F 635D AB1B  B749" lineBreakMode="wordWrap" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontForContentSizeCategory="YES" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="hG8-4i-GCa" userLabel="Other Device Fingerprint">
-                                                        <rect key="frame" x="0.0" y="121.5" width="236" height="33.5"/>
+                                                        <rect key="frame" x="0.0" y="111.5" width="236" height="33.5"/>
                                                         <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                                         <nil key="textColor"/>
                                                         <nil key="highlightedColor"/>
@@ -619,7 +620,7 @@
                                                     <constraint firstItem="alJ-ZR-xF1" firstAttribute="leading" secondItem="U6D-LO-smC" secondAttribute="leading" id="She-Ob-0fC"/>
                                                     <constraint firstAttribute="trailing" secondItem="IRo-9p-rDF" secondAttribute="trailing" constant="24" id="cqr-eL-9Xa"/>
                                                     <constraint firstItem="U6D-LO-smC" firstAttribute="leading" secondItem="pBp-p2-ggt" secondAttribute="leading" id="dnr-Tv-Nr5"/>
-                                                    <constraint firstItem="UMJ-wf-2yl" firstAttribute="top" secondItem="IRo-9p-rDF" secondAttribute="bottom" constant="12" id="fKD-WH-iu6"/>
+                                                    <constraint firstItem="UMJ-wf-2yl" firstAttribute="top" secondItem="IRo-9p-rDF" secondAttribute="bottom" constant="8" id="fKD-WH-iu6"/>
                                                     <constraint firstItem="hG8-4i-GCa" firstAttribute="trailing" secondItem="IRo-9p-rDF" secondAttribute="trailing" id="mMD-We-qQE"/>
                                                     <constraint firstItem="UMJ-wf-2yl" firstAttribute="leading" secondItem="IRo-9p-rDF" secondAttribute="leading" id="qVR-7S-iOL"/>
                                                     <constraint firstItem="hG8-4i-GCa" firstAttribute="top" secondItem="UMJ-wf-2yl" secondAttribute="bottom" constant="4" id="rvf-PC-aa6"/>
@@ -629,7 +630,7 @@
                                                 </constraints>
                                             </view>
                                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="BZn-pi-A0m">
-                                                <rect key="frame" x="0.0" y="372" width="300" height="46"/>
+                                                <rect key="frame" x="0.0" y="374" width="300" height="46"/>
                                                 <subviews>
                                                     <stackView opaque="NO" contentMode="scaleToFill" distribution="fillEqually" spacing="1" translatesAutoresizingMaskIntoConstraints="NO" id="VxD-CR-ed4">
                                                         <rect key="frame" x="0.0" y="1" width="300" height="45"/>
@@ -682,7 +683,7 @@
                                     <constraint firstItem="inG-LR-uGD" firstAttribute="leading" secondItem="bXA-jN-br9" secondAttribute="leading" id="2qi-Oz-3sD"/>
                                     <constraint firstAttribute="trailing" secondItem="inG-LR-uGD" secondAttribute="trailing" id="3Pm-k1-Yi7"/>
                                     <constraint firstAttribute="width" constant="300" id="4hg-Ud-Ebh"/>
-                                    <constraint firstAttribute="height" constant="430" id="M2d-8Q-wF4"/>
+                                    <constraint firstAttribute="height" constant="432" id="M2d-8Q-wF4"/>
                                     <constraint firstItem="inG-LR-uGD" firstAttribute="top" secondItem="bXA-jN-br9" secondAttribute="top" constant="12" id="TNu-yA-oMU"/>
                                     <constraint firstAttribute="bottom" secondItem="inG-LR-uGD" secondAttribute="bottom" id="Td4-Ue-Pv1"/>
                                     <constraint firstAttribute="width" constant="420" id="s6M-QK-Bs3"/>
