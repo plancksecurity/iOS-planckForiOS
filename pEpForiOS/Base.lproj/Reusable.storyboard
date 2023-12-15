@@ -498,10 +498,10 @@
                                         <rect key="frame" x="0.0" y="12" width="300" height="418"/>
                                         <subviews>
                                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="1kz-AL-jdJ" userLabel="Title container view">
-                                                <rect key="frame" x="12" y="0.0" width="276" height="40"/>
+                                                <rect key="frame" x="12" y="0.0" width="276" height="20.5"/>
                                                 <subviews>
                                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="1000" verticalCompressionResistancePriority="1000" text="Verify Identity" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="vug-2K-Z1c">
-                                                        <rect key="frame" x="80.5" y="0.0" width="115.5" height="40"/>
+                                                        <rect key="frame" x="80.5" y="0.0" width="115.5" height="20.5"/>
                                                         <fontDescription key="fontDescription" type="boldSystem" pointSize="17"/>
                                                         <nil key="textColor"/>
                                                         <nil key="highlightedColor"/>
@@ -511,18 +511,17 @@
                                                     <constraint firstItem="vug-2K-Z1c" firstAttribute="top" secondItem="1kz-AL-jdJ" secondAttribute="top" id="2XA-tC-osP"/>
                                                     <constraint firstItem="vug-2K-Z1c" firstAttribute="leading" relation="greaterThanOrEqual" secondItem="1kz-AL-jdJ" secondAttribute="leading" constant="8" id="7Lm-eV-GZV"/>
                                                     <constraint firstItem="vug-2K-Z1c" firstAttribute="centerX" secondItem="1kz-AL-jdJ" secondAttribute="centerX" id="Bhb-6e-b6D"/>
-                                                    <constraint firstAttribute="height" constant="40" id="Qj8-z3-qZx"/>
                                                     <constraint firstAttribute="bottom" secondItem="vug-2K-Z1c" secondAttribute="bottom" id="RCz-ju-lC2"/>
                                                 </constraints>
                                             </view>
                                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="1000" horizontalCompressionResistancePriority="1000" verticalCompressionResistancePriority="1000" text="Ask your partner in person or over the phone: What are your Trustwords? Then compare to the correct answer shown below" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontForContentSizeCategory="YES" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Fnc-l3-k6s">
-                                                <rect key="frame" x="20" y="48" width="260" height="52"/>
+                                                <rect key="frame" x="20" y="28.5" width="260" height="72"/>
                                                 <fontDescription key="fontDescription" type="system" pointSize="15"/>
                                                 <nil key="textColor"/>
                                                 <nil key="highlightedColor"/>
                                             </label>
                                             <view contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" translatesAutoresizingMaskIntoConstraints="NO" id="v4z-vl-hjd" userLabel="Trustwords Language button Container">
-                                                <rect key="frame" x="20" y="108" width="260" height="30"/>
+                                                <rect key="frame" x="20" y="108.5" width="260" height="30"/>
                                                 <subviews>
                                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Trustwords" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="mSa-p4-S9y">
                                                         <rect key="frame" x="0.0" y="6.5" width="79" height="17"/>
@@ -534,6 +533,7 @@
                                                         <rect key="frame" x="230" y="0.0" width="30" height="30"/>
                                                         <constraints>
                                                             <constraint firstAttribute="width" secondItem="5uL-b4-FcI" secondAttribute="height" multiplier="1:1" id="3nL-Im-w77"/>
+                                                            <constraint firstAttribute="width" constant="30" id="Bcu-S3-nGN"/>
                                                         </constraints>
                                                         <inset key="imageEdgeInsets" minX="5" minY="5" maxX="5" maxY="5"/>
                                                         <state key="normal" image="ico_language"/>
@@ -547,13 +547,12 @@
                                                     <constraint firstAttribute="trailing" secondItem="5uL-b4-FcI" secondAttribute="trailing" id="A2b-g3-a0Q"/>
                                                     <constraint firstItem="5uL-b4-FcI" firstAttribute="height" secondItem="v4z-vl-hjd" secondAttribute="height" id="LSb-BM-08P"/>
                                                     <constraint firstItem="mSa-p4-S9y" firstAttribute="leading" secondItem="v4z-vl-hjd" secondAttribute="leading" id="Rr6-8e-UOQ"/>
-                                                    <constraint firstAttribute="height" constant="30" id="Uxk-nU-NU0"/>
                                                     <constraint firstAttribute="trailing" relation="greaterThanOrEqual" secondItem="mSa-p4-S9y" secondAttribute="trailing" constant="40" id="viC-vw-um8"/>
                                                     <constraint firstItem="5uL-b4-FcI" firstAttribute="centerY" secondItem="v4z-vl-hjd" secondAttribute="centerY" id="xU2-5R-Y5V"/>
                                                 </constraints>
                                             </view>
                                             <view contentMode="scaleToFill" verticalHuggingPriority="1000" verticalCompressionResistancePriority="1000" translatesAutoresizingMaskIntoConstraints="NO" id="lGs-Zv-bTF">
-                                                <rect key="frame" x="12" y="146" width="276" height="50"/>
+                                                <rect key="frame" x="12" y="146.5" width="276" height="50"/>
                                                 <subviews>
                                                     <label opaque="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="MOUNT GLOOMY RIGHTEOUS SPAIN NOSTALGIA THING SPACE CAR TREE CUP DESK" lineBreakMode="tailTruncation" numberOfLines="0" minimumFontSize="7" translatesAutoresizingMaskIntoConstraints="NO" id="del-U0-Iuc">
                                                         <rect key="frame" x="8" y="0.0" width="260" height="50"/>
@@ -575,7 +574,7 @@
                                                 </constraints>
                                             </view>
                                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="pBp-p2-ggt" userLabel="Other Device Container">
-                                                <rect key="frame" x="20" y="204" width="260" height="160"/>
+                                                <rect key="frame" x="20" y="204.5" width="260" height="159.5"/>
                                                 <subviews>
                                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" verticalCompressionResistancePriority="1000" text="Fingerprints" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontForContentSizeCategory="YES" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="U6D-LO-smC" userLabel="Fingerprints Title Label">
                                                         <rect key="frame" x="0.0" y="0.0" width="85" height="30"/>
@@ -617,7 +616,6 @@
                                                     <constraint firstItem="IRo-9p-rDF" firstAttribute="top" secondItem="alJ-ZR-xF1" secondAttribute="bottom" constant="4" id="1qK-nm-I2O"/>
                                                     <constraint firstItem="U6D-LO-smC" firstAttribute="top" secondItem="pBp-p2-ggt" secondAttribute="top" id="8rE-tL-Tum"/>
                                                     <constraint firstAttribute="trailing" relation="greaterThanOrEqual" secondItem="UMJ-wf-2yl" secondAttribute="trailing" constant="20" symbolic="YES" id="Fs4-Cf-uiL"/>
-                                                    <constraint firstAttribute="height" constant="160" id="PZY-Ok-7r5"/>
                                                     <constraint firstItem="alJ-ZR-xF1" firstAttribute="leading" secondItem="U6D-LO-smC" secondAttribute="leading" id="She-Ob-0fC"/>
                                                     <constraint firstAttribute="trailing" secondItem="IRo-9p-rDF" secondAttribute="trailing" constant="24" id="cqr-eL-9Xa"/>
                                                     <constraint firstItem="U6D-LO-smC" firstAttribute="leading" secondItem="pBp-p2-ggt" secondAttribute="leading" id="dnr-Tv-Nr5"/>
