@@ -717,6 +717,7 @@
                     </view>
                     <connections>
                         <outlet property="closeButton" destination="YwS-bS-AZe" id="CZr-Mu-5xY"/>
+                        <outlet property="containerHeightConstraint" destination="M2d-8Q-wF4" id="iUb-aa-7KN"/>
                         <outlet property="messageLabel" destination="Fnc-l3-k6s" id="zWS-l7-9fA"/>
                         <outlet property="otherDeviceFingerprints" destination="hG8-4i-GCa" id="TbO-lt-jr8"/>
                         <outlet property="otherDeviceUsernameLabel" destination="UMJ-wf-2yl" id="XQG-8B-M6G"/>

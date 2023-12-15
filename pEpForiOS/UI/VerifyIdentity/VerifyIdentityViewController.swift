@@ -19,7 +19,8 @@ class VerifyIdentityViewController: UIViewController {
     public var viewModel: VerifyIdentityViewModel?
     public var trustManagementViewModel: TrustManagementViewModel?
     public static let storyboardId = "VerifyIdentityViewController"
-
+    @IBOutlet weak var containerHeightConstraint: NSLayoutConstraint!
+    
     // Static
     @IBOutlet private weak var verifyIdentityTitleLabel: UILabel!
     @IBOutlet private weak var messageLabel: UILabel!
@@ -32,9 +33,7 @@ class VerifyIdentityViewController: UIViewController {
     @IBOutlet private weak var ownDeviceUsernameLabel: UILabel!
     @IBOutlet private weak var otherDeviceFingerprints: UILabel!
     @IBOutlet private weak var otherDeviceUsernameLabel: UILabel!
-    
-    var languages: [String] = []
-    
+
     override func viewDidLoad() {
         super.viewDidLoad()
         setStaticTexts()
@@ -123,13 +122,20 @@ extension VerifyIdentityViewController: TrustManagementViewModelDelegate {
         guard let row = vm.rows.first else {
             return
         }
-        trustwordsLabel.text = row.trustwords
-        ownDeviceFingerprintsLabel.text = row.ownFormattedFingerprint
-        ownDeviceUsernameLabel.text = row.ownTitle
-        otherDeviceFingerprints.text = row.partnerFormattedFingerprint
-        otherDeviceUsernameLabel.text = row.partnerTitle
+        let trustwordsHeight: CGFloat = row.trustwords?.height(withConstrainedWidth: trustwordsLabel.frame.width, font: trustwordsLabel.font) ?? 40
+        var height = trustwordsHeight + 390
+        UIView.animate(withDuration: 0.5, delay: 0, options: .curveEaseInOut) { [weak self] in
+            guard let me = self else { return }
+            me.containerHeightConstraint.constant = CGFloat(height)
+        } completion: { _ in
+            self.trustwordsLabel.text = row.trustwords
+            self.ownDeviceFingerprintsLabel.text = row.ownFormattedFingerprint
+            self.ownDeviceUsernameLabel.text = row.ownTitle
+            self.otherDeviceFingerprints.text = row.partnerFormattedFingerprint
+            self.otherDeviceUsernameLabel.text = row.partnerTitle
+        }
     }
-
+    
     func dataChanged(forRowAt indexPath: IndexPath) {
         reload()
     }

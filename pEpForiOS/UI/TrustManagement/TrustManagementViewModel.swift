@@ -54,7 +54,7 @@ extension TrustManagementViewModel {
                     handshakeCombination: TrustManagementUtil.HandshakeCombination,
                     trustManagementUtil: TrustManagementUtilProtocol? = nil,
                     completion: @escaping () -> ()) {
-            _language = language
+            self.language = language
             self.handshakeCombination = handshakeCombination
             self.trustManagementUtil = trustManagementUtil ?? TrustManagementUtil()
             setupTrustwords(combination: handshakeCombination, language: language) {
@@ -127,16 +127,13 @@ extension TrustManagementViewModel {
         }
 
         /// The current language
-        private var _language: String
         fileprivate func setLanguage(newLang: String, completion: @escaping ()->Void) {
-            _language = newLang
-            setupTrustwords(combination: handshakeCombination, language: _language) {
+            language = newLang
+            setupTrustwords(combination: handshakeCombination, language: language) {
                 completion()
             }
         }
-        fileprivate var language: String {
-            return _language
-        }
+        private(set) var language: String
 
         /// Indicates if the long (or the short) version of the trustwords should be shown
         var showLongTrustwordVersion: Bool = false
