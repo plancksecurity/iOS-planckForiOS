@@ -53,14 +53,6 @@ struct TrustBannerViewModel {
             return false
         }
 
-        /*
-        // Only should show the trust banner when there is one sender and one recipient and the message is “secure” (reliable).
-
-        guard message.pEpRatingInt == Rating.reliable.toInt() else {
-            return false
-        }
-        */
-        
         guard message.from != nil else {
             //From does not exist. The banner must be hidden.
             return false
