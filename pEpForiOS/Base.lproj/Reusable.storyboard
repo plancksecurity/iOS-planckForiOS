@@ -578,34 +578,34 @@
                                                 <rect key="frame" x="20" y="204.5" width="260" height="161.5"/>
                                                 <subviews>
                                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" verticalCompressionResistancePriority="1000" text="Fingerprints" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontForContentSizeCategory="YES" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="U6D-LO-smC" userLabel="Fingerprints Title Label">
-                                                        <rect key="frame" x="0.0" y="0.0" width="85" height="24"/>
+                                                        <rect key="frame" x="0.0" y="0.0" width="85" height="30"/>
                                                         <constraints>
-                                                            <constraint firstAttribute="height" constant="24" id="oe8-QU-bT8"/>
+                                                            <constraint firstAttribute="height" constant="30" id="oe8-QU-bT8"/>
                                                         </constraints>
                                                         <fontDescription key="fontDescription" type="boldSystem" pointSize="14"/>
                                                         <nil key="textColor"/>
                                                         <nil key="highlightedColor"/>
                                                     </label>
                                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="252" verticalCompressionResistancePriority="1000" text="B787  8D1A C48D E573 5F92 509F 635D AB1B  B749" lineBreakMode="wordWrap" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontForContentSizeCategory="YES" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="IRo-9p-rDF" userLabel="Own Device Fingerprint">
-                                                        <rect key="frame" x="0.0" y="49" width="236" height="33.5"/>
+                                                        <rect key="frame" x="0.0" y="55" width="236" height="33.5"/>
                                                         <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                                         <nil key="textColor"/>
                                                         <nil key="highlightedColor"/>
                                                     </label>
                                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="252" verticalCompressionResistancePriority="1000" text="Rick Deckward" lineBreakMode="wordWrap" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontForContentSizeCategory="YES" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="alJ-ZR-xF1" userLabel="Own Device Fingerprint">
-                                                        <rect key="frame" x="0.0" y="28" width="239.5" height="17"/>
+                                                        <rect key="frame" x="0.0" y="34" width="239.5" height="17"/>
                                                         <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                                         <nil key="textColor"/>
                                                         <nil key="highlightedColor"/>
                                                     </label>
                                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="252" verticalCompressionResistancePriority="1000" text="Nick" lineBreakMode="wordWrap" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontForContentSizeCategory="YES" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="UMJ-wf-2yl" userLabel="Other Device Username">
-                                                        <rect key="frame" x="0.0" y="90.5" width="29" height="17"/>
+                                                        <rect key="frame" x="0.0" y="100.5" width="29" height="17"/>
                                                         <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                                         <nil key="textColor"/>
                                                         <nil key="highlightedColor"/>
                                                     </label>
                                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="252" verticalCompressionResistancePriority="1000" text="B787  8D1A C48D E573 5F92 509F 635D AB1B  B749" lineBreakMode="wordWrap" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontForContentSizeCategory="YES" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="hG8-4i-GCa" userLabel="Other Device Fingerprint">
-                                                        <rect key="frame" x="0.0" y="111.5" width="236" height="33.5"/>
+                                                        <rect key="frame" x="0.0" y="121.5" width="236" height="33.5"/>
                                                         <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                                         <nil key="textColor"/>
                                                         <nil key="highlightedColor"/>
@@ -620,7 +620,7 @@
                                                     <constraint firstItem="alJ-ZR-xF1" firstAttribute="leading" secondItem="U6D-LO-smC" secondAttribute="leading" id="She-Ob-0fC"/>
                                                     <constraint firstAttribute="trailing" secondItem="IRo-9p-rDF" secondAttribute="trailing" constant="24" id="cqr-eL-9Xa"/>
                                                     <constraint firstItem="U6D-LO-smC" firstAttribute="leading" secondItem="pBp-p2-ggt" secondAttribute="leading" id="dnr-Tv-Nr5"/>
-                                                    <constraint firstItem="UMJ-wf-2yl" firstAttribute="top" secondItem="IRo-9p-rDF" secondAttribute="bottom" constant="8" id="fKD-WH-iu6"/>
+                                                    <constraint firstItem="UMJ-wf-2yl" firstAttribute="top" secondItem="IRo-9p-rDF" secondAttribute="bottom" constant="12" id="fKD-WH-iu6"/>
                                                     <constraint firstItem="hG8-4i-GCa" firstAttribute="trailing" secondItem="IRo-9p-rDF" secondAttribute="trailing" id="mMD-We-qQE"/>
                                                     <constraint firstItem="UMJ-wf-2yl" firstAttribute="leading" secondItem="IRo-9p-rDF" secondAttribute="leading" id="qVR-7S-iOL"/>
                                                     <constraint firstItem="hG8-4i-GCa" firstAttribute="top" secondItem="UMJ-wf-2yl" secondAttribute="bottom" constant="4" id="rvf-PC-aa6"/>
