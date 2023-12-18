@@ -22,8 +22,8 @@ struct VerifyIdentityViewModel {
         return NSLocalizedString("Trustwords", comment: "Trustwords")
     }
 
-    public var fingerprintsTitle: String {
-        return NSLocalizedString("Fingerprints", comment: "Fingerprints")
+    public var fingerprintTitle: String {
+        return NSLocalizedString("Fingerprint", comment: "Fingerprint")
     }
     
     public var closeButtonTitle: String {

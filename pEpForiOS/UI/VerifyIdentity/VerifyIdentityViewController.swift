@@ -21,33 +21,37 @@ class VerifyIdentityViewController: UIViewController {
     public static let storyboardId = "VerifyIdentityViewController"
     @IBOutlet weak var containerHeightConstraint: NSLayoutConstraint!
     
-    // Static
+    // Static content
     @IBOutlet private weak var verifyIdentityTitleLabel: UILabel!
     @IBOutlet private weak var messageLabel: UILabel!
     @IBOutlet private weak var trustwordsTitleLabel: UILabel!
     @IBOutlet private weak var closeButton: UIButton!
 
-    // Dynamic
+    // Dynamic content
     @IBOutlet private weak var trustwordsLabel: UILabel!
     @IBOutlet private weak var ownDeviceFingerprintsLabel: UILabel!
     @IBOutlet private weak var ownDeviceUsernameLabel: UILabel!
-    @IBOutlet private weak var otherDeviceFingerprints: UILabel!
+    @IBOutlet private weak var otherDeviceFingerprintsLabel: UILabel!
     @IBOutlet private weak var otherDeviceUsernameLabel: UILabel!
 
+    // TrustManagementViewModel generates rows and uses the indexPath of the tableview.
+    // Here we don't have any table view. We show only the trustwords of only one row.
+    private let indexPath = IndexPath(row: 0, section: 0)
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         setStaticTexts()
-        let tap = UITapGestureRecognizer(target: self, action: #selector(toogle))
+        let tap = UITapGestureRecognizer(target: self, action: #selector(toogleTrustwordsLength))
         trustwordsLabel.isUserInteractionEnabled = true
         trustwordsLabel.addGestureRecognizer(tap)
     }
     
-    @objc func toogle() {
+    @objc func toogleTrustwordsLength() {
         guard let vm = trustManagementViewModel else {
             Log.shared.errorAndCrash("VM not found")
             return
         }
-        vm.handleToggleLongTrustwords(forRowAt: IndexPath(row: 0, section: 0))
+        vm.handleToggleLongTrustwords(forRowAt: indexPath)
     }
 
     @IBAction func closeButtonPressed() {
@@ -73,7 +77,7 @@ class VerifyIdentityViewController: UIViewController {
                     break
                 }
                 let action = UIAlertAction(title: languageName, style: .default) { (action) in
-                    vm.handleDidSelect(language: language, forRowAt: IndexPath(row: 0, section: 0))
+                    vm.handleDidSelect(language: language, forRowAt: me.indexPath)
                 }
                 alertController.addAction(action)
             }
@@ -120,18 +124,23 @@ extension VerifyIdentityViewController: TrustManagementViewModelDelegate {
         }
 
         guard let row = vm.rows.first else {
+            Log.shared.errorAndCrash("Rows not found")
             return
         }
-        let trustwordsHeight: CGFloat = row.trustwords?.height(withConstrainedWidth: trustwordsLabel.frame.width, font: trustwordsLabel.font) ?? 40
-        var height = trustwordsHeight + 390
+        guard let trustwordsHeight: CGFloat = row.trustwords?.height(withConstrainedWidth: trustwordsLabel.frame.width, font: trustwordsLabel.font) else {
+            Log.shared.errorAndCrash("Trustwords not found")
+            return
+        }
+        let defaultContainerHeightWithoutTrustwords = 390.0
+        var heightToSet = defaultContainerHeightWithoutTrustwords + trustwordsHeight
         UIView.animate(withDuration: 0.5, delay: 0, options: .curveEaseInOut) { [weak self] in
             guard let me = self else { return }
-            me.containerHeightConstraint.constant = CGFloat(height)
+            me.containerHeightConstraint.constant = CGFloat(heightToSet)
         } completion: { _ in
             self.trustwordsLabel.text = row.trustwords
             self.ownDeviceFingerprintsLabel.text = row.ownFormattedFingerprint
             self.ownDeviceUsernameLabel.text = row.ownTitle
-            self.otherDeviceFingerprints.text = row.partnerFormattedFingerprint
+            self.otherDeviceFingerprintsLabel.text = row.partnerFormattedFingerprint
             self.otherDeviceUsernameLabel.text = row.partnerTitle
         }
     }
