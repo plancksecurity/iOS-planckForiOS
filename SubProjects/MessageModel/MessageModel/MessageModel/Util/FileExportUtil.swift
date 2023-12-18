@@ -93,6 +93,30 @@ public class FileExportUtil: NSObject, FileExportUtilProtocol {
     }
 }
 
+// MARK: - Async/Await wrappers
+
+extension FileExportUtil {
+    private func verifyText(text: String, signature: String) async throws -> Bool {
+        return try await withCheckedThrowingContinuation { continuation in
+            PEPSession().verifyText(text, signature: signature, errorCallback: { error in
+                continuation.resume(throwing: error)
+            }, successCallback: { success in
+                continuation.resume(returning: success)
+            })
+        }
+    }
+
+    private func signText(text: String) async throws -> String {
+        return try await withCheckedThrowingContinuation { continuation in
+            PEPSession().signText(text, errorCallback: { error in
+                continuation.resume(throwing: error)
+            }, successCallback: { success in
+                continuation.resume(returning: success)
+            })
+        }
+    }
+}
+
 // MARK: - Audit Logging
 
 extension FileExportUtil {
@@ -102,92 +126,37 @@ extension FileExportUtil {
         case emptyString
         case filepathNotFound
     }
-    
-    public func save(auditEventLog: EventLog, 
+
+    public func save(auditEventLog: EventLog,
                      maxNumberOfDays: Int,
                      errorCallback: @escaping (Error) -> Void) {
-        func validateNotEmpty(csv: String) {
-            guard !csv.isEmpty else {
-                Log.shared.errorAndCrash("Invalid argument: an empty string can't be signed")
-                errorCallback(SignError.emptyString)
-                return
-            }
-        }
-
         auditLogQueue.addOperation { [weak self] in
             guard let me = self else {
                 Log.shared.errorAndCrash("Lost myself")
                 return
             }
-            var newCsv: String
-            
-            // If the file already exists, it has a signature. Let's verify it.
-            // If the signature is valid, the file will be persisted.
-            // Otherwise, something went wrong, and the user will be notified through the errorCallback.
-
-            // The persistedCsvContent is the content of the file that is already persisted, as it is, including the rows and the signature.
-            if let persistedCsvContent = me.getPersistedCSVContent() {
-                let verifyTextGroup = DispatchGroup()
-
-                // Craft the new CVS, that means add a row.
-                newCsv = me.createCSV(auditEventLog: auditEventLog,
-                                      maxNumberOfDays: maxNumberOfDays,
-                                      persistedCSVContent: persistedCsvContent)
-
-                // Verify the signature
-                let signatureToVerify = me.extractSignatureFrom(csv: persistedCsvContent)
-                let persistedCsvVersionWithoutSignature = me.removeSignatureFrom(csv: persistedCsvContent, signature: signatureToVerify)
-                verifyTextGroup.enter()
-                PEPSession().verifyText(persistedCsvVersionWithoutSignature, signature: signatureToVerify) { error in
-                    // Verification failed, that is, an error ocurred.
-                    // Inform the user.
-                    errorCallback(error)
-                    verifyTextGroup.leave()
-                } successCallback: { success in
-                    guard success else {
-                        // The verification process finished but the verification fails.
-                        // The file might be tampered.
-                        errorCallback(SignError.signatureNotVerified)
-                        verifyTextGroup.leave()
-                        return
-                    }
-
-                    // The signature is valid.
-                    // Extract the logs of the persisted version of the CSV.
-                    let persistedLogs = me.getLogs(csvVersionWithoutSignature: persistedCsvVersionWithoutSignature)
-                    verifyTextGroup.leave()
-
-                    let signTextGroup = DispatchGroup()
-                    // This is the new CSV (content already persisted + new content) to sign and save.
-                    let resultantCSV = me.getAllEntries(auditEventLog: auditEventLog, logs: persistedLogs)
-                    // Sign the text is:
-                    // obtain the signature, prepend it, and persist the compounded file.
-                    signTextGroup.enter()
-                    PEPSession().signText(resultantCSV) { error in
-                        errorCallback(error)
-                        signTextGroup.leave()
-                    } successCallback: { signature in
-                        me.prependSignatureAndSave(csv: resultantCSV, signature: signature, errorCallback: errorCallback)
-                        signTextGroup.leave()
-                    }
-                }
-            } else {
-                let signTextGroup = DispatchGroup()
-                // The file does not exist yet. Let's create it!
-                newCsv = me.createCSV(auditEventLog: auditEventLog, maxNumberOfDays: maxNumberOfDays, persistedCSVContent: nil)
-                // It must not be empty
-                validateNotEmpty(csv: newCsv)
-                signTextGroup.enter()
-                // Sign and save.
-                PEPSession().signText(newCsv) { error in
-                    errorCallback(error)
-                    signTextGroup.leave()
-                } successCallback: { signature in
-                    me.prependSignatureAndSave(csv: newCsv, signature: signature, errorCallback: errorCallback)
-                    signTextGroup.leave()
-                }
-                signTextGroup.wait()
+            guard let persistedCsvContent = me.getPersistedCSVContent() else {
+                me.createFirstCSV(auditEventLog: auditEventLog, errorCallback: errorCallback)
+                return
             }
+            var newCsv = me.createCSV(auditEventLog: auditEventLog, maxNumberOfDays: maxNumberOfDays, persistedCSVContent: persistedCsvContent)
+            let signature = me.extractSignatureFrom(csv: persistedCsvContent)
+            let csv = me.removeSignatureFrom(csv: persistedCsvContent, signature: signature)
+            me.save(csv: csv, signature: signature, auditEventLog: auditEventLog, errorCallback: errorCallback)
+        }
+    }
+    
+    private func save(csv: String, signature: String, auditEventLog: EventLog, errorCallback: @escaping (Error) -> Void) {
+        Task {
+            let result = try await verifyText(text: csv, signature: signature)
+            guard result else {
+                errorCallback(SignError.signatureNotVerified)
+                return
+            }
+            let persistedLogs = getLogs(csv: csv)
+            let resultantCSV = getAllEntries(auditEventLog: auditEventLog, logs: persistedLogs)
+            let signature = try await signText(text: resultantCSV)
+            prependSignatureAndSave(csv: resultantCSV, signature: signature, errorCallback: errorCallback)
         }
     }
 }
@@ -211,40 +180,47 @@ extension FileExportUtil {
         }
     }
 
-    private func createCSV(auditEventLog: EventLog, maxNumberOfDays: Int, persistedCSVContent: String?) -> String {
+    private func canAddLog(maxNumberOfDays: Int, lastTimestamp: Double) -> Bool {
+        let date = Date(timeIntervalSince1970: lastTimestamp)
+        if let days = Calendar.current.dateComponents([.day], from: date, to: Date()).day {
+            return days <= maxNumberOfDays
+        }
+        return false
+    }
+    
+    private func getLogIfPossible(maxNumberOfDays: Int, row: String) -> EventLog? {
+        var logs = [EventLog]()
+        let values = row.components(separatedBy: commaSeparator)
+        let eventLog = EventLog(values)
+        if let timestamp = values.first, let timeResult = Double(timestamp) {
+            if canAddLog(maxNumberOfDays: maxNumberOfDays, lastTimestamp: timeResult) {
+                return eventLog
+            }
+        }
+        return nil
+    }
+    
+    private func createCSV(auditEventLog: EventLog, maxNumberOfDays: Int, persistedCSVContent: String) -> String {
         var logs = [EventLog]()
         do {
-            guard let content = persistedCSVContent else {
-                return auditEventLog.entry
-            }
-            let signature = extractSignatureFrom(csv: content)
-            let contentWithoutSignature = removeSignatureFrom(csv: content, signature: signature)
+            let signature = extractSignatureFrom(csv: persistedCSVContent)
+            let contentWithoutSignature = removeSignatureFrom(csv: persistedCSVContent, signature: signature)
         
             // Get rows of the content
             let rows = contentWithoutSignature.components(separatedBy: newLine).filter { !$0.isEmpty }
             
-            // Convert strings to EventLog (objects)
             rows.forEach { row in
-                let values = row.components(separatedBy: commaSeparator)
-                let eventLog = EventLog(values)
-                
-                // Get the date and evaluate if the entry should be included into the CSV file.
-                if let timestamp = values.first, let timeResult = Double(timestamp) {
-                    let date = Date(timeIntervalSince1970: timeResult)
-                    if let days = Calendar.current.dateComponents([.day], from: date, to: Date()).day,
-                       days <= maxNumberOfDays {
-                        logs.append(eventLog)
-                    }
+                if let log = getLogIfPossible(maxNumberOfDays: maxNumberOfDays, row: row) {
+                    logs.append(log)
                 }
             }
-            
             var resultantEntries = signature
             let newEntries = getAllEntries(auditEventLog: auditEventLog, logs: logs)
             resultantEntries.append(newEntries)
             return resultantEntries
         }
     }
-    
+
     // Set the audit Logging File Path if not set.
     private func setPathIfNeeded() {
         do {
@@ -293,9 +269,9 @@ extension FileExportUtil {
         }
     }
 
-    /// Convert the content of the CVS to Event Logs.
-    private func getLogs(csvVersionWithoutSignature: String) -> [EventLog] {
-        let rows = csvVersionWithoutSignature.components(separatedBy: newLine).filter { !$0.isEmpty }
+    /// Convert the content of the CSV to Event Logs.
+    private func getLogs(csv: String) -> [EventLog] {
+        let rows = csv.components(separatedBy: newLine).filter { !$0.isEmpty }
         var previousLogs = [EventLog]()
         rows.forEach { row in
             let values = row.components(separatedBy: commaSeparator)
@@ -325,10 +301,8 @@ extension FileExportUtil {
     }
 
     private func prependSignatureAndSave(csv: String, signature: String, errorCallback: @escaping (Error) -> Void) {
-        // Prepend the signature to the file
         var signedCSV = signature
         signedCSV.append(csv)
-        // Save the file in disk.
         saveInDisk(csv: signedCSV, errorCallback: errorCallback)
     }
 
@@ -361,12 +335,19 @@ extension FileExportUtil {
     private func removeSignatureFrom(csv: String, signature: String) -> String {
         return csv.removeFirstOccurrence(of: signature)
     }
+
+    private func createFirstCSV(auditEventLog: EventLog, errorCallback: @escaping (Error) -> Void) {
+        Task {
+            let signature = try await signText(text: auditEventLog.entry)
+            prependSignatureAndSave(csv: auditEventLog.entry, signature: signature, errorCallback: errorCallback)
+        }
+    }
 }
 
 // MARK: - Private Databases
 
 extension FileExportUtil {
-    
+
     /// Get the path of the file passed by param.
     /// - Parameters:
     ///   - url: The url of the file
@@ -384,7 +365,7 @@ extension FileExportUtil {
         }
         return path
     }
-    
+
     /// - Returns: The destination directory url.
     /// The last path component indicates the date and time.
     /// It could be something like '.../Documents/db-export/{YYYYMMDD-hh-mm}/'
@@ -398,7 +379,7 @@ extension FileExportUtil {
         docUrl.appendPathComponent("\(getDatetimeAsString())")
         return docUrl
     }
-    
+
     /// - Returns: The source url for the hidden p≡p folder
     private func getSourceURLforHiddenPEPFolder() -> URL? {
         guard var appGroupURL = FileManager.default.containerURL(forSecurityApplicationGroupIdentifier: kAppGroupIdentifier) else {
@@ -408,7 +389,7 @@ extension FileExportUtil {
         appGroupURL.appendPathComponent("pEp_home/.pEp/")
         return appGroupURL
     }
-    
+
     /// - Returns: the URL where the system.db file is stored
     private func getSystemDBSourceURL() -> URL? {
         guard var appGroupURL = FileManager.default.containerURL(forSecurityApplicationGroupIdentifier: kAppGroupIdentifier) else {
@@ -419,7 +400,7 @@ extension FileExportUtil {
         appGroupURL.appendPathComponent("system.db")
         return appGroupURL
     }
-    
+
     /// - Returns: the URL where the security.pEp files are stored
     private func getSQLiteDBSourceURL(fileName: String) -> URL? {
         guard var appGroupURL = FileManager.default.containerURL(forSecurityApplicationGroupIdentifier: kAppGroupIdentifier) else {
@@ -429,7 +410,7 @@ extension FileExportUtil {
         appGroupURL.appendPathComponent(fileName)
         return appGroupURL
     }
-    
+
     /// - Returns: the date as string using the date format YYYYMMDD-hh-mm-ss.
     private func getDatetimeAsString() -> String {
         let date = Date()
