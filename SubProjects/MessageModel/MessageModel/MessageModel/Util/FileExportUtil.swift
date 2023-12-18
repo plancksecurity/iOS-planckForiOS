@@ -24,14 +24,11 @@ public class FileExportUtil: NSObject, FileExportUtilProtocol {
 
     private override init() { }
 
-    private let planckFolderName = "planck"
     private let auditLoggingFileName = "auditLogging"
     private let csvExtension = "csv"
     private let commaSeparator = ","
     private let newLine = "\n"
     private var auditLoggingFilePath: URL?
-    private let beginPGP = "-----BEGIN PGP MESSAGE----"
-    private let endPGP = "-----END PGP MESSAGE-----\n"
 
     private let auditLogQueue: OperationQueue = {
         let createe = OperationQueue()
@@ -323,13 +320,29 @@ extension FileExportUtil {
 
     // MARK: - Signature
 
+    private func extractBetweenFirstAndLastDashes(input: String) -> String? {
+        do {
+            let regex = try NSRegularExpression(pattern: "(-----.*?-----)", options: .dotMatchesLineSeparators)
+            let nsString = input as NSString
+            if let firstMatch = regex.firstMatch(in: input, options: [], range: NSRange(location: 0, length: nsString.length)),
+               let lastMatch = regex.matches(in: input, options: [], range: NSRange(location: 0, length: nsString.length)).last {
+                let startIndex = firstMatch.range.location
+                let endIndex = lastMatch.range.location + lastMatch.range.length
+                let contentRange = NSRange(location: startIndex, length: endIndex - startIndex)
+                return nsString.substring(with: contentRange)
+            }
+        } catch {
+            Log.shared.errorAndCrash("Error creating regular expression:")
+        }
+        return nil
+    }
+
     /// Return the signature:
     private func extractSignatureFrom(csv: String) -> String {
-        guard let signatureContent = csv.slice(from: beginPGP, to: endPGP) else {
-            Log.shared.errorAndCrash("CSV does not contain signature")
+        guard let signature = extractBetweenFirstAndLastDashes(input: csv) else {
             return ""
         }
-        return beginPGP + signatureContent + endPGP
+        return signature.appending(newLine)
     }
 
     private func removeSignatureFrom(csv: String, signature: String) -> String {
