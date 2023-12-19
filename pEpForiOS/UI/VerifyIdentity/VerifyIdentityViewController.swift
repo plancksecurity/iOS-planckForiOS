@@ -127,24 +127,23 @@ extension VerifyIdentityViewController: TrustManagementViewModelDelegate {
             Log.shared.errorAndCrash("Rows not found")
             return
         }
-        guard let trustwordsHeight: CGFloat = row.trustwords?.height(withConstrainedWidth: trustwordsLabel.frame.width, font: trustwordsLabel.font) else {
-            Log.shared.errorAndCrash("Trustwords not found")
-            return
-        }
+        let trustwords = row.trustwords ?? NSLocalizedString("Trustwords Not Available", comment: "")
+        let trustwordsHeight: CGFloat = trustwords.height(withConstrainedWidth: trustwordsLabel.frame.width, font: trustwordsLabel.font)
         let defaultContainerHeightWithoutTrustwords = 390.0
-        var heightToSet = defaultContainerHeightWithoutTrustwords + trustwordsHeight
+        let heightToSet = defaultContainerHeightWithoutTrustwords + trustwordsHeight
         UIView.animate(withDuration: 0.5, delay: 0, options: .curveEaseInOut) { [weak self] in
             guard let me = self else { return }
             me.containerHeightConstraint.constant = CGFloat(heightToSet)
         } completion: { _ in
-            self.trustwordsLabel.text = row.trustwords
-            self.ownDeviceFingerprintsLabel.text = row.ownFormattedFingerprint
+            let fingerprintNotAvailable = NSLocalizedString("Fingerprint Not Available", comment: "Fingerprint Not Available")
+            self.trustwordsLabel.text = trustwords
+            self.ownDeviceFingerprintsLabel.text = row.ownFormattedFingerprint ?? fingerprintNotAvailable
             self.ownDeviceUsernameLabel.text = row.ownTitle
-            self.otherDeviceFingerprintsLabel.text = row.partnerFormattedFingerprint
+            self.otherDeviceFingerprintsLabel.text = row.partnerFormattedFingerprint ?? fingerprintNotAvailable
             self.otherDeviceUsernameLabel.text = row.partnerTitle
         }
     }
-    
+
     func dataChanged(forRowAt indexPath: IndexPath) {
         reload()
     }
