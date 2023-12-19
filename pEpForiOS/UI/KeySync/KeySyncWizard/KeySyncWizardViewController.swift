@@ -83,7 +83,7 @@ extension KeySyncWizardViewController {
         guard
             let wizardVC = storyboard.instantiateViewController(
                 withIdentifier: storyboardId) as? KeySyncWizardViewController else {
-                    Log.shared.errorAndCrash("Fail to instantiateViewController PlanckAlertViewController")
+                    Log.shared.errorAndCrash("Fail to instantiateViewController KeySyncWizardViewController")
                     return nil
         }
         wizardVC.isScrollEnable = false

@@ -306,6 +306,8 @@ final class TrustManagementViewModel {
         }
     }
     var shouldShowOptionsButton: Bool = false
+    private var shouldAllowHandshakeActions: Bool = true
+
     private var message: Message
     private var trustManagementUtil : TrustManagementUtilProtocol
     private let undoManager = UndoManager()
@@ -324,6 +326,7 @@ final class TrustManagementViewModel {
     public init(message : Message,
                 pEpProtectionModifyable: Bool,
                 persistRatingChangesForMessage: Bool = true,
+                shouldAllowHandshakeActions: Bool = true,
                 delegate: TrustManagementViewModelDelegate? = nil,
                 protectionStateChangeDelegate: TrustmanagementProtectionStateChangeDelegate? = nil,
                 ratingDelegate: TrustmanagementRatingChangedDelegate? = nil,
@@ -337,6 +340,7 @@ final class TrustManagementViewModel {
         self.delegate = delegate
         self.ratingDelegate = ratingDelegate
         self.protectionStateChangeDelegate = protectionStateChangeDelegate
+        self.shouldAllowHandshakeActions = shouldAllowHandshakeActions
         setupRows()
     }
 
@@ -450,13 +454,15 @@ final class TrustManagementViewModel {
     ///   - indexPath: The index path of the row
     ///   - language: The chosen language
     public func handleDidSelect(language: String, forRowAt indexPath: IndexPath) {
-        rows[indexPath.row].setLanguage(newLang: language) { [weak self] in
-            guard let me = self else {
-                // Valid case. We might have been dismissed already.
-                // Do nothing.
-                return
+        rows[indexPath.row].setLanguage(newLang: language) {
+            DispatchQueue.main.async { [weak self] in
+                guard let me = self else {
+                    // Valid case. We might have been dismissed already.
+                    // Do nothing.
+                    return
+                }
+                me.delegate?.dataChanged(forRowAt: indexPath)
             }
-            me.delegate?.dataChanged(forRowAt: indexPath)
         }
     }
     
@@ -519,7 +525,7 @@ final class TrustManagementViewModel {
 
     /// Method that generates the rows to be used by the VC
     private func setupRows() {
-        trustManagementUtil.handshakeCombinations(message: message) { [weak self] (combinations) in
+        trustManagementUtil.handshakeCombinations(message: message, shouldAllowHandshakeActions: shouldAllowHandshakeActions) { [weak self] (combinations) in
             guard let me = self else {
                 // Valid case. We might have been dismissed already.
                 // Do nothing.
