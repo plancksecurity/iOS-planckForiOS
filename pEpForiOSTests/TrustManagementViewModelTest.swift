@@ -171,20 +171,19 @@ class TrustManagementViewModelTest: AccountDrivenTestBase {
     }
 }
 
-///MARK: - Mock Util Classes
+// MARK: - Mock Util Classes
 
 class TrustManagementUtilMock: TrustManagementUtilProtocol {
-    
-    func handshakeCombinations(message: Message, completion: @escaping ([TrustManagementUtil.HandshakeCombination]) -> Void) {
+
+    func handshakeCombinations(message: Message, shouldAllowHandshakeActions: Bool, completion: @escaping ([TrustManagementUtil.HandshakeCombination]) -> Void) {
         if  let own = (message.allIdentities.filter { $0.isMySelf }.first),
             let other = (message.allIdentities.filter { !$0.isMySelf }.first) {
             completion([TrustManagementUtil.HandshakeCombination(ownIdentity:own, partnerIdentity: other)])
         }
-
         completion([TrustManagementUtil.HandshakeCombination]())
     }
 
-    func handshakeCombinations(identities: [Identity], completion: @escaping ([TrustManagementUtil.HandshakeCombination]) -> Void) {
+    func handshakeCombinations(identities: [Identity], shouldAllowHandshakeActions: Bool, completion: @escaping ([TrustManagementUtil.HandshakeCombination]) -> Void) {
         // Do nothing
     }
 
