@@ -112,14 +112,21 @@ class EmailViewModel {
     }
 
     /// - Returns: The Trust Management ViewModel
-    func getTrustManagementViewModel(protectionStateChangeDelegate: TrustmanagementProtectionStateChangeDelegate? = nil, ratingDelegate: TrustmanagementRatingChangedDelegate? = nil) -> TrustManagementViewModel {
+    func getTrustManagementViewModel(protectionStateChangeDelegate: TrustmanagementProtectionStateChangeDelegate? = nil, 
+                                     ratingDelegate: TrustmanagementRatingChangedDelegate? = nil,
+                                     shouldAllowHandshakeActions: Bool = true) -> TrustManagementViewModel {
         return TrustManagementViewModel(message: message,
                                         pEpProtectionModifyable: true,
                                         persistRatingChangesForMessage: true,
+                                        shouldAllowHandshakeActions: shouldAllowHandshakeActions,
                                         protectionStateChangeDelegate: protectionStateChangeDelegate,
                                         ratingDelegate: ratingDelegate)
     }
-                
+
+    func getVerificationTrustViewModel() -> VerifyIdentityViewModel {
+        return VerifyIdentityViewModel()
+    }
+
     // Indicates if the External Content View has to be shown.
     public var shouldShowExternalContentView: Bool {
         guard let body = htmlBody else {

@@ -154,13 +154,17 @@ extension AppDelegate {
         // Make sure we do not permanently disable auto locking
         UIApplication.shared.enableAutoLockingDevice()
         scheduleAppRefresh()
-        AuditLoggingUtil.shared.logEvent(maxLogTime: AppSettings.shared.auditLoggingTime, auditLoggerEvent: .stop)
+        AuditLoggingUtil.shared.logEvent(maxNumberOfDays: AppSettings.shared.auditLoggingMaxNumberOfDays, auditLoggerEvent: .stop) { error in
+            UIUtils.show(error: error)
+        }
     }
 
     /// Called as part of the transition from the background to the inactive state; here you can
     /// undo many of the changes made on entering the background.
     func applicationWillEnterForeground(_ application: UIApplication) {
-        AuditLoggingUtil.shared.logEvent(maxLogTime: AppSettings.shared.auditLoggingTime, auditLoggerEvent: .start)
+        AuditLoggingUtil.shared.logEvent(maxNumberOfDays: AppSettings.shared.auditLoggingMaxNumberOfDays, auditLoggerEvent: .start) { error in
+            UIUtils.show(error: error)
+        }
     }
 
     /// Restart any tasks that were paused (or not yet started) while the application was inactive.
@@ -181,7 +185,7 @@ extension AppDelegate {
     /// applicationDidEnterBackground:.
     /// Saves changes in the application's managed object context before the application terminates.
     func applicationWillTerminate(_ application: UIApplication) {
-        AuditLoggingUtil.shared.logEvent(maxLogTime: AppSettings.shared.auditLoggingTime, auditLoggerEvent: .stop)
+        AuditLoggingUtil.shared.logEvent(maxNumberOfDays: AppSettings.shared.auditLoggingMaxNumberOfDays, auditLoggerEvent: .stop) { error in }
         messageModelService?.stop()
         // Make sure we do not permanently disable auto locking
         UIApplication.shared.enableAutoLockingDevice()

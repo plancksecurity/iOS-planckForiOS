@@ -76,10 +76,12 @@ public protocol TrustManagementUtilProtocol: AnyObject {
     /// - Parameter message: The message to generate the handshake combinations.
     /// - returns: The possible handshake combinations.
     func handshakeCombinations(message: Message,
+                               shouldAllowHandshakeActions: Bool,
                                completion: @escaping ([TrustManagementUtil.HandshakeCombination]) -> Void)
 
     /// - Parameter identities: The identities to generate the handshake combinations
     /// - returns: The possible handshake combinations.
     func handshakeCombinations(identities: [Identity],
+                               shouldAllowHandshakeActions: Bool,
                                completion: @escaping ([TrustManagementUtil.HandshakeCombination]) -> Void)
 }

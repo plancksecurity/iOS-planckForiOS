@@ -50,7 +50,7 @@ class AppSettingsObserver {
         //Make sure we have same values for MDM-less.
         AppSettings.shared.usePEPFolderEnabled = AppSettings.shared.mdmPEPSyncFolderEnabled
 
-        AppSettings.shared.auditLoggingTime = AppSettings.shared.mdmAuditLoggingMaxFileTime
+        AppSettings.shared.auditLoggingMaxNumberOfDays = AppSettings.shared.mdmAuditLoggingMaxNumberOfDays
 
         // In MDM, we have mdmPEPSyncAccountEnabled and additionally mdmPEPSyncNewDevicesEnabled.
         // In non-mdm, keySyncEnabled is both in one.

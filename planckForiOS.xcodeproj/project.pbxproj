@@ -652,9 +652,12 @@
 		B7F676BD227C4B26007E5E3A /* MessageQueryResultsFilter+FilterButtonTitle.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7F676BC227C4B26007E5E3A /* MessageQueryResultsFilter+FilterButtonTitle.swift */; };
 		F70AE5BF29B72E9900D0CC48 /* TrustBannerViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = F70AE5BE29B72E9900D0CC48 /* TrustBannerViewModel.swift */; };
 		F70AE5C129B7394900D0CC48 /* TrustBannerViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F70AE5C029B7394900D0CC48 /* TrustBannerViewController.swift */; };
+		F72D99362B29BE2E00672B5F /* VerifyIdentityViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F72D99352B29BE2D00672B5F /* VerifyIdentityViewController.swift */; };
 		F73E4F72217F238300CCFFED /* FolderSectionViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = F73E4F71217F238300CCFFED /* FolderSectionViewModelTests.swift */; };
 		F73E4F7A2180744700CCFFED /* FolderCellViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = F73E4F792180744700CCFFED /* FolderCellViewModelTests.swift */; };
 		F75D01D22A39ABEA00805DEF /* AuditLogginService.swift in Sources */ = {isa = PBXBuildFile; fileRef = F75D01D12A39ABEA00805DEF /* AuditLogginService.swift */; };
+		F7644C922B2B4451007D8E5C /* VerifyIdentityViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = F7644C912B2B4451007D8E5C /* VerifyIdentityViewModel.swift */; };
+		F7644C942B2B5550007D8E5C /* FingerprintUtil.swift in Sources */ = {isa = PBXBuildFile; fileRef = F7644C932B2B5550007D8E5C /* FingerprintUtil.swift */; };
 		F779D6012A2F28E60069381E /* AuditLogginViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F779D6002A2F28E60069381E /* AuditLogginViewController.swift */; };
 		F779D6032A2F29130069381E /* AuditLoginViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = F779D6022A2F29130069381E /* AuditLoginViewModel.swift */; };
 		F779D6052A2F4DF60069381E /* AuditLoggingTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = F779D6042A2F4DF60069381E /* AuditLoggingTableViewCell.swift */; };
@@ -1248,9 +1251,12 @@
 		B7F676BC227C4B26007E5E3A /* MessageQueryResultsFilter+FilterButtonTitle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "MessageQueryResultsFilter+FilterButtonTitle.swift"; sourceTree = "<group>"; };
 		F70AE5BE29B72E9900D0CC48 /* TrustBannerViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TrustBannerViewModel.swift; sourceTree = "<group>"; };
 		F70AE5C029B7394900D0CC48 /* TrustBannerViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TrustBannerViewController.swift; sourceTree = "<group>"; };
+		F72D99352B29BE2D00672B5F /* VerifyIdentityViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VerifyIdentityViewController.swift; sourceTree = "<group>"; };
 		F73E4F71217F238300CCFFED /* FolderSectionViewModelTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FolderSectionViewModelTests.swift; sourceTree = "<group>"; };
 		F73E4F792180744700CCFFED /* FolderCellViewModelTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FolderCellViewModelTests.swift; sourceTree = "<group>"; };
 		F75D01D12A39ABEA00805DEF /* AuditLogginService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuditLogginService.swift; sourceTree = "<group>"; };
+		F7644C912B2B4451007D8E5C /* VerifyIdentityViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VerifyIdentityViewModel.swift; sourceTree = "<group>"; };
+		F7644C932B2B5550007D8E5C /* FingerprintUtil.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FingerprintUtil.swift; sourceTree = "<group>"; };
 		F779D6002A2F28E60069381E /* AuditLogginViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuditLogginViewController.swift; sourceTree = "<group>"; };
 		F779D6022A2F29130069381E /* AuditLoginViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuditLoginViewModel.swift; sourceTree = "<group>"; };
 		F779D6042A2F4DF60069381E /* AuditLoggingTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuditLoggingTableViewCell.swift; sourceTree = "<group>"; };
@@ -2289,6 +2295,7 @@
 				B70D32A6205BCC120094A92A /* CellsAndSections */,
 				5BC14AEF23EB19B5005F0AF3 /* TrustManagementViewController.swift */,
 				5BC14ABE23E2EE78005F0AF3 /* TrustManagementViewModel.swift */,
+				F7644C932B2B5550007D8E5C /* FingerprintUtil.swift */,
 			);
 			path = TrustManagement;
 			sourceTree = "<group>";
@@ -2540,6 +2547,7 @@
 				158A564E2403F00A003C0D7E /* ClientCertificateManagement */,
 				15146C8F237F030A00D69495 /* BaseClasses */,
 				37816540230EC66F00B967E3 /* PEPAlert */,
+				F72D99342B29BDED00672B5F /* VerifyIdentity */,
 				15033C7223473CD20060A1A2 /* KeySync */,
 				15265942216230B0006A78DF /* Compose */,
 				B70D32B0205BCFBD0094A92A /* EmailDisplay */,
@@ -3062,6 +3070,15 @@
 			path = TrustBanner;
 			sourceTree = "<group>";
 		};
+		F72D99342B29BDED00672B5F /* VerifyIdentity */ = {
+			isa = PBXGroup;
+			children = (
+				F72D99352B29BE2D00672B5F /* VerifyIdentityViewController.swift */,
+				F7644C912B2B4451007D8E5C /* VerifyIdentityViewModel.swift */,
+			);
+			path = VerifyIdentity;
+			sourceTree = "<group>";
+		};
 		F73E4F7B2180746400CCFFED /* Folder */ = {
 			isa = PBXGroup;
 			children = (
@@ -3535,6 +3552,7 @@
 				1543B6A822ABDAAE002B59AB /* Identity+pEp.swift in Sources */,
 				1546CBF6252B53CC00A7AA7D /* CreditsWebViewController.swift in Sources */,
 				152A39D821905C3E00D9F8E4 /* BodyCellViewModel.swift in Sources */,
+				F7644C942B2B5550007D8E5C /* FingerprintUtil.swift in Sources */,
 				B7C7E3142334E7A1009ABFFE /* ResetTrustViewModel.swift in Sources */,
 				3A928C86242259E300FEFA4C /* HtmlTagParser.swift in Sources */,
 				B72C7BAC2395198D0013B12E /* AccountTypeSelectorViewModel.swift in Sources */,
@@ -3562,6 +3580,7 @@
 				4351C2D51F4441190053381F /* latex.c in Sources */,
 				B74F37CD24ADD2B00083501B /* EmailViewController.swift in Sources */,
 				37816546230EE5F700B967E3 /* PEPUIAlertAction.swift in Sources */,
+				F7644C922B2B4451007D8E5C /* VerifyIdentityViewModel.swift in Sources */,
 				5BBE80CE24B733C0008DE0E5 /* SettingSwitchTableViewCell.swift in Sources */,
 				5BBE80CC24B733C0008DE0E5 /* AccountSettingsOAuthTableViewCell.swift in Sources */,
 				43498CDB200CF20F006DC947 /* LoginViewModelLoginErrorDelegate.swift in Sources */,
@@ -3572,6 +3591,7 @@
 				4351C2C91F4441190053381F /* buffer.c in Sources */,
 				152A39C621905C3E00D9F8E4 /* ComposeViewModelState.swift in Sources */,
 				5BB7C73B24D2EC6300D5F328 /* UnifiedInbox.swift in Sources */,
+				F72D99362B29BE2E00672B5F /* VerifyIdentityViewController.swift in Sources */,
 				5B1EF69F2926C49400CE2355 /* RecipientsBannerViewModel.swift in Sources */,
 				155E5B33264535C30051A65E /* EncryptionErrorHandler.swift in Sources */,
 				15F136F424B6294E00A7F810 /* UserInputProvider.swift in Sources */,
