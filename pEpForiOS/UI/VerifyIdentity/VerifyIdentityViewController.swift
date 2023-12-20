@@ -26,6 +26,9 @@ class VerifyIdentityViewController: UIViewController {
     @IBOutlet private weak var messageLabel: UILabel!
     @IBOutlet private weak var trustwordsTitleLabel: UILabel!
     @IBOutlet private weak var closeButton: UIButton!
+    @IBOutlet private weak var buttonContainerStackView: UIStackView!
+    @IBOutlet private weak var confirmButton: UIButton!
+    @IBOutlet private weak var rejectButton: UIButton!
 
     // Dynamic content
     @IBOutlet private weak var trustwordsLabel: UILabel!
@@ -38,12 +41,19 @@ class VerifyIdentityViewController: UIViewController {
     // Here we don't have any table view. We show only the trustwords of only one row.
     private let indexPath = IndexPath(row: 0, section: 0)
     
+
     override func viewDidLoad() {
         super.viewDidLoad()
         setStaticTexts()
         let tap = UITapGestureRecognizer(target: self, action: #selector(toogleTrustwordsLength))
         trustwordsLabel.isUserInteractionEnabled = true
         trustwordsLabel.addGestureRecognizer(tap)
+        guard let vm = viewModel else {
+            Log.shared.errorAndCrash("VM not found")
+            return
+        }
+        confirmButton.isHidden = !vm.shouldManageTrust
+        rejectButton.isHidden = !vm.shouldManageTrust
     }
     
     @objc func toogleTrustwordsLength() {
@@ -118,6 +128,9 @@ extension VerifyIdentityViewController {
 
 extension VerifyIdentityViewController: TrustManagementViewModelDelegate {
     func reload() {
+        guard let view = viewIfLoaded else {
+            return
+        }
         guard let vm = trustManagementViewModel else {
             Log.shared.errorAndCrash("VM not found")
             return

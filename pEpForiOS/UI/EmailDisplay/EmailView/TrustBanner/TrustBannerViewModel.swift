@@ -92,16 +92,20 @@ struct TrustBannerViewModel {
                 Log.shared.errorAndCrash("Delegate not found")
                 return
             }
+            /*
             guard let msg = message else {
                 Log.shared.errorAndCrash("Message not found")
                 return
-            }
+            }*/
+            del.presentVerificationTrustView()
+            /*
             let messageRating = msg.pEpRatingInt
             if messageRating == Rating.reliable.toInt() {
                 del.presentTrustManagementView()
             } else {
                 del.presentVerificationTrustView()
             }
+            */
         }
     }
 }

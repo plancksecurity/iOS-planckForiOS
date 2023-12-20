@@ -9,6 +9,12 @@
 import Foundation
 
 struct VerifyIdentityViewModel {
+
+    init(isCommunicationPartnerVerified: Bool) {
+        self.shouldManageTrust = isCommunicationPartnerVerified
+    }
+
+    public private(set) var shouldManageTrust: Bool = false
     
     public var title: String {
         return NSLocalizedString("Verify Identity", comment: "Verify Identity - Modal view title")
