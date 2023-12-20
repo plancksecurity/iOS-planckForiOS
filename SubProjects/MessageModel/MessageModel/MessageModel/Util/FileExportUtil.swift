@@ -9,51 +9,59 @@
 import Foundation
 import PlanckToolbox
 import pEp4iosIntern
+import PEPObjCAdapter
 
 public protocol FileExportUtilProtocol: AnyObject {
     func exportDatabases() throws
-    func save(auditEventLog: EventLog, maxLogTime: Int)
+    func save(auditEventLog: EventLog, maxNumberOfDays: Int, errorCallback: @escaping (Error) -> Void)
 }
 
 public class FileExportUtil: NSObject, FileExportUtilProtocol {
     
     // MARK: - Singleton
-
+    
     static public let shared = FileExportUtil()
 
     private override init() { }
-    
-    private let planckFolderName = "planck"
-    private let auditLogginggFileName = "auditLoggingg"
+
+    private let auditLoggingFileName = "auditLogging"
     private let csvExtension = "csv"
     private let commaSeparator = ","
     private let newLine = "\n"
     private var auditLoggingFilePath: URL?
-    
+
+    private let auditLogQueue: OperationQueue = {
+        let createe = OperationQueue()
+        createe.name = "security.planck.auditLogging.fileExportUtil.queueForSavingLogs"
+        createe.qualityOfService = .userInteractive
+        createe.maxConcurrentOperationCount = 1
+        return createe
+    }()
+
     /// Export databases
     ///
     /// - Throws: throws an error in cases of failure.
     public func exportDatabases() throws {
         let systemDBFileName = "system.db"
         let pepFolderName = "pEp"
-
+        
         do {
             let fileManager = FileManager.default
             guard let destinationDirectoryURL: URL = getDBDestinationDirectoryURL() else {
                 Log.shared.errorAndCrash("Destination Directory URL not found")
                 return
             }
-
+            
             //Check if destination directory already exists. If not, create it.
             var isDirectory:ObjCBool = true
             if !fileManager.fileExists(atPath: destinationDirectoryURL.path, isDirectory: &isDirectory) {
                 try FileManager.default.createDirectory(at: destinationDirectoryURL, withIntermediateDirectories: true)
             }
-
+            
             //Get the destination path of each file and copy items from source paths to the destination paths
             let pepFolderDestinationPath = getDestinationPath(from: destinationDirectoryURL, fileName: pepFolderName)
             let systemDBDestinationPath = getDestinationPath(from: destinationDirectoryURL, fileName: systemDBFileName)
-
+            
             //System DB
             if let systemDBsourcePath = getSystemDBSourceURL()?.path {
                 var isDirectory:ObjCBool = false
@@ -66,7 +74,7 @@ public class FileExportUtil: NSObject, FileExportUtilProtocol {
             if let pepHiddenFolderSourcePath = getSourceURLforHiddenPEPFolder()?.path {
                 try fileManager.copyItem(atPath: pepHiddenFolderSourcePath, toPath: pepFolderDestinationPath)
             }
-
+            
             //security.pEp DB files
             if let path = fileManager.containerURL(forSecurityApplicationGroupIdentifier: kAppGroupIdentifier)?.path,
                let items = try? fileManager.contentsOfDirectory(atPath: path) {
@@ -82,33 +90,70 @@ public class FileExportUtil: NSObject, FileExportUtilProtocol {
     }
 }
 
-// MARK: - Audit Loggin
+// MARK: - Async/Await wrappers
 
 extension FileExportUtil {
-
-    public func save(auditEventLog: EventLog, maxLogTime: Int) {
-        // 1. Check if the CSV file already exists.
-        let csvFileAlreadyExists = csvFileAlreadyExists()
-
-        // 2. Craft the CVS.
-        // - if it exists already, add a row.
-        // - Otherwise, create it with the given row.
-        guard let csv = createCSV(auditEventLog: auditEventLog, csvFileAlreadyExists: csvFileAlreadyExists, maxLogTime: maxLogTime) else {
-            Log.shared.error("CSV not saved. Probably filepath not found")
-            return
+    private func verifyText(text: String, signature: String) async throws -> Bool {
+        return try await withCheckedThrowingContinuation { continuation in
+            PEPSession().verifyText(text, signature: signature, errorCallback: { error in
+                continuation.resume(throwing: error)
+            }, successCallback: { success in
+                continuation.resume(returning: success)
+            })
         }
+    }
 
-        // 3. Save the file in disk.
-        do {
-            guard let data = csv.data(using: .utf8),
-                  let fileUrl = auditLoggingFilePath else {
-                Log.shared.errorAndCrash("Can't save CSV file")
+    private func signText(text: String) async throws -> String {
+        return try await withCheckedThrowingContinuation { continuation in
+            PEPSession().signText(text, errorCallback: { error in
+                continuation.resume(throwing: error)
+            }, successCallback: { success in
+                continuation.resume(returning: success)
+            })
+        }
+    }
+}
+
+// MARK: - Audit Logging
+
+extension FileExportUtil {
+    
+    enum SignError: Error {
+        case signatureNotVerified
+        case emptyString
+        case filepathNotFound
+    }
+
+    public func save(auditEventLog: EventLog,
+                     maxNumberOfDays: Int,
+                     errorCallback: @escaping (Error) -> Void) {
+        auditLogQueue.addOperation { [weak self] in
+            guard let me = self else {
+                Log.shared.errorAndCrash("Lost myself")
                 return
             }
-            try data.write(to: fileUrl)
-            Log.shared.info("CSV file successfully saved")
-        } catch {
-            Log.shared.errorAndCrash(error: error)
+            guard let persistedCsvContent = me.getPersistedCSVContent() else {
+                me.createFirstCSV(auditEventLog: auditEventLog, errorCallback: errorCallback)
+                return
+            }
+            var newCsv = me.createCSV(auditEventLog: auditEventLog, maxNumberOfDays: maxNumberOfDays, persistedCSVContent: persistedCsvContent)
+            let signature = me.extractSignatureFrom(csv: persistedCsvContent)
+            let csv = me.removeSignatureFrom(csv: persistedCsvContent, signature: signature)
+            me.save(csv: csv, signature: signature, auditEventLog: auditEventLog, errorCallback: errorCallback)
+        }
+    }
+    
+    private func save(csv: String, signature: String, auditEventLog: EventLog, errorCallback: @escaping (Error) -> Void) {
+        Task {
+            let result = try await verifyText(text: csv, signature: signature)
+            guard result else {
+                errorCallback(SignError.signatureNotVerified)
+                return
+            }
+            let persistedLogs = getLogs(csv: csv)
+            let resultantCSV = getAllEntries(auditEventLog: auditEventLog, logs: persistedLogs)
+            let signature = try await signText(text: resultantCSV)
+            prependSignatureAndSave(csv: resultantCSV, signature: signature, errorCallback: errorCallback)
         }
     }
 }
@@ -116,84 +161,130 @@ extension FileExportUtil {
 // MARK: - Private - Audit Loggin
 
 extension FileExportUtil {
-
+    
     private func csvFileAlreadyExists() -> Bool {
+        setPathIfNeeded()
+        guard let url = auditLoggingFilePath else {
+            Log.shared.errorAndCrash("No Path. Should not happened.")
+            return false
+        }
+
+        // Check if the file already exists.
+        if #available(iOS 16.0, *) {
+            return FileManager.default.fileExists(atPath: url.path())
+        } else {
+            return FileManager.default.fileExists(atPath: url.path)
+        }
+    }
+
+    private func canAddLog(maxNumberOfDays: Int, lastTimestamp: Double) -> Bool {
+        let date = Date(timeIntervalSince1970: lastTimestamp)
+        if let days = Calendar.current.dateComponents([.day], from: date, to: Date()).day {
+            return days <= maxNumberOfDays
+        }
+        return false
+    }
+    
+    private func getLogIfPossible(maxNumberOfDays: Int, row: String) -> EventLog? {
+        var logs = [EventLog]()
+        let values = row.components(separatedBy: commaSeparator)
+        let eventLog = EventLog(values)
+        if let timestamp = values.first, let timeResult = Double(timestamp) {
+            if canAddLog(maxNumberOfDays: maxNumberOfDays, lastTimestamp: timeResult) {
+                return eventLog
+            }
+        }
+        return nil
+    }
+    
+    private func createCSV(auditEventLog: EventLog, maxNumberOfDays: Int, persistedCSVContent: String) -> String {
+        var logs = [EventLog]()
         do {
+            let signature = extractSignatureFrom(csv: persistedCSVContent)
+            let contentWithoutSignature = removeSignatureFrom(csv: persistedCSVContent, signature: signature)
+        
+            // Get rows of the content
+            let rows = contentWithoutSignature.components(separatedBy: newLine).filter { !$0.isEmpty }
+            
+            rows.forEach { row in
+                if let log = getLogIfPossible(maxNumberOfDays: maxNumberOfDays, row: row) {
+                    logs.append(log)
+                }
+            }
+            var resultantEntries = signature
+            let newEntries = getAllEntries(auditEventLog: auditEventLog, logs: logs)
+            resultantEntries.append(newEntries)
+            return resultantEntries
+        }
+    }
+
+    // Set the audit Logging File Path if not set.
+    private func setPathIfNeeded() {
+        do {
+            guard auditLoggingFilePath == nil else {
+                return
+            }
             let fileManager = FileManager.default
             guard let auditLoggingDestinationDirectoryURL = getAuditLoggingDestinationDirectoryURL() else {
                 Log.shared.errorAndCrash("Audit logging Destination Directory URL not found")
-                return false
+                return
             }
-
+            
             // Check if destination directory already exists. If not, create it.
             var isDirectory: ObjCBool = true
             if !fileManager.fileExists(atPath: auditLoggingDestinationDirectoryURL.path, isDirectory: &isDirectory) {
                 try FileManager.default.createDirectory(at: auditLoggingDestinationDirectoryURL, withIntermediateDirectories: true)
             }
-
-            var url = auditLoggingDestinationDirectoryURL.appendingPathComponent(auditLogginggFileName)
+            
+            var url = auditLoggingDestinationDirectoryURL.appendingPathComponent(auditLoggingFileName)
             url = url.appendingPathExtension(csvExtension)
             // Keep the file url
             auditLoggingFilePath = url
-
-            // Check if the file already exists.
-            if #available(iOS 16.0, *) {
-                return fileManager.fileExists(atPath: url.path())
-            } else {
-                return fileManager.fileExists(atPath: url.path)
-            }
-
         } catch {
             Log.shared.errorAndCrash(error: error)
-            return false
+            return
+        }
+    }
+    
+    private func getPersistedCSVContent() -> String? {
+        // Set the path where the audit logging file is, if exists, stored.
+        setPathIfNeeded()
+        do {
+            guard let path = auditLoggingFilePath else {
+                Log.shared.errorAndCrash("Something really wrong happend")
+                return nil
+            }
+            // If the path exists, the file may or may not exist.
+            // Try to get the content of the file as data.
+            let data = try Data(contentsOf: path)
+
+            // Convert to string, so it's readable and parseable.
+            return String(decoding: data, as: UTF8.self)
+        } catch {
+            // No such file or directory
+            return nil
         }
     }
 
-    private func createCSV(auditEventLog: EventLog, csvFileAlreadyExists: Bool, maxLogTime: Int) -> String? {
-        var logs = [EventLog]()
-        do {
-            if !csvFileAlreadyExists {
-                return auditEventLog.entry
-            } else {
-                guard let filePath = auditLoggingFilePath else {
-                    Log.shared.errorAndCrash("File path not found")
-                    return nil
-                }
-                // Get the content of the file as data.
-                let data = try Data(contentsOf: filePath)
-
-                // Convert to string, so it's readable and parseable.
-                let content = String(decoding: data, as: UTF8.self)
-
-                // Get rows of the content
-                let rows = content.components(separatedBy: newLine).filter { !$0.isEmpty }
-                
-                // Convert strings to EventLog (objects)
-                rows.forEach { row in
-                    let values = row.components(separatedBy: commaSeparator)
-                    let eventLog = EventLog(values)
-                    
-                    // Get the date and evaluate if the entry should be included into the CSV file.
-                    if let timestamp = values.first, let timeResult = Double(timestamp) {
-                        let date = Date(timeIntervalSince1970: timeResult)
-                        if let days = Calendar.current.dateComponents([.day], from: date, to: Date()).day,
-                           days <= maxLogTime {
-                            logs.append(eventLog)
-                        }
-                    }
-                }
-
-                // All entries means: previous entries + current entry.
-                let previousEntries: [String] = logs.compactMap { $0.entry.trimmed() }
-                var allEntries = previousEntries
-                allEntries.append(auditEventLog.entry)
-                return allEntries.joined(separator: newLine)
-            }
-        } catch {
-            Log.shared.errorAndCrash("Something went wrong while creating the CVS")
+    /// Convert the content of the CSV to Event Logs.
+    private func getLogs(csv: String) -> [EventLog] {
+        let rows = csv.components(separatedBy: newLine).filter { !$0.isEmpty }
+        var previousLogs = [EventLog]()
+        rows.forEach { row in
+            let values = row.components(separatedBy: commaSeparator)
+            let eventLog = EventLog(values)
+            previousLogs.append(eventLog)
         }
-        Log.shared.errorAndCrash("Something went wrong while creating the CVS")
-        return ""
+        return previousLogs
+    }
+
+    /// All entries mean: previous entries + current entry.
+    private func getAllEntries(auditEventLog: EventLog, logs: [EventLog]) -> String {
+        // All entries mean: previous entries + current entry.
+        let previousEntries: [String] = logs.compactMap { $0.entry.trimmed() }
+        var allEntries = previousEntries
+        allEntries.append(auditEventLog.entry)
+        return allEntries.joined(separator: newLine)
     }
 
     /// - Returns: The destination directory url.
@@ -205,9 +296,68 @@ extension FileExportUtil {
         }
         return docUrl
     }
+
+    private func prependSignatureAndSave(csv: String, signature: String, errorCallback: @escaping (Error) -> Void) {
+        var signedCSV = signature
+        signedCSV.append(csv)
+        saveInDisk(csv: signedCSV, errorCallback: errorCallback)
+    }
+
+    private func saveInDisk(csv: String, errorCallback: @escaping (Error) -> Void) {
+        do {
+            guard let data = csv.data(using: .utf8),
+                  let fileUrl = auditLoggingFilePath else {
+                Log.shared.errorAndCrash("Can't save CSV file")
+                return
+            }
+            try data.write(to: fileUrl)
+            Log.shared.info("CSV file successfully saved")
+        } catch {
+            errorCallback(error)
+            Log.shared.errorAndCrash(error: error)
+        }
+    }
+
+    // MARK: - Signature
+
+    private func extractBetweenFirstAndLastDashes(input: String) -> String? {
+        do {
+            let regex = try NSRegularExpression(pattern: "(-----.*?-----)", options: .dotMatchesLineSeparators)
+            let nsString = input as NSString
+            if let firstMatch = regex.firstMatch(in: input, options: [], range: NSRange(location: 0, length: nsString.length)),
+               let lastMatch = regex.matches(in: input, options: [], range: NSRange(location: 0, length: nsString.length)).last {
+                let startIndex = firstMatch.range.location
+                let endIndex = lastMatch.range.location + lastMatch.range.length
+                let contentRange = NSRange(location: startIndex, length: endIndex - startIndex)
+                return nsString.substring(with: contentRange)
+            }
+        } catch {
+            Log.shared.errorAndCrash("Error creating regular expression:")
+        }
+        return nil
+    }
+
+    /// Return the signature:
+    private func extractSignatureFrom(csv: String) -> String {
+        guard let signature = extractBetweenFirstAndLastDashes(input: csv) else {
+            return ""
+        }
+        return signature.appending(newLine)
+    }
+
+    private func removeSignatureFrom(csv: String, signature: String) -> String {
+        return csv.removeFirstOccurrence(of: signature)
+    }
+
+    private func createFirstCSV(auditEventLog: EventLog, errorCallback: @escaping (Error) -> Void) {
+        Task {
+            let signature = try await signText(text: auditEventLog.entry)
+            prependSignatureAndSave(csv: auditEventLog.entry, signature: signature, errorCallback: errorCallback)
+        }
+    }
 }
 
-//MARK: - Private
+// MARK: - Private Databases
 
 extension FileExportUtil {
 
@@ -252,7 +402,7 @@ extension FileExportUtil {
         appGroupURL.appendPathComponent("pEp_home/.pEp/")
         return appGroupURL
     }
-    
+
     /// - Returns: the URL where the system.db file is stored
     private func getSystemDBSourceURL() -> URL? {
         guard var appGroupURL = FileManager.default.containerURL(forSecurityApplicationGroupIdentifier: kAppGroupIdentifier) else {

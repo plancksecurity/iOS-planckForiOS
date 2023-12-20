@@ -10,12 +10,63 @@ import Foundation
 
 import MessageModel
 
-/**
- The error that gets delegated when there was no error during authorization, but
- neither a valid access token.
- */
-enum OAuth2AuthorizationError: Error {
+// We might want to distinguish error types.
+enum OAuthErrorType {
     case inconsistentAuthorizationResult
+}
+
+/// The error that gets delegated when there was no error during authorization, but
+/// neither a valid access token.
+struct OAuth2AuthorizationError: LocalizedError {
+    var errorDescription: String?
+    var domain: String?
+    var type: OAuthErrorType
+    var errorMessage: String
+
+    init(error: Error?) {
+        self.domain = (error as? NSError)?.domain
+        self.errorDescription = (error as? NSError)?.userInfo["NSUnderlyingError"] as? String
+        self.type = .inconsistentAuthorizationResult
+        let code = (error as? NSError)?.code ?? -1
+        self.errorMessage = OAuth2AuthorizationError.getErrorMessage(code: code)
+    }
+
+    // Error messages are taken from documentation in OIDError.h
+    // @see https://github.com/openid/AppAuth-iOS/blob/1.6.0/Source/AppAuthCore/OIDError.h
+    static private func getErrorMessage(code: Int) -> String {
+        switch code {
+        case OIDErrorCode.invalidDiscoveryDocument.rawValue:
+            return NSLocalizedString("A problem parsing an OpenID Connect Service Discovery document.", comment: "")
+        case OIDErrorCode.userCanceledAuthorizationFlow.rawValue:
+            return NSLocalizedString("The user manually canceled the OAuth authorization code flow.", comment: "")
+        case OIDErrorCode.programCanceledAuthorizationFlow.rawValue:
+            return NSLocalizedString("An OAuth authorization flow was programmatically cancelled.", comment: "")
+        case OIDErrorCode.networkError.rawValue:
+            return NSLocalizedString("A network error or server error occurred", comment: "")
+        case OIDErrorCode.serverError.rawValue:
+            return NSLocalizedString("A server error occurred", comment: "")
+        case OIDErrorCode.jsonDeserializationError.rawValue:
+            return NSLocalizedString("A problem occurred deserializing the response/JSON", comment: "")
+        case OIDErrorCode.tokenResponseConstructionError.rawValue:
+            return NSLocalizedString("A problem occurred constructing the token response from the JSON.", comment: "")
+        case OIDErrorCode.safariOpenError.rawValue:
+            return NSLocalizedString("UIApplication.openURL: returned NO when attempting to open the authorization request in mobile Safari.", comment: "")
+        case OIDErrorCode.browserOpenError.rawValue:
+            return NSLocalizedString("NSWorkspace.openURL returned NO when attempting to open the authorization request in the default browser", comment: "")
+        case OIDErrorCode.tokenRefreshError.rawValue:
+            return NSLocalizedString("A problem when trying to refresh the tokens ocurred", comment: "")
+        case OIDErrorCode.registrationResponseConstructionError.rawValue:
+            return NSLocalizedString("A problem occurred constructing the registration response from the JSON", comment: "")
+        case OIDErrorCode.jsonSerializationError.rawValue:
+            return NSLocalizedString("A problem occurred deserializing the response/JSON", comment: "")
+        case OIDErrorCode.idTokenParsingError.rawValue:
+            return NSLocalizedString("The ID Token did not parse.", comment: "")
+        case OIDErrorCode.idTokenFailedValidationError.rawValue:
+            return NSLocalizedString("The ID Token did not pass validation (e.g. issuer, audience checks).", comment: "")
+        default:
+            return NSLocalizedString("Unknown error occurred", comment: "")
+        }
+    }
 }
 
 /**

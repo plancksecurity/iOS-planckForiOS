@@ -11,7 +11,6 @@ import PlanckToolbox
 
 class AuditLoggingViewController: UIViewController {
 
-
     @IBOutlet private weak var tableView: UITableView!
     static private let maxTimeCellId = "AuditLoggingMaxTimeCellId"
 
@@ -38,7 +37,7 @@ class AuditLoggingViewController: UIViewController {
             Log.shared.errorAndCrash("No VM")
             return
         }
-        AppSettings.shared.auditLoggingTime = vm.currentAuditLoggingTime
+        AppSettings.shared.auditLoggingMaxNumberOfDays = vm.currentAuditLoggingMaxNumberOfDays
         navigationController?.popViewController(animated: true)
     }
 }

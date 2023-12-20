@@ -10,7 +10,7 @@ extension CdIdentity {
 
     /// You MUST use this ID for all identities that you know belong to the user.
     /// This is also true for identities no acount exists for.
-    static let pEpOwnUserID = "security.pep.pEpOwnUserID"
+    static let pEpOwnUserID = "pEp_own_userId"
 
     // MARK: - MySelf
 

@@ -62,12 +62,12 @@ extension AppSettings: MDMSettingsProtocol {
         }
     }
 
-    public var mdmAuditLoggingMaxFileTime: Int {
+    public var mdmAuditLoggingMaxNumberOfDays: Int {
         get {
-            guard let auditLoggingMaxFileTime = mdmDictionary[AppSettings.keyAuditLoggingMaxFileTime] as? Int else {
+            guard let auditLoggingMaxNumberOfDays = mdmDictionary[AppSettings.keyAuditLoggingMaxNumberOfDays] as? Int else {
                 return 30
             }
-            return auditLoggingMaxFileTime
+            return auditLoggingMaxNumberOfDays
         }
     }
 

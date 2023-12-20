@@ -42,7 +42,7 @@ class MessageViewModelTests: AccountDrivenTestBase {
             static let toField = "To:borja@helm.cat"
             static let longLongMessage = "Hey Borja, How is it going? Are you okay? I was wondering"
                 + " if we could meet sometime this afternoon. I would like to disc"
-            static let expectedDateText = "Jan 2, 1991"
+            static let expectedDateText = "2 Jan 1991"
             static let expectedNumberOfMessages = 0
         }
     }

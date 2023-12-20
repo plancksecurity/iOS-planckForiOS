@@ -11,24 +11,23 @@ import PlanckToolbox
 
 public protocol AuditLoggingUtilProtocol: AnyObject {
     
-    /// Save the log. If the file exceeds the time bound, the entries of the first day will be deleted.
-    func log(senderId: String, rating: String, maxLogTime: Int)
+    /// Save the log. 
+    /// We will only save entries from the last few days. The number of days are those indicated in the maxNumberOfDays parameter.
+    /// E.g. If 30 is passed, entries older than 30 days will be discarded.
+    func log(maxNumberOfDays: Int, senderId: String, rating: String, errorCallback: @escaping (Error) -> Void)
+    
+    /// Save the event log (start, stop).
+    /// We will only save entries from the last few days. The number of days are those indicated in the maxNumberOfDays parameter.
+    /// E.g. If 30 is passed, entries older than 30 days will be discarded.
+    func logEvent(maxNumberOfDays: Int, auditLoggerEvent: AuditLoggerStartStopEvent, errorCallback: @escaping (Error) -> Void)
 }
 
-public enum AuditLoggerEvent: String {
+public enum AuditLoggerStartStopEvent: String {
     case start = "Start"
     case stop = "Stop"
 }
 
 public class AuditLoggingUtil: NSObject, AuditLoggingUtilProtocol {
-    
-    private let savingLogsQueue: OperationQueue = {
-        let createe = OperationQueue()
-        createe.qualityOfService = .background
-        createe.maxConcurrentOperationCount = 1
-        createe.name = "security.planck.auditLoggging.queueForSavingLogs"
-        return createe
-    }()
 
     private var fileExportUtil: FileExportUtilProtocol
     
@@ -40,18 +39,24 @@ public class AuditLoggingUtil: NSObject, AuditLoggingUtilProtocol {
         self.fileExportUtil = fileExportUtil
     }
     
-    /// Logs starts and stops events
-    public func logEvent(maxLogTime: Int, auditLoggerEvent: AuditLoggerEvent) {
-        savingLogsQueue.addOperation {
-            let log = EventLog([Date.timestamp, auditLoggerEvent.rawValue])
-            self.fileExportUtil.save(auditEventLog: log, maxLogTime: maxLogTime)
-        }
+    /// Log `Start` and `Stop` events
+    public func logEvent(maxNumberOfDays: Int, auditLoggerEvent: AuditLoggerStartStopEvent, errorCallback: @escaping (Error) -> Void) {
+        let log = EventLog([Date.timestamp, auditLoggerEvent.rawValue])
+        save(log: log, maxNumberOfDays: maxNumberOfDays, errorCallback: errorCallback)
     }
 
-    public func log(senderId: String, rating: String, maxLogTime: Int) {
-        savingLogsQueue.addOperation {
-            let log = EventLog([Date.timestamp, senderId, rating])
-            self.fileExportUtil.save(auditEventLog: log, maxLogTime: maxLogTime)
-        }
+    /// Log ratings
+    public func log(maxNumberOfDays: Int, senderId: String, rating: String, errorCallback: @escaping (Error) -> Void) {
+        let log = EventLog([Date.timestamp, senderId, rating])
+        save(log: log, maxNumberOfDays: maxNumberOfDays, errorCallback: errorCallback)
+    }
+}
+
+// MARK: - Private
+
+extension AuditLoggingUtil {
+
+    private func save(log: EventLog, maxNumberOfDays: Int, errorCallback: @escaping (Error) -> Void) {
+        fileExportUtil.save(auditEventLog: log, maxNumberOfDays: maxNumberOfDays, errorCallback: errorCallback)
     }
 }

@@ -127,8 +127,6 @@ extension TrustManagementViewController : UITableViewDataSource  {
                     return UITableViewCell()
             }
             setupCell(cell, forRowAt: indexPath)
-
-
             return cell
         }
     }
