@@ -25,11 +25,12 @@ class VerifyIdentityViewController: UIViewController {
     @IBOutlet private weak var verifyIdentityTitleLabel: UILabel!
     @IBOutlet private weak var messageLabel: UILabel!
     @IBOutlet private weak var trustwordsTitleLabel: UILabel!
+    
+    //Buttons
     @IBOutlet private weak var closeButton: UIButton!
-    @IBOutlet private weak var buttonContainerStackView: UIStackView!
     @IBOutlet private weak var confirmButton: UIButton!
     @IBOutlet private weak var rejectButton: UIButton!
-
+    
     // Dynamic content
     @IBOutlet private weak var trustwordsLabel: UILabel!
     @IBOutlet private weak var ownDeviceFingerprintsLabel: UILabel!
@@ -41,7 +42,6 @@ class VerifyIdentityViewController: UIViewController {
     // Here we don't have any table view. We show only the trustwords of only one row.
     private let indexPath = IndexPath(row: 0, section: 0)
     
-
     override func viewDidLoad() {
         super.viewDidLoad()
         setStaticTexts()
@@ -123,12 +123,20 @@ extension VerifyIdentityViewController {
         closeButton.setPEPFont(style: .body, weight: .regular)
         closeButton.setTitleColor(UIColor.planckLightPurpleText, for: [.normal])
         closeButton.setTitle(vm.closeButtonTitle, for: [.normal])
+        
+        confirmButton.setPEPFont(style: .body, weight: .regular)
+        confirmButton.setTitleColor(UIColor.pEpGreen, for: [.normal])
+        confirmButton.setTitle(vm.confirmButtonTitle, for: [.normal])
+        
+        rejectButton.setPEPFont(style: .body, weight: .regular)
+        rejectButton.setTitleColor(UIColor.pEpRed, for: [.normal])
+        rejectButton.setTitle(vm.rejectButtonTitle, for: [.normal])
     }
 }
 
 extension VerifyIdentityViewController: TrustManagementViewModelDelegate {
     func reload() {
-        guard let view = viewIfLoaded else {
+        guard viewIfLoaded != nil else {
             return
         }
         guard let vm = trustManagementViewModel else {
@@ -143,7 +151,8 @@ extension VerifyIdentityViewController: TrustManagementViewModelDelegate {
         let trustwords = row.trustwords ?? NSLocalizedString("Trustwords Not Available", comment: "")
         let trustwordsHeight: CGFloat = trustwords.height(withConstrainedWidth: trustwordsLabel.frame.width, font: trustwordsLabel.font)
         let defaultContainerHeightWithoutTrustwords = 390.0
-        let heightToSet = defaultContainerHeightWithoutTrustwords + trustwordsHeight
+        var heightToSet = defaultContainerHeightWithoutTrustwords + trustwordsHeight
+
         UIView.animate(withDuration: 0.5, delay: 0, options: .curveEaseInOut) { [weak self] in
             guard let me = self else { return }
             me.containerHeightConstraint.constant = CGFloat(heightToSet)

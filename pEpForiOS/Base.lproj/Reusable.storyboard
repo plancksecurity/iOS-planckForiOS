@@ -494,7 +494,7 @@
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="bXA-jN-br9" userLabel="Container" customClass="KeyInputView" customModule="pEpForiOS" customModuleProvider="target">
                                 <rect key="frame" x="37.5" y="131.5" width="300" height="424"/>
                                 <subviews>
-                                    <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" alignment="center" spacing="8" translatesAutoresizingMaskIntoConstraints="NO" id="inG-LR-uGD">
+                                    <stackView opaque="NO" contentMode="scaleToFill" verticalCompressionResistancePriority="1000" axis="vertical" alignment="center" spacing="8" translatesAutoresizingMaskIntoConstraints="NO" id="inG-LR-uGD">
                                         <rect key="frame" x="0.0" y="12" width="300" height="412"/>
                                         <subviews>
                                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="1kz-AL-jdJ" userLabel="Title container view">
@@ -732,7 +732,6 @@
                         </constraints>
                     </view>
                     <connections>
-                        <outlet property="buttonContainerStackView" destination="VxD-CR-ed4" id="CfV-Mq-Pp1"/>
                         <outlet property="closeButton" destination="YwS-bS-AZe" id="CZr-Mu-5xY"/>
                         <outlet property="confirmButton" destination="TeL-43-Yx4" id="ndW-G2-Cw0"/>
                         <outlet property="containerHeightConstraint" destination="M2d-8Q-wF4" id="iUb-aa-7KN"/>
