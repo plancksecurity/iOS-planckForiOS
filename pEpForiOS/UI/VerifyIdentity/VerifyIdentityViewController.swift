@@ -55,7 +55,23 @@ class VerifyIdentityViewController: UIViewController {
         confirmButton.isHidden = !vm.shouldManageTrust
         rejectButton.isHidden = !vm.shouldManageTrust
     }
-    
+
+    @IBAction func rejectButtonPressed() {
+        guard let vm = trustManagementViewModel else {
+            Log.shared.errorAndCrash("VM not found")
+            return
+        }
+        vm.handleRejectHandshakePressed(at: indexPath)
+    }
+
+    @IBAction func confirmButtonPressed() {
+        guard let vm = trustManagementViewModel else {
+            Log.shared.errorAndCrash("VM not found")
+            return
+        }
+        vm.handleConfirmHandshakePressed(at: indexPath)
+    }
+
     @objc func toogleTrustwordsLength() {
         guard let vm = trustManagementViewModel else {
             Log.shared.errorAndCrash("VM not found")
