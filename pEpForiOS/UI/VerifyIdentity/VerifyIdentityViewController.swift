@@ -54,25 +54,27 @@ class VerifyIdentityViewController: UIViewController {
         confirmButton.isHidden = !vm.shouldManageTrust
         rejectButton.isHidden = !vm.shouldManageTrust
     }
-
-    @IBAction func rejectButtonPressed() {
-        /*
-        guard let vm = trustManagementViewModel else {
-            Log.shared.errorAndCrash("VM not found")
-            return
-        }
-        vm.handleRejectHandshakePressed(at: indexPath)
-        */
+    
+    @IBAction func confirmButtonPressed() {
+        show(action: Action.accept)
     }
 
-    @IBAction func confirmButtonPressed() {
-        /*
-        guard let vm = trustManagementViewModel else {
-            Log.shared.errorAndCrash("VM not found")
-            return
+    @IBAction func rejectButtonPressed() {
+        show(action: Action.reject)
+    }
+
+    func show(action: Action) {
+        let storyboard = UIStoryboard(name: Constants.reusableStoryboard, bundle: .main)
+        guard let vc = storyboard.instantiateViewController(
+            withIdentifier: VerifyIdentityActionConfirmationViewController.storyboardId) as? VerifyIdentityActionConfirmationViewController else {
+                Log.shared.errorAndCrash("Fail to instantiateViewController VerifyIdentityActionConfirmationViewController")
+                return
         }
-        vm.handleConfirmHandshakePressed(at: indexPath)
-         */
+        viewModel?.action = action
+        vc.viewModel = viewModel
+        trustManagementViewModel?.delegate = vc
+        vc.trustManagementViewModel = trustManagementViewModel
+        UIUtils.showVerifyIdentityConfirmation(viewContorller: vc)
     }
 
     @objc func toogleTrustwordsLength() {
@@ -147,11 +149,6 @@ extension VerifyIdentityViewController {
         rejectButton.setTitleColor(UIColor.pEpRed, for: [.normal])
         rejectButton.setTitle(vm.rejectButtonTitle, for: [.normal])
     }
-    
-    override func viewDidLayoutSubviews() {
-        super.viewDidLayoutSubviews()
-        listAll()
-    }
 }
 
 extension VerifyIdentityViewController: TrustManagementViewModelDelegate {
@@ -193,23 +190,4 @@ extension VerifyIdentityViewController: TrustManagementViewModelDelegate {
     func showResetPartnerKeySuccessfully() { }
 
     func showResetPartnerKeyFailed(forRowAt indexPath: IndexPath) { }
-}
-
-extension UIViewController {
-    func listAll() {
-        listSubviews(view: view)
-    }
-    func listSubviews(view: UIView) {
-        // Iterate through all subviews
-        for subview in view.subviews {
-            // Print information about each subview
-            print("Subview: \(subview) | Type: \(type(of: subview))")
-            
-            // If the subview has more subviews, recursively call the function
-            if subview.subviews.count > 0 {
-                listSubviews(view: subview)
-            }
-        }
-    }
-
 }

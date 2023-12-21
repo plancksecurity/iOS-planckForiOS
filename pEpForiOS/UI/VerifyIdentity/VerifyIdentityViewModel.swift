@@ -10,6 +10,8 @@ import Foundation
 
 struct VerifyIdentityViewModel {
 
+    var action: Action = .accept
+    
     init(isCommunicationPartnerVerified: Bool) {
         self.shouldManageTrust = isCommunicationPartnerVerified
     }
@@ -23,7 +25,27 @@ struct VerifyIdentityViewModel {
     public var messageText: String {
         return NSLocalizedString("Ask your partner in person or over the phone: What are your Trustwords? Then compare the to the correct answer shown below", comment: "Instructions to verify Identity")
     }
+
     
+    public func getVerificationMessage(partner: String) -> String {
+        return action == .accept ? getConfirmationVerificationMessage(partner: partner) : getRejectVerificationMessage(partner: partner)
+    }
+    
+    private func getConfirmationVerificationMessage(partner: String) -> String {
+        let text = """
+        Trustwords or fingerprints are matching, this means that it is secure to communicate with \(partner) identity.
+        We recommend to press Yes, Confirm, marking \(partner) as verified.
+        """
+        return NSLocalizedString(text, comment: text)
+    }
+
+    private func getRejectVerificationMessage(partner: String) -> String {
+        let text = """
+        Trustwords or fingerprints are not matching, this could indicate that someone is trying to imitate yours or \(partner) identity. We recommend to press Yes, Reject, marking \(partner) as Dangerous, and to contact your IT support on your operational security team to investigate.
+        """
+        return NSLocalizedString(text, comment: text)
+    }
+
     public var trustwordsTitle: String {
         return NSLocalizedString("Trustwords", comment: "Trustwords")
     }
@@ -42,6 +64,10 @@ struct VerifyIdentityViewModel {
 
     public var rejectButtonTitle: String {
         return NSLocalizedString("Reject", comment: "Reject button title")
+    }
+
+    public var actionButtonTitle: String {
+        return action == .accept ? NSLocalizedString("Yes, confirm", comment: "Confirm button title") : NSLocalizedString("Yes, reject", comment: "Reject button title")
     }
 
 }
