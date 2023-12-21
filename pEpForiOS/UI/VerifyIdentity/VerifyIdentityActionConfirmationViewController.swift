@@ -35,7 +35,7 @@ class VerifyIdentityActionConfirmationViewController: UIViewController {
     @IBOutlet private weak var cancelButton: UIButton!
     
     private let indexPath = IndexPath(row: 0, section: 0)
-    
+
     override func viewDidLoad() {
         super.viewDidLoad()
         title = NSLocalizedString("Verify Identity", comment: "Verify Identity")
