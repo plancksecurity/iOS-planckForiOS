@@ -655,19 +655,8 @@
                                     <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" distribution="fillEqually" spacing="1" translatesAutoresizingMaskIntoConstraints="NO" id="VxD-CR-ed4">
                                         <rect key="frame" x="0.0" y="0.0" width="337.5" height="90"/>
                                         <subviews>
-                                            <button opaque="NO" tag="2" contentMode="scaleToFill" verticalCompressionResistancePriority="1000" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="ZVW-Jv-vXh" userLabel="Reject">
-                                                <rect key="frame" x="0.0" y="0.0" width="337.5" height="44.5"/>
-                                                <color key="backgroundColor" systemColor="systemBackgroundColor"/>
-                                                <fontDescription key="fontDescription" type="system" weight="semibold" pointSize="15"/>
-                                                <state key="normal" title="Reject">
-                                                    <color key="titleColor" systemColor="systemRedColor"/>
-                                                </state>
-                                                <connections>
-                                                    <action selector="rejectButtonPressed" destination="sT5-gb-80O" eventType="touchUpInside" id="mF4-bV-sVp"/>
-                                                </connections>
-                                            </button>
                                             <button opaque="NO" tag="2" contentMode="scaleToFill" verticalCompressionResistancePriority="1000" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="TeL-43-Yx4" userLabel="Confirm">
-                                                <rect key="frame" x="0.0" y="45.5" width="337.5" height="44.5"/>
+                                                <rect key="frame" x="0.0" y="0.0" width="337.5" height="44.5"/>
                                                 <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                                                 <fontDescription key="fontDescription" type="system" weight="semibold" pointSize="15"/>
                                                 <state key="normal" title="Confirm">
@@ -675,6 +664,17 @@
                                                 </state>
                                                 <connections>
                                                     <action selector="confirmButtonPressed" destination="sT5-gb-80O" eventType="touchUpInside" id="xgK-ut-kRy"/>
+                                                </connections>
+                                            </button>
+                                            <button opaque="NO" tag="2" contentMode="scaleToFill" verticalCompressionResistancePriority="1000" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="ZVW-Jv-vXh" userLabel="Reject">
+                                                <rect key="frame" x="0.0" y="45.5" width="337.5" height="44.5"/>
+                                                <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+                                                <fontDescription key="fontDescription" type="system" weight="semibold" pointSize="15"/>
+                                                <state key="normal" title="Reject">
+                                                    <color key="titleColor" systemColor="systemRedColor"/>
+                                                </state>
+                                                <connections>
+                                                    <action selector="rejectButtonPressed" destination="sT5-gb-80O" eventType="touchUpInside" id="mF4-bV-sVp"/>
                                                 </connections>
                                             </button>
                                         </subviews>

@@ -26,7 +26,6 @@ class VerifyIdentityViewController: UIViewController {
     @IBOutlet private weak var trustwordsTitleLabel: UILabel!
     
     //Buttons
-    @IBOutlet private weak var closeButton: UIButton!
     @IBOutlet private weak var confirmButton: UIButton!
     @IBOutlet private weak var rejectButton: UIButton!
     
@@ -57,19 +56,23 @@ class VerifyIdentityViewController: UIViewController {
     }
 
     @IBAction func rejectButtonPressed() {
+        /*
         guard let vm = trustManagementViewModel else {
             Log.shared.errorAndCrash("VM not found")
             return
         }
         vm.handleRejectHandshakePressed(at: indexPath)
+        */
     }
 
     @IBAction func confirmButtonPressed() {
+        /*
         guard let vm = trustManagementViewModel else {
             Log.shared.errorAndCrash("VM not found")
             return
         }
         vm.handleConfirmHandshakePressed(at: indexPath)
+         */
     }
 
     @objc func toogleTrustwordsLength() {
