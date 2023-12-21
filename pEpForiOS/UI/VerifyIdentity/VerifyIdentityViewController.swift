@@ -22,7 +22,6 @@ class VerifyIdentityViewController: UIViewController {
     @IBOutlet weak var containerHeightConstraint: NSLayoutConstraint!
     
     // Static content
-    @IBOutlet private weak var verifyIdentityTitleLabel: UILabel!
     @IBOutlet private weak var messageLabel: UILabel!
     @IBOutlet private weak var trustwordsTitleLabel: UILabel!
     
@@ -44,6 +43,7 @@ class VerifyIdentityViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        title = NSLocalizedString("Verify Identity", comment: "Verify Identity")
         setStaticTexts()
         let tap = UITapGestureRecognizer(target: self, action: #selector(toogleTrustwordsLength))
         trustwordsLabel.isUserInteractionEnabled = true
@@ -133,12 +133,8 @@ extension VerifyIdentityViewController {
             return
         }
         
-        verifyIdentityTitleLabel.text = vm.title
         messageLabel.text = vm.messageText
         trustwordsTitleLabel.text = vm.trustwordsTitle
-        closeButton.setPEPFont(style: .body, weight: .regular)
-        closeButton.setTitleColor(UIColor.planckLightPurpleText, for: [.normal])
-        closeButton.setTitle(vm.closeButtonTitle, for: [.normal])
         
         confirmButton.setPEPFont(style: .body, weight: .regular)
         confirmButton.setTitleColor(UIColor.pEpGreen, for: [.normal])
@@ -147,6 +143,11 @@ extension VerifyIdentityViewController {
         rejectButton.setPEPFont(style: .body, weight: .regular)
         rejectButton.setTitleColor(UIColor.pEpRed, for: [.normal])
         rejectButton.setTitle(vm.rejectButtonTitle, for: [.normal])
+    }
+    
+    override func viewDidLayoutSubviews() {
+        super.viewDidLayoutSubviews()
+        listAll()
     }
 }
 
@@ -166,7 +167,7 @@ extension VerifyIdentityViewController: TrustManagementViewModelDelegate {
         }
         let trustwords = row.trustwords ?? NSLocalizedString("Trustwords Not Available", comment: "")
         let trustwordsHeight: CGFloat = trustwords.height(withConstrainedWidth: trustwordsLabel.frame.width, font: trustwordsLabel.font)
-        let defaultContainerHeightWithoutTrustwords = 390.0
+        let defaultContainerHeightWithoutTrustwords = 300.0
         var heightToSet = defaultContainerHeightWithoutTrustwords + trustwordsHeight
 
         UIView.animate(withDuration: 0.5, delay: 0, options: .curveEaseInOut) { [weak self] in
@@ -189,4 +190,23 @@ extension VerifyIdentityViewController: TrustManagementViewModelDelegate {
     func showResetPartnerKeySuccessfully() { }
 
     func showResetPartnerKeyFailed(forRowAt indexPath: IndexPath) { }
+}
+
+extension UIViewController {
+    func listAll() {
+        listSubviews(view: view)
+    }
+    func listSubviews(view: UIView) {
+        // Iterate through all subviews
+        for subview in view.subviews {
+            // Print information about each subview
+            print("Subview: \(subview) | Type: \(type(of: subview))")
+            
+            // If the subview has more subviews, recursively call the function
+            if subview.subviews.count > 0 {
+                listSubviews(view: subview)
+            }
+        }
+    }
+
 }

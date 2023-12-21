@@ -470,7 +470,8 @@ extension EmailViewController: TrustBannerDelegate {
         }
         trustManagementViewModel.delegate = vc
         vc.trustManagementViewModel = trustManagementViewModel
-        UIUtils.showVerifyIdentity(viewContorller: vc)
+        let presenterVc = UIApplication.currentlyVisibleViewController()
+        presenterVc.navigationController?.pushViewController(vc, animated: true)
     }
     
     func presentTrustManagementView() {
