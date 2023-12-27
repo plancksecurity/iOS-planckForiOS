@@ -10,7 +10,7 @@ import Foundation
 
 struct VerifyIdentityViewModel {
 
-    var action: Action = .accept
+    var action: VerificationAction = .accept
     
     init(isCommunicationPartnerVerified: Bool) {
         self.shouldManageTrust = isCommunicationPartnerVerified
@@ -26,6 +26,11 @@ struct VerifyIdentityViewModel {
         return NSLocalizedString("Ask your partner in person or over the phone: What are your Trustwords? Then compare the to the correct answer shown below", comment: "Instructions to verify Identity")
     }
 
+    public func getVerificationResultMessage(partner: String) -> String {
+        return action == .accept ? 
+        NSLocalizedString("\(partner) is now verified", comment: "Partner is verified") :
+        NSLocalizedString("\(partner) is now Dangerous email partner.\nWe recommend to contact your IT support of your operational team to investigate", comment: "Partner is Dangerous")
+    }
     
     public func getVerificationMessage(partner: String) -> String {
         return action == .accept ? getConfirmationVerificationMessage(partner: partner) : getRejectVerificationMessage(partner: partner)

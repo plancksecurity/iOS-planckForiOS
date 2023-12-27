@@ -15,7 +15,7 @@ import PlanckToolboxForExtensions
 import PlanckToolbox
 #endif
 
-enum Action {
+enum VerificationAction {
     case accept
     case reject
 }
@@ -62,20 +62,25 @@ extension VerifyIdentityActionConfirmationViewController: TrustManagementViewMod
             Log.shared.errorAndCrash("Extremely unexpected")
             return
         }
+        guard let vm = viewModel, 
+                let trustVM = trustManagementViewModel,
+              let name = trustVM.rows.first?.partnerTitle else {
+            Log.shared.errorAndCrash("Trustwords not found")
+            return
+        }
+        let title = vm.title
+        let message = vm.getVerificationResultMessage(partner: name)
+        
         dismiss(animated: true, completion: {
-            UIApplication.currentlyVisibleViewController().navigationController?.popViewController(animated: true)
+            UIApplication.currentlyVisibleViewController().navigationController?.popViewController(animated: true, completion: {
+                UIUtils.showAlertWithOnlyCloseButton(title: title, message: message)
+            })
         })
     }
     
-    func showResetPartnerKeySuccessfully() {
-        // TODO: implement me!
-        print("")
-    }
+    func showResetPartnerKeySuccessfully() { }
     
-    func showResetPartnerKeyFailed(forRowAt indexPath: IndexPath) {
-        // TODO: implement me!
-        print("")
-    }
+    func showResetPartnerKeyFailed(forRowAt indexPath: IndexPath) { }
 }
 
 // MARK: - Private
@@ -95,11 +100,11 @@ extension VerifyIdentityActionConfirmationViewController {
         actionButton.setTitleColor(vm.action == .accept ? UIColor.pEpGreen : UIColor.pEpRed, for: [.normal])
         actionButton.setTitle(vm.confirmButtonTitle, for: [.normal])
         cancelButton.setPEPFont(style: .body, weight: .regular)
-        cancelButton.setTitleColor(UIColor.pEpRed, for: [.normal])
+        cancelButton.setTitleColor(UIColor.planckLightPurpleText, for: [.normal])
         cancelButton.setTitle(vm.closeButtonTitle, for: [.normal])
     }
     
-    private func handleUserInput(action: Action) {
+    private func handleUserInput(action: VerificationAction) {
         guard let vm = trustManagementViewModel else {
             Log.shared.errorAndCrash("VM not found")
             return

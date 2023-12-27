@@ -56,14 +56,14 @@ class VerifyIdentityViewController: UIViewController {
     }
     
     @IBAction func confirmButtonPressed() {
-        show(action: Action.accept)
+        show(action: VerificationAction.accept)
     }
 
     @IBAction func rejectButtonPressed() {
-        show(action: Action.reject)
+        show(action: VerificationAction.reject)
     }
 
-    func show(action: Action) {
+    func show(action: VerificationAction) {
         let storyboard = UIStoryboard(name: Constants.reusableStoryboard, bundle: .main)
         guard let vc = storyboard.instantiateViewController(
             withIdentifier: VerifyIdentityActionConfirmationViewController.storyboardId) as? VerifyIdentityActionConfirmationViewController else {

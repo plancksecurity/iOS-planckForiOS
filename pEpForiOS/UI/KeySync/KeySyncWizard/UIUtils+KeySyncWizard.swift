@@ -58,6 +58,12 @@ extension UIUtils {
 // MARK: - Verify Identity
 
 extension UIUtils {
+    static public func showVerifyIdentityConfirmationOK() {
+    }
+    
+    static public func showVerifyIdentityRejectionOK() {
+        
+    }
 
     static public func showVerifyIdentityConfirmation(viewContorller: VerifyIdentityActionConfirmationViewController) {
         DispatchQueue.main.async {
