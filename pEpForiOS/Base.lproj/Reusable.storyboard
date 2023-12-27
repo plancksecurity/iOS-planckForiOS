@@ -735,42 +735,45 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="wE6-aw-1dJ" userLabel="Container" customClass="KeyInputView" customModule="pEpForiOS" customModuleProvider="target">
-                                <rect key="frame" x="37.5" y="115" width="300" height="285.5"/>
+                                <rect key="frame" x="37.5" y="111.5" width="300" height="292"/>
                                 <subviews>
-                                    <stackView opaque="NO" contentMode="scaleToFill" verticalCompressionResistancePriority="1000" axis="vertical" alignment="center" spacing="8" translatesAutoresizingMaskIntoConstraints="NO" id="ti2-hv-sYw">
-                                        <rect key="frame" x="0.0" y="12" width="300" height="273.5"/>
+                                    <stackView opaque="NO" contentMode="scaleToFill" verticalCompressionResistancePriority="1000" axis="vertical" distribution="fillProportionally" alignment="center" spacing="8" translatesAutoresizingMaskIntoConstraints="NO" id="ti2-hv-sYw">
+                                        <rect key="frame" x="0.0" y="0.0" width="300" height="292"/>
                                         <subviews>
                                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="xGG-qQ-Pgf" userLabel="Title container view">
-                                                <rect key="frame" x="12" y="0.0" width="276" height="20.5"/>
+                                                <rect key="frame" x="12" y="0.0" width="276" height="192"/>
                                                 <subviews>
                                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="1000" verticalCompressionResistancePriority="1000" text="Verify Identity" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="De6-uE-bkb">
-                                                        <rect key="frame" x="80.5" y="0.0" width="115.5" height="20.5"/>
+                                                        <rect key="frame" x="80.5" y="12" width="115.5" height="20.5"/>
                                                         <fontDescription key="fontDescription" type="boldSystem" pointSize="17"/>
+                                                        <nil key="textColor"/>
+                                                        <nil key="highlightedColor"/>
+                                                    </label>
+                                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="1000" horizontalCompressionResistancePriority="1000" verticalCompressionResistancePriority="1000" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontForContentSizeCategory="YES" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="DoM-mN-Zey">
+                                                        <rect key="frame" x="8" y="40.5" width="260" height="143.5"/>
+                                                        <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                                        <string key="text">Trustwords or fingerprints are matching, this means that it is secure to communicate with rick@planck.security identity.
+
+We recommend to press Yes, Confirm, marking rick@planck.security.dev as verified.</string>
+                                                        <fontDescription key="fontDescription" type="system" pointSize="15"/>
                                                         <nil key="textColor"/>
                                                         <nil key="highlightedColor"/>
                                                     </label>
                                                 </subviews>
                                                 <constraints>
                                                     <constraint firstItem="De6-uE-bkb" firstAttribute="centerX" secondItem="xGG-qQ-Pgf" secondAttribute="centerX" id="1Ud-Mu-FSi"/>
-                                                    <constraint firstAttribute="height" constant="20.5" id="ZhV-12-xwe"/>
+                                                    <constraint firstAttribute="trailing" secondItem="DoM-mN-Zey" secondAttribute="trailing" constant="8" id="Kzl-G0-Rcq"/>
+                                                    <constraint firstAttribute="bottom" secondItem="DoM-mN-Zey" secondAttribute="bottom" constant="8" id="OI0-e1-itf"/>
+                                                    <constraint firstItem="DoM-mN-Zey" firstAttribute="leading" secondItem="xGG-qQ-Pgf" secondAttribute="leading" constant="8" id="TlA-7G-9bD"/>
                                                     <constraint firstItem="De6-uE-bkb" firstAttribute="leading" relation="greaterThanOrEqual" secondItem="xGG-qQ-Pgf" secondAttribute="leading" constant="8" id="bfM-W5-c8m"/>
-                                                    <constraint firstAttribute="bottom" secondItem="De6-uE-bkb" secondAttribute="bottom" id="kq3-M7-9wn"/>
-                                                    <constraint firstItem="De6-uE-bkb" firstAttribute="top" secondItem="xGG-qQ-Pgf" secondAttribute="top" id="vws-vT-f5A"/>
+                                                    <constraint firstItem="DoM-mN-Zey" firstAttribute="top" secondItem="De6-uE-bkb" secondAttribute="bottom" constant="8" id="dTW-kQ-wPC"/>
+                                                    <constraint firstItem="De6-uE-bkb" firstAttribute="top" secondItem="xGG-qQ-Pgf" secondAttribute="top" constant="12" id="vws-vT-f5A"/>
                                                 </constraints>
                                             </view>
-                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="1000" horizontalCompressionResistancePriority="1000" verticalCompressionResistancePriority="1000" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontForContentSizeCategory="YES" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="DoM-mN-Zey">
-                                                <rect key="frame" x="20" y="28.5" width="260" height="145"/>
-                                                <string key="text">Trustwords or fingerprints are matching, this means that it is secure to communicate with rick@planck.security identity.
-
-We recommend to press Yes, Confirm, marking rick@planck.security.dev as verified.</string>
-                                                <fontDescription key="fontDescription" type="system" pointSize="15"/>
-                                                <nil key="textColor"/>
-                                                <nil key="highlightedColor"/>
-                                            </label>
                                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="uhz-Ux-k1y" userLabel="Buttons container">
-                                                <rect key="frame" x="0.0" y="181.5" width="300" height="92"/>
+                                                <rect key="frame" x="0.0" y="200" width="300" height="92"/>
                                                 <subviews>
-                                                    <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" distribution="fillEqually" spacing="1" translatesAutoresizingMaskIntoConstraints="NO" id="vKW-D5-REq">
+                                                    <stackView opaque="NO" contentMode="scaleToFill" verticalCompressionResistancePriority="1000" axis="vertical" distribution="fillEqually" spacing="1" translatesAutoresizingMaskIntoConstraints="NO" id="vKW-D5-REq">
                                                         <rect key="frame" x="0.0" y="1" width="300" height="91"/>
                                                         <subviews>
                                                             <button opaque="NO" tag="2" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="RQy-7k-R6g" userLabel="Confirm">
@@ -802,14 +805,14 @@ We recommend to press Yes, Confirm, marking rick@planck.security.dev as verified
                                                                 </connections>
                                                             </button>
                                                         </subviews>
-                                                        <color key="backgroundColor" systemColor="separatorColor"/>
+                                                        <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                                     </stackView>
                                                 </subviews>
                                                 <color key="backgroundColor" systemColor="separatorColor"/>
                                                 <constraints>
-                                                    <constraint firstItem="vKW-D5-REq" firstAttribute="top" secondItem="uhz-Ux-k1y" secondAttribute="top" constant="1" id="EY4-FL-1ui"/>
                                                     <constraint firstAttribute="bottom" secondItem="vKW-D5-REq" secondAttribute="bottom" id="Maf-Ec-Wgu"/>
                                                     <constraint firstItem="vKW-D5-REq" firstAttribute="leading" secondItem="uhz-Ux-k1y" secondAttribute="leading" id="Uyd-V6-jYj"/>
+                                                    <constraint firstItem="vKW-D5-REq" firstAttribute="top" secondItem="uhz-Ux-k1y" secondAttribute="top" constant="1" id="WfD-TF-vsg"/>
                                                     <constraint firstAttribute="trailing" secondItem="vKW-D5-REq" secondAttribute="trailing" id="vPC-qe-v8O"/>
                                                 </constraints>
                                             </view>
@@ -817,20 +820,18 @@ We recommend to press Yes, Confirm, marking rick@planck.security.dev as verified
                                         <color key="backgroundColor" systemColor="secondarySystemBackgroundColor"/>
                                         <constraints>
                                             <constraint firstAttribute="trailing" secondItem="xGG-qQ-Pgf" secondAttribute="trailing" constant="12" id="3Cb-5X-9ve"/>
-                                            <constraint firstItem="DoM-mN-Zey" firstAttribute="leading" secondItem="ti2-hv-sYw" secondAttribute="leading" constant="20" id="KNQ-zB-guW"/>
                                             <constraint firstItem="xGG-qQ-Pgf" firstAttribute="leading" secondItem="ti2-hv-sYw" secondAttribute="leading" constant="12" id="Qx6-gB-ccF"/>
                                             <constraint firstAttribute="trailing" secondItem="uhz-Ux-k1y" secondAttribute="trailing" id="edw-sE-Ga5"/>
-                                            <constraint firstAttribute="trailing" secondItem="DoM-mN-Zey" secondAttribute="trailing" constant="20" id="l0j-Yx-2Ef"/>
                                             <constraint firstItem="uhz-Ux-k1y" firstAttribute="leading" secondItem="ti2-hv-sYw" secondAttribute="leading" id="oQv-xf-fIY"/>
                                         </constraints>
                                     </stackView>
                                 </subviews>
-                                <color key="backgroundColor" systemColor="secondarySystemBackgroundColor"/>
+                                <color key="backgroundColor" systemColor="separatorColor"/>
                                 <constraints>
                                     <constraint firstItem="ti2-hv-sYw" firstAttribute="leading" secondItem="wE6-aw-1dJ" secondAttribute="leading" id="3NL-em-P6D"/>
                                     <constraint firstAttribute="trailing" secondItem="ti2-hv-sYw" secondAttribute="trailing" id="9yv-f2-T3u"/>
                                     <constraint firstAttribute="bottom" secondItem="ti2-hv-sYw" secondAttribute="bottom" id="Ahl-hH-IIY"/>
-                                    <constraint firstItem="ti2-hv-sYw" firstAttribute="top" secondItem="wE6-aw-1dJ" secondAttribute="top" constant="12" id="fhZ-ef-Vl1"/>
+                                    <constraint firstItem="ti2-hv-sYw" firstAttribute="top" secondItem="wE6-aw-1dJ" secondAttribute="top" id="fhZ-ef-Vl1"/>
                                 </constraints>
                                 <userDefinedRuntimeAttributes>
                                     <userDefinedRuntimeAttribute type="number" keyPath="layer.cornerRadius">
@@ -843,11 +844,9 @@ We recommend to press Yes, Confirm, marking rick@planck.security.dev as verified
                         <viewLayoutGuide key="safeArea" id="YXt-l7-YO3"/>
                         <color key="backgroundColor" red="0.0" green="0.0" blue="0.0" alpha="0.29999999999999999" colorSpace="custom" customColorSpace="sRGB"/>
                         <constraints>
-                            <constraint firstItem="wE6-aw-1dJ" firstAttribute="top" secondItem="YXt-l7-YO3" secondAttribute="top" constant="95" id="GOZ-LI-erB"/>
                             <constraint firstItem="wE6-aw-1dJ" firstAttribute="width" secondItem="LHY-Yh-87h" secondAttribute="width" multiplier="0.8" id="Lbr-eB-1UM"/>
                             <constraint firstItem="wE6-aw-1dJ" firstAttribute="centerY" secondItem="YXt-l7-YO3" secondAttribute="centerY" multiplier="0.75" id="eXo-zN-1Lw"/>
                             <constraint firstItem="wE6-aw-1dJ" firstAttribute="centerX" secondItem="YXt-l7-YO3" secondAttribute="centerX" id="qMq-tm-zdc"/>
-                            <constraint firstItem="YXt-l7-YO3" firstAttribute="bottom" relation="greaterThanOrEqual" secondItem="wE6-aw-1dJ" secondAttribute="bottom" constant="35" id="qQU-LE-Qgl"/>
                         </constraints>
                     </view>
                     <connections>

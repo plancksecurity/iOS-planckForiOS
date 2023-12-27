@@ -57,7 +57,15 @@ class VerifyIdentityActionConfirmationViewController: UIViewController {
 extension VerifyIdentityActionConfirmationViewController: TrustManagementViewModelDelegate {
     func reload() { }
     
-    func dataChanged(forRowAt indexPath: IndexPath) { }
+    func dataChanged(forRowAt indexPath: IndexPath) {
+        guard indexPath == self.indexPath else {
+            Log.shared.errorAndCrash("Extremely unexpected")
+            return
+        }
+        dismiss(animated: true, completion: {
+            UIApplication.currentlyVisibleViewController().navigationController?.popViewController(animated: true)
+        })
+    }
     
     func showResetPartnerKeySuccessfully() {
         // TODO: implement me!

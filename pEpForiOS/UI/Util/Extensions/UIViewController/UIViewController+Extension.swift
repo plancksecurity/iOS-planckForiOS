@@ -86,7 +86,7 @@ extension UIViewController {
             let minimumHitTestDimension: CGFloat = 44
 
             let imageView = UIImageView(image: image)
-
+            imageView.backgroundColor = .red
             var accessibilityIdentifier: String = AccessibilityIdentifier.unknownTrust
 
             if rating.isUnreliable() {
