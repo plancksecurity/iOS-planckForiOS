@@ -463,16 +463,18 @@ extension EmailViewController: TrustBannerDelegate {
                 Log.shared.errorAndCrash("Fail to instantiateViewController VerifyIdentityViewController")
                 return
         }
-        vc.viewModel = viewModel?.getVerificationTrustViewModel()
-        guard let trustManagementViewModel = viewModel?.getTrustManagementViewModel(shouldAllowHandshakeActions: false) else {
-            Log.shared.errorAndCrash("Fail to instantiateViewController trustManagementViewModel")
+        guard let vm = viewModel else {
+            Log.shared.errorAndCrash("VM not found")
             return
         }
+        vc.verifyIdentityViewModel = vm.getVerificationTrustViewModel()
+        let trustManagementViewModel = vm.getTrustManagementViewModel(ratingDelegate: self, shouldAllowHandshakeActions: false)
         trustManagementViewModel.delegate = vc
         vc.trustManagementViewModel = trustManagementViewModel
-        UIUtils.showVerifyIdentity(viewContorller: vc)
+        let presenterVc = UIApplication.currentlyVisibleViewController()
+        presenterVc.navigationController?.pushViewController(vc, animated: true)
     }
-    
+
     func presentTrustManagementView() {
         performSegue(withIdentifier: .segueTrustManagementView, sender: self)
     }

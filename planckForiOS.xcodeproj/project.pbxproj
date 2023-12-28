@@ -652,6 +652,7 @@
 		B7F676BD227C4B26007E5E3A /* MessageQueryResultsFilter+FilterButtonTitle.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7F676BC227C4B26007E5E3A /* MessageQueryResultsFilter+FilterButtonTitle.swift */; };
 		F70AE5BF29B72E9900D0CC48 /* TrustBannerViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = F70AE5BE29B72E9900D0CC48 /* TrustBannerViewModel.swift */; };
 		F70AE5C129B7394900D0CC48 /* TrustBannerViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F70AE5C029B7394900D0CC48 /* TrustBannerViewController.swift */; };
+		F7114C2D2B34920A008BEC4B /* VerifyIdentityActionConfirmationViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F7114C2C2B34920A008BEC4B /* VerifyIdentityActionConfirmationViewController.swift */; };
 		F72D99362B29BE2E00672B5F /* VerifyIdentityViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F72D99352B29BE2D00672B5F /* VerifyIdentityViewController.swift */; };
 		F73E4F72217F238300CCFFED /* FolderSectionViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = F73E4F71217F238300CCFFED /* FolderSectionViewModelTests.swift */; };
 		F73E4F7A2180744700CCFFED /* FolderCellViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = F73E4F792180744700CCFFED /* FolderCellViewModelTests.swift */; };
@@ -1251,6 +1252,7 @@
 		B7F676BC227C4B26007E5E3A /* MessageQueryResultsFilter+FilterButtonTitle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "MessageQueryResultsFilter+FilterButtonTitle.swift"; sourceTree = "<group>"; };
 		F70AE5BE29B72E9900D0CC48 /* TrustBannerViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TrustBannerViewModel.swift; sourceTree = "<group>"; };
 		F70AE5C029B7394900D0CC48 /* TrustBannerViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TrustBannerViewController.swift; sourceTree = "<group>"; };
+		F7114C2C2B34920A008BEC4B /* VerifyIdentityActionConfirmationViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VerifyIdentityActionConfirmationViewController.swift; sourceTree = "<group>"; };
 		F72D99352B29BE2D00672B5F /* VerifyIdentityViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VerifyIdentityViewController.swift; sourceTree = "<group>"; };
 		F73E4F71217F238300CCFFED /* FolderSectionViewModelTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FolderSectionViewModelTests.swift; sourceTree = "<group>"; };
 		F73E4F792180744700CCFFED /* FolderCellViewModelTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FolderCellViewModelTests.swift; sourceTree = "<group>"; };
@@ -3074,6 +3076,7 @@
 			isa = PBXGroup;
 			children = (
 				F72D99352B29BE2D00672B5F /* VerifyIdentityViewController.swift */,
+				F7114C2C2B34920A008BEC4B /* VerifyIdentityActionConfirmationViewController.swift */,
 				F7644C912B2B4451007D8E5C /* VerifyIdentityViewModel.swift */,
 			);
 			path = VerifyIdentity;
@@ -3760,6 +3763,7 @@
 				F7DB9F3B2A66A3D900D2E5AB /* SettingsActionTableViewCell.swift in Sources */,
 				15874BD12127493E00A3A4A6 /* TrustedServerSettingsViewModel.swift in Sources */,
 				4351C2DC1F4441190053381F /* xml.c in Sources */,
+				F7114C2D2B34920A008BEC4B /* VerifyIdentityActionConfirmationViewController.swift in Sources */,
 				5BFBB50425D5207900F269C4 /* MessageSubjectCell.swift in Sources */,
 				152A39D921905C3E00D9F8E4 /* NSAttributedString+BodyTextUtils.swift in Sources */,
 				5B1EF6A52927AAA000CE2355 /* RecipientRowProtocol.swift in Sources */,

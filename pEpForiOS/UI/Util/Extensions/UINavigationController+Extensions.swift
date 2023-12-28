@@ -20,4 +20,17 @@ extension UINavigationController {
     public func child<T:UIViewController>(ofType class: T.Type) -> T? {
         return viewControllers.filter { $0 is T } .first as? T
     }
+    
+    public func popViewController(animated: Bool, completion: @escaping () -> Void) {
+        popViewController(animated: animated)
+
+        if animated, let coordinator = transitionCoordinator {
+            coordinator.animate(alongsideTransition: nil) { _ in
+                completion()
+            }
+        } else {
+            completion()
+        }
+    }
+
 }
