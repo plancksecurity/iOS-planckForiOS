@@ -16,7 +16,7 @@ import PlanckToolbox
 
 class VerifyIdentityViewController: UIViewController {
 
-    public var viewModel: VerifyIdentityViewModel?
+    public var verifyIdentityViewModel: VerifyIdentityViewModel?
     public var trustManagementViewModel: TrustManagementViewModel?
     
     public static let storyboardId = "VerifyIdentityViewController"
@@ -49,7 +49,7 @@ class VerifyIdentityViewController: UIViewController {
         let tap = UITapGestureRecognizer(target: self, action: #selector(toogleTrustwordsLength))
         trustwordsLabel.isUserInteractionEnabled = true
         trustwordsLabel.addGestureRecognizer(tap)
-        guard let vm = viewModel else {
+        guard let vm = verifyIdentityViewModel else {
             Log.shared.errorAndCrash("VM not found")
             return
         }
@@ -119,10 +119,18 @@ extension VerifyIdentityViewController {
                 Log.shared.errorAndCrash("Fail to instantiateViewController VerifyIdentityActionConfirmationViewController")
                 return
         }
-        viewModel?.action = action
-        vc.verifyIdentityViewModel = viewModel
-        trustManagementViewModel?.delegate = vc
-        vc.trustManagementViewModel = trustManagementViewModel
+        guard var verifyIdentityVM = verifyIdentityViewModel else {
+            Log.shared.errorAndCrash("Fail to set action to verifyIdentityVM")
+            return
+        }
+        guard var trustManagementVC = trustManagementViewModel else {
+            Log.shared.errorAndCrash("Fail to load trustManagementVC")
+            return
+        }
+        verifyIdentityVM.action = action
+        vc.verifyIdentityViewModel = verifyIdentityVM
+        trustManagementVC.delegate = vc
+        vc.trustManagementViewModel = trustManagementVC
         UIUtils.showVerifyIdentityConfirmation(viewContorller: vc)
     }
 
@@ -135,7 +143,7 @@ extension VerifyIdentityViewController {
     }
     
     private func setStaticTexts() {
-        guard let vm = viewModel else {
+        guard let vm = verifyIdentityViewModel else {
             Log.shared.errorAndCrash("VM not found")
             return
         }

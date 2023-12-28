@@ -467,14 +467,14 @@ extension EmailViewController: TrustBannerDelegate {
             Log.shared.errorAndCrash("VM not found")
             return
         }
-        vc.viewModel = vm.getVerificationTrustViewModel()
+        vc.verifyIdentityViewModel = vm.getVerificationTrustViewModel()
         let trustManagementViewModel = vm.getTrustManagementViewModel(ratingDelegate: self, shouldAllowHandshakeActions: false)
         trustManagementViewModel.delegate = vc
         vc.trustManagementViewModel = trustManagementViewModel
         let presenterVc = UIApplication.currentlyVisibleViewController()
         presenterVc.navigationController?.pushViewController(vc, animated: true)
     }
-    
+
     func presentTrustManagementView() {
         performSegue(withIdentifier: .segueTrustManagementView, sender: self)
     }
