@@ -22,7 +22,7 @@ enum VerificationAction {
 
 class VerifyIdentityActionConfirmationViewController: UIViewController {
 
-    public var viewModel: VerifyIdentityViewModel?
+    public var verifyIdentityViewModel: VerifyIdentityViewModel?
     public var trustManagementViewModel: TrustManagementViewModel?
     public static let storyboardId = "VerifyIdentityActionConfirmationViewController"
 
@@ -33,7 +33,6 @@ class VerifyIdentityActionConfirmationViewController: UIViewController {
     //Buttons
     @IBOutlet private weak var actionButton: UIButton!
     @IBOutlet private weak var cancelButton: UIButton!
-    
     private let indexPath = IndexPath(row: 0, section: 0)
 
     override func viewDidLoad() {
@@ -43,10 +42,7 @@ class VerifyIdentityActionConfirmationViewController: UIViewController {
     }
 
     @IBAction func confirmationButtonPressed() {
-        guard let vm = viewModel else {
-            return
-        }
-        handleUserInput(action: vm.action)
+        handleUserInput(action: .accept)
     }
 
     @IBAction func closeButtonPressed() {
@@ -62,7 +58,7 @@ extension VerifyIdentityActionConfirmationViewController: TrustManagementViewMod
             Log.shared.errorAndCrash("Extremely unexpected")
             return
         }
-        guard let vm = viewModel, 
+        guard let vm = verifyIdentityViewModel, 
                 let trustVM = trustManagementViewModel,
               let name = trustVM.rows.first?.partnerTitle else {
             Log.shared.errorAndCrash("Trustwords not found")
@@ -88,7 +84,7 @@ extension VerifyIdentityActionConfirmationViewController: TrustManagementViewMod
 extension VerifyIdentityActionConfirmationViewController {
     
     private func setStaticTexts() {
-        guard let vm = viewModel else {
+        guard let vm = verifyIdentityViewModel else {
             Log.shared.errorAndCrash("VM not found")
             return
         }

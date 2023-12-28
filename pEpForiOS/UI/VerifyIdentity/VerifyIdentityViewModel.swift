@@ -7,10 +7,17 @@
 //
 
 import Foundation
+#if EXT_SHARE
+import PlanckToolboxForExtensions
+#else
+import PlanckToolbox
+#endif
 
 struct VerifyIdentityViewModel {
 
-    var action: VerificationAction = .accept
+    // This is the action the user decides.
+    // To accept or to reject the trustwords.
+    var action: VerificationAction?
     
     init(isCommunicationPartnerVerified: Bool) {
         self.shouldManageTrust = isCommunicationPartnerVerified
@@ -27,13 +34,21 @@ struct VerifyIdentityViewModel {
     }
 
     public func getVerificationResultMessage(partner: String) -> String {
-        return action == .accept ? 
+        guard let decision = action else {
+            Log.shared.errorAndCrash("The user decision must be set first")
+            return ""
+        }
+        return decision == .accept ?
         NSLocalizedString("\(partner) is now verified", comment: "Partner is verified") :
         NSLocalizedString("\(partner) is now Dangerous email partner.\nWe recommend to contact your IT support of your operational team to investigate", comment: "Partner is Dangerous")
     }
     
     public func getVerificationMessage(partner: String) -> String {
-        return action == .accept ? getConfirmationVerificationMessage(partner: partner) : getRejectVerificationMessage(partner: partner)
+        guard let decision = action else {
+            Log.shared.errorAndCrash("The user decision must be set first")
+            return ""
+        }
+        return decision == .accept ? getConfirmationVerificationMessage(partner: partner) : getRejectVerificationMessage(partner: partner)
     }
     
     private func getConfirmationVerificationMessage(partner: String) -> String {
@@ -72,7 +87,10 @@ struct VerifyIdentityViewModel {
     }
 
     public var actionButtonTitle: String {
-        return action == .accept ? NSLocalizedString("Yes, confirm", comment: "Confirm button title") : NSLocalizedString("Yes, reject", comment: "Reject button title")
+        guard let decision = action else {
+            Log.shared.errorAndCrash("The user decision must be set first")
+            return ""
+        }
+        return decision == .accept ? NSLocalizedString("Yes, confirm", comment: "Confirm button title") : NSLocalizedString("Yes, reject", comment: "Reject button title")
     }
-
 }

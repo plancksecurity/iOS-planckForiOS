@@ -18,8 +18,10 @@ class VerifyIdentityViewController: UIViewController {
 
     public var viewModel: VerifyIdentityViewModel?
     public var trustManagementViewModel: TrustManagementViewModel?
+    
     public static let storyboardId = "VerifyIdentityViewController"
-    @IBOutlet weak var containerHeightConstraint: NSLayoutConstraint!
+    
+    @IBOutlet private weak var containerHeightConstraint: NSLayoutConstraint!
     
     // Static content
     @IBOutlet private weak var messageLabel: UILabel!
@@ -61,28 +63,6 @@ class VerifyIdentityViewController: UIViewController {
 
     @IBAction func rejectButtonPressed() {
         show(action: VerificationAction.reject)
-    }
-
-    func show(action: VerificationAction) {
-        let storyboard = UIStoryboard(name: Constants.reusableStoryboard, bundle: .main)
-        guard let vc = storyboard.instantiateViewController(
-            withIdentifier: VerifyIdentityActionConfirmationViewController.storyboardId) as? VerifyIdentityActionConfirmationViewController else {
-                Log.shared.errorAndCrash("Fail to instantiateViewController VerifyIdentityActionConfirmationViewController")
-                return
-        }
-        viewModel?.action = action
-        vc.viewModel = viewModel
-        trustManagementViewModel?.delegate = vc
-        vc.trustManagementViewModel = trustManagementViewModel
-        UIUtils.showVerifyIdentityConfirmation(viewContorller: vc)
-    }
-
-    @objc func toogleTrustwordsLength() {
-        guard let vm = trustManagementViewModel else {
-            Log.shared.errorAndCrash("VM not found")
-            return
-        }
-        vm.handleToggleLongTrustwords(forRowAt: indexPath)
     }
 
     @IBAction func closeButtonPressed() {
@@ -132,6 +112,28 @@ class VerifyIdentityViewController: UIViewController {
 
 extension VerifyIdentityViewController {
     
+    private func show(action: VerificationAction) {
+        let storyboard = UIStoryboard(name: Constants.reusableStoryboard, bundle: .main)
+        guard let vc = storyboard.instantiateViewController(
+            withIdentifier: VerifyIdentityActionConfirmationViewController.storyboardId) as? VerifyIdentityActionConfirmationViewController else {
+                Log.shared.errorAndCrash("Fail to instantiateViewController VerifyIdentityActionConfirmationViewController")
+                return
+        }
+        viewModel?.action = action
+        vc.verifyIdentityViewModel = viewModel
+        trustManagementViewModel?.delegate = vc
+        vc.trustManagementViewModel = trustManagementViewModel
+        UIUtils.showVerifyIdentityConfirmation(viewContorller: vc)
+    }
+
+    @objc private func toogleTrustwordsLength() {
+        guard let vm = trustManagementViewModel else {
+            Log.shared.errorAndCrash("VM not found")
+            return
+        }
+        vm.handleToggleLongTrustwords(forRowAt: indexPath)
+    }
+    
     private func setStaticTexts() {
         guard let vm = viewModel else {
             Log.shared.errorAndCrash("VM not found")
@@ -168,7 +170,7 @@ extension VerifyIdentityViewController: TrustManagementViewModelDelegate {
         let trustwords = row.trustwords ?? NSLocalizedString("Trustwords Not Available", comment: "")
         let trustwordsHeight: CGFloat = trustwords.height(withConstrainedWidth: trustwordsLabel.frame.width, font: trustwordsLabel.font)
         let defaultContainerHeightWithoutTrustwords = 300.0
-        var heightToSet = defaultContainerHeightWithoutTrustwords + trustwordsHeight
+        let heightToSet = defaultContainerHeightWithoutTrustwords + trustwordsHeight
 
         UIView.animate(withDuration: 0.5, delay: 0, options: .curveEaseInOut) { [weak self] in
             guard let me = self else { return }
