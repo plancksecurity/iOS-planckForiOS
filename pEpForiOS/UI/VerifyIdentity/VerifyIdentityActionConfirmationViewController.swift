@@ -42,7 +42,11 @@ class VerifyIdentityActionConfirmationViewController: UIViewController {
     }
 
     @IBAction func confirmationButtonPressed() {
-        handleUserInput(action: .accept)
+        guard let action = verifyIdentityViewModel?.action else {
+            Log.shared.errorAndCrash("No VM or No decision")
+            return
+        }
+        handleUserInput(action: action)
     }
 
     @IBAction func closeButtonPressed() {

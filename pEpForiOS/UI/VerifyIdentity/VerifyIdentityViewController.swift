@@ -15,7 +15,9 @@ import PlanckToolbox
 #endif
 
 class VerifyIdentityViewController: UIViewController {
-
+    
+    @IBOutlet private weak var trustwordLanguageButton: UIButton!
+    
     public var verifyIdentityViewModel: VerifyIdentityViewModel?
     public var trustManagementViewModel: TrustManagementViewModel?
     
@@ -63,10 +65,6 @@ class VerifyIdentityViewController: UIViewController {
 
     @IBAction func rejectButtonPressed() {
         show(action: VerificationAction.reject)
-    }
-
-    @IBAction func closeButtonPressed() {
-        dismiss(animated: true)
     }
 
     @IBAction func trustwordsLanguageButtonPressed() {
@@ -183,6 +181,7 @@ extension VerifyIdentityViewController: TrustManagementViewModelDelegate {
         UIView.animate(withDuration: 0.5, delay: 0, options: .curveEaseInOut) { [weak self] in
             guard let me = self else { return }
             me.containerHeightConstraint.constant = CGFloat(heightToSet)
+            me.trustwordLanguageButton.isHidden = row.trustwords == nil
         } completion: { _ in
             let fingerprintNotAvailable = NSLocalizedString("Fingerprint Not Available", comment: "Fingerprint Not Available")
             self.trustwordsLabel.text = trustwords
