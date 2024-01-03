@@ -355,14 +355,14 @@ extension EmailDetailViewController {
             // List is empty. That is ok. The user might have deleted the last shown message.
             return
         }
-
+        let isSmime = vm.isSmime(itemAt: indexPath)
         vm.pEpRating(forItemAt: indexPath) { [weak self] (rating) in
             guard let me = self else {
                 // Valid case. The user might have dismissed the view meanwhile.
                 // Do nothing.
                 return
             }
-            me.showNavigationBarSecurityBadge(pEpRating: rating)
+            me.showNavigationBarSecurityBadge(pEpRating: rating, isSmime: isSmime)
         }
     }
     

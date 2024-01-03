@@ -8,6 +8,7 @@
 
 import UIKit
 import CoreData
+import PEPObjCTypes
 
 public class Identity: MessageModelObjectProtocol, ManagedObjectWrapperProtocol {
 
@@ -93,6 +94,12 @@ public class Identity: MessageModelObjectProtocol, ManagedObjectWrapperProtocol 
 
     public var isMySelf: Bool {
         return cdObject.isMySelf
+    }
+
+    public var isSMime: Bool {
+        //return cdObject.pEpIdentity().commType == PEPCommType.smime
+        //return cdObject.encryptionFormat == PEPEncFormat.sMime.rawValue
+        return false
     }
 
     public var language: String? {

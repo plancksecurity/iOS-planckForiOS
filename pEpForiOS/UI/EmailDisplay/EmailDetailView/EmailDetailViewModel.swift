@@ -190,6 +190,14 @@ class EmailDetailViewModel: EmailDisplayViewModel {
         }
     }
 
+    public func isSmime(itemAt indexPath: IndexPath) -> Bool {
+        guard let message = message(representedByRowAt: indexPath) else {
+            Log.shared.errorAndCrash("No msg")
+            return false
+        }
+        return message.from?.isSMime ?? false
+    }
+
     /// - Parameter indexPath: indexPath of the cell to compute result for.
     /// - returns:  Whether or not to show privacy icon for cell at given indexPath
     public func shouldShowPrivacyStatus(forItemAt indexPath: IndexPath,

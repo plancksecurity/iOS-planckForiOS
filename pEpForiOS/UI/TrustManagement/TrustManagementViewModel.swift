@@ -49,13 +49,16 @@ extension TrustManagementViewModel {
     public class Row {
         private let trustManagementUtil: TrustManagementUtilProtocol
         public typealias LanguageCode = String
+        private var isSmime: Bool = false
 
         public init(language: LanguageCode,
                     handshakeCombination: TrustManagementUtil.HandshakeCombination,
                     trustManagementUtil: TrustManagementUtilProtocol? = nil,
+                    isSmime: Bool = false,
                     completion: @escaping () -> ()) {
             _language = language
             self.handshakeCombination = handshakeCombination
+            self.isSmime = isSmime
             self.trustManagementUtil = trustManagementUtil ?? TrustManagementUtil()
             setupTrustwords(combination: handshakeCombination, language: language) {
                 completion()
@@ -116,11 +119,15 @@ extension TrustManagementViewModel {
         /// The privacy status image
         public func privacyStatusImage(completion: @escaping (UIImage?) -> Void) {
             if forceRed {
-                completion(Rating.mistrust.statusIconForMessage(enabled: true, withText: false))
+                completion(Rating.mistrust.statusIconForMessage(enabled: true, withText: false, isSMime: isSmime))
             }else {
                 rating{ (rating) in
-                    DispatchQueue.main.async {
-                        completion(rating.statusIconForMessage(enabled: true, withText: false))
+                    DispatchQueue.main.async { [weak self] in
+                        guard let me = self else {
+                            completion(rating.statusIconForMessage(enabled: true, withText: false, isSMime: false))
+                            return
+                        }
+                        completion(rating.statusIconForMessage(enabled: true, withText: false, isSMime: me.isSmime))
                     }
                 }
             }
@@ -525,6 +532,7 @@ final class TrustManagementViewModel {
 
     /// Method that generates the rows to be used by the VC
     private func setupRows() {
+        let isSmime = message.from?.isSMime ?? false
         trustManagementUtil.handshakeCombinations(message: message, shouldAllowHandshakeActions: shouldAllowHandshakeActions) { [weak self] (combinations) in
             guard let me = self else {
                 // Valid case. We might have been dismissed already.
@@ -542,7 +550,8 @@ final class TrustManagementViewModel {
 
                 let row = Row(language: trustwordsLanguage ?? backupLanguage,
                               handshakeCombination: combination,
-                              trustManagementUtil: me.trustManagementUtil) {
+                              trustManagementUtil: me.trustManagementUtil,
+                              isSmime: isSmime) {
                                 rowsLoadedGroup.leave()
                 }
                 me.rows.append(row)

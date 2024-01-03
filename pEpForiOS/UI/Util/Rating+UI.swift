@@ -20,7 +20,10 @@ extension Rating {
     ///
     /// - Parameter enabled: whether or not pEp protection is enabled
     /// - Returns: icon suitable for indicating the pEp rating of a message
-    public func statusIconForMessage(enabled: Bool = true, withText : Bool = true) -> UIImage? {
+    public func statusIconForMessage(enabled: Bool = true, withText : Bool = true, isSMime: Bool) -> UIImage? {
+        if isSMime {
+            return UIImage(named: "planck-inactive")
+        }
         switch self {
         case .undefined, .fullyAnonymous, .haveNoKey:
             return nil

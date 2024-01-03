@@ -203,9 +203,11 @@ extension ComposeViewController {
             Log.shared.errorAndCrash("No VM")
             return
         }
+
         //Not so nice. The view(controller) should not know about state and protection.
         let pEpRatingView = showNavigationBarSecurityBadge(pEpRating: pEpRating,
-                                                           pEpProtection: pEpProtected)
+                                                           pEpProtection: pEpProtected,
+                                                           isSmime: vm.isSmime)
         navigationItem.titleView?.isHidden = !hasRecipients
 
         // Handshake on simple touch if possible

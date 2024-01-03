@@ -156,7 +156,7 @@ class ComposeViewModel {
     /// message to send is crafted. (E.g. attachments have message == nil, which is invalid and
     /// would thus crash if anone commits the main session.
     private let session = Session()
-
+    var isSmime: Bool = false
     init(state: ComposeViewModelState, offerToSaveDraftOnCancel: Bool = true) {
         self.state = state
         self.offerToSaveDraftOnCancel = offerToSaveDraftOnCancel
@@ -174,6 +174,7 @@ class ComposeViewModel {
                                 composeMode: composeMode)
         let state = ComposeViewModelState(initData: initData)
         self.init(state: state)
+        self.isSmime = originalMessage?.from?.isSMime ?? false
     }
 
     convenience init(prefilledFromAddress: String) {

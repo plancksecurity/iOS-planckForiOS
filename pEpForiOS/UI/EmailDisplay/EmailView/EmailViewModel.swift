@@ -62,6 +62,10 @@ class EmailViewModel {
         return message.icsAttachments()
     }
 
+    public var isSmime: Bool {
+        return message.from?.isSMime ?? false
+    }
+
     /// Constructor
     /// - Parameter message: The message to display
     public init(message: Message, delegate: EmailViewModelDelegate? = nil) {
