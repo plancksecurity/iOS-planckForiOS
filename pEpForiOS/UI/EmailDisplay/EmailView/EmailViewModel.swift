@@ -63,7 +63,7 @@ class EmailViewModel {
     }
 
     public var isSmime: Bool {
-        return message.from?.isSMime ?? false
+        return message.isSmime
     }
 
     /// Constructor

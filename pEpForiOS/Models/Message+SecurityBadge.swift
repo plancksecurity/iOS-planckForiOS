@@ -17,7 +17,7 @@ extension Message {
                 completion(rating.statusIconForMessage(withText: false, isSMime: false))
                 return
             }
-            completion(rating.statusIconForMessage(withText: false, isSMime: me.from?.isSMime ?? false))
+            completion(rating.statusIconForMessage(withText: false, isSMime: me.isSmime))
         }
     }
 }

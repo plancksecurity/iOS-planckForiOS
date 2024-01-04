@@ -68,6 +68,11 @@ extension MimeTypeUtils {
         case mdb, accda, accdb, accde, accdr, accdt, ade, adp, adn, mde, mdf, mdn, mdt, mdw = "application/msaccess"
         case wri = "application/mswrite"
 
+        case mimeXPkcs7Signature = "application/x-pkcs7-signature"
+        case mimepkcs7Signature = "application/pkcs7-signature"
+        case mimePkcs7Mime = "application/pkcs7-mime"
+        case mimePkcs10 = "application/pkcs10"
+
         public init?(rawValueIgnoringCase: String) {
             let lowercased = rawValueIgnoringCase.lowercased()
             self.init(rawValue: lowercased)

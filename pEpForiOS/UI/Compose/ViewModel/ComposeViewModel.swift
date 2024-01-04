@@ -174,7 +174,7 @@ class ComposeViewModel {
                                 composeMode: composeMode)
         let state = ComposeViewModelState(initData: initData)
         self.init(state: state)
-        self.isSmime = originalMessage?.from?.isSMime ?? false
+        self.isSmime = originalMessage?.isSmime ?? false
     }
 
     convenience init(prefilledFromAddress: String) {

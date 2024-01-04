@@ -532,7 +532,7 @@ final class TrustManagementViewModel {
 
     /// Method that generates the rows to be used by the VC
     private func setupRows() {
-        let isSmime = message.from?.isSMime ?? false
+        let isSmime = message.isSmime
         trustManagementUtil.handshakeCombinations(message: message, shouldAllowHandshakeActions: shouldAllowHandshakeActions) { [weak self] (combinations) in
             guard let me = self else {
                 // Valid case. We might have been dismissed already.

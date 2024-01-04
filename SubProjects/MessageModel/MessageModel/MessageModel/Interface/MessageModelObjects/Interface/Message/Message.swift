@@ -185,6 +185,14 @@ public class Message: MessageModelObjectProtocol, ManagedObjectWrapperProtocol {
         }
     }
 
+    public var isSmime: Bool {
+        let attachmentsHaveSmime = attachments.contains(where: { MimeTypeUtils.isSmime(type: $0.mimeType) })
+        let mailIsSMIME = optionalFields.contains { (key: String, value: String) in
+            return MimeTypeUtils.isSmime(type: key) || MimeTypeUtils.isSmime(type: value)
+        }
+        return attachmentsHaveSmime || mailIsSMIME
+    }
+
     /** See the extension for it (in the app), for more type-safety */
     //!!!: use it here?! (the extension). Also rethink, check what we have (enum exists?) and maybe renam pEpRating to pEpRatingRawValue in MOM
     public var pEpRatingInt: Int {

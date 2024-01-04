@@ -195,7 +195,7 @@ class EmailDetailViewModel: EmailDisplayViewModel {
             Log.shared.errorAndCrash("No msg")
             return false
         }
-        return message.from?.isSMime ?? false
+        return message.isSmime
     }
 
     /// - Parameter indexPath: indexPath of the cell to compute result for.

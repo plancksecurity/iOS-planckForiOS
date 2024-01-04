@@ -96,12 +96,6 @@ public class Identity: MessageModelObjectProtocol, ManagedObjectWrapperProtocol 
         return cdObject.isMySelf
     }
 
-    public var isSMime: Bool {
-        //return cdObject.pEpIdentity().commType == PEPCommType.smime
-        //return cdObject.encryptionFormat == PEPEncFormat.sMime.rawValue
-        return false
-    }
-
     public var language: String? {
         return cdObject.language
     }

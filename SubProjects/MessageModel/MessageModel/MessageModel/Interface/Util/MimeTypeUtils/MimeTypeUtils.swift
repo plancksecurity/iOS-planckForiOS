@@ -71,6 +71,15 @@ public class MimeTypeUtils {
         }
         return false
     }
+
+    static public func isSmime(type: String?) -> Bool {
+        guard let type = type else { return false}
+        return [MimeType.pgpKeys.rawValue,
+                MimeType.mimeXPkcs7Signature.rawValue,
+                MimeType.mimepkcs7Signature.rawValue,
+                MimeType.mimePkcs7Mime.rawValue,
+                MimeType.mimePkcs7Mime.rawValue].contains(type.lowercased())
+    }
 }
 
 // MARK: - Private
