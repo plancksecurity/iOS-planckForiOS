@@ -37,6 +37,11 @@ class CreditsWebViewController: PEPWebViewController {
 
     private func html() -> String {
         let hex = UIColor.primaryHex()
+        guard let shortVersion = InfoPlist.mainBundleShortVersion() else {
+            Log.shared.errorAndCrash("Missing app version")
+            return "3.1.5"
+        }
+        let version = shortVersion.replacingOccurrences(of: ".", with: "-")
         let appVersion = InfoPlist.versionDisplayString() ?? "666"
         let backgroundColor = UIColor.systemBackground
         let fontColor = UIColor.label
@@ -61,7 +66,7 @@ class CreditsWebViewController: PEPWebViewController {
         <p>planck for iOS<br/> \(appVersion)</p>
         <p>&nbsp;</p>
         <p><a href="pEpMDM:settings">Settings Overview</a></p>
-        <p><a href="https://pep.security/docs">Documentation</a></p>
+        <p><a href="https://help.planck.security/articles/#!user-guide-for-ios-v\(version)/user-guide-for-ios">Documentation</a></p>
         <p><a href="mailto:support@planck.security">Support</a></p>
         <p>Thanks to:
         \(thanxRows())
