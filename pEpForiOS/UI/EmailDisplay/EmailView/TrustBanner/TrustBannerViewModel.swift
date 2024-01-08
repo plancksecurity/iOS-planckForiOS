@@ -53,6 +53,10 @@ struct TrustBannerViewModel {
             return false
         }
 
+        guard ![Rating.mistrust.toInt(), Rating.underAttack.toInt()].contains(message.pEpRatingInt)  else {
+            return false
+        }
+
         guard message.from != nil else {
             //From does not exist. The banner must be hidden.
             return false
