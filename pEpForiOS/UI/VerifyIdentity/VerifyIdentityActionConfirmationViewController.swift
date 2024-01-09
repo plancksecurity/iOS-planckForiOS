@@ -98,7 +98,7 @@ extension VerifyIdentityActionConfirmationViewController {
         messageLabel.text = vm.getVerificationMessage(partner: name)
         actionButton.setPEPFont(style: .body, weight: .regular)
         actionButton.setTitleColor(vm.action == .accept ? UIColor.pEpGreen : UIColor.pEpRed, for: [.normal])
-        actionButton.setTitle(vm.confirmButtonTitle, for: [.normal])
+        actionButton.setTitle(vm.action == .accept ? vm.reconfirmButtonTitle : vm.confirmRejectionButtonTitle, for: [.normal])
         cancelButton.setPEPFont(style: .body, weight: .regular)
         cancelButton.setTitleColor(UIColor.planckLightPurpleText, for: [.normal])
         cancelButton.setTitle(vm.closeButtonTitle, for: [.normal])
