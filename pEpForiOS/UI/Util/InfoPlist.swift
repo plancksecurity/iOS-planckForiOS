@@ -32,7 +32,12 @@ struct InfoPlist {
         guard let userManualURL = mainBundleInfoDictValue(forKey: "USER_MANUAL_URL") as? String else {
             return nil
         }
-        return userManualURL
+        guard let shortVersion = mainBundleShortVersion() else {
+            Log.shared.errorAndCrash("Missing app version")
+            return "3.1.5"
+        }
+        let version = shortVersion.replacingOccurrences(of: ".", with: "-")
+        return userManualURL.replaceFirstOccurrence(of: "version", with: version)
     }
     
     static public func termsAndConditionsURL() -> String? {
