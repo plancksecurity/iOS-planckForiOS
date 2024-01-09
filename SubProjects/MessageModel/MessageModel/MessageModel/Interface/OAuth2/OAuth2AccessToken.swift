@@ -9,6 +9,11 @@
 import Foundation
 
 import AppAuth
+#if EXT_SHARE
+import PlanckToolboxForExtensions
+#else
+import PlanckToolbox
+#endif
 
 /**
  Result of an OAuth2 authorization request. Persist this, and use it anytime you need
@@ -73,6 +78,7 @@ public class OAuth2AccessToken: NSObject, NSSecureCoding {
 }
 
 extension OAuth2AccessToken: OAuth2AccessTokenProtocol {
+
     public func performAction(
         freshTokensBlock: @escaping (_ error: Error?, _ accessToken: String?) -> Void) {
         authState.performAction() { accessToken, idToken, error in
@@ -83,9 +89,12 @@ extension OAuth2AccessToken: OAuth2AccessTokenProtocol {
     // MARK: Own persistence code
 
     func persistIntoString() -> String {
-        let data = NSKeyedArchiver.archivedData(withRootObject: self)
+        guard let data = try? NSKeyedArchiver.archivedData(withRootObject: self, requiringSecureCoding: true) else {
+            Log.shared.errorAndCrash("Can't archive data")
+            return ""
+        }
         return data.base64EncodedString()
-    }
+   }
 }
 
 extension OAuth2AccessToken: OIDAuthStateChangeDelegate {
