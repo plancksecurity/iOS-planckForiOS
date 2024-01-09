@@ -101,7 +101,7 @@ extension VerifyIdentityActionConfirmationViewController {
         actionButton.setTitle(vm.action == .accept ? vm.reconfirmButtonTitle : vm.confirmRejectionButtonTitle, for: [.normal])
         cancelButton.setPEPFont(style: .body, weight: .regular)
         cancelButton.setTitleColor(UIColor.planckLightPurpleText, for: [.normal])
-        cancelButton.setTitle(vm.closeButtonTitle, for: [.normal])
+        cancelButton.setTitle(vm.cancelButtonTitle, for: [.normal])
     }
     
     private func handleUserInput(action: VerificationAction) {

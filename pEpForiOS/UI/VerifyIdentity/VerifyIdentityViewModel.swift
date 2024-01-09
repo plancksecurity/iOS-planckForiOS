@@ -77,7 +77,11 @@ struct VerifyIdentityViewModel {
     public var closeButtonTitle: String {
         return NSLocalizedString("Close", comment: "Close button title")
     }
-    
+
+    public var cancelButtonTitle: String {
+        return NSLocalizedString("Cancel", comment: "Cancel button title")
+    }
+
     public var confirmButtonTitle: String {
         return NSLocalizedString("Confirm", comment: "Confirm button title")
     }
