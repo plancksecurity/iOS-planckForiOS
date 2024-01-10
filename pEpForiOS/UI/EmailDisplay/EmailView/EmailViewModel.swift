@@ -95,6 +95,21 @@ class EmailViewModel {
         UIPasteboard.general.image = image.resizeIfExceedMaxWidth(maxWidth: maxWidth - margin)
     }
 
+    func handleResetPartnerKeyPressed(completion: @escaping () -> (), errorCallback: (() -> Void)? = nil) {
+        guard let from = message.from else { return }
+        from.resetTrust(completion: {
+            DispatchQueue.main.async {
+                completion()
+            }
+        }, errorCallback: {
+            DispatchQueue.main.async {
+                if let errorCB = errorCallback {
+                    errorCB()
+                }
+            }
+        })
+    }
+    
     /// Get the Calendar Event Banner ViewModel.
     /// Or nil, if there is no events.
     /// - Returns: The Calendar Event Banner ViewModel
@@ -133,6 +148,10 @@ class EmailViewModel {
             return false
         }
         return body.containsExternalContent() && shouldHideExternalContent
+    }
+    
+    public var shouldShowThreeDotsButton: Bool {
+        return [Rating.mediaKeyEncryption, Rating.mistrust, Rating.b0rken, Rating.underAttack, Rating.trusted, Rating.trustedAndAnonymized].map({$0.toInt()}).contains(message.pEpRatingInt)
     }
 
     // Yields the HTML message body if we can show it in a secure way or we have non-empty HTML content at all

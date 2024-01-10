@@ -82,8 +82,12 @@ class EmailViewController: UIViewController {
         tableView.rowHeight = UITableView.automaticDimension
         tableView.estimatedRowHeight = 100
         setBackButtonAccessibilityLabel()
+        guard let vm = viewModel else {
+            Log.shared.errorAndCrash("VM not found")
+            return
+        }
     }
-
+    
     override func preferredContentSizeDidChange(forChildContentContainer container: UIContentContainer) {
         super.preferredContentSizeDidChange(forChildContentContainer: container)
         if let container = container as? CalendarEventBannerViewController, !bannerContainerView.isHidden {
@@ -139,7 +143,6 @@ class EmailViewController: UIViewController {
         }
     }
 
-
     @objc func copyToClip() {
         guard let vm = viewModel else {
             Log.shared.errorAndCrash("VM not found")
@@ -160,6 +163,45 @@ class EmailViewController: UIViewController {
             return
         }
         vm.handleShowExternalContentButtonPressed()
+    }
+    
+    @IBAction func dotsButtonPressed(_ sender: Any) {
+        let title = NSLocalizedString("Reset Partner Key", comment: "Title - Reset Partner Key")
+        let successMessage = NSLocalizedString("You have successfully reset your partner key.", comment: "Success Message - Reset Partner Key")
+
+        let errorMessage = NSLocalizedString("Reset your partner key failed.", comment: "Failed Message - Reset Partner Key")
+
+        let cancel = NSLocalizedString("Cancel", comment: "Cancel - Reset Partner Key")
+        let message = NSLocalizedString("""
+After resetting and as soon as you start composing an email to the recipient, planck will automatically get the correct public key. Are you sure you want to reset?
+""", comment: "reset partner key message")
+        let confirm = NSLocalizedString("Yes, confirm", comment: "Re Confirm button title")
+        UIUtils.showTwoButtonAlert(withTitle: title,
+                                   message: message,
+                                   cancelButtonText: cancel,
+                                   positiveButtonText: confirm,
+                                   cancelButtonAction: { [weak self] in
+            guard let me = self else {
+                Log.shared.lostMySelf()
+                return
+            }
+            me.dismiss()
+        }, 
+                                   positiveButtonAction: { [weak self] in
+            guard let me = self, let vm = me.viewModel else {
+                Log.shared.lostMySelf()
+                return
+            }
+            vm.handleResetPartnerKeyPressed {
+                UIUtils.showAlertWithOnlyCloseButton(title: title, message: successMessage) {
+                    vm.updateRating()
+                }
+            } errorCallback: {
+                UIUtils.showAlertWithOnlyCloseButton(title: title, message: errorMessage)
+            }
+            
+        },
+                                   presenter: self)
     }
 }
 
@@ -191,6 +233,7 @@ extension EmailViewController: UITableViewDataSource {
                 Log.shared.errorAndCrash("Can't get or cast sender row")
                 return cell
             }
+            cell.threeDotsButton.isHidden = !vm.shouldShowThreeDotsButton
             setupHeader(cell: cell, row: row)
             return cell
 

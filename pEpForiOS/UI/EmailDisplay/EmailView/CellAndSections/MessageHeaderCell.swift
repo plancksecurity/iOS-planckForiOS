@@ -16,6 +16,7 @@ protocol MessageHeaderCellDelegate: AnyObject {
 
 class MessageHeaderCell: UITableViewCell {
 
+    @IBOutlet weak var threeDotsButton: UIButton!
     private static let emptyContactImage = UIImage(named: "empty-avatar")
 
     private var viewModel: MessageHeaderCellViewModel?
