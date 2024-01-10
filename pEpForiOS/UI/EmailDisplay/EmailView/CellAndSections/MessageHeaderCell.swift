@@ -16,7 +16,7 @@ protocol MessageHeaderCellDelegate: AnyObject {
 
 class MessageHeaderCell: UITableViewCell {
 
-    @IBOutlet weak var threeDotsButton: UIButton!
+    @IBOutlet private weak var threeDotsButton: UIButton!
     private static let emptyContactImage = UIImage(named: "empty-avatar")
 
     private var viewModel: MessageHeaderCellViewModel?
@@ -60,13 +60,15 @@ class MessageHeaderCell: UITableViewCell {
     ///   - delegate: The delegate to communicate to the VC.
     public func setup(row: EmailViewModel.HeaderRow,
                       shouldDisplayAll: [EmailViewModel.RecipientType: Bool],
-                      delegate: MessageHeaderCellDelegate) {
+                      delegate: MessageHeaderCellDelegate, shouldShowThreeDotsButton: Bool) {
 
         self.viewModel = row.viewModel
         guard let vm = viewModel else {
             Log.shared.errorAndCrash("VM not found")
             return
         }
+
+        threeDotsButton.isHidden = !shouldShowThreeDotsButton
 
         //Collection view containers
         bccContainer.isHidden = row.bccsViewModels.isEmpty

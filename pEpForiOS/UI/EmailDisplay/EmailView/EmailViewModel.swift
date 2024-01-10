@@ -151,7 +151,13 @@ class EmailViewModel {
     }
     
     public var shouldShowThreeDotsButton: Bool {
-        return [Rating.mediaKeyEncryption, Rating.mistrust, Rating.b0rken, Rating.underAttack, Rating.trusted, Rating.trustedAndAnonymized].map({$0.toInt()}).contains(message.pEpRatingInt)
+        return [Rating.mediaKeyEncryption,
+                Rating.mistrust,
+                Rating.b0rken,
+                Rating.underAttack,
+                Rating.trusted,
+                Rating.reliable,
+                Rating.trustedAndAnonymized].map { $0.toInt() }.contains(message.pEpRatingInt)
     }
 
     // Yields the HTML message body if we can show it in a secure way or we have non-empty HTML content at all

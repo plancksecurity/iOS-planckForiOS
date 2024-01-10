@@ -233,8 +233,7 @@ extension EmailViewController: UITableViewDataSource {
                 Log.shared.errorAndCrash("Can't get or cast sender row")
                 return cell
             }
-            cell.threeDotsButton.isHidden = !vm.shouldShowThreeDotsButton
-            setupHeader(cell: cell, row: row)
+            setupHeader(cell: cell, row: row, shouldShowThreeDotsButton: vm.shouldShowThreeDotsButton)
             return cell
 
         case .subject:
@@ -581,8 +580,8 @@ extension EmailViewController {
         }
     }
 
-    private func setupHeader(cell: MessageHeaderCell, row: EmailViewModel.HeaderRow) {
-        cell.setup(row:row, shouldDisplayAll: shouldDisplayAll, delegate: self)
+    private func setupHeader(cell: MessageHeaderCell, row: EmailViewModel.HeaderRow, shouldShowThreeDotsButton: Bool) {
+        cell.setup(row:row, shouldDisplayAll: shouldDisplayAll, delegate: self, shouldShowThreeDotsButton: shouldShowThreeDotsButton)
     }
 
     private func setupSubject(cell: MessageSubjectCell, with row: EmailViewModel.SubjectRow) {
