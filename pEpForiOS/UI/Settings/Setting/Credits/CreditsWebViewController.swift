@@ -92,7 +92,7 @@ class CreditsWebViewController: PEPWebViewController {
     
     private func getDivWithLinkToTyC() -> String {
         let termsAndConditions = NSLocalizedString("Terms & Conditions", comment: "terms and conditions")
-        guard let link = InfoPlist.userManualURL() else {
+        guard let link = InfoPlist.termsAndConditionsURL() else {
             Log.shared.errorAndCrash("Missing URL")
             return "<div class=\"links\"></div>"
         }

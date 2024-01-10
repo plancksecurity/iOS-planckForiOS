@@ -114,7 +114,7 @@
 	<key>OAUTH2_O365_REDIRECT_URL_SCHEME</key>
 	<string>${OAUTH2_O365_REDIRECT_URL_SCHEME}</string>
 	<key>TERMS_AND_CONDITIONS_URL</key>
-	<string>https://www.planck.security/conditions-of-use/</string>
+	<string>https://www.planck.security/policies/terms-and-conditions</string>
 	<key>UIAppFonts</key>
 	<array>
 		<string>UniversLTStd.otf</string>
