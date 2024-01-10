@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="21701" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="22505" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES">
     <device id="retina5_5" orientation="portrait" appearance="light"/>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="21679"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="22504"/>
         <capability name="System colors in document resources" minToolsVersion="11.0"/>
         <capability name="collection view cell content view" minToolsVersion="11.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
@@ -382,7 +382,7 @@
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
                                                 <label opaque="NO" multipleTouchEnabled="YES" contentMode="left" insetsLayoutMarginsFromSafeArea="NO" text="Title" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="OLo-8A-CCo">
-                                                    <rect key="frame" x="20" y="0.0" width="374" height="43.666667938232422"/>
+                                                    <rect key="frame" x="16" y="0.0" width="382" height="43.666667938232422"/>
                                                     <autoresizingMask key="autoresizingMask"/>
                                                     <fontDescription key="fontDescription" style="UICTFontTextStyleCallout"/>
                                                     <nil key="textColor"/>
@@ -795,6 +795,11 @@
                                                                 <constraint firstItem="ojN-E5-YJy" firstAttribute="leading" secondItem="utW-4j-PQh" secondAttribute="leading" id="QX4-BD-YVO"/>
                                                             </constraints>
                                                         </stackView>
+                                                        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Aen-ME-320">
+                                                            <rect key="frame" x="388" y="15" width="20" height="22"/>
+                                                            <inset key="imageEdgeInsets" minX="0.0" minY="0.0" maxX="2.2250738585072014e-308" maxY="0.0"/>
+                                                            <state key="normal" image="ico_3dots"/>
+                                                        </button>
                                                     </subviews>
                                                     <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                                     <constraints>
@@ -802,6 +807,8 @@
                                                         <constraint firstItem="ekg-9A-kwW" firstAttribute="top" secondItem="075-hv-ST0" secondAttribute="top" id="1dA-UY-x9N"/>
                                                         <constraint firstAttribute="trailing" secondItem="ekg-9A-kwW" secondAttribute="trailing" constant="16" id="32O-8l-fav"/>
                                                         <constraint firstItem="ekg-9A-kwW" firstAttribute="top" secondItem="7X9-hw-ERx" secondAttribute="top" id="4ol-jk-bBb"/>
+                                                        <constraint firstAttribute="trailing" secondItem="Aen-ME-320" secondAttribute="trailing" constant="6" id="6Ai-CM-5qM"/>
+                                                        <constraint firstItem="Aen-ME-320" firstAttribute="centerY" secondItem="KoL-cN-CXc" secondAttribute="centerY" id="73s-4I-M9v"/>
                                                         <constraint firstItem="ekg-9A-kwW" firstAttribute="leading" secondItem="7X9-hw-ERx" secondAttribute="trailing" constant="20" id="9h2-un-OKr"/>
                                                         <constraint firstAttribute="bottom" secondItem="7X9-hw-ERx" secondAttribute="bottom" id="Qji-hx-FQt"/>
                                                         <constraint firstAttribute="bottom" secondItem="ekg-9A-kwW" secondAttribute="bottom" id="lHq-Lc-DyB"/>
@@ -1696,9 +1703,9 @@
         </designable>
     </designables>
     <inferredMetricsTieBreakers>
-        <segue reference="g1q-wK-tff"/>
-        <segue reference="CKh-jT-ski"/>
-        <segue reference="6by-Pi-xWQ"/>
+        <segue reference="e2D-Sv-Lmt"/>
+        <segue reference="jct-YG-JYz"/>
+        <segue reference="wZp-rH-OFv"/>
     </inferredMetricsTieBreakers>
     <resources>
         <image name="attachment-list-icon" width="14" height="15"/>
@@ -1708,6 +1715,7 @@
         <image name="compose" width="28" height="28"/>
         <image name="doc" catalog="system" width="115" height="128"/>
         <image name="empty-avatar" width="150" height="150"/>
+        <image name="ico_3dots" width="20" height="20"/>
         <image name="icon-settings" width="25" height="24"/>
         <image name="pEpForiOS-icon-delete" width="16" height="24"/>
         <image name="pEpForiOS-icon-movetofolder" width="29" height="24"/>
@@ -1719,31 +1727,31 @@
             <color red="0.94901960784313721" green="0.94901960784313721" blue="0.96862745098039216" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
         </systemColor>
         <systemColor name="labelColor">
-            <color red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+            <color white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
         </systemColor>
         <systemColor name="scrollViewTexturedBackgroundColor">
             <color red="0.43529411759999997" green="0.4431372549" blue="0.47450980390000003" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
         </systemColor>
         <systemColor name="secondaryLabelColor">
-            <color red="0.23529411764705882" green="0.23529411764705882" blue="0.2627450980392157" alpha="0.59999999999999998" colorSpace="custom" customColorSpace="sRGB"/>
+            <color red="0.23529411759999999" green="0.23529411759999999" blue="0.26274509800000001" alpha="0.59999999999999998" colorSpace="custom" customColorSpace="sRGB"/>
         </systemColor>
         <systemColor name="secondarySystemBackgroundColor">
-            <color red="0.94901960784313721" green="0.94901960784313721" blue="0.96862745098039216" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+            <color red="0.94901960780000005" green="0.94901960780000005" blue="0.96862745100000003" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
         </systemColor>
         <systemColor name="separatorColor">
-            <color red="0.23529411764705882" green="0.23529411764705882" blue="0.2627450980392157" alpha="0.28999999999999998" colorSpace="custom" customColorSpace="sRGB"/>
+            <color red="0.23529411759999999" green="0.23529411759999999" blue="0.26274509800000001" alpha="0.28999999999999998" colorSpace="custom" customColorSpace="sRGB"/>
         </systemColor>
         <systemColor name="systemBackgroundColor">
             <color white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
         </systemColor>
         <systemColor name="systemGray6Color">
-            <color red="0.94901960784313721" green="0.94901960784313721" blue="0.96862745098039216" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+            <color red="0.94901960780000005" green="0.94901960780000005" blue="0.96862745100000003" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
         </systemColor>
         <systemColor name="systemGrayColor">
-            <color red="0.55686274509803924" green="0.55686274509803924" blue="0.57647058823529407" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+            <color red="0.5568627451" green="0.5568627451" blue="0.57647058819999997" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
         </systemColor>
         <systemColor name="systemRedColor">
-            <color red="1" green="0.23137254901960785" blue="0.18823529411764706" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+            <color red="1" green="0.23137254900000001" blue="0.18823529410000001" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
         </systemColor>
     </resources>
 </document>
