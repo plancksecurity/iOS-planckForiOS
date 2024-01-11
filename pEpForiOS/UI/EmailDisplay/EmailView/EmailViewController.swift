@@ -167,10 +167,6 @@ class EmailViewController: UIViewController {
     
     @IBAction func dotsButtonPressed(_ sender: Any) {
         let title = NSLocalizedString("Reset Partner Key", comment: "Title - Reset Partner Key")
-        let successMessage = NSLocalizedString("You have successfully reset your partner key.", comment: "Success Message - Reset Partner Key")
-
-        let errorMessage = NSLocalizedString("Reset your partner key failed.", comment: "Failed Message - Reset Partner Key")
-
         let cancel = NSLocalizedString("Cancel", comment: "Cancel - Reset Partner Key")
         let message = NSLocalizedString("""
 After resetting and as soon as you start composing an email to the recipient, planck will automatically get the correct public key. Are you sure you want to reset?
@@ -186,22 +182,32 @@ After resetting and as soon as you start composing an email to the recipient, pl
                 return
             }
             me.dismiss()
-        }, 
-                                   positiveButtonAction: { [weak self] in
+        }, positiveButtonAction: { [weak self] in
             guard let me = self, let vm = me.viewModel else {
                 Log.shared.lostMySelf()
                 return
             }
-            vm.handleResetPartnerKeyPressed {
-                UIUtils.showAlertWithOnlyCloseButton(title: title, message: successMessage) {
-                    vm.updateRating()
-                }
-            } errorCallback: {
-                UIUtils.showAlertWithOnlyCloseButton(title: title, message: errorMessage)
-            }
+            vm.handleResetPartnerKeyPressed()
             
-        },
-                                   presenter: self)
+        }, presenter: self)
+    }
+    
+    func resetPartnerKeySucced() {
+        guard let vm = viewModel else {
+            Log.shared.lostMySelf()
+            return
+        }
+        let successMessage = NSLocalizedString("You have successfully reset your partner key.", comment: "Success Message - Reset Partner Key")
+        let title = NSLocalizedString("Reset Partner Key", comment: "Title - Reset Partner Key")
+        UIUtils.showAlertWithOnlyCloseButton(title: title, message: successMessage) {
+            vm.updateRating()
+        }
+    }
+    
+    func resetPartnerKeyFailed() {
+        let title = NSLocalizedString("Reset Partner Key", comment: "Title - Reset Partner Key")
+        let errorMessage = NSLocalizedString("Reset your partner key failed.", comment: "Failed Message - Reset Partner Key")
+        UIUtils.showAlertWithOnlyCloseButton(title: title, message: errorMessage)
     }
 }
 

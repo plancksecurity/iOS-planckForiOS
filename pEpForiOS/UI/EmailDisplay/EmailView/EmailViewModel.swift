@@ -30,6 +30,10 @@ protocol EmailViewModelDelegate: AnyObject {
     func showExternalContent()
     /// Update the navigation bar badge
     func updateNavigationBarSecurityBadge(pEpRating: Rating)
+    /// Informs reset partner key succed.
+    func resetPartnerKeySucced()
+    /// Informs reset partner key failed
+    func resetPartnerKeyFailed()
 }
 
 //MARK: - EmailRowProtocol
@@ -95,17 +99,21 @@ class EmailViewModel {
         UIPasteboard.general.image = image.resizeIfExceedMaxWidth(maxWidth: maxWidth - margin)
     }
 
-    func handleResetPartnerKeyPressed(completion: @escaping () -> (), errorCallback: (() -> Void)? = nil) {
+    func handleResetPartnerKeyPressed() {
         guard let from = message.from else { return }
-        from.resetTrust(completion: {
-            DispatchQueue.main.async {
-                completion()
+        from.resetTrust(completion: { [weak self] in
+            guard let me = self else {
+                return
             }
-        }, errorCallback: {
             DispatchQueue.main.async {
-                if let errorCB = errorCallback {
-                    errorCB()
-                }
+                me.delegate?.resetPartnerKeySucced()
+            }
+        }, errorCallback: { [weak self] in
+            guard let me = self else {
+                return
+            }
+            DispatchQueue.main.async {
+                me.delegate?.resetPartnerKeyFailed()
             }
         })
     }
