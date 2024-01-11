@@ -60,7 +60,7 @@ class MessageHeaderCell: UITableViewCell {
     ///   - delegate: The delegate to communicate to the VC.
     public func setup(row: EmailViewModel.HeaderRow,
                       shouldDisplayAll: [EmailViewModel.RecipientType: Bool],
-                      delegate: MessageHeaderCellDelegate, shouldShowThreeDotsButton: Bool) {
+                      delegate: MessageHeaderCellDelegate) {
 
         self.viewModel = row.viewModel
         guard let vm = viewModel else {
@@ -68,7 +68,7 @@ class MessageHeaderCell: UITableViewCell {
             return
         }
 
-        threeDotsButton.isHidden = !shouldShowThreeDotsButton
+        threeDotsButton.isHidden = !row.shouldShowThreeDotsButton
 
         //Collection view containers
         bccContainer.isHidden = row.bccsViewModels.isEmpty

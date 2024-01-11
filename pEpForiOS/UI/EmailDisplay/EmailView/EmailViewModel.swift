@@ -328,6 +328,7 @@ extension EmailViewModel {
         var bccsViewModels: [CollectionViewCellViewModel]
         var date: String?
         var image: UIImage?
+        var shouldShowThreeDotsButton: Bool
         var viewModel: MessageHeaderCellViewModel
     }
 
@@ -537,6 +538,7 @@ extension EmailViewModel {
                                   ccsViewModels: ccRecipientsVMs,
                                   bccsViewModels: bccRecipientsVMs,
                                   date: message.sent?.fullString(),
+                                  shouldShowThreeDotsButton: shouldShowThreeDotsButton,
                                   viewModel: headerCellViewModel)
         rows.append(headerRow)
 
