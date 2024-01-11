@@ -30,8 +30,8 @@ protocol EmailViewModelDelegate: AnyObject {
     func showExternalContent()
     /// Update the navigation bar badge
     func updateNavigationBarSecurityBadge(pEpRating: Rating)
-    /// Informs reset partner key succed.
-    func resetPartnerKeySucced()
+    /// Informs reset partner key succeed.
+    func resetPartnerKeySucceed()
     /// Informs reset partner key failed
     func resetPartnerKeyFailed()
 }
@@ -106,7 +106,7 @@ class EmailViewModel {
                 return
             }
             DispatchQueue.main.async {
-                me.delegate?.resetPartnerKeySucced()
+                me.delegate?.resetPartnerKeySucceed()
             }
         }, errorCallback: { [weak self] in
             guard let me = self else {

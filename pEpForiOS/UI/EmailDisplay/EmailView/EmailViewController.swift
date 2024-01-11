@@ -192,7 +192,7 @@ After resetting and as soon as you start composing an email to the recipient, pl
         }, presenter: self)
     }
     
-    func resetPartnerKeySucced() {
+    func resetPartnerKeySucceed() {
         guard let vm = viewModel else {
             Log.shared.lostMySelf()
             return
