@@ -11,7 +11,7 @@ import Foundation
 import PEPObjCAdapter
 
 extension Rating {
-    init(pEpRating: PEPRating) {
+    public init(pEpRating: PEPRating) {
         switch pEpRating {
         case .b0rken:
             self = .b0rken

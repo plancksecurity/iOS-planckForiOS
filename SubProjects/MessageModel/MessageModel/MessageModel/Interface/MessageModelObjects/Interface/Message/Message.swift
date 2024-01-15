@@ -136,7 +136,7 @@ public class Message: MessageModelObjectProtocol, ManagedObjectWrapperProtocol {
             return cdObject.underAttack
         }
     }
-
+    
     public var shortMessage: String? {
         get {
             return cdObject.shortMessage

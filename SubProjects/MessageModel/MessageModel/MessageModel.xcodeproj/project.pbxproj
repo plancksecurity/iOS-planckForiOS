@@ -712,6 +712,8 @@
 		F779D5FC2A2877260069381E /* Rating+Groups.swift in Sources */ = {isa = PBXBuildFile; fileRef = F779D5FA2A2877260069381E /* Rating+Groups.swift */; };
 		F7E446702B5538FB002356D1 /* CreateIMAPSuspiciousFolderOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = F7E4466F2B5538FB002356D1 /* CreateIMAPSuspiciousFolderOperation.swift */; };
 		F7E446712B5538FB002356D1 /* CreateIMAPSuspiciousFolderOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = F7E4466F2B5538FB002356D1 /* CreateIMAPSuspiciousFolderOperation.swift */; };
+		F7E446752B556958002356D1 /* SuspiciousMessageUtil.swift in Sources */ = {isa = PBXBuildFile; fileRef = F7E446742B556958002356D1 /* SuspiciousMessageUtil.swift */; };
+		F7E446762B556958002356D1 /* SuspiciousMessageUtil.swift in Sources */ = {isa = PBXBuildFile; fileRef = F7E446742B556958002356D1 /* SuspiciousMessageUtil.swift */; };
 		F7EBF8C32A3323440050A40E /* EventLog.swift in Sources */ = {isa = PBXBuildFile; fileRef = F7EBF8C22A3323440050A40E /* EventLog.swift */; };
 		F7EBF8DD2A3709560050A40E /* AuditLoggingUtil.swift in Sources */ = {isa = PBXBuildFile; fileRef = F7EBF8DC2A3709560050A40E /* AuditLoggingUtil.swift */; };
 /* End PBXBuildFile section */
@@ -1250,6 +1252,7 @@
 		F75D01CF2A39A9C400805DEF /* AuditLoggingProtocol.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuditLoggingProtocol.swift; sourceTree = "<group>"; };
 		F779D5FA2A2877260069381E /* Rating+Groups.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Rating+Groups.swift"; sourceTree = "<group>"; };
 		F7E4466F2B5538FB002356D1 /* CreateIMAPSuspiciousFolderOperation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CreateIMAPSuspiciousFolderOperation.swift; sourceTree = "<group>"; };
+		F7E446742B556958002356D1 /* SuspiciousMessageUtil.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SuspiciousMessageUtil.swift; sourceTree = "<group>"; };
 		F7EBF8C22A3323440050A40E /* EventLog.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EventLog.swift; sourceTree = "<group>"; };
 		F7EBF8DC2A3709560050A40E /* AuditLoggingUtil.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuditLoggingUtil.swift; sourceTree = "<group>"; };
 		F7FFFAF929DC22AE00A6DC49 /* 1.1.274.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = 1.1.274.xcdatamodel; sourceTree = "<group>"; };
@@ -2665,6 +2668,7 @@
 				439CADC02563B9B50043077E /* AuthMethod.swift */,
 				5BD6B5D625C0570000EC95C8 /* OSStatus+Error.swift */,
 				5B65440428CF378F0064E1C7 /* MediaKeysUtil.swift */,
+				F7E446742B556958002356D1 /* SuspiciousMessageUtil.swift */,
 				5BDF60BC28F96C2500BD0278 /* ExtraKeysUtil.swift */,
 				5B65440728CF4D450064E1C7 /* EchoProtocolUtil.swift */,
 				5BEBA8F828EDD4BB00967DC2 /* TrustedServerUtil.swift */,
@@ -3140,6 +3144,7 @@
 				43BDDDA225DD4D4900FC0C68 /* SmtpSendError.swift in Sources */,
 				434C22A325D69CD200F622DB /* CdAccount+NonOptionalConvenienceAccessors.swift.swift in Sources */,
 				43148AB029B0A49900CCFF1B /* TrustManagementUtilProtocol.swift in Sources */,
+				F7E446762B556958002356D1 /* SuspiciousMessageUtil.swift in Sources */,
 				43BDDD0225DD34EE00FC0C68 /* Attachment+ContentID.swift in Sources */,
 				43BDDD8625DD4B2100FC0C68 /* CdAccount+ProviderSpecific.swift in Sources */,
 				437B127225F785D1000CCFBA /* EncryptAndSendSharingProtocol.swift in Sources */,
@@ -3707,6 +3712,7 @@
 				430CDA852296BC7A00AAC37F /* CdMessage+KeySync.swift in Sources */,
 				43EA484D221E9518006E8F83 /* Folder+Imap.swift in Sources */,
 				493B6D051E70589800364D60 /* SystemUtils.swift in Sources */,
+				F7E446752B556958002356D1 /* SuspiciousMessageUtil.swift in Sources */,
 				15E39FC422551D650016A1C4 /* Message+SessionAware.swift in Sources */,
 				B7789CCC222446EC00AB08F4 /* MessageQueryResultsSearch.swift in Sources */,
 				3AECFB792462C690004842D6 /* CdAttachment+PredicateFactory.swift in Sources */,
