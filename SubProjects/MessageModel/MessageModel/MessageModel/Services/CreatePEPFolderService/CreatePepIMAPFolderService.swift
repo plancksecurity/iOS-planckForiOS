@@ -7,7 +7,6 @@
 //
 
 import CoreData
-
 import PlanckToolbox
 
 /// Makes sure a special pEp folder exists (locally and on server) to store pEp Sync messages in.
@@ -52,10 +51,15 @@ class CreatePepIMAPFolderService: OperationBasedService {
                 let loginOP = LoginImapOperation(context: moc, imapConnection: imapConnection)
                 let fetchFoldersOP = SyncFoldersFromServerOperation(context: moc,
                                                                     imapConnection: imapConnection)
+
+                let createSuspiciousFolderOP = CreateIMAPSuspiciousFolderOperation(context: moc,
+                                                                     imapConnection: imapConnection)
+
                 let createPepFolderOP = CreateIMAPPepFolderOperation(context: moc,
                                                                      imapConnection: imapConnection)
                 operations.append(loginOP)
                 operations.append(fetchFoldersOP)
+                operations.append(createSuspiciousFolderOP)
                 operations.append(createPepFolderOP)
             }
         }

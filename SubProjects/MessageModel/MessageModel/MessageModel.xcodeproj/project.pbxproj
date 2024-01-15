@@ -39,7 +39,7 @@
 		152EC88722E73721001836F9 /* CdMessage+FakeTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 152EC88622E73721001836F9 /* CdMessage+FakeTest.swift */; };
 		152F09672126D27E001BCF20 /* CdServer+PredicateFactory.swift in Sources */ = {isa = PBXBuildFile; fileRef = 152F09662126D27E001BCF20 /* CdServer+PredicateFactory.swift */; };
 		15326E2F24A4C45B00EA8C9B /* UsePEPFolderProviderProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = 15326E2E24A4C45B00EA8C9B /* UsePEPFolderProviderProtocol.swift */; };
-		15326E3424A4E00400EA8C9B /* CreatePepIMAPFolderService.swift.swift in Sources */ = {isa = PBXBuildFile; fileRef = 15326E3324A4E00400EA8C9B /* CreatePepIMAPFolderService.swift.swift */; };
+		15326E3424A4E00400EA8C9B /* CreatePepIMAPFolderService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 15326E3324A4E00400EA8C9B /* CreatePepIMAPFolderService.swift */; };
 		1532CE7B23184130005DBC39 /* RatingReEvaluator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1532CE7A23184130005DBC39 /* RatingReEvaluator.swift */; };
 		1533492523E4604800CB8C0B /* README.md in Resources */ = {isa = PBXBuildFile; fileRef = 1533492423E4604700CB8C0B /* README.md */; };
 		1535D075223AB4BF008F0ACC /* ImapFlags.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1535D074223AB4BF008F0ACC /* ImapFlags.swift */; };
@@ -710,6 +710,8 @@
 		F75D01D52A39B41900805DEF /* AuditLoggingProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = F75D01CF2A39A9C400805DEF /* AuditLoggingProtocol.swift */; };
 		F779D5FB2A2877260069381E /* Rating+Groups.swift in Sources */ = {isa = PBXBuildFile; fileRef = F779D5FA2A2877260069381E /* Rating+Groups.swift */; };
 		F779D5FC2A2877260069381E /* Rating+Groups.swift in Sources */ = {isa = PBXBuildFile; fileRef = F779D5FA2A2877260069381E /* Rating+Groups.swift */; };
+		F7E446702B5538FB002356D1 /* CreateIMAPSuspiciousFolderOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = F7E4466F2B5538FB002356D1 /* CreateIMAPSuspiciousFolderOperation.swift */; };
+		F7E446712B5538FB002356D1 /* CreateIMAPSuspiciousFolderOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = F7E4466F2B5538FB002356D1 /* CreateIMAPSuspiciousFolderOperation.swift */; };
 		F7EBF8C32A3323440050A40E /* EventLog.swift in Sources */ = {isa = PBXBuildFile; fileRef = F7EBF8C22A3323440050A40E /* EventLog.swift */; };
 		F7EBF8DD2A3709560050A40E /* AuditLoggingUtil.swift in Sources */ = {isa = PBXBuildFile; fileRef = F7EBF8DC2A3709560050A40E /* AuditLoggingUtil.swift */; };
 /* End PBXBuildFile section */
@@ -790,7 +792,7 @@
 		152EC88622E73721001836F9 /* CdMessage+FakeTest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "CdMessage+FakeTest.swift"; sourceTree = "<group>"; };
 		152F09662126D27E001BCF20 /* CdServer+PredicateFactory.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "CdServer+PredicateFactory.swift"; sourceTree = "<group>"; };
 		15326E2E24A4C45B00EA8C9B /* UsePEPFolderProviderProtocol.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UsePEPFolderProviderProtocol.swift; sourceTree = "<group>"; };
-		15326E3324A4E00400EA8C9B /* CreatePepIMAPFolderService.swift.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreatePepIMAPFolderService.swift.swift; sourceTree = "<group>"; };
+		15326E3324A4E00400EA8C9B /* CreatePepIMAPFolderService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreatePepIMAPFolderService.swift; sourceTree = "<group>"; };
 		1532CE7A23184130005DBC39 /* RatingReEvaluator.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RatingReEvaluator.swift; sourceTree = "<group>"; };
 		1533492423E4604700CB8C0B /* README.md */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = net.daringfireball.markdown; path = README.md; sourceTree = "<group>"; };
 		1535D074223AB4BF008F0ACC /* ImapFlags.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImapFlags.swift; sourceTree = "<group>"; };
@@ -1247,6 +1249,7 @@
 		B7FD55D82338D01F00C9FC55 /* IdentityQueryResultsTest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IdentityQueryResultsTest.swift; sourceTree = "<group>"; };
 		F75D01CF2A39A9C400805DEF /* AuditLoggingProtocol.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuditLoggingProtocol.swift; sourceTree = "<group>"; };
 		F779D5FA2A2877260069381E /* Rating+Groups.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Rating+Groups.swift"; sourceTree = "<group>"; };
+		F7E4466F2B5538FB002356D1 /* CreateIMAPSuspiciousFolderOperation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CreateIMAPSuspiciousFolderOperation.swift; sourceTree = "<group>"; };
 		F7EBF8C22A3323440050A40E /* EventLog.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EventLog.swift; sourceTree = "<group>"; };
 		F7EBF8DC2A3709560050A40E /* AuditLoggingUtil.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuditLoggingUtil.swift; sourceTree = "<group>"; };
 		F7FFFAF929DC22AE00A6DC49 /* 1.1.274.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = 1.1.274.xcdatamodel; sourceTree = "<group>"; };
@@ -1589,7 +1592,7 @@
 		15326E3024A4DF0A00EA8C9B /* CreatePEPFolderService */ = {
 			isa = PBXGroup;
 			children = (
-				15326E3324A4E00400EA8C9B /* CreatePepIMAPFolderService.swift.swift */,
+				15326E3324A4E00400EA8C9B /* CreatePepIMAPFolderService.swift */,
 			);
 			path = CreatePEPFolderService;
 			sourceTree = "<group>";
@@ -2555,6 +2558,7 @@
 				152105052355FCB700F30B51 /* OperationBaseClasses */,
 				43EA4829221E9518006E8F83 /* FetchNumberOfNewMailsOperation.swift */,
 				150C5EEF24A38825005BA3C9 /* CreateIMAPPepFolderOperation.swift */,
+				F7E4466F2B5538FB002356D1 /* CreateIMAPSuspiciousFolderOperation.swift */,
 			);
 			path = Operations;
 			sourceTree = "<group>";
@@ -3261,6 +3265,7 @@
 				43BDDDAA25DD4DC000FC0C68 /* FetchImapFoldersService.swift in Sources */,
 				434C230B25D6A19C00F622DB /* ImapConnectionProtocol.swift in Sources */,
 				434C228F25D69C4000F622DB /* CdAttachment+PredicateFactory.swift in Sources */,
+				F7E446712B5538FB002356D1 /* CreateIMAPSuspiciousFolderOperation.swift in Sources */,
 				43BDDCC325DD2ABB00FC0C68 /* Message+pEp_Internal.swift in Sources */,
 				434C21BC25D6980E00F622DB /* Stack.swift in Sources */,
 				436FD23925DA819900D929B3 /* ClientCertificcate+SessionAware.swift in Sources */,
@@ -3394,6 +3399,7 @@
 				B7C1F4F02459CD5F00070DCC /* Identity+Fetching.swift in Sources */,
 				15CCE2C52225BCE5004A8306 /* CoreDataEntityAttributeNames.swift in Sources */,
 				1543B69022AAB12D002B59AB /* KeySyncService.swift in Sources */,
+				F7E446702B5538FB002356D1 /* CreateIMAPSuspiciousFolderOperation.swift in Sources */,
 				155FE56A228B50D8003D3E68 /* CdAccount+Extensions.swift in Sources */,
 				43F609802248BCBD0008B900 /* CdFolder+VirtualMailbox.swift in Sources */,
 				4355E4CF233C98C0005772D5 /* CWIMAPMessage+pEp.swift in Sources */,
@@ -3527,7 +3533,7 @@
 				43A9818624E5382900830603 /* Color.swift in Sources */,
 				8BE460811DB7B355008D63C6 /* CdMessage.swift in Sources */,
 				37BC7AEE222014D20047267A /* MessageQueryResults.swift in Sources */,
-				15326E3424A4E00400EA8C9B /* CreatePepIMAPFolderService.swift.swift in Sources */,
+				15326E3424A4E00400EA8C9B /* CreatePepIMAPFolderService.swift in Sources */,
 				8BE460901DB7B5FC008D63C6 /* Query.swift in Sources */,
 				B7E0514222D63B5E005FE4F9 /* Folder+RealFolder.swift in Sources */,
 				43EA4895221E9518006E8F83 /* PantomimeError.swift in Sources */,

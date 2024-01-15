@@ -66,7 +66,7 @@ extension Message {
             } else {
                 completion(PEPUtils.pEpRatingFromInt(message.pEpRatingInt))
             }
-        case .all, .archive, .inbox, .normal, .sent, .spam, .flagged, .trash:
+        case .all, .archive, .inbox, .normal, .sent, .spam, .flagged, .trash, .suspicious:
             completion(PEPUtils.pEpRatingFromInt(message.pEpRatingInt))
         case .pEpSync:
             // messages from this folder should never be shown to the user

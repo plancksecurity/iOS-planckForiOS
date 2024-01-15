@@ -1,15 +1,12 @@
 //
-//  CreateIMAPPepFolderOperation.swift
+//  CreateIMAPSuspiciousFolderOperation.swift
 //  MessageModel
 //
-//  Created by Andreas Buff on 24.06.20.
-//  Copyright © 2020 pEp Security S.A. All rights reserved.
+//  Created by Martin Brude on 12/1/24.
+//  Copyright © 2024 pEp Security S.A. All rights reserved.
 //
 
 import Foundation
-
-
-import UIKit
 import CoreData
 
 #if EXT_SHARE
@@ -18,9 +15,9 @@ import PlanckToolboxForExtensions
 import PlanckToolbox
 #endif
 
-/// Checks if the pEp folder (used for pEp Sync messages) exists and tries to create it if it
-/// does not.
-class CreateIMAPPepFolderOperation: ImapSyncOperation {
+
+/// Checks if the planck suspicious folder exists and tries to create it if it does not.
+class CreateIMAPSuspiciousFolderOperation: ImapSyncOperation {
     /// Whether or not the client or this operation is responsible for saving the context
     private var saveContextWhenDone: Bool
 
@@ -49,7 +46,7 @@ class CreateIMAPPepFolderOperation: ImapSyncOperation {
                 Log.shared.lostMySelf()
                 return
             }
-            me.syncDelegate = CreateIMAPPepFolderOperationSyncDelegate(errorHandler: me)
+            me.syncDelegate = CreateIMAPSuspiciousFolderOperationSyncDelegate(errorHandler: me)
             me.imapConnection.delegate = me.syncDelegate
 
             me.privateMOC.performAndWait {
@@ -59,16 +56,13 @@ class CreateIMAPPepFolderOperation: ImapSyncOperation {
                             BackgroundError.CoreDataError.couldNotFindAccount(info: me.comp))
                         return
                 }
-                guard
-                    CdFolder.by(folderType: .pEpSync,
-                                account: cdAccount,
-                                context: me.privateMOC) == nil
+                guard CdFolder.by(folderType: .suspicious, account: cdAccount, context: me.privateMOC) == nil
                     else {
-                        // pEp folder exists already. Nothing to do.
+                        // suspicious folder exists already. Nothing to do.
                         me.waitForBackgroundTasksAndFinish()
                         return
                 }
-                me.createPEPFolder(for: cdAccount)
+                me.createPlanckSuspiciousFolder(for: cdAccount)
             }
         }
     }
@@ -79,15 +73,15 @@ class CreateIMAPPepFolderOperation: ImapSyncOperation {
         }
     }
 
-    private func createPEPFolder(for cdAccount: CdAccount) {
-        guard let pEpFolderName = createPepFolderName(for: cdAccount) else {
+    private func createPlanckSuspiciousFolder(for cdAccount: CdAccount) {
+        guard let suspiciousFolderName = createPlanckFolderName(for: cdAccount) else {
                 handle(error: BackgroundError.ImapError.invalidAccount)
                 return
         }
-        imapConnection.createFolderNamed(pEpFolderName)
+        imapConnection.createFolderNamed(suspiciousFolderName)
     }
 
-    private func createPepFolderName(for cdAccount: CdAccount) -> String? {
+    private func createPlanckFolderName(for cdAccount: CdAccount) -> String? {
         guard
             let seperator = CdFolder.folderSeparatorAsString(cdAccount: cdAccount),
             let inbox = CdFolder.by(folderType: .inbox, account: cdAccount, context: privateMOC),
@@ -96,21 +90,21 @@ class CreateIMAPPepFolderOperation: ImapSyncOperation {
                 handle(error: BackgroundError.ImapError.invalidAccount)
                 return nil
         }
-        let pEpFolderName = inboxName + seperator + CdFolder.planckSyncFolderName
+        let pEpFolderName = inboxName + seperator + CdFolder.planckSuspiciousFolderName
         return pEpFolderName
     }
 
-    /// Creates local planckSync folder.
+    /// Creates local planck suspicious folder.
     /// - note: MUST be called on privateMoc
     private func createLocalPlanckFolder() {
         guard
             let cdAccount = imapConnection.cdAccount(moc: privateMOC),
             let inbox = CdFolder.by(folderType: .inbox, account: cdAccount, context: privateMOC),
             let seperator = CdFolder.folderSeparatorAsString(cdAccount: cdAccount),
-            let name = createPepFolderName(for: cdAccount),
+            let name = createPlanckFolderName(for: cdAccount),
             let localPEPFolder = CdFolder.updateOrCreate(folderName: name,
                                                          folderSeparator: seperator,
-                                                         folderType: .pEpSync,
+                                                         folderType: .suspicious,
                                                          account: cdAccount,
                                                          context: privateMOC)
             else {
@@ -123,7 +117,7 @@ class CreateIMAPPepFolderOperation: ImapSyncOperation {
 
 // MARK: - Callback Handler
 
-extension CreateIMAPPepFolderOperation {
+extension CreateIMAPSuspiciousFolderOperation {
 
     fileprivate func handleFolderCreateCompleted() {
         backgroundQueue.addOperation { [weak self] in
@@ -149,9 +143,9 @@ extension CreateIMAPPepFolderOperation {
 
 // MARK: - DefaultImapSyncDelegate
 
-class CreateIMAPPepFolderOperationSyncDelegate: DefaultImapConnectionDelegate {
+class CreateIMAPSuspiciousFolderOperationSyncDelegate: DefaultImapConnectionDelegate {
     override func folderCreateCompleted(_ imapConnection: ImapConnectionProtocol, notification: Notification?) {
-        guard let op = errorHandler as? CreateIMAPPepFolderOperation else {
+        guard let op = errorHandler as? CreateIMAPSuspiciousFolderOperation else {
             Log.shared.errorAndCrash("Sorry, wrong number.")
             return
         }
@@ -159,7 +153,7 @@ class CreateIMAPPepFolderOperationSyncDelegate: DefaultImapConnectionDelegate {
     }
 
     override func folderCreateFailed(_ imapConnection: ImapConnectionProtocol, notification: Notification?) {
-        guard let op = errorHandler as? CreateIMAPPepFolderOperation else {
+        guard let op = errorHandler as? CreateIMAPSuspiciousFolderOperation else {
             Log.shared.errorAndCrash("Sorry, wrong number.")
             return
         }
