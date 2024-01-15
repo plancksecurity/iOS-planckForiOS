@@ -15,18 +15,24 @@ import PlanckToolbox
 #endif
 
 class VerifyIdentityViewController: UIViewController {
-
-    public var viewModel: VerifyIdentityViewModel?
+    
+    @IBOutlet private weak var trustwordLanguageButton: UIButton!
+    
+    public var verifyIdentityViewModel: VerifyIdentityViewModel?
     public var trustManagementViewModel: TrustManagementViewModel?
+    
     public static let storyboardId = "VerifyIdentityViewController"
-    @IBOutlet weak var containerHeightConstraint: NSLayoutConstraint!
+    
+    @IBOutlet private weak var containerHeightConstraint: NSLayoutConstraint!
     
     // Static content
-    @IBOutlet private weak var verifyIdentityTitleLabel: UILabel!
     @IBOutlet private weak var messageLabel: UILabel!
     @IBOutlet private weak var trustwordsTitleLabel: UILabel!
-    @IBOutlet private weak var closeButton: UIButton!
-
+    
+    //Buttons
+    @IBOutlet private weak var confirmButton: UIButton!
+    @IBOutlet private weak var rejectButton: UIButton!
+    
     // Dynamic content
     @IBOutlet private weak var trustwordsLabel: UILabel!
     @IBOutlet private weak var ownDeviceFingerprintsLabel: UILabel!
@@ -40,22 +46,25 @@ class VerifyIdentityViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        title = NSLocalizedString("Verify Identity", comment: "Verify Identity")
         setStaticTexts()
         let tap = UITapGestureRecognizer(target: self, action: #selector(toogleTrustwordsLength))
         trustwordsLabel.isUserInteractionEnabled = true
         trustwordsLabel.addGestureRecognizer(tap)
-    }
-    
-    @objc func toogleTrustwordsLength() {
-        guard let vm = trustManagementViewModel else {
+        guard let vm = verifyIdentityViewModel else {
             Log.shared.errorAndCrash("VM not found")
             return
         }
-        vm.handleToggleLongTrustwords(forRowAt: indexPath)
+        confirmButton.isHidden = !vm.shouldManageTrust
+        rejectButton.isHidden = !vm.shouldManageTrust
+    }
+    
+    @IBAction func confirmButtonPressed() {
+        show(action: VerificationAction.accept)
     }
 
-    @IBAction func closeButtonPressed() {
-        dismiss(animated: true)
+    @IBAction func rejectButtonPressed() {
+        show(action: VerificationAction.reject)
     }
 
     @IBAction func trustwordsLanguageButtonPressed() {
@@ -101,23 +110,60 @@ class VerifyIdentityViewController: UIViewController {
 
 extension VerifyIdentityViewController {
     
+    private func show(action: VerificationAction) {
+        let storyboard = UIStoryboard(name: Constants.reusableStoryboard, bundle: .main)
+        guard let vc = storyboard.instantiateViewController(
+            withIdentifier: VerifyIdentityActionConfirmationViewController.storyboardId) as? VerifyIdentityActionConfirmationViewController else {
+                Log.shared.errorAndCrash("Fail to instantiateViewController VerifyIdentityActionConfirmationViewController")
+                return
+        }
+        guard var verifyIdentityVM = verifyIdentityViewModel else {
+            Log.shared.errorAndCrash("Fail to set action to verifyIdentityVM")
+            return
+        }
+        guard var trustManagementVC = trustManagementViewModel else {
+            Log.shared.errorAndCrash("Fail to load trustManagementVC")
+            return
+        }
+        verifyIdentityVM.action = action
+        vc.verifyIdentityViewModel = verifyIdentityVM
+        trustManagementVC.delegate = vc
+        vc.trustManagementViewModel = trustManagementVC
+        UIUtils.showVerifyIdentityConfirmation(viewContorller: vc)
+    }
+
+    @objc private func toogleTrustwordsLength() {
+        guard let vm = trustManagementViewModel else {
+            Log.shared.errorAndCrash("VM not found")
+            return
+        }
+        vm.handleToggleLongTrustwords(forRowAt: indexPath)
+    }
+    
     private func setStaticTexts() {
-        guard let vm = viewModel else {
+        guard let vm = verifyIdentityViewModel else {
             Log.shared.errorAndCrash("VM not found")
             return
         }
         
-        verifyIdentityTitleLabel.text = vm.title
         messageLabel.text = vm.messageText
         trustwordsTitleLabel.text = vm.trustwordsTitle
-        closeButton.setPEPFont(style: .body, weight: .regular)
-        closeButton.setTitleColor(UIColor.planckLightPurpleText, for: [.normal])
-        closeButton.setTitle(vm.closeButtonTitle, for: [.normal])
+        
+        confirmButton.setPEPFont(style: .body, weight: .regular)
+        confirmButton.setTitleColor(UIColor.pEpGreen, for: [.normal])
+        confirmButton.setTitle(vm.confirmButtonTitle, for: [.normal])
+        
+        rejectButton.setPEPFont(style: .body, weight: .regular)
+        rejectButton.setTitleColor(UIColor.pEpRed, for: [.normal])
+        rejectButton.setTitle(vm.rejectButtonTitle, for: [.normal])
     }
 }
 
 extension VerifyIdentityViewController: TrustManagementViewModelDelegate {
     func reload() {
+        guard viewIfLoaded != nil else {
+            return
+        }
         guard let vm = trustManagementViewModel else {
             Log.shared.errorAndCrash("VM not found")
             return
@@ -129,11 +175,13 @@ extension VerifyIdentityViewController: TrustManagementViewModelDelegate {
         }
         let trustwords = row.trustwords ?? NSLocalizedString("Trustwords Not Available", comment: "")
         let trustwordsHeight: CGFloat = trustwords.height(withConstrainedWidth: trustwordsLabel.frame.width, font: trustwordsLabel.font)
-        let defaultContainerHeightWithoutTrustwords = 390.0
+        let defaultContainerHeightWithoutTrustwords = 300.0
         let heightToSet = defaultContainerHeightWithoutTrustwords + trustwordsHeight
+
         UIView.animate(withDuration: 0.5, delay: 0, options: .curveEaseInOut) { [weak self] in
             guard let me = self else { return }
             me.containerHeightConstraint.constant = CGFloat(heightToSet)
+            me.trustwordLanguageButton.isHidden = row.trustwords == nil
         } completion: { _ in
             let fingerprintNotAvailable = NSLocalizedString("Fingerprint Not Available", comment: "Fingerprint Not Available")
             self.trustwordsLabel.text = trustwords

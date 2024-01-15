@@ -86,7 +86,6 @@ extension UIViewController {
             let minimumHitTestDimension: CGFloat = 44
 
             let imageView = UIImageView(image: image)
-
             var accessibilityIdentifier: String = AccessibilityIdentifier.unknownTrust
 
             if rating.isUnreliable() {

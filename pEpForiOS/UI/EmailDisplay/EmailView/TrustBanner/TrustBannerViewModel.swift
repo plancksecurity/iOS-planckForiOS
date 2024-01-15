@@ -53,6 +53,10 @@ struct TrustBannerViewModel {
             return false
         }
 
+        guard ![Rating.mistrust.toInt(), Rating.underAttack.toInt()].contains(message.pEpRatingInt)  else {
+            return false
+        }
+
         guard message.from != nil else {
             //From does not exist. The banner must be hidden.
             return false
@@ -92,16 +96,7 @@ struct TrustBannerViewModel {
                 Log.shared.errorAndCrash("Delegate not found")
                 return
             }
-            guard let msg = message else {
-                Log.shared.errorAndCrash("Message not found")
-                return
-            }
-            let messageRating = msg.pEpRatingInt
-            if messageRating == Rating.reliable.toInt() {
-                del.presentTrustManagementView()
-            } else {
-                del.presentVerificationTrustView()
-            }
+            del.presentVerificationTrustView()
         }
     }
 }

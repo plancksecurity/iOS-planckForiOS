@@ -124,7 +124,7 @@ class EmailViewModel {
     }
 
     func getVerificationTrustViewModel() -> VerifyIdentityViewModel {
-        return VerifyIdentityViewModel()
+        return VerifyIdentityViewModel(isCommunicationPartnerVerified: message.pEpRatingInt == Rating.reliable.toInt())
     }
 
     // Indicates if the External Content View has to be shown.
