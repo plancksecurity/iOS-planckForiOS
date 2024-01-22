@@ -268,6 +268,10 @@ class MockEmailViewModelDelegate: EmailViewModelDelegate {
     
     func updateNavigationBarSecurityBadge(pEpRating: MessageModel.Rating) {
     }
+    
+    func resetPartnerKeySucceed() {}
+    
+    func resetPartnerKeyFailed() {}
 
     private func fulfillIfNotNil(expectation: XCTestExpectation?) {
         if expectation != nil {
