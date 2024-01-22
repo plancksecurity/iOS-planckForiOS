@@ -87,7 +87,11 @@ extension OAuth2AccessToken: OAuth2AccessTokenProtocol {
     }
 
     public func refresh() {
+        let authorized = authState.isAuthorized
         authState.setNeedsTokenRefresh()
+        authState.performAction() { accessToken, idToken, error in
+            Log.shared.logInfo(message: "Fresh token? \(error)")
+        }
     }
 
     // MARK: Own persistence code
