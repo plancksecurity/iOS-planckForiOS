@@ -364,8 +364,13 @@ extension ImapConnection: CWServiceClient {
     }
 
     func authenticationFailed(_ notification: Notification?) {
-        runOnDelegate(logName: #function) { theDelegate in
-            theDelegate.authenticationFailed(self, notification: notification)
+        if connectInfo.authMethod == .saslXoauth2,
+           let token = accessToken {
+            token.refresh()
+        } else {
+            runOnDelegate(logName: #function) { theDelegate in
+                theDelegate.authenticationFailed(self, notification: notification)
+            }
         }
     }
 

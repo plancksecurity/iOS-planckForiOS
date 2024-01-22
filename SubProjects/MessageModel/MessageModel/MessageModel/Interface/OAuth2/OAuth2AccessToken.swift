@@ -86,6 +86,10 @@ extension OAuth2AccessToken: OAuth2AccessTokenProtocol {
         }
     }
 
+    public func refresh() {
+        authState.setNeedsTokenRefresh()
+    }
+
     // MARK: Own persistence code
 
     func persistIntoString() -> String {

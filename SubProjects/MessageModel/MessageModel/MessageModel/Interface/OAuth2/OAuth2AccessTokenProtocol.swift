@@ -24,6 +24,9 @@ public protocol OAuth2AccessTokenProtocol: NSSecureCoding {
     func getName() -> String?
 
     // MARK: Refreshing tokens
+
     func performAction(
         freshTokensBlock: @escaping (_ error: Error?, _ accessToken: String?) -> Void)
+
+    func refresh()
 }
