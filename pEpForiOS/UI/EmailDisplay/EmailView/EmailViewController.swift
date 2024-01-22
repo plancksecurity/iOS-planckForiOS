@@ -169,7 +169,9 @@ class EmailViewController: UIViewController {
         let title = NSLocalizedString("Reset Partner Key", comment: "Title - Reset Partner Key")
         let cancel = NSLocalizedString("Cancel", comment: "Cancel - Reset Partner Key")
         let message = NSLocalizedString("""
-After resetting and as soon as you start composing an email to the recipient, planck will automatically get the correct public key. Are you sure you want to reset?
+Resetting the public key of a recipient tells your planck that it should not use this key anymore.
+\n
+You fall back to unencrypted communications, and you can establish a new secure channel. Are you sure?
 """, comment: "reset partner key message")
         let confirm = NSLocalizedString("Yes, confirm", comment: "Re Confirm button title")
         UIUtils.showTwoButtonAlert(withTitle: title,
