@@ -82,9 +82,6 @@ extension OAuth2AccessToken: OAuth2AccessTokenProtocol {
     public func performAction(
         freshTokensBlock: @escaping (_ error: Error?, _ accessToken: String?) -> Void) {
         authState.performAction() { accessToken, idToken, error in
-            if let error = error {
-                Log.shared.error(error: error)
-            }
             freshTokensBlock(error, accessToken)
         }
     }
