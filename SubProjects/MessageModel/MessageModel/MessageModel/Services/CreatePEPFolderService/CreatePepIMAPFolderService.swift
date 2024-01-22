@@ -37,8 +37,8 @@ class CreatePepIMAPFolderService: OperationBasedService {
 
             for cdAccount in cdAccounts {
                 guard cdAccount.pEpSyncEnabled else {
-                    // We are not supposed to use pEp Sync with this account, thus we must not
-                    // create a pEp folder.
+                    // We are not supposed to use planck Sync with this account, thus we must not
+                    // create a planck folder.
                     // Nothing to do
                     continue
                 }
@@ -53,7 +53,7 @@ class CreatePepIMAPFolderService: OperationBasedService {
                                                                     imapConnection: imapConnection)
 
                 let createSuspiciousFolderOP = CreateIMAPSuspiciousFolderOperation(context: moc,
-                                                                     imapConnection: imapConnection)
+                                                                                   imapConnection: imapConnection)
 
                 let createPepFolderOP = CreateIMAPPepFolderOperation(context: moc,
                                                                      imapConnection: imapConnection)
