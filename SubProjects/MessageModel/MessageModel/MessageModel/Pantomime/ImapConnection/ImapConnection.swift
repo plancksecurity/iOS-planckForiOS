@@ -373,7 +373,7 @@ extension ImapConnection: CWServiceClient {
                     // If this was not a temporary server error, it will re-appear.
                     return
                 }
-                if let error = error {
+                if let _ = error {
                     self.runOnDelegate(logName: #function) { theDelegate in
                         theDelegate.authenticationFailedXOauth2(self, notification: notification)
                     }
