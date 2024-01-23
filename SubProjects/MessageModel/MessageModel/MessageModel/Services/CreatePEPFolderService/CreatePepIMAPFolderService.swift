@@ -54,13 +54,13 @@ class CreatePepIMAPFolderService: OperationBasedService {
 
                 let createSuspiciousFolderOP = CreateIMAPSuspiciousFolderOperation(context: moc,
                                                                                    imapConnection: imapConnection)
-
-                let createPepFolderOP = CreateIMAPPepFolderOperation(context: moc,
-                                                                     imapConnection: imapConnection)
+                
+                let createPlanckFolderOP = CreateIMAPPlanckFolderOperation(context: moc,
+                                                                           imapConnection: imapConnection)
                 operations.append(loginOP)
                 operations.append(fetchFoldersOP)
                 operations.append(createSuspiciousFolderOP)
-                operations.append(createPepFolderOP)
+                operations.append(createPlanckFolderOP)
             }
         }
         return operations
