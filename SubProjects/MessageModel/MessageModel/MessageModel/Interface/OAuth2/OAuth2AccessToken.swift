@@ -86,16 +86,13 @@ extension OAuth2AccessToken: OAuth2AccessTokenProtocol {
         }
     }
 
-    public func refresh() {
-        let authorized = authState.isAuthorized
-        authState.setNeedsTokenRefresh()
-        authState.performAction() { accessToken, idToken, error in
-            if let error = error {
-                Log.shared.log(error: error)
-            } else {
-                Log.shared.logInfo(message: "Could not refresh an outh2 token")
+    public func forceRefreshTokenOnAuthenticationError(
+        freshTokensBlock: @escaping (_ error: Error?, _ accessToken: String?) -> Void) {
+            let authorized = authState.isAuthorized
+            authState.setNeedsTokenRefresh()
+            authState.performAction() { accessToken, idToken, error in
+                freshTokensBlock(error, accessToken)
             }
-        }
     }
 
     // MARK: Own persistence code
