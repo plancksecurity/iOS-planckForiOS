@@ -216,7 +216,7 @@ extension SmtpConnection: CWServiceClient {
             smtpStatus.haveStartedTLS = true
             smtp.startTLS()
         } else {
-            if connectInfo.authMethod == .saslXoauth2,
+            if connectInfo.authMethod == .xoAuth2,
                 let theLoginName = connectInfo.loginName,
                 let token = accessToken {
                 // The CWIMAPStore seems to expect that that its delegate (us) processes

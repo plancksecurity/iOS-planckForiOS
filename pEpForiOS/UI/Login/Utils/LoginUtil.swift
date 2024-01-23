@@ -150,7 +150,7 @@ extension LoginUtil {
 
         // Note: auth method is never taken from LAS. We either have OAuth2,
         // as determined previously, or we will defer to pantomime to find out the best method.
-        theVerifiableAccount.authMethod = accessToken != nil ? .saslXoauth2 : nil
+        theVerifiableAccount.authMethod = accessToken != nil ? .xoAuth2 : nil
 
         theVerifiableAccount.verifiableAccountDelegate = self
         theVerifiableAccount.address = emailAddress

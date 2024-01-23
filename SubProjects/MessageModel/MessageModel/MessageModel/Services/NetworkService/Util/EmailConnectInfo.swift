@@ -124,7 +124,7 @@ class EmailConnectInfo: ConnectInfo {
     /// There is either the `loginPassword`, or this, but there should never exist both.
     /// If non-nil, the `authMethod` is expected to be `AuthMethod.saslXoauth2`.
     func accessToken() -> OAuth2AccessTokenProtocol? {
-        if authMethod == .saslXoauth2,
+        if authMethod == .xoAuth2,
             let payload = loginPassword {
             handleClassMappingsForNSKeyedUnarchiver()
             return OAuth2AccessToken.from(base64Encoded: payload) as? OAuth2AccessTokenProtocol

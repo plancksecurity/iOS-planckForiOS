@@ -364,7 +364,7 @@ extension ImapConnection: CWServiceClient {
     }
 
     func authenticationFailed(_ notification: Notification?) {
-        if connectInfo.authMethod == .saslXoauth2,
+        if connectInfo.authMethod == .xoAuth2,
            let token = accessToken {
             token.forceRefreshTokenOnAuthenticationError { [weak self] error, accessToken, idToken in
                 guard let self = self else {
@@ -465,7 +465,7 @@ extension ImapConnection: CWServiceClient {
         if connectInfo.connectionTransport == ConnectionTransport.startTLS
             && !state.hasStartedTLS {
             startTLS()
-        } else if connectInfo.authMethod == .saslXoauth2,
+        } else if connectInfo.authMethod == .xoAuth2,
             let theLoginName = connectInfo.loginName,
             let token = accessToken {
             let authMechanism = connectInfo.authMethod.rawValue

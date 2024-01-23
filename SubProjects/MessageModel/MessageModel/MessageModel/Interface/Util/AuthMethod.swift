@@ -20,7 +20,7 @@ public enum AuthMethod: String {
     case cramMD5 = "CRAM-MD5"
 
     /** Pantomime requires XOAUTH2 */
-    case saslXoauth2 = "XOAUTH2"
+    case xoAuth2 = "XOAUTH2"
 
     init(string: String?) {
         if let s = string  {
@@ -30,8 +30,8 @@ public enum AuthMethod: String {
                 self = .login
             } else if s.isEqual(AuthMethod.cramMD5.rawValue) {
                 self = .cramMD5
-            } else if s.isEqual(AuthMethod.saslXoauth2.rawValue) {
-                self = .saslXoauth2
+            } else if s.isEqual(AuthMethod.xoAuth2.rawValue) {
+                self = .xoAuth2
             } else {
                 self = .simple
             }

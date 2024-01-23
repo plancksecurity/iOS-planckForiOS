@@ -112,7 +112,7 @@ class EditableAccountSettingsViewModel {
         self.delegate = delegate
         self.appSettings = appSettings
         accountSettingsHelper = AccountSettingsHelper(account: account)
-        isOAuth2 = account.imapServer?.authMethod == AuthMethod.saslXoauth2.rawValue
+        isOAuth2 = account.imapServer?.authMethod == AuthMethod.xoAuth2.rawValue
         if isOAuth2 {
             if let payload = account.imapServer?.credentials.password ??
                 account.smtpServer?.credentials.password,
@@ -473,7 +473,7 @@ extension EditableAccountSettingsViewModel {
             if self.accessToken == nil {
                 Log.shared.errorAndCrash("Have to do OAUTH2, but lacking current token")
             }
-            theVerifier.authMethod = .saslXoauth2
+            theVerifier.authMethod = .xoAuth2
             theVerifier.accessToken = accessToken
             // OAUTH2 trumps any password
             theVerifier.imapPassword = nil

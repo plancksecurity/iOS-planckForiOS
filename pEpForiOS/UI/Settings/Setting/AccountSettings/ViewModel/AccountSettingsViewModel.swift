@@ -73,7 +73,7 @@ final class AccountSettingsViewModel {
         self.account = account
         self.delegate = delegate
         includeInUnifiedFolders = account.isIncludedInUnifiedFolders
-        isOAuth2 = account.imapServer?.authMethod == AuthMethod.saslXoauth2.rawValue
+        isOAuth2 = account.imapServer?.authMethod == AuthMethod.xoAuth2.rawValue
         self.generateSections()
     }
 
