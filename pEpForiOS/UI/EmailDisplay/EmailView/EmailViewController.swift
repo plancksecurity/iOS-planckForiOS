@@ -199,7 +199,7 @@ You fall back to unencrypted communications, and you can establish a new secure 
             Log.shared.lostMySelf()
             return
         }
-        let successMessage = NSLocalizedString("You have successfully reset your partner key.", comment: "Success Message - Reset Partner Key")
+        let successMessage = NSLocalizedString("Successfully reset the key", comment: "Success Message - Reset Partner Key")
         let title = NSLocalizedString("Reset Partner Key", comment: "Title - Reset Partner Key")
         UIUtils.showAlertWithOnlyCloseButton(title: title, message: successMessage) {
             vm.updateRating()
