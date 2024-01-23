@@ -12,6 +12,7 @@ import PlanckToolboxForExtensions
 #else
 import PlanckToolbox
 #endif
+
 // MARK: - DefaultImapConnectionDelegate
 
 class CreateIMAPPlanckFolderOperationSyncDelegate: DefaultImapConnectionDelegate {

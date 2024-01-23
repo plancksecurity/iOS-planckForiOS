@@ -29,7 +29,8 @@ class CreateIMAPFolderOperation: ImapSyncOperation {
          folderType: FolderType) {
         self.saveContextWhenDone = saveContextWhenDone
         self.folderType = folderType
-        super.init(context: context,
+        super.init(parentName: parentName,
+                   context: context,
                    errorContainer: errorContainer,
                    imapConnection: imapConnection)
     }

@@ -124,10 +124,12 @@ public class FetchImapFoldersService {
             blockingQueue.waitUntilAllOperationsAreFinished()
 
             if alsoCreatePEPFolder {
-                let createPlanckFolderOP = CreateIMAPPlanckFolderOperation(context: context,
-                                                                        errorContainer: errorContainer,
-                                                                        imapConnection: imapConnection,
-                                                                        saveContextWhenDone: saveContextWhenDone)
+                let createPlanckFolderOP = CreateIMAPFolderOperation(parentName: #function + "\(FolderType.pEpSync.rawValue)", 
+                                                                     context: context,
+                                                                     errorContainer: errorContainer,
+                                                                     imapConnection: imapConnection,
+                                                                     saveContextWhenDone: saveContextWhenDone,
+                                                                     folderType: .pEpSync)
                 blockingQueue.addOperation(createPlanckFolderOP)
                 blockingQueue.waitUntilAllOperationsAreFinished()
             }
