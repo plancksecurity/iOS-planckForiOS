@@ -90,7 +90,11 @@ extension OAuth2AccessToken: OAuth2AccessTokenProtocol {
         let authorized = authState.isAuthorized
         authState.setNeedsTokenRefresh()
         authState.performAction() { accessToken, idToken, error in
-            Log.shared.logInfo(message: "Fresh token? \(error)")
+            if let error = error {
+                Log.shared.log(error: error)
+            } else {
+                Log.shared.logInfo(message: "Could not refresh an outh2 token")
+            }
         }
     }
 
