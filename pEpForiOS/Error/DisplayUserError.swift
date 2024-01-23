@@ -26,8 +26,9 @@ struct DisplayUserError: LocalizedError {
         /// We could not login for some reason.
         case authenticationFailed
 
-        /// We could not login, Oauth2 reauthorization is probably needed.
-        case authenticationFailedSaslOAuth2
+        /// We could not login, OAuth2 reauthorization is probably needed,
+        /// since the user has zero control over a password here.
+        case authenticationFailedXOAuth2
 
         /// We could not send a message for some reason
         case messageNotSent
@@ -62,7 +63,7 @@ struct DisplayUserError: LocalizedError {
                     return false
                 #endif
             case .authenticationFailed,
-                    .authenticationFailedSaslOAuth2,
+                    .authenticationFailedXOAuth2,
                     .brokenServerConnectionImap,
                     .brokenServerConnectionSmtp,
                     .messageNotSent,
@@ -121,7 +122,7 @@ struct DisplayUserError: LocalizedError {
             switch imapError {
             case .authenticationFailed(_, let account):
                 extraInfo = account
-            case .authenticationFailedSaslXOAuth2(_, let account):
+            case .authenticationFailedXOAuth2(_, let account):
                 extraInfo = account
             case .illegalState(_):
                 break
@@ -202,8 +203,8 @@ struct DisplayUserError: LocalizedError {
             return .internalError
         case .authenticationFailed:
             return .authenticationFailed
-        case .authenticationFailedSaslXOAuth2:
-            return .authenticationFailedSaslOAuth2
+        case .authenticationFailedXOAuth2:
+            return .authenticationFailedXOAuth2
         case .connectionLost:
             return .brokenServerConnectionImap
         case .connectionTerminated:
@@ -329,7 +330,7 @@ struct DisplayUserError: LocalizedError {
             return NSLocalizedString("Login Failed",
                                      comment:
                 "Title of error alert shown to the user in case the authentication to IMAP or SMTP server failed.")
-        case .authenticationFailedSaslOAuth2:
+        case .authenticationFailedXOAuth2:
             return NSLocalizedString("OAuth Authentication Required",
                                      comment:
                 "Title of error alert shown to the user in case the OAuth2 session has been closed server-side, and a simple token refresh won't help")
@@ -382,7 +383,7 @@ struct DisplayUserError: LocalizedError {
                     comment:
                     "Error message shown to the user in case the authentication to IMAP or SMTP server failed.")
             }
-        case .authenticationFailedSaslOAuth2:
+        case .authenticationFailedXOAuth2:
             if let account = extraInfo {
                 return String.localizedStringWithFormat(
                     NSLocalizedString(

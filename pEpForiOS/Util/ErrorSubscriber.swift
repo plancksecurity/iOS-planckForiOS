@@ -29,7 +29,7 @@ public class ErrorSubscriber {
             switch imapError {
             case .authenticationFailed(_, let account):
                 return accountErrorShouldBeShown(account: account, serverType: .imap)
-            case .authenticationFailedSaslXOAuth2(_, let account):
+            case .authenticationFailedXOAuth2(_, let account):
                 return accountErrorShouldBeShown(account: account, serverType: .imap)
             case .illegalState(_),
                  .connectionLost(_),

@@ -375,7 +375,7 @@ extension ImapConnection: CWServiceClient {
                 }
                 if let error = error {
                     self.runOnDelegate(logName: #function) { theDelegate in
-                        theDelegate.authenticationFailedSaslXoauth2(self, notification: notification)
+                        theDelegate.authenticationFailedXOauth2(self, notification: notification)
                     }
                 } else {
                     // It looks like we successfully refreshed the token,

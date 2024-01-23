@@ -11,7 +11,7 @@ import Foundation
 protocol ImapConnectionDelegate: AnyObject {
     func authenticationCompleted(_ imapConnection: ImapConnectionProtocol, notification: Notification?)
     func authenticationFailed(_ imapConnection: ImapConnectionProtocol, notification: Notification?)
-    func authenticationFailedSaslXoauth2(_ imapConnection: ImapConnectionProtocol, notification: Notification?)
+    func authenticationFailedXOauth2(_ imapConnection: ImapConnectionProtocol, notification: Notification?)
     func connectionLost(_ imapConnection: ImapConnectionProtocol, notification: Notification?)
     func connectionTerminated(_ imapConnection: ImapConnectionProtocol, notification: Notification?)
     func connectionTimedOut(_ imapConnection: ImapConnectionProtocol, notification: Notification?)
