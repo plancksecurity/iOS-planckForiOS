@@ -87,11 +87,12 @@ extension OAuth2AccessToken: OAuth2AccessTokenProtocol {
     }
 
     public func forceRefreshTokenOnAuthenticationError(
-        freshTokensBlock: @escaping (_ error: Error?, _ accessToken: String?) -> Void) {
-            let authorized = authState.isAuthorized
+        freshTokensBlock: @escaping (_ error: Error?,
+                                     _ accessToken: String?,
+                                     _ idToken: String?) -> Void) {
             authState.setNeedsTokenRefresh()
             authState.performAction() { accessToken, idToken, error in
-                freshTokensBlock(error, accessToken)
+                freshTokensBlock(error, accessToken, idToken)
             }
     }
 
