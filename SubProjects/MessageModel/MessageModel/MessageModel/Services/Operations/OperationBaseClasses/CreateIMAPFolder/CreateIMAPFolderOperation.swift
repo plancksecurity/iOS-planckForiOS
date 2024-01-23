@@ -19,6 +19,7 @@ class CreateIMAPFolderOperation: ImapSyncOperation {
 
     private var saveContextWhenDone: Bool
     public private(set) var folderType: FolderType
+    private weak var delegate: CreateIMAPPlanckFolderOperationSyncDelegate?
 
     init(parentName: String,
          context: NSManagedObjectContext? = nil,
@@ -42,11 +43,11 @@ class CreateIMAPFolderOperation: ImapSyncOperation {
     }
     
     // Indicates whether a folder of the specified operation type exists locally in the given account
-    func folderExists(for cdAccount: CdAccount) -> Bool {
+    public func folderExists(for cdAccount: CdAccount) -> Bool {
         return CdFolder.by(folderType: folderType, account: cdAccount, context: privateMOC) != nil
     }
 
-    func createFolder(for cdAccount: CdAccount) {
+    public func createFolder(for cdAccount: CdAccount) {
         guard let folderName = createPlanckFolderName(for: cdAccount) else {
             handle(error: BackgroundError.ImapError.invalidAccount)
             return
@@ -56,7 +57,7 @@ class CreateIMAPFolderOperation: ImapSyncOperation {
 
     /// Creates a local folder.
     /// - note: MUST be called on privateMoc
-    func createLocalPlanckFolder() {
+    public func createLocalPlanckFolder() {
         guard
             let cdAccount = imapConnection.cdAccount(moc: privateMOC),
             let inbox = CdFolder.by(folderType: .inbox, account: cdAccount, context: privateMOC),
@@ -74,7 +75,7 @@ class CreateIMAPFolderOperation: ImapSyncOperation {
         localPlanckFolder.parent = inbox
     }
 
-    func createPlanckFolderName(for cdAccount: CdAccount) -> String? {
+    public func createPlanckFolderName(for cdAccount: CdAccount) -> String? {
         guard
             let seperator = CdFolder.folderSeparatorAsString(cdAccount: cdAccount),
             let inbox = CdFolder.by(folderType: .inbox, account: cdAccount, context: privateMOC),
@@ -88,7 +89,7 @@ class CreateIMAPFolderOperation: ImapSyncOperation {
         return planckFolderName
     }
     
-    func saveContext() {
+    public func saveContext() {
         if saveContextWhenDone {
             privateMOC.saveAndLogErrors()
         }
@@ -96,7 +97,7 @@ class CreateIMAPFolderOperation: ImapSyncOperation {
     
     // MARK: - Must subclass
 
-    func createSyncDelegate() -> ImapConnectionDelegate {
+    public func createSyncDelegate() -> ImapConnectionDelegate {
         return CreateIMAPPlanckFolderOperationSyncDelegate(errorHandler: self)
     }
 }
@@ -105,7 +106,7 @@ class CreateIMAPFolderOperation: ImapSyncOperation {
 
 extension CreateIMAPFolderOperation {
 
-    func handleFolderCreateCompleted() {
+    public func handleFolderCreateCompleted() {
         backgroundQueue.addOperation { [weak self] in
             guard let me = self else {
                 Log.shared.lostMySelf()
@@ -119,7 +120,7 @@ extension CreateIMAPFolderOperation {
         }
     }
 
-    func handleFolderCreateFailed() {
+    public func handleFolderCreateFailed() {
         // The server refused to let us create a folder. That can happen. GMX free accounts for
         // instance allow 10 custom folders only.
         // We silently ignore those errors.
