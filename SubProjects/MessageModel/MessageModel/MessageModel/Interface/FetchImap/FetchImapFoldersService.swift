@@ -124,15 +124,27 @@ public class FetchImapFoldersService {
             blockingQueue.waitUntilAllOperationsAreFinished()
 
             if alsoCreatePEPFolder {
-                let createPlanckFolderOP = CreateIMAPFolderOperation(parentName: #function + "\(FolderType.pEpSync.rawValue)", 
+                let syncFolderType = FolderType.pEpSync
+                let parentName = #function + "\(syncFolderType.rawValue)"
+                let createPlanckFolderOP = CreateIMAPFolderOperation(parentName: parentName,
                                                                      context: context,
                                                                      errorContainer: errorContainer,
                                                                      imapConnection: imapConnection,
                                                                      saveContextWhenDone: saveContextWhenDone,
-                                                                     folderType: .pEpSync)
+                                                                     folderType: syncFolderType)
+
                 blockingQueue.addOperation(createPlanckFolderOP)
                 blockingQueue.waitUntilAllOperationsAreFinished()
             }
+
+            let suspiciousFolderType = FolderType.suspicious
+            let suspiciousParentName = #function + "\(suspiciousFolderType.rawValue)"
+            let createSuspiciousFolderOP = CreateIMAPFolderOperation(parentName: suspiciousParentName,
+                                                                     context: context,
+                                                                     imapConnection: imapConnection,
+                                                                     folderType: suspiciousFolderType)
+            blockingQueue.addOperation(createSuspiciousFolderOP)
+            blockingQueue.waitUntilAllOperationsAreFinished()
 
             completion(!errorContainer.hasErrors)
         }
