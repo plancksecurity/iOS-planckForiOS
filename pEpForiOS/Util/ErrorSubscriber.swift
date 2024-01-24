@@ -12,8 +12,8 @@ import MessageModel
 import PlanckToolbox
 
 public class ErrorSubscriber {
-    /// Helper model to handle most of the OAuth2 authorization.
-    var oauthAuthorizer = OAuthAuthorizer()
+    /// OAuth2 (re)authorizers
+    var oauthAuthorizers = [String:OAuthAuthorizer]()
 
     private func errorShouldBeDisplayed(error: Error) -> Bool{
         if let smtpError = error as? SmtpSendError {

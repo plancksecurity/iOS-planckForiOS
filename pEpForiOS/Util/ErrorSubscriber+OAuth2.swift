@@ -9,7 +9,6 @@
 import Foundation
 
 import MessageModel
-import PlanckToolbox
 
 extension ErrorSubscriber {
     public func handleOAuth2AuthorizationError(error: Error) -> Bool {
@@ -44,15 +43,18 @@ extension ErrorSubscriber {
 
         /// Handles the OAuth2 reauthorization
         func handleReauthorization(accountEmail: String, scopes: [String]) {
-            let oauthType = oauthType(scopes: scopes)
-            Log.shared.logInfo(message: "Have OAuth2 type: \(oauthType)")
-            let vc = UIApplication.currentlyVisibleViewController()
-            oauthAuthorizer.delegate = self
-            let oauth2Authorizer = OAuth2ProviderFactory().oauth2Provider().createOAuth2Authorizer()
+            if oauthAuthorizers[accountEmail] != nil {
+                let oauthType = oauthType(scopes: scopes)
+                let vc = UIApplication.currentlyVisibleViewController()
+                let oauthAuthorizer = OAuthAuthorizer()
+                oauthAuthorizers[accountEmail] = oauthAuthorizer
+                oauthAuthorizer.delegate = self
+                let oauth2Authorizer = OAuth2ProviderFactory().oauth2Provider().createOAuth2Authorizer()
 
-            oauthAuthorizer.authorize(authorizer: oauth2Authorizer,
-                                      accountType: accountType(oauthType: oauthType),
-                                      viewController: vc)
+                oauthAuthorizer.authorize(authorizer: oauth2Authorizer,
+                                          accountType: accountType(oauthType: oauthType),
+                                          viewController: vc)
+            }
         }
 
         /// Presents the user a dialog with the error, giving him a choice of doing the reauthorization or not.
@@ -76,6 +78,8 @@ extension ErrorSubscriber {
 
 extension ErrorSubscriber: OAuthAuthorizerDelegate {
     func didAuthorize(oauth2Error: Error?, accessToken: MessageModel.OAuth2AccessTokenProtocol?) {
-        Log.shared.logInfo(message: "didAuthorize")
+        if let token = accessToken, let email = accessToken?.getEmail()  {
+            oauthAuthorizers.removeValue(forKey: email)
+        }
     }
 }
