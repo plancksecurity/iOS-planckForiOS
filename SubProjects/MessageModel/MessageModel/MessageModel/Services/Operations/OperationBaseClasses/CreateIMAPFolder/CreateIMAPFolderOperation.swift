@@ -95,10 +95,6 @@ class CreateIMAPFolderOperation: ImapSyncOperation {
             privateMOC.saveAndLogErrors()
         }
     }
-    
-    public func createSyncDelegate() -> ImapConnectionDelegate {
-        return CreateIMAPPlanckFolderOperationSyncDelegate(errorHandler: self)
-    }
 }
 
 // MARK: - Callbacks
@@ -137,7 +133,7 @@ extension CreateIMAPFolderOperation {
                 Log.shared.lostMySelf()
                 return
             }
-            me.syncDelegate = me.createSyncDelegate()
+            me.syncDelegate = CreateIMAPPlanckFolderOperationSyncDelegate(errorHandler: me)
             me.imapConnection.delegate = me.syncDelegate
 
             me.privateMOC.performAndWait {
