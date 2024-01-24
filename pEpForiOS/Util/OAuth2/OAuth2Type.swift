@@ -12,7 +12,7 @@ import Foundation
  The kind of endpoint/provider that should be used.
  Abstracts configuration.
  */
-enum OAuth2Type {
+enum OAuth2Type: CaseIterable {
     case google
     case o365
 }

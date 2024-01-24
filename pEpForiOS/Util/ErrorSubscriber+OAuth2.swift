@@ -23,7 +23,7 @@ extension ErrorSubscriber {
             // Default value, just in case.
             var oauthType = OAuth2Type.o365
 
-            for authType in [OAuth2Type.google, OAuth2Type.o365] {
+            for authType in OAuth2Type.allCases {
                 let configScopes = authType.oauth2Config()?.scopes ?? []
                 let s1 = Set(configScopes)
                 if !scopes.intersection(s1).isEmpty {
