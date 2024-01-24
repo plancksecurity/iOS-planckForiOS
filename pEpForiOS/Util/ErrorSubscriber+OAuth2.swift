@@ -39,7 +39,6 @@ extension ErrorSubscriber {
             switch oauthType {
             case .google: return VerifiableAccount.AccountType.gmail
             case .o365: return VerifiableAccount.AccountType.o365
-            default: return VerifiableAccount.AccountType.o365
             }
         }
 
