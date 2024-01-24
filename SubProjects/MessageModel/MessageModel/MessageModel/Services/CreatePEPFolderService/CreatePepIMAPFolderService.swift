@@ -52,12 +52,16 @@ class CreatePepIMAPFolderService: OperationBasedService {
                 let fetchFoldersOP = SyncFoldersFromServerOperation(context: moc,
                                                                     imapConnection: imapConnection)
                 
-                let createSuspiciousFolderOP = CreateIMAPFolderOperation(parentName: #function + "\(FolderType.suspicious.rawValue)",
+                let suspiciousFolderType = FolderType.suspicious
+                let suspiciousParentName = #function + "\(suspiciousFolderType.rawValue)"
+                let createSuspiciousFolderOP = CreateIMAPFolderOperation(parentName: suspiciousParentName,
                                                                          context: moc,
                                                                          imapConnection: imapConnection,
                                                                          folderType: .suspicious)
                 
-                let createPlanckFolderOP = CreateIMAPFolderOperation(parentName: #function + "\(FolderType.pEpSync.rawValue)",
+                let syncFolderType = FolderType.pEpSync
+                let syncParentName = #function + "\(syncFolderType.rawValue)"
+                let createPlanckFolderOP = CreateIMAPFolderOperation(parentName: syncParentName,
                                                                      context: moc,
                                                                      imapConnection: imapConnection,
                                                                      folderType: .pEpSync)
