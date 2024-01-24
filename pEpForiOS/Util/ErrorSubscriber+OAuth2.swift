@@ -9,6 +9,7 @@
 import Foundation
 
 import MessageModel
+import PlanckToolbox
 
 extension ErrorSubscriber {
     public func handleOAuth2AuthorizationError(error: Error) -> Bool {
@@ -60,11 +61,19 @@ extension ErrorSubscriber {
         /// Presents the user a dialog with the error, giving him a choice of doing the reauthorization or not.
         func handleReauthorization(accountEmail: String, scope: String?) {
             let scopes = (scope ?? "").components(separatedBy: " ")
+            if scopes.isEmpty {
+                Log.shared.errorAndCrash(message: "A valid OAuth2 scope is needed on XOAuth2 errors")
+                // Without a scope, we'll have to guess the OAuth2 provider, which is bad,
+                // but it's O365 anyways, right?
+            }
+
+            func handleReAuth() {
+                handleReauthorization(accountEmail: accountEmail, scopes: scopes)
+            }
+
             UIUtils.showTwoButtonAlert(withTitle: displayError.title,
                                        message: displayError.errorDescription,
-                                       positiveButtonAction: {
-                handleReauthorization(accountEmail: accountEmail,
-                                      scopes: scopes) })
+                                       positiveButtonAction: handleReAuth)
         }
 
         switch displayError.underlyingError {
