@@ -30,6 +30,10 @@ protocol EmailViewModelDelegate: AnyObject {
     func showExternalContent()
     /// Update the navigation bar badge
     func updateNavigationBarSecurityBadge(pEpRating: Rating)
+    /// Informs reset partner key succeed.
+    func resetPartnerKeySucceed()
+    /// Informs reset partner key failed
+    func resetPartnerKeyFailed()
 }
 
 //MARK: - EmailRowProtocol
@@ -95,6 +99,25 @@ class EmailViewModel {
         UIPasteboard.general.image = image.resizeIfExceedMaxWidth(maxWidth: maxWidth - margin)
     }
 
+    func handleResetPartnerKeyPressed() {
+        guard let from = message.from else { return }
+        from.resetTrust(completion: { [weak self] in
+            guard let me = self else {
+                return
+            }
+            DispatchQueue.main.async {
+                me.delegate?.resetPartnerKeySucceed()
+            }
+        }, errorCallback: { [weak self] in
+            guard let me = self else {
+                return
+            }
+            DispatchQueue.main.async {
+                me.delegate?.resetPartnerKeyFailed()
+            }
+        })
+    }
+    
     /// Get the Calendar Event Banner ViewModel.
     /// Or nil, if there is no events.
     /// - Returns: The Calendar Event Banner ViewModel
@@ -133,6 +156,16 @@ class EmailViewModel {
             return false
         }
         return body.containsExternalContent() && shouldHideExternalContent
+    }
+    
+    public var shouldShowThreeDotsButton: Bool {
+        return [Rating.mediaKeyEncryption,
+                Rating.mistrust,
+                Rating.b0rken,
+                Rating.underAttack,
+                Rating.trusted,
+                Rating.reliable,
+                Rating.trustedAndAnonymized].map { $0.toInt() }.contains(message.pEpRatingInt)
     }
 
     // Yields the HTML message body if we can show it in a secure way or we have non-empty HTML content at all
@@ -303,6 +336,7 @@ extension EmailViewModel {
         var bccsViewModels: [CollectionViewCellViewModel]
         var date: String?
         var image: UIImage?
+        var shouldShowThreeDotsButton: Bool
         var viewModel: MessageHeaderCellViewModel
     }
 
@@ -512,6 +546,7 @@ extension EmailViewModel {
                                   ccsViewModels: ccRecipientsVMs,
                                   bccsViewModels: bccRecipientsVMs,
                                   date: message.sent?.fullString(),
+                                  shouldShowThreeDotsButton: shouldShowThreeDotsButton,
                                   viewModel: headerCellViewModel)
         rows.append(headerRow)
 

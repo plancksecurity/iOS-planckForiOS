@@ -82,8 +82,12 @@ class EmailViewController: UIViewController {
         tableView.rowHeight = UITableView.automaticDimension
         tableView.estimatedRowHeight = 100
         setBackButtonAccessibilityLabel()
+        guard let vm = viewModel else {
+            Log.shared.errorAndCrash("VM not found")
+            return
+        }
     }
-
+    
     override func preferredContentSizeDidChange(forChildContentContainer container: UIContentContainer) {
         super.preferredContentSizeDidChange(forChildContentContainer: container)
         if let container = container as? CalendarEventBannerViewController, !bannerContainerView.isHidden {
@@ -139,7 +143,6 @@ class EmailViewController: UIViewController {
         }
     }
 
-
     @objc func copyToClip() {
         guard let vm = viewModel else {
             Log.shared.errorAndCrash("VM not found")
@@ -160,6 +163,53 @@ class EmailViewController: UIViewController {
             return
         }
         vm.handleShowExternalContentButtonPressed()
+    }
+    
+    @IBAction func dotsButtonPressed(_ sender: Any) {
+        let title = NSLocalizedString("Reset Partner Key", comment: "Title - Reset Partner Key")
+        let cancel = NSLocalizedString("Cancel", comment: "Cancel - Reset Partner Key")
+        let message = NSLocalizedString("""
+Resetting the public key of a recipient tells your planck that it should not use this key anymore.
+\n
+You fall back to unencrypted communications, and you can establish a new secure channel. Are you sure?
+""", comment: "reset partner key message")
+        let confirm = NSLocalizedString("Yes, confirm", comment: "Re Confirm button title")
+        UIUtils.showTwoButtonAlert(withTitle: title,
+                                   message: message,
+                                   cancelButtonText: cancel,
+                                   positiveButtonText: confirm,
+                                   cancelButtonAction: { [weak self] in
+            guard let me = self else {
+                Log.shared.lostMySelf()
+                return
+            }
+            me.dismiss()
+        }, positiveButtonAction: { [weak self] in
+            guard let me = self, let vm = me.viewModel else {
+                Log.shared.lostMySelf()
+                return
+            }
+            vm.handleResetPartnerKeyPressed()
+            
+        }, presenter: self)
+    }
+    
+    func resetPartnerKeySucceed() {
+        guard let vm = viewModel else {
+            Log.shared.lostMySelf()
+            return
+        }
+        let successMessage = NSLocalizedString("Successfully reset the key", comment: "Success Message - Reset Partner Key")
+        let title = NSLocalizedString("Reset Partner Key", comment: "Title - Reset Partner Key")
+        UIUtils.showAlertWithOnlyCloseButton(title: title, message: successMessage) {
+            vm.updateRating()
+        }
+    }
+    
+    func resetPartnerKeyFailed() {
+        let title = NSLocalizedString("Reset Partner Key", comment: "Title - Reset Partner Key")
+        let errorMessage = NSLocalizedString("Reset your partner key failed.", comment: "Failed Message - Reset Partner Key")
+        UIUtils.showAlertWithOnlyCloseButton(title: title, message: errorMessage)
     }
 }
 
@@ -538,8 +588,11 @@ extension EmailViewController {
         }
     }
 
-    private func setupHeader(cell: MessageHeaderCell, row: EmailViewModel.HeaderRow) {
-        cell.setup(row:row, shouldDisplayAll: shouldDisplayAll, delegate: self)
+    private func setupHeader(cell: MessageHeaderCell, 
+                             row: EmailViewModel.HeaderRow) {
+        cell.setup(row:row,
+                   shouldDisplayAll: shouldDisplayAll,
+                   delegate: self)
     }
 
     private func setupSubject(cell: MessageSubjectCell, with row: EmailViewModel.SubjectRow) {

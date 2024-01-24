@@ -16,6 +16,7 @@ protocol MessageHeaderCellDelegate: AnyObject {
 
 class MessageHeaderCell: UITableViewCell {
 
+    @IBOutlet private weak var threeDotsButton: UIButton!
     private static let emptyContactImage = UIImage(named: "empty-avatar")
 
     private var viewModel: MessageHeaderCellViewModel?
@@ -66,6 +67,8 @@ class MessageHeaderCell: UITableViewCell {
             Log.shared.errorAndCrash("VM not found")
             return
         }
+
+        threeDotsButton.isHidden = !row.shouldShowThreeDotsButton
 
         //Collection view containers
         bccContainer.isHidden = row.bccsViewModels.isEmpty
