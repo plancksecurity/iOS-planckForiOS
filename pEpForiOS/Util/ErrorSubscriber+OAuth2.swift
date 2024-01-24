@@ -12,7 +12,7 @@ import MessageModel
 import PlanckToolbox
 
 extension ErrorSubscriber {
-    public func handleOAuth2AuthorizationError(error: Error) -> Bool {
+    func handleOAuth2AuthorizationError(error: Error) -> Bool {
         guard let displayError = DisplayUserError(withError: error) else {
             return false
         }
