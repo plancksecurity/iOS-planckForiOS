@@ -307,7 +307,7 @@ class EmailListViewModel: EmailDisplayViewModel {
         }
     }
 
-    public func moveMailsToSubscriptionIfNeeded() {
+    public func moveMailsToSuspiciousIfPossible() {
         let result = messageQueryResults.all.filter { SuspiciousMessageUtil.isDangerous(message: $0) }
         result.forEach { message in
             if let folder = Folder.by(account: message.parent.account, folderType: .suspicious) {
