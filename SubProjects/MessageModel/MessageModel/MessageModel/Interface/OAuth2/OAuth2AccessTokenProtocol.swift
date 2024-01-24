@@ -23,6 +23,8 @@ public protocol OAuth2AccessTokenProtocol: NSSecureCoding {
 
     func getName() -> String?
 
+    func scope() -> String?
+
     // MARK: Refreshing tokens
 
     func performAction(

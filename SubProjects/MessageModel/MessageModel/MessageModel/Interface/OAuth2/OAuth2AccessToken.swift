@@ -78,7 +78,10 @@ public class OAuth2AccessToken: NSObject, NSSecureCoding {
 }
 
 extension OAuth2AccessToken: OAuth2AccessTokenProtocol {
-
+    public func scope() -> String? {
+        return authState.scope
+    }
+    
     public func performAction(
         freshTokensBlock: @escaping (_ error: Error?, _ accessToken: String?) -> Void) {
         authState.performAction() { accessToken, idToken, error in

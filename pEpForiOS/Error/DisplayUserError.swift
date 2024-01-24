@@ -79,10 +79,13 @@ struct DisplayUserError: LocalizedError {
 
     /// The type of the DisplayUserError. Meant to give clients the chance to handle different
     /// errors differentelly or even ignore certain types.
-    let type:ErrorType
+    let type: ErrorType
 
     /// Some error types have extra info to be used
     var extraInfo: String?
+
+    /// If this is an OAuth2 authorization error, the scope will be stored here.
+    var oauth2Scope: String?
 
     /// Contains the underlying `NSError`'s `localizedDescription`, if available.
     var errorString: String?
@@ -95,6 +98,8 @@ struct DisplayUserError: LocalizedError {
     ///             user friendly error otherwize.
     init?(withError error: Error) {
         extraInfo = nil
+        oauth2Scope = nil
+
         if let displayUserError = error as? DisplayUserError {
             self = displayUserError
         } else if let smtpError = error as? SmtpSendError {
@@ -122,8 +127,9 @@ struct DisplayUserError: LocalizedError {
             switch imapError {
             case .authenticationFailed(_, let account):
                 extraInfo = account
-            case .authenticationFailedXOAuth2(_, let account):
+            case .authenticationFailedXOAuth2(_, let account, let scope):
                 extraInfo = account
+                oauth2Scope = scope
             case .illegalState(_):
                 break
             case .connectionLost(_):

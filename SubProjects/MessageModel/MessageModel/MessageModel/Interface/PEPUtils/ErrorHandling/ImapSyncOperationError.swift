@@ -12,7 +12,7 @@ public enum ImapSyncOperationError: Error, Equatable {
      */
     case illegalState(FunctionName)
     case authenticationFailed(FunctionName, String)
-    case authenticationFailedXOAuth2(FunctionName, String)
+    case authenticationFailedXOAuth2(FunctionName, String, String?)
     case connectionLost(FunctionName)
     case connectionTerminated(FunctionName)
     case connectionTimedOut(FunctionName)
