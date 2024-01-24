@@ -36,7 +36,7 @@ extension UIUtils {
         }
 
         /// Handles the OAuth2 reauthorization
-        func handleReauthorization(scopes: [String]) {
+        func handleReauthorization(accountEmail: String, scopes: [String]) {
             let oauthType = oauthType(scopes: scopes)
             Log.shared.logInfo(message: "Have OAuth2 type: \(oauthType)")
         }
@@ -46,7 +46,9 @@ extension UIUtils {
             let scopes = (scope ?? "").components(separatedBy: " ")
             showTwoButtonAlert(withTitle: displayError.title,
                                message: displayError.errorDescription,
-                               positiveButtonAction: { handleReauthorization(scopes: scopes) })
+                               positiveButtonAction: {
+                handleReauthorization(accountEmail: accountEmail,
+                                      scopes: scopes) })
         }
 
         switch displayError.underlyingError {
