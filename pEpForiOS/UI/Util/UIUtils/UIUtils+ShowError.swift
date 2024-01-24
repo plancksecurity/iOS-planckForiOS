@@ -62,8 +62,22 @@ extension UIUtils {
         guard let displayError = DisplayUserError(withError: error) else {
             return false
         }
+
+        /// Handles the OAuth2 reauthorization
+        func handleReauthorization() {
+            Log.shared.logInfo(message: "handleReauthorization")
+        }
+
+        /// Presents the user a dialog with the error, giving him a choice of doing the reauthorization or not.
+        func handleReauthorization(accountEmail: String, scope: String?) {
+            showTwoButtonAlert(withTitle: displayError.title,
+                               message: displayError.errorDescription,
+                               positiveButtonAction: handleReauthorization)
+        }
+
         switch displayError.underlyingError {
         case ImapSyncOperationError.authenticationFailedXOAuth2(_, let accountEmail, let scope):
+            handleReauthorization(accountEmail: accountEmail, scope: scope)
             return true
         default: return false
         }
