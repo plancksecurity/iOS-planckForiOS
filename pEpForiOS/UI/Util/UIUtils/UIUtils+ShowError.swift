@@ -9,6 +9,7 @@
 import Foundation
 
 import PlanckToolbox
+import MessageModel
 
 extension UIUtils {
     /// Converts the error to a user frienldy DisplayUserError and presents it to the user
@@ -40,7 +41,10 @@ extension UIUtils {
                         UIUtils.showServerNotAvailableBanner()
                     }
                 } else {
-                    showAlertWithOnlyPositiveButton(title: displayError.title, message: displayError.errorDescription)
+                    let handled = handleOAuth2AuthorizationError(error: error)
+                    if !handled {
+                        showAlertWithOnlyPositiveButton(title: displayError.title, message: displayError.errorDescription)
+                    }
                 }
             }
         }
@@ -51,6 +55,17 @@ extension UIUtils {
             DispatchQueue.main.async {
                 workBlock()
             }
+        }
+    }
+
+    static public func handleOAuth2AuthorizationError(error: Error) -> Bool {
+        guard let displayError = DisplayUserError(withError: error) else {
+            return false
+        }
+        switch displayError.underlyingError {
+        case ImapSyncOperationError.authenticationFailedXOAuth2(_, let accountEmail, let scope):
+            return true
+        default: return false
         }
     }
 }

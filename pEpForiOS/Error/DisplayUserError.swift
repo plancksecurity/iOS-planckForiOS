@@ -90,6 +90,8 @@ struct DisplayUserError: LocalizedError {
     /// Contains the underlying `NSError`'s `localizedDescription`, if available.
     var errorString: String?
 
+    let underlyingError: Error
+
     /// Creates a user friendly error to present in an alert or such. I case the error type is not
     /// suitable to display to the user (should fail silently), nil is returned.
     ///
@@ -102,76 +104,80 @@ struct DisplayUserError: LocalizedError {
 
         if let displayUserError = error as? DisplayUserError {
             self = displayUserError
-        } else if let smtpError = error as? SmtpSendError {
-            type = DisplayUserError.type(forError: smtpError)
-            switch smtpError {
-            case .authenticationFailed( _, let account):
-                extraInfo = account
-            case .illegalState(_):
-                break
-            case .connectionLost(_, let errorDescription):
-                errorString = errorDescription
-                break
-            case .connectionTerminated(_):
-                break
-            case .connectionTimedOut(_, let errorDescription):
-                errorString = errorDescription
-                break
-            case .badResponse(_):
-                break
-            case .clientCertificateNotAccepted:
-                break
-            }
-        } else if let imapError = error as? ImapSyncOperationError {
-            type = DisplayUserError.type(forError: imapError)
-            switch imapError {
-            case .authenticationFailed(_, let account):
-                extraInfo = account
-            case .authenticationFailedXOAuth2(_, let account, let scope):
-                extraInfo = account
-                oauth2Scope = scope
-            case .illegalState(_):
-                break
-            case .connectionLost(_):
-                break
-            case .connectionTerminated(_):
-                break
-            case .connectionTimedOut(_):
-                break
-            case .folderAppendFailed:
-                break
-            case .badResponse(_):
-                break
-            case .actionFailed:
-                break
-            case .clientCertificateNotAccepted:
-                break
-            }
-        } else if let oauthInternalError = error as? OAuthAuthorizerError {
-            type = DisplayUserError.type(forError: oauthInternalError)
-        } else if let oauthError = error as? OAuth2AuthorizationError {
-            type = DisplayUserError.type(forError: oauthError)
-        }
-            // BackgroundError
-        else if let err = error as? BackgroundError.GeneralError {
-            type = DisplayUserError.type(forError: err)
-        } else if let err = error as? BackgroundError.ImapError {
-            type = DisplayUserError.type(forError: err)
-        } else if let err = error as? BackgroundError.SmtpError {
-            type = DisplayUserError.type(forError: err)
-        } else if let err = error as? BackgroundError.CoreDataError {
-            type = DisplayUserError.type(forError: err)
-        } else if let err = error as? BackgroundError.PepError {
-            type = DisplayUserError.type(forError: err)
-        }
-            // Login view controller
-        else if let err = error as? LoginViewController.LoginError {
-            type = .loginValidationError
-            foreignDescription = err.localizedDescription
         } else {
-            // Unknown
-            foreignDescription = error.localizedDescription
-            type = .unknownError
+            underlyingError = error
+            
+            if let smtpError = error as? SmtpSendError {
+                type = DisplayUserError.type(forError: smtpError)
+                switch smtpError {
+                case .authenticationFailed( _, let account):
+                    extraInfo = account
+                case .illegalState(_):
+                    break
+                case .connectionLost(_, let errorDescription):
+                    errorString = errorDescription
+                    break
+                case .connectionTerminated(_):
+                    break
+                case .connectionTimedOut(_, let errorDescription):
+                    errorString = errorDescription
+                    break
+                case .badResponse(_):
+                    break
+                case .clientCertificateNotAccepted:
+                    break
+                }
+            } else if let imapError = error as? ImapSyncOperationError {
+                type = DisplayUserError.type(forError: imapError)
+                switch imapError {
+                case .authenticationFailed(_, let account):
+                    extraInfo = account
+                case .authenticationFailedXOAuth2(_, let account, let scope):
+                    extraInfo = account
+                    oauth2Scope = scope
+                case .illegalState(_):
+                    break
+                case .connectionLost(_):
+                    break
+                case .connectionTerminated(_):
+                    break
+                case .connectionTimedOut(_):
+                    break
+                case .folderAppendFailed:
+                    break
+                case .badResponse(_):
+                    break
+                case .actionFailed:
+                    break
+                case .clientCertificateNotAccepted:
+                    break
+                }
+            } else if let oauthInternalError = error as? OAuthAuthorizerError {
+                type = DisplayUserError.type(forError: oauthInternalError)
+            } else if let oauthError = error as? OAuth2AuthorizationError {
+                type = DisplayUserError.type(forError: oauthError)
+            }
+            // BackgroundError
+            else if let err = error as? BackgroundError.GeneralError {
+                type = DisplayUserError.type(forError: err)
+            } else if let err = error as? BackgroundError.ImapError {
+                type = DisplayUserError.type(forError: err)
+            } else if let err = error as? BackgroundError.SmtpError {
+                type = DisplayUserError.type(forError: err)
+            } else if let err = error as? BackgroundError.CoreDataError {
+                type = DisplayUserError.type(forError: err)
+            } else if let err = error as? BackgroundError.PepError {
+                type = DisplayUserError.type(forError: err)
+            }
+            // Login view controller
+            else if let err = error as? LoginViewController.LoginError {
+                type = .loginValidationError
+                foreignDescription = err.localizedDescription
+            } else {
+                // Unknown
+                foreignDescription = error.localizedDescription
+                type = .unknownError
+            }
         }
         if !type.shouldBeShownToUser {
             return nil
