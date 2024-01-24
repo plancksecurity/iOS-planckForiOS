@@ -20,7 +20,7 @@ extension ErrorSubscriber {
         func oauthType(scopes: [String]) -> OAuth2Type {
             let scopes = Set(scopes)
 
-            // Please note the default
+            // Default value, just in case.
             var oauthType = OAuth2Type.o365
 
             for authType in [OAuth2Type.google, OAuth2Type.o365] {
