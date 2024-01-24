@@ -104,7 +104,10 @@ extension ErrorSubscriber: ErrorPropagatorSubscriber {
                 return
             }
             if me.errorShouldBeDisplayed(error: error) {
-                UIUtils.show(error: error)
+                let handled = me.handleOAuth2AuthorizationError(error: error)
+                if !handled {
+                    UIUtils.show(error: error)
+                }
             }
         }
     }

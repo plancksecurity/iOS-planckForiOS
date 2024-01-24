@@ -40,10 +40,7 @@ extension UIUtils {
                         UIUtils.showServerNotAvailableBanner()
                     }
                 } else {
-                    let handled = handleOAuth2AuthorizationError(error: error)
-                    if !handled {
-                        showAlertWithOnlyPositiveButton(title: displayError.title, message: displayError.errorDescription)
-                    }
+                    showAlertWithOnlyPositiveButton(title: displayError.title, message: displayError.errorDescription)
                 }
             }
         }

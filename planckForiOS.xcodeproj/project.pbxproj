@@ -378,7 +378,6 @@
 		4356FFE52135448600804089 /* ReplyAllPossibleChecker.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4356FFE42135448600804089 /* ReplyAllPossibleChecker.swift */; };
 		4356FFE721354A4B00804089 /* ReplyAllPossibleCheckerProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4356FFE621354A4B00804089 /* ReplyAllPossibleCheckerProtocol.swift */; };
 		4356FFEC21356CB600804089 /* ReplyAllPossibleCheckerTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4356FFEB21356CB600804089 /* ReplyAllPossibleCheckerTest.swift */; };
-		4369E14C2B61313A00884FC1 /* UIUtils+OAuth2.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4369E14B2B61313A00884FC1 /* UIUtils+OAuth2.swift */; };
 		4369E14E2B613B3C00884FC1 /* ErrorSubscriber+OAuth2.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4369E14D2B613B3C00884FC1 /* ErrorSubscriber+OAuth2.swift */; };
 		436C003B2A03D0E600C2B3DD /* PlanckToolbox.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 436C003A2A03D0E600C2B3DD /* PlanckToolbox.framework */; };
 		436C003D2A03D16400C2B3DD /* PlanckToolbox.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 436C003A2A03D0E600C2B3DD /* PlanckToolbox.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
@@ -1010,7 +1009,6 @@
 		4356FFE42135448600804089 /* ReplyAllPossibleChecker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReplyAllPossibleChecker.swift; sourceTree = "<group>"; };
 		4356FFE621354A4B00804089 /* ReplyAllPossibleCheckerProtocol.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReplyAllPossibleCheckerProtocol.swift; sourceTree = "<group>"; };
 		4356FFEB21356CB600804089 /* ReplyAllPossibleCheckerTest.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ReplyAllPossibleCheckerTest.swift; sourceTree = "<group>"; };
-		4369E14B2B61313A00884FC1 /* UIUtils+OAuth2.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIUtils+OAuth2.swift"; sourceTree = "<group>"; };
 		4369E14D2B613B3C00884FC1 /* ErrorSubscriber+OAuth2.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "ErrorSubscriber+OAuth2.swift"; sourceTree = "<group>"; };
 		436C003A2A03D0E600C2B3DD /* PlanckToolbox.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = PlanckToolbox.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		436C5A8D1CFEDF59006A195F /* UIHelper.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UIHelper.swift; sourceTree = "<group>"; };
@@ -1435,7 +1433,6 @@
 				5BC0F93726A9953D0089760D /* UIUtils+SystemSettings.swift */,
 				5B5BBC2A26A8240500430F73 /* UIUtils+CalendarEvents.swift */,
 				434C1A9025D40CEC00F622DB /* UIUtils+ShowError.swift */,
-				4369E14B2B61313A00884FC1 /* UIUtils+OAuth2.swift */,
 				1521B790241BDCD9000EAE57 /* UIUtils+Alerts.swift */,
 				5B0B339C24AC85E800CABD0B /* UIUtils+Passphrase.swift */,
 				1521B792241BDD33000EAE57 /* UIUtils+ActionSheets.swift */,
@@ -3549,7 +3546,6 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				4369E14C2B61313A00884FC1 /* UIUtils+OAuth2.swift in Sources */,
 				002375D420DCF59D00663961 /* MoveToAccountViewController.swift in Sources */,
 				437E9BA9237AFB7F00E9A847 /* UIStoryboard+Constants.swift in Sources */,
 				4315E4C3201242BB00F68763 /* OAuth2Type+Extension.swift in Sources */,
