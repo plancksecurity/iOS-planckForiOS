@@ -17,7 +17,7 @@ extension ErrorSubscriber {
             return false
         }
 
-        func oauthType(scopes: [String]) ->OAuth2Type {
+        func oauthType(scopes: [String]) -> OAuth2Type {
             let scopes = Set(scopes)
 
             // Please note the default
