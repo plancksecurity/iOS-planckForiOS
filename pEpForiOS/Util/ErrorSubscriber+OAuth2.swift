@@ -35,10 +35,25 @@ extension ErrorSubscriber {
             return oauthType
         }
 
+        func accountType(oauthType: OAuth2Type) -> VerifiableAccount.AccountType {
+            switch oauthType {
+            case .google: return VerifiableAccount.AccountType.gmail
+            case .o365: return VerifiableAccount.AccountType.o365
+            default: return VerifiableAccount.AccountType.o365
+            }
+        }
+
         /// Handles the OAuth2 reauthorization
         func handleReauthorization(accountEmail: String, scopes: [String]) {
             let oauthType = oauthType(scopes: scopes)
             Log.shared.logInfo(message: "Have OAuth2 type: \(oauthType)")
+            let vc = UIApplication.currentlyVisibleViewController()
+            oauthAuthorizer.delegate = self
+            let oauth2Authorizer = OAuth2ProviderFactory().oauth2Provider().createOAuth2Authorizer()
+
+            oauthAuthorizer.authorize(authorizer: oauth2Authorizer,
+                                      accountType: accountType(oauthType: oauthType),
+                                      viewController: vc)
         }
 
         /// Presents the user a dialog with the error, giving him a choice of doing the reauthorization or not.
@@ -57,5 +72,11 @@ extension ErrorSubscriber {
             return true
         default: return false
         }
+    }
+}
+
+extension ErrorSubscriber: OAuthAuthorizerDelegate {
+    func didAuthorize(oauth2Error: Error?, accessToken: MessageModel.OAuth2AccessTokenProtocol?) {
+        Log.shared.logInfo(message: "didAuthorize")
     }
 }
