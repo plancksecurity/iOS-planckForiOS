@@ -96,8 +96,6 @@ class CreateIMAPFolderOperation: ImapSyncOperation {
         }
     }
     
-    // MARK: - Must subclass
-
     public func createSyncDelegate() -> ImapConnectionDelegate {
         return CreateIMAPPlanckFolderOperationSyncDelegate(errorHandler: self)
     }
