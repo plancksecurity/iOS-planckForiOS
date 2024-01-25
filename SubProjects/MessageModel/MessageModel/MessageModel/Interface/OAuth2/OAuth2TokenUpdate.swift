@@ -14,7 +14,10 @@ public class OAuth2TokenUpdate {
     static public func updateToken(credentials: CdServerCredentials,
                                    accountEmail: String,
                                    accessToken: OAuth2AccessTokenProtocol) {
-        Log.shared.logInfo(message: "Update credentials \(credentials)")
+        if let key = credentials.key {
+            let payload = accessToken.persistBase64Encoded()
+            KeyChain.updateCreateOrDelete(password: payload, forKey: key)
+        }
     }
 
     static public func updateTokens(accountEmail: String, accessToken: OAuth2AccessTokenProtocol) {
