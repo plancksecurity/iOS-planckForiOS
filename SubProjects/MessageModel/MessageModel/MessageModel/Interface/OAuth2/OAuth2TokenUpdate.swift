@@ -13,11 +13,10 @@ import PlanckToolbox
 public class OAuth2TokenUpdate {
     static public func updateToken(credentials: CdServerCredentials,
                                    accountEmail: String,
-                                   accessToken: OAuth2AccessTokenProtocol,
+                                   payload: String,
                                    keysAlreadyUpdated: inout Set<String>) {
         if let key = credentials.key {
             if !keysAlreadyUpdated.contains(key) {
-                let payload = accessToken.persistBase64Encoded()
                 KeyChain.updateCreateOrDelete(password: payload, forKey: key)
                 keysAlreadyUpdated.insert(key)
             }
@@ -29,6 +28,7 @@ public class OAuth2TokenUpdate {
         session.perform {
             let moc = session.moc
             if let account = CdAccount.by(address: accountEmail, context: moc) {
+                let payload = accessToken.persistBase64Encoded()
                 var keysAlreadyUpdated = Set<String>()
                 if let servers = account.servers {
                     for server in servers {
@@ -36,7 +36,7 @@ public class OAuth2TokenUpdate {
                             if let credentials = server.credentials {
                                 updateToken(credentials: credentials,
                                             accountEmail: accountEmail,
-                                            accessToken: accessToken,
+                                            payload: payload,
                                             keysAlreadyUpdated: &keysAlreadyUpdated)
                             }
                         }
