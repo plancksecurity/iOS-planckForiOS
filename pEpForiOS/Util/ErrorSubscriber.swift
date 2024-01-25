@@ -15,7 +15,7 @@ public class ErrorSubscriber {
     /// OAuth2 (re)authorizers
     var oauthAuthorizers = [String:OAuthAuthorizer]()
 
-    private func errorShouldBeDisplayed(error: Error) -> Bool{
+    private func errorShouldBeDisplayed(error: Error) -> Bool {
         if let smtpError = error as? SmtpSendError {
             switch smtpError {
             case .authenticationFailed(_, let account):
