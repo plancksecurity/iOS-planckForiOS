@@ -91,6 +91,7 @@ extension ErrorSubscriber: OAuthAuthorizerDelegate {
             // In any case, if we have a token with an email,
             // let this authorizer get cleaned up, no matter what.
             oauthAuthorizers.removeValue(forKey: email)
+            OAuth2TokenUpdate.updateTokens(accountEmail: email, accessToken: token)
         }
     }
 }
