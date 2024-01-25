@@ -108,6 +108,8 @@ struct DisplayUserError: LocalizedError {
                 switch smtpError {
                 case .authenticationFailed( _, let account):
                     extraInfo = account
+                case .authenticationFailedXOAuth2(_, let account, _):
+                    extraInfo = account
                 case .illegalState(_):
                     break
                 case .connectionLost(_, let errorDescription):
@@ -189,6 +191,8 @@ struct DisplayUserError: LocalizedError {
             return .internalError
         case .authenticationFailed:
             return .authenticationFailed
+        case .authenticationFailedXOAuth2:
+            return .authenticationFailedXOAuth2
         case .connectionLost:
             return .brokenServerConnectionSmtp
         case .connectionTerminated:

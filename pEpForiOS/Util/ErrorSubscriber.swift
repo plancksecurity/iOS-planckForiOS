@@ -20,6 +20,8 @@ public class ErrorSubscriber {
             switch smtpError {
             case .authenticationFailed(_, let account):
                 return accountErrorShouldBeShown(account: account, serverType: .smtp)
+            case .authenticationFailedXOAuth2(_, let account, _):
+                return accountErrorShouldBeShown(account: account, serverType: .smtp)
             case .illegalState(_),
                  .connectionLost(_, _),
                  .connectionTerminated(_),
