@@ -148,6 +148,8 @@ extension AccountTypeSelectorViewController: AccountTypeSelectorViewModelDelegat
                 me.handleLoginError(error: err)
             case .noImapConnectData, .noSmtpConnectData:
                 me.handleLoginError(error: LoginViewController.LoginError.noConnectData)
+            case .unknown(let err):
+                me.handleLoginError(error: err)
             }
         }
     }
