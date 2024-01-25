@@ -128,7 +128,7 @@ struct DisplayUserError: LocalizedError {
                 switch imapError {
                 case .authenticationFailed(_, let account):
                     extraInfo = account
-                case .authenticationFailedXOAuth2(_, let account, let scope):
+                case .authenticationFailedXOAuth2(_, let account, _):
                     extraInfo = account
                 case .illegalState(_):
                     break
