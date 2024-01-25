@@ -87,6 +87,10 @@ struct DisplayUserError: LocalizedError {
     /// Contains the underlying `NSError`'s `localizedDescription`, if available.
     var errorString: String?
 
+    /// The lower-level error that caused this error to be potentially displayed to the user.
+    ///
+    /// Gives the code more "inspection capability" to find out what exactly went wrong,
+    /// and what to do about it. Used e.g. for handling OAuth2 authentication errors.
     let underlyingError: Error
 
     /// Creates a user friendly error to present in an alert or such. I case the error type is not
