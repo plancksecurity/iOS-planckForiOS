@@ -62,7 +62,7 @@ extension ErrorSubscriber {
         func handleReauthorization(accountEmail: String, scope: String?) {
             let scopes = (scope ?? "").components(separatedBy: " ")
             if scopes.isEmpty {
-                Log.shared.errorAndCrash(message: "A valid OAuth2 scope is needed on XOAuth2 errors")
+                Log.shared.errorAndCrash(message: "A valid OAuth2 scope should be defined for XOAuth2 errors")
                 // Without a scope, we'll have to guess the OAuth2 provider, which is bad,
                 // but it's O365 anyways, right?
             }
