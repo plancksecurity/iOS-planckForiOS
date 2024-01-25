@@ -11,6 +11,12 @@ import Foundation
 import PlanckToolbox
 
 public class OAuth2TokenUpdate {
+    static public func updateToken(credentials: CdServerCredentials,
+                                   accountEmail: String,
+                                   accessToken: OAuth2AccessTokenProtocol) {
+        Log.shared.logInfo(message: "Update credentials \(credentials)")
+    }
+
     static public func updateTokens(accountEmail: String, accessToken: OAuth2AccessTokenProtocol) {
         let session = Session()
         session.perform {
@@ -20,7 +26,9 @@ public class OAuth2TokenUpdate {
                     for server in servers {
                         if let server = server as? CdServer {
                             if let credentials = server.credentials {
-                                Log.shared.logInfo(message: "Have credentials \(credentials)")
+                                updateToken(credentials: credentials,
+                                            accountEmail: accountEmail,
+                                            accessToken: accessToken)
                             }
                         }
                     }
