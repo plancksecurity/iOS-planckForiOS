@@ -33,14 +33,6 @@ extension ErrorSubscriber {
         return oauthType
     }
 
-    // TODO
-    func accountType(oauthType: OAuth2Type) -> VerifiableAccount.AccountType {
-        switch oauthType {
-        case .google: return VerifiableAccount.AccountType.gmail
-        case .o365: return VerifiableAccount.AccountType.o365
-        }
-    }
-
     /// Handles the OAuth2 reauthentication.
     func handleReauthentication(accountEmail: String, scopes: [String]) {
         if oauthAuthorizers[accountEmail] == nil {
@@ -50,9 +42,10 @@ extension ErrorSubscriber {
             oauthAuthorizers[accountEmail] = oauthAuthorizer
             oauthAuthorizer.delegate = self
             let oauth2Authorizer = OAuth2ProviderFactory().oauth2Provider().createOAuth2Authorizer()
+            let accountType = oauthType.accountType()
 
             oauthAuthorizer.authorize(authorizer: oauth2Authorizer,
-                                      accountType: accountType(oauthType: oauthType),
+                                      accountType: accountType,
                                       viewController: vc)
         }
     }

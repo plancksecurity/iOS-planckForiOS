@@ -21,4 +21,11 @@ extension OAuth2Type {
             return nil
         }
     }
+
+    func accountType() -> VerifiableAccount.AccountType {
+        switch self {
+        case .google: return VerifiableAccount.AccountType.gmail
+        case .o365: return VerifiableAccount.AccountType.o365
+        }
+    }
 }
