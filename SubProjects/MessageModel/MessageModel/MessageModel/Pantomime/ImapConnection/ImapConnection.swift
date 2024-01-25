@@ -480,7 +480,9 @@ extension ImapConnection: CWServiceClient {
                     Log.shared.error("%@", "\(err)")
                     if let theSelf = self {
                         theSelf.runOnDelegate(logName: #function) { theDelegate in
-                            theDelegate.authenticationFailed(theSelf, notification: nil)
+                            theDelegate.authenticationFailedXOauth2(theSelf,
+                                                                    oauth2Scope: token.scope(),
+                                                                    notification: nil)
                         }
                     }
                     group.leave()
