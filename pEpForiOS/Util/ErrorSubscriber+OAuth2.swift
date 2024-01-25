@@ -88,6 +88,8 @@ extension ErrorSubscriber {
 extension ErrorSubscriber: OAuthAuthorizerDelegate {
     func didAuthorize(oauth2Error: Error?, accessToken: MessageModel.OAuth2AccessTokenProtocol?) {
         if let token = accessToken, let email = accessToken?.getEmail()  {
+            // In any case, if we have a token with an email,
+            // let this authorizer get cleaned up, no matter what.
             oauthAuthorizers.removeValue(forKey: email)
         }
     }
