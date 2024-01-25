@@ -273,8 +273,6 @@ struct DisplayUserError: LocalizedError {
             return .brokenServerConnectionSmtp
         case .authenticationFailed:
             return .authenticationFailed
-        case .authenticationFailedXOAuth2:
-            return .authenticationFailedXOAuth2
         case .connectionLost:
             return .brokenServerConnectionSmtp
         case .connectionTerminated:

@@ -55,7 +55,6 @@ public struct BackgroundError {
         case recipientIdentificationFailed(info: String?)
         case transactionResetFailed(info: String?)
         case authenticationFailed(info: String?)
-        case authenticationFailedXOAuth2(info: String?, String, String?)
         case connectionLost(info: String?)
         case connectionTerminated(info: String?)
         case connectionTimedOut(info: String?)
@@ -76,8 +75,6 @@ public struct BackgroundError {
             case .transactionResetFailed(let info):
                 return info
             case .authenticationFailed(let info):
-                return info
-            case .authenticationFailedXOAuth2(let info, _, _):
                 return info
             case .connectionLost(let info):
                 return info

@@ -377,7 +377,7 @@ extension EncryptAndSMTPSendMessageOperation: SmtpConnectionDelegate {
     }
 
     func authenticationFailedXOauth2(_ smtpConnection: SmtpConnectionProtocol, oauth2Scope: String?, notification: Notification?) {
-        let error = BackgroundError.SmtpError.authenticationFailedXOAuth2(info: comp, smtpConnection.accountAddress, oauth2Scope)
+        let error = SmtpSendError.authenticationFailedXOAuth2(#function, smtpConnection.accountAddress, oauth2Scope)
         handle(error: error, message: "authenticationFailedXOauth2")
     }
 
