@@ -11,7 +11,10 @@ import Foundation
 import MessageModel
 import PlanckToolbox
 
+/// OAuth2-related helper functions for reauthentication.
 extension ErrorSubscriber {
+    /// Heuristically guesses the OAuth2 type from a list of scopes, falling back
+    /// to `OAuth2Type.o365` in case no guess is possible.
     func oauthType(scopes: [String]) -> OAuth2Type {
         let scopes = Set(scopes)
 
@@ -30,6 +33,7 @@ extension ErrorSubscriber {
         return oauthType
     }
 
+    // TODO
     func accountType(oauthType: OAuth2Type) -> VerifiableAccount.AccountType {
         switch oauthType {
         case .google: return VerifiableAccount.AccountType.gmail
@@ -37,8 +41,8 @@ extension ErrorSubscriber {
         }
     }
 
-    /// Handles the OAuth2 reauthorization
-    func handleReauthorization(accountEmail: String, scopes: [String]) {
+    /// Handles the OAuth2 reauthentication.
+    func handleReauthentication(accountEmail: String, scopes: [String]) {
         if oauthAuthorizers[accountEmail] == nil {
             let oauthType = oauthType(scopes: scopes)
             let vc = UIApplication.currentlyVisibleViewController()
@@ -68,7 +72,7 @@ extension ErrorSubscriber {
             }
 
             func handleReAuth() {
-                self.handleReauthorization(accountEmail: accountEmail, scopes: scopes)
+                self.handleReauthentication(accountEmail: accountEmail, scopes: scopes)
             }
 
             UIUtils.showTwoButtonAlert(withTitle: displayError.title,

@@ -106,7 +106,7 @@ struct DisplayUserError: LocalizedError {
             self = displayUserError
         } else {
             underlyingError = error
-            
+
             if let smtpError = error as? SmtpSendError {
                 type = DisplayUserError.type(forError: smtpError)
                 switch smtpError {
