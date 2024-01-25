@@ -89,16 +89,6 @@ extension OAuth2AccessToken: OAuth2AccessTokenProtocol {
         }
     }
 
-    public func forceRefreshTokenOnAuthenticationError(
-        freshTokensBlock: @escaping (_ error: Error?,
-                                     _ accessToken: String?,
-                                     _ idToken: String?) -> Void) {
-            authState.setNeedsTokenRefresh()
-            authState.performAction() { accessToken, idToken, error in
-                freshTokensBlock(error, accessToken, idToken)
-            }
-    }
-
     // MARK: Own persistence code
 
     func persistIntoString() -> String {

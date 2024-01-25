@@ -31,9 +31,4 @@ public protocol OAuth2AccessTokenProtocol: NSSecureCoding {
 
     func performAction(
         freshTokensBlock: @escaping (_ error: Error?, _ accessToken: String?) -> Void)
-
-    func forceRefreshTokenOnAuthenticationError(
-        freshTokensBlock: @escaping (_ error: Error?,
-                                     _ accessToken: String?,
-                                     _ idToken: String?) -> Void)
 }
