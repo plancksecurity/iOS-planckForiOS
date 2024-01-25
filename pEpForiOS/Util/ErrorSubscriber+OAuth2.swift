@@ -39,7 +39,7 @@ extension ErrorSubscriber {
 
     /// Handles the OAuth2 reauthorization
     func handleReauthorization(accountEmail: String, scopes: [String]) {
-        if oauthAuthorizers[accountEmail] != nil {
+        if oauthAuthorizers[accountEmail] == nil {
             let oauthType = oauthType(scopes: scopes)
             let vc = UIApplication.currentlyVisibleViewController()
             let oauthAuthorizer = OAuthAuthorizer()
