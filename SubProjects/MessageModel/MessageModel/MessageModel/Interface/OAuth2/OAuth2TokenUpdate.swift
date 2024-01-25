@@ -10,6 +10,7 @@ import Foundation
 
 import PlanckToolbox
 
+/// Functionality for updating OAuth2 tokens
 public class OAuth2TokenUpdate {
     static public func updateToken(credentials: CdServerCredentials,
                                    accountEmail: String,
@@ -23,6 +24,7 @@ public class OAuth2TokenUpdate {
         }
     }
 
+    /// Updates all tokens in credentials for the account represented by the given email with the given access token.
     static public func updateTokens(accountEmail: String, accessToken: OAuth2AccessTokenProtocol) {
         let session = Session()
         session.perform {
