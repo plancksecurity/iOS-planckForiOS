@@ -43,11 +43,16 @@ extension LoginSmtpOperation: SmtpConnectionDelegate {
     }
 
     func authenticationFailed(_ smtpConnection: SmtpConnectionProtocol, theNotification: Notification?) {
-
         addError(SmtpSendError.authenticationFailed(#function, smtpConnection.accountAddress))
         waitForBackgroundTasksAndFinish()
     }
     
+    func authenticationFailedXOauth2(_ smtpConnection: SmtpConnectionProtocol, oauth2Scope: String?, notification: Notification?) {
+        let error = BackgroundError.SmtpError.authenticationFailedXOAuth2(info: comp, smtpConnection.accountAddress, oauth2Scope)
+        addError(error)
+        waitForBackgroundTasksAndFinish()
+    }
+
     func connectionEstablished(_ smtpConnection: SmtpConnectionProtocol, theNotification: Notification?) {}
 
     func connectionLost(_ smtpConnection: SmtpConnectionProtocol, theNotification: Notification?) {

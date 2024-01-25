@@ -80,6 +80,9 @@ extension ErrorSubscriber {
         case ImapSyncOperationError.authenticationFailedXOAuth2(_, let accountEmail, let scope):
             handleReauthorization(accountEmail: accountEmail, scope: scope)
             return true
+        case BackgroundError.SmtpError.authenticationFailedXOAuth2(info: _, let accountEmail, let scope):
+            handleReauthorization(accountEmail: accountEmail, scope: scope)
+            return true
         default: return false
         }
     }

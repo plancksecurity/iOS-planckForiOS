@@ -24,6 +24,9 @@ protocol SmtpConnectionDelegate: AnyObject {
     func transactionResetCompleted(_ smtpConnection: SmtpConnectionProtocol, theNotification: Notification?)
     func transactionResetFailed(_ smtpConnection: SmtpConnectionProtocol, theNotification: Notification?)
     func authenticationCompleted(_ smtpConnection: SmtpConnectionProtocol, theNotification: Notification?)
+    func authenticationFailedXOauth2(_ smtpConnection: SmtpConnectionProtocol,
+                                     oauth2Scope: String?,
+                                     notification: Notification?)
     func authenticationFailed(_ smtpConnection: SmtpConnectionProtocol, theNotification: Notification?)
     func connectionEstablished(_ smtpConnection: SmtpConnectionProtocol, theNotification: Notification?)
     func connectionLost(_ smtpConnection: SmtpConnectionProtocol, theNotification: Notification?)
@@ -230,7 +233,9 @@ extension SmtpConnection: CWServiceClient {
                         Log.shared.error(
                             "%@", "\(err)")
                         if let theSelf = self {
-                            theSelf.delegate?.authenticationFailed(theSelf, theNotification: nil)
+                            theSelf.delegate?.authenticationFailedXOauth2(theSelf,
+                                                                          oauth2Scope: token.scope(),
+                                                                          notification: nil)
                         }
                         group.leave()
                     } else {
