@@ -364,8 +364,17 @@ extension ImapConnection: CWServiceClient {
     }
 
     func authenticationFailed(_ notification: Notification?) {
-        runOnDelegate(logName: #function) { theDelegate in
-            theDelegate.authenticationFailed(self, notification: notification)
+        if connectInfo.authMethod == .xoAuth2,
+           let token = accessToken {
+            runOnDelegate(logName: #function) { theDelegate in
+                theDelegate.authenticationFailedXOauth2(self,
+                                                        oauth2Scope: token.scope(),
+                                                        notification: notification)
+            }
+        } else {
+            runOnDelegate(logName: #function) { theDelegate in
+                theDelegate.authenticationFailed(self, notification: notification)
+            }
         }
     }
 
@@ -445,7 +454,7 @@ extension ImapConnection: CWServiceClient {
         if connectInfo.connectionTransport == ConnectionTransport.startTLS
             && !state.hasStartedTLS {
             startTLS()
-        } else if connectInfo.authMethod == .saslXoauth2,
+        } else if connectInfo.authMethod == .xoAuth2,
             let theLoginName = connectInfo.loginName,
             let token = accessToken {
             let authMechanism = connectInfo.authMethod.rawValue
@@ -458,7 +467,9 @@ extension ImapConnection: CWServiceClient {
                     Log.shared.error("%@", "\(err)")
                     if let theSelf = self {
                         theSelf.runOnDelegate(logName: #function) { theDelegate in
-                            theDelegate.authenticationFailed(theSelf, notification: nil)
+                            theDelegate.authenticationFailedXOauth2(theSelf,
+                                                                    oauth2Scope: token.scope(),
+                                                                    notification: nil)
                         }
                     }
                     group.leave()

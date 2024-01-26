@@ -32,7 +32,6 @@ class EncryptAndSMTPSendMessageOperation: ConcurrentBaseOperation {
          errorContainer: ErrorContainerProtocol = ErrorPropagator(),
          encryptionErrorDelegate: EncryptionErrorDelegate? = nil,
          auditLogger: AuditLoggingProtocol? = nil) {
-        
         self.cdMessageToSendObjectId = cdMessageToSendObjectId
         self.smtpConnection = smtpConnection
         self.encryptionErrorDelegate = encryptionErrorDelegate
@@ -375,6 +374,11 @@ extension EncryptAndSMTPSendMessageOperation: SmtpConnectionDelegate {
     func authenticationFailed(_ smtpConnection: SmtpConnectionProtocol, theNotification: Notification?) {
         let error = BackgroundError.SmtpError.authenticationFailed(info: comp)
         handle(error: error, message: "authenticationFailed")
+    }
+
+    func authenticationFailedXOauth2(_ smtpConnection: SmtpConnectionProtocol, oauth2Scope: String?, notification: Notification?) {
+        let error = SmtpSendError.authenticationFailedXOAuth2(#function, smtpConnection.accountAddress, oauth2Scope)
+        handle(error: error, message: "authenticationFailedXOauth2")
     }
 
     func connectionEstablished(_ smtpConnection: SmtpConnectionProtocol, theNotification: Notification?) {}

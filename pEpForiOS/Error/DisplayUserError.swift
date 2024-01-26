@@ -23,8 +23,12 @@ import MessageModel
 struct DisplayUserError: LocalizedError {
     enum ErrorType {
 
-        /// We could not login for some reason
+        /// We could not login for some reason.
         case authenticationFailed
+
+        /// We could not login, OAuth2 reauthorization is probably needed,
+        /// since the user has zero control over a password here.
+        case authenticationFailedXOAuth2
 
         /// We could not send a message for some reason
         case messageNotSent
@@ -59,12 +63,13 @@ struct DisplayUserError: LocalizedError {
                     return false
                 #endif
             case .authenticationFailed,
-                 .brokenServerConnectionImap,
-                 .brokenServerConnectionSmtp,
-                 .messageNotSent,
-                 .loginValidationError,
-                 .clientCertificateError,
-                 .unknownError:
+                    .authenticationFailedXOAuth2,
+                    .brokenServerConnectionImap,
+                    .brokenServerConnectionSmtp,
+                    .messageNotSent,
+                    .loginValidationError,
+                    .clientCertificateError,
+                    .unknownError:
                 return true
             }
         }
@@ -74,13 +79,19 @@ struct DisplayUserError: LocalizedError {
 
     /// The type of the DisplayUserError. Meant to give clients the chance to handle different
     /// errors differentelly or even ignore certain types.
-    let type:ErrorType
+    let type: ErrorType
 
     /// Some error types have extra info to be used
     var extraInfo: String?
 
     /// Contains the underlying `NSError`'s `localizedDescription`, if available.
     var errorString: String?
+
+    /// The lower-level error that caused this error to be potentially displayed to the user.
+    ///
+    /// Gives the code more "inspection capability" to find out what exactly went wrong,
+    /// and what to do about it. Used e.g. for handling OAuth2 authentication errors.
+    let underlyingError: Error
 
     /// Creates a user friendly error to present in an alert or such. I case the error type is not
     /// suitable to display to the user (should fail silently), nil is returned.
@@ -90,75 +101,84 @@ struct DisplayUserError: LocalizedError {
     ///             user friendly error otherwize.
     init?(withError error: Error) {
         extraInfo = nil
+
         if let displayUserError = error as? DisplayUserError {
             self = displayUserError
-        } else if let smtpError = error as? SmtpSendError {
-            type = DisplayUserError.type(forError: smtpError)
-            switch smtpError {
-            case .authenticationFailed( _, let account):
-                extraInfo = account
-            case .illegalState(_):
-                break
-            case .connectionLost(_, let errorDescription):
-                errorString = errorDescription
-                break
-            case .connectionTerminated(_):
-                break
-            case .connectionTimedOut(_, let errorDescription):
-                errorString = errorDescription
-                break
-            case .badResponse(_):
-                break
-            case .clientCertificateNotAccepted:
-                break
-            }
-        } else if let imapError = error as? ImapSyncOperationError {
-            type = DisplayUserError.type(forError: imapError)
-            switch imapError {
-            case .authenticationFailed(_, let account):
-                extraInfo = account
-            case .illegalState(_):
-                break
-            case .connectionLost(_):
-                break
-            case .connectionTerminated(_):
-                break
-            case .connectionTimedOut(_):
-                break
-            case .folderAppendFailed:
-                break
-            case .badResponse(_):
-                break
-            case .actionFailed:
-                break
-            case .clientCertificateNotAccepted:
-                break
-            }
-        } else if let oauthInternalError = error as? OAuthAuthorizerError {
-            type = DisplayUserError.type(forError: oauthInternalError)
-        } else if let oauthError = error as? OAuth2AuthorizationError {
-            type = DisplayUserError.type(forError: oauthError)
-        }
-            // BackgroundError
-        else if let err = error as? BackgroundError.GeneralError {
-            type = DisplayUserError.type(forError: err)
-        } else if let err = error as? BackgroundError.ImapError {
-            type = DisplayUserError.type(forError: err)
-        } else if let err = error as? BackgroundError.SmtpError {
-            type = DisplayUserError.type(forError: err)
-        } else if let err = error as? BackgroundError.CoreDataError {
-            type = DisplayUserError.type(forError: err)
-        } else if let err = error as? BackgroundError.PepError {
-            type = DisplayUserError.type(forError: err)
-        }
-            // Login view controller
-        else if let err = error as? LoginViewController.LoginError {
-            type = .loginValidationError
-            foreignDescription = err.localizedDescription
         } else {
-            // Unknown
-            foreignDescription = error.localizedDescription
-            type = .unknownError
+            underlyingError = error
+
+            if let smtpError = error as? SmtpSendError {
+                type = DisplayUserError.type(forError: smtpError)
+                switch smtpError {
+                case .authenticationFailed( _, let account):
+                    extraInfo = account
+                case .authenticationFailedXOAuth2(_, let account, _):
+                    extraInfo = account
+                case .illegalState(_):
+                    break
+                case .connectionLost(_, let errorDescription):
+                    errorString = errorDescription
+                    break
+                case .connectionTerminated(_):
+                    break
+                case .connectionTimedOut(_, let errorDescription):
+                    errorString = errorDescription
+                    break
+                case .badResponse(_):
+                    break
+                case .clientCertificateNotAccepted:
+                    break
+                }
+            } else if let imapError = error as? ImapSyncOperationError {
+                type = DisplayUserError.type(forError: imapError)
+                switch imapError {
+                case .authenticationFailed(_, let account):
+                    extraInfo = account
+                case .authenticationFailedXOAuth2(_, let account, _):
+                    extraInfo = account
+                case .illegalState(_):
+                    break
+                case .connectionLost(_):
+                    break
+                case .connectionTerminated(_):
+                    break
+                case .connectionTimedOut(_):
+                    break
+                case .folderAppendFailed:
+                    break
+                case .badResponse(_):
+                    break
+                case .actionFailed:
+                    break
+                case .clientCertificateNotAccepted:
+                    break
+                }
+            } else if let oauthInternalError = error as? OAuthAuthorizerError {
+                type = DisplayUserError.type(forError: oauthInternalError)
+            } else if let oauthError = error as? OAuth2AuthorizationError {
+                type = DisplayUserError.type(forError: oauthError)
+            }
+            // BackgroundError
+            else if let err = error as? BackgroundError.GeneralError {
+                type = DisplayUserError.type(forError: err)
+            } else if let err = error as? BackgroundError.ImapError {
+                type = DisplayUserError.type(forError: err)
+            } else if let err = error as? BackgroundError.SmtpError {
+                type = DisplayUserError.type(forError: err)
+            } else if let err = error as? BackgroundError.CoreDataError {
+                type = DisplayUserError.type(forError: err)
+            } else if let err = error as? BackgroundError.PepError {
+                type = DisplayUserError.type(forError: err)
+            }
+            // Login view controller
+            else if let err = error as? LoginViewController.LoginError {
+                type = .loginValidationError
+                foreignDescription = err.localizedDescription
+            } else {
+                // Unknown
+                foreignDescription = error.localizedDescription
+                type = .unknownError
+            }
         }
         if !type.shouldBeShownToUser {
             return nil
@@ -175,6 +195,8 @@ struct DisplayUserError: LocalizedError {
             return .internalError
         case .authenticationFailed:
             return .authenticationFailed
+        case .authenticationFailedXOAuth2:
+            return .authenticationFailedXOAuth2
         case .connectionLost:
             return .brokenServerConnectionSmtp
         case .connectionTerminated:
@@ -196,6 +218,8 @@ struct DisplayUserError: LocalizedError {
             return .internalError
         case .authenticationFailed:
             return .authenticationFailed
+        case .authenticationFailedXOAuth2:
+            return .authenticationFailedXOAuth2
         case .connectionLost:
             return .brokenServerConnectionImap
         case .connectionTerminated:
@@ -321,6 +345,10 @@ struct DisplayUserError: LocalizedError {
             return NSLocalizedString("Login Failed",
                                      comment:
                 "Title of error alert shown to the user in case the authentication to IMAP or SMTP server failed.")
+        case .authenticationFailedXOAuth2:
+            return NSLocalizedString("OAuth Reauthorization Required",
+                                     comment:
+                "Title of error alert shown to the user in case the OAuth2 session has been closed server-side, and a simple token refresh won't help")
         case .messageNotSent:
             return NSLocalizedString("Error",
                                      comment:
@@ -363,6 +391,20 @@ struct DisplayUserError: LocalizedError {
                         "It was impossible to login to %1$@. Username or password is wrong.",
                         comment:
                         "Error message shown to the user in case the authentication to IMAP or SMTP server failed."),
+                    String(describing: account))
+            } else {
+                return NSLocalizedString(
+                    "It was impossible to login to the server. Username or password is wrong.",
+                    comment:
+                    "Error message shown to the user in case the authentication to IMAP or SMTP server failed.")
+            }
+        case .authenticationFailedXOAuth2:
+            if let account = extraInfo {
+                return String.localizedStringWithFormat(
+                    NSLocalizedString(
+                        "It was impossible to login to %1$@ via Oauth2. Reauthorization is required.",
+                        comment:
+                        "Error message shown to the user in case the oauth2 token to an IMAP or SMTP server is not valid anymore."),
                     String(describing: account))
             } else {
                 return NSLocalizedString(

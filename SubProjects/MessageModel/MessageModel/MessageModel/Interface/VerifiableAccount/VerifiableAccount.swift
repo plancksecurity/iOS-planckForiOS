@@ -268,11 +268,11 @@ extension VerifiableAccount {
 
     private func isValid() -> Bool {
         let isValid =
-            (authMethod == .saslXoauth2 || loginNameIsValid) &&
-                (authMethod == .saslXoauth2 || (loginNameIMAP?.count ?? 0) >= 1) &&
-                (authMethod == .saslXoauth2 || (loginNameSMTP?.count ?? 0) >= 1) &&
+            (authMethod == .xoAuth2 || loginNameIsValid) &&
+                (authMethod == .xoAuth2 || (loginNameIMAP?.count ?? 0) >= 1) &&
+                (authMethod == .xoAuth2 || (loginNameSMTP?.count ?? 0) >= 1) &&
                 (address?.count ?? 0) > 0 &&
-                ((authMethod == .saslXoauth2 && accessToken != nil && imapPassword == nil && smtpPassword == nil) ||
+                ((authMethod == .xoAuth2 && accessToken != nil && imapPassword == nil && smtpPassword == nil) ||
                     (accessToken == nil && imapPassword != nil && smtpPassword != nil)) &&
                 portIMAP > 0 &&
                 portSMTP > 0 &&
@@ -600,7 +600,7 @@ extension VerifiableAccount {
             account = VerifiableAccount(verifiableAccountDelegate: nil,
                                         address: nil,
                                         userName: nil,
-                                        authMethod: .saslXoauth2,
+                                        authMethod: .xoAuth2,
                                         imapPassword: nil,
                                         smtpPassword: nil,
                                         accessToken: nil,

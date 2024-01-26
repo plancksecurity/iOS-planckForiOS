@@ -20,9 +20,6 @@ class LoginUtil {
     var verifiableAccount = VerifiableAccount.verifiableAccount(for: .other,
                                                                 usePlanckFolderProvider: AppSettings.shared)
 
-    /// An OAuth2 process lives longer than the method call, so this object needs to survive.
-    var currentOauth2Authorizer: OAuth2AuthorizationProtocol?
-
     /// Helper model to handle most of the OAuth2 authorization.
     var oauthAuthorizer = OAuthAuthorizer()
 
@@ -153,7 +150,7 @@ extension LoginUtil {
 
         // Note: auth method is never taken from LAS. We either have OAuth2,
         // as determined previously, or we will defer to pantomime to find out the best method.
-        theVerifiableAccount.authMethod = accessToken != nil ? .saslXoauth2 : nil
+        theVerifiableAccount.authMethod = accessToken != nil ? .xoAuth2 : nil
 
         theVerifiableAccount.verifiableAccountDelegate = self
         theVerifiableAccount.address = emailAddress
@@ -215,7 +212,6 @@ extension LoginUtil: OAuthAuthorizerDelegate {
                     error: OAuthAuthorizerError.noToken)
             }
         }
-        currentOauth2Authorizer = nil
     }
 }
 

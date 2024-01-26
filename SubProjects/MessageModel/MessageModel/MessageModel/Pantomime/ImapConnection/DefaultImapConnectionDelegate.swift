@@ -53,6 +53,15 @@ class DefaultImapConnectionDelegate: ImapConnectionDelegate {
             imapConection.accountAddress))
     }
 
+    func authenticationFailedXOauth2(_ imapConection: ImapConnectionProtocol,
+                                     oauth2Scope: String?,
+                                     notification: Notification?) {
+        forceErrorDelegate().handle(error: ImapSyncOperationError.authenticationFailedXOAuth2(
+            #function,
+            imapConection.accountAddress,
+            oauth2Scope))
+    }
+
     func connectionLost(_ imapConection: ImapConnectionProtocol, notification: Notification?) {
         var setSpecializedError = false
 

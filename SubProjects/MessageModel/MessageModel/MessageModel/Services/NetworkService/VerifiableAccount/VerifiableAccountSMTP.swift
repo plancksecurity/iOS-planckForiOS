@@ -94,6 +94,11 @@ extension VerifiableAccountSMTP: SmtpConnectionDelegate {
             smtpConnection.accountAddress))
     }
 
+    func authenticationFailedXOauth2(_ smtpConnection: SmtpConnectionProtocol, oauth2Scope: String?, notification: Notification?) {
+        let error = SmtpSendError.authenticationFailedXOAuth2(#function, smtpConnection.accountAddress, oauth2Scope)
+        notify(error: error)
+    }
+
     func connectionEstablished(_ smtpConnection: SmtpConnectionProtocol, theNotification: Notification?) {}
 
     func connectionLost(_ smtpConnection: SmtpConnectionProtocol, theNotification: Notification?) {

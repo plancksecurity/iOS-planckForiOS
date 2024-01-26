@@ -12,10 +12,18 @@ import MessageModel
 import PlanckToolbox
 
 public class ErrorSubscriber {
-    private func errorShouldBeDisplayed(error: Error) -> Bool{
+    /// There can be only one.
+    ///
+    /// While the user is busy OAuth2-authenticating while the app is running, there should
+    /// obviously no other authentication triggered concurrently.
+    var oauthAuthorizer: OAuthAuthorizer?
+
+    private func errorShouldBeDisplayed(error: Error) -> Bool {
         if let smtpError = error as? SmtpSendError {
             switch smtpError {
             case .authenticationFailed(_, let account):
+                return accountErrorShouldBeShown(account: account, serverType: .smtp)
+            case .authenticationFailedXOAuth2(_, let account, _):
                 return accountErrorShouldBeShown(account: account, serverType: .smtp)
             case .illegalState(_),
                  .connectionLost(_, _),
@@ -28,6 +36,8 @@ public class ErrorSubscriber {
         } else if let imapError = error as? ImapSyncOperationError {
             switch imapError {
             case .authenticationFailed(_, let account):
+                return accountErrorShouldBeShown(account: account, serverType: .imap)
+            case .authenticationFailedXOAuth2(_, let account, _):
                 return accountErrorShouldBeShown(account: account, serverType: .imap)
             case .illegalState(_),
                  .connectionLost(_),
@@ -102,7 +112,10 @@ extension ErrorSubscriber: ErrorPropagatorSubscriber {
                 return
             }
             if me.errorShouldBeDisplayed(error: error) {
-                UIUtils.show(error: error)
+                let handled = me.handleOAuth2AuthorizationError(error: error)
+                if !handled {
+                    UIUtils.show(error: error)
+                }
             }
         }
     }

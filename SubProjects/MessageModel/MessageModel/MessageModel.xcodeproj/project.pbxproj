@@ -447,6 +447,7 @@
 		4384D404243F3714006CCBA2 /* PGPMimeMail.txt in Resources */ = {isa = PBXBuildFile; fileRef = 4384D403243F3714006CCBA2 /* PGPMimeMail.txt */; };
 		4384D406243F455A006CCBA2 /* MiscTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4384D405243F455A006CCBA2 /* MiscTests.swift */; };
 		4384D40A243F5245006CCBA2 /* MessagePantomimeTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4384D409243F5245006CCBA2 /* MessagePantomimeTests.swift */; };
+		438883B52B625D3E008FC2DD /* OAuth2TokenUpdate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 438883B42B625D3E008FC2DD /* OAuth2TokenUpdate.swift */; };
 		4389100B25F7D0D500BB2576 /* LoginSmtpOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43EA4826221E9518006E8F83 /* LoginSmtpOperation.swift */; };
 		4396230D23FD41C2007E9364 /* ClientCertificateUtil.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4396230C23FD41C2007E9364 /* ClientCertificateUtil.swift */; };
 		4396231023FD5079007E9364 /* ClientCertificateUtil+Internal.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4396230F23FD5079007E9364 /* ClientCertificateUtil+Internal.swift */; };
@@ -1044,6 +1045,7 @@
 		4384D403243F3714006CCBA2 /* PGPMimeMail.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = PGPMimeMail.txt; sourceTree = "<group>"; };
 		4384D405243F455A006CCBA2 /* MiscTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MiscTests.swift; sourceTree = "<group>"; };
 		4384D409243F5245006CCBA2 /* MessagePantomimeTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MessagePantomimeTests.swift; sourceTree = "<group>"; };
+		438883B42B625D3E008FC2DD /* OAuth2TokenUpdate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OAuth2TokenUpdate.swift; sourceTree = "<group>"; };
 		4396230C23FD41C2007E9364 /* ClientCertificateUtil.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ClientCertificateUtil.swift; sourceTree = "<group>"; };
 		4396230F23FD5079007E9364 /* ClientCertificateUtil+Internal.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "ClientCertificateUtil+Internal.swift"; sourceTree = "<group>"; };
 		439B16A122802A8700201DE5 /* VerifiableAccountProtocol.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = VerifiableAccountProtocol.swift; sourceTree = "<group>"; };
@@ -1633,6 +1635,7 @@
 			children = (
 				153DDF4925ADD455008F645F /* OAuth2AccessToken.swift */,
 				153DDF4A25ADD455008F645F /* OAuth2AccessTokenProtocol.swift */,
+				438883B42B625D3E008FC2DD /* OAuth2TokenUpdate.swift */,
 			);
 			path = OAuth2;
 			sourceTree = "<group>";
@@ -3633,6 +3636,7 @@
 				439B16AB22802B6B00201DE5 /* VerifiableAccountSMTP.swift in Sources */,
 				43062B9224ED3F0100489258 /* TrustwordsLanguage+pEp.swift in Sources */,
 				154660C42333927B008D2137 /* BackgroundTaskManager.swift in Sources */,
+				438883B52B625D3E008FC2DD /* OAuth2TokenUpdate.swift in Sources */,
 				43F484461E8130A80028BC1A /* CdImapFields+Extension.swift in Sources */,
 				431BAE34246D4F330043490F /* KeyImportUtil.swift in Sources */,
 				5B1A010F27901DF000EE5838 /* FileExportUtil.swift in Sources */,

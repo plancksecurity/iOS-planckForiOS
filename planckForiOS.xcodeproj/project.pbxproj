@@ -216,7 +216,7 @@
 		4313A55625E7C203001E6767 /* Reusable.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 155F2DA020530798001B4B1C /* Reusable.storyboard */; };
 		4313A55A25E7C20E001E6767 /* Thread.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 491B656020CFE0FD00C2ADDA /* Thread.storyboard */; };
 		4313A55D25E7C214001E6767 /* Certificates.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 3A2119E624125AC60030C3E4 /* Certificates.storyboard */; };
-		4315E4C3201242BB00F68763 /* OAuth2Type+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4315E4C2201242BB00F68763 /* OAuth2Type+Extension.swift */; };
+		4315E4C3201242BB00F68763 /* OAuth2Type+Config.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4315E4C2201242BB00F68763 /* OAuth2Type+Config.swift */; };
 		431BB9451E49B7A9000BCBF1 /* PorpoiseGalaxy_HubbleFraile_960.jpg in Resources */ = {isa = PBXBuildFile; fileRef = 431BB9441E49B7A9000BCBF1 /* PorpoiseGalaxy_HubbleFraile_960.jpg */; };
 		431C2B171F387C4100D87FFD /* LoginViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 431C2B161F387C4100D87FFD /* LoginViewModelTests.swift */; };
 		431C2B191F38888B00D87FFD /* ConnectionTransport+AccountSettings.swift in Sources */ = {isa = PBXBuildFile; fileRef = 431C2B181F38888B00D87FFD /* ConnectionTransport+AccountSettings.swift */; };
@@ -378,6 +378,7 @@
 		4356FFE52135448600804089 /* ReplyAllPossibleChecker.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4356FFE42135448600804089 /* ReplyAllPossibleChecker.swift */; };
 		4356FFE721354A4B00804089 /* ReplyAllPossibleCheckerProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4356FFE621354A4B00804089 /* ReplyAllPossibleCheckerProtocol.swift */; };
 		4356FFEC21356CB600804089 /* ReplyAllPossibleCheckerTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4356FFEB21356CB600804089 /* ReplyAllPossibleCheckerTest.swift */; };
+		4369E14E2B613B3C00884FC1 /* ErrorSubscriber+OAuth2.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4369E14D2B613B3C00884FC1 /* ErrorSubscriber+OAuth2.swift */; };
 		436C003B2A03D0E600C2B3DD /* PlanckToolbox.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 436C003A2A03D0E600C2B3DD /* PlanckToolbox.framework */; };
 		436C003D2A03D16400C2B3DD /* PlanckToolbox.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 436C003A2A03D0E600C2B3DD /* PlanckToolbox.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		436F1BA425028B8A004426DC /* CocoaLumberjackSwift.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 436F1BA225028B7D004426DC /* CocoaLumberjackSwift.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
@@ -929,7 +930,7 @@
 		4307D5E123575853004569C4 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/Thread.strings; sourceTree = "<group>"; };
 		4307D5E223575853004569C4 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/Main.strings; sourceTree = "<group>"; };
 		430D73641E9CBD4E00EA6FA9 /* AttachmentViewOperation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AttachmentViewOperation.swift; sourceTree = "<group>"; };
-		4315E4C2201242BB00F68763 /* OAuth2Type+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "OAuth2Type+Extension.swift"; sourceTree = "<group>"; };
+		4315E4C2201242BB00F68763 /* OAuth2Type+Config.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "OAuth2Type+Config.swift"; sourceTree = "<group>"; };
 		431BB9441E49B7A9000BCBF1 /* PorpoiseGalaxy_HubbleFraile_960.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = PorpoiseGalaxy_HubbleFraile_960.jpg; sourceTree = "<group>"; };
 		431C2B161F387C4100D87FFD /* LoginViewModelTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LoginViewModelTests.swift; sourceTree = "<group>"; };
 		431C2B181F38888B00D87FFD /* ConnectionTransport+AccountSettings.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "ConnectionTransport+AccountSettings.swift"; sourceTree = "<group>"; };
@@ -1008,6 +1009,7 @@
 		4356FFE42135448600804089 /* ReplyAllPossibleChecker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReplyAllPossibleChecker.swift; sourceTree = "<group>"; };
 		4356FFE621354A4B00804089 /* ReplyAllPossibleCheckerProtocol.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReplyAllPossibleCheckerProtocol.swift; sourceTree = "<group>"; };
 		4356FFEB21356CB600804089 /* ReplyAllPossibleCheckerTest.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ReplyAllPossibleCheckerTest.swift; sourceTree = "<group>"; };
+		4369E14D2B613B3C00884FC1 /* ErrorSubscriber+OAuth2.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "ErrorSubscriber+OAuth2.swift"; sourceTree = "<group>"; };
 		436C003A2A03D0E600C2B3DD /* PlanckToolbox.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = PlanckToolbox.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		436C5A8D1CFEDF59006A195F /* UIHelper.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UIHelper.swift; sourceTree = "<group>"; };
 		436F1BA225028B7D004426DC /* CocoaLumberjackSwift.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = CocoaLumberjackSwift.framework; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -2169,7 +2171,7 @@
 				438052881FE3E24400ACF729 /* OAuth2AuthorizationProtocol.swift */,
 				4380528A1FE3E2E800ACF729 /* OAuth2AuthorizationURLHandlerProtocol.swift */,
 				43306EC11FE129840045DD00 /* OAuth2Type.swift */,
-				4315E4C2201242BB00F68763 /* OAuth2Type+Extension.swift */,
+				4315E4C2201242BB00F68763 /* OAuth2Type+Config.swift */,
 				4334CF2F2020CFFE00B3193E /* OAuth2Type+LibAccountSettings.swift */,
 				43236E642459891B00D8318D /* OAuth2Type+VerifiableAccountType.swift */,
 				43425EDE1FE3E052004A2728 /* OAuth2ProviderFactory.swift */,
@@ -2387,6 +2389,7 @@
 				155050EF1FE82356009CEAD2 /* UserNotificationTool.swift */,
 				5B4A7189252CC4A500436FCF /* Mailto.swift */,
 				B764D0212451A21E001C4BCA /* ErrorSubscriber.swift */,
+				4369E14D2B613B3C00884FC1 /* ErrorSubscriber+OAuth2.swift */,
 			);
 			path = Util;
 			sourceTree = "<group>";
@@ -3545,7 +3548,7 @@
 			files = (
 				002375D420DCF59D00663961 /* MoveToAccountViewController.swift in Sources */,
 				437E9BA9237AFB7F00E9A847 /* UIStoryboard+Constants.swift in Sources */,
-				4315E4C3201242BB00F68763 /* OAuth2Type+Extension.swift in Sources */,
+				4315E4C3201242BB00F68763 /* OAuth2Type+Config.swift in Sources */,
 				5BEF9A8D28C8D21B0073A3B4 /* OutgoingRatingChangeService.swift in Sources */,
 				5B5C2A8825D28CDB00F9C18A /* UIPopoverPresentationControllerProtocol.swift in Sources */,
 				4351C2D11F4441190053381F /* houdini_html_u.c in Sources */,
@@ -3593,6 +3596,7 @@
 				5BC0F94D26AAAB640089760D /* CalendarEventDescriptionTableViewCell.swift in Sources */,
 				4351C2C91F4441190053381F /* buffer.c in Sources */,
 				152A39C621905C3E00D9F8E4 /* ComposeViewModelState.swift in Sources */,
+				4369E14E2B613B3C00884FC1 /* ErrorSubscriber+OAuth2.swift in Sources */,
 				5BB7C73B24D2EC6300D5F328 /* UnifiedInbox.swift in Sources */,
 				F72D99362B29BE2E00672B5F /* VerifyIdentityViewController.swift in Sources */,
 				5B1EF69F2926C49400CE2355 /* RecipientsBannerViewModel.swift in Sources */,

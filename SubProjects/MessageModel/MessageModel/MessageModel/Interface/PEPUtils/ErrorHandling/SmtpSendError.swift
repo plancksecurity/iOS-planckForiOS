@@ -13,6 +13,7 @@ public enum SmtpSendError: Error {
     case illegalState(FunctionName)
 
     case authenticationFailed(FunctionName, String)
+    case authenticationFailedXOAuth2(FunctionName, String, String?)
     case connectionLost(FunctionName, String?)
     case connectionTerminated(FunctionName)
     case connectionTimedOut(FunctionName, String?)

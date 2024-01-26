@@ -23,7 +23,12 @@ public protocol OAuth2AccessTokenProtocol: NSSecureCoding {
 
     func getName() -> String?
 
+    /// Can be used to heuristically find out the OAuth2 type (o365, google ...) when presented
+    /// with errors, since we don't store that information anywhere.
+    func scope() -> String?
+
     // MARK: Refreshing tokens
+
     func performAction(
         freshTokensBlock: @escaping (_ error: Error?, _ accessToken: String?) -> Void)
 }
