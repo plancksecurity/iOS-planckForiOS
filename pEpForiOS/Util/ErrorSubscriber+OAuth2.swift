@@ -65,7 +65,9 @@ extension ErrorSubscriber {
             }
 
             func handleReAuth() {
-                self.handleReauthentication(accountEmail: accountEmail, scopes: scopes)
+                DispatchQueue.main.async {
+                    self.handleReauthentication(accountEmail: accountEmail, scopes: scopes)
+                }
             }
 
             UIUtils.showTwoButtonAlert(withTitle: displayError.title,
