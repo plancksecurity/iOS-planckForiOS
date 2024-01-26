@@ -293,6 +293,8 @@ extension LoginViewController: AccountVerificationResultDelegate {
             case .noImapConnectData, .noSmtpConnectData:
                 me.handleLoginError(error: LoginViewController.LoginError.noConnectData,
                                     offerManualSetup: true)
+            case .unknown(let err):
+                me.handleLoginError(error: err, offerManualSetup: true)
             }
         }
     }

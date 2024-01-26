@@ -286,6 +286,7 @@ extension LoginUtil: VerifiableAccountDelegate {
         } else {
             if let theError = error {
                 Log.shared.errorAndCrash(error: theError)
+                unwrappedDelegate.didVerify(result: .unknown(theError))
             } else {
                 unwrappedDelegate.didVerify(result: .ok)
             }
