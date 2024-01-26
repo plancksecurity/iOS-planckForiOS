@@ -34,13 +34,11 @@ public class OAuth2TokenUpdate {
                 var keysAlreadyUpdated = Set<String>()
                 if let servers = account.servers {
                     for server in servers {
-                        if let server = server as? CdServer {
-                            if let credentials = server.credentials {
-                                updateToken(credentials: credentials,
-                                            accountEmail: accountEmail,
-                                            payload: payload,
-                                            keysAlreadyUpdated: &keysAlreadyUpdated)
-                            }
+                        if let server = server as? CdServer, let credentials = server.credentials {
+                            updateToken(credentials: credentials,
+                                        accountEmail: accountEmail,
+                                        payload: payload,
+                                        keysAlreadyUpdated: &keysAlreadyUpdated)
                         }
                     }
                 }
