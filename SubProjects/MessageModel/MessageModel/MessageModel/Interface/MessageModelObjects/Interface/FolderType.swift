@@ -71,6 +71,8 @@ public enum FolderType: Int16, CaseIterable{
 
     /// Folder exclusively used for pEp sync messages
     case pEpSync
+    
+    case suspicious
 }
 
  // MARK: - Local or remote folder

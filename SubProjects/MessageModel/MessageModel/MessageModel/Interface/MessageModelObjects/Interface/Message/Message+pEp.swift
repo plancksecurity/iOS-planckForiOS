@@ -24,7 +24,7 @@ extension Message {
                 completion(Rating(pEpRating: pEpRating))
             }
         } else {
-            return  Message.pEpRating(message: self, session: session) { pEpRating in
+            return Message.pEpRating(message: self, session: session) { pEpRating in
                 completion(Rating(pEpRating: pEpRating))
             }
         }

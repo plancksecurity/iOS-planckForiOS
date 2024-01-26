@@ -3185,7 +3185,7 @@
 			attributes = {
 				LastSwiftUpdateCheck = 1200;
 				LastUpgradeCheck = 1110;
-				ORGANIZATIONNAME = "p≡p Security S.A.";
+				ORGANIZATIONNAME = "planck Security S.A.";
 				TargetAttributes = {
 					3A503A9B253737B20070AB6A = {
 						CreatedOnToolsVersion = 12.0;

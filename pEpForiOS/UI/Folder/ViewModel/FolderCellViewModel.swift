@@ -176,7 +176,7 @@ public class FolderCellViewModel {
             //If is not a folder, it's a UnifiedInbox
             return false
         }
-        return folder.folderType == .normal && folder.folderType != .outbox && folder.parent != nil
+        return folder.folderType == .suspicious || (folder.folderType == .normal && folder.folderType != .outbox && folder.parent != nil)
 
     }
 }

@@ -7,7 +7,6 @@
 //
 
 import Foundation
-
 import PlanckToolbox
 import MessageModel
 
@@ -305,6 +304,15 @@ class EmailListViewModel: EmailDisplayViewModel {
             UIUtils.showNoInternetConnectionBanner()
         } else {
             UIUtils.hideBanner()
+        }
+    }
+
+    public func moveMailsToSuspiciousIfPossible() {
+        let result = messageQueryResults.all.filter { SuspiciousMessageUtil.isDangerous(message: $0) }
+        result.forEach { message in
+            if let folder = Folder.by(account: message.parent.account, folderType: .suspicious) {
+                Message.move(messages: [message], to: folder)
+            }
         }
     }
 

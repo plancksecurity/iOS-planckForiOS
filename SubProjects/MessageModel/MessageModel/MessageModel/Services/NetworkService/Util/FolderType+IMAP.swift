@@ -23,7 +23,7 @@ extension FolderType {
             let result = ImapFlags(cdObject: cdFlags, context: context)
             result.seen = true
             return result
-        case .archive, .drafts, .inbox, .normal, .trash, .spam, .all, .flagged, .outbox, .pEpSync:
+        case .archive, .drafts, .inbox, .normal, .trash, .spam, .all, .flagged, .outbox, .pEpSync, .suspicious:
             break
         }
         return nil
@@ -60,6 +60,8 @@ extension FolderType {
             return ["Flagged"]
         case .outbox:
             return ["Outbox"]
+        case .suspicious:
+            return ["Suspicious"]
         case .pEpSync:
             // should not be shown to the user, has a fixed name
             return []

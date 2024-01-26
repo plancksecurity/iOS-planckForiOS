@@ -142,6 +142,7 @@ final class EmailListViewController: UIViewController {
             return
         }
         vm.handleBannerIfNeeded()
+        vm.moveMailsToSuspiciousIfPossible()
     }
 
     override func viewWillTransition(to size: CGSize, with coordinator: UIViewControllerTransitionCoordinator) {

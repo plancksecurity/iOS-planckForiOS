@@ -7,7 +7,6 @@
 //
 
 import CoreData
-
 import PlanckToolbox
 
 /// Makes sure a special pEp folder exists (locally and on server) to store pEp Sync messages in.
@@ -38,8 +37,8 @@ class CreatePepIMAPFolderService: OperationBasedService {
 
             for cdAccount in cdAccounts {
                 guard cdAccount.pEpSyncEnabled else {
-                    // We are not supposed to use pEp Sync with this account, thus we must not
-                    // create a pEp folder.
+                    // We are not supposed to use planck Sync with this account, thus we must not
+                    // create a planck folder.
                     // Nothing to do
                     continue
                 }
@@ -52,11 +51,24 @@ class CreatePepIMAPFolderService: OperationBasedService {
                 let loginOP = LoginImapOperation(context: moc, imapConnection: imapConnection)
                 let fetchFoldersOP = SyncFoldersFromServerOperation(context: moc,
                                                                     imapConnection: imapConnection)
-                let createPepFolderOP = CreateIMAPPepFolderOperation(context: moc,
-                                                                     imapConnection: imapConnection)
+                
+                let suspiciousFolderType = FolderType.suspicious
+                let suspiciousParentName = #function + "\(suspiciousFolderType.rawValue)"
+                let createSuspiciousFolderOP = CreateIMAPFolderOperation(parentName: suspiciousParentName,
+                                                                         context: moc,
+                                                                         imapConnection: imapConnection,
+                                                                         folderType: .suspicious)
+                
+                let syncFolderType = FolderType.pEpSync
+                let syncParentName = #function + "\(syncFolderType.rawValue)"
+                let createPlanckFolderOP = CreateIMAPFolderOperation(parentName: syncParentName,
+                                                                     context: moc,
+                                                                     imapConnection: imapConnection,
+                                                                     folderType: .pEpSync)
                 operations.append(loginOP)
                 operations.append(fetchFoldersOP)
-                operations.append(createPepFolderOP)
+                operations.append(createSuspiciousFolderOP)
+                operations.append(createPlanckFolderOP)
             }
         }
         return operations
