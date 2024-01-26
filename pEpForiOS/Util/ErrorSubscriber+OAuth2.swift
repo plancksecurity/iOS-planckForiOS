@@ -35,19 +35,20 @@ extension ErrorSubscriber {
 
     /// Handles the OAuth2 reauthentication.
     func handleReauthentication(accountEmail: String, scopes: [String]) {
-        if oauthAuthorizers[accountEmail] == nil {
-            let oauthType = oauthType(scopes: scopes)
-            let vc = UIApplication.currentlyVisibleViewController()
-            let oauthAuthorizer = OAuthAuthorizer()
-            oauthAuthorizers[accountEmail] = oauthAuthorizer
-            oauthAuthorizer.delegate = self
-            let oauth2Authorizer = OAuth2ProviderFactory().oauth2Provider().createOAuth2Authorizer()
-            let accountType = oauthType.accountType()
-
-            oauthAuthorizer.authorize(authorizer: oauth2Authorizer,
-                                      accountType: accountType,
-                                      viewController: vc)
+        guard oauthAuthorizer == nil else {
+            return
         }
+        let oauthType = oauthType(scopes: scopes)
+        let vc = UIApplication.currentlyVisibleViewController()
+        let oauthAuthorizer = OAuthAuthorizer()
+        self.oauthAuthorizer = oauthAuthorizer
+        oauthAuthorizer.delegate = self
+        let oauth2Authorizer = OAuth2ProviderFactory().oauth2Provider().createOAuth2Authorizer()
+        let accountType = oauthType.accountType()
+
+        oauthAuthorizer.authorize(authorizer: oauth2Authorizer,
+                                  accountType: accountType,
+                                  viewController: vc)
     }
 
     func handleOAuth2AuthorizationError(error: Error) -> Bool {
@@ -92,7 +93,7 @@ extension ErrorSubscriber: OAuthAuthorizerDelegate {
         if let token = accessToken, let email = accessToken?.getEmail()  {
             // In any case, if we have a token with an email,
             // let this authorizer get cleaned up, no matter what.
-            oauthAuthorizers.removeValue(forKey: email)
+            oauthAuthorizer = nil
             OAuth2TokenUpdate.updateTokens(accountEmail: email, accessToken: token)
         }
     }

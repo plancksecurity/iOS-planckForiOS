@@ -12,8 +12,11 @@ import MessageModel
 import PlanckToolbox
 
 public class ErrorSubscriber {
-    /// OAuth2 (re)authorizers
-    var oauthAuthorizers = [String:OAuthAuthorizer]()
+    /// There can be only one.
+    ///
+    /// While the user is busy OAuth2-authenticating while the app is running, there should
+    /// obviously no other authentication triggered concurrently.
+    var oauthAuthorizer: OAuthAuthorizer?
 
     private func errorShouldBeDisplayed(error: Error) -> Bool {
         if let smtpError = error as? SmtpSendError {
