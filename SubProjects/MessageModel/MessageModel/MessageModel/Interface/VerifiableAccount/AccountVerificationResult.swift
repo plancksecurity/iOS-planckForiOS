@@ -12,4 +12,5 @@ public enum AccountVerificationResult {
     case noSmtpConnectData
     case imapError(ImapSyncOperationError)
     case smtpError(SmtpSendError)
+    case unknown(Error)
 }

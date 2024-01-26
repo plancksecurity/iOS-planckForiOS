@@ -280,6 +280,8 @@ extension MDMAccountDeploymentViewController: AccountTypeSelectorViewModelDelega
                 me.handle(error: err)
             case .noImapConnectData, .noSmtpConnectData:
                 me.handle(error: LoginViewController.LoginError.noConnectData)
+            case .unknown(let err):
+                me.handle(error: err)
             }
         }
     }
