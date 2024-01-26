@@ -13,6 +13,11 @@ import PlanckToolbox
 
 /// OAuth2-related helper functions for reauthentication.
 extension ErrorSubscriber {
+    /// @return `true` if a reauthentication has already been triggered.
+    func isAlreadyInReAuthentication() -> Bool {
+        return oauthAuthorizer != nil
+    }
+
     /// Heuristically guesses the OAuth2 type from a list of scopes, falling back
     /// to `OAuth2Type.o365` in case no guess is possible.
     func oauthType(scopes: [String]) -> OAuth2Type {
@@ -35,7 +40,7 @@ extension ErrorSubscriber {
 
     /// Handles the OAuth2 reauthentication.
     func handleReauthentication(accountEmail: String, scopes: [String]) {
-        guard oauthAuthorizer == nil else {
+        guard !isAlreadyInReAuthentication() else {
             return
         }
         let oauthType = oauthType(scopes: scopes)
@@ -76,13 +81,18 @@ extension ErrorSubscriber {
                                        positiveButtonAction: handleReAuth)
         }
 
+        // Note:
+        // Regardless whether we trigger an OAuth2 reauth or we are still busy with the
+        // last one, we "consume" the OAuth2 authentication error by returning `true`.
+        // This way, we don't trigger it while still waiting for another one or the
+        // same one.
         switch displayError.underlyingError {
         case ImapSyncOperationError.authenticationFailedXOAuth2(_, let accountEmail, let scope):
             handleReauthorization(accountEmail: accountEmail, scope: scope)
-            return true
+            return true // Consume this error, don't show it to the user
         case SmtpSendError.authenticationFailedXOAuth2(_, let accountEmail, let scope):
             handleReauthorization(accountEmail: accountEmail, scope: scope)
-            return true
+            return true // Consume this error, don't show it to the user
         default: return false
         }
     }
