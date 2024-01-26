@@ -39,7 +39,7 @@ class CreditsWebViewController: PEPWebViewController {
         let hex = UIColor.primaryHex()
         guard let shortVersion = InfoPlist.mainBundleShortVersion() else {
             Log.shared.errorAndCrash("Missing app version")
-            return "3.1.5"
+            return "3.1.7"
         }
         let version = shortVersion.replacingOccurrences(of: ".", with: "-")
         let appVersion = InfoPlist.versionDisplayString() ?? "666"
