@@ -10,8 +10,6 @@ on:
 jobs:
  build-and-test:
   name: Build and Run Tests
- trigger_workflow:
-  name: Run Something
   runs-on: macos-latest
   steps:
     - name: Echo Workflow name
