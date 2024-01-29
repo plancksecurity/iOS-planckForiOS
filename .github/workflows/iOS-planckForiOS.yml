@@ -1,4 +1,4 @@
-name: iOS Build planckForiOS
+name: iOS Build Meta
 
 on:
  workflow_dispatch:
@@ -12,5 +12,4 @@ jobs:
   name: Build and Run Tests
   runs-on: macos-latest
   steps:
-    - name: Echo Workflow name
     - run: echo "🎉 The job was automatically triggered by a ${{ github.event_name }} event."
