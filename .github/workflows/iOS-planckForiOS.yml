@@ -16,10 +16,7 @@ jobs:
   steps:
     - name: Echo Workflow name
     - run: echo "🎉 The job was automatically triggered by a ${{ github.event_name }} event."
-    - run: echo "🐧 This job is now running on a ${{ runner.os }} server hosted by GitHub!"
-    - run: echo "🔎 The name of your branch is ${{ github.ref }} and your repository is ${{ github.repository }}."
     - name: Select Xcode
       run: sudo Xcode-select -switch /Applications/Xcode.app
     - name: Build & Test
-      run: echo "I'm workflow of the child REPO planckForiOS."
       run: xcodebuild clean build test -workspace planckForiOS.xcworkspace -scheme planckForiOS -destination 'platform=iOS Simulator,name=iPhone 15 pro Pro,OS=17.2'
