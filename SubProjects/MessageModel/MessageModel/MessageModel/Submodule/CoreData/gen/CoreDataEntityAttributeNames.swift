@@ -195,6 +195,7 @@ extension CdMessage {
     struct AttributeName {
         static let comments = "comments"
         static let flagsFromDecryptionRawValue = "flagsFromDecryptionRawValue"
+        static let isSMIME = "isSMIME"
         static let longMessage = "longMessage"
         static let longMessageFormatted = "longMessageFormatted"
         static let needsDecrypt = "needsDecrypt"

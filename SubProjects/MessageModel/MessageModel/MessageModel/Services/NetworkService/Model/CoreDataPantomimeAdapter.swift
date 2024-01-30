@@ -367,6 +367,7 @@ extension CoreDataPantomimeAdapter: CWIMAPCache {
             CdMessage.insertOrUpdate(pantomimeMessage: message,
                                      account: cdAccount,
                                      messageUpdate: messageUpdate,
+                                     record: theRecord,
                                      context: me.privateMOC)
         }
     }
