@@ -643,7 +643,7 @@ extension EmailDetailViewController: EmailDetailViewModelDelegate {
                 Log.shared.lostMySelf()
                 return
             }
-            me.collectionView?.deleteItems(at: indexPaths)
+            me.collectionView.deleteItems(at: indexPaths)
         }
     }
 

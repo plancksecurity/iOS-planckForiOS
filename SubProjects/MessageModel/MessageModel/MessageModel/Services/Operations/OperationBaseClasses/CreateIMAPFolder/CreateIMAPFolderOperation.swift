@@ -119,6 +119,7 @@ extension CreateIMAPFolderOperation {
         // The server refused to let us create a folder. That can happen. GMX free accounts for
         // instance allow 10 custom folders only.
         // We silently ignore those errors.
+        privateMOC.rollback()
         waitForBackgroundTasksAndFinish()
     }
 }

@@ -308,7 +308,9 @@ class EmailListViewModel: EmailDisplayViewModel {
     }
 
     public func moveMailsToSuspiciousIfPossible() {
-        let result = messageQueryResults.all.filter { SuspiciousMessageUtil.isDangerous(message: $0) }
+        let result = messageQueryResults.all.filter { SuspiciousMessageUtil.isDangerous(message: $0)
+            && $0.parent.folderType != .suspicious
+        }
         result.forEach { message in
             if let folder = Folder.by(account: message.parent.account, folderType: .suspicious) {
                 Message.move(messages: [message], to: folder)
