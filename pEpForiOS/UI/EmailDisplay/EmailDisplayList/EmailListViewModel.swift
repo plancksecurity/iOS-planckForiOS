@@ -319,19 +319,17 @@ class EmailListViewModel: EmailDisplayViewModel {
 
     public func moveMailsToSuspiciousIfPossible() {
         guard folderName != Folder.planckSuspiciousFolderName else {
+            // Nothing to process in the suspicious folder
             return
         }
         // Get the dangerous messages () that are not on suspcious folder yet.
         // This should be only 1 message at maximum.
-        let result = messageQueryResults.all.filter { SuspiciousMessageUtil.shouldMoveToSuspiciousFolder(message: $0) }
-        
+        let suspiciousMessages = messageQueryResults.all.filter { SuspiciousMessageUtil.shouldMoveToSuspiciousFolder(message: $0) }
         guard let account = account, let folder = Folder.getSuspiciousFolder(account: account) else {
+            Log.shared.errorAndCrash("No account? No suspicious folder? - Unexpected")
             return
         }
-
-        result.forEach { message in
-            Message.move(messages: [message], to: folder)
-        }
+        Message.move(messages: suspiciousMessages, to: folder)
     }
 
     // MARK: - EmailDisplayViewModelDelegate Overrides
