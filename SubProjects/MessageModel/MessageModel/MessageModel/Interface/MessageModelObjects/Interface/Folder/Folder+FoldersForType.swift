@@ -13,7 +13,7 @@ extension Folder {
         CdFolder.planckSuspiciousFolderName
     }
     
-    func update(folderType: FolderType) {
+    public func update(folderType: FolderType) {
         guard let cdFolder = cdFolder() else {
             return
         }
