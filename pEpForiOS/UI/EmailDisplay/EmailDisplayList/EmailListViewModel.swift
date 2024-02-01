@@ -94,6 +94,16 @@ class EmailListViewModel: EmailDisplayViewModel {
             return nil
         }
     }
+    
+    private var account: Account? {
+        get {
+            if let folder = folderToShow as? Folder {
+                return folder.account
+            }
+            return nil
+        }
+    }
+
 
     public let folderToShow: DisplayableFolderProtocol
 
@@ -308,11 +318,19 @@ class EmailListViewModel: EmailDisplayViewModel {
     }
 
     public func moveMailsToSuspiciousIfPossible() {
-        let result = messageQueryResults.all.filter { SuspiciousMessageUtil.isDangerous(message: $0) }
+        guard folderName != Folder.planckSuspiciousFolderName else {
+            return
+        }
+        // Get the dangerous messages () that are not on suspcious folder yet.
+        // This should be only 1 message at maximum.
+        let result = messageQueryResults.all.filter { SuspiciousMessageUtil.shouldMoveToSuspiciousFolder(message: $0) }
+        
+        guard let account = account, let folder = Folder.getSuspiciousFolder(account: account) else {
+            return
+        }
+
         result.forEach { message in
-            if let folder = Folder.by(account: message.parent.account, folderType: .suspicious) {
-                Message.move(messages: [message], to: folder)
-            }
+            Message.move(messages: [message], to: folder)
         }
     }
 

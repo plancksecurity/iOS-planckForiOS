@@ -55,6 +55,7 @@ class VerifyIdentityActionConfirmationViewController: UIViewController {
 }
 
 extension VerifyIdentityActionConfirmationViewController: TrustManagementViewModelDelegate {
+    
     func reload() { }
     
     func dataChanged(forRowAt indexPath: IndexPath) {

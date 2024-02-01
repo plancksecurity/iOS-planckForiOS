@@ -717,6 +717,7 @@
 		F7E446762B556958002356D1 /* SuspiciousMessageUtil.swift in Sources */ = {isa = PBXBuildFile; fileRef = F7E446742B556958002356D1 /* SuspiciousMessageUtil.swift */; };
 		F7EBF8C32A3323440050A40E /* EventLog.swift in Sources */ = {isa = PBXBuildFile; fileRef = F7EBF8C22A3323440050A40E /* EventLog.swift */; };
 		F7EBF8DD2A3709560050A40E /* AuditLoggingUtil.swift in Sources */ = {isa = PBXBuildFile; fileRef = F7EBF8DC2A3709560050A40E /* AuditLoggingUtil.swift */; };
+		F7F797202B6BCCC6004822AD /* Folder+FoldersForType.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7BED3122254F75600CCF638 /* Folder+FoldersForType.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -3146,6 +3147,7 @@
 				434C24A325D6CEF100F622DB /* CdMessage+Extension.swift in Sources */,
 				434C234625D6A32A00F622DB /* ConcurrentBaseOperation.swift in Sources */,
 				434C231725D6A1DE00F622DB /* FetchServiceBaseClass.swift in Sources */,
+				F7F797202B6BCCC6004822AD /* Folder+FoldersForType.swift in Sources */,
 				43BDDD9E25DD4D0A00FC0C68 /* SmtpConnectionProtocol.swift in Sources */,
 				434C230725D6A18600F622DB /* ImapConnection.swift in Sources */,
 				436FD26025DA831000D929B3 /* Server+SessionAware.swift in Sources */,

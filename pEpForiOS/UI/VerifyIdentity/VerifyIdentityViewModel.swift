@@ -8,8 +8,10 @@
 
 import Foundation
 #if EXT_SHARE
+import MessageModelForAppExtensions
 import PlanckToolboxForExtensions
 #else
+import MessageModel
 import PlanckToolbox
 #endif
 
@@ -104,5 +106,12 @@ struct VerifyIdentityViewModel {
             return ""
         }
         return decision == .accept ? NSLocalizedString("Yes, confirm", comment: "Confirm button title") : NSLocalizedString("Yes, reject", comment: "Reject button title")
+    }
+    
+    public func handleTrustwordsRejection(message: Message) {
+        guard let folder = Folder.getSuspiciousFolder(account: message.parent.account) else {
+            return
+        }
+        Message.move(messages: [message], to: folder)
     }
 }

@@ -308,7 +308,7 @@ final class TrustManagementViewModel {
     var shouldShowOptionsButton: Bool = false
     private var shouldAllowHandshakeActions: Bool = true
 
-    private var message: Message
+    public private(set) var message: Message
     private var trustManagementUtil : TrustManagementUtilProtocol
     private let undoManager = UndoManager()
     /// It contains the names of the actions that are going to revert previously executed actions.

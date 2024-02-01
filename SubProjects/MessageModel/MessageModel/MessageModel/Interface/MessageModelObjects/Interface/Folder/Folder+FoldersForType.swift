@@ -9,6 +9,36 @@
 import Foundation
 
 extension Folder {
+    public static var planckSuspiciousFolderName: String {
+        CdFolder.planckSuspiciousFolderName
+    }
+    
+    func update(folderType: FolderType) {
+        guard let cdFolder = cdFolder() else {
+            return
+        }
+        guard let account = cdFolder.account else {
+            return
+        }
+        guard let moc = account.managedObjectContext else {
+            return
+        }
+        moc.performAndWait {
+            cdFolder.folderType = folderType
+        }
+        moc.saveAndLogErrors()
+    }
+    
+    public static func getSuspiciousFolder(account: Account) -> Folder? {
+        if let folder = Folder.by(account: account, folderType: .suspicious) {
+            return folder
+        }
+        //For some unknown reason, sometimes 
+        let normal = getAll(folderType: .normal)
+        let suspicious = normal.first(where: {$0.realName == planckSuspiciousFolderName})
+        suspicious?.update(folderType: .suspicious)
+        return suspicious
+    }
 
     public static func getAll(folderType: FolderType, session: Session = Session.main) -> [Folder]{
         let predicate = CdFolder.PredicateFactory.predicateForFolder(ofType: folderType)

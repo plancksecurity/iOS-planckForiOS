@@ -128,6 +128,10 @@ class EmailViewModel {
         return CalendarEventsBannerViewModel(attachments: icsFilesAttachments, delegate: delegate)
     }
     
+    func handleViewDidDisappear() {
+        SuspiciousMessageUtil.moveMessageToSuspiciousFolderIfNeeded(message: message)
+    }
+    
     /// Get the Trust Banner ViewModel.
     /// - Returns: The Trust Banner ViewModel
     func getTrustBannerViewModel(delegate: TrustBannerDelegate, pEpProtectionModifyable: Bool) -> TrustBannerViewModel {

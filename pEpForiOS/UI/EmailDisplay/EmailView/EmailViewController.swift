@@ -82,10 +82,11 @@ class EmailViewController: UIViewController {
         tableView.rowHeight = UITableView.automaticDimension
         tableView.estimatedRowHeight = 100
         setBackButtonAccessibilityLabel()
-        guard let vm = viewModel else {
-            Log.shared.errorAndCrash("VM not found")
-            return
-        }
+    }
+    
+    override func viewDidDisappear(_ animated: Bool) {
+        super.viewDidDisappear(animated)
+        viewModel?.handleViewDidDisappear()
     }
     
     override func preferredContentSizeDidChange(forChildContentContainer container: UIContentContainer) {
