@@ -329,7 +329,9 @@ class EmailListViewModel: EmailDisplayViewModel {
             Log.shared.errorAndCrash("No account? No suspicious folder? - Unexpected")
             return
         }
-        Message.move(messages: suspiciousMessages, to: folder)
+        if suspiciousMessages.count > 0 {
+            Message.move(messages: suspiciousMessages, to: folder)
+        }
     }
 
     // MARK: - EmailDisplayViewModelDelegate Overrides

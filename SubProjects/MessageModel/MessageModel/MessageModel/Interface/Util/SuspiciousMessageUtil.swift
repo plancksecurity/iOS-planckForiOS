@@ -17,15 +17,5 @@ public class SuspiciousMessageUtil {
         }
         return Rating(pEpRating: pEprating).isDangerous() && message.parent.folderType != .suspicious
     }
-
-    public static func moveMessageToSuspiciousFolderIfNeeded(message: Message) {
-        guard shouldMoveToSuspiciousFolder(message: message) else {
-            return
-        }
-        guard let folder = Folder.getSuspiciousFolder(account: message.parent.account) else {
-            return
-        }
-        Message.move(messages: [message], to: folder)
-    }
 }
 

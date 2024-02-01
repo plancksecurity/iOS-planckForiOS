@@ -83,12 +83,7 @@ class EmailViewController: UIViewController {
         tableView.estimatedRowHeight = 100
         setBackButtonAccessibilityLabel()
     }
-    
-    override func viewDidDisappear(_ animated: Bool) {
-        super.viewDidDisappear(animated)
-        viewModel?.handleViewDidDisappear()
-    }
-    
+
     override func preferredContentSizeDidChange(forChildContentContainer container: UIContentContainer) {
         super.preferredContentSizeDidChange(forChildContentContainer: container)
         if let container = container as? CalendarEventBannerViewController, !bannerContainerView.isHidden {
