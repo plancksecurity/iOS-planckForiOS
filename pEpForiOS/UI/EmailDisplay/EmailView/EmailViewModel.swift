@@ -81,6 +81,10 @@ class EmailViewModel {
         return EmailViewModel(message: message)
     }
 
+    public func markEmailAsSeen() {
+        message.markAsSeen()
+    }
+    
     /// Handle the copy action.
     ///
     /// - Parameter width: The max width the copied element may have
