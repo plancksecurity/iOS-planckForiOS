@@ -331,6 +331,7 @@ class EmailListViewModel: EmailDisplayViewModel {
         }
         if suspiciousMessages.count > 0 {
             Message.move(messages: suspiciousMessages, to: folder)
+            Session.main.commit()
         }
     }
 
