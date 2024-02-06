@@ -40,7 +40,7 @@ extension Folder {
         return suspicious
     }
 
-    public static func getAll(folderType: FolderType, session: Session = Session.main) -> [Folder]{
+    public static func getAll(folderType: FolderType, session: Session = Session.main) -> [Folder] {
         let predicate = CdFolder.PredicateFactory.predicateForFolder(ofType: folderType)
         let cdFolders: [CdFolder] = CdFolder.all(predicate: predicate, in: session.moc) ?? []
         return cdFolders.map { $0.folder() }

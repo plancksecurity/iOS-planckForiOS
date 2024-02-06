@@ -110,6 +110,7 @@ struct VerifyIdentityViewModel {
     
     public func handleTrustwordsRejection(message: Message) {
         guard let folder = Folder.getSuspiciousFolder(account: message.parent.account) else {
+            Log.shared.errorAndCrash("Suspicious folder not found")
             return
         }
         Message.move(messages: [message], to: folder)
