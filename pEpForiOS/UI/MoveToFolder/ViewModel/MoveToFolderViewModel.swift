@@ -101,14 +101,6 @@ class MoveToFolderViewModel {
         }
         return result
     }
-    
-    public func moveToSuspiciousFolder(messages: [Message]) {
-        guard let suspiciousFolder = items.map({$0.folder}).filter({$0.folderType == .suspicious}).first else {
-            Log.shared.errorAndCrash("Suspicious Folder not found")
-            return
-        }
-        Message.move(messages: messages, to: suspiciousFolder)
-    }
 
     subscript(index: Int) -> MoveToFolderCellViewModel {
         get {

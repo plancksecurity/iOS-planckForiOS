@@ -33,9 +33,9 @@ extension Folder {
         if let folder = Folder.by(account: account, folderType: .suspicious) {
             return folder
         }
-        //For some unknown reason, sometimes 
+        // The suspicious folder might have a wrong folder type.
         let normal = getAll(folderType: .normal)
-        let suspicious = normal.first(where: {$0.realName == planckSuspiciousFolderName})
+        let suspicious = normal.first(where: { $0.realName == planckSuspiciousFolderName })
         suspicious?.update(folderType: .suspicious)
         return suspicious
     }

@@ -15,7 +15,9 @@ public class SuspiciousMessageUtil {
         guard let pEprating = PEPRating(rawValue: Int32(message.cdObject.pEpRating)) else {
             return false
         }
-        return Rating(pEpRating: pEprating).isDangerous() && message.parent.folderType != .suspicious
+        let currentFolderType = message.parent.folderType
+        let isDangerousMessage = Rating(pEpRating: pEprating).isDangerous()
+        let isFolderWrong = [FolderType.suspicious, FolderType.sent, FolderType.pEpSync, FolderType.trash].contains(where: {$0 != currentFolderType})
+        return isDangerousMessage && isFolderWrong
     }
 }
-

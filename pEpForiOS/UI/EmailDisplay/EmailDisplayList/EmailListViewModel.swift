@@ -322,16 +322,19 @@ class EmailListViewModel: EmailDisplayViewModel {
             // Nothing to process in the suspicious folder
             return
         }
-        // Get the dangerous messages () that are not on suspcious folder yet.
-        // This should be only 1 message at maximum.
+        // Move the dangerous messages to the suspicious folder if possible.
         let suspiciousMessages = messageQueryResults.all.filter { SuspiciousMessageUtil.shouldMoveToSuspiciousFolder(message: $0) }
-        guard let account = account, let folder = Folder.getSuspiciousFolder(account: account) else {
-            Log.shared.errorAndCrash("No account? No suspicious folder? - Unexpected")
+
+        guard let account = account else {
+            Log.shared.errorAndCrash("Account not found.")
             return
         }
-        if suspiciousMessages.count > 0 {
+        guard let folder = Folder.getSuspiciousFolder(account: account) else {
+            Log.shared.errorAndCrash("Suspicious folder not found.")
+            return
+        }
+        if !suspiciousMessages.isEmpty {
             Message.move(messages: suspiciousMessages, to: folder)
-            Session.main.commit()
         }
     }
 
