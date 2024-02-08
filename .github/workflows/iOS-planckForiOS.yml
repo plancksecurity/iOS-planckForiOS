@@ -1,4 +1,5 @@
 name: iOS Build planckForiOS
+uses: actions/checkout@v3
 
 on:
  workflow_dispatch:
@@ -11,7 +12,12 @@ jobs:
  build-and-test:
   name: Build and Run Tests
   runs-on: macos-latest
+
   steps:
+    - name: List
+      run: ls
+    - name: PWD
+      run: pwd
     - name: Select Xcode
       run: sudo Xcode-select -switch /Applications/Xcode.app
     - name: Build & Test
