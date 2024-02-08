@@ -1,9 +1,11 @@
 name: iOS Build planckForiOS
-uses: actions/checkout@v3
 
 on:
  workflow_dispatch:
   push:
+    branches: [ "EFI-129" ]
+  pull_request:
+    branches: [ "EFI-129" ]
   merge_group:
     branches:
       - develop
