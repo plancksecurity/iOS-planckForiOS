@@ -1,4 +1,4 @@
-name: iOS Build Meta
+name: iOS Build planckForiOS
 
 on:
  workflow_dispatch:
