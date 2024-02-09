@@ -94,7 +94,9 @@ extension KeySyncHandshakeService: KeySyncServiceHandshakeHandlerProtocol {
     }
 
     public func handleSuccessfullyGrouped() {
-        NotificationCenter.default.post(name:.planckSettingsChanged, object: nil, userInfo: nil)
+        DispatchQueue.main.async {
+            NotificationCenter.default.post(name:.planckSettingsChanged, object: nil, userInfo: nil)
+        }
         // Ignore certain sync notifications again, until the user choses to sync manually.
         AppSettings.shared.keySyncEnabled = false
         guard let pEpSyncWizard = pEpSyncWizard else {
