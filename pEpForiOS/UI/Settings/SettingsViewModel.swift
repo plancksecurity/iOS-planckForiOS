@@ -20,6 +20,8 @@ protocol SettingsViewModelDelegate: AnyObject {
     func informReinitFailed()
     /// Informs that Leave device group request finieshed
     func leaveDeviceGroupFinished()
+    /// Reload view
+    func reload()
     /// Shows an alert to indicate if the extra key is editable
     func showExtraKeyEditabilityStateChangeAlert(newValue: String)
     /// Shows an alert to confirm the reset all identities.
@@ -647,6 +649,10 @@ extension SettingsViewModel {
                 Log.shared.info("Success")
                 DispatchQueue.main.async {
                     me.delegate?.hideLoadingView()
+                    AppSettings.shared.lastKnownDeviceGroupState = .sole
+                    me.items = []
+                    me.generateSections()
+                    me.delegate?.reload()
                     let title = NSLocalizedString("Reset Own Key", comment: "Reset Own Key successfull title")
                     let message = NSLocalizedString("You have successfully reset your own keys.", comment: "Reset Own Keys feedback messsage ")
                     me.delegate?.showFeedback(title: title, message: message)
@@ -654,7 +660,7 @@ extension SettingsViewModel {
             case .failure:
                 DispatchQueue.main.async {
                     me.delegate?.hideLoadingView()
-                    let title = NSLocalizedString("Reset Own Key", comment: "Reset Own Key successfull title")
+                    let title = NSLocalizedString("Reset Own Key", comment: "Reset Own Key failure title")
                     let message = NSLocalizedString("An error has occurred reseting your own keys. Try again or if the problem persist cancel and please contact with an IT Member", comment: "Reset Own Key - Try again message")
                     me.delegate?.showTryAgain(title: title, message: message)
                 }
