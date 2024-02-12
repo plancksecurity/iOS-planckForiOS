@@ -23,10 +23,12 @@ extension UIUtils {
     /// - Parameters:
     ///   - title: alert title
     ///   - message: alert message
+    ///   - presenter: The viewController that should be presenter
     ///   - completion: called when "OK" has been pressed
     public static func showAlertWithOnlyCloseButton(title: String,
                                                     message: String?,
                                                     style: PlanckAlertViewController.AlertStyle = .default,
+                                                    presenter: UIViewController? = nil,
                                                     completion: (()->Void)? = nil) {
         guard let alertViewController = UIUtils.getAlert(withTitle: title,
                                                          message: message,
@@ -39,7 +41,7 @@ extension UIUtils {
             Log.shared.errorAndCrash("Can't instanciate alert")
             return
         }
-        UIUtils.show(alertViewController)
+        UIUtils.show(alertViewController, presenter: presenter)
     }
 
 

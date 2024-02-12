@@ -418,7 +418,7 @@ extension SettingsTableViewController : SettingsViewModelDelegate {
     }
 
     func showFeedback(title: String, message: String) {
-        UIUtils.showAlertWithOnlyCloseButton(title: title, message: message)
+        UIUtils.showAlertWithOnlyCloseButton(title: title, message: message, presenter: self)
     }
 
     func showTryAgain(title: String, message: String) {
