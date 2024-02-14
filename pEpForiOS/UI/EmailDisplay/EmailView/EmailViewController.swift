@@ -82,12 +82,8 @@ class EmailViewController: UIViewController {
         tableView.rowHeight = UITableView.automaticDimension
         tableView.estimatedRowHeight = 100
         setBackButtonAccessibilityLabel()
-        guard let vm = viewModel else {
-            Log.shared.errorAndCrash("VM not found")
-            return
-        }
     }
-    
+
     override func preferredContentSizeDidChange(forChildContentContainer container: UIContentContainer) {
         super.preferredContentSizeDidChange(forChildContentContainer: container)
         if let container = container as? CalendarEventBannerViewController, !bannerContainerView.isHidden {
@@ -440,6 +436,11 @@ extension EmailViewController: MessageHeaderCellDelegate {
         // This workaround prevents a wrong layout in the collection view of the recipient fields.
         // For some unknown reason it seems to layout the cells in a container of the size of what's in the IB, ignoring the real device dimensions.
         tableView.reloadData()
+        guard let vm = viewModel else {
+            Log.shared.errorAndCrash("VM not found")
+            return
+        }
+        vm.markEmailAsSeen()
     }
 }
 

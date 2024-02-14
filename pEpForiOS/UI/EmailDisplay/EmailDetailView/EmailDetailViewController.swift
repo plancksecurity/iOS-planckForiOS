@@ -341,7 +341,6 @@ extension EmailDetailViewController {
         prevButtonForSplitView?.isEnabled = thereIsAPreviousMessageToShow
         nextButtonForSplitView?.isEnabled = thereIsANextMessageToShow
         
-
         showPepRating()
         setupToolbar()
     }

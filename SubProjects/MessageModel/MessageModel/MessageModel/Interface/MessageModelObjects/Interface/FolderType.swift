@@ -100,6 +100,7 @@ extension FolderType {
                                                    .archive,
                                                    .all,
                                                    .flagged,
+                                                   .suspicious,
                                                    .pEpSync]
 
     /// Raw values of typesSyncedWithImapServer

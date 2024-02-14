@@ -11,12 +11,18 @@ import PEPObjCAdapter
 
 public class SuspiciousMessageUtil {
 
-    public static func isDangerous(message: Message) -> Bool {
+    /// Indicates if the message passed has to be moved to the suspicious folder. True if it has to be moved.
+    public static func shouldMoveToSuspiciousFolder(message: Message) -> Bool {
         guard let pEprating = PEPRating(rawValue: Int32(message.cdObject.pEpRating)) else {
             return false
         }
-        return Rating(pEpRating: pEprating).isDangerous()
+        let isDangerousMessage = Rating(pEpRating: pEprating).isDangerous()
+        let isFolderWrong = isFolderWrong(type: message.parent.folderType)
+        return isDangerousMessage && isFolderWrong
     }
 
+    private static func isFolderWrong(type: FolderType) -> Bool {
+        let foldersToSkip: [FolderType] = [.suspicious, .sent, .pEpSync, .trash, .outbox, .drafts]
+        return foldersToSkip.allSatisfy { $0 != type }
+    }
 }
-

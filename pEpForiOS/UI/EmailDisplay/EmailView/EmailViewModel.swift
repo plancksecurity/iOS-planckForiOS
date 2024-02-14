@@ -81,6 +81,10 @@ class EmailViewModel {
         return EmailViewModel(message: message)
     }
 
+    public func markEmailAsSeen() {
+        message.markAsSeen()
+    }
+    
     /// Handle the copy action.
     ///
     /// - Parameter width: The max width the copied element may have
@@ -127,7 +131,7 @@ class EmailViewModel {
         }
         return CalendarEventsBannerViewModel(attachments: icsFilesAttachments, delegate: delegate)
     }
-    
+
     /// Get the Trust Banner ViewModel.
     /// - Returns: The Trust Banner ViewModel
     func getTrustBannerViewModel(delegate: TrustBannerDelegate, pEpProtectionModifyable: Bool) -> TrustBannerViewModel {
