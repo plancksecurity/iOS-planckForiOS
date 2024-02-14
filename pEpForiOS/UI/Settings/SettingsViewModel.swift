@@ -649,6 +649,7 @@ extension SettingsViewModel {
                 Log.shared.info("Success")
                 DispatchQueue.main.async {
                     me.delegate?.hideLoadingView()
+                    // We update the UI imediatelly (fake responsiveness)
                     AppSettings.shared.lastKnownDeviceGroupState = .sole
                     me.items = []
                     me.generateSections()
