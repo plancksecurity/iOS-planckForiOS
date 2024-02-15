@@ -16,6 +16,12 @@ jobs:
       - run: echo "🎉 The job was automatically triggered by a ${{ github.event_name }} event."
       - run: echo "🐧 This job is now running on a ${{ runner.os }} server hosted by GitHub!"
       - run: echo "🔎 The name of your branch is ${{ github.ref }} and your repository is ${{ github.repository }}."
+      - name: Checkout planckForiOS_intern
+        uses: actions/checkout@v2
+        with:
+          repository: plancksecurity/iOS-planckForiOS_intern
+          token: ${{ secrets.ALL_REPO_ACCESS_TOKEN }}
+
       - name: Checkout
         uses: actions/checkout@v3
       - name: Set Default Scheme
