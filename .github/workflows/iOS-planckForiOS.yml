@@ -1,4 +1,4 @@
-name: iOS starter workflow
+name: planckForiOS workflow
 
 on:
   workflow_dispatch:
