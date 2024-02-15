@@ -3074,7 +3074,6 @@
 		};
 		151573B81F2093AA0049BB0B /* Log Build Time Stop Script */ = {
 			isa = PBXShellScriptBuildPhase;
-			alwaysOutOfDate = 1;
 			buildActionMask = 2147483647;
 			files = (
 			);
@@ -3109,7 +3108,6 @@
 		};
 		4961BA0F1E7BF09700920DF8 /* Warnings for TODO++ Script */ = {
 			isa = PBXShellScriptBuildPhase;
-			alwaysOutOfDate = 1;
 			buildActionMask = 2147483647;
 			files = (
 			);
