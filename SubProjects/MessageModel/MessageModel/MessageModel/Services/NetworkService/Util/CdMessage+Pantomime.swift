@@ -402,7 +402,7 @@ extension CdMessage {
         } else {
             mail = CdMessage.newIncomingMessage(context: context)
         }
-        mail.isSMIME = record?.isSMIME ?? false
+        mail.isSMIME = record?.isSmime ?? false
 
         let oldMSN = mail.imapFields(context: context).messageNumber
         let newMSN = Int32(message.messageNumber())
