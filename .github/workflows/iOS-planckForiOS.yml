@@ -23,7 +23,7 @@ jobs:
           token: ${{ secrets.ALL_REPO_ACCESS_TOKEN }}
 
       - name: Check planckForiOS_intern
-        uses: actions/checkout@develop
+        uses: actions/checkout@master
         with:
           repository: plancksecurity/iOS-planckForiOS_intern
 
