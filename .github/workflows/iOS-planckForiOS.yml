@@ -22,6 +22,11 @@ jobs:
           repository: plancksecurity/iOS-planckForiOS_intern
           token: ${{ secrets.ALL_REPO_ACCESS_TOKEN }}
 
+      - name: Check planckForiOS_intern
+        uses: actions/checkout@develop
+        with:
+          repository: plancksecurity/iOS-planckForiOS_intern
+
       - name: Checkout
         uses: actions/checkout@v3
       - name: Set Default Scheme
