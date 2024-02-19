@@ -379,7 +379,6 @@ extension CdMessage {
     static func quickInsertOrUpdate(pantomimeMessage message: CWIMAPMessage,
                                     account: CdAccount,
                                     messageUpdate: CWMessageUpdate,
-                                    record: CWCacheRecord?,
                                     context: NSManagedObjectContext) -> CdMessage? {
         guard
             let folderName = message.folder()?.name(),
@@ -402,7 +401,6 @@ extension CdMessage {
         } else {
             mail = CdMessage.newIncomingMessage(context: context)
         }
-        mail.isSMIME = record?.isSmime ?? false
 
         let oldMSN = mail.imapFields(context: context).messageNumber
         let newMSN = Int32(message.messageNumber())
@@ -457,7 +455,6 @@ extension CdMessage {
     static func insertOrUpdate(pantomimeMessage: CWIMAPMessage,
                                account: CdAccount,
                                messageUpdate: CWMessageUpdate,
-                               record: CWCacheRecord?,
                                context: NSManagedObjectContext) -> CdMessage? {
         objc_sync_enter(self)
         defer { objc_sync_exit(self) }
@@ -465,7 +462,6 @@ extension CdMessage {
         guard let mail = quickInsertOrUpdate(pantomimeMessage: pantomimeMessage,
                                              account: account,
                                              messageUpdate: messageUpdate,
-                                             record: record,
                                              context: context)
             else {
                 return nil
@@ -551,6 +547,7 @@ extension CdMessage {
         store(headerFieldNames: ["X-pEp-Version",
                                  "X-EncStatus",
                                  "X-KeyList",
+                                 "isSmime",
                                  kPepHeaderAutoConsume],
               pantomimeMessage: pantomimeMessage,
               cdMessage: mail,

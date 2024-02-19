@@ -360,14 +360,19 @@ extension CoreDataPantomimeAdapter: CWIMAPCache {
                 return
             }
 
-            guard let cdAccount =  me.privateMOC.object(with: me.accountID) as? CdAccount else {
+            guard let cdAccount = me.privateMOC.object(with: me.accountID) as? CdAccount else {
                     Log.shared.errorAndCrash("Need an existing account")
                     return
             }
+
+            if let isSmime = theRecord?.isSmime {
+                let value = isSmime ? "true" : "false"
+                message.setHeaders(["isSmime" : value])
+            }
+
             CdMessage.insertOrUpdate(pantomimeMessage: message,
                                      account: cdAccount,
                                      messageUpdate: messageUpdate,
-                                     record: theRecord,
                                      context: me.privateMOC)
         }
     }

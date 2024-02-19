@@ -117,15 +117,6 @@ public class Message: MessageModelObjectProtocol, ManagedObjectWrapperProtocol {
             cdObject.parent = newValue.cdObject
         }
     }
-    
-    public var isSmime: Bool {
-        get {
-            return cdObject.isSMIME
-        }
-        set {
-            cdObject.isSMIME = newValue
-        }
-    }
 
     /// This is set when a message has to be moved to another folder.
     public var targetFolder: Folder? {
