@@ -459,6 +459,11 @@ extension CdMessage {
         objc_sync_enter(self)
         defer { objc_sync_exit(self) }
 
+        if let data = pantomimeMessage.protocol() {
+            let result = String(decoding: data, as: UTF8.self) == "application/pkcs7-signature"
+            pantomimeMessage.setHeaders(["isSmime" : result ? "true" : "false"])
+        }
+
         guard let mail = quickInsertOrUpdate(pantomimeMessage: pantomimeMessage,
                                              account: account,
                                              messageUpdate: messageUpdate,

@@ -365,11 +365,6 @@ extension CoreDataPantomimeAdapter: CWIMAPCache {
                     return
             }
 
-            if let isSmime = theRecord?.isSmime {
-                let value = isSmime ? "true" : "false"
-                message.setHeaders(["isSmime" : value])
-            }
-
             CdMessage.insertOrUpdate(pantomimeMessage: message,
                                      account: cdAccount,
                                      messageUpdate: messageUpdate,
