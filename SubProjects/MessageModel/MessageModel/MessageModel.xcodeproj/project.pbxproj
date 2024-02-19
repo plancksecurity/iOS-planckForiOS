@@ -1258,7 +1258,6 @@
 		F7E446742B556958002356D1 /* SuspiciousMessageUtil.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SuspiciousMessageUtil.swift; sourceTree = "<group>"; };
 		F7EBF8C22A3323440050A40E /* EventLog.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EventLog.swift; sourceTree = "<group>"; };
 		F7EBF8DC2A3709560050A40E /* AuditLoggingUtil.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuditLoggingUtil.swift; sourceTree = "<group>"; };
-		F7EBF91F2B693B3B00E0E3DD /* 3.1.8.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = 3.1.8.xcdatamodel; sourceTree = "<group>"; };
 		F7FFFAF929DC22AE00A6DC49 /* 1.1.274.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = 1.1.274.xcdatamodel; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -4270,7 +4269,6 @@
 		1587D135204570BA002C2157 /* MessageModel.xcdatamodeld */ = {
 			isa = XCVersionGroup;
 			children = (
-				F7EBF91F2B693B3B00E0E3DD /* 3.1.8.xcdatamodel */,
 				43C863A62AB1990800A19B43 /* 3.0.10.xcdatamodel */,
 				F7FFFAF929DC22AE00A6DC49 /* 1.1.274.xcdatamodel */,
 				5BD3DDA92808232000E41E0C /* 1.1.273.xcdatamodel */,
@@ -4289,7 +4287,7 @@
 				154F0A7E208512BF00C77D72 /* 0.0.32.xcdatamodel */,
 				1587D136204570BA002C2157 /* pEpForiOS.xcdatamodel */,
 			);
-			currentVersion = F7EBF91F2B693B3B00E0E3DD /* 3.1.8.xcdatamodel */;
+			currentVersion = 43C863A62AB1990800A19B43 /* 3.0.10.xcdatamodel */;
 			path = MessageModel.xcdatamodeld;
 			sourceTree = "<group>";
 			versionGroupType = wrapper.xcdatamodel;
