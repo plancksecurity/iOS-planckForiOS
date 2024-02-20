@@ -494,7 +494,6 @@ extension VerifiableAccount {
         server.authMethod = authMethod?.rawValue
         server.serverType = serverType
         server.automaticallyTrusted = automaticallyTrusted
-        server.manuallyTrusted = manuallyTrusted
         server.transport = transport.toServerTransport()
         server.serverType = serverType
 

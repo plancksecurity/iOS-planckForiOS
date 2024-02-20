@@ -231,8 +231,7 @@ extension CdMessage {
             return false
         }
         let accountHasBeenCreatedInLocalNetwork = imapServer.automaticallyTrusted
-        let userDecidedToTrustServer = imapServer.manuallyTrusted
-        return accountHasBeenCreatedInLocalNetwork || userDecidedToTrustServer
+        return accountHasBeenCreatedInLocalNetwork
     }
 
     /// - Returns: all messages marked for UidMoveToTrash

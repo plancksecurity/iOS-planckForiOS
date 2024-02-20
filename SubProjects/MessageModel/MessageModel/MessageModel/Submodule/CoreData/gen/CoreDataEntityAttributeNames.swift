@@ -266,7 +266,6 @@ extension CdServer {
         static let automaticallyTrusted = "automaticallyTrusted"
         static let dateLastAuthenticationErrorShown = "dateLastAuthenticationErrorShown"
         static let imapFolderSeparator = "imapFolderSeparator"
-        static let manuallyTrusted = "manuallyTrusted"
         static let port = "port"
         static let serverTypeRawValue = "serverTypeRawValue"
         static let transportRawValue = "transportRawValue"

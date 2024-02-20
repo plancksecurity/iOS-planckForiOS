@@ -84,16 +84,6 @@ public class Server: MessageModelObjectProtocol, ManagedObjectWrapperProtocol {
         }
     }
 
-    public var manuallyTrusted: Bool {
-        get{
-            // Only IMAP servers can be trusted.
-            return cdObject.manuallyTrusted
-        }
-        set{
-            cdObject.manuallyTrusted = newValue
-        }
-    }
-
     public  var credentials: ServerCredentials {
         get {
             return ServerCredentials(cdObject: cdObject.credentials!, context: moc)
@@ -137,7 +127,6 @@ public class Server: MessageModelObjectProtocol, ManagedObjectWrapperProtocol {
                       transport: transport,
                       authMethod: authMethod,
                       automaticallyTrusted: automaticallyTrusted,
-                      manuallyTrusted: manuallyTrusted,
                       credentials: credentials,
                       toPersist: false)
     }
@@ -148,7 +137,6 @@ public class Server: MessageModelObjectProtocol, ManagedObjectWrapperProtocol {
                                transport: Transport,
                                authMethod: String? = nil,
                                automaticallyTrusted: Bool = false,
-                               manuallyTrusted: Bool = false,
                                credentials: ServerCredentials,
                                toPersist: Bool = true) -> Server {
         let server = Server(serverType: serverType,
@@ -157,7 +145,6 @@ public class Server: MessageModelObjectProtocol, ManagedObjectWrapperProtocol {
                                  transport: transport,
                                  authMethod: authMethod,
                                  automaticallyTrusted: automaticallyTrusted,
-                                 manuallyTrusted: manuallyTrusted,
                                  credentials: credentials)
         if toPersist {
             server.session.commit() //!!!: needs rethink. Topic: probaly Verifyable Account
@@ -177,7 +164,6 @@ public class Server: MessageModelObjectProtocol, ManagedObjectWrapperProtocol {
                  transport: Transport,
                  authMethod: String? = nil,
                  automaticallyTrusted: Bool = false,
-                 manuallyTrusted: Bool = false,
                  credentials: ServerCredentials,
                  session: Session = Session.main) {
         let moc = session.moc
@@ -190,7 +176,6 @@ public class Server: MessageModelObjectProtocol, ManagedObjectWrapperProtocol {
         createe.authMethod = authMethod
         createe.credentials = credentials.cdObject
         createe.automaticallyTrusted = automaticallyTrusted
-        createe.manuallyTrusted = manuallyTrusted
 
         self.cdObject = createe
         self.moc = moc
@@ -204,7 +189,6 @@ public class Server: MessageModelObjectProtocol, ManagedObjectWrapperProtocol {
                   transport: server.transport,
                   authMethod: server.authMethod,
                   automaticallyTrusted: server.automaticallyTrusted,
-                  manuallyTrusted: server.manuallyTrusted,
                   credentials: ServerCredentials(withDataFrom: server.credentials))
     }
     
