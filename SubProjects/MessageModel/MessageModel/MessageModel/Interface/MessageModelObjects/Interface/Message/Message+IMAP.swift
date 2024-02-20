@@ -120,9 +120,6 @@ extension Message {
 extension Message {
     
     public var isSmime: Bool {
-        if let value = Bool(optionalFields["isSmime"] ?? "false") {
-            return value
-        }
-        return false
+        return cdObject.isSMIME
     }
 }
