@@ -64,6 +64,7 @@ extension MimeTypeUtils {
         case ppsm = "application/vnd.ms-powerpoint.slideshow.macroenabled.12"
         case potm = "application/vnd.ms-powerpoint.template.macroenabled.12"
 
+        case smime = "application/pkcs7-signature"
 
         case mdb, accda, accdb, accde, accdr, accdt, ade, adp, adn, mde, mdf, mdn, mdt, mdw = "application/msaccess"
         case wri = "application/mswrite"

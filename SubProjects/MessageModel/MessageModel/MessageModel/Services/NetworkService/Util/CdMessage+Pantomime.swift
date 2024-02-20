@@ -401,6 +401,10 @@ extension CdMessage {
         } else {
             mail = CdMessage.newIncomingMessage(context: context)
         }
+        
+        if let data = message.protocol() {
+            mail.isSMIME = MimeTypeUtils.MimeType(rawValue: String(decoding: data, as: UTF8.self)) == .smime
+        }
 
         let oldMSN = mail.imapFields(context: context).messageNumber
         let newMSN = Int32(message.messageNumber())
@@ -410,7 +414,7 @@ extension CdMessage {
             mail.imapFields(context: context).messageNumber = newMSN
             return mail
         }
-
+        
         mail.updateFromServer(cwFlags: message.flags(), context: context)
 
         // Bail out quickly if there is only a flag change needed
@@ -459,11 +463,6 @@ extension CdMessage {
         objc_sync_enter(self)
         defer { objc_sync_exit(self) }
 
-        if let data = pantomimeMessage.protocol() {
-            let result = String(decoding: data, as: UTF8.self) == "application/pkcs7-signature"
-            pantomimeMessage.setHeaders(["isSmime" : result ? "true" : "false"])
-        }
-
         guard let mail = quickInsertOrUpdate(pantomimeMessage: pantomimeMessage,
                                              account: account,
                                              messageUpdate: messageUpdate,
@@ -472,6 +471,7 @@ extension CdMessage {
                 return nil
         }
 
+        
         if messageUpdate.isFlagsOnly() || messageUpdate.isMsnOnly() {
             context.saveAndLogErrors()
             return mail
