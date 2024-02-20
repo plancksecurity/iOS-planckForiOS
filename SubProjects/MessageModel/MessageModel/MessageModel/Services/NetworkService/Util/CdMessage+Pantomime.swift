@@ -552,7 +552,6 @@ extension CdMessage {
         store(headerFieldNames: ["X-pEp-Version",
                                  "X-EncStatus",
                                  "X-KeyList",
-                                 "isSmime",
                                  kPepHeaderAutoConsume],
               pantomimeMessage: pantomimeMessage,
               cdMessage: mail,
