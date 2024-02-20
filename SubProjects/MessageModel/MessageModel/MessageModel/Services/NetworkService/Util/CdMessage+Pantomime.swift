@@ -414,7 +414,7 @@ extension CdMessage {
             mail.imapFields(context: context).messageNumber = newMSN
             return mail
         }
-        
+
         mail.updateFromServer(cwFlags: message.flags(), context: context)
 
         // Bail out quickly if there is only a flag change needed
