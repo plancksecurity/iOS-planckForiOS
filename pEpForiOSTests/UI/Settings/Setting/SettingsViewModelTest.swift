@@ -113,6 +113,10 @@ class MockFileExportUtil : FileExportUtilProtocol {
 // MARK: - delegate mocks
 
 class SettingsViewModeldelegate: SettingsViewModelDelegate {
+    func reload() {
+        XCTFail()
+    }
+
     func changeActivityIndicatorOnPlanckSync() {
         XCTFail()
     }
