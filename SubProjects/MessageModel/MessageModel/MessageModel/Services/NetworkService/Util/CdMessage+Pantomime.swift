@@ -401,6 +401,10 @@ extension CdMessage {
         } else {
             mail = CdMessage.newIncomingMessage(context: context)
         }
+        
+        if let data = message.protocol() {
+            mail.isSMIME = MimeTypeUtils.MimeType(rawValue: String(decoding: data, as: UTF8.self)) == .smime
+        }
 
         let oldMSN = mail.imapFields(context: context).messageNumber
         let newMSN = Int32(message.messageNumber())
@@ -467,6 +471,7 @@ extension CdMessage {
                 return nil
         }
 
+        
         if messageUpdate.isFlagsOnly() || messageUpdate.isMsnOnly() {
             context.saveAndLogErrors()
             return mail

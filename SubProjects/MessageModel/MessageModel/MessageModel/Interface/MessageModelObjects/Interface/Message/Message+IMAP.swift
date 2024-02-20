@@ -116,3 +116,10 @@ extension Message {
         moc.saveAndLogErrors()
     }
 }
+
+extension Message {
+    
+    public var isSmime: Bool {
+        return cdObject.isSMIME
+    }
+}
