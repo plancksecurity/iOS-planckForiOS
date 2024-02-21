@@ -14,20 +14,14 @@ extension CdServer {
 
         static func isAllowedToManuallyTrust() -> NSPredicate {
             let pImap = isImap()
-            let pNotInLocalNetworkWhenCreated = notAutomaticallyTrusted()
             return
-                NSCompoundPredicate(andPredicateWithSubpredicates: [pImap,
-                                                                    pNotInLocalNetworkWhenCreated])
+                NSCompoundPredicate(andPredicateWithSubpredicates: [pImap])
         }
 
         static func isImap() -> NSPredicate {
             return NSPredicate(format: "%K = %d",
                                          CdServer.AttributeName.serverTypeRawValue,
                                          Server.ServerType.imap.rawValue)
-        }
-        
-        static func notAutomaticallyTrusted() -> NSPredicate {
-            return NSPredicate(format: "%K = false", CdServer.AttributeName.automaticallyTrusted)
         }
     }
 }

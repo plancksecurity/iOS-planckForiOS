@@ -13,6 +13,6 @@ extension CdAccount {
         guard let imapServer = server(type: .imap) else {
             return false
         }
-        return imapServer.automaticallyTrusted
+        return false
     }
 }

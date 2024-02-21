@@ -224,16 +224,6 @@ extension CdMessage {
         addToOptionalFields(headerField)
     }
 
-    // TODO: This is duplicated between MM and Cd.
-    var isOnTrustedServer: Bool {
-        guard let imapServer = parent?.account?.server(with: .imap) else {
-            // Some tests seem to think that this is a valid case. Don't crash.
-            return false
-        }
-        let accountHasBeenCreatedInLocalNetwork = imapServer.automaticallyTrusted
-        return accountHasBeenCreatedInLocalNetwork
-    }
-
     /// - Returns: all messages marked for UidMoveToTrash
     static func allMessagesMarkedForMoveToFolder(inAccount account: CdAccount,
                                                  context: NSManagedObjectContext) -> [CdMessage] {

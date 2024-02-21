@@ -181,7 +181,6 @@
     <entity name="CdServer" representedClassName="CdServer" syncable="YES" codeGenerationType="category">
         <attribute name="address" attributeType="String"/>
         <attribute name="authMethod" optional="YES" attributeType="String"/>
-        <attribute name="automaticallyTrusted" attributeType="Boolean" defaultValueString="NO" usesScalarValueType="YES"/>
         <attribute name="dateLastAuthenticationErrorShown" optional="YES" transient="YES" attributeType="Date" usesScalarValueType="NO"/>
         <attribute name="imapFolderSeparator" optional="YES" attributeType="String"/>
         <attribute name="port" attributeType="Integer 32" usesScalarValueType="YES"/>

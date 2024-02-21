@@ -74,16 +74,6 @@ public class Server: MessageModelObjectProtocol, ManagedObjectWrapperProtocol {
         }
     }
 
-    public var automaticallyTrusted: Bool {
-        get{
-            // Only IMAP servers can be trusted.
-            return cdObject.automaticallyTrusted
-        }
-        set{
-            cdObject.automaticallyTrusted = newValue
-        }
-    }
-
     public  var credentials: ServerCredentials {
         get {
             return ServerCredentials(cdObject: cdObject.credentials!, context: moc)
@@ -175,7 +165,6 @@ public class Server: MessageModelObjectProtocol, ManagedObjectWrapperProtocol {
         createe.transport = transport
         createe.authMethod = authMethod
         createe.credentials = credentials.cdObject
-        createe.automaticallyTrusted = automaticallyTrusted
 
         self.cdObject = createe
         self.moc = moc
@@ -188,7 +177,6 @@ public class Server: MessageModelObjectProtocol, ManagedObjectWrapperProtocol {
                   address: server.address,
                   transport: server.transport,
                   authMethod: server.authMethod,
-                  automaticallyTrusted: server.automaticallyTrusted,
                   credentials: ServerCredentials(withDataFrom: server.credentials))
     }
     
