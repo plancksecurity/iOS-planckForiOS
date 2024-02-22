@@ -251,10 +251,7 @@ extension DecryptMessageOperation {
 
         let flagNeedsReupload = decryptFlags?.needsReupload ?? false
 
-        if cdMessage.isOnTrustedServer {
-            // Reupload plaintext message for trusted server
-            handleReUploadForTrustedServer(decryptedMessage: cdMessage, originalRating: rating)
-        } else if flagNeedsReupload {
+        if flagNeedsReupload {
             // The Engine gave us src_modified to signal us the message needs re-upload. (has been
             // reencrypted with extra keys, Unprotected subject or whatever other reason)
             handleReUploadForReEncrypted(decryptedMessage: cdMessage,
