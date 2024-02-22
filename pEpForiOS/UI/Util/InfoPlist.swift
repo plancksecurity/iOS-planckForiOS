@@ -34,7 +34,7 @@ struct InfoPlist {
         }
         guard let shortVersion = mainBundleShortVersion() else {
             Log.shared.errorAndCrash("Missing app version")
-            return "3.1.10"
+            return "3.1.11"
         }
         let version = shortVersion.replacingOccurrences(of: ".", with: "-")
         return userManualURL.replaceFirstOccurrence(of: "version", with: version)
