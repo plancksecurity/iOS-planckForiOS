@@ -106,7 +106,6 @@ final class SettingsViewModel {
                 .userManual,
                 .termsAndConditions,
                 .extraKeys,
-                .trustedServer,
                 .resetTrust,
                 .exportDBs,
                 .groupMailboxes,
@@ -496,9 +495,6 @@ extension SettingsViewModel {
         case .defaultAccount:
             return NSLocalizedString("Default Account",
                                      comment: "Settings: Cell (button) title to view default account setting")
-        case .trustedServer:
-            return NSLocalizedString("Store Messages Securely",
-                                     comment: "Settings: Cell (button) title to view default account setting")
         case .pgpKeyImport:
             return NSLocalizedString("PGP Key Import",
                                      comment: "Settings: Cell (button) title for importing and using private PGP keys")
@@ -559,7 +555,6 @@ extension SettingsViewModel {
                 .resetAccounts,
                 .resetTrust,
                 .pgpKeyImport,
-                .trustedServer,
                 .unsecureReplyWarningEnabled,
                 .exportDBs,
                 .groupMailboxes,
@@ -689,7 +684,6 @@ extension SettingsViewModel {
         case resetAccounts
         case defaultAccount
         case credits
-        case trustedServer
         case pgpKeyImport // This will not be shown. For further info see: EFI-24
         case passiveMode  // This will not be shown. For further info see: EFI-24
         case protectMessageSubject

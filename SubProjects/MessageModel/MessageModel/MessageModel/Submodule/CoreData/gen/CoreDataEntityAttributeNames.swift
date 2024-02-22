@@ -263,10 +263,8 @@ extension CdServer {
     struct AttributeName {
         static let address = "address"
         static let authMethod = "authMethod"
-        static let automaticallyTrusted = "automaticallyTrusted"
         static let dateLastAuthenticationErrorShown = "dateLastAuthenticationErrorShown"
         static let imapFolderSeparator = "imapFolderSeparator"
-        static let manuallyTrusted = "manuallyTrusted"
         static let port = "port"
         static let serverTypeRawValue = "serverTypeRawValue"
         static let transportRawValue = "transportRawValue"
