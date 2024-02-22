@@ -88,7 +88,7 @@ extension Appearance {
         let primary = UIColor.primary()
         let appearance = UINavigationBarAppearance()
         appearance.configureWithOpaqueBackground()
-        let font = UIFont.pepFont(style: .headline, weight: .medium)
+        let font = UIFont.planckFont(style: .headline, weight: .medium)
         let titleTextAttributes: [NSAttributedString.Key : Any] = [.foregroundColor: color,
                                                                    .font: font]
         let buttonsAttributes: [NSAttributedString.Key : Any] = [.foregroundColor: primary]

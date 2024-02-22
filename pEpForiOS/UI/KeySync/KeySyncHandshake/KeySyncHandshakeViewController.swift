@@ -19,7 +19,7 @@ final class KeySyncHandshakeViewController: UIViewController {
 
     @IBOutlet private weak var currentDeviceFingerprintsLabel: UILabel! {
         didSet {
-            currentDeviceFingerprintsLabel.text = NSLocalizedString("Fingerprint of this device:",
+            currentDeviceFingerprintsLabel.text = NSLocalizedString("This device:",
                                                                     comment: "Key Sync, fingerprint of this device - title")
         }
     }
@@ -28,7 +28,7 @@ final class KeySyncHandshakeViewController: UIViewController {
 
     @IBOutlet private weak var otherDeviceFingerprintsLabel: UILabel! {
         didSet {
-            otherDeviceFingerprintsLabel.text = NSLocalizedString("Fingerprint of the other device:",
+            otherDeviceFingerprintsLabel.text = NSLocalizedString("New device:",
                                                                   comment: "Key Sync, fingerprint of the other device - title")
         }
     }
@@ -65,14 +65,13 @@ final class KeySyncHandshakeViewController: UIViewController {
     @IBOutlet private weak var alertTitle: UILabel! {
         didSet {
             let titleText = NSLocalizedString("planck Sync", comment: "keySync handshake alert title")
-            alertTitle.font = UIFont.pepFont(style: .body, weight: .semibold)
-            alertTitle.attributedText = titleText.paintPlanckToPlanckColour()
+            alertTitle.font = UIFont.planckFont(style: .body, weight: .semibold)
         }
     }
 
     @IBOutlet private weak var message: UILabel! {
         didSet {
-            message.font = UIFont.pepFont(style: .footnote, weight: .regular)
+            message.font = UIFont.planckFont(style: .body, weight: .regular)
             message.text = viewModel.getMessage()
         }
     }
@@ -137,7 +136,7 @@ final class KeySyncHandshakeViewController: UIViewController {
     }
 
     private func setFont(button: UIButton) {
-        button.titleLabel?.font = UIFont.pepFont(style: .body, weight: .regular)
+        button.titleLabel?.font = UIFont.planckFont(style: .body, weight: .regular)
     }
 
     @IBAction private func didPress(_ sender: UIButton) {
@@ -187,10 +186,9 @@ extension KeySyncHandshakeViewController: KeySyncHandshakeViewModelDelegate {
     }
 
     func change(myFingerprints: String, partnerFingerprints: String) {
-        currentDeviceFingerprintsValueLabel?.text = myFingerprints.prettyFingerPrint()
-        otherDeviceFingerprintsValueLabel?.text = partnerFingerprints.prettyFingerPrint()
+        currentDeviceFingerprintsValueLabel?.text = myFingerprints.filter{!$0.isWhitespace}.prettyFingerPrint()
+        otherDeviceFingerprintsValueLabel?.text = partnerFingerprints.filter{!$0.isWhitespace}.prettyFingerPrint()
     }
-
 }
 
 // MARK: - UIPickerViewDelegate

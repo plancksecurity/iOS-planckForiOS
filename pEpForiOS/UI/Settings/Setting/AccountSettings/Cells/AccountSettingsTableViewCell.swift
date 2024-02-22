@@ -18,8 +18,8 @@ final class AccountSettingsTableViewCell: UITableViewCell {
     @IBOutlet private var valueFieldWidthConstraint: NSLayoutConstraint!
     override func awakeFromNib() {
         super.awakeFromNib()
-        keyLabel.font = UIFont.pepFont(style: .body, weight: .regular)
-        valueTextfield.font = UIFont.pepFont(style: .body, weight: .regular)
+        keyLabel.font = UIFont.planckFont(style: .body, weight: .regular)
+        valueTextfield.font = UIFont.planckFont(style: .body, weight: .regular)
     }
 
     /// Configure the cell with the appropiate content from the row according to the current trait collection

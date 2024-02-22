@@ -19,7 +19,7 @@ extension UILabel {
     ///   - style: The preferred font style.
     ///   - weight: The preferred font weight.
     public func setPEPFont(style: UIFont.TextStyle, weight: UIFont.Weight) {
-        font = UIFont.pepFont(style: style, weight: weight)
+        font = UIFont.planckFont(style: style, weight: weight)
         adjustsFontForContentSizeCategory = true
     }
 }

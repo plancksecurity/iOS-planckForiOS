@@ -111,7 +111,7 @@ extension SettingsTableViewController {
         }
         cell.textLabel?.text = row.title
         cell.textLabel?.textColor = viewModel.titleColor(rowIdentifier: row.identifier)
-        cell.textLabel?.font = UIFont.pepFont(style: .body, weight: .regular)
+        cell.textLabel?.font = UIFont.planckFont(style: .body, weight: .regular)
         cell.detailTextLabel?.text = nil
         cell.delegate = self
         return cell
@@ -123,7 +123,7 @@ extension SettingsTableViewController {
     ///   - row: the row with the information to configure the cell
     private func prepareActionCell(_ dequeuedCell: UITableViewCell, for row: SettingsRowProtocol) -> UITableViewCell {
         dequeuedCell.textLabel?.text = row.title
-        dequeuedCell.textLabel?.font = UIFont.pepFont(style: .body, weight: .regular)
+        dequeuedCell.textLabel?.font = UIFont.planckFont(style: .body, weight: .regular)
         dequeuedCell.textLabel?.textColor = viewModel.titleColor(rowIdentifier: row.identifier)
         dequeuedCell.detailTextLabel?.text = nil
         Appearance.configureSelectedBackgroundViewForPep(tableViewCell: dequeuedCell)
@@ -142,7 +142,7 @@ extension SettingsTableViewController {
         }
         cell.accessibilityIdentifier = row.title
         cell.switchDescription.text = row.title
-        cell.switchDescription.font = UIFont.pepFont(style: .body, weight: .regular)
+        cell.switchDescription.font = UIFont.planckFont(style: .body, weight: .regular)
         cell.switchDescription.textColor = viewModel.titleColor(rowIdentifier: row.identifier)
         cell.delegate = self
         cell.selectionStyle = .none
@@ -192,10 +192,10 @@ extension SettingsTableViewController {
             }
             dequeuedCell.textLabel?.text = row.title
             dequeuedCell.textLabel?.textColor = viewModel.titleColor(rowIdentifier: row.identifier)
-            dequeuedCell.textLabel?.font = UIFont.pepFont(style: .body, weight: .regular)
+            dequeuedCell.textLabel?.font = UIFont.planckFont(style: .body, weight: .regular)
 
             dequeuedCell.detailTextLabel?.text = row.subtitle
-            dequeuedCell.detailTextLabel?.font = UIFont.pepFont(style: .body, weight: .regular)
+            dequeuedCell.detailTextLabel?.font = UIFont.planckFont(style: .body, weight: .regular)
             return dequeuedCell
         case .passiveMode,
              .protectMessageSubject,

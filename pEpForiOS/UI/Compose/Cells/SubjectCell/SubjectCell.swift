@@ -29,8 +29,8 @@ final class SubjectCell: TextViewContainingTableViewCell {
     }
 
     private func setStyle() {
-        textView.font = UIFont.pepFont(style: .footnote, weight: .regular)
-        subjectLabel.font = UIFont.pepFont(style: .footnote, weight: .regular)
+        textView.font = UIFont.planckFont(style: .footnote, weight: .regular)
+        subjectLabel.font = UIFont.planckFont(style: .footnote, weight: .regular)
     }
 }
 

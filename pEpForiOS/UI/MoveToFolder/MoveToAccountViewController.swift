@@ -75,7 +75,7 @@ extension MoveToAccountViewController: UITableViewDataSource {
         let row = vm[indexPath.row]
         cell.accessoryType = .disclosureIndicator
         cell.textLabel?.text = row.title
-        cell.textLabel?.font = UIFont.pepFont(style: .callout, weight: .regular)
+        cell.textLabel?.font = UIFont.planckFont(style: .callout, weight: .regular)
         return cell
     }
 }

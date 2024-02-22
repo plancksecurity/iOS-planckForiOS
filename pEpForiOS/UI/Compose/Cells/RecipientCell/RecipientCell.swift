@@ -41,9 +41,9 @@ final class RecipientCell: TextViewContainingTableViewCell {
     }
 
     private func setFonts() {
-        title.font = UIFont.pepFont(style: .footnote,
+        title.font = UIFont.planckFont(style: .footnote,
                                     weight: .regular)
-        recipientTextView?.font = UIFont.pepFont(style: .footnote,
+        recipientTextView?.font = UIFont.planckFont(style: .footnote,
                                                  weight: .regular)
     }
 

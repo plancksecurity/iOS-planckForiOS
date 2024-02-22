@@ -52,7 +52,7 @@ extension pEpFooterView {
 
     private func setFont(titleLabel: UILabel) {
         titleLabel.textColor = .pEpGreyText
-        titleLabel.font = .pepFont(style: .caption2, weight: .regular)
+        titleLabel.font = .planckFont(style: .caption2, weight: .regular)
         titleLabel.translatesAutoresizingMaskIntoConstraints = false
     }
     private func setConstraints(titleLabel: UILabel) {

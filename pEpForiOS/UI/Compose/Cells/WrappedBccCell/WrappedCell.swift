@@ -18,6 +18,6 @@ final class WrappedCell: UITableViewCell {
     }
 
     private func setStyle() {
-        ccBccLabel.font = UIFont.pepFont(style: .footnote, weight: .regular)
+        ccBccLabel.font = UIFont.planckFont(style: .footnote, weight: .regular)
     }
 }

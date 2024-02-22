@@ -130,7 +130,7 @@ extension KeySyncWizardViewController {
         guard let introView =
                 PlanckAlertViewController.fromStoryboard(title: keySyncIntroTitle,
                                                       message: keySyncIntroMessage,
-                                                      paintPEPInTitle: true,
+                                                      paintPEPInTitle: false,
                                                       image: [keySyncIntroImage],
                                                       viewModel: PlanckAlertViewModel(alertType: .planckSyncWizard)) else {
             return nil
@@ -206,7 +206,7 @@ extension KeySyncWizardViewController {
             let PlanckAlertViewController =
                 PlanckAlertViewController.fromStoryboard(title: animationTitle,
                                                       message: animationMessage,
-                                                      paintPEPInTitle: true,
+                                                      paintPEPInTitle: false,
                                                       image: animationImages,
                                                       viewModel: PlanckAlertViewModel(alertType: .planckSyncWizard))
 
@@ -231,7 +231,7 @@ extension KeySyncWizardViewController {
         let planckAlertViewController =
             PlanckAlertViewController.fromStoryboard(title: completionTitle,
                                                   message: completionMessage,
-                                                  paintPEPInTitle: true,
+                                                  paintPEPInTitle: false,
                                                   image: [completionImage],
                                                   viewModel: PlanckAlertViewModel(alertType: .planckSyncWizard))
 

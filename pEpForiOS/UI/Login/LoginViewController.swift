@@ -557,9 +557,9 @@ extension LoginViewController {
 extension LoginViewController {
 
     private func setFonts() {
-        emailAddress.font = UIFont.pepFont(style: .callout, weight: .regular)
-        password.font = UIFont.pepFont(style: .callout, weight: .regular)
-        user.font = UIFont.pepFont(style: .callout, weight: .regular)
+        emailAddress.font = UIFont.planckFont(style: .callout, weight: .regular)
+        password.font = UIFont.planckFont(style: .callout, weight: .regular)
+        user.font = UIFont.planckFont(style: .callout, weight: .regular)
         loginButton.setPEPFont(style: .body, weight: .regular)
         dismissButton.setPEPFont(style: .body, weight: .regular)
         manualConfigButton.setPEPFont(style: .callout, weight: .regular)

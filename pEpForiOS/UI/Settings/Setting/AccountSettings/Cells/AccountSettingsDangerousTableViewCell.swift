@@ -22,6 +22,6 @@ final class AccountSettingsDangerousTableViewCell: UITableViewCell {
 
     override func awakeFromNib() {
         super.awakeFromNib()
-        titleLabel.font = UIFont.pepFont(style: .body, weight: .regular)
+        titleLabel.font = UIFont.planckFont(style: .body, weight: .regular)
     }
 }

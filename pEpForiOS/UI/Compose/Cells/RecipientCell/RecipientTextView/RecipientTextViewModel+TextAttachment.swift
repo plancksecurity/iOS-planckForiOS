@@ -24,7 +24,7 @@ extension RecipientTextViewModel {
         public var isBadge: Bool = false
 
         init(recipient: Identity,
-             font: UIFont = UIFont.pepFont(style: .footnote, weight: .regular),
+             font: UIFont = UIFont.planckFont(style: .footnote, weight: .regular),
              textColor: UIColor = .pEpDarkText,
              maxWidth: CGFloat = 0.0) {
             self.recipient = recipient

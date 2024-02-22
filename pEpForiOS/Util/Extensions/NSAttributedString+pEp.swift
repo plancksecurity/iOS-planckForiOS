@@ -71,7 +71,7 @@ extension NSAttributedString {
                 new.append(attachString)
             }
             new.addAttribute(NSAttributedString.Key.font,
-                             value: UIFont.pepFont(style: .footnote, weight: .regular),
+                             value: UIFont.planckFont(style: .footnote, weight: .regular),
                              range: NSRange(location: 0, length: new.length)
             )
             new.addAttribute(NSAttributedString.Key.baselineOffset,

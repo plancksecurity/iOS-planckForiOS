@@ -46,7 +46,7 @@ class SettingDefaultAccountTableViewController: UITableViewController {
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: cellID, for: indexPath)
         let address = allAccounts[indexPath.row].user.address
-        cell.textLabel?.font = UIFont.pepFont(style: .body, weight: .regular)
+        cell.textLabel?.font = UIFont.planckFont(style: .body, weight: .regular)
         cell.textLabel?.text = address
         cell.tintColor = UIColor.primary()
         if let defaultAccountAddress = AppSettings.shared.defaultAccount,

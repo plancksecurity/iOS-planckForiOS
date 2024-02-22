@@ -44,7 +44,7 @@ class CollapsibleTableViewHeader: UITableViewHeaderFooterView {
 
         //Account type
         accountType.translatesAutoresizingMaskIntoConstraints = false
-        accountType.font = UIFont.pepFont(style: .body, weight: .regular)
+        accountType.font = UIFont.planckFont(style: .body, weight: .regular)
 
 
         //Label stack view
@@ -61,11 +61,11 @@ class CollapsibleTableViewHeader: UITableViewHeaderFooterView {
 
         //Account name
         accountName.translatesAutoresizingMaskIntoConstraints = false
-        accountName.font = UIFont.pepFont(style: .body, weight: .regular)
+        accountName.font = UIFont.planckFont(style: .body, weight: .regular)
 
         //User address
         userAddress.translatesAutoresizingMaskIntoConstraints = false
-        userAddress.font = UIFont.pepFont(style: .body, weight: .regular)
+        userAddress.font = UIFont.planckFont(style: .body, weight: .regular)
 
         sectionButton.translatesAutoresizingMaskIntoConstraints = false
         contentView.addSubview(profileImage)
