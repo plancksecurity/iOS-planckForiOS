@@ -14,7 +14,8 @@ final class KeySyncHandshakeViewController: UIViewController {
     enum Action {
         case cancel, decline, accept
     }
-
+    @IBOutlet weak var contentViewHeight: NSLayoutConstraint!
+    
     static let storyboardId = "KeySyncHandshakeViewController"
 
     @IBOutlet private weak var currentDeviceFingerprintsLabel: UILabel! {
@@ -107,7 +108,8 @@ final class KeySyncHandshakeViewController: UIViewController {
             buttonsView.backgroundColor = UIColor.separator
         }
     }
-
+    @IBOutlet weak var fullTrustwordsButton: UIButton!
+    
     private let viewModel = KeySyncHandshakeViewModel()
     private var pickerLanguages = [String]()
 
@@ -119,6 +121,8 @@ final class KeySyncHandshakeViewController: UIViewController {
     override func viewDidLoad() {
         // Recalculate the trustwords, and update the UI.
         viewModel.updateTrustwords()
+        hideKeyboardWhenTappedAround()
+        fullTrustwordsButton.transform = CGAffineTransform(rotationAngle: CGFloat.pi)
     }
 
     override func viewDidAppear(_ animated: Bool) {
@@ -138,7 +142,18 @@ final class KeySyncHandshakeViewController: UIViewController {
         guard let action = pressedAction(tag: sender.tag) else {
             return
         }
+        if action == .lenght {
+            handleUI(sender: sender)
+        }
         viewModel.handle(action: action)
+    }
+    
+    private func handleUI(sender: UIButton) {
+        let fullTrustWords = viewModel.fullTrustWords
+        UIView.animate(withDuration: 0.25, animations: { // [weak self] in
+            sender.transform = fullTrustWords ? CGAffineTransform(rotationAngle: CGFloat.pi) : CGAffineTransform.identity
+            //self?.contentViewHeight.constant = !fullTrustWords ? 600 : 590
+        })
     }
 
     @IBAction private func didLongPressWords(_ sender: UILongPressGestureRecognizer) {
@@ -227,5 +242,18 @@ extension KeySyncHandshakeViewController {
         default:
             return nil
         }
+    }
+}
+
+// Put this piece of code anywhere you like
+extension KeySyncHandshakeViewController {
+    func hideKeyboardWhenTappedAround() {
+        let tap = UITapGestureRecognizer(target: self, action: #selector(KeySyncHandshakeViewController.dismissKeyboard))
+        tap.cancelsTouchesInView = false
+        view.addGestureRecognizer(tap)
+    }
+    
+    @objc func dismissKeyboard() {
+        view.endEditing(true)
     }
 }
