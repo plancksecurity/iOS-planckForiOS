@@ -161,7 +161,6 @@ extension TestUtil {
         createe.port = Int32(serverPort)
         createe.address = serverAddress
         createe.transport = serverTransport
-        createe.automaticallyTrusted = automaticallyTrusted
 
         let keychainKeySmtp = UUID().uuidString
         CdServerCredentials.add(password: password, forKey: keychainKeySmtp)
