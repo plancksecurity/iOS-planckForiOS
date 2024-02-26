@@ -34,15 +34,6 @@ final class KeySyncHandshakeViewController: UIViewController {
     }
 
     @IBOutlet private weak var otherDeviceFingerprintsValueLabel: UILabel?
-    
-    @IBOutlet private weak var trustwordsView: UIView! {
-        didSet {
-            trustwordsView.backgroundColor = .systemBackground
-            trustwordsView.layer.borderColor = UIColor.pEpGreyLines.cgColor
-            trustwordsView.layer.cornerRadius = 3
-            trustwordsView.layer.borderWidth = 1
-        }
-    }
 
     @IBOutlet private weak var trustwordsLabel: UILabel? {
         didSet {
@@ -65,6 +56,7 @@ final class KeySyncHandshakeViewController: UIViewController {
     @IBOutlet private weak var alertTitle: UILabel! {
         didSet {
             let titleText = NSLocalizedString("planck Sync", comment: "keySync handshake alert title")
+            alertTitle.text = titleText
             alertTitle.font = UIFont.planckFont(style: .body, weight: .semibold)
         }
     }
@@ -81,9 +73,10 @@ final class KeySyncHandshakeViewController: UIViewController {
             setFont(button: accept)
             let primary = UIColor.primary()
             accept.setTitleColor(primary, for: .normal)
-            accept.setTitle(NSLocalizedString("Confirm",
-                                              comment: "accept hand shake confirm button"), for: .normal)
+            let confirmText = NSLocalizedString("Confirm", comment: "accept hand shake confirm button")
+            accept.setTitle(confirmText, for: .normal)
             accept.backgroundColor = .systemGray6
+            accept.isEnabled = true
         }
     }
 
@@ -94,6 +87,8 @@ final class KeySyncHandshakeViewController: UIViewController {
             decline.setTitle(NSLocalizedString("Reject",
                                                comment: "reject hand shake button"), for: .normal)
             decline.backgroundColor = .systemGray6
+            decline.isEnabled = true
+
         }
     }
 
@@ -101,9 +96,9 @@ final class KeySyncHandshakeViewController: UIViewController {
         didSet {
             setFont(button: cancel)
             cancel.setTitleColor(.pEpGreyText, for: .normal)
-            cancel.setTitle(NSLocalizedString("Not Now",
-                                              comment: "not now button"), for: .normal)
+            cancel.setTitle(NSLocalizedString("Not Now", comment: "not now button"), for: .normal)
             cancel.backgroundColor = .systemGray6
+            cancel.isEnabled = true
         }
     }
 
