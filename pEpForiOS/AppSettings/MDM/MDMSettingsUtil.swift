@@ -16,7 +16,6 @@ public class MDMSettingsUtil {
     /// - Note: For some of these settings it's vital that they are set, e.g. at DB level, _before_ the corresponding
     /// service starts up the first time, e.g. `KeySyncService`.
     public func configure(completion: @escaping (Result<Void, Error>) -> Void) {
-        TrustedServerUtil().setStoreSecurely(newValue: AppSettings.shared.mdmPEPSaveEncryptedOnServerEnabled)
         KeySyncSettingsUtil().configureKeySync(enabled: AppSettings.shared.mdmPEPSyncAccountEnabled)
         EchoProtocolUtil().enableEchoProtocol(enabled: AppSettings.shared.mdmEchoProtocolEnabled)
 
