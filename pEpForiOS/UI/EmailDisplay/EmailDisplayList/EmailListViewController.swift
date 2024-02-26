@@ -145,6 +145,11 @@ final class EmailListViewController: UIViewController {
         }
         vm.handleBannerIfNeeded()
         vm.moveMailsToSuspiciousIfPossible()
+        
+        let data = KeySyncHandshakeData(fingerprintLocal: "B787  8D1A C48D E573 5F92 509F 635D AB1B  B749", fingerprintOther: "A157 1A8D 8DC4 73E5 95F2 0F59 6D35 CB1A A8B7")
+        UIUtils.showKeySyncWizard(keySyncHandshakeData: data) { action in
+            print(action)
+        }
     }
 
     override func viewWillTransition(to size: CGSize, with coordinator: UIViewControllerTransitionCoordinator) {

@@ -222,6 +222,8 @@ extension KeySyncHandshakeViewController {
             return .decline
         case 4:
             return .accept
+        case 5:
+            return .lenght
         default:
             return nil
         }
