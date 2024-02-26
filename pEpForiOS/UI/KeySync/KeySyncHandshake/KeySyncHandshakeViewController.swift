@@ -150,9 +150,9 @@ final class KeySyncHandshakeViewController: UIViewController {
     
     private func handleUI(sender: UIButton) {
         let fullTrustWords = viewModel.fullTrustWords
-        UIView.animate(withDuration: 0.25, animations: { // [weak self] in
+        UIView.animate(withDuration: 0.25, animations: { [weak self] in
             sender.transform = fullTrustWords ? CGAffineTransform(rotationAngle: CGFloat.pi) : CGAffineTransform.identity
-            //self?.contentViewHeight.constant = !fullTrustWords ? 600 : 590
+            self?.contentViewHeight.constant = fullTrustWords ? 580 : 590
         })
     }
 
