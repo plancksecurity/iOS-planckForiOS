@@ -126,7 +126,6 @@ extension LoginUtil {
             verifiableAccount.serverSMTP = outgoingServer.hostname
             verifiableAccount.portSMTP = UInt16(outgoingServer.port)
             verifiableAccount.transportSMTP = smtpTransport
-            verifiableAccount.isAutomaticallyTrustedImapServer = false
 
             checkIfServerShouldBeConsideredATrustedServer()
         }
@@ -174,21 +173,18 @@ extension LoginUtil {
             qualifyServerIsLocalService.delegate = self
             qualifyServerIsLocalService.qualify(serverName: imapServer)
         } else {
-            markServerAsTrusted(trusted: true)
+            verifyAccount()
         }
     }
 
-    private func markServerAsTrusted(trusted: Bool) {
-        verifiableAccount.isAutomaticallyTrustedImapServer = trusted
+    private func verifyAccount() {
         do {
             try verifiableAccount.verify()
         } catch {
             Log.shared.log(error: error)
             loginProtocolResponseDelegate?.didFail(error: error)
         }
-    }
-
-    
+    }  
 }
 
 // MARK: - OAuthAuthorizerDelegate
@@ -261,7 +257,7 @@ extension LoginUtil: QualifyServerIsLocalServiceDelegate {
                 unwrappedDelegate.didFail(error: err)
                 return
             }
-            me.markServerAsTrusted(trusted: isLocal ?? false)
+            me.verifyAccount()
         }
     }
 }

@@ -51,12 +51,6 @@ final class LoginViewModel {
     }
 }
 
-// MARK: - Private
-
-extension LoginViewModel {
-
-}
-
 // MARK: - LoginProtocolResponseDelegate
 
 extension LoginViewModel : LoginProtocolResponseDelegate {
