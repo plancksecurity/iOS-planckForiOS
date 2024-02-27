@@ -123,12 +123,6 @@ public protocol VerifiableAccountProtocol {
     /// The transport to be used for SMTP, like TLS.
     var transportSMTP: ConnectionTransport { get set }
 
-    /// Indicates that the IMAP server is to be automaticallyTrusted.
-    var isAutomaticallyTrustedImapServer: Bool { get set }
-
-    /// Indicates that the IMAP server is to be manuallyTrusted.
-    var isManuallyTrustedImapServer: Bool { get set }
-
     // MARK: - VerifiableAccountProtocol (behaviour)
 
     /// Starts login attempts in the background to the indicated servers,
