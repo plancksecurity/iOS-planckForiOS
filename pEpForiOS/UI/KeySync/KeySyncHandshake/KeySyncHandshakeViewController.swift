@@ -14,9 +14,12 @@ final class KeySyncHandshakeViewController: UIViewController {
     enum Action {
         case cancel, decline, accept
     }
-    @IBOutlet weak var contentViewHeight: NSLayoutConstraint!
     
     static let storyboardId = "KeySyncHandshakeViewController"
+    
+    @IBOutlet private weak var contentViewHeight: NSLayoutConstraint?
+
+    private var trustwordsHeight: CGFloat = 34
 
     @IBOutlet private weak var currentDeviceFingerprintsLabel: UILabel! {
         didSet {
@@ -150,17 +153,9 @@ final class KeySyncHandshakeViewController: UIViewController {
     
     private func handleUI(sender: UIButton) {
         let fullTrustWords = viewModel.fullTrustWords
-        UIView.animate(withDuration: 0.25, animations: { [weak self] in
+        UIView.animate(withDuration: 0.25, animations: {
             sender.transform = fullTrustWords ? CGAffineTransform(rotationAngle: CGFloat.pi) : CGAffineTransform.identity
-            self?.contentViewHeight.constant = fullTrustWords ? 580 : 590
         })
-    }
-
-    @IBAction private func didLongPressWords(_ sender: UILongPressGestureRecognizer) {
-        guard sender.state == .began else {
-            return
-        }
-        viewModel.didLongPressWords()
     }
 
     func completionHandler(_ block: @escaping (Action) -> Void) {
@@ -190,7 +185,19 @@ extension KeySyncHandshakeViewController: KeySyncHandshakeViewModelDelegate {
     }
 
     func change(handshakeWordsTo: String) {
+        let font = UIFont.planckFont(style: .body, weight: .regular)
+        let height = trustwordsLabel?.frame.height ?? 0
+        let minHeight = 21.0
+        let currentHeight = max(height,  minHeight)
+        let maxWidth = 280.0
+        
         DispatchQueue.main.async { [weak self] in
+            
+            if let width = self?.trustwordsLabel?.frame.width {
+                let newHeight = handshakeWordsTo.height(withConstrainedWidth: maxWidth, font: font)
+                let difference = newHeight - currentHeight
+                //self?.contentViewHeight?.constant += difference
+            }
             self?.trustwordsLabel?.text = handshakeWordsTo
         }
     }

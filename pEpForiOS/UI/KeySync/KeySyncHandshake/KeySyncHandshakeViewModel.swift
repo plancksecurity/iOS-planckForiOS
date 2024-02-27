@@ -116,11 +116,6 @@ final class KeySyncHandshakeViewModel {
         updateTrustwords()
     }
 
-    func didLongPressWords() {
-        fullTrustWords = !fullTrustWords
-        updateTrustwords()
-    }
-
     func getMessage() -> String {
         return isNewGroup
         ? Localized.Message.twoDevices
