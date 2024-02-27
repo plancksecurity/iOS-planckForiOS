@@ -178,16 +178,13 @@ extension LoginUtil {
     }
 
     private func verifyAccount() {
-        //verifiableAccount.isAutomaticallyTrustedImapServer = trusted
         do {
             try verifiableAccount.verify()
         } catch {
             Log.shared.log(error: error)
             loginProtocolResponseDelegate?.didFail(error: error)
         }
-    }
-
-    
+    }  
 }
 
 // MARK: - OAuthAuthorizerDelegate
