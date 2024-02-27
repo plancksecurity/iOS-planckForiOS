@@ -101,9 +101,9 @@ final class KeySyncHandshakeViewModel {
             }
             completionHandler?(action)
         case .changeLanguage:
-            handleChangeLanguageButton()
+            handleChangeLanguageButtonPressed()
         case .lenght:
-            handleChangeLengthButton()
+            handleChangeTrustwordsLengthButtonPressed()
         }
     }
 
@@ -183,12 +183,14 @@ extension KeySyncHandshakeViewModel {
         }
     }
 
-    public func handleChangeLengthButton() {
+    // Show the long or short version of the trustwords.
+    // Toogle the flag and update the ui.
+    public func handleChangeTrustwordsLengthButtonPressed() {
         fullTrustWords.toggle()
         updateTrustwords()
     }
 
-    private func handleChangeLanguageButton() {
+    private func handleChangeLanguageButtonPressed() {
         languages { [weak self] langs in
             DispatchQueue.main.async {
                 guard let me = self else {

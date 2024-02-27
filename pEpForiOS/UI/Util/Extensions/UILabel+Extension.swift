@@ -24,7 +24,7 @@ extension UILabel {
     }
     
     /// Calculate number of lines of a UILabel aproximately.
-    func calculateLines() -> Int {
+    public func calculateLines() -> Int {
         let maxSize = CGSize(width: frame.size.width, height: CGFloat(Float.infinity))
         let charSize = font.lineHeight
         let text = (self.text ?? "") as NSString
