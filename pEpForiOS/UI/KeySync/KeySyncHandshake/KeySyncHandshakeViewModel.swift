@@ -128,7 +128,9 @@ final class KeySyncHandshakeViewModel {
                 // Valid case. We might have been dismissed already.
                 return
             }
-            me.delegate?.change(handshakeWordsTo: trustWords)
+            DispatchQueue.main.async {
+                me.delegate?.change(handshakeWordsTo: trustWords)
+            }
         }
     }
 }

@@ -119,22 +119,22 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="fiE-pm-mWd" customClass="KeyInputView" customModule="pEpForiOS" customModuleProvider="target">
-                                <rect key="frame" x="19.666666666666657" y="99" width="353.66666666666674" height="591.33333333333337"/>
+                                <rect key="frame" x="19.666666666666657" y="114.66666666666669" width="353.66666666666674" height="560"/>
                                 <subviews>
                                     <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" distribution="equalSpacing" alignment="center" translatesAutoresizingMaskIntoConstraints="NO" id="YMa-Kc-JoR">
                                         <rect key="frame" x="0.0" y="10" width="353.66666666666669" height="589"/>
                                         <subviews>
-                                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="htI-ge-ZQj" userLabel="Header">
+                                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="htI-ge-ZQj" userLabel="Header container">
                                                 <rect key="frame" x="0.0" y="0.0" width="353.66666666666669" height="140"/>
                                                 <subviews>
                                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" verticalCompressionResistancePriority="1000" text="planck sync" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="ckp-rp-1Pd">
-                                                        <rect key="frame" x="131.66666666666669" y="7.9999999999999982" width="90.333333333333314" height="20.333333333333329"/>
+                                                        <rect key="frame" x="131.66666666666669" y="7.999999999999984" width="90.333333333333314" height="20.333333333333329"/>
                                                         <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                                         <nil key="textColor"/>
                                                         <nil key="highlightedColor"/>
                                                     </label>
                                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="249" horizontalCompressionResistancePriority="1000" verticalCompressionResistancePriority="1000" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontForContentSizeCategory="YES" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="rPi-Px-Pyp">
-                                                        <rect key="frame" x="20" y="36.33333333333335" width="313.66666666666669" height="95.666666666666686"/>
+                                                        <rect key="frame" x="20" y="36.333333333333321" width="313.66666666666669" height="95.666666666666686"/>
                                                         <string key="text">Please make sure you have both devices toghether so you can compare the Trustwords on both devices. Are the Trustwords equals to the Trustwords on the other device?</string>
                                                         <fontDescription key="fontDescription" type="system" pointSize="16"/>
                                                         <nil key="textColor"/>
@@ -153,7 +153,7 @@
                                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="TrJ-dj-tWG" userLabel="Trustwords container">
                                                 <rect key="frame" x="0.0" y="140" width="353.66666666666669" height="120"/>
                                                 <subviews>
-                                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" verticalCompressionResistancePriority="1000" text="Trustwords" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="T1u-WT-jiR">
+                                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" verticalCompressionResistancePriority="1000" text="Trustwords" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="T1u-WT-jiR" userLabel="Trustwords title label">
                                                         <rect key="frame" x="19.999999999999993" y="15.999999999999998" width="93.333333333333314" height="20.333333333333329"/>
                                                         <fontDescription key="fontDescription" type="boldSystem" pointSize="17"/>
                                                         <nil key="textColor"/>
@@ -179,8 +179,8 @@
                                                             <action selector="didPress:" destination="GZS-2u-rXb" eventType="touchUpInside" id="QUE-HM-rDT"/>
                                                         </connections>
                                                     </button>
-                                                    <label opaque="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="1000" verticalCompressionResistancePriority="1000" text="SOME TRUST WORDS SOME TRUST" lineBreakMode="tailTruncation" numberOfLines="0" minimumFontSize="7" translatesAutoresizingMaskIntoConstraints="NO" id="GC3-wG-GHD">
-                                                        <rect key="frame" x="20" y="44.333333333333314" width="281" height="20.333333333333329"/>
+                                                    <label opaque="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="1000" verticalCompressionResistancePriority="1000" text="SOME TRUST WORDS SOME TRUST SOME TRUST" lineBreakMode="tailTruncation" numberOfLines="0" minimumFontSize="7" translatesAutoresizingMaskIntoConstraints="NO" id="GC3-wG-GHD">
+                                                        <rect key="frame" x="20" y="44.333333333333314" width="285.33333333333331" height="42.333333333333343"/>
                                                         <gestureRecognizers/>
                                                         <fontDescription key="fontDescription" style="UICTFontTextStyleBody"/>
                                                         <nil key="textColor"/>
@@ -206,7 +206,7 @@
                                                 <rect key="frame" x="1" y="260" width="351.66666666666669" height="192"/>
                                                 <subviews>
                                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Fingerprints" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="fwH-H1-YHj">
-                                                        <rect key="frame" x="19.999999999999993" y="0.0" width="107.66666666666666" height="20.333333333333332"/>
+                                                        <rect key="frame" x="20" y="0.0" width="100" height="20.333333333333332"/>
                                                         <fontDescription key="fontDescription" type="boldSystem" pointSize="17"/>
                                                         <nil key="textColor"/>
                                                         <nil key="highlightedColor"/>
@@ -218,7 +218,7 @@
                                                         <nil key="highlightedColor"/>
                                                     </label>
                                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="A999 B749 8D1A 8DC4 73E5 3C92 309F 635D AD1B 5517" lineBreakMode="wordWrap" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontForContentSizeCategory="YES" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="ZUS-e1-qvj" userLabel="My device FPR value">
-                                                        <rect key="frame" x="20" y="55.666666666666686" width="315.66666666666669" height="38.333333333333343"/>
+                                                        <rect key="frame" x="20" y="55.666666666666629" width="315.66666666666669" height="38.333333333333343"/>
                                                         <fontDescription key="fontDescription" type="system" pointSize="16"/>
                                                         <nil key="textColor"/>
                                                         <nil key="highlightedColor"/>
@@ -246,17 +246,17 @@
                                                     <constraint firstAttribute="bottom" relation="greaterThanOrEqual" secondItem="4Ib-7E-2Fh" secondAttribute="bottom" id="Lyc-m4-DTB"/>
                                                     <constraint firstItem="4Ib-7E-2Fh" firstAttribute="top" secondItem="CGm-5R-f3G" secondAttribute="bottom" id="QpN-OR-ET2"/>
                                                     <constraint firstAttribute="trailing" relation="greaterThanOrEqual" secondItem="CGm-5R-f3G" secondAttribute="trailing" constant="8" id="YR7-OQ-vLJ"/>
-                                                    <constraint firstAttribute="trailing" secondItem="fwH-H1-YHj" secondAttribute="trailing" constant="224" id="dvT-Kf-nLY"/>
+                                                    <constraint firstAttribute="trailing" relation="greaterThanOrEqual" secondItem="fwH-H1-YHj" secondAttribute="trailing" constant="8" id="dvT-Kf-nLY"/>
                                                     <constraint firstItem="Kzk-9N-Dws" firstAttribute="top" secondItem="fwH-H1-YHj" secondAttribute="bottom" constant="16" id="fub-Dg-Z88"/>
                                                     <constraint firstItem="Kzk-9N-Dws" firstAttribute="leading" secondItem="fwH-H1-YHj" secondAttribute="leading" id="hmc-K4-ACV"/>
-                                                    <constraint firstItem="ZUS-e1-qvj" firstAttribute="top" secondItem="Kzk-9N-Dws" secondAttribute="bottom" constant="-1.4210854715202004e-14" id="keJ-Lx-4of"/>
+                                                    <constraint firstItem="ZUS-e1-qvj" firstAttribute="top" secondItem="Kzk-9N-Dws" secondAttribute="bottom" id="keJ-Lx-4of"/>
                                                     <constraint firstItem="fwH-H1-YHj" firstAttribute="top" secondItem="wnY-5Z-QEL" secondAttribute="top" id="tSv-f4-1VZ"/>
                                                     <constraint firstItem="ZUS-e1-qvj" firstAttribute="leading" secondItem="Kzk-9N-Dws" secondAttribute="leading" id="utc-q4-esd"/>
                                                     <constraint firstItem="4Ib-7E-2Fh" firstAttribute="trailing" secondItem="ZUS-e1-qvj" secondAttribute="trailing" id="wbJ-hh-4jF"/>
                                                     <constraint firstItem="fwH-H1-YHj" firstAttribute="leading" secondItem="wnY-5Z-QEL" secondAttribute="leading" constant="20" symbolic="YES" id="zVj-56-w5L"/>
                                                 </constraints>
                                             </view>
-                                            <view contentMode="scaleToFill" verticalCompressionResistancePriority="1000" translatesAutoresizingMaskIntoConstraints="NO" id="yqe-4g-8D5">
+                                            <view contentMode="scaleToFill" verticalCompressionResistancePriority="1000" translatesAutoresizingMaskIntoConstraints="NO" id="yqe-4g-8D5" userLabel="Buttons container">
                                                 <rect key="frame" x="1" y="452" width="351.66666666666669" height="137"/>
                                                 <subviews>
                                                     <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" distribution="fillEqually" spacing="1" translatesAutoresizingMaskIntoConstraints="NO" id="Uet-A2-4gw">
@@ -336,6 +336,7 @@
                                     <constraint firstItem="YMa-Kc-JoR" firstAttribute="leading" secondItem="fiE-pm-mWd" secondAttribute="leading" id="EAC-nr-iun"/>
                                     <constraint firstAttribute="width" constant="420" id="T8h-SO-PE2"/>
                                     <constraint firstItem="YMa-Kc-JoR" firstAttribute="top" secondItem="fiE-pm-mWd" secondAttribute="top" constant="10" id="neq-VA-ZUu"/>
+                                    <constraint firstAttribute="height" constant="560" id="nuh-Ml-7PF"/>
                                     <constraint firstAttribute="trailing" secondItem="YMa-Kc-JoR" secondAttribute="trailing" id="xBm-Xd-JL5"/>
                                 </constraints>
                                 <userDefinedRuntimeAttributes>
@@ -361,7 +362,6 @@
                         <constraints>
                             <constraint firstItem="fiE-pm-mWd" firstAttribute="centerX" secondItem="IdW-oi-ZvZ" secondAttribute="centerX" id="48M-KR-Nr8"/>
                             <constraint firstItem="fiE-pm-mWd" firstAttribute="width" secondItem="IdW-oi-ZvZ" secondAttribute="width" multiplier="0.9" id="ofd-Xa-7zs"/>
-                            <constraint firstItem="fiE-pm-mWd" firstAttribute="top" secondItem="NhM-aN-dMs" secondAttribute="top" priority="250" constant="40" id="vbx-TB-RUy"/>
                             <constraint firstItem="fiE-pm-mWd" firstAttribute="centerY" secondItem="NhM-aN-dMs" secondAttribute="centerY" multiplier="0.9" id="zVl-X9-RFf"/>
                         </constraints>
                     </view>
@@ -370,6 +370,7 @@
                         <outlet property="alertTitle" destination="ckp-rp-1Pd" id="WIa-4m-pJy"/>
                         <outlet property="cancel" destination="VIq-OL-Cou" id="yM8-bp-8qD"/>
                         <outlet property="contentView" destination="fiE-pm-mWd" id="eNm-5G-7Xa"/>
+                        <outlet property="contentViewHeight" destination="nuh-Ml-7PF" id="2dM-AR-YCa"/>
                         <outlet property="currentDeviceFingerprintsLabel" destination="Kzk-9N-Dws" id="oqi-op-fu0"/>
                         <outlet property="currentDeviceFingerprintsValueLabel" destination="ZUS-e1-qvj" id="Mog-3Z-uhx"/>
                         <outlet property="decline" destination="rCM-Fk-IWd" id="oWK-hX-WAB"/>

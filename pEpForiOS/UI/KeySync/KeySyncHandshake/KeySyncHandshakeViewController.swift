@@ -19,8 +19,6 @@ final class KeySyncHandshakeViewController: UIViewController {
     
     @IBOutlet private weak var contentViewHeight: NSLayoutConstraint?
 
-    private var trustwordsHeight: CGFloat = 34
-
     @IBOutlet private weak var currentDeviceFingerprintsLabel: UILabel! {
         didSet {
             currentDeviceFingerprintsLabel.text = NSLocalizedString("This device:",
@@ -185,20 +183,19 @@ extension KeySyncHandshakeViewController: KeySyncHandshakeViewModelDelegate {
     }
 
     func change(handshakeWordsTo: String) {
-        let font = UIFont.planckFont(style: .body, weight: .regular)
-        let height = trustwordsLabel?.frame.height ?? 0
-        let minHeight = 21.0
-        let currentHeight = max(height,  minHeight)
-        let maxWidth = 280.0
-        
-        DispatchQueue.main.async { [weak self] in
-            
-            if let width = self?.trustwordsLabel?.frame.width {
-                let newHeight = handshakeWordsTo.height(withConstrainedWidth: maxWidth, font: font)
-                let difference = newHeight - currentHeight
-                //self?.contentViewHeight?.constant += difference
+        UIView.animate(withDuration: 0.25) { [weak self] in
+            guard let me = self else { return }
+            let lineHeight: Double = 21.0
+            // Set text
+            me.trustwordsLabel?.text = handshakeWordsTo
+            // Adapt height if needed
+            let numberOfLines = Double(me.trustwordsLabel?.calculateMaxLines() ?? 0)
+            if numberOfLines > 2 {
+                let heightToIncrease = (numberOfLines - 2.0) * lineHeight
+                me.contentViewHeight?.constant = 560 + heightToIncrease
+            } else {
+                me.contentViewHeight?.constant = 560
             }
-            self?.trustwordsLabel?.text = handshakeWordsTo
         }
     }
 
@@ -262,5 +259,18 @@ extension KeySyncHandshakeViewController {
     
     @objc func dismissKeyboard() {
         view.endEditing(true)
+    }
+}
+
+extension UILabel {
+    func calculateMaxLines() -> Int {
+        let maxSize = CGSize(width: frame.size.width, height: CGFloat(Float.infinity))
+        let charSize = font.lineHeight
+        let text = (self.text ?? "") as NSString
+        let textSize = text.boundingRect(with: maxSize, options: .usesLineFragmentOrigin, attributes: [NSAttributedString.Key.font: font ?? UIFont.planckFont(style: .body,
+                                                                                                                                                              weight: .regular)], context: nil)
+        let min = min(textSize.height, intrinsicContentSize.height)
+        let linesRoundedUp = Int(round(min/charSize))
+        return linesRoundedUp
     }
 }
