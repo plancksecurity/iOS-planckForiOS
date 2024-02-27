@@ -122,7 +122,7 @@
                                 <rect key="frame" x="19.666666666666657" y="114.66666666666669" width="353.66666666666674" height="560"/>
                                 <subviews>
                                     <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" distribution="equalSpacing" alignment="center" translatesAutoresizingMaskIntoConstraints="NO" id="YMa-Kc-JoR">
-                                        <rect key="frame" x="0.0" y="10" width="353.66666666666669" height="589"/>
+                                        <rect key="frame" x="0.0" y="10" width="353.66666666666669" height="590"/>
                                         <subviews>
                                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="htI-ge-ZQj" userLabel="Header container">
                                                 <rect key="frame" x="0.0" y="0.0" width="353.66666666666669" height="140"/>
@@ -243,7 +243,7 @@
                                                     <constraint firstAttribute="trailing" secondItem="ZUS-e1-qvj" secondAttribute="trailing" constant="16" id="Bdn-Rt-YM5"/>
                                                     <constraint firstItem="CGm-5R-f3G" firstAttribute="top" secondItem="ZUS-e1-qvj" secondAttribute="bottom" constant="16" id="CZO-sb-sCN"/>
                                                     <constraint firstItem="4Ib-7E-2Fh" firstAttribute="leading" secondItem="CGm-5R-f3G" secondAttribute="leading" id="FgE-88-gQK"/>
-                                                    <constraint firstAttribute="bottom" relation="greaterThanOrEqual" secondItem="4Ib-7E-2Fh" secondAttribute="bottom" id="Lyc-m4-DTB"/>
+                                                    <constraint firstAttribute="bottom" relation="greaterThanOrEqual" secondItem="4Ib-7E-2Fh" secondAttribute="bottom" constant="10" id="Lyc-m4-DTB"/>
                                                     <constraint firstItem="4Ib-7E-2Fh" firstAttribute="top" secondItem="CGm-5R-f3G" secondAttribute="bottom" id="QpN-OR-ET2"/>
                                                     <constraint firstAttribute="trailing" relation="greaterThanOrEqual" secondItem="CGm-5R-f3G" secondAttribute="trailing" constant="8" id="YR7-OQ-vLJ"/>
                                                     <constraint firstAttribute="trailing" relation="greaterThanOrEqual" secondItem="fwH-H1-YHj" secondAttribute="trailing" constant="8" id="dvT-Kf-nLY"/>
@@ -257,21 +257,21 @@
                                                 </constraints>
                                             </view>
                                             <view contentMode="scaleToFill" verticalCompressionResistancePriority="1000" translatesAutoresizingMaskIntoConstraints="NO" id="yqe-4g-8D5" userLabel="Buttons container">
-                                                <rect key="frame" x="1" y="452" width="351.66666666666669" height="137"/>
+                                                <rect key="frame" x="1" y="452" width="351.66666666666669" height="138"/>
                                                 <subviews>
                                                     <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" distribution="fillEqually" spacing="1" translatesAutoresizingMaskIntoConstraints="NO" id="Uet-A2-4gw">
-                                                        <rect key="frame" x="0.0" y="0.0" width="351.66666666666669" height="137"/>
+                                                        <rect key="frame" x="0.0" y="1" width="351.66666666666669" height="137"/>
                                                         <subviews>
-                                                            <button opaque="NO" tag="2" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="VIq-OL-Cou">
+                                                            <button opaque="NO" tag="4" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="n0d-ad-g7F">
                                                                 <rect key="frame" x="0.0" y="0.0" width="351.66666666666669" height="45"/>
                                                                 <color key="backgroundColor" systemColor="secondarySystemBackgroundColor"/>
                                                                 <constraints>
-                                                                    <constraint firstAttribute="height" constant="45" id="whg-rl-o3z"/>
+                                                                    <constraint firstAttribute="height" constant="45" id="o1A-lD-4fP"/>
                                                                 </constraints>
                                                                 <fontDescription key="fontDescription" type="system" weight="semibold" pointSize="15"/>
-                                                                <state key="normal" title="Not now"/>
+                                                                <state key="normal" title="Confirm"/>
                                                                 <connections>
-                                                                    <action selector="didPress:" destination="GZS-2u-rXb" eventType="touchUpInside" id="q59-cb-Xpc"/>
+                                                                    <action selector="didPress:" destination="GZS-2u-rXb" eventType="touchUpInside" id="DWc-N0-Qgh"/>
                                                                 </connections>
                                                             </button>
                                                             <button opaque="NO" tag="3" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="rCM-Fk-IWd">
@@ -286,16 +286,16 @@
                                                                     <action selector="didPress:" destination="GZS-2u-rXb" eventType="touchUpInside" id="WD4-ea-YRB"/>
                                                                 </connections>
                                                             </button>
-                                                            <button opaque="NO" tag="4" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="n0d-ad-g7F">
+                                                            <button opaque="NO" tag="2" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="VIq-OL-Cou">
                                                                 <rect key="frame" x="0.0" y="92" width="351.66666666666669" height="45"/>
                                                                 <color key="backgroundColor" systemColor="secondarySystemBackgroundColor"/>
                                                                 <constraints>
-                                                                    <constraint firstAttribute="height" constant="45" id="o1A-lD-4fP"/>
+                                                                    <constraint firstAttribute="height" constant="45" id="whg-rl-o3z"/>
                                                                 </constraints>
                                                                 <fontDescription key="fontDescription" type="system" weight="semibold" pointSize="15"/>
-                                                                <state key="normal" title="Confirm"/>
+                                                                <state key="normal" title="Not now"/>
                                                                 <connections>
-                                                                    <action selector="didPress:" destination="GZS-2u-rXb" eventType="touchUpInside" id="DWc-N0-Qgh"/>
+                                                                    <action selector="didPress:" destination="GZS-2u-rXb" eventType="touchUpInside" id="q59-cb-Xpc"/>
                                                                 </connections>
                                                             </button>
                                                         </subviews>
@@ -313,8 +313,7 @@
                                                 <color key="backgroundColor" systemColor="separatorColor"/>
                                                 <constraints>
                                                     <constraint firstAttribute="bottom" secondItem="Uet-A2-4gw" secondAttribute="bottom" id="0hT-Fe-D2W"/>
-                                                    <constraint firstAttribute="height" constant="137" id="E7J-Yb-j3O"/>
-                                                    <constraint firstItem="Uet-A2-4gw" firstAttribute="top" secondItem="yqe-4g-8D5" secondAttribute="top" id="adI-5R-gQd"/>
+                                                    <constraint firstAttribute="height" constant="138" id="E7J-Yb-j3O"/>
                                                     <constraint firstItem="Uet-A2-4gw" firstAttribute="leading" secondItem="yqe-4g-8D5" secondAttribute="leading" id="ahZ-iN-eBh"/>
                                                     <constraint firstAttribute="trailing" secondItem="Uet-A2-4gw" secondAttribute="trailing" id="o4U-Jq-dgb"/>
                                                 </constraints>

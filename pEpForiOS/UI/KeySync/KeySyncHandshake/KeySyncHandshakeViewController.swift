@@ -73,8 +73,7 @@ final class KeySyncHandshakeViewController: UIViewController {
     @IBOutlet private weak var accept: UIButton! {
         didSet {
             setFont(button: accept)
-            let primary = UIColor.primary()
-            accept.setTitleColor(primary, for: .normal)
+            accept.setTitleColor(UIColor.pEpGreen, for: .normal)
             let confirmText = NSLocalizedString("Confirm", comment: "accept hand shake confirm button")
             accept.setTitle(confirmText, for: .normal)
             accept.backgroundColor = .systemGray6
@@ -97,7 +96,7 @@ final class KeySyncHandshakeViewController: UIViewController {
     @IBOutlet private weak var cancel: UIButton! {
         didSet {
             setFont(button: cancel)
-            cancel.setTitleColor(.pEpGreyText, for: .normal)
+            cancel.setTitleColor(UIColor.primary(), for: .normal)
             cancel.setTitle(NSLocalizedString("Not Now", comment: "not now button"), for: .normal)
             cancel.backgroundColor = .systemGray6
             cancel.isEnabled = true
@@ -124,7 +123,6 @@ final class KeySyncHandshakeViewController: UIViewController {
         // Recalculate the trustwords, and update the UI.
         viewModel.updateTrustwords()
         hideKeyboardWhenTappedAround()
-        fullTrustwordsButton.transform = CGAffineTransform(rotationAngle: CGFloat.pi)
     }
 
     override func viewDidAppear(_ animated: Bool) {
@@ -153,7 +151,7 @@ final class KeySyncHandshakeViewController: UIViewController {
     private func handleUI(sender: UIButton) {
         let fullTrustWords = viewModel.fullTrustWords
         UIView.animate(withDuration: 0.25, animations: {
-            sender.transform = fullTrustWords ? CGAffineTransform(rotationAngle: CGFloat.pi) : CGAffineTransform.identity
+            sender.transform = fullTrustWords ? CGAffineTransform.identity : CGAffineTransform(rotationAngle: CGFloat.pi)
         })
     }
 
@@ -187,10 +185,15 @@ extension KeySyncHandshakeViewController: KeySyncHandshakeViewModelDelegate {
         UIView.animate(withDuration: 0.25) { [weak self] in
             guard let me = self else { return }
             let lineHeight: Double = 21.0
-            let defaultContentViewHeight: Double = 560.0
+            let defaultContentViewHeight: Double = 570.0
             let defaultNumberOfLines: Double = 2.0
             // Set text
-            me.trustwordsLabel?.text = handshakeWordsTo
+            if me.viewModel.fullTrustWords {
+                me.trustwordsLabel?.text = handshakeWordsTo
+            } else {
+                me.trustwordsLabel?.text = handshakeWordsTo.appending("...")
+            }
+
             // Adapt height if needed
             let numberOfLines = Double(me.trustwordsLabel?.calculateLines() ?? 0)
             if numberOfLines > defaultNumberOfLines {
