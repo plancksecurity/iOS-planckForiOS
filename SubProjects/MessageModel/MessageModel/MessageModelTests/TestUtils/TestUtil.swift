@@ -151,8 +151,6 @@ extension TestUtil {
                              serverTransport: Server.Transport = .startTls,
                              password: String = "fakePassword",
                              loginName: String = "fakeLoginName",
-                             automaticallyTrusted: Bool = false,
-                             manuallyTrusted: Bool = false,
                              serverType: Server.ServerType,
                              moc: NSManagedObjectContext) -> CdServer {
         //SMTP

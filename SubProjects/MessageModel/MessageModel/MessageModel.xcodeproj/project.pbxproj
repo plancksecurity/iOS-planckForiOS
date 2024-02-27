@@ -93,7 +93,6 @@
 		155FE572228B526E003D3E68 /* CdMessage+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 155FE571228B526E003D3E68 /* CdMessage+Extensions.swift */; };
 		155FE574228B52D4003D3E68 /* CdServerCredentials+KeyChain.swift in Sources */ = {isa = PBXBuildFile; fileRef = 155FE573228B52D4003D3E68 /* CdServerCredentials+KeyChain.swift */; };
 		15679F022292CADA0051DCC3 /* CdAccount+Trusted.swift in Sources */ = {isa = PBXBuildFile; fileRef = 15679F012292CAD90051DCC3 /* CdAccount+Trusted.swift */; };
-		15679F052292CB2C0051DCC3 /* Account+FetchingTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 15679F042292CB2C0051DCC3 /* Account+FetchingTest.swift */; };
 		156FF8CA22994A47002A2566 /* RealFolderProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = 156FF8C922994A47002A2566 /* RealFolderProtocol.swift */; };
 		1574D15A268C8374003A5161 /* ReceivedByUtil.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1574D159268C8374003A5161 /* ReceivedByUtil.swift */; };
 		1574D15B268C8689003A5161 /* ReceivedByUtil.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1574D159268C8374003A5161 /* ReceivedByUtil.swift */; };
@@ -852,7 +851,6 @@
 		155FE573228B52D4003D3E68 /* CdServerCredentials+KeyChain.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "CdServerCredentials+KeyChain.swift"; sourceTree = "<group>"; };
 		1560A0F6229D71D30073E5E5 /* 0.0.46.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = 0.0.46.xcdatamodel; sourceTree = "<group>"; };
 		15679F012292CAD90051DCC3 /* CdAccount+Trusted.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "CdAccount+Trusted.swift"; sourceTree = "<group>"; };
-		15679F042292CB2C0051DCC3 /* Account+FetchingTest.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Account+FetchingTest.swift"; sourceTree = "<group>"; };
 		156BCD6F223273FB00A80C62 /* refactor0.1.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = refactor0.1.xcdatamodel; sourceTree = "<group>"; };
 		156FF8C922994A47002A2566 /* RealFolderProtocol.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RealFolderProtocol.swift; sourceTree = "<group>"; };
 		1574D159268C8374003A5161 /* ReceivedByUtil.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReceivedByUtil.swift; sourceTree = "<group>"; };
@@ -1762,7 +1760,6 @@
 		15679F032292CB2C0051DCC3 /* MessageModelObjects */ = {
 			isa = PBXGroup;
 			children = (
-				15679F042292CB2C0051DCC3 /* Account+FetchingTest.swift */,
 				43CB60901DA4EB4E0015281E /* IdentityTest.swift */,
 				B73252F322B019470039DE29 /* FolderTest.swift */,
 			);
@@ -3742,7 +3739,6 @@
 				37BC7AF32220187E0047267A /* MessageQueryResultsTest.swift in Sources */,
 				3A798E0A2476754200510B02 /* CdMessage+PredicateFactory.swift in Sources */,
 				37BC7B00222D23460047267A /* MessageModelObjectUtilsTest.swift in Sources */,
-				15679F052292CB2C0051DCC3 /* Account+FetchingTest.swift in Sources */,
 				B745C15F231D270900D3CC69 /* FetchImapFolderTest.swift in Sources */,
 				B73252F422B019470039DE29 /* FolderTest.swift in Sources */,
 				4351723A229FD4AA00D92026 /* TestUtil+LoadData.swift in Sources */,
