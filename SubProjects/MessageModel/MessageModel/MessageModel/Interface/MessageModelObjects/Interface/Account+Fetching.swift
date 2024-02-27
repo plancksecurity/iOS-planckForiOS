@@ -15,40 +15,6 @@ import PlanckToolbox
 #endif
 
 extension Account {
-    public struct Fetch {
-        /// Get all accounts that are allowed to be manually trusted.
-        ///
-        /// - Returns: Array of accounts allowed to be manually trusted
-        static public func allAccountsAllowedToManuallyTrust(session: Session = Session.main) -> [Account] {
-            let allowedPredicate = CdServer.PredicateFactory.isAllowedToManuallyTrust()
-            let allowedCdServers = CdServer.all(predicate: allowedPredicate,
-                                                in: session.moc) as? [CdServer] ?? []
-            var allowedAccounts = [Account]()
-            for cdServer in allowedCdServers {
-                guard let account = cdServer.account?.account() else {
-                    Log.shared.errorAndCrash("No address")
-                    continue
-                }
-                allowedAccounts.append(account)
-            }
-            return allowedAccounts
-        }
-
-        /// Get an account from an address
-        ///
-        /// - Parameter address: address to search account
-        /// - Returns: account with parameter address. Nil if none account with that address
-        ///   was found
-        static public func accountAllowedToManuallyTrust(fromAddress address: String) -> Account? {
-            let accounts = allAccountsAllowedToManuallyTrust()
-            for account in accounts {
-                if account.user.address == address {
-                    return account
-                }
-            }
-            return nil
-        }
-    }
 
     //!!!: move in the "Fetch" struct above
 
