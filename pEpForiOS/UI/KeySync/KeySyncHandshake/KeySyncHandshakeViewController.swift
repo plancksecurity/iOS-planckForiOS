@@ -186,15 +186,17 @@ extension KeySyncHandshakeViewController: KeySyncHandshakeViewModelDelegate {
         UIView.animate(withDuration: 0.25) { [weak self] in
             guard let me = self else { return }
             let lineHeight: Double = 21.0
+            let defaultContentViewHeight: Double = 560.0
+            let defaultNumberOfLines: Double = 2.0
             // Set text
             me.trustwordsLabel?.text = handshakeWordsTo
             // Adapt height if needed
-            let numberOfLines = Double(me.trustwordsLabel?.calculateMaxLines() ?? 0)
-            if numberOfLines > 2 {
-                let heightToIncrease = (numberOfLines - 2.0) * lineHeight
-                me.contentViewHeight?.constant = 560 + heightToIncrease
+            let numberOfLines = Double(me.trustwordsLabel?.calculateLines() ?? 0)
+            if numberOfLines > defaultNumberOfLines {
+                let heightToIncrease = (numberOfLines - defaultNumberOfLines) * lineHeight
+                me.contentViewHeight?.constant = defaultContentViewHeight + heightToIncrease
             } else {
-                me.contentViewHeight?.constant = 560
+                me.contentViewHeight?.constant = defaultContentViewHeight
             }
         }
     }
@@ -259,18 +261,5 @@ extension KeySyncHandshakeViewController {
     
     @objc func dismissKeyboard() {
         view.endEditing(true)
-    }
-}
-
-extension UILabel {
-    func calculateMaxLines() -> Int {
-        let maxSize = CGSize(width: frame.size.width, height: CGFloat(Float.infinity))
-        let charSize = font.lineHeight
-        let text = (self.text ?? "") as NSString
-        let textSize = text.boundingRect(with: maxSize, options: .usesLineFragmentOrigin, attributes: [NSAttributedString.Key.font: font ?? UIFont.planckFont(style: .body,
-                                                                                                                                                              weight: .regular)], context: nil)
-        let min = min(textSize.height, intrinsicContentSize.height)
-        let linesRoundedUp = Int(round(min/charSize))
-        return linesRoundedUp
     }
 }
