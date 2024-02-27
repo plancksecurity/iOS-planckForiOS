@@ -83,8 +83,6 @@ public class VerifiableAccount: VerifiableAccountProtocol {
     public var serverSMTP: String?
     public var portSMTP: UInt16 = 587
     public var transportSMTP = ConnectionTransport.startTLS
-    public var isAutomaticallyTrustedImapServer: Bool
-    public var isManuallyTrustedImapServer: Bool
     public var containsCompleteServerInfo: Bool = false
 
     // MARK: - Life Cycle
@@ -104,8 +102,6 @@ public class VerifiableAccount: VerifiableAccountProtocol {
          serverSMTP: String? = nil,
          portSMTP: UInt16 = 587,
          transportSMTP: ConnectionTransport = ConnectionTransport.startTLS,
-         automaticallyTrustedImapServer: Bool = false,
-         manuallyTrustedImapServer: Bool = false,
          keySyncEnable: Bool = true,
          containsCompleteServerInfo: Bool = false,
          usePlanckFolderProvider: UsePlanckFolderProviderProtocol? = nil,
@@ -126,8 +122,6 @@ public class VerifiableAccount: VerifiableAccountProtocol {
         self.serverSMTP = serverSMTP
         self.portSMTP = portSMTP
         self.transportSMTP = transportSMTP
-        self.isAutomaticallyTrustedImapServer = automaticallyTrustedImapServer
-        self.isManuallyTrustedImapServer = manuallyTrustedImapServer
         self.keySyncEnable = keySyncEnable
         self.containsCompleteServerInfo = containsCompleteServerInfo
         self.usePlanckFolderProvider = usePlanckFolderProvider
@@ -387,8 +381,6 @@ extension VerifiableAccount {
                 port: me.portIMAP,
                 serverType: .imap,
                 authMethod: me.authMethod,
-                automaticallyTrusted: me.isAutomaticallyTrustedImapServer,
-                manuallyTrusted: me.isManuallyTrustedImapServer,
                 transport: me.transportIMAP)
 
             let theSmtpServer = me.update(
@@ -397,8 +389,6 @@ extension VerifiableAccount {
                 port: me.portSMTP,
                 serverType: .smtp,
                 authMethod: me.authMethod,
-                automaticallyTrusted: false,
-                manuallyTrusted: false,
                 transport: me.transportSMTP)
 
             var cdClientCertificate: CdClientCertificate? = nil
@@ -486,8 +476,6 @@ extension VerifiableAccount {
                         port: UInt16,
                         serverType: Server.ServerType,
                         authMethod: AuthMethod?,
-                        automaticallyTrusted: Bool,
-                        manuallyTrusted: Bool,
                         transport: ConnectionTransport) -> CdServer {
         server.address = address
         server.port = Int32(port)
@@ -585,8 +573,6 @@ extension VerifiableAccount {
                                          serverSMTP: nil,
                                          portSMTP: 465,
                                          transportSMTP: .TLS,
-                                         automaticallyTrustedImapServer: false,
-                                         manuallyTrustedImapServer: false,
                                          keySyncEnable: true,
                                          containsCompleteServerInfo: false,
                                          usePlanckFolderProvider: usePlanckFolderProvider,
@@ -610,8 +596,6 @@ extension VerifiableAccount {
                                         serverSMTP: "smtp.gmail.com",
                                         portSMTP: 465,
                                         transportSMTP: .TLS,
-                                        automaticallyTrustedImapServer: false,
-                                        manuallyTrustedImapServer: false,
                                         keySyncEnable: true,
                                         containsCompleteServerInfo: true,
                                         usePlanckFolderProvider: usePlanckFolderProvider)
@@ -631,8 +615,6 @@ extension VerifiableAccount {
                                         serverSMTP: "smtp.office365.com",
                                         portSMTP: 587,
                                         transportSMTP: .startTLS,
-                                        automaticallyTrustedImapServer: false,
-                                        manuallyTrustedImapServer: false,
                                         keySyncEnable: true,
                                         containsCompleteServerInfo: true,
                                         usePlanckFolderProvider: usePlanckFolderProvider)
@@ -652,8 +634,6 @@ extension VerifiableAccount {
                                          serverSMTP: "smtp.mail.me.com",
                                          portSMTP: 587,
                                          transportSMTP: .startTLS,
-                                         automaticallyTrustedImapServer: false,
-                                         manuallyTrustedImapServer: false,
                                          keySyncEnable: true,
                                          containsCompleteServerInfo: true,
                                          usePlanckFolderProvider: usePlanckFolderProvider)
@@ -673,8 +653,6 @@ extension VerifiableAccount {
                                          serverSMTP: "smtp.office365.com",
                                          portSMTP: 587,
                                          transportSMTP: .startTLS,
-                                         automaticallyTrustedImapServer: false,
-                                         manuallyTrustedImapServer: false,
                                          keySyncEnable: true,
                                          containsCompleteServerInfo: true,
                                          usePlanckFolderProvider: usePlanckFolderProvider)

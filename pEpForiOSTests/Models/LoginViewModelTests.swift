@@ -49,8 +49,6 @@ class LoginViewModelTests: XCTestCase {
         var serverSMTP: String?
         var portSMTP: UInt16 = 587
         var transportSMTP: ConnectionTransport = .startTLS
-        var isAutomaticallyTrustedImapServer = false
-        var isManuallyTrustedImapServer = false
         var verifiableAccountDelegate: VerifiableAccountDelegate?
 
         var keySyncEnable = false
@@ -92,7 +90,7 @@ class LoginViewModelTests: XCTestCase {
             return
         }
 
-        guard let smtpPassword = accountSettings.smtpPassword else {
+        guard accountSettings.smtpPassword != nil else {
             XCTFail("expecting password for account")
             return
         }

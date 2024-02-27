@@ -108,15 +108,12 @@ public class Server: MessageModelObjectProtocol, ManagedObjectWrapperProtocol {
                               address: String,
                             transport: Transport,
                             authMethod: String? = nil,
-                            automaticallyTrusted: Bool = false,
-                            manuallyTrusted: Bool = false,
                             credentials: ServerCredentials) -> Server {
         return create(serverType: serverType,
                       port: port,
                       address: address,
                       transport: transport,
                       authMethod: authMethod,
-                      automaticallyTrusted: automaticallyTrusted,
                       credentials: credentials,
                       toPersist: false)
     }
@@ -126,7 +123,6 @@ public class Server: MessageModelObjectProtocol, ManagedObjectWrapperProtocol {
                                address: String,
                                transport: Transport,
                                authMethod: String? = nil,
-                               automaticallyTrusted: Bool = false,
                                credentials: ServerCredentials,
                                toPersist: Bool = true) -> Server {
         let server = Server(serverType: serverType,
@@ -134,7 +130,6 @@ public class Server: MessageModelObjectProtocol, ManagedObjectWrapperProtocol {
                                  address: address,
                                  transport: transport,
                                  authMethod: authMethod,
-                                 automaticallyTrusted: automaticallyTrusted,
                                  credentials: credentials)
         if toPersist {
             server.session.commit() //!!!: needs rethink. Topic: probaly Verifyable Account
@@ -153,7 +148,6 @@ public class Server: MessageModelObjectProtocol, ManagedObjectWrapperProtocol {
                  address: String,
                  transport: Transport,
                  authMethod: String? = nil,
-                 automaticallyTrusted: Bool = false,
                  credentials: ServerCredentials,
                  session: Session = Session.main) {
         let moc = session.moc
