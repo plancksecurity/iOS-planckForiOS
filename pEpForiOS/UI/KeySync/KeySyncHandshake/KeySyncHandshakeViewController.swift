@@ -120,6 +120,7 @@ final class KeySyncHandshakeViewController: UIViewController {
     }
 
     override func viewDidLoad() {
+        super.viewDidLoad()
         // Recalculate the trustwords, and update the UI.
         viewModel.updateTrustwords()
         hideKeyboardWhenTappedAround()
@@ -230,6 +231,21 @@ extension KeySyncHandshakeViewController: UIPickerViewDataSource {
     }
 }
 
+// MARK: - Keyboard / Picker view
+
+extension KeySyncHandshakeViewController {
+    // Dismiss the picker view if needed.
+    func hideKeyboardWhenTappedAround() {
+        let tap = UITapGestureRecognizer(target: self, action: #selector(KeySyncHandshakeViewController.dismissKeyboard))
+        tap.cancelsTouchesInView = false
+        view.addGestureRecognizer(tap)
+    }
+    
+    @objc func dismissKeyboard() {
+        view.endEditing(true)
+    }
+}
+
 // MARK: - Private
 
 extension KeySyncHandshakeViewController {
@@ -248,18 +264,5 @@ extension KeySyncHandshakeViewController {
         default:
             return nil
         }
-    }
-}
-
-// Put this piece of code anywhere you like
-extension KeySyncHandshakeViewController {
-    func hideKeyboardWhenTappedAround() {
-        let tap = UITapGestureRecognizer(target: self, action: #selector(KeySyncHandshakeViewController.dismissKeyboard))
-        tap.cancelsTouchesInView = false
-        view.addGestureRecognizer(tap)
-    }
-    
-    @objc func dismissKeyboard() {
-        view.endEditing(true)
     }
 }
