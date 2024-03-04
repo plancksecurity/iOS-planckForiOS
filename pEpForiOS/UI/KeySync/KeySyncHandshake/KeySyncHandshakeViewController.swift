@@ -7,7 +7,7 @@
 //
 
 import UIKit
-
+import PlanckToolbox
 import MessageModel // Only for KeySyncHandshakeData
 
 final class KeySyncHandshakeViewController: UIViewController {
@@ -53,6 +53,14 @@ final class KeySyncHandshakeViewController: UIViewController {
             languangePicker.delegate = self
             contentView.inputView = languangePicker
         }
+    }
+
+    private var defaultHeightValue: CGFloat? {
+        didSet { defaultHeightValue = oldValue ?? defaultHeightValue }
+    }
+
+    private var defaultNumberOfLines: CGFloat? {
+        didSet { defaultNumberOfLines = oldValue ?? defaultNumberOfLines }
     }
 
     @IBOutlet private weak var alertTitle: UILabel! {
@@ -142,7 +150,7 @@ final class KeySyncHandshakeViewController: UIViewController {
         guard let action = pressedAction(tag: sender.tag) else {
             return
         }
-        if action == .lenght {
+        if action == .length {
             handleUI(sender: sender)
         }
         viewModel.handle(action: action)
@@ -183,21 +191,35 @@ extension KeySyncHandshakeViewController: KeySyncHandshakeViewModelDelegate {
 
     func change(handshakeWordsTo: String) {
         UIView.animate(withDuration: 0.25) { [weak self] in
-            guard let me = self else { return }
-            let lineHeight: Double = 21.0
-            let defaultContentViewHeight: Double = 570.0
-            let defaultNumberOfLines: Double = 2.0
-            // Set text
+            guard let me = self, let label = me.trustwordsLabel, let defaultHeight = me.contentViewHeight, defaultHeight.constant > 0 else {
+                //May happen, the view didn't load yet.
+                return
+            }
+            let lineHeight: Double = ceil(label.font.lineHeight)
+            me.defaultHeightValue = defaultHeight.constant
+            me.defaultNumberOfLines = round(label.frame.height / lineHeight)
+
             if me.viewModel.fullTrustWords {
-                me.trustwordsLabel?.text = handshakeWordsTo
+                label.text = handshakeWordsTo
             } else {
-                me.trustwordsLabel?.text = handshakeWordsTo.appending("...")
+                label.text = handshakeWordsTo.appending("...")
             }
 
-            // Adapt height if needed
-            let numberOfLines = Double(me.trustwordsLabel?.calculateLines() ?? 0)
-            if numberOfLines > defaultNumberOfLines {
-                let heightToIncrease = (numberOfLines - defaultNumberOfLines) * lineHeight
+            guard let defaultContentViewHeight = me.defaultHeightValue else {
+                Log.shared.errorAndCrash("Something wrong happend with the defaultHeightValue")
+                return
+            }
+
+            // Adapt the height of the content view if needed
+            let numberOfLines = Double(label.calculateLines())
+
+            guard let lines = me.defaultNumberOfLines else {
+                Log.shared.errorAndCrash("Something wrong happend with the defaultNumberOfLines")
+                return
+            }
+
+            if numberOfLines > lines {
+                let heightToIncrease = (numberOfLines - lines) * lineHeight
                 me.contentViewHeight?.constant = defaultContentViewHeight + heightToIncrease
             } else {
                 me.contentViewHeight?.constant = defaultContentViewHeight
@@ -263,7 +285,7 @@ extension KeySyncHandshakeViewController {
         case 4:
             return .accept
         case 5:
-            return .lenght
+            return .length
         default:
             return nil
         }

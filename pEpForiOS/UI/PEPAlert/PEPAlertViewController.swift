@@ -141,6 +141,8 @@ extension PlanckAlertViewController {
         alertTitle.font = UIFont.planckFont(style: .body, weight: .semibold)
         if paintPEPInTitle {
             alertTitle.attributedText = title?.paintPlanckToPlanckColour()
+        } else {
+            alertTitle.text = title
         }
     }
 

@@ -121,8 +121,6 @@ extension KeySyncWizardViewController {
     private func introView(isNewGroup: Bool,
                            pageCompletion: @escaping (Action) -> Void)
     -> PlanckAlertViewController? {
-
-
         let keySyncIntroTitle = completeTitle()
         let keySyncIntroMessage = introMessage(isNewGroup: isNewGroup)
         let keySyncIntroImage = isNewGroup ? #imageLiteral(resourceName: "pEpForiOS-icon-sync-2nd-device") : #imageLiteral(resourceName: "pEpForiOS-icon-sync-3rd-device")
