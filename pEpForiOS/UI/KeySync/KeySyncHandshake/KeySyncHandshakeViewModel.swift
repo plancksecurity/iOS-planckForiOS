@@ -20,7 +20,7 @@ protocol KeySyncHandshakeViewModelDelegate: AnyObject {
 
 final class KeySyncHandshakeViewModel {
     enum Action {
-        case cancel, decline, accept, changeLanguage, lenght
+        case cancel, decline, accept, changeLanguage, length
     }
 
     private struct Localized {
@@ -102,7 +102,7 @@ final class KeySyncHandshakeViewModel {
             completionHandler?(action)
         case .changeLanguage:
             handleChangeLanguageButtonPressed()
-        case .lenght:
+        case .length:
             handleChangeTrustwordsLengthButtonPressed()
         }
     }
@@ -221,7 +221,7 @@ extension KeySyncHandshakeViewModel {
                 return .decline
             case .changeLanguage:
                 return nil
-            case .lenght:
+            case .length:
                 return nil
             }
     }
