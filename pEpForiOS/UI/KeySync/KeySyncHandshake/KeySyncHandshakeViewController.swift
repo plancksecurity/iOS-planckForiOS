@@ -287,6 +287,7 @@ extension KeySyncHandshakeViewController {
         case 5:
             return .length
         default:
+            Log.shared.errorAndCrash("Tag not found")
             return nil
         }
     }
