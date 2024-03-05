@@ -151,15 +151,15 @@ final class KeySyncHandshakeViewController: UIViewController {
             return
         }
         if action == .length {
-            handleUI(sender: sender)
+            rotate(button: sender)
         }
         viewModel.handle(action: action)
     }
     
-    private func handleUI(sender: UIButton) {
+    private func rotate(button: UIButton) {
         let fullTrustWords = viewModel.fullTrustWords
         UIView.animate(withDuration: 0.25, animations: {
-            sender.transform = fullTrustWords ? CGAffineTransform.identity : CGAffineTransform(rotationAngle: CGFloat.pi)
+            button.transform = fullTrustWords ? CGAffineTransform.identity : CGAffineTransform(rotationAngle: CGFloat.pi)
         })
     }
 
@@ -206,7 +206,6 @@ extension KeySyncHandshakeViewController: KeySyncHandshakeViewModelDelegate {
             }
 
             guard let defaultContentViewHeight = me.defaultHeightValue else {
-                Log.shared.errorAndCrash("Something wrong happend with the defaultHeightValue")
                 return
             }
 
@@ -214,7 +213,6 @@ extension KeySyncHandshakeViewController: KeySyncHandshakeViewModelDelegate {
             let numberOfLines = Double(label.calculateLines())
 
             guard let lines = me.defaultNumberOfLines else {
-                Log.shared.errorAndCrash("Something wrong happend with the defaultNumberOfLines")
                 return
             }
 
