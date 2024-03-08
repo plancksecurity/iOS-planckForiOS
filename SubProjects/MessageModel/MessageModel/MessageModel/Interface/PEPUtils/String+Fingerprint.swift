@@ -11,7 +11,7 @@ import Foundation
 extension String {
 
     /// Interprets itself as a fingerprint and formats it as such.
-    /// Example usage: somePEPIdentity.fingerPrint?.prettyFingerPrint()
+    /// Example usage: somePlanckIdentity.fingerPrint?.prettyFingerPrint()
     /// - returns:  the fingerprint string.
     public func prettyFingerPrint() -> String {
         let upper = uppercased()

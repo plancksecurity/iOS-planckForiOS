@@ -23,6 +23,6 @@ final class AccountSettingsOAuthTableViewCell: UITableViewCell {
     override func awakeFromNib() {
         super.awakeFromNib()
         oauthLabel.text = NSLocalizedString("OAuth2 Reauthorization", comment: "OAuth2 Reauthorization label")
-        oauthLabel.font = UIFont.pepFont(style: .body, weight: .regular)
+        oauthLabel.font = UIFont.planckFont(style: .body, weight: .regular)
     }
 }

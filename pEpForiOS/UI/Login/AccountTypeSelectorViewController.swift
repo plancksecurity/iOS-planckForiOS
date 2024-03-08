@@ -22,12 +22,12 @@ final class AccountTypeSelectorViewController: UIViewController {
     @IBOutlet weak var clientCertificateButton: AccountSelectorButton!
     
     private var attrs = [
-        NSAttributedString.Key.font : UIFont.pepFont(style: .callout, weight: .regular),
+        NSAttributedString.Key.font : UIFont.planckFont(style: .callout, weight: .regular),
         NSAttributedString.Key.foregroundColor : UITraitCollection.current.userInterfaceStyle == .light ? UIColor.secondary : .white,
         NSAttributedString.Key.underlineStyle : 1] as [NSAttributedString.Key : Any]
 
     private var highlightedAttrs = [
-        NSAttributedString.Key.font : UIFont.pepFont(style: .callout, weight: .regular),
+        NSAttributedString.Key.font : UIFont.planckFont(style: .callout, weight: .regular),
         NSAttributedString.Key.foregroundColor : UIColor.selected,
         NSAttributedString.Key.underlineStyle : 1] as [NSAttributedString.Key : Any]
 

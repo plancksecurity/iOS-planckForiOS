@@ -137,8 +137,8 @@ extension PlanckAlertViewController {
 
     private func setUp(title: String?, paintPEPInTitle: Bool, message: String?) {
         alertMessage.text = message
-        alertMessage.font = UIFont.pepFont(style: .footnote, weight: .regular)
-        alertTitle.font = UIFont.pepFont(style: .body, weight: .semibold)
+        alertMessage.font = UIFont.planckFont(style: .footnote, weight: .regular)
+        alertTitle.font = UIFont.planckFont(style: .body, weight: .semibold)
         if paintPEPInTitle {
             alertTitle.attributedText = title?.paintPlanckToPlanckColour()
         } else {
@@ -170,9 +170,9 @@ extension PlanckAlertViewController {
     private func setUp(alertButton: UIButton, style: PlanckAlertViewModel.AlertType) {
         switch style {
         case .planckSyncWizard:
-            alertButton.titleLabel?.font = UIFont.pepFont(style: .body, weight: .semibold)
+            alertButton.titleLabel?.font = UIFont.planckFont(style: .body, weight: .semibold)
         case .planckDefault:
-            alertButton.titleLabel?.font = UIFont.pepFont(style: .callout, weight: .semibold)
+            alertButton.titleLabel?.font = UIFont.planckFont(style: .callout, weight: .semibold)
             break
         }
     }

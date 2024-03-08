@@ -198,7 +198,7 @@ class FolderTableViewController: UITableViewController {
         cell.titleLabel.text = fcvm.title
         cell.titleLabel.setPEPFont(style: .body, weight: .regular)
         cell.titleLabel?.textColor = fcvm.isSelectable ? .label : .tertiaryLabel
-        cell.unreadMailsLabel.font = UIFont.pepFont(style: .body, weight: .regular)
+        cell.unreadMailsLabel.font = UIFont.planckFont(style: .body, weight: .regular)
         let numUnreadMails = fcvm.numUnreadMails
         cell.unreadMailsLabel.text = numUnreadMails > 0 ? String(numUnreadMails) : ""
         let iconTintColor : UIColor = UIColor.primary()

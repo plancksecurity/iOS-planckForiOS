@@ -19,7 +19,19 @@ extension UILabel {
     ///   - style: The preferred font style.
     ///   - weight: The preferred font weight.
     public func setPEPFont(style: UIFont.TextStyle, weight: UIFont.Weight) {
-        font = UIFont.pepFont(style: style, weight: weight)
+        font = UIFont.planckFont(style: style, weight: weight)
         adjustsFontForContentSizeCategory = true
+    }
+    
+    /// Calculate number of lines of a UILabel aproximately.
+    public func calculateLines() -> Int {
+        let maxSize = CGSize(width: frame.size.width, height: CGFloat(Float.greatestFiniteMagnitude))
+        let charSize = font.lineHeight
+        let text = (self.text ?? "") as NSString
+        let textSize = text.boundingRect(with: maxSize, options: .usesLineFragmentOrigin, attributes: [NSAttributedString.Key.font: font ?? UIFont.planckFont(style: .body,
+                                                                                                                                                              weight: .regular)], context: nil)
+        let min = min(textSize.height, intrinsicContentSize.height)
+        let linesRoundedUp = Int(round(min/charSize))
+        return linesRoundedUp
     }
 }

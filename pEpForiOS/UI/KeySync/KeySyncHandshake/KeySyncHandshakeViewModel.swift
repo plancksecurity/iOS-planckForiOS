@@ -20,7 +20,7 @@ protocol KeySyncHandshakeViewModelDelegate: AnyObject {
 
 final class KeySyncHandshakeViewModel {
     enum Action {
-        case cancel, decline, accept, changeLanguage
+        case cancel, decline, accept, changeLanguage, length
     }
 
     private struct Localized {
@@ -101,7 +101,9 @@ final class KeySyncHandshakeViewModel {
             }
             completionHandler?(action)
         case .changeLanguage:
-            handleChangeLanguageButton()
+            handleChangeLanguageButtonPressed()
+        case .length:
+            handleChangeTrustwordsLengthButtonPressed()
         }
     }
 
@@ -111,11 +113,6 @@ final class KeySyncHandshakeViewModel {
         self.partnerFPR = keySyncHandshakeData.fingerprintOther
         self.isNewGroup = keySyncHandshakeData.isNewGroup
 
-        updateTrustwords()
-    }
-
-    func didLongPressWords() {
-        fullTrustWords = !fullTrustWords
         updateTrustwords()
     }
 
@@ -131,7 +128,9 @@ final class KeySyncHandshakeViewModel {
                 // Valid case. We might have been dismissed already.
                 return
             }
-            me.delegate?.change(handshakeWordsTo: trustWords)
+            DispatchQueue.main.async {
+                me.delegate?.change(handshakeWordsTo: trustWords)
+            }
         }
     }
 }
@@ -184,7 +183,14 @@ extension KeySyncHandshakeViewModel {
         }
     }
 
-    private func handleChangeLanguageButton() {
+    // Show the long or short version of the trustwords.
+    // Toogle the flag and update the ui.
+    public func handleChangeTrustwordsLengthButtonPressed() {
+        fullTrustWords.toggle()
+        updateTrustwords()
+    }
+
+    private func handleChangeLanguageButtonPressed() {
         languages { [weak self] langs in
             DispatchQueue.main.async {
                 guard let me = self else {
@@ -214,6 +220,8 @@ extension KeySyncHandshakeViewModel {
             case .decline:
                 return .decline
             case .changeLanguage:
+                return nil
+            case .length:
                 return nil
             }
     }

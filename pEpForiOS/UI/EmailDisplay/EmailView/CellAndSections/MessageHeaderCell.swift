@@ -201,7 +201,7 @@ extension MessageHeaderCell {
 
     private func setup(label: UILabel, text: String) {
         label.text = text
-        label.font = UIFont.pepFont(style: .footnote, weight: .semibold)
+        label.font = UIFont.planckFont(style: .footnote, weight: .semibold)
         label.textColor = UIColor.pEpSecondaryColor()
     }
 

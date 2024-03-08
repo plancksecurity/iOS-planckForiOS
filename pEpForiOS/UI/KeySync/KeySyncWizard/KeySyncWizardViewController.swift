@@ -121,8 +121,6 @@ extension KeySyncWizardViewController {
     private func introView(isNewGroup: Bool,
                            pageCompletion: @escaping (Action) -> Void)
     -> PlanckAlertViewController? {
-
-
         let keySyncIntroTitle = completeTitle()
         let keySyncIntroMessage = introMessage(isNewGroup: isNewGroup)
         let keySyncIntroImage = isNewGroup ? #imageLiteral(resourceName: "pEpForiOS-icon-sync-2nd-device") : #imageLiteral(resourceName: "pEpForiOS-icon-sync-3rd-device")
@@ -130,7 +128,7 @@ extension KeySyncWizardViewController {
         guard let introView =
                 PlanckAlertViewController.fromStoryboard(title: keySyncIntroTitle,
                                                       message: keySyncIntroMessage,
-                                                      paintPEPInTitle: true,
+                                                      paintPEPInTitle: false,
                                                       image: [keySyncIntroImage],
                                                       viewModel: PlanckAlertViewModel(alertType: .planckSyncWizard)) else {
             return nil
@@ -206,7 +204,7 @@ extension KeySyncWizardViewController {
             let PlanckAlertViewController =
                 PlanckAlertViewController.fromStoryboard(title: animationTitle,
                                                       message: animationMessage,
-                                                      paintPEPInTitle: true,
+                                                      paintPEPInTitle: false,
                                                       image: animationImages,
                                                       viewModel: PlanckAlertViewModel(alertType: .planckSyncWizard))
 
@@ -231,7 +229,7 @@ extension KeySyncWizardViewController {
         let planckAlertViewController =
             PlanckAlertViewController.fromStoryboard(title: completionTitle,
                                                   message: completionMessage,
-                                                  paintPEPInTitle: true,
+                                                  paintPEPInTitle: false,
                                                   image: [completionImage],
                                                   viewModel: PlanckAlertViewModel(alertType: .planckSyncWizard))
 

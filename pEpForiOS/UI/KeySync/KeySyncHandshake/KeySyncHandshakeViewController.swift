@@ -7,19 +7,21 @@
 //
 
 import UIKit
-
+import PlanckToolbox
 import MessageModel // Only for KeySyncHandshakeData
 
 final class KeySyncHandshakeViewController: UIViewController {
     enum Action {
         case cancel, decline, accept
     }
-
+    
     static let storyboardId = "KeySyncHandshakeViewController"
+    
+    @IBOutlet private weak var contentViewHeight: NSLayoutConstraint?
 
     @IBOutlet private weak var currentDeviceFingerprintsLabel: UILabel! {
         didSet {
-            currentDeviceFingerprintsLabel.text = NSLocalizedString("Fingerprint of this device:",
+            currentDeviceFingerprintsLabel.text = NSLocalizedString("This device:",
                                                                     comment: "Key Sync, fingerprint of this device - title")
         }
     }
@@ -28,21 +30,12 @@ final class KeySyncHandshakeViewController: UIViewController {
 
     @IBOutlet private weak var otherDeviceFingerprintsLabel: UILabel! {
         didSet {
-            otherDeviceFingerprintsLabel.text = NSLocalizedString("Fingerprint of the other device:",
+            otherDeviceFingerprintsLabel.text = NSLocalizedString("New device:",
                                                                   comment: "Key Sync, fingerprint of the other device - title")
         }
     }
 
     @IBOutlet private weak var otherDeviceFingerprintsValueLabel: UILabel?
-    
-    @IBOutlet private weak var trustwordsView: UIView! {
-        didSet {
-            trustwordsView.backgroundColor = .systemBackground
-            trustwordsView.layer.borderColor = UIColor.pEpGreyLines.cgColor
-            trustwordsView.layer.cornerRadius = 3
-            trustwordsView.layer.borderWidth = 1
-        }
-    }
 
     @IBOutlet private weak var trustwordsLabel: UILabel? {
         didSet {
@@ -62,17 +55,25 @@ final class KeySyncHandshakeViewController: UIViewController {
         }
     }
 
+    private var defaultHeightValue: CGFloat? {
+        didSet { defaultHeightValue = oldValue ?? defaultHeightValue }
+    }
+
+    private var defaultNumberOfLines: CGFloat? {
+        didSet { defaultNumberOfLines = oldValue ?? defaultNumberOfLines }
+    }
+
     @IBOutlet private weak var alertTitle: UILabel! {
         didSet {
             let titleText = NSLocalizedString("planck Sync", comment: "keySync handshake alert title")
-            alertTitle.font = UIFont.pepFont(style: .body, weight: .semibold)
-            alertTitle.attributedText = titleText.paintPlanckToPlanckColour()
+            alertTitle.text = titleText
+            alertTitle.font = UIFont.planckFont(style: .body, weight: .semibold)
         }
     }
 
     @IBOutlet private weak var message: UILabel! {
         didSet {
-            message.font = UIFont.pepFont(style: .footnote, weight: .regular)
+            message.font = UIFont.planckFont(style: .body, weight: .regular)
             message.text = viewModel.getMessage()
         }
     }
@@ -80,11 +81,11 @@ final class KeySyncHandshakeViewController: UIViewController {
     @IBOutlet private weak var accept: UIButton! {
         didSet {
             setFont(button: accept)
-            let primary = UIColor.primary()
-            accept.setTitleColor(primary, for: .normal)
-            accept.setTitle(NSLocalizedString("Confirm",
-                                              comment: "accept hand shake confirm button"), for: .normal)
+            accept.setTitleColor(UIColor.pEpGreen, for: .normal)
+            let confirmText = NSLocalizedString("Confirm", comment: "accept hand shake confirm button")
+            accept.setTitle(confirmText, for: .normal)
             accept.backgroundColor = .systemGray6
+            accept.isEnabled = true
         }
     }
 
@@ -95,16 +96,18 @@ final class KeySyncHandshakeViewController: UIViewController {
             decline.setTitle(NSLocalizedString("Reject",
                                                comment: "reject hand shake button"), for: .normal)
             decline.backgroundColor = .systemGray6
+            decline.isEnabled = true
+
         }
     }
 
     @IBOutlet private weak var cancel: UIButton! {
         didSet {
             setFont(button: cancel)
-            cancel.setTitleColor(.pEpGreyText, for: .normal)
-            cancel.setTitle(NSLocalizedString("Not Now",
-                                              comment: "not now button"), for: .normal)
+            cancel.setTitleColor(UIColor.primary(), for: .normal)
+            cancel.setTitle(NSLocalizedString("Not Now", comment: "not now button"), for: .normal)
             cancel.backgroundColor = .systemGray6
+            cancel.isEnabled = true
         }
     }
 
@@ -113,7 +116,8 @@ final class KeySyncHandshakeViewController: UIViewController {
             buttonsView.backgroundColor = UIColor.separator
         }
     }
-
+    @IBOutlet weak var fullTrustwordsButton: UIButton!
+    
     private let viewModel = KeySyncHandshakeViewModel()
     private var pickerLanguages = [String]()
 
@@ -123,8 +127,10 @@ final class KeySyncHandshakeViewController: UIViewController {
     }
 
     override func viewDidLoad() {
+        super.viewDidLoad()
         // Recalculate the trustwords, and update the UI.
         viewModel.updateTrustwords()
+        hideKeyboardWhenTappedAround()
     }
 
     override func viewDidAppear(_ animated: Bool) {
@@ -137,21 +143,24 @@ final class KeySyncHandshakeViewController: UIViewController {
     }
 
     private func setFont(button: UIButton) {
-        button.titleLabel?.font = UIFont.pepFont(style: .body, weight: .regular)
+        button.titleLabel?.font = UIFont.planckFont(style: .body, weight: .regular)
     }
 
     @IBAction private func didPress(_ sender: UIButton) {
         guard let action = pressedAction(tag: sender.tag) else {
             return
         }
+        if action == .length {
+            rotate(button: sender)
+        }
         viewModel.handle(action: action)
     }
-
-    @IBAction private func didLongPressWords(_ sender: UILongPressGestureRecognizer) {
-        guard sender.state == .began else {
-            return
-        }
-        viewModel.didLongPressWords()
+    
+    private func rotate(button: UIButton) {
+        let fullTrustWords = viewModel.fullTrustWords
+        UIView.animate(withDuration: 0.25, animations: {
+            button.transform = fullTrustWords ? CGAffineTransform.identity : CGAffineTransform(rotationAngle: CGFloat.pi)
+        })
     }
 
     func completionHandler(_ block: @escaping (Action) -> Void) {
@@ -181,16 +190,45 @@ extension KeySyncHandshakeViewController: KeySyncHandshakeViewModelDelegate {
     }
 
     func change(handshakeWordsTo: String) {
-        DispatchQueue.main.async { [weak self] in
-            self?.trustwordsLabel?.text = handshakeWordsTo
+        UIView.animate(withDuration: 0.25) { [weak self] in
+            guard let me = self, let label = me.trustwordsLabel, let defaultHeight = me.contentViewHeight, defaultHeight.constant > 0 else {
+                //May happen, the view didn't load yet.
+                return
+            }
+            let lineHeight: Double = ceil(label.font.lineHeight)
+            me.defaultHeightValue = defaultHeight.constant
+            me.defaultNumberOfLines = round(label.frame.height / lineHeight)
+
+            if me.viewModel.fullTrustWords {
+                label.text = handshakeWordsTo
+            } else {
+                label.text = handshakeWordsTo.appending("...")
+            }
+
+            guard let defaultContentViewHeight = me.defaultHeightValue else {
+                return
+            }
+
+            // Adapt the height of the content view if needed
+            let numberOfLines = Double(label.calculateLines())
+
+            guard let lines = me.defaultNumberOfLines else {
+                return
+            }
+
+            if numberOfLines > lines {
+                let heightToIncrease = (numberOfLines - lines) * lineHeight
+                me.contentViewHeight?.constant = defaultContentViewHeight + heightToIncrease
+            } else {
+                me.contentViewHeight?.constant = defaultContentViewHeight
+            }
         }
     }
 
     func change(myFingerprints: String, partnerFingerprints: String) {
-        currentDeviceFingerprintsValueLabel?.text = myFingerprints.prettyFingerPrint()
-        otherDeviceFingerprintsValueLabel?.text = partnerFingerprints.prettyFingerPrint()
+        currentDeviceFingerprintsValueLabel?.text = myFingerprints.filter{!$0.isWhitespace}.prettyFingerPrint()
+        otherDeviceFingerprintsValueLabel?.text = partnerFingerprints.filter{!$0.isWhitespace}.prettyFingerPrint()
     }
-
 }
 
 // MARK: - UIPickerViewDelegate
@@ -216,6 +254,21 @@ extension KeySyncHandshakeViewController: UIPickerViewDataSource {
     }
 }
 
+// MARK: - Keyboard / Picker view
+
+extension KeySyncHandshakeViewController {
+    // Dismiss the picker view if needed.
+    func hideKeyboardWhenTappedAround() {
+        let tap = UITapGestureRecognizer(target: self, action: #selector(KeySyncHandshakeViewController.dismissKeyboard))
+        tap.cancelsTouchesInView = false
+        view.addGestureRecognizer(tap)
+    }
+    
+    @objc func dismissKeyboard() {
+        view.endEditing(true)
+    }
+}
+
 // MARK: - Private
 
 extension KeySyncHandshakeViewController {
@@ -229,7 +282,10 @@ extension KeySyncHandshakeViewController {
             return .decline
         case 4:
             return .accept
+        case 5:
+            return .length
         default:
+            Log.shared.errorAndCrash("Tag not found")
             return nil
         }
     }

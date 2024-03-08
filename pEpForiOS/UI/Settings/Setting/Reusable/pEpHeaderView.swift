@@ -95,7 +95,7 @@ extension PEPHeaderView {
     }
 
     private func setFont() {
-        let font = UIFont.pepFont(style: .subheadline, weight: .regular)
+        let font = UIFont.planckFont(style: .subheadline, weight: .regular)
 
         titleTextView.textColor = .pEpGreyText
         titleTextView.font = font

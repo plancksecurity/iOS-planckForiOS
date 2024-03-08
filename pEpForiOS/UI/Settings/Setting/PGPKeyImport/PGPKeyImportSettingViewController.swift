@@ -104,7 +104,7 @@ extension PGPKeyImportSettingViewController: UITableViewDataSource {
                 return UITableViewCell()
             }
             cell.titleLabel?.text = row.title
-            cell.titleLabel?.font = UIFont.pepFont(style: .body, weight: .regular)
+            cell.titleLabel?.font = UIFont.planckFont(style: .body, weight: .regular)
             if let fontColor = row.titleFontColor {
                 cell.titleLabel?.textColor = fontColor
             }
@@ -116,7 +116,7 @@ extension PGPKeyImportSettingViewController: UITableViewDataSource {
                 Log.shared.errorAndCrash("PGPKeyImportSettingTableViewCell not found")
                 return UITableViewCell()
             }
-            cell.textLabel?.font = UIFont.pepFont(style: .body, weight: .regular)
+            cell.textLabel?.font = UIFont.planckFont(style: .body, weight: .regular)
             cell.textLabel?.text = row.title
 
             if row.isEnabled {

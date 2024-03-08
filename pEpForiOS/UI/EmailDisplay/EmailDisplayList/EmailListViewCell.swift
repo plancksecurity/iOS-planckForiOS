@@ -99,12 +99,12 @@ final class EmailListViewCell: PEPSwipeTableViewCell, MessageViewModelConfigurab
         // _after_ this function has ended and the cell has already been
         // layouted, leading to a smaller cell than usual.
         summaryLabel.text = " "
-        summaryLabel.font = UIFont.pepFont(style: summaryFontStyle, weight: seenFontWeight)
-        addressLabel.font = UIFont.pepFont(style: addressFontStyle, weight: viewModel.isSeen ? seenFontWeight : unseenFontWeight)
+        summaryLabel.font = UIFont.planckFont(style: summaryFontStyle, weight: seenFontWeight)
+        addressLabel.font = UIFont.planckFont(style: addressFontStyle, weight: viewModel.isSeen ? seenFontWeight : unseenFontWeight)
         addressLabel.text = atLeastOneSpace(possiblyEmptyString: viewModel.displayedUsername)
-        subjectLabel.font = UIFont.pepFont(style: subjectFontStyle, weight: viewModel.isSeen ? seenFontWeight : unseenFontWeight)
+        subjectLabel.font = UIFont.planckFont(style: subjectFontStyle, weight: viewModel.isSeen ? seenFontWeight : unseenFontWeight)
         subjectLabel.text = atLeastOneSpace(possiblyEmptyString: viewModel.subject)
-        dateLabel.font = UIFont.pepFont(style: dateFontStyle, weight: viewModel.isSeen ? seenFontWeight : unseenFontWeight)
+        dateLabel.font = UIFont.planckFont(style: dateFontStyle, weight: viewModel.isSeen ? seenFontWeight : unseenFontWeight)
 
         if !viewModel.isSeen {
             contactImageView.applyBorder(color: .label)
@@ -200,13 +200,13 @@ extension EmailListViewCell {
         let fontWeight: UIFont.Weight = seen
             ? seenFontWeight
             : unseenFontWeight
-        addressLabel.font = UIFont.pepFont(style: addressFontStyle,
+        addressLabel.font = UIFont.planckFont(style: addressFontStyle,
                                            weight: fontWeight)
-        subjectLabel.font = UIFont.pepFont(style: subjectFontStyle,
+        subjectLabel.font = UIFont.planckFont(style: subjectFontStyle,
                                            weight: fontWeight)
-        summaryLabel.font = UIFont.pepFont(style: summaryFontStyle,
+        summaryLabel.font = UIFont.planckFont(style: summaryFontStyle,
                                            weight: fontWeight)
-        dateLabel.font = UIFont.pepFont(style: dateFontStyle,
+        dateLabel.font = UIFont.planckFont(style: dateFontStyle,
                                         weight: fontWeight)
     }
 

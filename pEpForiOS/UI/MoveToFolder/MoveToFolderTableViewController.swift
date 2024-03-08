@@ -39,7 +39,7 @@ class MoveToFolderTableViewController: UITableViewController {
             cell.textLabel?.text = vm.title
             let icon = vm.icon.withTintColor(primary)
             cell.imageView?.image = icon
-            cell.textLabel?.font = UIFont.pepFont(style: .callout, weight: .regular)
+            cell.textLabel?.font = UIFont.planckFont(style: .callout, weight: .regular)
             if !vm.isSelectable {
                 cell.isUserInteractionEnabled = false
                 cell.selectionStyle = .none

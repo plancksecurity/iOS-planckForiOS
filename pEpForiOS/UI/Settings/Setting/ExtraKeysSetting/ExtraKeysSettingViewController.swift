@@ -33,8 +33,8 @@ class ExtraKeysSettingViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         fpr.delegate = self
-        fpr.font = UIFont.pepFont(style: .callout, weight: .regular)
-        addExtraKeyButton.titleLabel?.font = UIFont.pepFont(style: .body, weight: .regular)
+        fpr.font = UIFont.planckFont(style: .callout, weight: .regular)
+        addExtraKeyButton.titleLabel?.font = UIFont.planckFont(style: .body, weight: .regular)
         subscribeForKeyboardNotifications()
 
         noExtraKeysFoundLabel.text = NSLocalizedString("No extra keys were found", comment: "No extra keys were found")
@@ -161,7 +161,7 @@ extension ExtraKeysSettingViewController: UITableViewDataSource {
         // Multi line to avoud truncation of FPRs
         cell.textLabel?.numberOfLines = 0
         cell.textLabel?.text = viewModel?[indexPath.row]
-        cell.textLabel?.font = UIFont.pepFont(style: .body, weight: .regular)
+        cell.textLabel?.font = UIFont.planckFont(style: .body, weight: .regular)
 
         return cell
     }
