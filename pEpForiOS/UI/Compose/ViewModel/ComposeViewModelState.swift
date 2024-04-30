@@ -148,6 +148,7 @@ extension ComposeViewModel {
             let newValue = ComposeViewModelState(initData: initData, delegate: nil)
 
             newValue.toRecipients = Identity.makeSafe(toRecipients, forSession: session)
+            newValue.toRecipientsHidden = Identity.makeSafe(toRecipientsHidden, forSession: session)
             newValue.ccRecipients = Identity.makeSafe(ccRecipients, forSession: session)
             newValue.bccRecipients = Identity.makeSafe(bccRecipients, forSession: session)
             if let from = from {
