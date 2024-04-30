@@ -222,7 +222,8 @@ struct ComposeUtil {
             message.imapFlags.seen = imapSeenState(forMessageToSend: message)
 
             message.from = from
-            message.replaceTo(with: state.toRecipients)
+            let collectedToRecipients = state.toRecipients + state.toRecipientsHidden
+            message.replaceTo(with: collectedToRecipients)
             message.replaceCc(with: state.ccRecipients)
             message.replaceBcc(with: state.bccRecipients)
             guard !recipientsOnly else {
