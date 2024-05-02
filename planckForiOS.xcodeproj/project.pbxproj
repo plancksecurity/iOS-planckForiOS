@@ -3202,7 +3202,9 @@
 					};
 					43980E391CBD0BCA00A7FC3C = {
 						CreatedOnToolsVersion = 7.3;
+						DevelopmentTeam = NQLYU6MGPN;
 						LastSwiftMigration = 1020;
+						ProvisioningStyle = Manual;
 						TestTargetID = 43980E221CBD0BC900A7FC3C;
 					};
 				};
@@ -4430,12 +4432,17 @@
 			buildSettings = {
 				BUNDLE_LOADER = "$(TEST_HOST)";
 				CLANG_ENABLE_MODULES = YES;
+				CODE_SIGN_STYLE = Manual;
+				DEVELOPMENT_TEAM = "";
+				"DEVELOPMENT_TEAM[sdk=iphoneos*]" = NQLYU6MGPN;
 				INFOPLIST_FILE = pEpForiOSTests/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				ONLY_ACTIVE_ARCH = "$(inherited)";
 				OTHER_SWIFT_FLAGS = "$(inherited)";
-				PRODUCT_BUNDLE_IDENTIFIER = "net.planck-security.apps.planckForiOSTests";
+				PRODUCT_BUNDLE_IDENTIFIER = security.planck.email.app;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE_SPECIFIER = "";
+				"PROVISIONING_PROFILE_SPECIFIER[sdk=iphoneos*]" = iOS_Development_Default_Mail_Client;
 				SWIFT_COMPILATION_MODE = singlefile;
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 				SWIFT_VERSION = 5.0;
@@ -4449,11 +4456,16 @@
 			buildSettings = {
 				BUNDLE_LOADER = "$(TEST_HOST)";
 				CLANG_ENABLE_MODULES = YES;
+				CODE_SIGN_STYLE = Manual;
+				DEVELOPMENT_TEAM = "";
+				"DEVELOPMENT_TEAM[sdk=iphoneos*]" = NQLYU6MGPN;
 				INFOPLIST_FILE = pEpForiOSTests/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				ONLY_ACTIVE_ARCH = "$(inherited)";
-				PRODUCT_BUNDLE_IDENTIFIER = "net.planck-security.apps.planckForiOSTests";
+				PRODUCT_BUNDLE_IDENTIFIER = security.planck.email.app;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE_SPECIFIER = "";
+				"PROVISIONING_PROFILE_SPECIFIER[sdk=iphoneos*]" = iOS_Development_Default_Mail_Client;
 				SWIFT_COMPILATION_MODE = wholemodule;
 				SWIFT_VERSION = 5.0;
 				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/planckForiOS.app/$(BUNDLE_EXECUTABLE_FOLDER_PATH)/planckForiOS";
