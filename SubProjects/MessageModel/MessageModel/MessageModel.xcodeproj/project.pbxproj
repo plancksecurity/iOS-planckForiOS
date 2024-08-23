@@ -3072,7 +3072,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "echo \"BUILD_TIME STOP MessageModel: \"`date \"+%Y_%m_%d--%H:%M:%S\"`";
+			shellScript = "echo \"BUILD_TIME STOP MessageModel: \"`date \"+%Y_%m_%d--%H:%M:%S\"`\n";
 		};
 		15175F3A22259E7200C91DB8 /* Generate Core Data Boilerplate */ = {
 			isa = PBXShellScriptBuildPhase;
